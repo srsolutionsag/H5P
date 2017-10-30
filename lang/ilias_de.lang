@@ -1,0 +1,22 @@
+obj_xhfp#:#H5P
+obj_xhfp_duplicate#:#H5P kopieren
+objs_xhfp#:#H5P's
+objs_xhfp_duplicate#:#H5P's kopieren
+rbac_create_xhfp#:#H5P anlegen
+xhfp_actions#:#Aktionen
+xhfp_cancel#:#Abbrechen
+xhfp_delete#:#Löschen
+xhfp_delete_confirm#:#%s löschen?
+xhfp_deleted#:#%s gelöscht
+xhfp_error_file_field_invalid#:#Feld %1$s in %2$s ist ungültig!
+xhfp_error_file_invalid#:#%s ist ungültig!
+xhfp_error_file_not_exists#:#%s existiert nicht!
+xhfp_error_invalid_zip_archive#:#Ungültiges ZIP-Archiv!
+xhfp_error_no_package#:#Bitte wählen Sie eine H5P-Datei aus!
+xhfp_error_package_exists#:#Packet %s existiert bereits!
+xhfp_packages#:#Packete
+xhfp_package_folder#:#Packet-Ordner
+xhfp_package_name#:#Packet-Name
+xhfp_upload#:#Hochladen
+xhfp_upload_package#:#H5P-Packet hochladen
+xhfp_upload_package_ok#:#Packet %s erfolgreich hochgeladen

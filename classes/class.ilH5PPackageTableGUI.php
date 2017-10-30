@@ -1,0 +1,83 @@
+<?php
+
+require_once "Services/Table/classes/class.ilTable2GUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PConfigGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
+require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
+
+/**
+ * H5P Package Table GUI
+ */
+class ilH5PPackageTableGUI extends ilTable2GUI {
+
+	/**
+	 * @var ilCtrl
+	 */
+	protected $ctr;
+	/**
+	 * @var ilH5PPlugin
+	 */
+	protected $pl;
+
+
+	/**
+	 * @param ilH5PConfigGUI $a_parent_obj
+	 * @param string         $a_parent_cmd
+	 */
+	public function __construct(ilH5PConfigGUI $a_parent_obj, $a_parent_cmd) {
+		/**
+		 * @var ilCtrl $ilCtrl
+		 */
+
+		parent::__construct($a_parent_obj, $a_parent_cmd);
+
+		global $ilCtrl;
+
+		$this->ctrl = $ilCtrl;
+		$this->pl = ilH5PPlugin::getInstance();
+
+		$this->addColumn($this->txt("xhfp_package_name"), "package_name");
+		$this->addColumn($this->txt("xhfp_package_folder"), "package_name");
+		$this->addColumn($this->txt("xhfp_actions"));
+
+		$this->setDefaultOrderField("package_name");
+		$this->setDefaultOrderDirection("asc");
+
+		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+
+		$this->setRowTemplate("package_list_row.html", $this->pl->getDirectory());
+
+		$this->setData(H5PPackage::getArray());
+	}
+
+
+	/**
+	 * @param array $a_set
+	 */
+	protected function fillRow($a_set) {
+		$parent = $this->getParentObject();
+
+		$this->tpl->setVariable("PACKAGE_NAME", $a_set["package_name"]);
+		$this->tpl->setVariable("PACKAGE_FOLDER", $a_set["package_folder"]);
+
+		$actions = new ilAdvancedSelectionListGUI();
+		$actions->setListTitle($this->pl->txt("xhfp_actions"));
+
+		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["id"]);
+
+		$actions->addItem($this->pl->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, "deletePackage"));
+
+		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
+	}
+
+
+	/**
+	 * @param string $a_var
+	 *
+	 * @return string
+	 */
+	protected function txt($a_var) {
+		return $this->pl->txt($a_var);
+	}
+}
