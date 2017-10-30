@@ -151,7 +151,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$h5p_package_name = $h5p_json["mainLibrary"];
 
 			// Check package already exists
-			if (H5PPackage::where([ "package_name" => $h5p_package_name ])->count() !== 0) {
+			if (H5PPackage::packeExists($h5p_package_name)) {
 				throw new H5PException("xhfp_error_package_exists", [ $h5p_package_name ]);
 			}
 
@@ -198,7 +198,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deletePackage() {
-		$h5p_package = $this->getH5PPackage();
+		$h5p_package = H5PPackage::getCurrentH5PPackage();
 
 		$confirmation = new ilConfirmationGUI();
 
@@ -218,7 +218,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deletePackageConfirmed() {
-		$h5p_package = $this->getH5PPackage();
+		$h5p_package = H5PPackage::getCurrentH5PPackage();
 
 		$h5p_package->delete();
 
@@ -232,18 +232,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected function removeFolder($folder) {
 		exec('rm -rfd "' . escapeshellcmd($folder) . '"');
-	}
-
-
-	/**
-	 * @return H5PPackage
-	 */
-	protected function getH5PPackage() {
-		$id = (isset($_GET["xhfp_package"]) ? $_GET["xhfp_package"] : "");
-
-		$h5p_package = H5PPackage::where([ "id" => $id ])->first();
-
-		return $h5p_package;
 	}
 
 

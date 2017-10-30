@@ -33,6 +33,10 @@ class H5PPackageInstaller {
 	 * @throws H5PException
 	 */
 	function installH5PPackage() {
+		/* https://h5p.org/creating-your-own-h5p-plugin */
+
+		// TODO: Correct install incl. dependencies
+
 		$folder = $this->getH5PFolder($this->h5p_package_name);
 
 		$this->moveFolder($this->tmp_package_folder, $folder);

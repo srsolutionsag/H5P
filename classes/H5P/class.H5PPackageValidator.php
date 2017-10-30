@@ -61,6 +61,8 @@ class H5PPackageValidator {
 		// library.json
 		$this->validateLibraryJsons($this->extract_folder);
 
+		// TODO: Check all dependencies are exists
+
 		return $h5p_json;
 	}
 
@@ -288,6 +290,8 @@ class H5PPackageValidator {
 		if (!$this->validateArray($json)) {
 			throw new H5PException("xhfp_error_file_invalid", [ basename($library_json_file) ]);
 		}
+
+		// TODO: Validate library.json
 
 		return $json;
 	}

@@ -62,11 +62,11 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("PACKAGE_FOLDER", $a_set["package_folder"]);
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->pl->txt("xhfp_actions"));
+		$actions->setListTitle($this->txt("xhfp_actions"));
 
 		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["id"]);
 
-		$actions->addItem($this->pl->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, "deletePackage"));
+		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, "deletePackage"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 	}

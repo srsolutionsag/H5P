@@ -20,6 +20,32 @@ class H5PPackage extends ActiveRecord {
 
 
 	/**
+	 * @param string $package_name
+	 *
+	 * @return bool
+	 */
+	static function packeExists($package_name) {
+		return (self::where([ "package_name" => $package_name ])->count() !== 0);
+	}
+
+
+	/**
+	 * @return H5PPackage
+	 */
+	static function getCurrentH5PPackage() {
+		/**
+		 * @var H5PPackage $h5p_package
+		 */
+
+		$id = (isset($_GET["xhfp_package"]) ? $_GET["xhfp_package"] : "");
+
+		$h5p_package = self::where([ "id" => $id ])->first();
+
+		return $h5p_package;
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true
