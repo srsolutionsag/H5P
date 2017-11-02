@@ -1,6 +1,8 @@
 <?php
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PException.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackageInstaller.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PLibrary.php";
 
 /**
  * H5P package validator
@@ -30,7 +32,7 @@ class H5PPackageValidator {
 	/**
 	 * Validate H5P package
 	 *
-	 * @return array h5p.json
+	 * @return array h5p and libraries
 	 * @throws H5PException
 	 */
 	function validateH5PPackage() {
@@ -45,7 +47,7 @@ class H5PPackageValidator {
 		$this->extractZipArchive($this->h5p_package, $this->extract_folder);
 
 		// h5p.json
-		$h5p_json = $this->validateH5PJson($this->extract_folder . "h5p.json");
+		$h5p = $this->validateH5PJson($this->extract_folder . "h5p.json");
 
 		// TODO: You must remember to check that the coreApi property of h5p.json is compatible with the version of the H5P that you are implementing.
 
@@ -55,15 +57,21 @@ class H5PPackageValidator {
 		}
 
 		// content/content.json
-		$this->validateContentJson($this->extract_folder
-			. "content/content.json", ((isset($h5p_json["contentType"])) ? $h5p_json["contentType"] : ""));
+		$this->validateContentJson($this->extract_folder . "content/content.json", ((isset($h5p["contentType"])) ? $h5p["contentType"] : ""));
 
 		// library.json
-		$this->validateLibraryJsons($this->extract_folder);
+		$libraries = $this->validateLibraryJsons($this->extract_folder);
 
-		// TODO: Check all dependencies are exists
+		// Go through all of the depedencies specified in h5p.json and check if one of the dependent libraries are missing.
+		$this->checkDependencies($h5p["preloadedDependencies"], $libraries);
+		if (isset($h5p["dynamicDependencies"])) {
+			$this->checkDependencies($h5p["dynamicDependencies"], $libraries);
+		}
 
-		return $h5p_json;
+		return [
+			"h5p" => $h5p,
+			"libraries" => $libraries
+		];
 	}
 
 
@@ -254,9 +262,10 @@ class H5PPackageValidator {
 	/**
 	 * @param string $folder
 	 *
+	 * @return array[] Libraries
 	 * @throws H5PException
 	 */
-	protected function validateLibraryJsons($folder) {
+	protected function validateLibraryJsons($folder, &$libraries = []) {
 		$files = scandir($folder);
 
 		if ($files !== false) {
@@ -264,16 +273,19 @@ class H5PPackageValidator {
 				if ($file !== "." && $file !== "..") {
 					if (is_dir($folder . $file)) {
 						// Recursive folder
-						$this->validateLibraryJsons($folder . $file . "/");
+						$this->validateLibraryJsons($folder . $file . "/", $libraries);
 					} else {
 						if ($file === "library.json") {
-							$this->validateLibraryJson($folder . $file);
+							$library = $this->validateLibraryJson($folder . $file);
+							$libraries[$folder] = $library;
 						}
-						// Ignore other files
+						// All other files and folders are not a part of the .h5p specification and may therefore be ignored.
 					}
 				}
 			}
 		}
+
+		return $libraries;
 	}
 
 
@@ -291,9 +303,76 @@ class H5PPackageValidator {
 			throw new H5PException("xhfp_error_file_invalid", [ basename($library_json_file) ]);
 		}
 
+		if (!isset($json["title"]) || !$this->validateString($json["title"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "title", basename($library_json_file) ]);
+		}
+
+		if (!isset($json["machineName"]) || !$this->validateString($json["machineName"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "machineName", basename($library_json_file) ]);
+		}
+
+		if (!isset($json["majorVersion"]) || !$this->validateInt($json["majorVersion"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "majorVersion", basename($library_json_file) ]);
+		}
+
+		if (!isset($json["minorVersion"]) || !$this->validateInt($json["minorVersion"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "minorVersion", basename($library_json_file) ]);
+		}
+
+		if (!isset($json["patchVersion"]) || !$this->validateInt($json["patchVersion"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "patchVersion", basename($library_json_file) ]);
+		}
+
+		if (!isset($json["runnable"]) || !$this->validateBool($json["runnable"])) {
+			throw new H5PException("xhfp_error_file_field_invalid", [ "runnable", basename($library_json_file) ]);
+		}
+
 		// TODO: Validate library.json
 
 		return $json;
+	}
+
+
+	/**
+	 * @param array $dependencies
+	 * @param array $libraries
+	 *
+	 * @throws H5PException
+	 */
+	protected function checkDependencies(array $dependencies, array $libraries) {
+		foreach ($dependencies as $dependency) {
+			$exists = false;
+
+			foreach ($libraries as $library) {
+				if ($dependency["machineName"] === $library["machineName"]) {
+					$exists = true;
+
+					// Check version
+					$min_version = H5PPackageInstaller::version($dependency["majorVersion"], $dependency["minorVersion"]);
+					$current_version = H5PPackageInstaller::version($library["majorVersion"], $library["minorVersion"], $library["patchVersion"]);
+					if (strcmp($min_version, $current_version) > 0) {
+						throw new H5PException("xhfp_error_library_outdated", [ $dependency["machineName"], $min_version, $current_version ]);
+					}
+
+					break;
+				}
+			}
+
+			if (!$exists) {
+				// Check library in database
+				$h5p_library = H5PLibrary::getLibrary($dependency["machineName"]);
+				if ($h5p_library !== NULL) {
+					// Check version
+					$min_version = H5PPackageInstaller::version($dependency["majorVersion"], $dependency["minorVersion"]);
+					$current_version = $h5p_library->getVersion();
+					if (strcmp($min_version, $current_version) > 0) {
+						throw new H5PException("xhfp_error_library_outdated", [ $dependency["machineName"], $min_version, $current_version ]);
+					}
+				} else {
+					throw new H5PException("xhfp_error_library_not_found", [ $dependency["machineName"] ]);
+				}
+			}
+		}
 	}
 
 
@@ -382,6 +461,16 @@ class H5PPackageValidator {
 	 */
 	protected function validateInt($int) {
 		return (is_numeric($int) && is_int((int)$int));
+	}
+
+
+	/**
+	 * @param mixed $bool
+	 *
+	 * @return bool
+	 */
+	protected function validateBool($bool) {
+		return (is_bool($bool) || $bool === 0 || $bool === 1);
 	}
 
 

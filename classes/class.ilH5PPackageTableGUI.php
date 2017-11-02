@@ -38,7 +38,6 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 		$this->pl = ilH5PPlugin::getInstance();
 
 		$this->addColumn($this->txt("xhfp_package_name"), "package_name");
-		$this->addColumn($this->txt("xhfp_package_folder"), "package_name");
 		$this->addColumn($this->txt("xhfp_actions"));
 
 		$this->setDefaultOrderField("package_name");
@@ -58,8 +57,7 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 	protected function fillRow($a_set) {
 		$parent = $this->getParentObject();
 
-		$this->tpl->setVariable("PACKAGE_NAME", $a_set["package_name"]);
-		$this->tpl->setVariable("PACKAGE_FOLDER", $a_set["package_folder"]);
+		$this->tpl->setVariable("PACKAGE_NAME", $a_set["name"]);
 
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->txt("xhfp_actions"));

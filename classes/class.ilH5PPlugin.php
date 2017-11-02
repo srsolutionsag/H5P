@@ -2,6 +2,8 @@
 
 require_once "Services/Repository/classes/class.ilRepositoryObjectPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PDependency.php";
 
 /**
  * H5P Plugin
@@ -46,5 +48,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		global $ilDB;
 
 		$ilDB->dropTable(H5PPackage::TABLE_NAME);
+		$ilDB->dropTable(H5PLibrary::TABLE_NAME);
+		$ilDB->dropTable(H5PDependency::TABLE_NAME);
+		// TODO: remove h5p folder
 	}
 }

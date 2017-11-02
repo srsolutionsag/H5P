@@ -12,10 +12,10 @@ xhfp_error_file_field_invalid#:#Field %1$s in %2$s is invalid!
 xhfp_error_file_invalid#:#%s is invalid!
 xhfp_error_file_not_exists#:#%s does not exists!
 xhfp_error_invalid_zip_archive#:#Invalid ZIP archive!
+xhfp_error_library_not_found#:#Library %s not found!
+xhfp_error_library_outdated#:#It is needed for the library %1$s min. version %2$s, %3$s is available!
 xhfp_error_no_package#:#Please select a H5P file!
-xhfp_error_package_exists#:#Package %s exists already!
 xhfp_packages#:#Packages
-xhfp_package_folder#:#Package folder
 xhfp_package_name#:#Package name
 xhfp_upload#:#Upload
 xhfp_upload_package#:#Upload H5P package

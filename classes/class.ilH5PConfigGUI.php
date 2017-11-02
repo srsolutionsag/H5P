@@ -139,31 +139,20 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$h5p_file = $form->getInput("xhfp_package");
 
 			$time = time(); // Handling multiple uploads
-			$tmp_name = "/tmp/package_" . $time . ".h5p";
-			$tmp_extract_folder = "/tmp/package_" . $time . "_extracted/";
+			$tmp_folder = H5PPackageInstaller::getTempFolder();
+			$tmp_name = $tmp_folder . "package_" . $time . ".h5p";
+			$tmp_extract_folder = $tmp_folder . "package_" . $time . "_extracted/";
 
 			// Rename upload package to package name
 			move_uploaded_file($h5p_file["tmp_name"], $tmp_name);
 
 			// Validate H5P package
 			$validator = new H5PPackageValidator($tmp_name, $tmp_extract_folder);
-			$h5p_json = $validator->validateH5PPackage();
-			$h5p_package_name = $h5p_json["mainLibrary"];
-
-			// Check package already exists
-			if (H5PPackage::packeExists($h5p_package_name)) {
-				throw new H5PException("xhfp_error_package_exists", [ $h5p_package_name ]);
-			}
+			$h5p = $validator->validateH5PPackage();
 
 			// Install H5P package
-			$installer = new H5PPackageInstaller($h5p_package_name, $tmp_extract_folder);
-			$h5p_package_folder = $installer->installH5PPackage();
-
-			// Insert in DB
-			$h5p_package = new H5PPackage();
-			$h5p_package->setPackageName($h5p_package_name);
-			$h5p_package->setPackageFolder($h5p_package_folder);
-			$h5p_package->create();
+			$installer = new H5PPackageInstaller($h5p["h5p"], $h5p["libraries"], $tmp_extract_folder);
+			$h5p_package = $installer->installH5PPackage();
 		} catch (H5PException $ex) {
 			// H5P exception!
 			$error = vsprintf($this->txt($ex->getMessage()), $ex->getPlaceholders());
@@ -189,7 +178,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		}
 
 		// Upload ok
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_upload_package_ok"), $h5p_package_name), true);
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_upload_package_ok"), $h5p_package->getName()), true);
 		$this->ctrl->redirect($this, "listPackages");
 	}
 
@@ -198,14 +187,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deletePackage() {
-		$h5p_package = H5PPackage::getCurrentH5PPackage();
+		$h5p_package = H5PPackage::getCurrentPackage();
 
 		$confirmation = new ilConfirmationGUI();
 
 		$this->ctrl->setParameter($this, "xhfp_package", $h5p_package->getId());
 		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
-		$confirmation->setHeaderText(sprintf($this->pl->txt("xhfp_delete_confirm"), $h5p_package->getPackageName()));
+		$confirmation->setHeaderText(sprintf($this->pl->txt("xhfp_delete_confirm"), $h5p_package->getName()));
 
 		$confirmation->setConfirm($this->pl->txt("xhfp_delete"), "deletePackageConfirmed");
 		$confirmation->setCancel($this->pl->txt("xhfp_cancel"), "listPackages");
@@ -218,11 +207,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deletePackageConfirmed() {
-		$h5p_package = H5PPackage::getCurrentH5PPackage();
+		$h5p_package = H5PPackage::getCurrentPackage();
 
 		$h5p_package->delete();
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted"), $h5p_package->getPackageName()), true);
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted"), $h5p_package->getName()), true);
 		$this->ctrl->redirect($this, "listPackages");
 	}
 

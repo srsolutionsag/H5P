@@ -1,13 +1,14 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackageInstaller.php";
 
 /**
- * H5P package active record
+ * H5P library active record
  */
-class H5PPackage extends ActiveRecord {
+class H5PLibrary extends ActiveRecord {
 
-	const TABLE_NAME = "rep_robj_xhfp_package";
+	const TABLE_NAME = "rep_robj_xhfp_library";
 
 
 	/**
@@ -21,32 +22,16 @@ class H5PPackage extends ActiveRecord {
 	/**
 	 * @param string $name
 	 *
-	 * @return H5PPackage|null
+	 * @return H5PLibrary|null
 	 */
-	static function getPackage($name) {
+	static function getLibrary($name) {
 		/**
-		 * @var H5PPackage $h5p_package
+		 * @var H5PLibrary $h5p_library
 		 */
 
-		$h5p_package = self::where([ "name" => $name ])->first();
+		$h5p_library = self::where([ "name" => $name ])->first();
 
-		return $h5p_package;
-	}
-
-
-	/**
-	 * @return H5PPackage|null
-	 */
-	static function getCurrentPackage() {
-		/**
-		 * @var H5PPackage $h5p_package
-		 */
-
-		$id = (isset($_GET["xhfp_package"]) ? $_GET["xhfp_package"] : "");
-
-		$h5p_package = self::where([ "id" => $id ])->first();
-
-		return $h5p_package;
+		return $h5p_library;
 	}
 
 
@@ -73,21 +58,25 @@ class H5PPackage extends ActiveRecord {
 	/**
 	 * @var string
 	 *
+	 * @con_has_field  true
+	 * @con_fieldtype  text
+	 * @con_is_notnull true
+	 */
+	protected $version;
+	/**
+	 * @var string
+	 *
 	 * @con_has_field   true
 	 * @con_fieldtype   text
 	 * @con_is_notnull  true
 	 */
-	protected $content_folder;
+	protected $folder;
 
 
-	/**
-	 *
-	 */
 	public function delete() {
-		H5PPackageInstaller::removePackage($this);
+		H5PPackageInstaller::removeLibrary($this);
 
 		parent::delete();
-		// TODO: Delete all repositories objects
 	}
 
 
@@ -126,15 +115,31 @@ class H5PPackage extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	public function getContentFolder() {
-		return $this->content_folder;
+	public function getVersion() {
+		return $this->version;
 	}
 
 
 	/**
-	 * @param string $content_folder
+	 * @param string $version
 	 */
-	public function setContentFolder($content_folder) {
-		$this->content_folder = $content_folder;
+	public function setVersion($version) {
+		$this->version = $version;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getFolder() {
+		return $this->folder;
+	}
+
+
+	/**
+	 * @param string $folder
+	 */
+	public function setFolder($folder) {
+		$this->folder = $folder;
 	}
 }
