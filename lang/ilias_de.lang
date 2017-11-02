@@ -5,9 +5,6 @@ objs_xhfp_duplicate#:#H5P's kopieren
 rbac_create_xhfp#:#H5P anlegen
 xhfp_actions#:#Aktionen
 xhfp_cancel#:#Abbrechen
-xhfp_delete#:#Löschen
-xhfp_delete_confirm#:#%s löschen?
-xhfp_deleted#:#%s gelöscht
 xhfp_error_file_field_invalid#:#Feld %1$s in %2$s ist ungültig!
 xhfp_error_file_invalid#:#%s ist ungültig!
 xhfp_error_file_not_exists#:#%s existiert nicht!
@@ -15,8 +12,13 @@ xhfp_error_invalid_zip_archive#:#Ungültiges ZIP-Archiv!
 xhfp_error_library_not_found#:#Library %s nicht gefunden!
 xhfp_error_library_outdated#:#Es wird für die Library %1$s mind. Version %2$s benötigt, %3$s vorhanden!
 xhfp_error_no_package#:#Bitte wählen Sie eine H5P-Datei aus!
-xhfp_packages#:#Packete
+xhfp_install#:#Installieren
+xhfp_install_package#:#H5P-Packet installieren
+xhfp_installed#:#Packet %s erfolgreich installiert
+xhfp_package#:#Packet
 xhfp_package_name#:#Packet-Name
-xhfp_upload#:#Hochladen
-xhfp_upload_package#:#H5P-Packet hochladen
-xhfp_upload_package_ok#:#Packet %s erfolgreich hochgeladen
+xhfp_packages#:#Packete
+xhfp_uninstall#:#Entfernen
+xhfp_uninstall_confirm#:#Möchten Sie das Packet #%s wirklich entfernen?
+xhfp_uninstalled#:#Packet %s erfolgreich entfernt
+xhfp_updated#:#Packet %s erfolgreich aktualisiert

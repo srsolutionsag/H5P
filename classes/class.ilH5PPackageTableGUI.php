@@ -64,7 +64,7 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 
 		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["id"]);
 
-		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, "deletePackage"));
+		$actions->addItem($this->txt("xhfp_uninstall"), "", $this->ctrl->getLinkTarget($parent, "uninstallPackage"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 	}

@@ -21,6 +21,13 @@ class H5PPackageInstaller {
 	}
 
 
+	static function removeH5PFolder() {
+		$h5p_folder = self::getH5PFolder();
+
+		self::removeFolder($h5p_folder);
+	}
+
+
 	/**
 	 * @return string
 	 */
