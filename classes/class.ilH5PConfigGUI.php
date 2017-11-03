@@ -6,10 +6,10 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilFileInputGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPackageTableGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackageValidator.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackageInstaller.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PException.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5PInstall/class.ilH5PPackageValidator.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5PInstall/class.ilH5PPackageInstaller.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/Exceptions/class.ilH5PException.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 
@@ -18,6 +18,10 @@ require_once "Services/Utilities/classes/class.ilUtil.php";
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
+	const CMD_LIST_PACKAGES = "listPackages";
+	const CMD_INSTALL_PACKAGE = "installPackage";
+	const CMD_UNINSTALL_PACKAGE = "uninstallPackage";
+	const CMD_UNINSTALL_PACKAGE_CONFIRMED = "uninstallPackageConfirmed";
 	/**
 	 * @var ilCtrl
 	 */
@@ -57,18 +61,18 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 * @param string $cmd
 	 */
 	function performCommand($cmd) {
-		$this->tabs->addTab("xhfp_packages", $this->txt("xhfp_packages"), $this->ctrl->getLinkTarget($this, "listPackages"));
+		$this->tabs->addTab("xhfp_packages", $this->txt("xhfp_packages"), $this->ctrl->getLinkTarget($this, self::CMD_LIST_PACKAGES));
 		$this->tabs->manual_activation = true; // Show all tabs as links when no activation
 
 		if ($cmd === "configure") {
-			$cmd = "listPackages";
+			$cmd = self::CMD_LIST_PACKAGES;
 		}
 
 		switch ($cmd) {
-			case "listPackages":
-			case "installPackage":
-			case "uninstallPackage":
-			case "uninstallPackageConfirmed":
+			case self::CMD_LIST_PACKAGES:
+			case self::CMD_INSTALL_PACKAGE:
+			case self::CMD_UNINSTALL_PACKAGE:
+			case self::CMD_UNINSTALL_PACKAGE_CONFIRMED:
 				$this->$cmd();
 				break;
 
@@ -96,7 +100,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form->setTitle($this->txt("xhfp_install_package"));
 
-		$form->addCommandButton("installPackage", $this->txt("xhfp_install"));
+		$form->addCommandButton(self::CMD_INSTALL_PACKAGE, $this->txt("xhfp_install"));
 
 		$install_package = new ilFileInputGUI($this->txt("xhfp_package"), "xhfp_package");
 		$install_package->setRequired(true);
@@ -115,7 +119,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form = $this->getInstallPackageForm();
 
-		$package_table = new ilH5PPackageTableGUI($this, "listPackages");
+		$package_table = new ilH5PPackageTableGUI($this, self::CMD_LIST_PACKAGES);
 
 		$this->show($form->getHTML() . $package_table->getHTML());
 	}
@@ -132,14 +136,16 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		try {
 			$form = $this->getInstallPackageForm();
 
+			$form->setValuesByPost();
+
 			if (!$form->checkInput()) {
-				throw new H5PException("xhfp_error_no_package");
+				throw new ilH5PException("xhfp_error_no_package");
 			}
 
 			$h5p_file = $form->getInput("xhfp_package");
 
 			$time = time(); // Handling multiple uploads
-			$tmp_folder = H5PPackageInstaller::getTempFolder();
+			$tmp_folder = ilH5PPackageInstaller::getTempFolder();
 			$tmp_name = $tmp_folder . "package_" . $time . ".h5p";
 			$tmp_extract_folder = $tmp_folder . "package_" . $time . "_extracted/";
 
@@ -147,15 +153,15 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			move_uploaded_file($h5p_file["tmp_name"], $tmp_name);
 
 			// Validate H5P package
-			$validator = new H5PPackageValidator($tmp_name, $tmp_extract_folder);
+			$validator = new ilH5PPackageValidator($tmp_name, $tmp_extract_folder);
 			$h5p = $validator->validateH5PPackage();
 
-			$update = (H5PPackage::getPackage($h5p["h5p"]["mainLibrary"]) !== NULL);
+			$update = (ilH5PPackage::getPackage($h5p["h5p"]["mainLibrary"]) !== NULL);
 
 			// Install H5P package
-			$installer = new H5PPackageInstaller($h5p["h5p"], $h5p["libraries"], $tmp_extract_folder);
+			$installer = new ilH5PPackageInstaller($h5p["h5p"], $h5p["libraries"], $tmp_extract_folder);
 			$h5p_package = $installer->installH5PPackage();
-		} catch (H5PException $ex) {
+		} catch (ilH5PException $ex) {
 			// H5P exception!
 			$error = vsprintf($this->txt($ex->getMessage()), $ex->getPlaceholders());
 		} catch (Exception $ex) {
@@ -175,13 +181,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			// Upload error!
 			if ($error !== NULL) {
 				ilUtil::sendFailure($error, true);
-				$this->ctrl->redirect($this, "listPackages");
+				$this->ctrl->redirect($this, self::CMD_LIST_PACKAGES);
 			}
 		}
 
 		// Install/update ok
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_" . (($update) ? "updated" : "installed")), $h5p_package->getName()), true);
-		$this->ctrl->redirect($this, "listPackages");
+		$this->ctrl->redirect($this, self::CMD_LIST_PACKAGES);
 	}
 
 
@@ -189,7 +195,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function uninstallPackage() {
-		$h5p_package = H5PPackage::getCurrentPackage();
+		$h5p_package = ilH5PPackage::getCurrentPackage();
 
 		$confirmation = new ilConfirmationGUI();
 
@@ -198,8 +204,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$confirmation->setHeaderText(sprintf($this->pl->txt("xhfp_uninstall_confirm"), $h5p_package->getName()));
 
-		$confirmation->setConfirm($this->pl->txt("xhfp_uninstall"), "uninstallPackageConfirmed");
-		$confirmation->setCancel($this->pl->txt("xhfp_cancel"), "listPackages");
+		$confirmation->setConfirm($this->pl->txt("xhfp_uninstall"), self::CMD_UNINSTALL_PACKAGE_CONFIRMED);
+		$confirmation->setCancel($this->pl->txt("xhfp_cancel"), self::CMD_LIST_PACKAGES);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -209,12 +215,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function uninstallPackageConfirmed() {
-		$h5p_package = H5PPackage::getCurrentPackage();
+		$h5p_package = ilH5PPackage::getCurrentPackage();
 
 		$h5p_package->delete();
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_uninstalled"), $h5p_package->getName()), true);
-		$this->ctrl->redirect($this, "listPackages");
+		$this->ctrl->redirect($this, self::CMD_LIST_PACKAGES);
 	}
 
 

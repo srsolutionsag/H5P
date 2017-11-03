@@ -1,10 +1,12 @@
 <#1>
 <?php
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PLibrary.php";
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PDependency.php";
+	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
+	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PLibrary.php";
+	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PDependency.php";
+	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackageObject.php";
 
-	H5PPackage::updateDB();
-	H5PLibrary::updateDB();
-	H5PDependency::updateDB();
+	ilH5PPackage::updateDB();
+	ilH5PLibrary::updateDB();
+	ilH5PDependency::updateDB();
+	ilH5PPackageObject::updateDB();
 ?>

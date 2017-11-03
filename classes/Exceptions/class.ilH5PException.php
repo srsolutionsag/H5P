@@ -5,7 +5,7 @@ require_once "Services/Exceptions/classes/class.ilException.php";
 /**
  * H5P Exception
  */
-class H5PException extends ilException {
+class ilH5PException extends ilException {
 
 	/**
 	 * @var array

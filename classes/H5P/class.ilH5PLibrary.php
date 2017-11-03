@@ -1,12 +1,12 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackageInstaller.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5PInstall/class.ilH5PPackageInstaller.php";
 
 /**
  * H5P library active record
  */
-class H5PLibrary extends ActiveRecord {
+class ilH5PLibrary extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_library";
 
@@ -22,11 +22,11 @@ class H5PLibrary extends ActiveRecord {
 	/**
 	 * @param string $name
 	 *
-	 * @return H5PLibrary|null
+	 * @return ilH5PLibrary|null
 	 */
 	static function getLibrary($name) {
 		/**
-		 * @var H5PLibrary $h5p_library
+		 * @var ilH5PLibrary $h5p_library
 		 */
 
 		$h5p_library = self::where([ "name" => $name ])->first();
@@ -74,7 +74,7 @@ class H5PLibrary extends ActiveRecord {
 
 
 	public function delete() {
-		H5PPackageInstaller::removeLibrary($this);
+		ilH5PPackageInstaller::removeLibrary($this);
 
 		parent::delete();
 	}

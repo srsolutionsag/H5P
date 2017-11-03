@@ -3,7 +3,7 @@
 require_once "Services/Table/classes/class.ilTable2GUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PConfigGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
 
 /**
@@ -47,7 +47,7 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 
 		$this->setRowTemplate("package_list_row.html", $this->pl->getDirectory());
 
-		$this->setData(H5PPackage::getArray());
+		$this->setData(ilH5PPackage::getArray());
 	}
 
 
@@ -64,7 +64,7 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 
 		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["id"]);
 
-		$actions->addItem($this->txt("xhfp_uninstall"), "", $this->ctrl->getLinkTarget($parent, "uninstallPackage"));
+		$actions->addItem($this->txt("xhfp_uninstall"), "", $this->ctrl->getLinkTarget($parent, ilH5PConfigGUI::CMD_UNINSTALL_PACKAGE));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 	}

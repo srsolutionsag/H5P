@@ -1,14 +1,15 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PException.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PDependency.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/Exceptions/class.ilH5PException.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PDependency.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackageObject.php";
 
 /**
  * H5P package installer, updater and remover
  */
-class H5PPackageInstaller {
+class ilH5PPackageInstaller {
 
 	/**
 	 * @return string
@@ -130,10 +131,10 @@ class H5PPackageInstaller {
 	/**
 	 * Install H5P package
 	 *
-	 * @return H5PPackage
+	 * @return ilH5PPackage
 	 */
 	function installH5PPackage() {
-		$h5p_package = H5PPackage::getPackage($this->h5p["mainLibrary"]);
+		$h5p_package = ilH5PPackage::getPackage($this->h5p["mainLibrary"]);
 
 		if ($h5p_package !== NULL) {
 			// Update package
@@ -151,10 +152,10 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @return H5PPackage
+	 * @return ilH5PPackage
 	 */
 	protected function installPackage() {
-		$h5p_package = new H5PPackage();
+		$h5p_package = new ilH5PPackage();
 
 		$h5p_package->setName($this->h5p["mainLibrary"]);
 		$h5p_package->setContentFolder(self::getContentFolder($this->h5p["mainLibrary"]));
@@ -169,23 +170,26 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @param H5PPackage $h5p_package
+	 * @param ilH5PPackage $h5p_package
 	 */
-	protected function updatePackage(H5PPackage $h5p_package) {
+	protected function updatePackage(ilH5PPackage $h5p_package) {
 		// Update content
 		$this->updateContent($h5p_package->getContentFolder());
 	}
 
 
 	/**
-	 * @param H5PPackage $h5p_package
+	 * @param ilH5PPackage $h5p_package
 	 */
-	static function removePackage(H5PPackage $h5p_package) {
+	static function removePackage(ilH5PPackage $h5p_package) {
 		// Remove content
 		self::removeFolder($h5p_package->getContentFolder());
 
 		// Remove dependencies
 		self::removeDependencies($h5p_package);
+
+		// Update objects
+		self::updatePackageObjects($h5p_package);
 	}
 
 
@@ -208,11 +212,11 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @param H5PPackage $h5p_package
+	 * @param ilH5PPackage $h5p_package
 	 */
-	protected function installLibraries(H5PPackage $h5p_package) {
+	protected function installLibraries(ilH5PPackage $h5p_package) {
 		foreach ($this->libraries as $folder => $library) {
-			$h5p_library = H5PLibrary::getLibrary($library["machineName"]);
+			$h5p_library = ilH5PLibrary::getLibrary($library["machineName"]);
 
 			if ($h5p_library !== NULL) {
 				// Library exists
@@ -240,14 +244,14 @@ class H5PPackageInstaller {
 	 * @param array  $library
 	 * @param string $folder
 	 *
-	 * @return H5PLibrary
+	 * @return ilH5PLibrary
 	 */
 	protected function installLibrary(array $library, $folder) {
 		$library_folder = self::getLibraryFolder($library["machineName"]);
 
 		self::moveFolder($folder, $library_folder);
 
-		$h5p_library = new H5PLibrary();
+		$h5p_library = new ilH5PLibrary();
 
 		$h5p_library->setName($library["machineName"]);
 		$h5p_library->setVersion(self::version($library["majorVersion"], $library["minorVersion"], $library["patchVersion"]));
@@ -260,11 +264,11 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @param H5PLibrary $h5p_library
-	 * @param array      $library
-	 * @param string     $folder
+	 * @param ilH5PLibrary $h5p_library
+	 * @param array        $library
+	 * @param string       $folder
 	 */
-	protected function updateLibrary(H5PLibrary $h5p_library, array $library, $folder) {
+	protected function updateLibrary(ilH5PLibrary $h5p_library, array $library, $folder) {
 		$library_folder = self::getLibraryFolder($library["machineName"]);
 
 		self::removeFolder($library_folder);
@@ -278,24 +282,24 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @param H5PLibrary $h5p_library
+	 * @param ilH5PLibrary $h5p_library
 	 */
-	static function removeLibrary(H5PLibrary $h5p_library) {
+	static function removeLibrary(ilH5PLibrary $h5p_library) {
 		self::removeFolder($h5p_library->getFolder());
 	}
 
 
 	/**
-	 * @param H5PPackage $h5p_package
-	 * @param H5PLibrary $h5p_library
+	 * @param ilH5PPackage $h5p_package
+	 * @param ilH5PLibrary $h5p_library
 	 *
-	 * @return H5PDependency
+	 * @return ilH5PDependency
 	 */
-	protected function createDependency(H5PPackage $h5p_package, H5PLibrary $h5p_library) {
-		$h5p_dependency = H5PDependency::getDependency($h5p_package, $h5p_library);
+	protected function createDependency(ilH5PPackage $h5p_package, ilH5PLibrary $h5p_library) {
+		$h5p_dependency = ilH5PDependency::getDependency($h5p_package, $h5p_library);
 
 		if ($h5p_dependency === NULL) {
-			$h5p_dependency = new H5PDependency();
+			$h5p_dependency = new ilH5PDependency();
 
 			$h5p_dependency->setPackage($h5p_package->getId());
 			$h5p_dependency->setLibrary($h5p_library->getId());
@@ -308,15 +312,28 @@ class H5PPackageInstaller {
 
 
 	/**
-	 * @param H5PPackage $h5p_package
+	 * @param ilH5PPackage $h5p_package
 	 */
-	static function removeDependencies(H5PPackage $h5p_package) {
-		$h5p_dependencies = H5PDependency::getDependencies($h5p_package);
+	static function removeDependencies(ilH5PPackage $h5p_package) {
+		$h5p_dependencies = ilH5PDependency::getDependencies($h5p_package);
 
 		foreach ($h5p_dependencies as $h5p_dependency) {
 			$h5p_dependency->delete();
 		}
 		// TODO: remove unnecessary libraries
+	}
+
+
+	/**
+	 * @param ilH5PPackage $h5p_package
+	 */
+	static function updatePackageObjects(ilH5PPackage $h5p_package) {
+		$h5p_package_objects = ilH5PPackageObject::getPackageObjects($h5p_package);
+
+		foreach ($h5p_package_objects as $h5p_package_object) {
+			$h5p_package_object->setPackage(NULL);
+			$h5p_package_object->update();
+		}
 	}
 
 

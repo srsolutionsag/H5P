@@ -4,6 +4,7 @@ objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#H5P's kopieren
 rbac_create_xhfp#:#H5P anlegen
 xhfp_actions#:#Aktionen
+xhfp_add#:#Hinzufügen
 xhfp_cancel#:#Abbrechen
 xhfp_error_file_field_invalid#:#Feld %1$s in %2$s ist ungültig!
 xhfp_error_file_invalid#:#%s ist ungültig!
@@ -15,9 +16,12 @@ xhfp_error_no_package#:#Bitte wählen Sie eine H5P-Datei aus!
 xhfp_install#:#Installieren
 xhfp_install_package#:#H5P-Packet installieren
 xhfp_installed#:#Packet %s erfolgreich installiert
+xhfp_new#:#H5P anlegen
 xhfp_package#:#Packet
 xhfp_package_name#:#Packet-Name
 xhfp_packages#:#Packete
+xhfp_please_select#:#bitte wählen
+xhfp_save#:#Speichern
 xhfp_uninstall#:#Entfernen
 xhfp_uninstall_confirm#:#Möchten Sie das Packet #%s wirklich entfernen?
 xhfp_uninstalled#:#Packet %s erfolgreich entfernt

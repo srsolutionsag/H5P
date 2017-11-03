@@ -1,13 +1,13 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PPackage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.H5PLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PLibrary.php";
 
 /**
  * H5P dependency active record
  */
-class H5PDependency extends ActiveRecord {
+class ilH5PDependency extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_depend";
 
@@ -21,14 +21,14 @@ class H5PDependency extends ActiveRecord {
 
 
 	/**
-	 * @param H5PPackage $package
-	 * @param H5PLibrary $library
+	 * @param ilH5PPackage $package
+	 * @param ilH5PLibrary $library
 	 *
-	 * @return H5PDependency|null
+	 * @return ilH5PDependency|null
 	 */
-	static function getDependency(H5PPackage $package, H5PLibrary $library) {
+	static function getDependency(ilH5PPackage $package, ilH5PLibrary $library) {
 		/**
-		 * @var H5PDependency $h5p_dependency
+		 * @var ilH5PDependency $h5p_dependency
 		 */
 
 		$h5p_dependency = self::where([ "package" => $package->getId(), "library" => $library->getId() ])->first();
@@ -38,13 +38,13 @@ class H5PDependency extends ActiveRecord {
 
 
 	/**
-	 * @param H5PPackage $package
+	 * @param ilH5PPackage $package
 	 *
-	 * @return H5PDependency[]
+	 * @return ilH5PDependency[]
 	 */
-	static function getDependencies(H5PPackage $package) {
+	static function getDependencies(ilH5PPackage $package) {
 		/**
-		 * @var H5PDependency[] $h5p_dependencies
+		 * @var ilH5PDependency[] $h5p_dependencies
 		 */
 
 		$h5p_dependencies = self::where([ "package" => $package->getId() ])->get();

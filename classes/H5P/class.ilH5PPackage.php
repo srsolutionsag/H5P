@@ -5,7 +5,7 @@ require_once "Services/ActiveRecord/class.ActiveRecord.php";
 /**
  * H5P package active record
  */
-class H5PPackage extends ActiveRecord {
+class ilH5PPackage extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_package";
 
@@ -19,13 +19,43 @@ class H5PPackage extends ActiveRecord {
 
 
 	/**
+	 * @return ilH5PPackage[]
+	 */
+	static function getPackages() {
+		/**
+		 * @var ilH5PPackage[] $packages
+		 */
+
+		$packages = self::get();
+
+		return $packages;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	static function getPackagesArray() {
+		$packages = self::getPackages();
+
+		$array = [];
+
+		foreach ($packages as $package) {
+			$array[$package->getId()] = $package->getName();
+		}
+
+		return $array;
+	}
+
+
+	/**
 	 * @param string $name
 	 *
-	 * @return H5PPackage|null
+	 * @return ilH5PPackage|null
 	 */
 	static function getPackage($name) {
 		/**
-		 * @var H5PPackage $h5p_package
+		 * @var ilH5PPackage $h5p_package
 		 */
 
 		$h5p_package = self::where([ "name" => $name ])->first();
@@ -35,11 +65,11 @@ class H5PPackage extends ActiveRecord {
 
 
 	/**
-	 * @return H5PPackage|null
+	 * @return ilH5PPackage|null
 	 */
 	static function getCurrentPackage() {
 		/**
-		 * @var H5PPackage $h5p_package
+		 * @var ilH5PPackage $h5p_package
 		 */
 
 		$id = (isset($_GET["xhfp_package"]) ? $_GET["xhfp_package"] : "");
@@ -84,10 +114,9 @@ class H5PPackage extends ActiveRecord {
 	 *
 	 */
 	public function delete() {
-		H5PPackageInstaller::removePackage($this);
+		ilH5PPackageInstaller::removePackage($this);
 
 		parent::delete();
-		// TODO: Delete all repositories objects
 	}
 
 
