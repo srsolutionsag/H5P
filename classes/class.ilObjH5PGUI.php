@@ -4,8 +4,9 @@ require_once "Services/Repository/classes/class.ilObjectPluginGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilSelectInputGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
 require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P GUI
@@ -31,10 +32,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @var ilObjH5P
 	 */
 	var $object;
+	/**
+	 * @var ilH5PPlugin
+	 */
+	protected $plugin;
+	/**
+	 * @var ilH5PFramework
+	 */
+	protected $h5p_framework;
 
 
 	protected function afterConstructor() {
-
+		$this->h5p_framework = new ilH5PFramework();
 	}
 
 
@@ -64,6 +73,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
+		$this->tpl->setTitle($this->object->getTitle());
+
+		$this->tpl->setDescription($this->object->getDescription());
+
 		$this->tpl->setContent($html);
 	}
 
@@ -74,7 +87,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return ilPropertyFormGUI
 	 */
 	function initCreateForm($a_new_type) {
-		$packages = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PPackage::getPackagesArray();
+		$packages = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PContent::getPackagesArray();
 
 		$form = parent::initCreateForm($a_new_type);
 
@@ -92,6 +105,93 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function showH5p() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENT);
+
+		$content = $this->h5p_framework->h5p_core->loadContent($this->object->getUserData()->getContentMainId());
+		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($this->object->getUserData()
+			->getContentMainId(), "preloaded");
+		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies);
+
+		$core_path = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
+
+		$core_scripts = array_map(function ($file) use ($core_path) {
+			return ($core_path . $file);
+		}, H5PCore::$scripts);
+
+		$core_styles = array_map(function ($file) use ($core_path) {
+			return ($core_path . $file);
+		}, H5PCore::$styles);
+
+		$scripts = $files["scripts"];
+
+		$styles = $files["styles"];
+
+		$H5PIntegration = [
+			"baseUrl" => "",
+			"url" => ilH5PFramework::getH5PFolder(),
+			"postUserStatistics" => false,
+			"ajaxPath" => "",
+			"ajax" => [
+				"setFinished" => "",
+				"contentUserData" => ""
+			],
+			"saveFreq" => 30,
+			"user" => [
+				"name" => "",
+				"mail" => ""
+			],
+			"siteUrl" => "",
+			"l10n" => [
+				"H5P" => $this->h5p_framework->h5p_core->getLocalization()
+			],
+			"loadedJs" => $scripts,
+			"loadedCss" => $styles,
+			"core" => [
+				"scripts" => $core_scripts,
+				"styles" => $core_styles
+			],
+			"contents" => [
+				("cid-" . $content["contentId"]) => [
+					"library" => H5PCore::libraryToString($content["library"]),
+					"jsonContent" => $content["params"],
+					"fullScreen" => false,
+					"exportUrl" => "",
+					"embedCode" => "",
+					"resizeCode" => "",
+					"mainId" => 0,
+					"url" => "",
+					"title" => $content["title"],
+					"contentUserData" => [],
+					"displayOptions" => [
+						"frame" => false,
+						"export" => false,
+						"embed" => false,
+						"copyright" => false,
+						"icon" => false
+					],
+					"styles" => [],
+					"scripts" => []
+				]
+			]
+		];
+
+		foreach (array_merge($core_scripts, $scripts) as $script) {
+			$this->tpl->addJavaScript($script);
+		}
+
+		foreach (array_merge($core_styles, $styles) as $style) {
+			$this->tpl->addCss($style, "");
+		}
+
+		$tmpl = $this->plugin->getTemplate("H5PIntegration.html");
+
+		$tmpl->setCurrentBlock("scriptBlock");
+		$tmpl->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($H5PIntegration));
+		$tmpl->parseCurrentBlock();
+
+		$tmpl->setCurrentBlock("contentBlock");
+		$tmpl->setVariable("H5P_CONTENT_ID", $content["contentId"]);
+
+		$this->show($tmpl->get());
 	}
 
 
@@ -99,8 +199,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function getSettingsForm() {
-		$packages = ilH5PPackage::getPackagesArray();
-		$current_package = $this->object->getPackage()->getPackage();
+		$packages = ilH5PContent::getPackagesArray();
+
+		$current_package = $this->object->getUserData()->getContentMainId();
 		if ($current_package === NULL) {
 			$packages = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + $packages;
 		}
@@ -127,6 +228,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$package->setRequired(true);
 		$package->setOptions($packages);
 		$package->setValue($current_package);
+		$package->setDisabled(true);
 		$form->addItem($package);
 
 		return $form;
@@ -165,8 +267,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$description = $form->getInput("xhfp_description");
 		$this->object->setDescription($description);
 
-		$package = $form->getInput("xhfp_package");
-		$this->object->getPackage()->setPackage($package);
+		/*$package = $form->getInput("xhfp_package");
+		$this->object->getUserData()->setContentMainId($package);*/
 
 		$this->object->update();
 
@@ -179,7 +281,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
-	 * @inheritdoc
+	 *
 	 */
 	protected function setTabs() {
 		$this->tabs_gui->addTab(self::TAB_CONTENT, $this->lng->txt(self::TAB_CONTENT), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_H5P));

@@ -2,7 +2,7 @@
 
 require_once "Services/Repository/classes/class.ilObjectPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackageObject.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentUserData.php";
 
 /**
  * H5P Object
@@ -10,9 +10,13 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilObjH5P extends ilObjectPlugin {
 
 	/**
-	 * @var ilH5PPackageObject
+	 * @var ilObjUser
 	 */
-	protected $package;
+	protected $user;
+	/**
+	 * @var ilH5PContentUserData
+	 */
+	protected $user_data;
 
 
 	/**
@@ -20,6 +24,14 @@ class ilObjH5P extends ilObjectPlugin {
 	 */
 	function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
+
+		/**
+		 * @var ilObjUser $ilUser
+		 */
+
+		global $ilUser;
+
+		$this->user = $ilUser;
 	}
 
 
@@ -37,12 +49,19 @@ class ilObjH5P extends ilObjectPlugin {
 	function doCreate() {
 		$package = $_POST["xhfp_package"];
 
-		$this->package = new ilH5PPackageObject();
+		$time = time();
 
-		$this->package->setObj($this->getId());
-		$this->package->setPackage($package);
+		$this->user_data = new ilH5PContentUserData();
 
-		$this->package->create();
+		$this->user_data->setContentMainId($package);
+
+		$this->user_data->setDataId($this->getId());
+
+		$this->user_data->setUserId($this->user->getId());
+
+		$this->user_data->setTimestamp($time);
+
+		$this->user_data->create();
 	}
 
 
@@ -50,7 +69,11 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doRead() {
-		$this->package = ilH5PPackageObject::getPackageObject($this);
+		$this->user_data = ilH5PContentUserData::getUserDataByData($this->getId());
+
+		if ($this->user_data === NULL) {
+			$this->user_data = new ilH5PContentUserData();
+		}
 	}
 
 
@@ -58,7 +81,11 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doUpdate() {
-		$this->package->update();
+		$time = time();
+
+		$this->user_data->setTimestamp($time);
+
+		$this->user_data->update();
 	}
 
 
@@ -66,7 +93,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doDelete() {
-		$this->package->delete();
+		$this->user_data->delete();
 	}
 
 
@@ -76,24 +103,26 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_copy_id
 	 */
 	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
-		$new_obj->package->setPackage($this->package->getPackage());
+		$new_obj->user_data = $this->user_data->copy();
 
-		$new_obj->package->update();
+		$new_obj->user_data->setDataId($new_obj->getId());
+
+		$new_obj->user_data->create();
 	}
 
 
 	/**
-	 * @return ilH5PPackageObject
+	 * @return ilH5PContentUserData
 	 */
-	public function getPackage() {
-		return $this->package;
+	public function getUserData() {
+		return $this->user_data;
 	}
 
 
 	/**
-	 * @param ilH5PPackageObject $package
+	 * @param ilH5PContentUserData $user_data
 	 */
-	public function setPackage($package) {
-		$this->package = $package;
+	public function setUserData($user_data) {
+		$this->user_data = $user_data;
 	}
 }

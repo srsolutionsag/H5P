@@ -23,6 +23,5 @@ xhfp_packages#:#Packete
 xhfp_please_select#:#bitte wählen
 xhfp_save#:#Speichern
 xhfp_uninstall#:#Entfernen
-xhfp_uninstall_confirm#:#Möchten Sie das Packet #%s wirklich entfernen?
+xhfp_uninstall_confirm#:#Möchten Sie das Packet %s wirklich entfernen?
 xhfp_uninstalled#:#Packet %s erfolgreich entfernt
-xhfp_updated#:#Packet %s erfolgreich aktualisiert

@@ -3,8 +3,8 @@
 require_once "Services/Table/classes/class.ilTable2GUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PConfigGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
 
 /**
  * H5P Package Table GUI
@@ -47,7 +47,7 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 
 		$this->setRowTemplate("package_list_row.html", $this->pl->getDirectory());
 
-		$this->setData(ilH5PPackage::getArray());
+		$this->setData(ilH5PContent::getPackages());
 	}
 
 
@@ -57,12 +57,12 @@ class ilH5PPackageTableGUI extends ilTable2GUI {
 	protected function fillRow($a_set) {
 		$parent = $this->getParentObject();
 
-		$this->tpl->setVariable("PACKAGE_NAME", $a_set["name"]);
+		$this->tpl->setVariable("PACKAGE_NAME", $a_set["package_name"]);
 
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["id"]);
+		$this->ctrl->setParameter($parent, "xhfp_package", $a_set["content_id"]);
 
 		$actions->addItem($this->txt("xhfp_uninstall"), "", $this->ctrl->getLinkTarget($parent, ilH5PConfigGUI::CMD_UNINSTALL_PACKAGE));
 

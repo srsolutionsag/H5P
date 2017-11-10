@@ -1,11 +1,18 @@
 <?php
 
 require_once "Services/Repository/classes/class.ilRepositoryObjectPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PDependency.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PPackageObject.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5PInstall/class.ilH5PPackageInstaller.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentUserData.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PCounter.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PEvent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryHubCache.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PPoint.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P Plugin
@@ -49,11 +56,28 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		global $ilDB;
 
-		$ilDB->dropTable(ilH5PPackage::TABLE_NAME);
-		$ilDB->dropTable(ilH5PLibrary::TABLE_NAME);
-		$ilDB->dropTable(ilH5PDependency::TABLE_NAME);
-		$ilDB->dropTable(ilH5PPackageObject::TABLE_NAME);
+		$ilDB->dropTable(ilH5PContent::TABLE_NAME, false);
 
-		ilH5PPackageInstaller::removeH5PFolder();
+		$ilDB->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PContentUserData::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PCounter::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PEvent::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PLibrary::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5POption::TABLE_NAME, false);
+
+		$ilDB->dropTable(ilH5PPoint::TABLE_NAME, false);
+
+		ilH5PFramework::removeH5PFolder();
 	}
 }

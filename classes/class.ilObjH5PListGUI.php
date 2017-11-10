@@ -18,10 +18,25 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 
 
 	/**
-	 *
+	 * @return array
 	 */
 	function initCommands() {
-		$commands = [];
+		$this->timings_enabled = false;
+		$this->subscribe_enabled = false;
+		$this->payment_enabled = false;
+		$this->link_enabled = false;
+		$this->info_screen_enabled = true;
+		$this->delete_enabled = true;
+		$this->cut_enabled = false;
+		$this->copy_enabled = false;
+
+		$commands = [
+			[
+				"permission" => "read",
+				"cmd" => ilObjH5PGUI::CMD_SHOW_H5P,
+				"default" => true,
+			]
+		];
 
 		return $commands;
 	}

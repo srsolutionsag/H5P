@@ -25,4 +25,3 @@ xhfp_save#:#Save
 xhfp_uninstall#:#Uninstall
 xhfp_uninstall_confirm#:#Are you sure you want to uninstall the package %s?
 xhfp_uninstalled#:#Successfully uninstalled package %s
-xhfp_updated#:#Successfully updated package %s
