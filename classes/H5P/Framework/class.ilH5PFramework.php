@@ -860,6 +860,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 */
 	public function saveLibraryUsage($content_id, $libraries_in_use) {
 		$drop_library_css_list = [];
+		// TODO
 		/*foreach ($libraries_in_use as $library_in_use) {
 			if (!empty($library_in_use["library"]["dropLibraryCss"])) {
 				$drop_library_css_list = array_merge($drop_library_css_list, self::splitCsv($library_in_use["library"]["dropLibraryCss"]));
