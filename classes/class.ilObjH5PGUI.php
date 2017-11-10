@@ -40,9 +40,21 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @var ilH5PFramework
 	 */
 	protected $h5p_framework;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $user;
 
 
 	protected function afterConstructor() {
+		/**
+		 * @var ilObjUser $ilUser
+		 */
+
+		global $ilUser;
+
+		$this->user = $ilUser;
+
 		$this->h5p_framework = new ilH5PFramework();
 	}
 
@@ -101,15 +113,41 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @param ilObjH5P $a_new_object
+	 */
+	function afterSave(ilObject $a_new_object) {
+		$content_id = $_POST["xhfp_package"];
+		$user_data = $a_new_object->getUserData();
+
+		$user_data->setContentMainId($content_id);
+
+		$user_data->setDataId($a_new_object->getId());
+
+		$user_data->setUserId($this->user->getId());
+
+		$user_data->create();
+
+		$content = $this->h5p_framework->h5p_core->loadContent($content_id);
+		$content["id"] = $content_id;
+
+		$this->h5p_framework->h5p_core->filterParameters($content);
+
+		parent::afterSave($a_new_object);
+	}
+
+
+	/**
 	 *
 	 */
 	protected function showH5p() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENT);
 
 		$content = $this->h5p_framework->h5p_core->loadContent($this->object->getUserData()->getContentMainId());
+
 		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($this->object->getUserData()
 			->getContentMainId(), "preloaded");
-		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies);
+		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies, ilH5PFramework::getH5PFolder());
+		// TODO double slashes
 
 		$core_path = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
 
@@ -121,9 +159,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return ($core_path . $file);
 		}, H5PCore::$styles);
 
-		$scripts = $files["scripts"];
+		$scripts = array_map(function ($file) {
+			return $file->path;
+		}, $files["scripts"]);
 
-		$styles = $files["styles"];
+		$styles = array_map(function ($file) {
+			return $file->path;
+		}, $files["styles"]);
 
 		$H5PIntegration = [
 			"baseUrl" => "",
@@ -267,8 +309,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$description = $form->getInput("xhfp_description");
 		$this->object->setDescription($description);
 
-		/*$package = $form->getInput("xhfp_package");
-		$this->object->getUserData()->setContentMainId($package);*/
+		/*$content_id = $form->getInput("xhfp_package");
+		$this->object->getUserData()->setContentMainId($content_id);*/
 
 		$this->object->update();
 

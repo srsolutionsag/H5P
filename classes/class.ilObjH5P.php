@@ -10,10 +10,6 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilObjH5P extends ilObjectPlugin {
 
 	/**
-	 * @var ilObjUser
-	 */
-	protected $user;
-	/**
 	 * @var ilH5PContentUserData
 	 */
 	protected $user_data;
@@ -24,14 +20,6 @@ class ilObjH5P extends ilObjectPlugin {
 	 */
 	function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
-
-		/**
-		 * @var ilObjUser $ilUser
-		 */
-
-		global $ilUser;
-
-		$this->user = $ilUser;
 	}
 
 
@@ -47,21 +35,11 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doCreate() {
-		$package = $_POST["xhfp_package"];
-
 		$time = time();
 
 		$this->user_data = new ilH5PContentUserData();
 
-		$this->user_data->setContentMainId($package);
-
-		$this->user_data->setDataId($this->getId());
-
-		$this->user_data->setUserId($this->user->getId());
-
 		$this->user_data->setTimestamp($time);
-
-		$this->user_data->create();
 	}
 
 

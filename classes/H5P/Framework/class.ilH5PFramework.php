@@ -860,11 +860,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 */
 	public function saveLibraryUsage($content_id, $libraries_in_use) {
 		$drop_library_css_list = [];
-		foreach ($libraries_in_use as $library_in_use) {
+		/*foreach ($libraries_in_use as $library_in_use) {
 			if (!empty($library_in_use["library"]["dropLibraryCss"])) {
 				$drop_library_css_list = array_merge($drop_library_css_list, self::splitCsv($library_in_use["library"]["dropLibraryCss"]));
 			}
-		}
+		}*/
 
 		foreach ($libraries_in_use as $library_in_use) {
 			$h5p_content_library = new ilH5PContentLibrary();
@@ -1173,33 +1173,28 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function loadContentDependencies($id, $type = NULL) {
 		// TODO order weight
 
-		$h5p_content = ilH5PContent::getContentById($id);
-		if ($h5p_content !== NULL) {
-			$dependencies = [];
+		$dependencies = [];
 
-			$h5p_dependencies = ilH5PLibraryDependencies::getDependencies($h5p_content->getLibraryId(), $type);
+		$h5p_dependencies = ilH5PContentLibrary::getContentLibraries($id, $type);
 
-			foreach ($h5p_dependencies as $h5p_dependency) {
-				$h5p_library = ilH5PLibrary::getLibraryById($h5p_dependency->getLibraryId());
+		foreach ($h5p_dependencies as $h5p_dependency) {
+			$h5p_library = ilH5PLibrary::getLibraryById($h5p_dependency->getLibraryId());
 
-				if ($h5p_library !== NULL) {
-					$dependencies[] = [
-						"libraryId" => $h5p_library->getLibraryId(),
-						"machineName" => $h5p_library->getMachineName(),
-						"majorVersion" => $h5p_library->getMajorVersion(),
-						"minorVersion" => $h5p_library->getMinorVersion(),
-						"patchVersion" => $h5p_library->getPatchVersion(),
-						"preloadedJs" => $h5p_library->getPreloadedJsCSV(),
-						"preloadedCss" => $h5p_library->getPreloadedCssCSV(),
-						"dropCss" => $h5p_library->getDropLibraryCss()
-					];
-				}
+			if ($h5p_library !== NULL) {
+				$dependencies[] = [
+					"libraryId" => $h5p_library->getLibraryId(),
+					"machineName" => $h5p_library->getMachineName(),
+					"majorVersion" => $h5p_library->getMajorVersion(),
+					"minorVersion" => $h5p_library->getMinorVersion(),
+					"patchVersion" => $h5p_library->getPatchVersion(),
+					"preloadedJs" => $h5p_library->getPreloadedJs(),
+					"preloadedCss" => $h5p_library->getPreloadedCss(),
+					"dropCss" => $h5p_library->getDropLibraryCss()
+				];
 			}
-
-			return $dependencies;
-		} else {
-			return [];
 		}
+
+		return $dependencies;
 	}
 
 

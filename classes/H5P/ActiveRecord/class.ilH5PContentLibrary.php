@@ -19,18 +19,25 @@ class ilH5PContentLibrary extends ActiveRecord {
 
 
 	/**
-	 * @param int $content_id
+	 * @param int         $content_id
+	 * @param string|null $dependency_type
 	 *
 	 * @return ilH5PContentLibrary[]
 	 */
-	static function getContentLibraries($content_id) {
+	static function getContentLibraries($content_id, $dependency_type = NULL) {
 		/**
 		 * @var ilH5PContentLibrary[] $h5p_content_libraries
 		 */
 
-		$h5p_content_libraries = self::where([
+		$where = [
 			"content_id" => $content_id
-		])->get();
+		];
+
+		if ($dependency_type !== NULL) {
+			$where["dependency_type"] = $dependency_type;
+		}
+
+		$h5p_content_libraries = self::where($where)->get();
 
 		return $h5p_content_libraries;
 	}
