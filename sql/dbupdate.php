@@ -10,7 +10,6 @@
 	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
 	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PPoint.php";
 
 	ilH5PContent::updateDB();
 
@@ -31,6 +30,4 @@
 	ilH5PLibraryDependencies::updateDB();
 
 	ilH5POption::updateDB();
-
-	ilH5PPoint::updateDB();
 ?>

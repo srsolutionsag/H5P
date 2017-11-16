@@ -11,7 +11,6 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PPoint.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
@@ -75,8 +74,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		$ilDB->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
 
 		$ilDB->dropTable(ilH5POption::TABLE_NAME, false);
-
-		$ilDB->dropTable(ilH5PPoint::TABLE_NAME, false);
 
 		ilH5PFramework::removeH5PFolder();
 	}

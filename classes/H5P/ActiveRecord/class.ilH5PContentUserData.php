@@ -10,7 +10,6 @@ class ilH5PContentUserData extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_cont_dat";
 
-
 	/**
 	 * @return string
 	 */
@@ -18,24 +17,22 @@ class ilH5PContentUserData extends ActiveRecord {
 		return self::TABLE_NAME;
 	}
 
-
 	/**
 	 * @param int $content_id
 	 *
 	 * @return ilH5PContentUserData|null
 	 */
-	static function getUserDataByData($data_id) {
+	static function getUserDataByData( $data_id ) {
 		/**
 		 * @var ilH5PContentUserData|null $h5p_user_data
 		 */
 
-		$h5p_user_data = self::where([
+		$h5p_user_data = self::where( [
 			"data_id" => $data_id
-		])->first();
+		] )->first();
 
 		return $h5p_user_data;
 	}
-
 
 	/**
 	 * @param int       $content_id
@@ -43,27 +40,28 @@ class ilH5PContentUserData extends ActiveRecord {
 	 *
 	 * @return ilH5PContentUserData[]
 	 */
-	static function getUserDatasByContent($content_id, $delete_on_content_change = NULL) {
+	static function getUserDatasByContent( $content_id, $delete_on_content_change = NULL ) {
 		/**
 		 * @var ilH5PContentUserData[] $h5p_user_datas
 		 */
 
-		if (is_bool($delete_on_content_change)) {
-			$h5p_user_datas = self::where([
-				"content_main_id" => $content_id,
+		if ( is_bool( $delete_on_content_change ) ) {
+			$h5p_user_datas = self::where( [
+				"content_main_id"          => $content_id,
 				"delete_on_content_change" => $delete_on_content_change
-			])->get();
+			] )->get();
 		} else {
-			$h5p_user_datas = self::where([
+			$h5p_user_datas = self::where( [
 				"content_main_id" => $content_id
-			])->get();
+			] )->get();
 		}
 
 		return $h5p_user_datas;
 	}
 
-
 	/**
+	 * Workaround for multiple primary keys: content_id, user_id, sub_content_id, data_id
+	 *
 	 * @var int
 	 *
 	 * @con_has_field    true
@@ -81,7 +79,15 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_fieldtype      integer
 	 * @con_length         8
 	 * @con_is_notnull     true
-	 * @__con_is_primary   true
+	 */
+	protected $content_id;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field      true
+	 * @con_fieldtype      integer
+	 * @con_length         8
+	 * @con_is_notnull     true
 	 */
 	protected $user_id;
 	/**
@@ -91,42 +97,22 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_fieldtype      integer
 	 * @con_length         8
 	 * @con_is_notnull     true
-	 * @__con_is_primary   true
 	 */
-	protected $content_main_id;
-	/**
-	 * @var int
-	 *
-	 * @con_has_field      true
-	 * @con_fieldtype      integer
-	 * @con_length         8
-	 * @con_is_notnull     false
-	 * @__con_is_primary   true
-	 */
-	protected $sub_content_id = NULL;
+	protected $sub_content_id;
 	/**
 	 * @var string
 	 *
 	 * @con_has_field      true
 	 * @con_fieldtype      text
+	 * @con_length         127
 	 * @con_is_notnull     true
-	 * @__con_is_primary   true
 	 */
 	protected $data_id;
-	/**
-	 * @var int
-	 *
-	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
-	 * @con_is_notnull   true
-	 */
-	protected $timestamp = - 1;
 	/**
 	 * @var string
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    text
+	 * @con_fieldtype    clob
 	 * @con_is_notnull   true
 	 */
 	protected $data = "null";
@@ -138,7 +124,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_length       1
 	 * @con_is_notnull   true
 	 */
-	protected $preloaded = false;
+	protected $preload = false;
 	/**
 	 * @var bool
 	 *
@@ -147,24 +133,30 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_length       1
 	 * @con_is_notnull   true
 	 */
-	protected $delete_on_content_change = false;
-
+	protected $invalidate = false;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   true
+	 */
+	protected $updated_at = 0;
 
 	/**
 	 * @return mixed
 	 */
 	public function getDataJson() {
-		return ilH5PFramework::stringToJson($this->data);
+		return ilH5PFramework::stringToJson( $this->data );
 	}
-
 
 	/**
 	 * @param mixed $data
 	 */
-	public function setDataJson($data) {
-		$this->data = ilH5PFramework::jsonToString($data);
+	public function setDataJson( $data ) {
+		$this->data = ilH5PFramework::jsonToString( $data );
 	}
-
 
 	/**
 	 * @return int
@@ -173,14 +165,26 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->id;
 	}
 
-
 	/**
 	 * @param int $id
 	 */
-	public function setId($id) {
+	public function setId( $id ) {
 		$this->id = $id;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getContentId() {
+		return $this->content_id;
+	}
+
+	/**
+	 * @param int $content_id
+	 */
+	public function setContentId( $content_id ) {
+		$this->content_id = $content_id;
+	}
 
 	/**
 	 * @return int
@@ -189,30 +193,12 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->user_id;
 	}
 
-
 	/**
 	 * @param int $user_id
 	 */
-	public function setUserId($user_id) {
+	public function setUserId( $user_id ) {
 		$this->user_id = $user_id;
 	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getContentMainId() {
-		return $this->content_main_id;
-	}
-
-
-	/**
-	 * @param int $content_main_id
-	 */
-	public function setContentMainId($content_main_id) {
-		$this->content_main_id = $content_main_id;
-	}
-
 
 	/**
 	 * @return int
@@ -221,14 +207,12 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->sub_content_id;
 	}
 
-
 	/**
 	 * @param int $sub_content_id
 	 */
-	public function setSubContentId($sub_content_id) {
+	public function setSubContentId( $sub_content_id ) {
 		$this->sub_content_id = $sub_content_id;
 	}
-
 
 	/**
 	 * @return string
@@ -237,75 +221,66 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->data_id;
 	}
 
-
 	/**
 	 * @param string $data_id
 	 */
-	public function setDataId($data_id) {
+	public function setDataId( $data_id ) {
 		$this->data_id = $data_id;
 	}
 
-
 	/**
-	 * @return int
-	 */
-	public function getTimestamp() {
-		return $this->timestamp;
-	}
-
-
-	/**
-	 * @param int $timestamp
-	 */
-	public function setTimestamp($timestamp) {
-		$this->timestamp = $timestamp;
-	}
-
-
-	/**
-	 * @return int
+	 * @return string
 	 */
 	public function getData() {
 		return $this->data;
 	}
 
-
 	/**
-	 * @param int $data
+	 * @param string $data
 	 */
-	public function setData($data) {
+	public function setData( $data ) {
 		$this->data = $data;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function isPreload() {
+		return $this->preload;
+	}
+
+	/**
+	 * @param bool $preload
+	 */
+	public function setPreload( $preload ) {
+		$this->preload = $preload;
+	}
 
 	/**
 	 * @return bool
 	 */
-	public function isPreloaded() {
-		return $this->preloaded;
+	public function isInvalidate() {
+		return $this->invalidate;
 	}
 
-
 	/**
-	 * @param bool $preloaded
+	 * @param bool $invalidate
 	 */
-	public function setPreloaded($preloaded) {
-		$this->preloaded = $preloaded;
+	public function setInvalidate( $invalidate ) {
+		$this->invalidate = $invalidate;
 	}
 
-
 	/**
-	 * @return bool
+	 * @return int
 	 */
-	public function isDeleteOnContentChange() {
-		return $this->delete_on_content_change;
+	public function getUpdatedAt() {
+		return $this->updated_at;
 	}
 
-
 	/**
-	 * @param bool $delete_on_content_change
+	 * @param int $updated_at
 	 */
-	public function setDeleteOnContentChange($delete_on_content_change) {
-		$this->delete_on_content_change = $delete_on_content_change;
+	public function setUpdatedAt( $updated_at ) {
+		$this->updated_at = $updated_at;
 	}
 }

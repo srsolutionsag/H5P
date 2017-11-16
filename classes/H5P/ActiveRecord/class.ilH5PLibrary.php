@@ -2,6 +2,8 @@
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
 
 /**
  * H5P library active record
@@ -52,17 +54,38 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @param string $machine_name
+	 * @param int $library_id
 	 *
 	 * @return ilH5PLibrary[]
 	 */
-	static function getLibraryAllVersions($machine_name) {
+	static function getLibraryUsage($library_id) {
+		/**
+		 * @var ilH5PLibrary[] $h5p_libraries
+		 */
+
+		// TODO multiple join not work
+		$h5p_libraries = self::innerjoin(ilH5PContentLibrary::TABLE_NAME, "library_id", "library_id")/*->innerjoin( ilH5PContent::TABLE_NAME,  "content_id", "content_id" )*/
+		->where([
+			self::TABLE_NAME . ".library_id" => $library_id
+		])->get();
+
+		return $h5p_libraries;
+	}
+
+
+	/**
+	 * @param string $name
+	 *
+	 * @return ilH5PLibrary[]
+	 */
+	static function getLibraryAllVersions($name) {
+		// TODO
 		/**
 		 * @var ilH5PLibrary[] $h5p_libraries
 		 */
 
 		$h5p_libraries = self::where([
-			"machine_name" => $machine_name
+			"name" => $name
 		])->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
 
 		return $h5p_libraries;
@@ -70,19 +93,20 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @param string   $machine_name
+	 * @param string   $name
 	 * @param int|null $major_version
 	 * @param int|null $minor_version
 	 *
 	 * @return ilH5PLibrary|null
 	 */
-	static function getLibraryByVersion($machine_name, $major_version = NULL, $minor_version = NULL) {
+	static function getLibraryByVersion($name, $major_version = NULL, $minor_version = NULL) {
+		// TODO
 		/**
 		 * @var ilH5PLibrary|null $h5p_library
 		 */
 
 		$where = [
-			"machine_name" => $machine_name
+			"name" => $name
 		];
 
 		if ($major_version !== NULL) {
@@ -112,21 +136,39 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	protected $library_id;
 	/**
-	 * @var string
+	 * @var int
 	 *
-	 * @con_has_field  true
-	 * @con_fieldtype  text
-	 * @con_is_notnull true
-	 * @__con_index    true library
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   true
 	 */
-	protected $machine_name = "";
+	protected $created_at = 0;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   true
+	 */
+	protected $updated_at = 0;
 	/**
 	 * @var string
 	 *
 	 * @con_has_field  true
 	 * @con_fieldtype  text
+	 * @con_length     127
 	 * @con_is_notnull true
-	 * @__con_index    true title
+	 */
+	protected $name = "";
+	/**
+	 * @var string
+	 *
+	 * @con_has_field  true
+	 * @con_fieldtype  text
+	 * @con_length     255
+	 * @con_is_notnull true
 	 */
 	protected $title = "";
 	/**
@@ -136,7 +178,6 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @con_fieldtype  integer
 	 * @con_length     8
 	 * @con_is_notnull true
-	 * @__con_index    true library
 	 */
 	protected $major_version;
 	/**
@@ -146,7 +187,6 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @con_fieldtype  integer
 	 * @con_length     8
 	 * @con_is_notnull true
-	 * @__con_index    true library
 	 */
 	protected $minor_version = 0;
 	/**
@@ -166,7 +206,16 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @con_length     1
 	 * @con_is_notnull true
 	 */
-	protected $runnable = true;
+	protected $runnable = false;
+	/**
+	 * @var bool
+	 *
+	 * @con_has_field  true
+	 * @con_fieldtype  integer
+	 * @con_length     1
+	 * @con_is_notnull true
+	 */
+	protected $restricted = false;
 	/**
 	 * @var bool
 	 *
@@ -181,6 +230,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 *
 	 * @con_has_field  true
 	 * @con_fieldtype  text
+	 * @con_length     255
 	 * @con_is_notnull true
 	 */
 	protected $embed_types = "";
@@ -217,19 +267,11 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	protected $semantics = "[]";
 	/**
-	 * @var bool
-	 *
-	 * @con_has_field  true
-	 * @con_fieldtype  integer
-	 * @con_length     1
-	 * @con_is_notnull true
-	 */
-	protected $restricted = false;
-	/**
 	 * @var string
 	 *
 	 * @con_has_field  true
 	 * @con_fieldtype  text
+	 * @con_length     1023
 	 * @con_is_notnull true
 	 */
 	protected $tutorial_url = "";
@@ -341,18 +383,50 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function getMachineName() {
-		return $this->machine_name;
+	public function getCreatedAt() {
+		return $this->created_at;
 	}
 
 
 	/**
-	 * @param string $machine_name
+	 * @param int $created_at
 	 */
-	public function setMachineName($machine_name) {
-		$this->machine_name = $machine_name;
+	public function setCreatedAt($created_at) {
+		$this->created_at = $created_at;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getUpdatedAt() {
+		return $this->updated_at;
+	}
+
+
+	/**
+	 * @param int $updated_at
+	 */
+	public function setUpdatedAt($updated_at) {
+		$this->updated_at = $updated_at;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name) {
+		$this->name = $name;
 	}
 
 
@@ -433,6 +507,22 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	public function setRunnable($runnable) {
 		$this->runnable = $runnable;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isRestricted() {
+		return $this->restricted;
+	}
+
+
+	/**
+	 * @param bool $restricted
+	 */
+	public function setRestricted($restricted) {
+		$this->restricted = $restricted;
 	}
 
 
@@ -529,22 +619,6 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	public function setSemantics($semantics) {
 		$this->semantics = $semantics;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isRestricted() {
-		return $this->restricted;
-	}
-
-
-	/**
-	 * @param bool $restricted
-	 */
-	public function setRestricted($restricted) {
-		$this->restricted = $restricted;
 	}
 
 

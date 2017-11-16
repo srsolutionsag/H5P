@@ -10,7 +10,6 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_lib_lng";
 
-
 	/**
 	 * @return string
 	 */
@@ -18,26 +17,26 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 		return self::TABLE_NAME;
 	}
 
-
 	/**
 	 * @param int $library_id
 	 *
 	 * @return ilH5PLibraryLanguage[]
 	 */
-	static function getLanguagesByLibrary($library_id) {
+	static function getLanguagesByLibrary( $library_id ) {
 		/**
 		 * @var ilH5PLibraryLanguage[] $h5p_languages
 		 */
 
-		$h5p_languages = self::where([
+		$h5p_languages = self::where( [
 			"library_id" => $library_id
-		])->get();
+		] )->get();
 
 		return $h5p_languages;
 	}
 
-
 	/**
+	 * Workaround for multiple primary keys: library_id, language_code
+	 *
 	 * @var int
 	 *
 	 * @con_has_field    true
@@ -55,7 +54,6 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 * @con_fieldtype      integer
 	 * @con_length         8
 	 * @con_is_notnull     true
-	 * @__con_is_primary   true
 	 */
 	protected $library_id;
 	/**
@@ -63,8 +61,8 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 *
 	 * @con_has_field      true
 	 * @con_fieldtype      text
+	 * @con_length         31
 	 * @con_is_notnull     true
-	 * @__con_is_primary   true
 	 */
 	protected $language_code = "";
 	/**
@@ -74,24 +72,21 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 * @con_fieldtype    text
 	 * @con_is_notnull   true
 	 */
-	protected $language_json = "[]";
-
+	protected $translation = "{}";
 
 	/**
 	 * @return array
 	 */
-	public function getLanguageJsonArray() {
-		return ilH5PFramework::stringToJson($this->language_json);
+	public function getTranslationArray() {
+		return ilH5PFramework::stringToJson( $this->translation );
 	}
-
 
 	/**
-	 * @param array $language_json
+	 * @param array $translation
 	 */
-	public function setLanguageJsonArray(array $language_json) {
-		$this->language_json = ilH5PFramework::jsonToString($language_json);
+	public function setTranslationArray( array $translation ) {
+		$this->translation = ilH5PFramework::jsonToString( $translation );
 	}
-
 
 	/**
 	 * @return int
@@ -100,14 +95,12 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 		return $this->id;
 	}
 
-
 	/**
 	 * @param int $id
 	 */
-	public function setId($id) {
+	public function setId( $id ) {
 		$this->id = $id;
 	}
-
 
 	/**
 	 * @return int
@@ -116,14 +109,12 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 		return $this->library_id;
 	}
 
-
 	/**
 	 * @param int $library_id
 	 */
-	public function setLibraryId($library_id) {
+	public function setLibraryId( $library_id ) {
 		$this->library_id = $library_id;
 	}
-
 
 	/**
 	 * @return string
@@ -132,27 +123,24 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 		return $this->language_code;
 	}
 
-
 	/**
 	 * @param string $language_code
 	 */
-	public function setLanguageCode($language_code) {
+	public function setLanguageCode( $language_code ) {
 		$this->language_code = $language_code;
 	}
-
 
 	/**
 	 * @return string
 	 */
-	public function getLanguageJson() {
-		return $this->language_json;
+	public function getTranslation() {
+		return $this->translation;
 	}
 
-
 	/**
-	 * @param string $language_json
+	 * @param string $translation
 	 */
-	public function setLanguageJson($language_json) {
-		$this->language_json = $language_json;
+	public function setTranslation( $translation ) {
+		$this->translation = $translation;
 	}
 }

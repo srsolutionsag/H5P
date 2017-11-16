@@ -13,16 +13,16 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PPoint.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 
 /**
  * H5P framework
  *
- * Implemented based on https://www.drupal.org/project/h5p and https://github.com/h5p/h5p-wordpress-plugin/blob/master/public/class-h5p-wordpress.php
+ * Implemented based on https://github.com/h5p/h5p-wordpress-plugin
  */
 class ilH5PFramework implements H5PFrameworkInterface {
 
+	const CORE_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
 	const CSV_SEPERATOR = ", ";
 
 
@@ -112,6 +112,54 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 
 	/**
+	 *
+	 */
+	function addCore() {
+		$core_scripts = H5PCore::$scripts;
+		$core_scripts = array_map(function ($file) {
+			return (self::CORE_PATH . $file);
+		}, $core_scripts);
+
+		$core_styles = H5PCore::$styles;
+		$core_styles = array_map(function ($file) {
+			return (self::CORE_PATH . $file);
+		}, $core_styles);
+
+		foreach ($core_scripts as $script) {
+			$this->tpl->addJavaScript($script);
+		}
+
+		foreach ($core_styles as $style) {
+			$this->tpl->addCss($style, "");
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	function addAdminCore() {
+		$core_scripts = array_merge(H5PCore::$adminScripts, [ "js/h5p-library-list.js" ]);
+		$core_scripts = array_map(function ($file) {
+			return (self::CORE_PATH . $file);
+		}, $core_scripts);
+
+		$core_styles = array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ]);
+		$core_styles = array_map(function ($file) {
+			return (self::CORE_PATH . $file);
+		}, $core_styles);
+
+		foreach ($core_scripts as $script) {
+			$this->tpl->addJavaScript($script);
+		}
+
+		foreach ($core_styles as $style) {
+			$this->tpl->addCss($style, "");
+		}
+	}
+
+
+	/**
 	 * @var string
 	 */
 	protected $uploaded_h5p_folder_path;
@@ -122,7 +170,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * @var ilH5PPlugin
 	 */
-	public $pl;
+	protected $pl;
 	/**
 	 * @var H5PCore
 	 */
@@ -135,10 +183,21 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @var H5PStorage
 	 */
 	public $h5p_storage;
+	/**
+	 * @var ilTemplate
+	 */
+	protected $tpl;
 
 
 	public function __construct() {
+		/**
+		 * @var ilTemplate $tpl
+		 */
+
+		global $tpl;
+
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->tpl = $tpl;
 
 		$this->h5p_core = new H5PCore($this, "data/ilias/h5p/", "/data/ilias/h5p/");
 		$this->h5p_validator = new H5PValidator($this, $this->h5p_core);
@@ -358,6 +417,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$name = $h5p_library->getMachineName();
 
 			$library = (object)[
+				"id" => $h5p_library->getLibraryId(),
 				"name" => $h5p_library->getMachineName(),
 				"title" => $h5p_library->getTitle(),
 				"major_version" => $h5p_library->getMajorVersion(),
@@ -707,7 +767,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content->setParameters($content["params"]);
 
-			$h5p_content->setFilteredParametersArray([]);
+			$h5p_content->setFilteredArray([]);
 
 			/*if ($content_main_id !== NULL) {
 				$h5p_content->setContentMainId($content_main_id);
@@ -900,12 +960,12 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   - libraries: Number of libraries depending on the library
 	 */
 	public function getLibraryUsage($library_id, $skip_content = false) {
-		// TODO ilH5PContent join
+		// TODO content_id distinct
 
 		if (!$skip_content) {
-			$content = sizeof(ilH5PContent::getContentsByLibrary($library_id));
+			$content = sizeof(ilH5PLibrary::getLibraryUsage($library_id));
 		} else {
-			$content = 0;
+			$content = - 1;
 		}
 
 		$libraries = sizeof(ilH5PLibraryDependencies::getRequiredDependencies($library_id));
@@ -1291,8 +1351,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return int
 	 */
 	public function getNumNotFiltered() {
-		// TODO library_id > 0
-
 		$h5p_contents = ilH5PContent::getContentsNotFiltered();
 
 		return sizeof($h5p_contents);

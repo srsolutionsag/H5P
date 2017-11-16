@@ -9,14 +9,12 @@ class ilH5PEvent extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_ev";
 
-
 	/**
 	 * @return string
 	 */
 	static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
-
 
 	/**
 	 * @var int
@@ -28,7 +26,7 @@ class ilH5PEvent extends ActiveRecord {
 	 * @con_is_primary   true
 	 * @con_sequence     true
 	 */
-	protected $id;
+	protected $event_id;
 	/**
 	 * @var int
 	 *
@@ -45,14 +43,14 @@ class ilH5PEvent extends ActiveRecord {
 	 * @con_fieldtype    integer
 	 * @con_length       8
 	 * @con_is_notnull   true
-	 * @__con_index      true created_at
 	 */
-	protected $created_at = - 1;
+	protected $created_at = 0;
 	/**
 	 * @var string
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    text
+	 * @con_length       63
 	 * @con_is_notnull   true
 	 */
 	protected $type = "";
@@ -61,6 +59,7 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    text
+	 * @con_length       63
 	 * @con_is_notnull   true
 	 */
 	protected $sub_type = "";
@@ -78,6 +77,7 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    text
+	 * @con_length       255
 	 * @con_is_notnull   true
 	 */
 	protected $content_title = "";
@@ -86,6 +86,7 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    text
+	 * @con_length       127
 	 * @con_is_notnull   true
 	 */
 	protected $library_name = "";
@@ -94,26 +95,24 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    text
+	 * @con_length       31
 	 * @con_is_notnull   true
 	 */
 	protected $library_version;
 
-
 	/**
 	 * @return int
 	 */
-	public function getId() {
-		return $this->id;
+	public function getEventId() {
+		return $this->event_id;
 	}
-
 
 	/**
-	 * @param int $id
+	 * @param int $event_id
 	 */
-	public function setId($id) {
-		$this->id = $id;
+	public function setEventId( $event_id ) {
+		$this->event_id = $event_id;
 	}
-
 
 	/**
 	 * @return int
@@ -122,14 +121,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->user_id;
 	}
 
-
 	/**
 	 * @param int $user_id
 	 */
-	public function setUserId($user_id) {
+	public function setUserId( $user_id ) {
 		$this->user_id = $user_id;
 	}
-
 
 	/**
 	 * @return int
@@ -138,14 +135,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->created_at;
 	}
 
-
 	/**
 	 * @param int $created_at
 	 */
-	public function setCreatedAt($created_at) {
+	public function setCreatedAt( $created_at ) {
 		$this->created_at = $created_at;
 	}
-
 
 	/**
 	 * @return string
@@ -154,14 +149,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->type;
 	}
 
-
 	/**
 	 * @param string $type
 	 */
-	public function setType($type) {
+	public function setType( $type ) {
 		$this->type = $type;
 	}
-
 
 	/**
 	 * @return string
@@ -170,14 +163,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->sub_type;
 	}
 
-
 	/**
 	 * @param string $sub_type
 	 */
-	public function setSubType($sub_type) {
+	public function setSubType( $sub_type ) {
 		$this->sub_type = $sub_type;
 	}
-
 
 	/**
 	 * @return int
@@ -186,14 +177,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->content_id;
 	}
 
-
 	/**
 	 * @param int $content_id
 	 */
-	public function setContentId($content_id) {
+	public function setContentId( $content_id ) {
 		$this->content_id = $content_id;
 	}
-
 
 	/**
 	 * @return string
@@ -202,14 +191,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->content_title;
 	}
 
-
 	/**
 	 * @param string $content_title
 	 */
-	public function setContentTitle($content_title) {
+	public function setContentTitle( $content_title ) {
 		$this->content_title = $content_title;
 	}
-
 
 	/**
 	 * @return string
@@ -218,14 +205,12 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->library_name;
 	}
 
-
 	/**
 	 * @param string $library_name
 	 */
-	public function setLibraryName($library_name) {
+	public function setLibraryName( $library_name ) {
 		$this->library_name = $library_name;
 	}
-
 
 	/**
 	 * @return string
@@ -234,11 +219,10 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->library_version;
 	}
 
-
 	/**
 	 * @param string $library_version
 	 */
-	public function setLibraryVersion($library_version) {
+	public function setLibraryVersion( $library_version ) {
 		$this->library_version = $library_version;
 	}
 }

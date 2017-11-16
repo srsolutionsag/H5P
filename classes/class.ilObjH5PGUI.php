@@ -116,7 +116,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param ilObjH5P $a_new_object
 	 */
 	function afterSave(ilObject $a_new_object) {
-		$content_id = $_POST["xhfp_package"];
+		$content_id = filter_input(INPUT_POST, "xhfp_package");
 		$user_data = $a_new_object->getUserData();
 
 		$user_data->setContentMainId($content_id);
@@ -142,6 +142,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function showH5p() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENT);
 
+		$this->h5p_framework->addCore();
+
 		$content = $this->h5p_framework->h5p_core->loadContent($this->object->getUserData()->getContentMainId());
 
 		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($this->object->getUserData()
@@ -149,14 +151,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies, ilH5PFramework::getH5PFolder());
 		// TODO double slashes
 
-		$core_path = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
-
-		$core_scripts = array_map(function ($file) use ($core_path) {
-			return ($core_path . $file);
+		$core_scripts = array_map(function ($file) {
+			return (ilH5PFramework::CORE_PATH . $file);
 		}, H5PCore::$scripts);
 
-		$core_styles = array_map(function ($file) use ($core_path) {
-			return ($core_path . $file);
+		$core_styles = array_map(function ($file) {
+			return (ilH5PFramework::CORE_PATH . $file);
 		}, H5PCore::$styles);
 
 		$scripts = array_map(function ($file) {
@@ -216,11 +216,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			]
 		];
 
-		foreach (array_merge($core_scripts, $scripts) as $script) {
+		foreach ($scripts as $script) {
 			$this->tpl->addJavaScript($script);
 		}
 
-		foreach (array_merge($core_styles, $styles) as $style) {
+		foreach ($core_styles as $style) {
 			$this->tpl->addCss($style, "");
 		}
 

@@ -3,6 +3,14 @@ obj_xhfp_duplicate#:#Copy H5P
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#Copy H5P's
 rbac_create_xhfp#:#Create H5P
+
+xhfp_error_no_package#:#Please select a H5P file!
+xhfp_installed_libraries#:#Installed libraries
+xhfp_library#:#Library
+xhfp_libraries#:#Libraries
+xhfp_upload#:#Upload
+xhfp_upload_library#:#Upload library
+
 xhfp_actions#:#Actions
 xhfp_add#:#Add
 xhfp_cancel#:#Cancel
@@ -12,12 +20,8 @@ xhfp_error_file_not_exists#:#%s does not exists!
 xhfp_error_invalid_zip_archive#:#Invalid ZIP archive!
 xhfp_error_library_not_found#:#Library %s not found!
 xhfp_error_library_outdated#:#It is needed for the library %1$s min. version %2$s, %3$s is available!
-xhfp_error_no_package#:#Please select a H5P file!
-xhfp_install#:#Installed
-xhfp_install_package#:#Install H5P package
 xhfp_installed#:#Successfully installed package %s
 xhfp_new#:#New H5P
-xhfp_package#:#Package
 xhfp_package_name#:#Package name
 xhfp_packages#:#Packages
 xhfp_please_select#:#please select
