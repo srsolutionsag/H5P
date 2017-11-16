@@ -9,6 +9,7 @@ class ilH5PContentLibrary extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_cont_lib";
 
+
 	/**
 	 * @return string
 	 */
@@ -16,13 +17,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return self::TABLE_NAME;
 	}
 
+
 	/**
 	 * @param int         $content_id
 	 * @param string|null $dependency_type
 	 *
 	 * @return ilH5PContentLibrary[]
 	 */
-	static function getContentLibraries( $content_id, $dependency_type = NULL ) {
+	static function getContentLibraries($content_id, $dependency_type = NULL) {
 		/**
 		 * @var ilH5PContentLibrary[] $h5p_content_libraries
 		 */
@@ -31,14 +33,15 @@ class ilH5PContentLibrary extends ActiveRecord {
 			"content_id" => $content_id
 		];
 
-		if ( $dependency_type !== NULL ) {
+		if ($dependency_type !== NULL) {
 			$where["dependency_type"] = $dependency_type;
 		}
 
-		$h5p_content_libraries = self::where( $where )->get();
+		$h5p_content_libraries = self::where($where)->orderBy("weight", "asc")->get();
 
 		return $h5p_content_libraries;
 	}
+
 
 	/**
 	 * Workaround for multiple primary keys: content_id, library_id, dependency_type
@@ -99,6 +102,7 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 */
 	protected $drop_css = false;
 
+
 	/**
 	 * @return int
 	 */
@@ -106,12 +110,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->id;
 	}
 
+
 	/**
 	 * @param int $id
 	 */
-	public function setId( $id ) {
+	public function setId($id) {
 		$this->id = $id;
 	}
+
 
 	/**
 	 * @return int
@@ -120,12 +126,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->content_id;
 	}
 
+
 	/**
 	 * @param int $content_id
 	 */
-	public function setContentId( $content_id ) {
+	public function setContentId($content_id) {
 		$this->content_id = $content_id;
 	}
+
 
 	/**
 	 * @return int
@@ -134,12 +142,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->library_id;
 	}
 
+
 	/**
 	 * @param int $library_id
 	 */
-	public function setLibraryId( $library_id ) {
+	public function setLibraryId($library_id) {
 		$this->library_id = $library_id;
 	}
+
 
 	/**
 	 * @return string
@@ -148,12 +158,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->dependency_type;
 	}
 
+
 	/**
 	 * @param string $dependency_type
 	 */
-	public function setDependencyType( $dependency_type ) {
+	public function setDependencyType($dependency_type) {
 		$this->dependency_type = $dependency_type;
 	}
+
 
 	/**
 	 * @return int
@@ -162,12 +174,14 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->weight;
 	}
 
+
 	/**
 	 * @param int $weight
 	 */
-	public function setWeight( $weight ) {
+	public function setWeight($weight) {
 		$this->weight = $weight;
 	}
+
 
 	/**
 	 * @return bool
@@ -176,10 +190,11 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $this->drop_css;
 	}
 
+
 	/**
 	 * @param bool $drop_css
 	 */
-	public function setDropCss( $drop_css ) {
+	public function setDropCss($drop_css) {
 		$this->drop_css = $drop_css;
 	}
 }

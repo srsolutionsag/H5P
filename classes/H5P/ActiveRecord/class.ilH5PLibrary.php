@@ -54,32 +54,11 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @param int $library_id
-	 *
-	 * @return ilH5PLibrary[]
-	 */
-	static function getLibraryUsage($library_id) {
-		/**
-		 * @var ilH5PLibrary[] $h5p_libraries
-		 */
-
-		// TODO multiple join not work
-		$h5p_libraries = self::innerjoin(ilH5PContentLibrary::TABLE_NAME, "library_id", "library_id")/*->innerjoin( ilH5PContent::TABLE_NAME,  "content_id", "content_id" )*/
-		->where([
-			self::TABLE_NAME . ".library_id" => $library_id
-		])->get();
-
-		return $h5p_libraries;
-	}
-
-
-	/**
 	 * @param string $name
 	 *
 	 * @return ilH5PLibrary[]
 	 */
 	static function getLibraryAllVersions($name) {
-		// TODO
 		/**
 		 * @var ilH5PLibrary[] $h5p_libraries
 		 */
@@ -100,7 +79,6 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return ilH5PLibrary|null
 	 */
 	static function getLibraryByVersion($name, $major_version = NULL, $minor_version = NULL) {
-		// TODO
 		/**
 		 * @var ilH5PLibrary|null $h5p_library
 		 */
@@ -121,6 +99,26 @@ class ilH5PLibrary extends ActiveRecord {
 			->first(); // Order desc version for the case no version specification to get latest version
 
 		return $h5p_library;
+	}
+
+
+	/**
+	 * @param int $library_id
+	 *
+	 * @return ilH5PLibrary[]
+	 */
+	static function getLibraryUsage($library_id) {
+		/**
+		 * @var ilH5PLibrary[] $h5p_libraries
+		 */
+
+		// TODO multiple join not work
+		$h5p_libraries = self::innerjoin(ilH5PContentLibrary::TABLE_NAME, "library_id", "library_id")/*->innerjoin( ilH5PContent::TABLE_NAME,  "content_id", "content_id" )*/
+		->where([
+			self::TABLE_NAME . ".library_id" => $library_id
+		])->get();
+
+		return $h5p_libraries;
 	}
 
 

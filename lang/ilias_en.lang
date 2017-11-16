@@ -10,22 +10,3 @@ xhfp_library#:#Library
 xhfp_libraries#:#Libraries
 xhfp_upload#:#Upload
 xhfp_upload_library#:#Upload library
-
-xhfp_actions#:#Actions
-xhfp_add#:#Add
-xhfp_cancel#:#Cancel
-xhfp_error_file_field_invalid#:#Field %1$s in %2$s is invalid!
-xhfp_error_file_invalid#:#%s is invalid!
-xhfp_error_file_not_exists#:#%s does not exists!
-xhfp_error_invalid_zip_archive#:#Invalid ZIP archive!
-xhfp_error_library_not_found#:#Library %s not found!
-xhfp_error_library_outdated#:#It is needed for the library %1$s min. version %2$s, %3$s is available!
-xhfp_installed#:#Successfully installed package %s
-xhfp_new#:#New H5P
-xhfp_package_name#:#Package name
-xhfp_packages#:#Packages
-xhfp_please_select#:#please select
-xhfp_save#:#Save
-xhfp_uninstall#:#Uninstall
-xhfp_uninstall_confirm#:#Are you sure you want to uninstall the package %s?
-xhfp_uninstalled#:#Successfully uninstalled package %s

@@ -10,6 +10,7 @@ class ilH5PContentUserData extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_cont_dat";
 
+
 	/**
 	 * @return string
 	 */
@@ -17,47 +18,42 @@ class ilH5PContentUserData extends ActiveRecord {
 		return self::TABLE_NAME;
 	}
 
+
 	/**
 	 * @param int $content_id
 	 *
 	 * @return ilH5PContentUserData|null
 	 */
-	static function getUserDataByData( $data_id ) {
+	static function getUserDataByData($data_id) {
 		/**
 		 * @var ilH5PContentUserData|null $h5p_user_data
 		 */
 
-		$h5p_user_data = self::where( [
+		$h5p_user_data = self::where([
 			"data_id" => $data_id
-		] )->first();
+		])->first();
 
 		return $h5p_user_data;
 	}
 
+
 	/**
-	 * @param int       $content_id
-	 * @param bool|null $delete_on_content_change
+	 * @param int $content_id
 	 *
 	 * @return ilH5PContentUserData[]
 	 */
-	static function getUserDatasByContent( $content_id, $delete_on_content_change = NULL ) {
+	static function getUserDatasByContent($content_id) {
 		/**
 		 * @var ilH5PContentUserData[] $h5p_user_datas
 		 */
 
-		if ( is_bool( $delete_on_content_change ) ) {
-			$h5p_user_datas = self::where( [
-				"content_main_id"          => $content_id,
-				"delete_on_content_change" => $delete_on_content_change
-			] )->get();
-		} else {
-			$h5p_user_datas = self::where( [
-				"content_main_id" => $content_id
-			] )->get();
-		}
+		$h5p_user_datas = self::where([
+			"content_id" => $content_id
+		])->get();
 
 		return $h5p_user_datas;
 	}
+
 
 	/**
 	 * Workaround for multiple primary keys: content_id, user_id, sub_content_id, data_id
@@ -144,19 +140,22 @@ class ilH5PContentUserData extends ActiveRecord {
 	 */
 	protected $updated_at = 0;
 
+
 	/**
 	 * @return mixed
 	 */
 	public function getDataJson() {
-		return ilH5PFramework::stringToJson( $this->data );
+		return ilH5PFramework::stringToJson($this->data);
 	}
+
 
 	/**
 	 * @param mixed $data
 	 */
-	public function setDataJson( $data ) {
-		$this->data = ilH5PFramework::jsonToString( $data );
+	public function setDataJson($data) {
+		$this->data = ilH5PFramework::jsonToString($data);
 	}
+
 
 	/**
 	 * @return int
@@ -165,12 +164,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->id;
 	}
 
+
 	/**
 	 * @param int $id
 	 */
-	public function setId( $id ) {
+	public function setId($id) {
 		$this->id = $id;
 	}
+
 
 	/**
 	 * @return int
@@ -179,12 +180,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->content_id;
 	}
 
+
 	/**
 	 * @param int $content_id
 	 */
-	public function setContentId( $content_id ) {
+	public function setContentId($content_id) {
 		$this->content_id = $content_id;
 	}
+
 
 	/**
 	 * @return int
@@ -193,12 +196,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->user_id;
 	}
 
+
 	/**
 	 * @param int $user_id
 	 */
-	public function setUserId( $user_id ) {
+	public function setUserId($user_id) {
 		$this->user_id = $user_id;
 	}
+
 
 	/**
 	 * @return int
@@ -207,12 +212,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->sub_content_id;
 	}
 
+
 	/**
 	 * @param int $sub_content_id
 	 */
-	public function setSubContentId( $sub_content_id ) {
+	public function setSubContentId($sub_content_id) {
 		$this->sub_content_id = $sub_content_id;
 	}
+
 
 	/**
 	 * @return string
@@ -221,12 +228,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->data_id;
 	}
 
+
 	/**
 	 * @param string $data_id
 	 */
-	public function setDataId( $data_id ) {
+	public function setDataId($data_id) {
 		$this->data_id = $data_id;
 	}
+
 
 	/**
 	 * @return string
@@ -235,12 +244,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->data;
 	}
 
+
 	/**
 	 * @param string $data
 	 */
-	public function setData( $data ) {
+	public function setData($data) {
 		$this->data = $data;
 	}
+
 
 	/**
 	 * @return bool
@@ -249,12 +260,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->preload;
 	}
 
+
 	/**
 	 * @param bool $preload
 	 */
-	public function setPreload( $preload ) {
+	public function setPreload($preload) {
 		$this->preload = $preload;
 	}
+
 
 	/**
 	 * @return bool
@@ -263,12 +276,14 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->invalidate;
 	}
 
+
 	/**
 	 * @param bool $invalidate
 	 */
-	public function setInvalidate( $invalidate ) {
+	public function setInvalidate($invalidate) {
 		$this->invalidate = $invalidate;
 	}
+
 
 	/**
 	 * @return int
@@ -277,10 +292,11 @@ class ilH5PContentUserData extends ActiveRecord {
 		return $this->updated_at;
 	}
 
+
 	/**
 	 * @param int $updated_at
 	 */
-	public function setUpdatedAt( $updated_at ) {
+	public function setUpdatedAt($updated_at) {
 		$this->updated_at = $updated_at;
 	}
 }

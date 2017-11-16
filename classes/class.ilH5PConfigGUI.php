@@ -20,9 +20,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
 	const CMD_RESTRICT_LIBRARY = "restrictLibrary";
 	const CMD_UPGRADE_LIBRARY = "upgradeLibrary";
+	const CMD_DELETE_LIBRARY = "deleteLibrary";
 	const CMD_INFO_LIBRARY = "infoLibrary";
-	const CMD_UNINSTALL_PACKAGE = "uninstallPackage";
-	const CMD_UNINSTALL_PACKAGE_CONFIRMED = "uninstallPackageConfirmed";
+	const CMD_REBUILD_CACHE = "rebuildCache";
 	const TAB_LIBRARIES = "xhfp_libraries";
 	/**
 	 * @var ilCtrl
@@ -81,8 +81,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			case self::CMD_RESTRICT_LIBRARY:
 			case self::CMD_UPGRADE_LIBRARY:
 			case self::CMD_INFO_LIBRARY:
-			case self::CMD_UNINSTALL_PACKAGE:
-			case self::CMD_UNINSTALL_PACKAGE_CONFIRMED:
+			case self::CMD_DELETE_LIBRARY:
+			case self::CMD_REBUILD_CACHE:
 				$this->$cmd();
 				break;
 
@@ -145,11 +145,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$not_cached = $this->h5p_framework->getNumNotFiltered();
 		$libraries = $this->h5p_framework->loadLibraries();
 
-		$settings = [
+		$intergration = [
 			"containerSelector" => "#xhfp_libraries",
 			"extraTableClasses" => "",
 			"l10n" => [
-				"NA" => $this->txt("N/A"),
+				"NA" => $this->h5p_framework->t("N/A"),
 				"viewLibrary" => $this->h5p_framework->t("View library details"),
 				"deleteLibrary" => $this->h5p_framework->t("Delete library"),
 				"upgradeLibrary" => $this->h5p_framework->t("Upgrade library content")
@@ -168,7 +168,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			]
 		];
 
-		$i = 0;
 		foreach ($libraries as $versions) {
 			foreach ($versions as $library) {
 				$this->ctrl->setParameterByClass(self::class, "library", $library->id);
@@ -177,11 +176,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 				if ($library->runnable) {
 					$upgrades = $this->h5p_framework->h5p_core->getUpgrades($library, $versions);
-					$upgradeUrl = empty($upgrades) ? NULL : $this->ctrl->getLinkTargetByClass(self::class, self::CMD_UPGRADE_LIBRARY);
+					$upgradeUrl = empty($upgrades) ? NULL : $this->ctrl->getLinkTargetByClass(self::class, self::CMD_UPGRADE_LIBRARY, "", false, false);
 
 					$restricted = ($library->restricted ? true : false);
 					$this->ctrl->setParameterByClass(self::class, "restrict", (!$restricted));
-					$restricted_url = $this->ctrl->getLinkTargetByClass(self::class, self::CMD_RESTRICT_LIBRARY, "", true);
+					$restricted_url = $this->ctrl->getLinkTargetByClass(self::class, self::CMD_RESTRICT_LIBRARY, "", true, false);
 					$this->ctrl->setParameterByClass(self::class, "restrict", NULL);
 				} else {
 					$upgradeUrl = NULL;
@@ -190,7 +189,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				}
 
 				$contents_count = $this->h5p_framework->getNumContent($library->id);
-				$settings["libraryList"]["listData"][] = [
+				$intergration["libraryList"]["listData"][] = [
 					"title" => $library->title . " (" . H5PCore::libraryVersion($library) . ")",
 					"restricted" => $restricted,
 					"restrictedUrl" => $restricted_url,
@@ -198,18 +197,18 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					"numContentDependencies" => $usage["content"] < 1 ? "" : $usage["content"],
 					"numLibraryDependencies" => $usage["libraries"] === 0 ? "" : $usage["libraries"],
 					"upgradeUrl" => $upgradeUrl,
-					"detailsUrl" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_INFO_LIBRARY),
-					"deleteUrl" => $this->ctrl->getLinkTargetByClass(self::class, "delete")
+					"detailsUrl" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_INFO_LIBRARY, "", false, false),
+					"deleteUrl" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_DELETE_LIBRARY, "", false, false)
 				];
-
-				$i ++;
 			}
 		}
 
-		if ($not_cached) {
+		$this->ctrl->clearParametersByClass(self::class, "library");
+
+		/*if ($not_cached) {
 			$settings["libraryList"]["notCached"] = [
 				"num" => $not_cached,
-				"url" => "admin-ajax.php?action=h5p_rebuild_cache",
+				"url" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_INFO_LIBRARY, "", true, false),
 				"message" => $this->h5p_framework->t("Not all content has gotten their cache rebuilt. This is required to be able to delete libraries, and to display how many contents that uses the library."),
 				"progress" => $this->h5p_framework->t(($not_cached
 					=== 1) ? "1 content need to get its cache rebuilt." : "%d contents needs to get their cache rebuilt.", [
@@ -217,17 +216,17 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				]),
 				"button" => $this->h5p_framework->t("Rebuild cache")
 			];
-		}
+		}*/
 
 		$form = $this->getUploadLibraryForm();
 
-		$libraries_table = $this->pl->getTemplate("H5PAdminIntegration.html");
+		$h5p_admin_intergration = $this->pl->getTemplate("H5PAdminIntegration.html");
 
-		$libraries_table->setCurrentBlock("scriptBlock");
-		$libraries_table->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($settings));
-		$libraries_table->parseCurrentBlock();
+		$h5p_admin_intergration->setCurrentBlock("scriptBlock");
+		$h5p_admin_intergration->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($intergration));
+		$h5p_admin_intergration->parseCurrentBlock();
 
-		$this->show($form->getHTML() . '<h3 class="ilHeader">' . $this->txt("xhfp_installed_libraries") . '</h3>' . $libraries_table->get());
+		$this->show($form->getHTML() . '<h3 class="ilHeader">' . $this->txt("xhfp_installed_libraries") . '</h3>' . $h5p_admin_intergration->get());
 	}
 
 
@@ -343,13 +342,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$library_id = filter_input(INPUT_GET, "library");
 		$restricted = filter_input(INPUT_GET, "restrict");
 
+		$this->ctrl->setParameterByClass(self::class, "library", $library_id);
+
 		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
 		if ($h5p_library !== NULL) {
 			$h5p_library->setRestricted($restricted);
 
 			$h5p_library->update();
 
-			$this->ctrl->setParameterByClass(self::class, "library", $library_id);
 			$this->ctrl->setParameterByClass(self::class, "restrict", (!$restricted));
 
 			$restricted_url = $this->ctrl->getLinkTargetByClass(self::class, self::CMD_RESTRICT_LIBRARY, "", true);
@@ -367,8 +367,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function upgradeLibrary() {
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
+
 		// TODO
-		$this->show("");
+
+		$this->show("TODO");
 	}
 
 
@@ -376,44 +379,30 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function infoLibrary() {
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
+
 		// TODO
-		$this->show("");
+
+		$this->show("TODO");
 	}
 
 
 	/**
 	 *
 	 */
-	protected function uninstallPackage() {
-		$h5p_package = ilH5PContent::getCurrentPackage();
+	protected function deleteLibrary() {
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
 
-		$confirmation = new ilConfirmationGUI();
+		// TODO
 
-		$this->ctrl->setParameter($this, "xhfp_library", $h5p_package["content"]->getContentId());
-		$confirmation->setFormAction($this->ctrl->getFormAction($this));
-
-		$confirmation->setHeaderText(sprintf($this->pl->txt("xhfp_uninstall_confirm"), $h5p_package["library"]->getTitle()));
-
-		$confirmation->setConfirm($this->pl->txt("xhfp_uninstall"), self::CMD_UNINSTALL_PACKAGE_CONFIRMED);
-		$confirmation->setCancel($this->pl->txt("xhfp_cancel"), self::CMD_MANAGE_LIBRARIES);
-
-		$this->show($confirmation->getHTML());
+		$this->show("TODO");
 	}
 
 
-	/**
-	 *
-	 */
-	protected function uninstallPackageConfirmed() {
-		$h5p_package = ilH5PContent::getCurrentPackage();
+	protected function rebuildCache() {
+		// TODO
 
-		$this->h5p_framework->h5p_storage->deletePackage([
-			"id" => $h5p_package["content"]->getContentId(),
-			"slug" => $h5p_package["content"]->getSlug()
-		]);
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_uninstalled"), $h5p_package["library"]->getTitle()), true);
-		$this->ctrl->redirect($this, self::CMD_MANAGE_LIBRARIES);
+		$this->show("TODO");
 	}
 
 

@@ -10,22 +10,3 @@ xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen
-
-xhfp_actions#:#Aktionen
-xhfp_add#:#Hinzufügen
-xhfp_cancel#:#Abbrechen
-xhfp_error_file_field_invalid#:#Feld %1$s in %2$s ist ungültig!
-xhfp_error_file_invalid#:#%s ist ungültig!
-xhfp_error_file_not_exists#:#%s existiert nicht!
-xhfp_error_invalid_zip_archive#:#Ungültiges ZIP-Archiv!
-xhfp_error_library_not_found#:#Library %s nicht gefunden!
-xhfp_error_library_outdated#:#Es wird für die Library %1$s mind. Version %2$s benötigt, %3$s vorhanden!
-xhfp_installed#:#Packet %s erfolgreich installiert
-xhfp_new#:#H5P anlegen
-xhfp_package_name#:#Packet-Name
-xhfp_packages#:#Packete
-xhfp_please_select#:#bitte wählen
-xhfp_save#:#Speichern
-xhfp_uninstall#:#Entfernen
-xhfp_uninstall_confirm#:#Möchten Sie das Packet %s wirklich entfernen?
-xhfp_uninstalled#:#Packet %s erfolgreich entfernt

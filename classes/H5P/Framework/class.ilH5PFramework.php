@@ -187,17 +187,23 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @var ilTemplate
 	 */
 	protected $tpl;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $user;
 
 
 	public function __construct() {
 		/**
 		 * @var ilTemplate $tpl
+		 * @var ilObjUser  $ilUser
 		 */
 
-		global $tpl;
+		global $tpl, $ilUser;
 
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->tpl = $tpl;
+		$this->user = $ilUser;
 
 		$this->h5p_core = new H5PCore($this, "data/ilias/h5p/", "/data/ilias/h5p/");
 		$this->h5p_validator = new H5PValidator($this, $this->h5p_core);
@@ -414,11 +420,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$libraries = [];
 
 		foreach ($h5p_libraries as $h5p_library) {
-			$name = $h5p_library->getMachineName();
+			$name = $h5p_library->getName();
 
 			$library = (object)[
 				"id" => $h5p_library->getLibraryId(),
-				"name" => $h5p_library->getMachineName(),
+				"name" => $name,
 				"title" => $h5p_library->getTitle(),
 				"major_version" => $h5p_library->getMajorVersion(),
 				"minor_version" => $h5p_library->getMinorVersion(),
@@ -602,7 +608,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			}
 		}
 
-		$h5p_library->setMachineName($library_data["machineName"]);
+		$h5p_library->setName($library_data["machineName"]);
 
 		$h5p_library->setTitle($library_data["title"]);
 
@@ -680,7 +686,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 		/*new H5PEvent("library", ($new ? "create" : "update"),
 			NULL, NULL,
-			$h5p_library->getMachineName(),
+			$h5p_library->getName(),
 			$h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion()
 		);*/
 
@@ -718,28 +724,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *     Main id for the content if this is a system that supports versions
 	 */
 	public function insertContent($content, $content_main_id = NULL) {
-		// TODO check
-		// TODO disabled_features?
-		// TODO log?
-		// TODO content_main_id?
-
-		$h5p_content = new ilH5PContent();
-
-		$h5p_content->setContentId($content["id"]);
-
-		$h5p_content->setLibraryId($content["library"]["libraryId"]);
-
-		$h5p_content->setParameters($content["params"]);
-
-		/*if ($content_main_id !== NULL) {
-			$h5p_content->setContentMainId($content_main_id);
-		}*/
-
-		$h5p_content->create();
-
-		$content["id"] = $h5p_content->getContentId();
-
-		return $h5p_content->getContentId();
+		return $this->updateContent($content, $content_main_id);
 	}
 
 
@@ -756,23 +741,49 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *     Main id for the content if this is a system that supports versions
 	 */
 	public function updateContent($content, $content_main_id = NULL) {
-		// TODO disabled_features?
-		// TODO log?
-		// TODO content_main_id?
+		$time = time();
 
 		$h5p_content = ilH5PContent::getContentById($content["id"]);
 
 		if ($h5p_content !== NULL) {
-			$h5p_content->setLibraryId($content["library"]["libraryId"]);
+			$new = false;
+		} else {
+			$new = true;
 
-			$h5p_content->setParameters($content["params"]);
+			$h5p_content = new ilH5PContent();
 
-			$h5p_content->setFilteredArray([]);
+			$h5p_content->setCreatedAt($time);
 
-			/*if ($content_main_id !== NULL) {
-				$h5p_content->setContentMainId($content_main_id);
-			}*/
+			$h5p_content->setUserId($this->user->getId());
+		}
 
+		$h5p_content->setUpdatedAt($time);
+
+		if (isset($content["title"])) {
+			$h5p_content->setTitle($content["title"]);
+		} else {
+			$h5p_content->setTitle("");
+		}
+
+		$h5p_content->setParameters($content["params"]);
+
+		$h5p_content->setEmbedType("div");
+
+		$h5p_content->setLibraryId($content["library"]["libraryId"]);
+
+		$h5p_content->setFiltered("");
+
+		if (isset($content["disable"])) {
+			$h5p_content->setDisable($content["disable"]);
+		} else {
+			$h5p_content->setDisable(false);
+		}
+
+		$h5p_content->update();
+
+		if ($new) {
+			$h5p_content->create();
+		} else {
 			$h5p_content->update();
 		}
 	}
@@ -784,10 +795,12 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @param int $content_id
 	 */
 	public function resetContentUserData($content_id) {
-		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id, true);
+		$time = time();
+
+		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
 
 		foreach ($h5p_user_datas as $h5p_user_data) {
-			$h5p_user_data->setTimestamp(time());
+			$h5p_user_data->setUpdatedAt($time);
 
 			$h5p_user_data->setDataJson(NULL);
 
@@ -1023,7 +1036,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		if ($h5p_library !== NULL) {
 			$library = [
 				"libraryId" => $h5p_library->getLibraryId(),
-				"machineName" => $h5p_library->getMachineName(),
+				"machineName" => $h5p_library->getName(),
 				"title" => $h5p_library->getTitle(),
 				"majorVersion" => $h5p_library->getMajorVersion(),
 				"minorVersion" => $h5p_library->getMinorVersion(),
@@ -1039,7 +1052,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"fullscreen" => $h5p_library->isFullscreen(),
 				"runnable" => $h5p_library->isRunnable(),
 				"semantics" => $h5p_library->getSemantics(),
-				"tutorial_url" => $h5p_library->getTutorialUrl(),
 				"has_icon" => $h5p_library->hasIcon(),
 				"preloadedDependencies" => [],
 				"dynamicDependencies" => [],
@@ -1181,8 +1193,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   - libraryFullscreen: 1 if fullscreen is supported. 0 otherwise.
 	 */
 	public function loadContent($id) {
-		// TODO current ILIAS language
-
 		$h5p_content = ilH5PContent::getContentById($id);
 		if ($h5p_content !== NULL) {
 
@@ -1190,16 +1200,19 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			if ($h5p_library !== NULL) {
 
 				return [
-					"contentId" => $h5p_content->getContentId(),
+					"id" => $h5p_content->getContentId(),
+					"title" => $h5p_content->getTitle(),
 					"params" => $h5p_content->getParameters(),
-					"embedType" => $h5p_library->getEmbedTypes(),
-					"title" => $h5p_library->getTitle(),
-					"language" => NULL,
+					"filtered" => $h5p_content->getFiltered(),
+					"slug" => $h5p_content->getSlug(),
+					"user_id" => $h5p_content->getUserId(),
+					"embedType" => $h5p_content->getEmbedType(),
+					"disable" => $h5p_content->isDisable(),
 					"libraryId" => $h5p_library->getLibraryId(),
-					"libraryName" => $h5p_library->getMachineName(),
+					"libraryName" => $h5p_library->getName(),
 					"libraryMajorVersion" => $h5p_library->getMajorVersion(),
 					"libraryMinorVersion" => $h5p_library->getMinorVersion(),
-					"libraryEmbedTypes" => $h5p_library->getEmbedTypesCSV(),
+					"libraryEmbedTypes" => $h5p_library->getEmbedTypes(),
 					"libraryFullscreen" => $h5p_library->isFullscreen()
 				];
 			}
@@ -1232,25 +1245,24 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   - dropCss(optional): csv of machine names
 	 */
 	public function loadContentDependencies($id, $type = NULL) {
-		// TODO order weight
-
 		$dependencies = [];
 
-		$h5p_dependencies = ilH5PContentLibrary::getContentLibraries($id, $type);
+		$h5p_content_libraries = ilH5PContentLibrary::getContentLibraries($id, $type);
 
-		foreach ($h5p_dependencies as $h5p_dependency) {
-			$h5p_library = ilH5PLibrary::getLibraryById($h5p_dependency->getLibraryId());
+		foreach ($h5p_content_libraries as $h5p_content_library) {
+			$h5p_library = ilH5PLibrary::getLibraryById($h5p_content_library->getLibraryId());
 
 			if ($h5p_library !== NULL) {
 				$dependencies[] = [
-					"libraryId" => $h5p_library->getLibraryId(),
-					"machineName" => $h5p_library->getMachineName(),
+					"id" => $h5p_library->getLibraryId(),
+					"machineName" => $h5p_library->getName(),
 					"majorVersion" => $h5p_library->getMajorVersion(),
 					"minorVersion" => $h5p_library->getMinorVersion(),
 					"patchVersion" => $h5p_library->getPatchVersion(),
 					"preloadedJs" => $h5p_library->getPreloadedJs(),
 					"preloadedCss" => $h5p_library->getPreloadedCss(),
-					"dropCss" => $h5p_library->getDropLibraryCss()
+					"dropCss" => $h5p_content_library->isDropCss(),
+					"dependencyType" => $h5p_content_library->getDependencyType()
 				];
 			}
 		}
@@ -1455,7 +1467,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$count = [];
 
 		foreach ($h5p_libraries as $h5p_library) {
-			$count[$h5p_library->getMachineName() . " " . $h5p_library->getMajorVersion() . " "
+			$count[$h5p_library->getName() . " " . $h5p_library->getMajorVersion() . " "
 			. $h5p_library->getMinorVersion()] = sizeof(ilH5PContent::getContentsByLibrary($h5p_library->getLibraryId()));
 		}
 
