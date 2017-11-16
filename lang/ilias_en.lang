@@ -3,10 +3,19 @@ obj_xhfp_duplicate#:#Copy H5P
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#Copy H5P's
 rbac_create_xhfp#:#Create H5P
+xhfp_new#:#Create H5P
 
+xhfp_add#:#Add
+xhfp_add_content#:#Add content
+xhfp_contents#:#Contents
+xhfp_delete_content#:#Delete content
+xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
+xhfp_deleted_content#:#%s deleted
+xhfp_edit_content#:#Edit content
 xhfp_error_no_package#:#Please select a H5P file!
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
+xhfp_please_select#:#please select
 xhfp_upload#:#Upload
 xhfp_upload_library#:#Upload library

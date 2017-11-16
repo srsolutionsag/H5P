@@ -755,6 +755,10 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_content->setCreatedAt($time);
 
 			$h5p_content->setUserId($this->user->getId());
+
+			$h5p_content->setEmbedType("div");
+
+			$h5p_content->setLibraryId($content["library"]["libraryId"]);
 		}
 
 		$h5p_content->setUpdatedAt($time);
@@ -767,16 +771,12 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 		$h5p_content->setParameters($content["params"]);
 
-		$h5p_content->setEmbedType("div");
-
-		$h5p_content->setLibraryId($content["library"]["libraryId"]);
-
 		$h5p_content->setFiltered("");
 
 		if (isset($content["disable"])) {
 			$h5p_content->setDisable($content["disable"]);
 		} else {
-			$h5p_content->setDisable(false);
+			$h5p_content->setDisable(0);
 		}
 
 		$h5p_content->update();
@@ -786,6 +786,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		} else {
 			$h5p_content->update();
 		}
+
+		return $h5p_content->getContentId();
 	}
 
 
@@ -883,11 +885,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 */
 	public function deleteContentData($content_id) {
 		$this->deleteLibraryUsage($content_id);
-
-		$h5p_points = ilH5PPoint::getPointsByContent($content_id);
-		foreach ($h5p_points as $h5p_point) {
-			$h5p_point->delete();
-		}
 
 		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
 		foreach ($h5p_user_datas as $h5p_user_data) {
@@ -1207,7 +1204,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 					"slug" => $h5p_content->getSlug(),
 					"user_id" => $h5p_content->getUserId(),
 					"embedType" => $h5p_content->getEmbedType(),
-					"disable" => $h5p_content->isDisable(),
+					"disable" => $h5p_content->getDisable(),
 					"libraryId" => $h5p_library->getLibraryId(),
 					"libraryName" => $h5p_library->getName(),
 					"libraryMajorVersion" => $h5p_library->getMajorVersion(),

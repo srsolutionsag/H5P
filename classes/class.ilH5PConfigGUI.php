@@ -9,20 +9,19 @@ require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibrary.php";
 
 /**
  * H5P Config GUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
-	const CMD_MANAGE_LIBRARIES = "manageLibraries";
-	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
-	const CMD_RESTRICT_LIBRARY = "restrictLibrary";
-	const CMD_UPGRADE_LIBRARY = "upgradeLibrary";
 	const CMD_DELETE_LIBRARY = "deleteLibrary";
 	const CMD_INFO_LIBRARY = "infoLibrary";
+	const CMD_MANAGE_LIBRARIES = "manageLibraries";
 	const CMD_REBUILD_CACHE = "rebuildCache";
+	const CMD_RESTRICT_LIBRARY = "restrictLibrary";
+	const CMD_UPGRADE_LIBRARY = "upgradeLibrary";
+	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
 	const TAB_LIBRARIES = "xhfp_libraries";
 	/**
 	 * @var ilCtrl
@@ -76,13 +75,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		}
 
 		switch ($cmd) {
+			case self::CMD_DELETE_LIBRARY:
+			case self::CMD_INFO_LIBRARY:
 			case self::CMD_MANAGE_LIBRARIES:
-			case self::CMD_UPLOAD_LIBRARY:
+			case self::CMD_REBUILD_CACHE:
 			case self::CMD_RESTRICT_LIBRARY:
 			case self::CMD_UPGRADE_LIBRARY:
-			case self::CMD_INFO_LIBRARY:
-			case self::CMD_DELETE_LIBRARY:
-			case self::CMD_REBUILD_CACHE:
+			case self::CMD_UPLOAD_LIBRARY:
 				$this->$cmd();
 				break;
 
@@ -170,18 +169,18 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		foreach ($libraries as $versions) {
 			foreach ($versions as $library) {
-				$this->ctrl->setParameterByClass(self::class, "library", $library->id);
+				$this->ctrl->setParameter($this, "library", $library->id);
 
 				$usage = $this->h5p_framework->getLibraryUsage($library->id, $not_cached ? true : false);
 
 				if ($library->runnable) {
 					$upgrades = $this->h5p_framework->h5p_core->getUpgrades($library, $versions);
-					$upgradeUrl = empty($upgrades) ? NULL : $this->ctrl->getLinkTargetByClass(self::class, self::CMD_UPGRADE_LIBRARY, "", false, false);
+					$upgradeUrl = empty($upgrades) ? NULL : $this->ctrl->getLinkTarget($this, self::CMD_UPGRADE_LIBRARY, "", false, false);
 
 					$restricted = ($library->restricted ? true : false);
-					$this->ctrl->setParameterByClass(self::class, "restrict", (!$restricted));
-					$restricted_url = $this->ctrl->getLinkTargetByClass(self::class, self::CMD_RESTRICT_LIBRARY, "", true, false);
-					$this->ctrl->setParameterByClass(self::class, "restrict", NULL);
+					$this->ctrl->setParameter($this, "restrict", (!$restricted));
+					$restricted_url = $this->ctrl->getLinkTarget($this, self::CMD_RESTRICT_LIBRARY, "", true, false);
+					$this->ctrl->setParameter($this, "restrict", NULL);
 				} else {
 					$upgradeUrl = NULL;
 					$restricted = NULL;
@@ -197,18 +196,18 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					"numContentDependencies" => $usage["content"] < 1 ? "" : $usage["content"],
 					"numLibraryDependencies" => $usage["libraries"] === 0 ? "" : $usage["libraries"],
 					"upgradeUrl" => $upgradeUrl,
-					"detailsUrl" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_INFO_LIBRARY, "", false, false),
-					"deleteUrl" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_DELETE_LIBRARY, "", false, false)
+					"detailsUrl" => $this->ctrl->getLinkTarget($this, self::CMD_INFO_LIBRARY, "", false, false),
+					"deleteUrl" => $this->ctrl->getLinkTarget($this, self::CMD_DELETE_LIBRARY, "", false, false)
 				];
 			}
 		}
 
-		$this->ctrl->clearParametersByClass(self::class, "library");
+		$this->ctrl->clearParameters($this, "library");
 
 		/*if ($not_cached) {
 			$settings["libraryList"]["notCached"] = [
 				"num" => $not_cached,
-				"url" => $this->ctrl->getLinkTargetByClass(self::class, self::CMD_INFO_LIBRARY, "", true, false),
+				"url" => $this->ctrl->getLinkTarget($this,self::CMD_INFO_LIBRARY, "", true, false),
 				"message" => $this->h5p_framework->t("Not all content has gotten their cache rebuilt. This is required to be able to delete libraries, and to display how many contents that uses the library."),
 				"progress" => $this->h5p_framework->t(($not_cached
 					=== 1) ? "1 content need to get its cache rebuilt." : "%d contents needs to get their cache rebuilt.", [
@@ -247,48 +246,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 			$h5p_file = $form->getInput("xhfp_library");
 
-			/*$plugin = H5P_Plugin::get_instance();
-    $validator = $plugin->get_h5p_instance('validator');
-    $interface = $plugin->get_h5p_instance('interface');
-
-    if (current_user_can('disable_h5p_security')) {
-      $core = $plugin->get_h5p_instance('core');
-
-      // Make it possible to disable file extension check
-      $core->disableFileCheck = (filter_input(INPUT_POST, 'h5p_disable_file_check', FILTER_VALIDATE_BOOLEAN) ? TRUE : FALSE);
-    }
-
-    // Move so core can validate the file extension.
-    rename($_FILES['h5p_file']['tmp_name'], $interface->getUploadedH5pPath());
-
-    $skipContent = ($content === NULL);
-    if ($validator->isValidPackage($skipContent, $only_upgrade) && ($skipContent || $content['title'] !== NULL)) {
-
-      if (function_exists('check_upload_size')) {
-        // Check file sizes before continuing!
-        $tmpDir = $interface->getUploadedH5pFolderPath();
-        $error = self::check_upload_sizes($tmpDir);
-        if ($error !== NULL) {
-          // Didn't meet space requirements, cleanup tmp dir.
-          $interface->setErrorMessage($error);
-          H5PCore::deleteFileTree($tmpDir);
-          return FALSE;
-        }
-      }
-
-      // No file size check errors
-
-      if (isset($content['id'])) {
-        $interface->deleteLibraryUsage($content['id']);
-      }
-      $storage = $plugin->get_h5p_instance('storage');
-      $storage->savePackage($content, NULL, $skipContent);
-
-      // Clear cached value for dirsize.
-      delete_transient('dirsize_cache');
-
-      return $storage->contentId;*/
-
 			$time = time(); // Handling multiple uploads
 			$tmp_folder = ilH5PFramework::getTempFolder();
 			$tmp_name = $tmp_folder . "package_" . $time . ".h5p";
@@ -308,7 +265,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				throw new Exception();
 			}
 
-			$error = ($this->h5p_framework->h5p_storage->savePackage() !== false);
+			$error = ($this->h5p_framework->h5p_storage->savePackage(NULL, NULL, true) !== false);
 			if (!$error) {
 				throw new Exception();
 			}
@@ -342,7 +299,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$library_id = filter_input(INPUT_GET, "library");
 		$restricted = filter_input(INPUT_GET, "restrict");
 
-		$this->ctrl->setParameterByClass(self::class, "library", $library_id);
+		$this->ctrl->setParameter($this, "library", $library_id);
 
 		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
 		if ($h5p_library !== NULL) {
@@ -350,9 +307,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 			$h5p_library->update();
 
-			$this->ctrl->setParameterByClass(self::class, "restrict", (!$restricted));
+			$this->ctrl->setParameter($this, "restrict", (!$restricted));
 
-			$restricted_url = $this->ctrl->getLinkTargetByClass(self::class, self::CMD_RESTRICT_LIBRARY, "", true);
+			$restricted_url = $this->ctrl->getLinkTarget($this, self::CMD_RESTRICT_LIBRARY, "", true);
 
 			$this->show(ilH5PFramework::jsonToString([
 				"url" => $restricted_url

@@ -2,8 +2,6 @@
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
 
 /**
  * H5P library active record
@@ -119,6 +117,38 @@ class ilH5PLibrary extends ActiveRecord {
 		])->get();
 
 		return $h5p_libraries;
+	}
+
+
+	/**
+	 * @return ilH5PLibrary[]
+	 */
+	static function getLibrariesRunnable() {
+		/**
+		 * @var ilH5PLibrary[] $h5p_libraries
+		 */
+
+		$h5p_libraries = self::where([
+			"runnable" => true
+		])->orderBy("title", "asc")->get();
+
+		return $h5p_libraries;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	static function getLibrariesRunnableArray() {
+		$h5p_libraries = self::getLibrariesRunnable();
+
+		$libraries = [];
+
+		foreach ($h5p_libraries as $h5p_library) {
+			$libraries[$h5p_library->getLibraryId()] = $h5p_library->getTitle();
+		}
+
+		return $libraries;
 	}
 
 

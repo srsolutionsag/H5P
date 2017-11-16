@@ -58,6 +58,20 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return ilH5PContent[]
 	 */
+	static function getContents() {
+		/**
+		 * @var ilH5PContent[] $h5p_contents
+		 */
+
+		$h5p_contents = self::get();
+
+		return $h5p_contents;
+	}
+
+
+	/**
+	 * @return ilH5PContent[]
+	 */
 	static function getContentsNotFiltered() {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
@@ -77,7 +91,6 @@ class ilH5PContent extends ActiveRecord {
 	 * @return ilH5PContent|null
 	 */
 	static function getContentsBySlug($slug) {
-		// TODO
 		/**
 		 * @var ilH5PContent|null $h5p_content
 		 */
@@ -91,76 +104,18 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @return array[]
+	 * @return ilH5PContent|null
 	 */
-	static function getPackages() {
-		// TODO
+	static function getCurrentContent() {
 		/**
-		 * @var ilH5PContent[] $h5p_contents
+		 * @var ilH5PContent|null $h5p_content
 		 */
 
-		$h5p_contents = self::get();
-
-		$packages = [];
-
-		foreach ($h5p_contents as $h5p_content) {
-			$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
-
-			if ($h5p_library !== NULL) {
-				$package = [
-					"content_id" => $h5p_content->getContentId(),
-					"package_name" => $h5p_library->getTitle()
-				];
-			}
-
-			$packages[] = $package;
-		}
-
-		return $packages;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	static function getPackagesArray() {
-		// TODO
-		$h5p_packages = self::getPackages();
-
-		$packages = [];
-
-		foreach ($h5p_packages as $h5p_package) {
-			$packages[$h5p_package["content_id"]] = $h5p_package["package_name"];
-		}
-
-		return $packages;
-	}
-
-
-	/**
-	 * @return array|null
-	 */
-	static function getCurrentPackage() {
-		// TODO
-		$content_id = filter_input(INPUT_GET, "xhfp_package");
+		$content_id = filter_input(INPUT_GET, "xhfp_content");
 
 		$h5p_content = self::getContentById($content_id);
 
-		if ($h5p_content !== NULL) {
-
-			$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
-
-			if ($h5p_library !== NULL) {
-				$package = [
-					"content" => $h5p_content,
-					"library" => $h5p_library
-				];
-
-				return $package;
-			}
-		}
-
-		return NULL;
+		return $h5p_content;
 	}
 
 
@@ -255,14 +210,14 @@ class ilH5PContent extends ActiveRecord {
 	 */
 	protected $embed_type = "";
 	/**
-	 * @var bool
+	 * @var int
 	 *
 	 * @con_has_field    true
 	 * @con_fieldtype    integer
-	 * @con_length       1
+	 * @con_length       2
 	 * @con_is_notnull   true
 	 */
-	protected $disable = false;
+	protected $disable = 0;
 	/**
 	 * @var string
 	 *
@@ -517,15 +472,15 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @return bool
+	 * @return int
 	 */
-	public function isDisable() {
+	public function getDisable() {
 		return $this->disable;
 	}
 
 
 	/**
-	 * @param bool $disable
+	 * @param int $disable
 	 */
 	public function setDisable($disable) {
 		$this->disable = $disable;
