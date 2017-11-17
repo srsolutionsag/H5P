@@ -104,6 +104,38 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
+	 * @param int $obj_id
+	 *
+	 * @return ilH5PContent[]
+	 */
+	static function getContentsByObjectId($obj_id) {
+		/**
+		 * @var ilH5PContent[] $h5p_contents
+		 */
+
+		$h5p_contents = self::where([
+			"obj_id" => $obj_id
+		])->orderBy("sort", "asc")->get();
+
+		return $h5p_contents;
+	}
+
+
+	/**
+	 * @param int $obj_id
+	 *
+	 * @return array
+	 */
+	static function getContentsByObjectIdArray($obj_id) {
+		$h5p_contents = self::where([
+			"obj_id" => $obj_id
+		])->orderBy("sort", "asc")->getArray();
+
+		return $h5p_contents;
+	}
+
+
+	/**
 	 * @return ilH5PContent|null
 	 */
 	static function getCurrentContent() {
@@ -116,6 +148,57 @@ class ilH5PContent extends ActiveRecord {
 		$h5p_content = self::getContentById($content_id);
 
 		return $h5p_content;
+	}
+
+
+	/**
+	 * @param int $obj_id
+	 */
+	static function reSort($obj_id) {
+		$h5p_contents = self::getContentsByObjectId($obj_id);
+
+		$i = 1;
+		foreach ($h5p_contents as $h5p_content) {
+			$h5p_content->setSort($i * 10);
+
+			$h5p_content->update();
+
+			$i ++;
+		}
+	}
+
+
+	/**
+	 * @param int $content_id
+	 * @param int $obj_id
+	 */
+	static function moveContentUp($content_id, $obj_id) {
+		$h5p_content = self::getContentById($content_id);
+
+		if ($h5p_content !== NULL) {
+			$h5p_content->setSort($h5p_content->sort - 15);
+
+			$h5p_content->update();
+
+			self::reSort($obj_id);
+		}
+	}
+
+
+	/**
+	 * @param int $content_id
+	 * @param int $obj_id
+	 */
+	static function moveContentDown($content_id, $obj_id) {
+		$h5p_content = self::getContentById($content_id);
+
+		if ($h5p_content !== NULL) {
+			$h5p_content->setSort($h5p_content->sort + 15);
+
+			$h5p_content->update();
+
+			self::reSort($obj_id);
+		}
 	}
 
 
@@ -261,6 +344,40 @@ class ilH5PContent extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $description = "";
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   true
+	 */
+	protected $obj_id;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   true
+	 */
+	protected $sort;
+
+
+	public function create() {
+		$sort = (sizeof(self::getContentsByObjectId($this->obj_id)) + 1);
+
+		$this->setSort($sort * 10);
+
+		parent::create();
+	}
+
+
+	public function delete() {
+		parent::delete();
+
+		self::reSort($this->obj_id);
+	}
 
 
 	/**
@@ -564,5 +681,37 @@ class ilH5PContent extends ActiveRecord {
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getObjId() {
+		return $this->obj_id;
+	}
+
+
+	/**
+	 * @param int $obj_id
+	 */
+	public function setObjId($obj_id) {
+		$this->obj_id = $obj_id;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getSort() {
+		return $this->sort;
+	}
+
+
+	/**
+	 * @param int $sort
+	 */
+	public function setSort($sort) {
+		$this->sort = $sort;
 	}
 }

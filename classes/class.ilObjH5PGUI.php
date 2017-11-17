@@ -28,6 +28,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_DELETE_CONTENT_CONFIRMED = "deleteContentConfirmed";
 	const CMD_EDIT_CONTENT = "editContent";
 	const CMD_MANAGE_CONTENTS = "manageContents";
+	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
+	const CMD_MOVE_CONTENT_UP = "moveContentUp";
 	const CMD_PERMISSIONS = "perm";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
@@ -90,6 +92,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			case self::CMD_DELETE_CONTENT_CONFIRMED:
 			case self::CMD_EDIT_CONTENT:
 			case self::CMD_MANAGE_CONTENTS:
+			case self::CMD_MOVE_CONTENT_DOWN:
+			case self::CMD_MOVE_CONTENT_UP:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
 			case self::CMD_SHOW_CONTENT:
@@ -134,22 +138,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param ilObjH5P $a_new_object
 	 */
 	function afterSave(ilObject $a_new_object) {
-		/*$content_id = filter_input(INPUT_POST, "xhfp_package");
-		$user_data = $a_new_object->getUserData();
-
-		$user_data->setContentMainId($content_id);
-
-		$user_data->setDataId($a_new_object->getId());
-
-		$user_data->setUserId($this->user->getId());
-
-		$user_data->create();
-
-		$content = $this->h5p_framework->h5p_core->loadContent($content_id);
-		$content["id"] = $content_id;
-
-		$this->h5p_framework->h5p_core->filterParameters($content);*/
-
 		parent::afterSave($a_new_object);
 	}
 
@@ -167,6 +155,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->toolbar->addButtonInstance($add_content);
 
 		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+
+		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
+		$this->tpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
+		$this->tpl->addOnLoadCode('xoctWaiter.init("waiter");');
+
+		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
+		$this->tpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
 
 		$this->show($table->getHTML());
 	}
@@ -197,6 +192,32 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->addItem($library);
 
 		return $form;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function moveContentDown() {
+		$content_id = filter_input(INPUT_GET, "xhfp_content");
+		$obi_id = $this->object->getId();
+
+		ilH5PContent::moveContentDown($content_id, $obi_id);
+
+		$this->show("");
+	}
+
+
+	/**
+	 *
+	 */
+	protected function moveContentUp() {
+		$content_id = filter_input(INPUT_GET, "xhfp_content");
+		$obi_id = $this->object->getId();
+
+		ilH5PContent::moveContentUp($content_id, $obi_id);
+
+		$this->show("");
 	}
 
 
@@ -242,7 +263,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					"majorVersion" => $h5p_library->getMajorVersion(),
 					"minorVersion" => $h5p_library->getMinorVersion()
 				],
-				"params" => "{}"
+				"params" => "{}",
+				"obj_id" => $this->object->getId()
 			];
 
 			$content["params"] = $this->h5p_framework->h5p_core->filterParameters($content);

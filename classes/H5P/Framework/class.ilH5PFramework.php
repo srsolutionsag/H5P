@@ -759,6 +759,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_content->setEmbedType("div");
 
 			$h5p_content->setLibraryId($content["library"]["libraryId"]);
+
+			$h5p_content->setObjId($content["obj_id"]);
 		}
 
 		$h5p_content->setUpdatedAt($time);

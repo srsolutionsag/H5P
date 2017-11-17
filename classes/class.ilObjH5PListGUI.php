@@ -33,7 +33,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		$commands = [
 			[
 				"permission" => "read",
-				"cmd" => ilObjH5PGUI::CMD_SHOW_H5P,
+				"cmd" => ilObjH5PGUI::CMD_MANAGE_CONTENTS,
 				"default" => true,
 			]
 		];

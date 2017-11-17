@@ -37,18 +37,16 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->ctrl = $ilCtrl;
 		$this->pl = ilH5PPlugin::getInstance();
 
+		$this->addColumn("");
 		$this->addColumn($this->lng->txt("title"));
 		$this->addColumn($this->txt("xhfp_library"));
 		$this->addColumn($this->lng->txt("actions"));
-
-		$this->setDefaultOrderField("title");
-		$this->setDefaultOrderDirection("asc");
 
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
 		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
 
-		$this->setData(ilH5PContent::getArray());
+		$this->setData(ilH5PContent::getContentsByObjectIdArray($a_parent_obj->object->getId()));
 	}
 
 
@@ -59,6 +57,8 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$parent = $this->getParentObject();
 
 		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
+
+		$this->tpl->setVariable("ID", $content["content_id"]);
 
 		$this->tpl->setVariable("TITLE", $content["title"]);
 
