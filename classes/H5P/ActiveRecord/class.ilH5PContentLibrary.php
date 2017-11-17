@@ -42,7 +42,23 @@ class ilH5PContentLibrary extends ActiveRecord {
 		return $h5p_content_libraries;
 	}
 
+	/**
+	 * @param int $library_id
+	 *
+	 * @return ilH5PContentLibrary[]
+	 */
+	static function getContentsByLibrary($library_id) {
+		/**
+		 * @var ilH5PContentLibrary[] $h5p_libraries
+		 */
 
+		$h5p_libraries = self::innerjoin( ilH5PContent::TABLE_NAME,  "content_id", "content_id" )
+		->where([
+			self::TABLE_NAME . ".library_id" => $library_id
+		])->get();
+
+		return $h5p_libraries;
+	}
 	/**
 	 * Workaround for multiple primary keys: content_id, library_id, dependency_type
 	 *

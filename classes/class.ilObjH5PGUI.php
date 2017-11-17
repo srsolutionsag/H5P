@@ -267,9 +267,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				"obj_id" => $this->object->getId()
 			];
 
-			$content["params"] = $this->h5p_framework->h5p_core->filterParameters($content);
-
 			$content["id"] = $this->h5p_framework->h5p_core->saveContent($content);
+
+			$content["params"] = $this->h5p_framework->h5p_core->filterParameters($content);
 
 			$this->ctrl->setParameter($this, "xhfp_content", $content["id"]);
 

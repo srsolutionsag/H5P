@@ -57,6 +57,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		$ilDB->dropTable(ilH5PLibrary::TABLE_NAME, false);
 
+		$ilDB->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
+
 		$ilDB->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
 
 		$ilDB->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);

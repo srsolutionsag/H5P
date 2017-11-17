@@ -11,12 +11,13 @@ xhfp_contents#:#Inhalte
 xhfp_delete_content#:#Inhalt löschen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 xhfp_deleted_content#:#%s gelöscht
+xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
+xhfp_deleted_library#:#%s gelöscht
 xhfp_edit_content#:#Inhalt bearbeiten
 xhfp_error_no_package#:#Bitte wählen Sie eine H5P-Datei aus!
 xhfp_installed_libraries#:#Installierte Bibliotheken
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
 xhfp_please_select#:#bitte wählen
-xhfp_save#:#Speichern
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen

@@ -103,20 +103,24 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @param int $library_id
 	 *
-	 * @return ilH5PLibrary[]
+	 * @return int
 	 */
 	static function getLibraryUsage($library_id) {
 		/**
-		 * @var ilH5PLibrary[] $h5p_libraries
+		 * @var ilDB $ilDB
 		 */
 
-		// TODO multiple join not work
-		$h5p_libraries = self::innerjoin(ilH5PContentLibrary::TABLE_NAME, "library_id", "library_id")/*->innerjoin( ilH5PContent::TABLE_NAME,  "content_id", "content_id" )*/
-		->where([
-			self::TABLE_NAME . ".library_id" => $library_id
-		])->get();
+		global $ilDB;
 
-		return $h5p_libraries;
+		$result = $ilDB->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
+          FROM " . self::TABLE_NAME . " AS l
+          JOIN " . ilH5PContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
+          JOIN " . ilH5PContent::TABLE_NAME . " AS c ON cl.content_id = c.content_id
+          WHERE l.library_id = %s", [ "integer" ], [ $library_id ]);
+
+		$count = $result->fetchAssoc()["count"];
+
+		return $count;
 	}
 
 
@@ -149,6 +153,18 @@ class ilH5PLibrary extends ActiveRecord {
 		}
 
 		return $libraries;
+	}
+
+
+	/**
+	 * @return array|null
+	 */
+	static function getCurrentContent() {
+		$content_id = filter_input(INPUT_GET, "xhfp_content");
+
+		$h5p_content = self::getContentById($content_id);
+
+		return NULL;
 	}
 
 
