@@ -33,11 +33,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_PERMISSIONS = "perm";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
-	const CMD_SHOW_CONTENT = "showContent";
+	const CMD_SHOW_CONTENTS = "showContents";
 	const CMD_UPDATE_CONTENT = "updateContent";
 	const TAB_CONTENTS = "contents";
 	const TAB_PERMISSIONS = "perm_settings";
 	const TAB_SETTINGS = "settings";
+	const TAB_SHOW_CONTENTS = "showContent";
 	/**
 	 * Fix autocomplete (Not defined in parent, but set)
 	 *
@@ -55,6 +56,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected $toolbar;
 	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
+	/**
 	 * @var ilH5PFramework
 	 */
 	protected $h5p_framework;
@@ -63,10 +68,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function afterConstructor() {
 		/**
 		 * @var ilToolbarGUI $ilToolbar
+		 * @var ilObjUser    $ilUser
 		 */
 
-		global $ilToolbar;
+		global $ilToolbar, $ilUser;
 
+		$this->usr = $ilUser;
 		$this->toolbar = $ilToolbar;
 
 		$this->h5p_framework = new ilH5PFramework();
@@ -96,7 +103,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			case self::CMD_MOVE_CONTENT_UP:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
-			case self::CMD_SHOW_CONTENT:
+			case self::CMD_SHOW_CONTENTS:
 			case self::CMD_UPDATE_CONTENT:
 				$this->{$cmd}();
 				break;
@@ -386,103 +393,168 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
-	 *
+	 * @return array
 	 */
-	protected function showContent() {
-		//$this->tabs_gui->activateTab(self::CMD_SHOW_CONTENT);
-
-		$this->h5p_framework->addCore();
-
-		$content = $this->h5p_framework->h5p_core->loadContent($this->object->getUserData()->getContentMainId());
-
-		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($this->object->getUserData()
-			->getContentMainId(), "preloaded");
-		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies, ilH5PFramework::getH5PFolder());
-		// TODO double slashes
-
-		$core_scripts = array_map(function ($file) {
-			return (ilH5PFramework::CORE_PATH . $file);
-		}, H5PCore::$scripts);
-
-		$core_styles = array_map(function ($file) {
-			return (ilH5PFramework::CORE_PATH . $file);
-		}, H5PCore::$styles);
-
-		$scripts = array_map(function ($file) {
-			return $file->path;
-		}, $files["scripts"]);
-
-		$styles = array_map(function ($file) {
-			return $file->path;
-		}, $files["styles"]);
-
+	protected function getCore() {
 		$H5PIntegration = [
-			"baseUrl" => "",
+			"baseUrl" => $_SERVER["HTTP_HOST"],
 			"url" => ilH5PFramework::getH5PFolder(),
 			"postUserStatistics" => false,
-			"ajaxPath" => "",
 			"ajax" => [
-				"setFinished" => "",
-				"contentUserData" => ""
+				"setFinished" => $this->ctrl->getLinkTarget($this),
+				"contentUserData" => $this->ctrl->getLinkTarget($this)
 			],
 			"saveFreq" => 30,
-			"user" => [
-				"name" => "",
-				"mail" => ""
-			],
-			"siteUrl" => "",
+			/*"user" => [
+				"name" => $this->usr->getFullname(),
+				"mail" => $this->usr->getEmail()
+			],*/
+			"siteUrl" => $_SERVER["HTTP_HOST"],
 			"l10n" => [
 				"H5P" => $this->h5p_framework->h5p_core->getLocalization()
 			],
-			"loadedJs" => $scripts,
-			"loadedCss" => $styles,
-			"core" => [
-				"scripts" => $core_scripts,
-				"styles" => $core_styles
+			"hubIsEnabled" => false
+		];
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param array $content
+	 *
+	 * @return array
+	 */
+	protected function getContent($content) {
+		$safe_parameters = $this->h5p_framework->h5p_core->filterParameters($content);
+
+		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
+
+		$contentIntergration = [
+			"library" => H5PCore::libraryToString($content["library"]),
+			"jsonContent" => $safe_parameters,
+			"fullScreen" => $content["library"]["fullscreen"],
+			"exportUrl" => "",
+			"embedCode" => "",
+			"resizeCode" => '',
+			"url" => "",
+			"title" => $content["title"],
+			"displayOptions" => [
+				"frame" => false,
+				"export" => false,
+				"embded" => false,
+				"copyright" => false,
+				"icon" => false
 			],
-			"contents" => [
-				("cid-" . $content["contentId"]) => [
-					"library" => H5PCore::libraryToString($content["library"]),
-					"jsonContent" => $content["params"],
-					"fullScreen" => false,
-					"exportUrl" => "",
-					"embedCode" => "",
-					"resizeCode" => "",
-					"mainId" => 0,
-					"url" => "",
-					"title" => $content["title"],
-					"contentUserData" => [],
-					"displayOptions" => [
-						"frame" => false,
-						"export" => false,
-						"embed" => false,
-						"copyright" => false,
-						"icon" => false
-					],
-					"styles" => [],
-					"scripts" => []
+			"contentUserData" => [
+				0 => [
+					"state" => "{}"
 				]
 			]
 		];
 
-		foreach ($scripts as $script) {
-			$this->tpl->addJavaScript($script);
+		return $contentIntergration;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	protected function addCore() {
+		$H5PIntegration = $this->getCore();
+
+		$H5PIntegration = array_merge($H5PIntegration, [
+			"loadedJs" => [],
+			"loadedCss" => [],
+			"core" => [
+				"scripts" => [],
+				"styles" => []
+			],
+			"contents" => []
+		]);
+
+		$this->h5p_framework->addCore();
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param int $content_id
+	 *
+	 * @return array
+	 */
+	protected function getContents($content_id) {
+		$H5PIntegration = $this->addCore();
+
+		$content = $this->h5p_framework->h5p_core->loadContent($content_id);
+
+		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($content["id"], "preloaded");
+
+		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies, ilH5PFramework::getH5PFolder());
+		$scripts = array_map(function ($file) {
+			return $file->path;
+		}, $files["scripts"]);
+		$styles = array_map(function ($file) {
+			return $file->path;
+		}, $files["styles"]);
+
+		$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
+
+		$cid = "cid-" . $content["id"];
+
+		if (!isset($H5PIntegration["contents"][$cid])) {
+			$contentIntergration = $this->getContent($content);
+
+			switch ($embed) {
+				case "div":
+				case "iframe":
+					foreach ($scripts as $script) {
+						$this->tpl->addJavaScript($script);
+					}
+
+					foreach ($styles as $style) {
+						$this->tpl->addCss($style, "");
+					}
+					break;
+				/*case "iframe":
+					$contentIntergration["scripts"] = $scripts;
+					$contentIntergration["styles"] = $styles;
+					break;*/
+			}
+
+			$H5PIntegration["contents"][$cid] = $contentIntergration;
 		}
 
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function showContents() {
+		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
+
+		$h5p_contents = ilH5PContent::getContentsByObjectId($this->object->getId());
+
+		$h5p_content = current($h5p_contents);
+		if ($h5p_content !== false) {
+			$content_id = $h5p_content->getContentId();
+
+			$H5PIntegration = $this->getContents($content_id);
+
+			$tmpl = $this->plugin->getTemplate("H5PIntegration.html");
+
+			$tmpl->setCurrentBlock("scriptBlock");
+			$tmpl->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($H5PIntegration));
+			$tmpl->parseCurrentBlock();
+
+			$tmpl->setCurrentBlock("contentBlock");
+			$tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+
+			$this->show($tmpl->get());
 		}
-
-		$tmpl = $this->plugin->getTemplate("H5PIntegration.html");
-
-		$tmpl->setCurrentBlock("scriptBlock");
-		$tmpl->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($H5PIntegration));
-		$tmpl->parseCurrentBlock();
-
-		$tmpl->setCurrentBlock("contentBlock");
-		$tmpl->setVariable("H5P_CONTENT_ID", $content["contentId"]);
-
-		$this->show($tmpl->get());
 	}
 
 
@@ -560,8 +632,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function setTabs() {
-		$this->tabs_gui->addTab(self::TAB_CONTENTS, $this->txt("xhfp_"
-			. self::TAB_CONTENTS), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
+		$this->tabs_gui->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
+
+		$this->tabs_gui->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
 
 		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 

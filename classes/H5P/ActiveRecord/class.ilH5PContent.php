@@ -123,34 +123,6 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @param int $library_id
-	 *
-	 * @return array
-	 */
-	static function getxx($library_id) {
-		/**
-		 * @var ilDB $ilDB
-		 */
-
-		global $ilDB;
-
-		$result = $ilDB->queryF("SELECT DISTINCT c.content_id, c.title
-            FROM " . ilH5PContentLibrary::TABLE_NAME . " AS cl
-            JOIN " . self::TABLE_NAME . " AS c ON cl.content_id = c.content_id
-            WHERE cl.library_id = %s
-            ORDER BY c.title", [ "integer" ], [ $library_id ]);
-
-		$h5p_contents = [];
-
-		while (($h5p_content = $result->fetchAssoc()) !== false) {
-			$h5p_contents[] = $h5p_content;
-		}
-
-		return $h5p_contents;
-	}
-
-
-	/**
 	 * @param int $obj_id
 	 *
 	 * @return ilH5PContent[]

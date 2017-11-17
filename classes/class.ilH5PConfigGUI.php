@@ -359,7 +359,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$not_cached = $this->h5p_framework->getNumNotFiltered();
 
-		$h5p_contents = ilH5PContent::getxx($h5p_library->getLibraryId());
+		$h5p_contents = ilH5PContentLibrary::getContentsByLibrary($h5p_library->getLibraryId());
 
 		$this->tabs->activateTab(self::TAB_LIBRARIES);
 
