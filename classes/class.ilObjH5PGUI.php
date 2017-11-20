@@ -8,6 +8,7 @@ require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PContentsTableGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
+require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 
 /**
  * H5P GUI
@@ -40,6 +41,22 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
 	/**
+	 * @var \ILIAS\DI\Container
+	 */
+	protected $dic;
+	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
+	/**
+	 * @var array
+	 */
+	protected $h5p_scripts = [];
+	/**
+	 * @var array
+	 */
+	protected $h5p_styles = [];
+	/**
 	 * Fix autocomplete (Not defined in parent, but set)
 	 *
 	 * @var ilObjH5P
@@ -51,32 +68,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @var ilH5PPlugin
 	 */
 	protected $plugin;
-	/**
-	 * @var ilToolbarGUI
-	 */
-	protected $toolbar;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-	/**
-	 * @var ilH5P
-	 */
-	protected $h5p;
 
 
 	protected function afterConstructor() {
-		/**
-		 * @var ilToolbarGUI $ilToolbar
-		 * @var ilObjUser    $ilUser
-		 */
+		global $DIC;
 
-		global $ilToolbar, $ilUser;
+		$this->dic = $DIC;
 
-		$this->usr = $ilUser;
-		$this->toolbar = $ilToolbar;
-
-		$this->h5p =  ilH5P::getInstance();
+		$this->h5p = ilH5P::getInstance();
 	}
 
 
@@ -120,11 +119,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			exit();
 		} else {
-			$this->tpl->setTitle($this->object->getTitle());
+			$main_tmpl = $this->dic->ui()->mainTemplate();
 
-			$this->tpl->setDescription($this->object->getDescription());
+			$main_tmpl->setTitle($this->object->getTitle());
 
-			$this->tpl->setContent($html);
+			$main_tmpl->setDescription($this->object->getDescription());
+
+			$main_tmpl->setContent($html);
 		}
 	}
 
@@ -153,52 +154,26 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function manageContents() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$main_tmpl = $this->dic->ui()->mainTemplate();
+
+		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 		$add_content = ilLinkButton::getInstance();
 		$add_content->setCaption($this->txt("xhfp_add_content"), false);
 		$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
 
-		$this->toolbar->addButtonInstance($add_content);
+		$this->dic->toolbar()->addButtonInstance($add_content);
 
 		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
 
-		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
-		$this->tpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
-		$this->tpl->addOnLoadCode('xoctWaiter.init("waiter");');
+		$main_tmpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
+		$main_tmpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
+		$main_tmpl->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
-		$this->tpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
+		$main_tmpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
+		$main_tmpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
 
 		$this->show($table->getHTML());
-	}
-
-
-	/**
-	 * @return ilPropertyFormGUI
-	 */
-	protected function getAddContentForm() {
-		$libraries = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PLibrary::getLibrariesRunnableArray();
-
-		$form = new ilPropertyFormGUI();
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->setTitle($this->txt("xhfp_add_content"));
-
-		$form->addCommandButton(self::CMD_CREATE_CONTENT, $this->lng->txt("add"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
-
-		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
-		$title->setRequired(true);
-		$form->addItem($title);
-
-		$library = new ilSelectInputGUI($this->txt("xhfp_library"), "xhfp_library");
-		$library->setRequired(true);
-		$library->setOptions($libraries);
-		$form->addItem($library);
-
-		return $form;
 	}
 
 
@@ -229,10 +204,38 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @return ilPropertyFormGUI
+	 */
+	protected function getAddContentForm() {
+		$libraries = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PLibrary::getLibrariesRunnableArray();
+
+		$form = new ilPropertyFormGUI();
+
+		$form->setFormAction($this->ctrl->getFormAction($this));
+
+		$form->setTitle($this->txt("xhfp_add_content"));
+
+		$form->addCommandButton(self::CMD_CREATE_CONTENT, $this->dic->language()->txt("add"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
+
+		$title = new ilTextInputGUI($this->dic->language()->txt("title"), "xhfp_title");
+		$title->setRequired(true);
+		$form->addItem($title);
+
+		$library = new ilSelectInputGUI($this->txt("xhfp_library"), "xhfp_library");
+		$library->setRequired(true);
+		$library->setOptions($libraries);
+		$form->addItem($library);
+
+		return $form;
+	}
+
+
+	/**
 	 *
 	 */
 	protected function addContent() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 		$form = $this->getAddContentForm();
 
@@ -249,7 +252,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+			$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 			$this->show($form->getHTML());
 
@@ -274,9 +277,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				"obj_id" => $this->object->getId()
 			];
 
-			$content["id"] = $this->h5p->h5p_core->saveContent($content);
+			$content["id"] = $this->h5p->core()->saveContent($content);
 
-			$content["params"] = $this->h5p->h5p_core->filterParameters($content);
+			$content["params"] = $this->h5p->core()->filterParameters($content);
 
 			$this->ctrl->setParameter($this, "xhfp_content", $content["id"]);
 
@@ -290,6 +293,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function getEditContentForm() {
 		$h5p_content = ilH5PContent::getCurrentContent();
+		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
 
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
@@ -299,13 +303,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->setTitle($this->txt("xhfp_edit_content"));
 
-		$form->addCommandButton(self::CMD_UPDATE_CONTENT, $this->lng->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
+		$form->addCommandButton(self::CMD_UPDATE_CONTENT, $this->dic->language()->txt("save"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
 
-		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
+		$title = new ilTextInputGUI($this->dic->language()->txt("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($h5p_content->getTitle());
 		$form->addItem($title);
+
+		$h5p = new ilCustomInputGUI($this->txt("xhfp_library") . " " . $h5p_library->getTitle());
+		$h5p->setHtml($this->getH5PEditorIntegration($h5p_content->getContentId()));
+		$form->addItem($h5p);
 
 		return $form;
 	}
@@ -315,7 +323,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function editContent() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 		$form = $this->getEditContentForm();
 
@@ -332,7 +340,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+			$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 			$this->show($form->getHTML());
 
@@ -343,13 +351,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$content = $this->h5p->h5p_core->loadContent($h5p_content->getContentId());
+		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
 		$content["title"] = $title;
 
-		$content["params"] = $this->h5p->h5p_core->filterParameters($content);
+		$content["params"] = $this->h5p->core()->filterParameters($content);
 
-		$this->h5p->h5p_core->saveContent($content);
+		$this->h5p->core()->saveContent($content);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -359,7 +367,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteContent() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
@@ -371,8 +379,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
-		$confirmation->setConfirm($this->lng->txt("delete"), self::CMD_DELETE_CONTENT_CONFIRMED);
-		$confirmation->setCancel($this->lng->txt("cancel"), self::CMD_MANAGE_CONTENTS);
+		$confirmation->setConfirm($this->dic->language()->txt("delete"), self::CMD_DELETE_CONTENT_CONFIRMED);
+		$confirmation->setCancel($this->dic->language()->txt("cancel"), self::CMD_MANAGE_CONTENTS);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -384,7 +392,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function deleteContentConfirmed() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->h5p->h5p_framework->deleteContentData($h5p_content->getContentId());
+		$this->h5p->framework()->deleteContentData($h5p_content->getContentId());
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 
@@ -393,28 +401,247 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 *
+	 */
+	protected function showContents() {
+		$this->dic->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
+
+		$h5p_contents = ilH5PContent::getContentsByObjectId($this->object->getId());
+
+		$h5p_content = current($h5p_contents);
+		if ($h5p_content !== false) {
+			$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	protected function getSettingsForm() {
+		$form = new ilPropertyFormGUI();
+
+		$form->setFormAction($this->ctrl->getFormAction($this));
+
+		$form->setTitle($this->dic->language()->txt(self::TAB_SETTINGS));
+
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->dic->language()->txt("save"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
+
+		$title = new ilTextInputGUI($this->dic->language()->txt("title"), "xhfp_title");
+		$title->setRequired(true);
+		$title->setValue($this->object->getTitle());
+		$form->addItem($title);
+
+		$description = new ilTextAreaInputGUI($this->dic->language()->txt("description"), "xhfp_description");
+		$description->setValue($this->object->getLongDescription());
+		$form->addItem($description);
+
+		return $form;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function settings() {
+		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+
+		$form = $this->getSettingsForm();
+
+		$this->show($form->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function settingsStore() {
+		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+
+		$form = $this->getSettingsForm();
+
+		$form->setValuesByPost();
+
+		if (!$form->checkInput()) {
+			$this->show($form->getHTML());
+
+			return;
+		}
+
+		$title = $form->getInput("xhfp_title");
+		$this->object->setTitle($title);
+
+		$description = $form->getInput("xhfp_description");
+		$this->object->setDescription($description);
+
+		$this->object->update();
+
+		ilUtil::sendSuccess($this->dic->language()->txt("settings_saved"), true);
+
+		$this->show($form->getHTML());
+
+		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
+	}
+
+
+	/**
+	 * @param int $content_id
+	 *
+	 * @return string
+	 */
+	protected function getH5PCoreIntegration($content_id, $type = "preloaded") {
+		$H5PIntegration = $this->getContents($content_id, $type);
+
+		if ($type === "editor") {
+			$content_id = NULL;
+		}
+
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), $this->h5p_scripts, $this->h5p_styles, $content_id);
+
+		return $h5p_integration;
+	}
+
+
+	/**
+	 * @param int $content_id
+	 *
+	 * @return string
+	 */
+	protected function getH5PEditorIntegration($content_id) {
+		return $this->getH5PCoreIntegration($content_id, "editor");
+	}
+
+
+	/**
 	 * @return array
 	 */
-	protected function getCore() {
+	protected function getBaseCore() {
 		$H5PIntegration = [
 			"baseUrl" => $_SERVER["HTTP_HOST"],
-			"url" => ilH5P::getInstance()->getH5PFolder(),
+			"url" => $this->h5p->getH5PFolder(),
 			"postUserStatistics" => false,
 			"ajax" => [
-				"setFinished" => $this->ctrl->getLinkTarget($this),
-				"contentUserData" => $this->ctrl->getLinkTarget($this)
+				"setFinished" => $this->ctrl->getLinkTarget($this, ""),
+				"contentUserData" => $this->ctrl->getLinkTarget($this, "")
 			],
 			"saveFreq" => 30,
 			/*"user" => [
-				"name" => $this->usr->getFullname(),
-				"mail" => $this->usr->getEmail()
+				"name" => $this->dic->user()->getFullname(),
+				"mail" => $this->dic->user()->getEmail()
 			],*/
 			"siteUrl" => $_SERVER["HTTP_HOST"],
 			"l10n" => [
-				"H5P" => $this->h5p->h5p_core->getLocalization()
+				"H5P" => $this->h5p->core()->getLocalization()
 			],
 			"hubIsEnabled" => false
 		];
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	protected function getCore() {
+		$H5PIntegration = $this->getBaseCore();
+
+		$H5PIntegration = array_merge($H5PIntegration, [
+			"loadedJs" => [],
+			"loadedCss" => [],
+			"core" => [
+				"scripts" => [],
+				"styles" => []
+			],
+			"contents" => []
+		]);
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param int    $content_id
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	protected function getContents($content_id, $type) {
+		$H5PIntegration = $this->getCore();
+
+		$this->addCore($H5PIntegration);
+
+		if ($type === "editor") {
+			$assets = [
+				"js" => [],
+				"css" => []
+			];
+
+			$this->addEditorCore($assets);
+
+			$H5PIntegration["editor"] = [
+				"filesPath" => $this->h5p->getH5PFolder() . "editor/",
+				"fileIcon" => [
+					"path" => ilH5P::EDITOR_PATH . "images/binary-file.png",
+					"width" => 50,
+					"height" => 50
+				],
+				"ajaxPath" => "",
+				"libraryUrl" => ilH5P::EDITOR_PATH,
+				"copyrightSemantics" => $this->h5p->content_validator()->getCopyrightSemantics(),
+				"assets" => $assets,
+				"deleteMessage" => $this->h5p->t("Are you sure you wish to delete this content?"),
+				"apiVersion" => H5PCore::$coreApi,
+				"nodeVersionId" => $content_id
+			];
+
+			$language = $this->h5p->getLanguage();
+			$language_script = ilH5P::EDITOR_PATH . "language/" . $language . ".js";
+			if (!file_exists($language_script)) {
+				$language_script = ilH5P::EDITOR_PATH . "language/en.js";
+			}
+			$this->h5p_scripts[] = $language_script;
+		} else {
+			$content = $this->h5p->core()->loadContent($content_id);
+
+			$content_dependencies = $this->h5p->core()->loadContentDependencies($content["id"], $type);
+
+			$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->h5p->getH5PFolder());
+			$scripts = array_map(function ($file) {
+				return $file->path;
+			}, $files["scripts"]);
+			$styles = array_map(function ($file) {
+				return $file->path;
+			}, $files["styles"]);
+
+			$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
+
+			$cid = "cid-" . $content["id"];
+
+			if (!isset($H5PIntegration["contents"][$cid])) {
+				$content_integration = $this->getContentIntegration($content);
+
+				switch ($embed) {
+					case "div":
+					case "iframe":
+						foreach ($scripts as $script) {
+							$this->h5p_scripts[] = $script;
+						}
+
+						foreach ($styles as $style) {
+							$this->h5p_styles[] = $style;
+						}
+						break;
+					/*case "iframe":
+						$content_integration["scripts"] = $scripts;
+						$content_integration["styles"] = $styles;
+						break;*/
+				}
+
+				$H5PIntegration["contents"][$cid] = $content_integration;
+			}
+		}
 
 		return $H5PIntegration;
 	}
@@ -425,12 +652,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 * @return array
 	 */
-	protected function getContent($content) {
-		$safe_parameters = $this->h5p->h5p_core->filterParameters($content);
+	protected function getContentIntegration(&$content) {
+		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
 		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
 
-		$contentIntergration = [
+		$content_integration = [
 			"library" => H5PCore::libraryToString($content["library"]),
 			"jsonContent" => $safe_parameters,
 			"fullScreen" => $content["library"]["fullscreen"],
@@ -453,178 +680,41 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			]
 		];
 
-		return $contentIntergration;
+		return $content_integration;
 	}
 
 
 	/**
-	 * @return array
+	 * @param array $H5PIntegration
 	 */
-	protected function addCore() {
-		$H5PIntegration = $this->getCore();
+	protected function addCore(&$H5PIntegration) {
+		foreach (H5PCore::$scripts as $script) {
+			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = (ilH5P::CORE_PATH . $script);
+		}
 
-		$H5PIntegration = array_merge($H5PIntegration, [
-			"loadedJs" => [],
-			"loadedCss" => [],
-			"core" => [
-				"scripts" => [],
-				"styles" => []
-			],
-			"contents" => []
-		]);
-
-		$this->h5p->addCore();
-
-		return $H5PIntegration;
+		foreach (H5PCore::$styles as $style) {
+			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = (ilH5P::CORE_PATH . $style);
+		}
 	}
 
 
 	/**
-	 * @param int $content_id
-	 *
-	 * @return array
+	 * @param array $assets
 	 */
-	protected function getContents($content_id) {
-		$H5PIntegration = $this->addCore();
-
-		$content = $this->h5p->h5p_core->loadContent($content_id);
-
-		$content_dependencies = $this->h5p->h5p_core->loadContentDependencies($content["id"], "preloaded");
-
-		$files = $this->h5p->h5p_core->getDependenciesFiles($content_dependencies, ilH5P::getInstance()->getH5PFolder());
-		$scripts = array_map(function ($file) {
-			return $file->path;
-		}, $files["scripts"]);
-		$styles = array_map(function ($file) {
-			return $file->path;
-		}, $files["styles"]);
-
-		$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
-
-		$cid = "cid-" . $content["id"];
-
-		if (!isset($H5PIntegration["contents"][$cid])) {
-			$contentIntergration = $this->getContent($content);
-
-			switch ($embed) {
-				case "div":
-				case "iframe":
-					foreach ($scripts as $script) {
-						$this->tpl->addJavaScript($script);
-					}
-
-					foreach ($styles as $style) {
-						$this->tpl->addCss($style, "");
-					}
-					break;
-				/*case "iframe":
-					$contentIntergration["scripts"] = $scripts;
-					$contentIntergration["styles"] = $styles;
-					break;*/
+	protected function addEditorCore(&$assets) {
+		foreach (H5peditor::$scripts as $script) {
+			if ($script !== "scripts/h5peditor-editor.js") {
+				/*$this->h5p_scripts[] = */
+				$assets["js"][] = (ilH5P::EDITOR_PATH . $script);
+			} else {
+				$this->h5p_scripts[] = (ilH5P::EDITOR_PATH . $script);
 			}
-
-			$H5PIntegration["contents"][$cid] = $contentIntergration;
 		}
 
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 *
-	 */
-	protected function showContents() {
-		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
-
-		$h5p_contents = ilH5PContent::getContentsByObjectId($this->object->getId());
-
-		$h5p_content = current($h5p_contents);
-		if ($h5p_content !== false) {
-			$content_id = $h5p_content->getContentId();
-
-			$H5PIntegration = $this->getContents($content_id);
-
-			$tmpl = $this->plugin->getTemplate("H5PIntegration.html");
-
-			$tmpl->setCurrentBlock("scriptBlock");
-			$tmpl->setVariable("H5P_INTERGRATION", ilH5P::getInstance()->jsonToString($H5PIntegration));
-			$tmpl->parseCurrentBlock();
-
-			$tmpl->setCurrentBlock("contentBlock");
-			$tmpl->setVariable("H5P_CONTENT_ID", $content_id);
-
-			$this->show($tmpl->get());
+		foreach (H5peditor::$styles as $style) {
+			/*$this->h5p_styles[] = */
+			$assets["css"][] = (ilH5P::EDITOR_PATH . $style);
 		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function getSettingsForm() {
-		$form = new ilPropertyFormGUI();
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->setTitle($this->lng->txt(self::TAB_SETTINGS));
-
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->lng->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
-
-		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
-		$title->setRequired(true);
-		$title->setValue($this->object->getTitle());
-		$form->addItem($title);
-
-		$description = new ilTextAreaInputGUI($this->lng->txt("description"), "xhfp_description");
-		$description->setValue($this->object->getLongDescription());
-		$form->addItem($description);
-
-		return $form;
-	}
-
-
-	/**
-	 *
-	 */
-	protected function settings() {
-		$this->tabs_gui->activateTab(self::TAB_SETTINGS);
-
-		$form = $this->getSettingsForm();
-
-		$this->show($form->getHTML());
-	}
-
-
-	/**
-	 *
-	 */
-	protected function settingsStore() {
-		$this->tabs_gui->activateTab(self::TAB_SETTINGS);
-
-		$form = $this->getSettingsForm();
-
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
-
-			return;
-		}
-
-		$title = $form->getInput("xhfp_title");
-		$this->object->setTitle($title);
-
-		$description = $form->getInput("xhfp_description");
-		$this->object->setDescription($description);
-
-		$this->object->update();
-
-		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
-
-		$this->show($form->getHTML());
-
-		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
 
 
@@ -632,18 +722,20 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function setTabs() {
-		$this->tabs_gui->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
+		$tabs = $this->dic->tabs();
 
-		$this->tabs_gui->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
+		$tabs->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
-		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
+		$tabs->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
 
-		$this->tabs_gui->addTab(self::TAB_PERMISSIONS, $this->lng->txt(self::TAB_PERMISSIONS), $this->ctrl->getLinkTargetByClass([
+		$tabs->addTab(self::TAB_SETTINGS, $this->dic->language()->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
+
+		$tabs->addTab(self::TAB_PERMISSIONS, $this->dic->language()->txt(self::TAB_PERMISSIONS), $this->ctrl->getLinkTargetByClass([
 			self::class,
 			ilPermissionGUI::class,
 		], self::CMD_PERMISSIONS));
 
-		$this->tabs_gui->manual_activation = true; // Show all tabs as links when no activation
+		$tabs->manual_activation = true; // Show all tabs as links when no activation
 	}
 
 

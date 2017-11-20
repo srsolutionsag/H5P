@@ -11,40 +11,30 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PFramework implements H5PFrameworkInterface {
 
 	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_folder_path;
-	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_path;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
 	/**
+	 * @var \ILIAS\DI\Container
+	 */
+	protected $dic;
+	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $user;
+
 
 	/**
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {
-		/**
-		 * @var ilObjUser $ilUser
-		 */
-
-		global $ilUser;
+		global $DIC;
 
 		$this->h5p = $h5p;
 
+		$this->dic = $DIC;
+
 		$this->pl = ilH5PPlugin::getInstance();
-		$this->user = $ilUser;
 	}
 
 
@@ -166,30 +156,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * Translated string
 	 */
 	public function t($message, $replacements = array()) {
-		// TODO translate string
-
-		//$message = $this->pl->txt($message);
-
-		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
-			$text = $replacements[$found[0]];
-
-			switch ($found[1]) {
-				case "@":
-					return htmlentities($text);
-					break;
-
-				case "%":
-					return "<b>" . htmlentities($text) . "</b>";
-					break;
-
-				case "!":
-				default:
-					return $text;
-					break;
-			}
-		}, $message);
-
-		return $message;
+		return $this->h5p->t($message, $replacements);
 	}
 
 
@@ -213,15 +180,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Path to the folder where the last uploaded h5p for this session is located.
 	 */
 	public function getUploadedH5pFolderPath() {
-		return $this->uploaded_h5p_folder_path;
-	}
-
-
-	/**
-	 * @param string $uploaded_h5p_folder_path
-	 */
-	function setUploadedH5pFolderPath($uploaded_h5p_folder_path) {
-		$this->uploaded_h5p_folder_path = $uploaded_h5p_folder_path;
+		return $this->h5p->getUploadedH5pFolderPath();
 	}
 
 
@@ -232,15 +191,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Path to the last uploaded h5p
 	 */
 	public function getUploadedH5pPath() {
-		return $this->uploaded_h5p_path;
-	}
-
-
-	/**
-	 * @param string $uploaded_h5p_path
-	 */
-	function setUploadedH5pPath($uploaded_h5p_path) {
-		$this->uploaded_h5p_path = $uploaded_h5p_path;
+		return $this->h5p->getUploadedH5pPath();
 	}
 
 
@@ -592,7 +543,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content->setCreatedAt($time);
 
-			$h5p_content->setUserId($this->user->getId());
+			$h5p_content->setUserId($this->dic->user()->getId());
 
 			$h5p_content->setEmbedType("div");
 

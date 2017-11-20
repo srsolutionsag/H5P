@@ -1,7 +1,5 @@
 <?php
 
-require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Services/WebServices/Curl/classes/class.ilCurlConnection.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PEditorStorage.php";
@@ -36,8 +34,6 @@ class ilH5P {
 	static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
-
-			self::$instance->getH5P(); // fix "Maximum function nesting level" because $instance may is null when getInstance is called multiple times inside constructors of h5p classes
 		}
 
 		return self::$instance;
@@ -55,64 +51,159 @@ class ilH5P {
 	/**
 	 * CSV seperator
 	 */
-	const CSV_SEPERATOR = ", ";
+	const CSV_SEPARATOR = ", ";
 	/**
-	 * @var ilH5PFramework
+	 * @var H5PContentValidator
 	 */
-	public $h5p_framework;
-	/**
-	 * @var ilH5PEditorStorage
-	 */
-	public $h5p_editor_storage;
-	/**
-	 * @var ilH5PEditorAjax
-	 */
-	public $h5p_editor_ajax;
+	protected $h5p_content_validator = NULL;
 	/**
 	 * @var H5PCore
 	 */
-	public $h5p_core;
-	/**
-	 * @var H5PValidator
-	 */
-	public $h5p_validator;
-	/**
-	 * @var H5PStorage
-	 */
-	public $h5p_storage;
+	protected $h5p_core = NULL;
 	/**
 	 * @var H5peditor
 	 */
-	public $h5p_editor;
+	protected $h5p_editor = NULL;
 	/**
-	 * @var ilTemplate
+	 * @var ilH5PEditorAjax
 	 */
-	protected $tpl;
+	protected $h5p_editor_ajax = NULL;
+	/**
+	 * @var ilH5PEditorStorage
+	 */
+	protected $h5p_editor_storage = NULL;
+	/**
+	 * @var ilH5PFramework
+	 */
+	protected $h5p_framework = NULL;
+	/**
+	 * @var H5PStorage
+	 */
+	protected $h5p_storage = NULL;
+	/**
+	 * @var H5PValidator
+	 */
+	protected $h5p_validator = NULL;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_path = NULL;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_folder_path = NULL;
+	/**
+	 * @var \ILIAS\DI\Container
+	 */
+	protected $dic;
+	/**
+	 * @var ilH5PPlugin
+	 */
+	protected $pl;
 
 
 	protected function __construct() {
-		/**
-		 * @var ilTemplate $tpl
-		 */
+		global $DIC;
 
-		global $tpl;
+		$this->dic = $DIC;
 
-		$this->tpl = $tpl;
+		$this->pl = ilH5PPlugin::getInstance();
 	}
 
 
 	/**
-	 *
+	 * @return H5PContentValidator
 	 */
-	protected function getH5P() {
-		$this->h5p_framework = new ilH5PFramework($this);
-		$this->h5p_editor_storage = new ilH5PEditorStorage($this);
-		$this->h5p_editor_ajax = new ilH5PEditorAjax($this);
+	function content_validator() {
+		if ($this->h5p_content_validator === NULL) {
+			$this->h5p_content_validator = new H5PContentValidator($this->framework(), $this->core());
+		}
 
-		$this->h5p_core = new H5PCore($this->h5p_framework, "data/ilias/h5p/", "/data/ilias/h5p/");
-		$this->h5p_validator = new H5PValidator($this->h5p_framework, $this->h5p_core);
-		$this->h5p_storage = new H5PStorage($this->h5p_framework, $this->h5p_core);
-		$this->h5p_editor = new H5peditor($this->h5p_core, $this->h5p_editor_storage, $this->h5p_editor_ajax);
+		return $this->h5p_content_validator;
+	}
+
+
+	/**
+	 * @return H5PCore
+	 */
+	function core() {
+		if ($this->h5p_core === NULL) {
+			$this->h5p_core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), $this->getLanguage(), false);
+		}
+
+		return $this->h5p_core;
+	}
+
+
+	/**
+	 * @return H5peditor
+	 */
+	function editor() {
+		if ($this->h5p_editor === NULL) {
+			$this->h5p_editor = new H5peditor($this->core(), $this->editor_storage(), $this->editor_ajax());
+		}
+
+		return $this->h5p_editor;
+	}
+
+
+	/**
+	 * @return ilH5PEditorAjax
+	 */
+	function editor_ajax() {
+		if ($this->h5p_editor_ajax === NULL) {
+			$this->h5p_editor_ajax = new ilH5PEditorAjax($this);
+		}
+
+		return $this->h5p_editor_ajax;
+	}
+
+
+	/**
+	 * @return ilH5PEditorStorage
+	 */
+	function editor_storage() {
+		if ($this->h5p_editor_storage === NULL) {
+			$this->h5p_editor_storage = new ilH5PEditorStorage($this);
+		}
+
+		return $this->h5p_editor_storage;
+	}
+
+
+	/**
+	 * @return ilH5PFramework
+	 */
+	function framework() {
+		if ($this->h5p_framework === NULL) {
+			$this->h5p_framework = new ilH5PFramework($this);
+		}
+
+		return $this->h5p_framework;
+	}
+
+
+	/**
+	 * @return H5PStorage
+	 */
+	function storage() {
+		if ($this->h5p_storage === NULL) {
+			$this->h5p_storage = new H5PStorage($this->framework(), $this->core());
+		}
+
+		return $this->h5p_storage;
+	}
+
+
+	/**
+	 * @return H5PValidator
+	 */
+	function validator() {
+		if ($this->h5p_validator === NULL) {
+			$this->h5p_validator = new H5PValidator($this->framework(), $this->core());
+		}
+
+		return $this->h5p_validator;
 	}
 
 
@@ -122,7 +213,7 @@ class ilH5P {
 	 * @return string[]
 	 */
 	function splitCsv($csv) {
-		return explode(self::CSV_SEPERATOR, $csv);
+		return explode(self::CSV_SEPARATOR, $csv);
 	}
 
 
@@ -132,7 +223,7 @@ class ilH5P {
 	 * @return string
 	 */
 	function joinCsv(array $array) {
-		return implode(self::CSV_SEPERATOR, $array);
+		return implode(self::CSV_SEPARATOR, $array);
 	}
 
 
@@ -199,72 +290,142 @@ class ilH5P {
 	/**
 	 *
 	 */
-	function addCore() {
-		$core_scripts = H5PCore::$scripts;
-		$core_scripts = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_scripts);
+	function setUploadedH5pPath() {
+		$time = time(); // Handling multiple uploads
 
-		$core_styles = H5PCore::$styles;
-		$core_styles = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_styles);
+		$tmp_folder = $this->getTempFolder();
 
-		foreach ($core_scripts as $script) {
-			$this->tpl->addJavaScript($script);
-		}
+		$this->uploaded_h5p_path = $tmp_folder . "package_" . $time . ".h5p";
 
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
-		}
-	}
-
-
-	/**
-	 * @param string[] $scripts
-	 * @param string[] $css
-	 */
-	function addAdminCore(array $scripts = [], array $css = []) {
-		$core_scripts = array_merge(H5PCore::$adminScripts, $scripts);
-		$core_scripts = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_scripts);
-
-		$core_styles = array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ], $css);
-		$core_styles = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_styles);
-
-		foreach ($core_scripts as $script) {
-			$this->tpl->addJavaScript($script);
-		}
-
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
-		}
+		$this->uploaded_h5p_folder_path = $tmp_folder . "package_" . $time . "_extracted/";
 	}
 
 
 	/**
 	 *
 	 */
-	function addEditorCore() {
-		$core_scripts = H5peditor::$scripts;
-		$core_scripts = array_map(function ($file) {
-			return (self::EDITOR_PATH . $file);
-		}, $core_scripts);
+	function cleanUploadedH5PPath() {
+		if (file_exists($this->uploaded_h5p_path)) {
+			unlink($this->uploaded_h5p_path);
+		}
+		$this->uploaded_h5p_path = NULL;
 
-		$core_styles = H5peditor::$styles;
-		$core_styles = array_map(function ($file) {
-			return (self::EDITOR_PATH . $file);
-		}, $core_styles);
+		if (file_exists($this->uploaded_h5p_folder_path)) {
+			H5PCore::deleteFileTree($this->uploaded_h5p_folder_path);
+		}
+		$this->uploaded_h5p_folder_path = NULL;
+	}
 
-		foreach ($core_scripts as $script) {
-			$this->tpl->addJavaScript($script);
+
+	/**
+	 * @return string
+	 */
+	function getLanguage() {
+		$lang = $this->dic->user()->getLanguage();
+
+		return $lang;
+	}
+
+
+	/**
+	 * @param string $message
+	 * @param array  $replacements
+	 *
+	 * @return string
+	 */
+	function t($message, $replacements = array()) {
+		// TODO translate string
+
+		//$message = $this->txt($message);
+
+		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
+			$text = $replacements[$found[0]];
+
+			switch ($found[1]) {
+				case "@":
+					return htmlentities($text);
+					break;
+
+				case "%":
+					return "<b>" . htmlentities($text) . "</b>";
+					break;
+
+				case "!":
+				default:
+					return $text;
+					break;
+			}
+		}, $message);
+
+		return $message;
+	}
+
+
+	/**
+	 * @param string   $h5p_integration_name
+	 * @param string   $h5p_integration
+	 * @param string[] $scripts
+	 * @param string[] $styles
+	 * @param int|null $content_id
+	 * @param bool     $admin
+	 *
+	 * @return string
+	 */
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $content_id = NULL, $admin = false) {
+		$h5p_tmpl = $this->pl->getTemplate("H5PIntegration.html");
+
+		$h5p_tmpl->setCurrentBlock("integrationBlock");
+		$h5p_tmpl->setVariable("H5P_INTEGRATION_NAME", $h5p_integration_name);
+		$h5p_tmpl->setVariable("H5P_INTEGRATION", $h5p_integration);
+		$h5p_tmpl->parseCurrentBlock();
+
+		$h5p_tmpl->setCurrentBlock("stylesBlock");
+		foreach (array_unique($styles) as $style) {
+			$h5p_tmpl->setVariable("STYLE", $style);
+			$h5p_tmpl->parseCurrentBlock();
 		}
 
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
+		$h5p_tmpl->setCurrentBlock("scriptsBlock");
+		foreach (array_unique($scripts) as $script) {
+			$h5p_tmpl->setVariable("SCRIPT", $script);
+			$h5p_tmpl->parseCurrentBlock();
 		}
+
+		if ($content_id !== NULL) {
+			$h5p_tmpl->setCurrentBlock("contentBlock");
+			$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+		}
+
+		if ($admin) {
+			$h5p_tmpl->touchBlock("adminBlock");
+		}
+
+		return $h5p_tmpl->get();
+	}
+
+
+	/**
+	 * @param string $a_var
+	 *
+	 * @return string
+	 */
+	protected function txt($a_var) {
+		return $this->pl->txt($a_var);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getUploadedH5pPath() {
+		return $this->uploaded_h5p_path;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getUploadedH5pFolderPath() {
+		return $this->uploaded_h5p_folder_path;
 	}
 }

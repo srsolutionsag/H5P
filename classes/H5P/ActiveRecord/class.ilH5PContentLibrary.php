@@ -49,13 +49,9 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 * @return array
 	 */
 	static function getContentsByLibrary($library_id) {
-		/**
-		 * @var ilDB $ilDB
-		 */
+		global $DIC;
 
-		global $ilDB;
-
-		$result = $ilDB->queryF("SELECT DISTINCT c.content_id, c.title
+		$result = $DIC->database()->queryF("SELECT DISTINCT c.content_id, c.title
             FROM " . self::TABLE_NAME . " AS cl
             JOIN " . ilH5PContent::TABLE_NAME . " AS c ON cl.content_id = c.content_id
             WHERE cl.library_id = %s

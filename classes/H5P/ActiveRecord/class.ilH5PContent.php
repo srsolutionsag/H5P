@@ -106,13 +106,9 @@ class ilH5PContent extends ActiveRecord {
 	 * @return int
 	 */
 	static function getNumAuthors() {
-		/**
-		 * @var ilDB $ilDB
-		 */
+		global $DIC;
 
-		global $ilDB;
-
-		$result = $ilDB->queryF("SELECT COUNT(DISTINCT user_id) AS count
+		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT user_id) AS count
           FROM " . self::TABLE_NAME, [], []);
 
 		$count = $result->fetchAssoc()["count"];

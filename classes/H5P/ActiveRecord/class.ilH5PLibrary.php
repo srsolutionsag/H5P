@@ -105,13 +105,9 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return int
 	 */
 	static function getLibraryUsage($library_id) {
-		/**
-		 * @var ilDB $ilDB
-		 */
+		global $DIC;
 
-		global $ilDB;
-
-		$result = $ilDB->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
+		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . self::TABLE_NAME . " AS l
           JOIN " . ilH5PContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
           JOIN " . ilH5PContent::TABLE_NAME . " AS c ON cl.content_id = c.content_id
