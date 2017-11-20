@@ -5,7 +5,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilSelectInputGUI.php";
 require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PContentsTableGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 
@@ -60,9 +60,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected $usr;
 	/**
-	 * @var ilH5PFramework
+	 * @var ilH5P
 	 */
-	protected $h5p_framework;
+	protected $h5p;
 
 
 	protected function afterConstructor() {
@@ -76,7 +76,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->usr = $ilUser;
 		$this->toolbar = $ilToolbar;
 
-		$this->h5p_framework = new ilH5PFramework();
+		$this->h5p =  ilH5P::getInstance();
 	}
 
 
@@ -274,9 +274,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				"obj_id" => $this->object->getId()
 			];
 
-			$content["id"] = $this->h5p_framework->h5p_core->saveContent($content);
+			$content["id"] = $this->h5p->h5p_core->saveContent($content);
 
-			$content["params"] = $this->h5p_framework->h5p_core->filterParameters($content);
+			$content["params"] = $this->h5p->h5p_core->filterParameters($content);
 
 			$this->ctrl->setParameter($this, "xhfp_content", $content["id"]);
 
@@ -343,13 +343,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$content = $this->h5p_framework->h5p_core->loadContent($h5p_content->getContentId());
+		$content = $this->h5p->h5p_core->loadContent($h5p_content->getContentId());
 
 		$content["title"] = $title;
 
-		$content["params"] = $this->h5p_framework->h5p_core->filterParameters($content);
+		$content["params"] = $this->h5p->h5p_core->filterParameters($content);
 
-		$this->h5p_framework->h5p_core->saveContent($content);
+		$this->h5p->h5p_core->saveContent($content);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -384,7 +384,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function deleteContentConfirmed() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->h5p_framework->deleteContentData($h5p_content->getContentId());
+		$this->h5p->h5p_framework->deleteContentData($h5p_content->getContentId());
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 
@@ -398,7 +398,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getCore() {
 		$H5PIntegration = [
 			"baseUrl" => $_SERVER["HTTP_HOST"],
-			"url" => ilH5PFramework::getH5PFolder(),
+			"url" => ilH5P::getInstance()->getH5PFolder(),
 			"postUserStatistics" => false,
 			"ajax" => [
 				"setFinished" => $this->ctrl->getLinkTarget($this),
@@ -411,7 +411,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			],*/
 			"siteUrl" => $_SERVER["HTTP_HOST"],
 			"l10n" => [
-				"H5P" => $this->h5p_framework->h5p_core->getLocalization()
+				"H5P" => $this->h5p->h5p_core->getLocalization()
 			],
 			"hubIsEnabled" => false
 		];
@@ -426,7 +426,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return array
 	 */
 	protected function getContent($content) {
-		$safe_parameters = $this->h5p_framework->h5p_core->filterParameters($content);
+		$safe_parameters = $this->h5p->h5p_core->filterParameters($content);
 
 		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
 
@@ -473,7 +473,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"contents" => []
 		]);
 
-		$this->h5p_framework->addCore();
+		$this->h5p->addCore();
 
 		return $H5PIntegration;
 	}
@@ -487,11 +487,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getContents($content_id) {
 		$H5PIntegration = $this->addCore();
 
-		$content = $this->h5p_framework->h5p_core->loadContent($content_id);
+		$content = $this->h5p->h5p_core->loadContent($content_id);
 
-		$content_dependencies = $this->h5p_framework->h5p_core->loadContentDependencies($content["id"], "preloaded");
+		$content_dependencies = $this->h5p->h5p_core->loadContentDependencies($content["id"], "preloaded");
 
-		$files = $this->h5p_framework->h5p_core->getDependenciesFiles($content_dependencies, ilH5PFramework::getH5PFolder());
+		$files = $this->h5p->h5p_core->getDependenciesFiles($content_dependencies, ilH5P::getInstance()->getH5PFolder());
 		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
@@ -547,7 +547,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$tmpl = $this->plugin->getTemplate("H5PIntegration.html");
 
 			$tmpl->setCurrentBlock("scriptBlock");
-			$tmpl->setVariable("H5P_INTERGRATION", ilH5PFramework::jsonToString($H5PIntegration));
+			$tmpl->setVariable("H5P_INTERGRATION", ilH5P::getInstance()->jsonToString($H5PIntegration));
 			$tmpl->parseCurrentBlock();
 
 			$tmpl->setCurrentBlock("contentBlock");

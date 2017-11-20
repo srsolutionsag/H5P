@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P library language active record
@@ -78,14 +77,14 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 * @return array
 	 */
 	public function getTranslationArray() {
-		return ilH5PFramework::stringToJson( $this->translation );
+		return ilH5P::getInstance()->stringToJson( $this->translation );
 	}
 
 	/**
 	 * @param array $translation
 	 */
 	public function setTranslationArray( array $translation ) {
-		$this->translation = ilH5PFramework::jsonToString( $translation );
+		$this->translation = ilH5P::getInstance()->jsonToString( $translation );
 	}
 
 	/**

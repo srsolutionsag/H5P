@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P library active record
@@ -334,7 +333,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getEmbedTypesArray() {
-		return ilH5PFramework::splitCsv($this->embed_types);
+		return ilH5P::getInstance()->splitCsv($this->embed_types);
 	}
 
 
@@ -342,7 +341,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @param string[] $embed_types
 	 */
 	public function setEmbedTypesArray(array $embed_types) {
-		$this->embed_types = ilH5PFramework::joinCsv($embed_types);
+		$this->embed_types = ilH5P::getInstance()->joinCsv($embed_types);
 	}
 
 
@@ -350,7 +349,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getPreloadedJsArray() {
-		return ilH5PFramework::splitCsv($this->preloaded_js);
+		return ilH5P::getInstance()->splitCsv($this->preloaded_js);
 	}
 
 
@@ -358,7 +357,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @param string[] $preloaded_js
 	 */
 	public function setPreloadedJsArray(array $preloaded_js) {
-		$this->preloaded_js = ilH5PFramework::joinCsv($preloaded_js);
+		$this->preloaded_js = ilH5P::getInstance()->joinCsv($preloaded_js);
 	}
 
 
@@ -366,7 +365,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getPreloadedCssArray() {
-		return ilH5PFramework::splitCsv($this->preloaded_css);
+		return ilH5P::getInstance()->splitCsv($this->preloaded_css);
 	}
 
 
@@ -374,7 +373,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @param string[] $preloaded_css
 	 */
 	public function setPreloadedCssArray(array $preloaded_css) {
-		$this->preloaded_css = ilH5PFramework::joinCsv($preloaded_css);
+		$this->preloaded_css = ilH5P::getInstance()->joinCsv($preloaded_css);
 	}
 
 
@@ -382,7 +381,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getDropLibraryCssArray() {
-		return ilH5PFramework::splitCsv($this->drop_library_css);
+		return ilH5P::getInstance()->splitCsv($this->drop_library_css);
 	}
 
 
@@ -390,7 +389,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @param string[] $drop_library_css
 	 */
 	public function setDropLibraryCssArray(array $drop_library_css) {
-		$this->drop_library_css = ilH5PFramework::joinCsv($drop_library_css);
+		$this->drop_library_css = ilH5P::getInstance()->joinCsv($drop_library_css);
 	}
 
 
@@ -398,7 +397,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return array
 	 */
 	public function getSemanticsArray() {
-		return ilH5PFramework::stringToJson($this->semantics);
+		return ilH5P::getInstance()->stringToJson($this->semantics);
 	}
 
 
@@ -406,7 +405,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @param array $semantics
 	 */
 	public function setSemanticsArray(array $semantics) {
-		$this->semantics = ilH5PFramework::jsonToString($semantics);
+		$this->semantics = ilH5P::getInstance()->jsonToString($semantics);
 	}
 
 

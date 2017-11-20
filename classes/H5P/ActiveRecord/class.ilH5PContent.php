@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P content active record
@@ -403,7 +402,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @return array
 	 */
 	public function getParametersArray() {
-		return ilH5PFramework::stringToJson($this->parameters);
+		return ilH5P::getInstance()->stringToJson($this->parameters);
 	}
 
 
@@ -411,7 +410,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @param array $parameters
 	 */
 	public function setParametersArray(array $parameters) {
-		$this->parameters = ilH5PFramework::jsonToString($parameters);
+		$this->parameters = ilH5P::getInstance()->jsonToString($parameters);
 	}
 
 
@@ -419,7 +418,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @return array
 	 */
 	public function getFilteredArray() {
-		return ilH5PFramework::stringToJson($this->filtered);
+		return ilH5P::getInstance()->stringToJson($this->filtered);
 	}
 
 
@@ -427,7 +426,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @param array $filtered
 	 */
 	public function setFilteredArray(array $filtered) {
-		$this->filtered = ilH5PFramework::jsonToString($filtered);
+		$this->filtered = ilH5P::getInstance()->jsonToString($filtered);
 	}
 
 
@@ -435,7 +434,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getKeywordsArray() {
-		return ilH5PFramework::stringToJson($this->keywords);
+		return ilH5P::getInstance()->stringToJson($this->keywords);
 	}
 
 
@@ -443,7 +442,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @param string[] $keywords
 	 */
 	public function setKeywordsArray(array $keywords) {
-		$this->keywords = ilH5PFramework::jsonToString($keywords);
+		$this->keywords = ilH5P::getInstance()->jsonToString($keywords);
 	}
 
 

@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibrary.php";
 
 /**
  * H5P library dependencies active record

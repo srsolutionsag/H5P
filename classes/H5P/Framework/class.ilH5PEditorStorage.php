@@ -1,12 +1,25 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 
 /**
  * H5P editor storage
  */
-class ilH5PEditorAjax implements H5peditorStorage {
+class ilH5PEditorStorage implements H5peditorStorage {
+
+	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
+
+
+	/**
+	 * @param ilH5P $h5p
+	 */
+	public function __construct(ilH5P $h5p) {
+		$this->h5p = $h5p;
+	}
+
 
 	/**
 	 * Load language file(JSON) from database.

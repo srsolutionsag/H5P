@@ -1,160 +1,14 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Services/WebServices/Curl/classes/class.ilCurlConnection.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentUserData.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PCounter.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PEvent.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryCachedAsset.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryHubCache.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 
 /**
  * H5P framework
- *
- * Implemented based on https://github.com/h5p/h5p-wordpress-plugin
  */
 class ilH5PFramework implements H5PFrameworkInterface {
-
-	const CORE_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
-	const CSV_SEPERATOR = ", ";
-
-
-	/**
-	 * @param string $csv
-	 *
-	 * @return string[]
-	 */
-	static function splitCsv($csv) {
-		return explode(self::CSV_SEPERATOR, $csv);
-	}
-
-
-	/**
-	 * @param string[] $array
-	 *
-	 * @return string
-	 */
-	static function joinCsv(array $array) {
-		return implode(self::CSV_SEPERATOR, $array);
-	}
-
-
-	/**
-	 * @param mixed $array
-	 *
-	 * @return string
-	 */
-	static function jsonToString($array) {
-		return json_encode($array);
-	}
-
-
-	/**
-	 * @param string $string
-	 *
-	 * @return mixed
-	 */
-	static function stringToJson($string) {
-		return json_decode($string, true);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	static function getH5PFolder() {
-		return "data/" . CLIENT_ID . "/h5p/";
-	}
-
-
-	/**
-	 *
-	 */
-	static function removeH5PFolder() {
-		$h5p_folder = self::getH5PFolder();
-
-		H5PCore::deleteFileTree($h5p_folder);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	static function getTempFolder() {
-		return self::ensureFolder(self::getH5PFolder() . "tmp/");
-	}
-
-
-	/**
-	 * @param string $folder
-	 *
-	 * @return string
-	 */
-	protected static function ensureFolder($folder) {
-		if (!file_exists($folder)) {
-			mkdir($folder, NULL, true);
-		}
-
-		return $folder;
-	}
-
-
-	/**
-	 *
-	 */
-	function addCore() {
-		$core_scripts = H5PCore::$scripts;
-		$core_scripts = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_scripts);
-
-		$core_styles = H5PCore::$styles;
-		$core_styles = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_styles);
-
-		foreach ($core_scripts as $script) {
-			$this->tpl->addJavaScript($script);
-		}
-
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
-		}
-	}
-
-
-	/**
-	 * @param string[] $scripts
-	 * @param string[] $css
-	 */
-	function addAdminCore(array $scripts = [], array $css = []) {
-		$core_scripts = array_merge(H5PCore::$adminScripts, $scripts);
-		$core_scripts = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_scripts);
-
-		$core_styles = array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ], $css);
-		$core_styles = array_map(function ($file) {
-			return (self::CORE_PATH . $file);
-		}, $core_styles);
-
-		foreach ($core_scripts as $script) {
-			$this->tpl->addJavaScript($script);
-		}
-
-		foreach ($core_styles as $style) {
-			$this->tpl->addCss($style, "");
-		}
-	}
-
 
 	/**
 	 * @var string
@@ -165,46 +19,32 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 */
 	protected $uploaded_h5p_path;
 	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
+	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
-	/**
-	 * @var H5PCore
-	 */
-	public $h5p_core;
-	/**
-	 * @var H5PValidator
-	 */
-	public $h5p_validator;
-	/**
-	 * @var H5PStorage
-	 */
-	public $h5p_storage;
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl;
 	/**
 	 * @var ilObjUser
 	 */
 	protected $user;
 
-
-	public function __construct() {
+	/**
+	 * @param ilH5P $h5p
+	 */
+	public function __construct(ilH5P $h5p) {
 		/**
-		 * @var ilTemplate $tpl
-		 * @var ilObjUser  $ilUser
+		 * @var ilObjUser $ilUser
 		 */
 
-		global $tpl, $ilUser;
+		global $ilUser;
+
+		$this->h5p = $h5p;
 
 		$this->pl = ilH5PPlugin::getInstance();
-		$this->tpl = $tpl;
 		$this->user = $ilUser;
-
-		$this->h5p_core = new H5PCore($this, "data/ilias/h5p/", "/data/ilias/h5p/");
-		$this->h5p_validator = new H5PValidator($this, $this->h5p_core);
-		$this->h5p_storage = new H5PStorage($this, $this->h5p_core);
 	}
 
 
@@ -362,7 +202,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return string URL to file
 	 */
 	public function getLibraryFileUrl($library_folder_name, $file_name) {
-		return "/" . self::getH5PFolder() . "libraries/" . $library_folder_name . "/" . $file_name;
+		return "/" . $this->h5p->getH5PFolder() . "libraries/" . $library_folder_name . "/" . $file_name;
 	}
 
 
@@ -933,7 +773,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 		foreach ($libraries_in_use as $library_in_use) {
 			if (!empty($library_in_use["library"]["dropLibraryCss"])) {
-				$drop_library_css_list = array_merge($drop_library_css_list, self::splitCsv($library_in_use["library"]["dropLibraryCss"]));
+				$drop_library_css_list = array_merge($drop_library_css_list, $this->h5p->splitCsv($library_in_use["library"]["dropLibraryCss"]));
 			}
 		}
 
@@ -1150,7 +990,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Library object with id, name, major version and minor version.
 	 */
 	public function deleteLibrary($library) {
-		H5PCore::deleteFileTree(self::getH5PFolder() . "libraries/" . $library->name . "-" . $library->major_version . "." . $library->minor_version);
+		H5PCore::deleteFileTree($this->h5p->getH5PFolder() . "libraries/" . $library->name . "-" . $library->major_version . "."
+			. $library->minor_version);
 
 		$h5p_dependencies = ilH5PLibraryDependencies::getDependencies($library->library_id);
 		foreach ($h5p_dependencies as $h5p_dependency) {

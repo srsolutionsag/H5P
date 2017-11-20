@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P option active record
@@ -71,7 +70,7 @@ class ilH5POption extends ActiveRecord {
 	 * @return mixed
 	 */
 	public function getValueJson() {
-		return ilH5PFramework::stringToJson($this->value);
+		return ilH5P::getInstance()->stringToJson($this->value);
 	}
 
 
@@ -79,7 +78,7 @@ class ilH5POption extends ActiveRecord {
 	 * @param mixed $value
 	 */
 	public function setValueJson($value) {
-		$this->value = ilH5PFramework::jsonToString($value);
+		$this->value = ilH5P::getInstance()->jsonToString($value);
 	}
 
 

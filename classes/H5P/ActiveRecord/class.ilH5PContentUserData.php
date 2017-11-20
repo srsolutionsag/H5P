@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P content user data active record
@@ -145,7 +144,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @return mixed
 	 */
 	public function getDataJson() {
-		return ilH5PFramework::stringToJson($this->data);
+		return ilH5P::getInstance()->stringToJson($this->data);
 	}
 
 
@@ -153,7 +152,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @param mixed $data
 	 */
 	public function setDataJson($data) {
-		$this->data = ilH5PFramework::jsonToString($data);
+		$this->data = ilH5P::getInstance()->jsonToString($data);
 	}
 
 

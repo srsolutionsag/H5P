@@ -2,7 +2,7 @@
 
 require_once "Services/Repository/classes/class.ilObjectPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 
 /**
  * H5P Object
@@ -53,12 +53,12 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doDelete() {
-		$h5p_framework = new ilH5PFramework();
+		$h5p = ilH5P::getInstance();
 
 		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
 
 		foreach ($h5p_contents as $h5p_content) {
-			$h5p_framework->deleteContentData($h5p_content->getContentId());
+			$h5p->h5p_framework->deleteContentData($h5p_content->getContentId());
 		}
 	}
 

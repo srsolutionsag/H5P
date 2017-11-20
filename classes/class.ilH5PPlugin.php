@@ -1,30 +1,32 @@
 <?php
 
 require_once "Services/Repository/classes/class.ilRepositoryObjectPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 
 /**
  * H5P Plugin
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
-	const ID = "xhfp";
 	/**
 	 * @var ilH5PPlugin
 	 */
-	protected static $cache;
+	protected static $instance = NULL;
 
 
 	/**
 	 * @return ilH5PPlugin
 	 */
 	static function getInstance() {
-		if (!isset(self::$cache)) {
-			self::$cache = new self();
+		if (self::$instance === NULL) {
+			self::$instance = new self();
 		}
 
-		return self::$cache;
+		return self::$instance;
 	}
+
+
+	const ID = "xhfp";
 
 
 	/**
@@ -67,6 +69,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		$ilDB->dropTable(ilH5POption::TABLE_NAME, false);
 
-		ilH5PFramework::removeH5PFolder();
+		ilH5P::getInstance()->removeH5PFolder();
 	}
 }

@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 
 /**
  * H5P library hub cache active record
@@ -229,56 +228,56 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @return string[]
 	 */
 	public function getScreenshotsArray() {
-		return ilH5PFramework::stringToJson( $this->screenshots );
+		return ilH5P::getInstance()->stringToJson( $this->screenshots );
 	}
 
 	/**
 	 * @param string[] $screenshots
 	 */
 	public function setScreenshotsArray( array $screenshots ) {
-		$this->screenshots = ilH5PFramework::jsonToString( $screenshots );
+		$this->screenshots = ilH5P::getInstance()->jsonToString( $screenshots );
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function getLicenseArray() {
-		return ilH5PFramework::stringToJson( $this->license );
+		return ilH5P::getInstance()->stringToJson( $this->license );
 	}
 
 	/**
 	 * @param string[] $screenshots
 	 */
 	public function setLicenseArray( array $license ) {
-		$this->license = ilH5PFramework::jsonToString( $license );
+		$this->license = ilH5P::getInstance()->jsonToString( $license );
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function getKeywordsArray() {
-		return ilH5PFramework::stringToJson( $this->keywords );
+		return ilH5P::getInstance()->stringToJson( $this->keywords );
 	}
 
 	/**
 	 * @param string[] $keywords
 	 */
 	public function setKeywordsArray( array $keywords ) {
-		$this->keywords = ilH5PFramework::jsonToString( $keywords );
+		$this->keywords = ilH5P::getInstance()->jsonToString( $keywords );
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function getCategoriesArray() {
-		return ilH5PFramework::stringToJson( $this->categories );
+		return ilH5P::getInstance()->stringToJson( $this->categories );
 	}
 
 	/**
 	 * @param string[] $categories
 	 */
 	public function setCategoriesArray( array $categories ) {
-		$this->categories = ilH5PFramework::jsonToString( $categories );
+		$this->categories = ilH5P::getInstance()->jsonToString( $categories );
 	}
 
 	/**
