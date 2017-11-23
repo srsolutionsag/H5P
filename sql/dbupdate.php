@@ -23,4 +23,6 @@
 	ilH5PLibraryDependencies::updateDB();
 
 	ilH5POption::updateDB();
+
+	ilH5PTmpFile::updateDB();
 ?>

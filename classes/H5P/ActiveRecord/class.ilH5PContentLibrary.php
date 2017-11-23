@@ -128,6 +128,41 @@ class ilH5PContentLibrary extends ActiveRecord {
 
 
 	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "drop_css":
+				return ($this->{$field_name} ? 1 : 0);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "drop_css":
+				return boolval($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
 	 * @return int
 	 */
 	public function getId() {

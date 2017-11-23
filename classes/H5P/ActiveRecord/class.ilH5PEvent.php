@@ -9,12 +9,38 @@ class ilH5PEvent extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_ev";
 
+
 	/**
 	 * @return string
 	 */
 	static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
+
+
+	/**
+	 * @return string[]
+	 */
+	static function getAuthorsRecentlyUsedLibraries() {
+		global $DIC;
+
+		$user_id = $DIC->user()->getId();
+
+		$result = $DIC->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
+            FROM " . self::TABLE_NAME . "
+            WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
+            GROUP BY library_name
+            ORDER BY max_created_at DESC", [ "integer" ], [ $user_id ]);
+
+		$h5p_events = [];
+
+		while (($h5p_event = $result->fetchAssoc()) !== false) {
+			$h5p_events[] = $h5p_event["library_name"];
+		}
+
+		return $h5p_events;
+	}
+
 
 	/**
 	 * @var int
@@ -40,8 +66,7 @@ class ilH5PEvent extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $created_at = 0;
@@ -69,9 +94,9 @@ class ilH5PEvent extends ActiveRecord {
 	 * @con_has_field    true
 	 * @con_fieldtype    integer
 	 * @con_length       8
-	 * @con_is_notnull   true
+	 * @con_is_notnull   false
 	 */
-	protected $content_id;
+	protected $content_id = NULL;
 	/**
 	 * @var string
 	 *
@@ -98,7 +123,73 @@ class ilH5PEvent extends ActiveRecord {
 	 * @con_length       31
 	 * @con_is_notnull   true
 	 */
-	protected $library_version;
+	protected $library_version = "";
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       8
+	 * @con_is_notnull   false
+	 */
+	protected $obj_id = NULL;
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "created_at":
+				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "created_at":
+				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function create() {
+		global $DIC;
+
+		$this->created_at = time();
+
+		$this->user_id = $DIC->user()->getId();
+
+		if ($this->type === "content") {
+			$h5p_content = ilH5PContent::getContentById($this->content_id);
+			if ($h5p_content !== NULL) {
+				$this->obj_id = $h5p_content->getObjId();
+			}
+		}
+
+		parent::create();
+	}
+
 
 	/**
 	 * @return int
@@ -107,12 +198,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->event_id;
 	}
 
+
 	/**
 	 * @param int $event_id
 	 */
-	public function setEventId( $event_id ) {
+	public function setEventId($event_id) {
 		$this->event_id = $event_id;
 	}
+
 
 	/**
 	 * @return int
@@ -121,12 +214,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->user_id;
 	}
 
+
 	/**
 	 * @param int $user_id
 	 */
-	public function setUserId( $user_id ) {
+	public function setUserId($user_id) {
 		$this->user_id = $user_id;
 	}
+
 
 	/**
 	 * @return int
@@ -135,12 +230,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->created_at;
 	}
 
+
 	/**
 	 * @param int $created_at
 	 */
-	public function setCreatedAt( $created_at ) {
+	public function setCreatedAt($created_at) {
 		$this->created_at = $created_at;
 	}
+
 
 	/**
 	 * @return string
@@ -149,12 +246,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->type;
 	}
 
+
 	/**
 	 * @param string $type
 	 */
-	public function setType( $type ) {
+	public function setType($type) {
 		$this->type = $type;
 	}
+
 
 	/**
 	 * @return string
@@ -163,12 +262,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->sub_type;
 	}
 
+
 	/**
 	 * @param string $sub_type
 	 */
-	public function setSubType( $sub_type ) {
+	public function setSubType($sub_type) {
 		$this->sub_type = $sub_type;
 	}
+
 
 	/**
 	 * @return int
@@ -177,12 +278,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->content_id;
 	}
 
+
 	/**
 	 * @param int $content_id
 	 */
-	public function setContentId( $content_id ) {
+	public function setContentId($content_id) {
 		$this->content_id = $content_id;
 	}
+
 
 	/**
 	 * @return string
@@ -191,12 +294,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->content_title;
 	}
 
+
 	/**
 	 * @param string $content_title
 	 */
-	public function setContentTitle( $content_title ) {
+	public function setContentTitle($content_title) {
 		$this->content_title = $content_title;
 	}
+
 
 	/**
 	 * @return string
@@ -205,12 +310,14 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->library_name;
 	}
 
+
 	/**
 	 * @param string $library_name
 	 */
-	public function setLibraryName( $library_name ) {
+	public function setLibraryName($library_name) {
 		$this->library_name = $library_name;
 	}
+
 
 	/**
 	 * @return string
@@ -219,10 +326,11 @@ class ilH5PEvent extends ActiveRecord {
 		return $this->library_version;
 	}
 
+
 	/**
 	 * @param string $library_version
 	 */
-	public function setLibraryVersion( $library_version ) {
+	public function setLibraryVersion($library_version) {
 		$this->library_version = $library_version;
 	}
 }

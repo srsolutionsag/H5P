@@ -11,13 +11,13 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PFramework implements H5PFrameworkInterface {
 
 	/**
-	 * @var ilH5P
-	 */
-	protected $h5p;
-	/**
 	 * @var \ILIAS\DI\Container
 	 */
 	protected $dic;
+	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
 	/**
 	 * @var ilH5PPlugin
 	 */
@@ -217,7 +217,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"major_version" => $h5p_library->getMajorVersion(),
 				"minor_version" => $h5p_library->getMinorVersion(),
 				"patch_version" => $h5p_library->getPatchVersion(),
-				"runnable" => $h5p_library->isRunnable(),
+				"runnable" => $h5p_library->canRunnable(),
 				"restricted" => $h5p_library->isRestricted()
 			];
 
@@ -378,14 +378,10 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return
 	 */
 	public function saveLibraryData(&$library_data, $new = true) {
-		$time = time();
-
 		if ($new) {
 			$h5p_library = new ilH5PLibrary();
 
 			$h5p_library->setLibraryId($library_data["libraryId"]);
-
-			$h5p_library->setCreatedAt($time);
 		} else {
 			$h5p_library = ilH5PLibrary::getLibraryById($library_data["libraryId"]);
 
@@ -394,13 +390,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 				$h5p_library->setLibraryId($library_data["libraryId"]);
 
-				$h5p_library->setCreatedAt($time);
-
 				$new = true;
 			}
 		}
-
-		$h5p_library->setUpdatedAt($time);
 
 		$h5p_library->setName($library_data["machineName"]);
 
@@ -472,12 +464,12 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$this->deleteLibraryDependencies($h5p_library->getLibraryId());
 		}
 
-		// TODO event?
-		/*new H5PEvent("library", ($new ? "create" : "update"),
-			NULL, NULL,
-			$h5p_library->getName(),
-			$h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion()
-		);*/
+		$h5p_event = new ilH5PEvent();
+		$h5p_event->setType("library");
+		$h5p_event->setSubType($new ? "create" : "update");
+		$h5p_event->setLibraryName($h5p_library->getName());
+		$h5p_event->setLibraryVersion($h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion());
+		$h5p_event->create();
 
 		$h5p_languages = ilH5PLibraryLanguage::getLanguagesByLibrary($h5p_library->getLibraryId());
 		foreach ($h5p_languages as $h5p_language) {
@@ -530,8 +522,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *     Main id for the content if this is a system that supports versions
 	 */
 	public function updateContent($content, $content_main_id = NULL) {
-		$time = time();
-
 		$h5p_content = ilH5PContent::getContentById($content["id"]);
 
 		if ($h5p_content !== NULL) {
@@ -541,18 +531,10 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content = new ilH5PContent();
 
-			$h5p_content->setCreatedAt($time);
-
-			$h5p_content->setUserId($this->dic->user()->getId());
-
 			$h5p_content->setEmbedType("div");
 
 			$h5p_content->setLibraryId($content["library"]["libraryId"]);
-
-			$h5p_content->setObjId($content["obj_id"]);
 		}
-
-		$h5p_content->setUpdatedAt($time);
 
 		$h5p_content->setTitle($content["title"]);
 
@@ -574,12 +556,14 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_content->update();
 		}
 
-		// TODO event?
-		/*new H5P_Event("content", $event_type,
-			$h5p_content->getContentId(),
-			$h5p_content->getTitle(),
-			$content["library"]["machineName"],
-			$content["library"]["majorVersion"] . "." . $content["library"]["minorVersion"]);*/
+		$h5p_event = new ilH5PEvent();
+		$h5p_event->setType("content");
+		$h5p_event->setSubType(($new ? "create" : "update") . (!empty($content["uploaded"]) ? " upload" : ""));
+		$h5p_event->setContentId($h5p_content->getContentId());
+		$h5p_event->setContentTitle($h5p_content->getTitle());
+		$h5p_event->setLibraryName($content["library"]["name"]);
+		$h5p_event->setLibraryVersion($content["library"]["majorVersion"] . "." . $content["library"]["minorVersion"]);
+		$h5p_event->create();
 
 		return $h5p_content->getContentId();
 	}
@@ -591,13 +575,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @param int $content_id
 	 */
 	public function resetContentUserData($content_id) {
-		$time = time();
-
 		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
 
 		foreach ($h5p_user_datas as $h5p_user_data) {
-			$h5p_user_data->setUpdatedAt($time);
-
 			$h5p_user_data->setDataJson(NULL);
 
 			$h5p_user_data->update();
@@ -674,6 +654,17 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Id identifying the content
 	 */
 	public function deleteContentData($content_id) {
+		$content = $this->loadContent($content_id);
+
+		$h5p_event = new ilH5PEvent();
+		$h5p_event->setType("content");
+		$h5p_event->setSubType("delete");
+		$h5p_event->setContentId($content_id);
+		$h5p_event->setContentTitle($content["title"]);
+		$h5p_event->setLibraryName($content["libraryName"]);
+		$h5p_event->setLibraryVersion($content["libraryMajorVersion"] . "." . $content["libraryMinorVersion"]);
+		$h5p_event->create();
+
 		$h5p_content = ilH5PContent::getContentById($content_id);
 		if ($h5p_content !== NULL) {
 			$h5p_content->delete();
@@ -832,7 +823,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"preloadedCss" => $h5p_library->getPreloadedCss(),
 				"dropLibraryCss" => $h5p_library->getDropLibraryCss(),
 				"fullscreen" => $h5p_library->isFullscreen(),
-				"runnable" => $h5p_library->isRunnable(),
+				"runnable" => $h5p_library->canRunnable(),
 				"semantics" => $h5p_library->getSemantics(),
 				"has_icon" => $h5p_library->hasIcon(),
 				"preloadedDependencies" => [],
@@ -958,6 +949,13 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		if ($h5p_library !== NULL) {
 			$h5p_library->delete();
 		}
+
+		$h5p_event = new ilH5PEvent();
+		$h5p_event->setType("library");
+		$h5p_event->setSubType("delete");
+		$h5p_event->setLibraryName($h5p_library->getName());
+		$h5p_event->setLibraryVersion($h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion());
+		$h5p_event->create();
 	}
 
 
@@ -1002,7 +1000,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 					"libraryMajorVersion" => $h5p_library->getMajorVersion(),
 					"libraryMinorVersion" => $h5p_library->getMinorVersion(),
 					"libraryEmbedTypes" => $h5p_library->getEmbedTypes(),
-					"libraryFullscreen" => $h5p_library->isFullscreen()
+					"libraryFullscreen" => $h5p_library->isFullscreen(),
+					"language" => $this->h5p->getLanguage()
 				];
 			}
 		}
@@ -1075,7 +1074,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$h5p_option = ilH5POption::getOption($name);
 
 		if ($h5p_option !== NULL) {
-			return $h5p_option->getValueJson();
+			return $h5p_option->getValue();
 		} else {
 			return $default;
 		}
@@ -1095,7 +1094,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$h5p_option = ilH5POption::getOption($name);
 
 		if ($h5p_option !== NULL) {
-			$h5p_option->setValueJson($value);
+			$h5p_option->setValue($value);
 
 			$h5p_option->update();
 		} else {
@@ -1103,7 +1102,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_option->setName($name);
 
-			$h5p_option->setValueJson($value);
+			$h5p_option->setValue($value);
 
 			$h5p_option->create();
 		}

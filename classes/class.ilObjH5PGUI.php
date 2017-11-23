@@ -207,7 +207,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return ilPropertyFormGUI
 	 */
 	protected function getAddContentForm() {
-		$libraries = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PLibrary::getLibrariesRunnableArray();
+		$libraries = [ "" => "&lt;" . $this->txt("xhfp_please_select") . "&gt;" ] + ilH5PLibrary::getLatestLibraryVersionsArray();
 
 		$form = new ilPropertyFormGUI();
 
@@ -269,17 +269,19 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				"title" => $title,
 				"library" => [
 					"libraryId" => $library_id,
-					"machineName" => $h5p_library->getName(),
+					"name" => $h5p_library->getName(),
 					"majorVersion" => $h5p_library->getMajorVersion(),
 					"minorVersion" => $h5p_library->getMinorVersion()
 				],
-				"params" => "{}",
-				"obj_id" => $this->object->getId()
+				"params" => "{}"
 			];
 
 			$content["id"] = $this->h5p->core()->saveContent($content);
 
 			$content["params"] = $this->h5p->core()->filterParameters($content);
+			$params = $this->h5p->stringToJson($content["params"]);
+
+			$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
 
 			$this->ctrl->setParameter($this, "xhfp_content", $content["id"]);
 
@@ -353,11 +355,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
+		$oldParams = $this->h5p->stringToJson($content["params"]);
+
 		$content["title"] = $title;
 
 		$content["params"] = $this->h5p->core()->filterParameters($content);
+		$params = $this->h5p->stringToJson($content["params"]);
 
-		$this->h5p->core()->saveContent($content);
+		$content["id"] = $this->h5p->core()->saveContent($content);
+
+		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -392,7 +399,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function deleteContentConfirmed() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->h5p->framework()->deleteContentData($h5p_content->getContentId());
+		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
+
+		$this->h5p->storage()->deletePackage($content);
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 

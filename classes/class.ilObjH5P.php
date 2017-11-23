@@ -58,7 +58,7 @@ class ilObjH5P extends ilObjectPlugin {
 		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
 
 		foreach ($h5p_contents as $h5p_content) {
-			$h5p->framework()->deleteContentData($h5p_content->getContentId());
+			$h5p->storage()->deletePackage($h5p_content->getContentId());
 		}
 	}
 

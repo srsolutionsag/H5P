@@ -231,8 +231,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $created_at = 0;
@@ -240,8 +239,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $updated_at = 0;
@@ -378,22 +376,6 @@ class ilH5PContent extends ActiveRecord {
 	protected $sort;
 
 
-	public function create() {
-		$sort = (sizeof(self::getContentsByObjectId($this->obj_id)) + 1);
-
-		$this->setSort($sort * 10);
-
-		parent::create();
-	}
-
-
-	public function delete() {
-		parent::delete();
-
-		self::reSort($this->obj_id);
-	}
-
-
 	/**
 	 * @return array
 	 */
@@ -439,6 +421,81 @@ class ilH5PContent extends ActiveRecord {
 	 */
 	public function setKeywordsArray(array $keywords) {
 		$this->keywords = ilH5P::getInstance()->jsonToString($keywords);
+	}
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function create() {
+		global $DIC;
+
+		$this->created_at = $this->updated_at = time();
+
+		$this->user_id = $DIC->user()->getId();
+
+		$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
+
+		$this->sort = (sizeof(self::getContentsByObjectId($this->obj_id)) + 1);
+
+		parent::create();
+	}
+
+
+	/**
+	 *
+	 */
+	public function update() {
+		$this->updated_at = time();
+
+		parent::update();
+	}
+
+
+	/**
+	 *
+	 */
+	public function delete() {
+		parent::delete();
+
+		self::reSort($this->obj_id);
 	}
 
 

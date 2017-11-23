@@ -133,8 +133,15 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
+	 * @con_is_notnull   true
+	 */
+	protected $created_at = 0;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $updated_at = 0;
@@ -153,6 +160,77 @@ class ilH5PContentUserData extends ActiveRecord {
 	 */
 	public function setDataJson($data) {
 		$this->data = ilH5P::getInstance()->jsonToString($data);
+	}
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "preload":
+			case "invalidate":
+				return ($this->{$field_name} ? 1 : 0);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "preload":
+			case "invalidate":
+				return boolval($field_value);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function create() {
+		global $DIC;
+
+		$this->created_at = $this->updated_at = time();
+
+		$this->user_id = $DIC->user()->getId();
+
+		parent::create();
+	}
+
+
+	/**
+	 *
+	 */
+	public function update() {
+		$this->updated_at = time();
+
+		parent::update();
 	}
 
 
@@ -281,6 +359,22 @@ class ilH5PContentUserData extends ActiveRecord {
 	 */
 	public function setInvalidate($invalidate) {
 		$this->invalidate = $invalidate;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getCreatedAt() {
+		return $this->created_at;
+	}
+
+
+	/**
+	 * @param int $created_at
+	 */
+	public function setCreatedAt($created_at) {
+		$this->created_at = $created_at;
 	}
 
 

@@ -57,28 +57,63 @@ class ilH5POption extends ActiveRecord {
 	 */
 	protected $name = "";
 	/**
-	 * @var string
+	 * @var mixed
 	 *
 	 * @con_has_field  true
 	 * @con_fieldtype  text
 	 * @con_is_notnull true
 	 */
-	protected $value = "null";
+	protected $value = NULL;
 
 
 	/**
-	 * @return mixed
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
 	 */
-	public function getValueJson() {
-		return ilH5P::getInstance()->stringToJson($this->value);
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "value":
+				return ilH5P::getInstance()->jsonToString($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
 	}
 
 
 	/**
-	 * @param mixed $value
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
 	 */
-	public function setValueJson($value) {
-		$this->value = ilH5P::getInstance()->jsonToString($value);
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "value":
+				return ilH5P::getInstance()->stringToJson($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+
+	/**
+	 * @param int $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
 	}
 
 
@@ -99,7 +134,7 @@ class ilH5POption extends ActiveRecord {
 
 
 	/**
-	 * @return string
+	 * @return mixed
 	 */
 	public function getValue() {
 		return $this->value;
@@ -107,7 +142,7 @@ class ilH5POption extends ActiveRecord {
 
 
 	/**
-	 * @param string $value
+	 * @param mixed $value
 	 */
 	public function setValue($value) {
 		$this->value = $value;

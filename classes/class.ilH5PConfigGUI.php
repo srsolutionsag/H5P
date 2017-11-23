@@ -446,7 +446,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 						"patch_version" => $h5p_library->getPatchVersion()
 					]),
 					$this->h5p->t("Fullscreen") => $this->h5p->t($h5p_library->isFullscreen() ? "Yes" : "No"),
-					$this->h5p->t("Content library") => $this->h5p->t($h5p_library->isRunnable() ? "Yes" : "No"),
+					$this->h5p->t("Content library") => $this->h5p->t($h5p_library->canRunnable() ? "Yes" : "No"),
 					$this->h5p->t("Used by") => $this->h5p->t(!$not_cached ? (sizeof($h5p_contents) === 1 ? "1 content" : "%d contents") : "N/A", [
 						"%d" => sizeof($h5p_contents)
 					])

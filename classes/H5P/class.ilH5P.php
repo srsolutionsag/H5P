@@ -15,7 +15,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PTmpFile.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
 
 /**
  * H5P
@@ -248,6 +250,34 @@ class ilH5P {
 
 
 	/**
+	 * @param int $timestamp
+	 *
+	 * @return string
+	 */
+	function timestampToDbDate($timestamp) {
+		$date_time = new DateTime("@" . $timestamp);
+
+		$formated = $date_time->format("Y-m-d H:i:s");
+
+		return $formated;
+	}
+
+
+	/**
+	 * @param string $formated
+	 *
+	 * @return int
+	 */
+	function dbDateToTimestamp($formated) {
+		$date_time = new DateTime($formated);
+
+		$timestamp = $date_time->getTimestamp();
+
+		return $timestamp;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	function getH5PFolder() {
@@ -266,38 +296,14 @@ class ilH5P {
 
 
 	/**
-	 * @return string
-	 */
-	function getTempFolder() {
-		return $this->ensureFolder($this->getH5PFolder() . "tmp/");
-	}
-
-
-	/**
-	 * @param string $folder
-	 *
-	 * @return string
-	 */
-	function ensureFolder($folder) {
-		if (!file_exists($folder)) {
-			mkdir($folder, NULL, true);
-		}
-
-		return $folder;
-	}
-
-
-	/**
 	 *
 	 */
 	function setUploadedH5pPath() {
-		$time = time(); // Handling multiple uploads
+		$tmp_path = $this->core()->fs->getTmpPath();
 
-		$tmp_folder = $this->getTempFolder();
+		$this->uploaded_h5p_folder_path = $tmp_path;
 
-		$this->uploaded_h5p_path = $tmp_folder . "package_" . $time . ".h5p";
-
-		$this->uploaded_h5p_folder_path = $tmp_folder . "package_" . $time . "_extracted/";
+		$this->uploaded_h5p_path = $tmp_path . ".h5p";
 	}
 
 
@@ -305,14 +311,10 @@ class ilH5P {
 	 *
 	 */
 	function cleanUploadedH5PPath() {
-		if (file_exists($this->uploaded_h5p_path)) {
-			unlink($this->uploaded_h5p_path);
-		}
+		ilH5PEditorStorage::removeTemporarilySavedFiles($this->uploaded_h5p_path);
 		$this->uploaded_h5p_path = NULL;
 
-		if (file_exists($this->uploaded_h5p_folder_path)) {
-			H5PCore::deleteFileTree($this->uploaded_h5p_folder_path);
-		}
+		ilH5PEditorStorage::removeTemporarilySavedFiles($this->uploaded_h5p_folder_path);
 		$this->uploaded_h5p_folder_path = NULL;
 	}
 
@@ -333,7 +335,7 @@ class ilH5P {
 	 *
 	 * @return string
 	 */
-	function t($message, $replacements = array()) {
+	function t($message, $replacements = []) {
 		// TODO translate string
 
 		//$message = $this->txt($message);

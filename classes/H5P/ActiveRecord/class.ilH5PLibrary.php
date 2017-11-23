@@ -122,14 +122,26 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return ilH5PLibrary[]
 	 */
-	static function getLibrariesRunnable() {
+	static function getLatestLibraryVersions() {
 		/**
-		 * @var ilH5PLibrary[] $h5p_libraries
+		 * @var ilH5PLibrary[] $h5p_libraries_
 		 */
 
-		$h5p_libraries = self::where([
+		$h5p_libraries_ = self::where([
 			"runnable" => true
-		])->orderBy("title", "asc")->get();
+		])->orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
+
+		$h5p_libraries = [];
+
+		$tmp = [];
+
+		foreach ($h5p_libraries_ as $h5p_library) {
+			if (!isset($tmp[$h5p_library->getLibraryId()])) {
+				$h5p_libraries[] = $h5p_library;
+
+				$tmp[$h5p_library->getLibraryId()] = true;
+			}
+		}
 
 		return $h5p_libraries;
 	}
@@ -138,8 +150,8 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return array
 	 */
-	static function getLibrariesRunnableArray() {
-		$h5p_libraries = self::getLibrariesRunnable();
+	static function getLatestLibraryVersionsArray() {
+		$h5p_libraries = self::getLatestLibraryVersions();
 
 		$libraries = [];
 
@@ -148,18 +160,6 @@ class ilH5PLibrary extends ActiveRecord {
 		}
 
 		return $libraries;
-	}
-
-
-	/**
-	 * @return array|null
-	 */
-	static function getCurrentContent() {
-		$content_id = filter_input(INPUT_GET, "xhfp_content");
-
-		$h5p_content = self::getContentById($content_id);
-
-		return NULL;
 	}
 
 
@@ -178,8 +178,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $created_at = 0;
@@ -187,8 +186,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $updated_at = 0;
@@ -406,6 +404,77 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "runnable":
+			case "restricted":
+			case "fullscreen":
+			case "has_icon":
+				return ($this->{$field_name} ? 1 : 0);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "runnable":
+			case "restricted":
+			case "fullscreen":
+			case "has_icon":
+				return boolval($field_value);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function create() {
+		$this->created_at = $this->updated_at = time();
+
+		parent::create();
+	}
+
+
+	/**
+	 *
+	 */
+	public function update() {
+		$this->updated_at = time();
+
+		parent::update();
+	}
+
+
+	/**
 	 * @return int
 	 */
 	public function getLibraryId() {
@@ -536,7 +605,7 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return bool
 	 */
-	public function isRunnable() {
+	public function canRunnable() {
 		return $this->runnable;
 	}
 

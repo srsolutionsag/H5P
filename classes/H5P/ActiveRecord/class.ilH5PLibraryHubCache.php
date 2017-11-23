@@ -9,6 +9,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 
 	const TABLE_NAME = "rep_robj_xhfp_lib_hub";
 
+
 	/**
 	 * @return string
 	 */
@@ -16,18 +17,28 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return self::TABLE_NAME;
 	}
 
+
 	/**
-	 * @return ilH5PLibraryHubCache[]
+	 * @param string|null $name
+	 *
+	 * @return object|array|null
 	 */
-	static function getLibraryHubCache() {
-		/**
-		 * @var $library_hub_caches ilH5PLibraryHubCache[]
-		 */
+	static function getLibraryHubCacheArray($name = NULL) {
+		if ($name != NULL) {
+			$library_hub_cache = self::where([
+				"machine_name" => $name
+			])->getArray(NULL, [ "id", "is_recommended" ])[0];
 
-		$library_hub_caches = self::get();
-
-		return $library_hub_caches;
+			if ($library_hub_cache != NULL) {
+				return (object)$library_hub_cache;
+			} else {
+				return NULL;
+			}
+		} else {
+			return self::getArray();
+		}
 	}
+
 
 	/**
 	 * @var int
@@ -132,8 +143,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $created_at = 0;
@@ -141,8 +151,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @var int
 	 *
 	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
+	 * @con_fieldtype    timestamp
 	 * @con_is_notnull   true
 	 */
 	protected $updated_at = 0;
@@ -224,61 +233,115 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 */
 	protected $owner = "";
 
+
 	/**
 	 * @return string[]
 	 */
 	public function getScreenshotsArray() {
-		return ilH5P::getInstance()->stringToJson( $this->screenshots );
+		return ilH5P::getInstance()->stringToJson($this->screenshots);
 	}
+
 
 	/**
 	 * @param string[] $screenshots
 	 */
-	public function setScreenshotsArray( array $screenshots ) {
-		$this->screenshots = ilH5P::getInstance()->jsonToString( $screenshots );
+	public function setScreenshotsArray(array $screenshots) {
+		$this->screenshots = ilH5P::getInstance()->jsonToString($screenshots);
 	}
+
 
 	/**
 	 * @return string[]
 	 */
 	public function getLicenseArray() {
-		return ilH5P::getInstance()->stringToJson( $this->license );
+		return ilH5P::getInstance()->stringToJson($this->license);
 	}
+
 
 	/**
 	 * @param string[] $screenshots
 	 */
-	public function setLicenseArray( array $license ) {
-		$this->license = ilH5P::getInstance()->jsonToString( $license );
+	public function setLicenseArray(array $license) {
+		$this->license = ilH5P::getInstance()->jsonToString($license);
 	}
+
 
 	/**
 	 * @return string[]
 	 */
 	public function getKeywordsArray() {
-		return ilH5P::getInstance()->stringToJson( $this->keywords );
+		return ilH5P::getInstance()->stringToJson($this->keywords);
 	}
+
 
 	/**
 	 * @param string[] $keywords
 	 */
-	public function setKeywordsArray( array $keywords ) {
-		$this->keywords = ilH5P::getInstance()->jsonToString( $keywords );
+	public function setKeywordsArray(array $keywords) {
+		$this->keywords = ilH5P::getInstance()->jsonToString($keywords);
 	}
+
 
 	/**
 	 * @return string[]
 	 */
 	public function getCategoriesArray() {
-		return ilH5P::getInstance()->stringToJson( $this->categories );
+		return ilH5P::getInstance()->stringToJson($this->categories);
 	}
+
 
 	/**
 	 * @param string[] $categories
 	 */
-	public function setCategoriesArray( array $categories ) {
-		$this->categories = ilH5P::getInstance()->jsonToString( $categories );
+	public function setCategoriesArray(array $categories) {
+		$this->categories = ilH5P::getInstance()->jsonToString($categories);
 	}
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		switch ($field_name) {
+			case "is_recommended":
+				return ($this->{$field_name} ? 1 : 0);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "is_recommended":
+				return boolval($field_value);
+				break;
+
+			case "created_at":
+			case "updated_at":
+				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
+
 
 	/**
 	 * @return int
@@ -287,12 +350,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->hub_id;
 	}
 
+
 	/**
 	 * @param int $hub_id
 	 */
-	public function setHubId( $hub_id ) {
+	public function setHubId($hub_id) {
 		$this->hub_id = $hub_id;
 	}
+
 
 	/**
 	 * @return string
@@ -301,12 +366,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->machine_name;
 	}
 
+
 	/**
 	 * @param string $machine_name
 	 */
-	public function setMachineName( $machine_name ) {
+	public function setMachineName($machine_name) {
 		$this->machine_name = $machine_name;
 	}
+
 
 	/**
 	 * @return int
@@ -315,12 +382,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->major_version;
 	}
 
+
 	/**
 	 * @param int $major_version
 	 */
-	public function setMajorVersion( $major_version ) {
+	public function setMajorVersion($major_version) {
 		$this->major_version = $major_version;
 	}
+
 
 	/**
 	 * @return int
@@ -329,12 +398,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->minor_version;
 	}
 
+
 	/**
 	 * @param int $minor_version
 	 */
-	public function setMinorVersion( $minor_version ) {
+	public function setMinorVersion($minor_version) {
 		$this->minor_version = $minor_version;
 	}
+
 
 	/**
 	 * @return int
@@ -343,12 +414,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->patch_version;
 	}
 
+
 	/**
 	 * @param int $patch_version
 	 */
-	public function setPatchVersion( $patch_version ) {
+	public function setPatchVersion($patch_version) {
 		$this->patch_version = $patch_version;
 	}
+
 
 	/**
 	 * @return int
@@ -357,12 +430,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->h5p_major_version;
 	}
 
+
 	/**
 	 * @param int $h5p_major_version
 	 */
-	public function setH5pMajorVersion( $h5p_major_version ) {
+	public function setH5pMajorVersion($h5p_major_version) {
 		$this->h5p_major_version = $h5p_major_version;
 	}
+
 
 	/**
 	 * @return int
@@ -371,12 +446,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->h5p_minor_version;
 	}
 
+
 	/**
 	 * @param int $h5p_minor_version
 	 */
-	public function setH5pMinorVersion( $h5p_minor_version ) {
+	public function setH5pMinorVersion($h5p_minor_version) {
 		$this->h5p_minor_version = $h5p_minor_version;
 	}
+
 
 	/**
 	 * @return string
@@ -385,12 +462,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->title;
 	}
 
+
 	/**
 	 * @param string $title
 	 */
-	public function setTitle( $title ) {
+	public function setTitle($title) {
 		$this->title = $title;
 	}
+
 
 	/**
 	 * @return string
@@ -399,12 +478,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->summary;
 	}
 
+
 	/**
 	 * @param string $summary
 	 */
-	public function setSummary( $summary ) {
+	public function setSummary($summary) {
 		$this->summary = $summary;
 	}
+
 
 	/**
 	 * @return string
@@ -413,12 +494,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->description;
 	}
 
+
 	/**
 	 * @param string $description
 	 */
-	public function setDescription( $description ) {
+	public function setDescription($description) {
 		$this->description = $description;
 	}
+
 
 	/**
 	 * @return string
@@ -427,12 +510,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->icon;
 	}
 
+
 	/**
 	 * @param string $icon
 	 */
-	public function setIcon( $icon ) {
+	public function setIcon($icon) {
 		$this->icon = $icon;
 	}
+
 
 	/**
 	 * @return int
@@ -441,12 +526,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->created_at;
 	}
 
+
 	/**
 	 * @param int $created_at
 	 */
-	public function setCreatedAt( $created_at ) {
+	public function setCreatedAt($created_at) {
 		$this->created_at = $created_at;
 	}
+
 
 	/**
 	 * @return int
@@ -455,12 +542,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->updated_at;
 	}
 
+
 	/**
 	 * @param int $updated_at
 	 */
-	public function setUpdatedAt( $updated_at ) {
+	public function setUpdatedAt($updated_at) {
 		$this->updated_at = $updated_at;
 	}
+
 
 	/**
 	 * @return bool
@@ -469,12 +558,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->is_recommended;
 	}
 
+
 	/**
 	 * @param bool $is_recommended
 	 */
-	public function setIsRecommended( $is_recommended ) {
+	public function setIsRecommended($is_recommended) {
 		$this->is_recommended = $is_recommended;
 	}
+
 
 	/**
 	 * @return int
@@ -483,12 +574,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->popularity;
 	}
 
+
 	/**
 	 * @param int $popularity
 	 */
-	public function setPopularity( $popularity ) {
+	public function setPopularity($popularity) {
 		$this->popularity = $popularity;
 	}
+
 
 	/**
 	 * @return string
@@ -497,12 +590,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->screenshots;
 	}
 
+
 	/**
 	 * @param string $screenshots
 	 */
-	public function setScreenshots( $screenshots ) {
+	public function setScreenshots($screenshots) {
 		$this->screenshots = $screenshots;
 	}
+
 
 	/**
 	 * @return string
@@ -511,12 +606,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->license;
 	}
 
+
 	/**
 	 * @param string $license
 	 */
-	public function setLicense( $license ) {
+	public function setLicense($license) {
 		$this->license = $license;
 	}
+
 
 	/**
 	 * @return string
@@ -525,12 +622,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->example;
 	}
 
+
 	/**
 	 * @param string $example
 	 */
-	public function setExample( $example ) {
+	public function setExample($example) {
 		$this->example = $example;
 	}
+
 
 	/**
 	 * @return string
@@ -539,12 +638,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->tutorial;
 	}
 
+
 	/**
 	 * @param string $tutorial
 	 */
-	public function setTutorial( $tutorial ) {
+	public function setTutorial($tutorial) {
 		$this->tutorial = $tutorial;
 	}
+
 
 	/**
 	 * @return string
@@ -553,12 +654,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->keywords;
 	}
 
+
 	/**
 	 * @param string $keywords
 	 */
-	public function setKeywords( $keywords ) {
+	public function setKeywords($keywords) {
 		$this->keywords = $keywords;
 	}
+
 
 	/**
 	 * @return string
@@ -567,12 +670,14 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->categories;
 	}
 
+
 	/**
 	 * @param string $categories
 	 */
-	public function setCategories( $categories ) {
+	public function setCategories($categories) {
 		$this->categories = $categories;
 	}
+
 
 	/**
 	 * @return string
@@ -581,10 +686,11 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 		return $this->owner;
 	}
 
+
 	/**
 	 * @param string $owner
 	 */
-	public function setOwner( $owner ) {
+	public function setOwner($owner) {
 		$this->owner = $owner;
 	}
 }

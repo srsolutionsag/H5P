@@ -47,7 +47,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @return string Translation in JSON format
 	 */
 	public function getLanguage($machineName, $majorVersion, $minorVersion, $language) {
-
+		return ilH5PLibraryLanguage::getTranslationJson($machineName, $majorVersion, $minorVersion, $language);
 	}
 
 
@@ -58,7 +58,11 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param int $fileId
 	 */
 	public function keepFile($fileId) {
+		$h5p_tmp_files = ilH5PTmpFile::getFilesByPath($fileId);
 
+		foreach ($h5p_tmp_files as $h5p_tmp_file) {
+			$h5p_tmp_file->delete();
+		}
 	}
 
 
@@ -77,7 +81,55 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @return array List of all libraries loaded
 	 */
 	public function getLibraries($libraries = NULL) {
+		$super_user = $this->h5p->framework()->hasPermission("manage_h5p_libraries");
 
+		if ($libraries !== NULL) {
+			$librariesWithDetails = [];
+
+			foreach ($libraries as $library) {
+				$h5p_library = ilH5PLibrary::getLibraryByVersion($library->name, $library->majorVersion, $library->minorVersion);
+
+				if ($h5p_library !== NULL) {
+					$library->tutorialUrl = $h5p_library->getTutorialUrl();
+					$library->title = $h5p_library->getTitle();
+					$library->runnable = $h5p_library->canRunnable();
+					$library->restricted = ($super_user ? false : $h5p_library->isRestricted());
+					$librariesWithDetails[] = $library;
+				}
+			}
+
+			return $librariesWithDetails;
+		} else {
+			$h5p_libraries = ilH5PLibrary::getLatestLibraryVersions();
+
+			$libraries = [];
+
+			foreach ($h5p_libraries as $h5p_library) {
+				$library = (object)[
+					"name" => $h5p_library->getName(),
+					"title" => $h5p_library->getTitle(),
+					"major_version" => $h5p_library->getMajorVersion(),
+					"minor_version" => $h5p_library->getMinorVersion(),
+					"tutorial_url" => $h5p_library->getTutorialUrl(),
+					"restricted" => ($super_user ? false : $h5p_library->isRestricted())
+				];
+
+				foreach ($libraries as $key => $existingLibrary) {
+					if ($library->name === $existingLibrary->name) {
+						if (($library->majorVersion === $existingLibrary->majorVersion && $library->minorVersion > $existingLibrary->minorVersion)
+							|| ($library->majorVersion > $existingLibrary->majorVersion)) {
+							$existingLibrary->isOld = true;
+						} else {
+							$library->isOld = true;
+						}
+					}
+				}
+
+				$libraries[] = $library;
+			}
+
+			return $libraries;
+		}
 	}
 
 
@@ -106,7 +158,18 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 *  if saving succeeded
 	 */
 	public static function saveFileTemporarily($data, $move_file) {
+		$path = ilH5P::getInstance()->framework()->getUploadedH5pPath();
 
+		if ($move_file) {
+			rename($data, $path);
+		} else {
+			file_put_contents($path, $data);
+		}
+
+		return (object)[
+			"dir" => dirname($path),
+			"fileName" => basename($path)
+		];
 	}
 
 
@@ -118,7 +181,20 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param $content_id
 	 */
 	public static function markFileForCleanup($file, $content_id) {
+		$path = ilH5P::getInstance()->getH5PFolder();
 
+		if (empty($content_id)) {
+			$path .= "editor/";
+		} else {
+			$path .= "content/" . $content_id . "/";
+		}
+		$path .= $file->getType() . "s/" . $file->getName();
+
+		$h5p_tmp_file = new ilH5PTmpFile();
+
+		$h5p_tmp_file->setPath($path);
+
+		$h5p_tmp_file->create();
 	}
 
 
@@ -128,6 +204,12 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param string $filePath Path to file or directory
 	 */
 	public static function removeTemporarilySavedFiles($filePath) {
-
+		if (file_exists($filePath)) {
+			if (is_dir($filePath)) {
+				H5PCore::deleteFileTree($filePath);
+			} else {
+				unlink($filePath);
+			}
+		}
 	}
 }
