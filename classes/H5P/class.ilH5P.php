@@ -364,16 +364,18 @@ class ilH5P {
 
 
 	/**
-	 * @param string   $h5p_integration_name
-	 * @param string   $h5p_integration
-	 * @param string[] $scripts
-	 * @param string[] $styles
-	 * @param int|null $content_id
-	 * @param bool     $admin
+	 * @param string      $h5p_integration_name
+	 * @param string      $h5p_integration
+	 * @param string[]    $scripts
+	 * @param string[]    $styles
+	 * @param string      $title
+	 * @param string|null $content_type
+	 * @param int|null    $content_id
+	 * @param bool        $admin
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $content_id = NULL, $admin = false) {
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $title = "", $content_type = "div", $content_id = NULL, $admin = false) {
 		$h5p_tmpl = $this->pl->getTemplate("H5PIntegration.html");
 
 		$h5p_tmpl->setCurrentBlock("integrationBlock");
@@ -393,9 +395,29 @@ class ilH5P {
 			$h5p_tmpl->parseCurrentBlock();
 		}
 
+		if (!empty($title)) {
+			$h5p_tmpl->setCurrentBlock("titleBlock");
+			$h5p_tmpl->setVariable("TITLE", $title);
+			$h5p_tmpl->parseCurrentBlock();
+		}
+
 		if ($content_id !== NULL) {
-			$h5p_tmpl->setCurrentBlock("contentBlock");
-			$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+			switch ($content_type) {
+				case "div":
+					$h5p_tmpl->setCurrentBlock("contentDivBlock");
+					$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+					$h5p_tmpl->parseCurrentBlock();
+					break;
+
+				case "iframe":
+					$h5p_tmpl->setCurrentBlock("contentFrameBlock");
+					$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+					$h5p_tmpl->parseCurrentBlock();
+					break;
+
+				default:
+					break;
+			}
 		}
 
 		if ($admin) {

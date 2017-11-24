@@ -9,6 +9,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PContentsTableGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Form/classes/class.ilCustomInputGUI.php";
+require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
 
 /**
  * H5P GUI
@@ -24,22 +25,28 @@ require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 class ilObjH5PGUI extends ilObjectPluginGUI {
 
 	const CMD_ADD_CONTENT = "addContent";
+	const CMD_AJAX_CONTENT = "ajaxContent";
 	const CMD_CREATE_CONTENT = "createContent";
 	const CMD_DELETE_CONTENT = "deleteContent";
 	const CMD_DELETE_CONTENT_CONFIRMED = "deleteContentConfirmed";
 	const CMD_EDIT_CONTENT = "editContent";
+	const CMD_EMBED_CONTENT = "embedContent";
+	const CMD_EXPORT_CONTENT = "exportContent";
 	const CMD_MANAGE_CONTENTS = "manageContents";
 	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
 	const CMD_MOVE_CONTENT_UP = "moveContentUp";
 	const CMD_PERMISSIONS = "perm";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
+	const CMD_SHOW_CONTENT = "showContent";
 	const CMD_SHOW_CONTENTS = "showContents";
 	const CMD_UPDATE_CONTENT = "updateContent";
 	const TAB_CONTENTS = "contents";
 	const TAB_PERMISSIONS = "perm_settings";
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
+	const H5P_ACTION_CONTENT_USER_DATA = "contentUserData";
+	const H5P_ACTION_SET_FINISHED = "setFinished";
 	/**
 	 * @var \ILIAS\DI\Container
 	 */
@@ -93,15 +100,19 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	function performCommand($cmd) {
 		switch ($cmd) {
 			case self::CMD_ADD_CONTENT:
+			case self::CMD_AJAX_CONTENT:
 			case self::CMD_CREATE_CONTENT:
 			case self::CMD_DELETE_CONTENT:
 			case self::CMD_DELETE_CONTENT_CONFIRMED:
 			case self::CMD_EDIT_CONTENT:
+			case self::CMD_EMBED_CONTENT:
+			case self::CMD_EXPORT_CONTENT:
 			case self::CMD_MANAGE_CONTENTS:
 			case self::CMD_MOVE_CONTENT_DOWN:
 			case self::CMD_MOVE_CONTENT_UP:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
+			case self::CMD_SHOW_CONTENT:
 			case self::CMD_SHOW_CONTENTS:
 			case self::CMD_UPDATE_CONTENT:
 				$this->{$cmd}();
@@ -297,11 +308,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$h5p_content = ilH5PContent::getCurrentContent();
 		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
 
+		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
+		$params = $this->h5p->core()->filterParameters($content);
+
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$form = new ilPropertyFormGUI();
 
 		$form->setFormAction($this->ctrl->getFormAction($this));
+
+		$form->setId("xhfp_edit_form");
 
 		$form->setTitle($this->txt("xhfp_edit_content"));
 
@@ -314,8 +330,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->addItem($title);
 
 		$h5p = new ilCustomInputGUI($this->txt("xhfp_library") . " " . $h5p_library->getTitle());
-		$h5p->setHtml($this->getH5PEditorIntegration($h5p_content->getContentId()));
+		$h5p->setHtml($this->getH5PEditorIntegration($h5p_content->getContentId()) . '<div id="xhfp_editor"></div>');
 		$form->addItem($h5p);
+		$h5p_params = new ilHiddenInputGUI("xhfp_params");
+		$h5p_params->setValue($params);
+		$form->addItem($h5p_params);
 
 		return $form;
 	}
@@ -415,12 +434,66 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function showContents() {
 		$this->dic->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
 
-		$h5p_contents = ilH5PContent::getContentsByObjectId($this->object->getId());
+		$this->show("");
+	}
 
-		$h5p_content = current($h5p_contents);
-		if ($h5p_content !== false) {
-			$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
+
+	/**
+	 *
+	 */
+	protected function showContent() {
+		$this->dic->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
+
+		$h5p_content = ilH5PContent::getCurrentContent();
+
+		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function ajaxContent() {
+		$h5p_action = filter_input(INPUT_GET, "h5p_action");
+
+		switch ($h5p_action) {
+			case self::H5P_ACTION_SET_FINISHED:
+			case self::H5P_ACTION_CONTENT_USER_DATA:
+				$this->{$h5p_action}();
+				break;
 		}
+	}
+
+
+	/**
+	 *
+	 */
+	protected function setFinished() {
+		$this->show("");
+	}
+
+
+	/**
+	 *
+	 */
+	protected function contentUserData() {
+		$this->show("");
+	}
+
+
+	/**
+	 *
+	 */
+	protected function embedContent() {
+		$this->show("");
+	}
+
+
+	/**
+	 *
+	 */
+	protected function exportContent() {
+		$this->show("");
 	}
 
 
@@ -502,11 +575,25 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getH5PCoreIntegration($content_id, $type = "preloaded") {
 		$H5PIntegration = $this->getContents($content_id, $type);
 
+		$content = $this->h5p->core()->loadContent($content_id);
+		$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
+
+		if ($type !== "editor") {
+			$title = $content["title"];
+
+			$h5p_library = ilH5PLibrary::getLibraryById($content["library"]["id"]);
+			if ($h5p_library !== NULL) {
+				$title .= " - " . $h5p_library->getTitle();
+			}
+		} else {
+			$title = "";
+		}
+
 		if ($type === "editor") {
 			$content_id = NULL;
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), $this->h5p_scripts, $this->h5p_styles, $content_id);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), $this->h5p_scripts, $this->h5p_styles, $title, $embed, $content_id);
 
 		return $h5p_integration;
 	}
@@ -526,20 +613,24 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return array
 	 */
 	protected function getBaseCore() {
+		$user = $this->dic->user();
+
 		$H5PIntegration = [
-			"baseUrl" => $_SERVER["HTTP_HOST"],
+			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"url" => $this->h5p->getH5PFolder(),
-			"postUserStatistics" => false,
+			"postUserStatistics" => true,
 			"ajax" => [
-				"setFinished" => $this->ctrl->getLinkTarget($this, ""),
-				"contentUserData" => $this->ctrl->getLinkTarget($this, "")
+				"setFinished" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action="
+					. self::H5P_ACTION_SET_FINISHED,
+				"contentUserData" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action="
+					. self::H5P_ACTION_CONTENT_USER_DATA . "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
 			],
-			"saveFreq" => 30,
-			/*"user" => [
-				"name" => $this->dic->user()->getFullname(),
-				"mail" => $this->dic->user()->getEmail()
-			],*/
-			"siteUrl" => $_SERVER["HTTP_HOST"],
+			"saveFreq" => false,
+			"user" => [
+				"name" => $user->getFullname(),
+				"mail" => $user->getEmail()
+			],
+			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"l10n" => [
 				"H5P" => $this->h5p->core()->getLocalization()
 			],
@@ -557,14 +648,15 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$H5PIntegration = $this->getBaseCore();
 
 		$H5PIntegration = array_merge($H5PIntegration, [
-			"loadedJs" => [],
-			"loadedCss" => [],
 			"core" => [
 				"scripts" => [],
 				"styles" => []
 			],
-			"contents" => []
+			"loadedJs" => [],
+			"loadedCss" => []
 		]);
+
+		$this->addCore($H5PIntegration);
 
 		return $H5PIntegration;
 	}
@@ -579,12 +671,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getContents($content_id, $type) {
 		$H5PIntegration = $this->getCore();
 
-		$this->addCore($H5PIntegration);
+		$content = $this->h5p->core()->loadContent($content_id);
 
 		if ($type === "editor") {
 			$assets = [
-				"js" => [],
-				"css" => []
+				"js" => $H5PIntegration["core"]["scripts"],
+				"css" => $H5PIntegration["core"]["styles"]
 			];
 
 			$this->addEditorCore($assets);
@@ -596,13 +688,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					"width" => 50,
 					"height" => 50
 				],
-				"ajaxPath" => "",
+				"ajaxPath" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action=",
 				"libraryUrl" => ilH5P::EDITOR_PATH,
 				"copyrightSemantics" => $this->h5p->content_validator()->getCopyrightSemantics(),
 				"assets" => $assets,
 				"deleteMessage" => $this->h5p->t("Are you sure you wish to delete this content?"),
 				"apiVersion" => H5PCore::$coreApi,
-				"nodeVersionId" => $content_id
+				"nodeVersionId" => $content_id,
+				"library" => H5PCore::libraryToString($content["library"])
 			];
 
 			$language = $this->h5p->getLanguage();
@@ -612,7 +705,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			}
 			$this->h5p_scripts[] = $language_script;
 		} else {
-			$content = $this->h5p->core()->loadContent($content_id);
+			$H5PIntegration["contents"] = [];
 
 			$content_dependencies = $this->h5p->core()->loadContentDependencies($content["id"], $type);
 
@@ -633,19 +726,19 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 				switch ($embed) {
 					case "div":
-					case "iframe":
 						foreach ($scripts as $script) {
-							$this->h5p_scripts[] = $script;
+							$this->h5p_scripts[] = $H5PIntegration["loadedJs"][] = $script;
 						}
 
 						foreach ($styles as $style) {
-							$this->h5p_styles[] = $style;
+							$this->h5p_styles[] = $H5PIntegration["loadedCss"][] = $style;
 						}
 						break;
-					/*case "iframe":
+
+					case "iframe":
 						$content_integration["scripts"] = $scripts;
 						$content_integration["styles"] = $styles;
-						break;*/
+						break;
 				}
 
 				$H5PIntegration["contents"][$cid] = $content_integration;
@@ -662,6 +755,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return array
 	 */
 	protected function getContentIntegration(&$content) {
+		$this->dic->ctrl()->setParameter($this, "xhfp_content", $content["content_id"]);
+
 		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
 		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
@@ -670,24 +765,24 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"library" => H5PCore::libraryToString($content["library"]),
 			"jsonContent" => $safe_parameters,
 			"fullScreen" => $content["library"]["fullscreen"],
-			"exportUrl" => "",
-			"embedCode" => "",
-			"resizeCode" => '',
-			"url" => "",
+			"exportUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_EXPORT_CONTENT, "", true, false),
+			"embedCode" => '<iframe src="' . $this->dic->ctrl()->getLinkTarget($this, self::CMD_EMBED_CONTENT, "", true, false)
+				. '" width=":w" height=":h" frameborder="0" allowfullscreen="allowfullscreen"></iframe>',
+			"resizeCode" => '<script src="' . ilH5P::CORE_PATH . 'js/h5p-resizer.js" charset="UTF-8"></script>',
+			"url" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_SHOW_CONTENT, "", false, false),
 			"title" => $content["title"],
-			"displayOptions" => [
-				"frame" => false,
-				"export" => false,
-				"embded" => false,
-				"copyright" => false,
-				"icon" => false
-			],
+			"displayOptions" => $this->h5p->core()->getDisplayOptionsForView($content["disable"], $author_id),
 			"contentUserData" => [
 				0 => [
 					"state" => "{}"
 				]
 			]
 		];
+
+		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($this->dic->user()->getId(), $content["id"]);
+		foreach ($content_user_datas as $content_user_data) {
+			$content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
+		}
 
 		return $content_integration;
 	}
@@ -698,11 +793,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function addCore(&$H5PIntegration) {
 		foreach (H5PCore::$scripts as $script) {
-			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = (ilH5P::CORE_PATH . $script);
+			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = ilH5P::CORE_PATH . $script;
 		}
 
 		foreach (H5PCore::$styles as $style) {
-			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = (ilH5P::CORE_PATH . $style);
+			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = ilH5P::CORE_PATH . $style;
 		}
 	}
 
@@ -714,15 +809,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		foreach (H5peditor::$scripts as $script) {
 			if ($script !== "scripts/h5peditor-editor.js") {
 				/*$this->h5p_scripts[] = */
-				$assets["js"][] = (ilH5P::EDITOR_PATH . $script);
+				$assets["js"][] = ilH5P::EDITOR_PATH . $script;
 			} else {
-				$this->h5p_scripts[] = (ilH5P::EDITOR_PATH . $script);
+				$this->h5p_scripts[] = ilH5P::EDITOR_PATH . $script;
 			}
 		}
+		$this->h5p_scripts[] = $this->plugin->getDirectory() . "/js/h5p-editor.js";
 
 		foreach (H5peditor::$styles as $style) {
 			/*$this->h5p_styles[] = */
-			$assets["css"][] = (ilH5P::EDITOR_PATH . $style);
+			$assets["css"][] = ilH5P::EDITOR_PATH . $style;
 		}
 	}
 

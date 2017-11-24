@@ -21,24 +21,6 @@ class ilH5PContentUserData extends ActiveRecord {
 	/**
 	 * @param int $content_id
 	 *
-	 * @return ilH5PContentUserData|null
-	 */
-	static function getUserDataByData($data_id) {
-		/**
-		 * @var ilH5PContentUserData|null $h5p_user_data
-		 */
-
-		$h5p_user_data = self::where([
-			"data_id" => $data_id
-		])->first();
-
-		return $h5p_user_data;
-	}
-
-
-	/**
-	 * @param int $content_id
-	 *
 	 * @return ilH5PContentUserData[]
 	 */
 	static function getUserDatasByContent($content_id) {
@@ -47,6 +29,26 @@ class ilH5PContentUserData extends ActiveRecord {
 		 */
 
 		$h5p_user_datas = self::where([
+			"content_id" => $content_id
+		])->get();
+
+		return $h5p_user_datas;
+	}
+
+
+	/**
+	 * @param int $user_id
+	 * @param int $content_id
+	 *
+	 * @return ilH5PContentUserData[]
+	 */
+	static function getUserDatasByUser($user_id, $content_id) {
+		/**
+		 * @var ilH5PContentUserData[] $h5p_user_datas
+		 */
+
+		$h5p_user_datas = self::where([
+			"user_id" => $user_id,
 			"content_id" => $content_id
 		])->get();
 

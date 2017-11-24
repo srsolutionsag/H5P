@@ -7,8 +7,8 @@ require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilFileInputGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
 
 /**
  * H5P Config GUI
@@ -325,11 +325,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected function addAdminCore(array $scripts = [], array $styles = []) {
 		foreach (array_merge(H5PCore::$adminScripts, $scripts) as $script) {
-			$this->h5p_scripts[] = (ilH5P::CORE_PATH . $script);
+			$this->h5p_scripts[] = ilH5P::CORE_PATH . $script;
 		}
 
 		foreach (array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ], $styles) as $style) {
-			$this->h5p_styles[] = (ilH5P::CORE_PATH . $style);
+			$this->h5p_styles[] = ilH5P::CORE_PATH . $style;
 		}
 	}
 
@@ -406,7 +406,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "",NULL, NULL, true);
 
 		return $h5p_integration;
 	}
@@ -464,15 +464,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 				$admin_integration["libraryInfo"]["content"][] = [
 					"title" => $h5p_content["title"],
-					"url" => "",
-					//"url" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_INFO_LIBRARY, "", false, false),
+					"url" => $this->dic->ctrl()->getLinkTargetByClass(ilObjH5PGUI::class, ilObjH5PGUI::CMD_SHOW_CONTENT, "", false, false),
 				];
 			}
 		}
 
 		$this->dic->ctrl()->clearParameters($this);
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "",NULL, NULL, true);
 
 		return $h5p_integration;
 	}
