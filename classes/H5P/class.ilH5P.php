@@ -1,9 +1,11 @@
 <?php
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
+
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PEditorStorage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PEditorAjax.php";
+
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentUserData.php";
@@ -16,6 +18,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PTmpFile.php";
+
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
+
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
 
@@ -298,24 +303,12 @@ class ilH5P {
 	/**
 	 *
 	 */
-	function setUploadedH5pPath() {
+	protected function setUploadedH5pPath() {
 		$tmp_path = $this->core()->fs->getTmpPath();
 
 		$this->uploaded_h5p_folder_path = $tmp_path;
 
 		$this->uploaded_h5p_path = $tmp_path . ".h5p";
-	}
-
-
-	/**
-	 *
-	 */
-	function cleanUploadedH5PPath() {
-		ilH5PEditorStorage::removeTemporarilySavedFiles($this->uploaded_h5p_path);
-		$this->uploaded_h5p_path = NULL;
-
-		ilH5PEditorStorage::removeTemporarilySavedFiles($this->uploaded_h5p_folder_path);
-		$this->uploaded_h5p_folder_path = NULL;
 	}
 
 
@@ -442,6 +435,10 @@ class ilH5P {
 	 * @return string
 	 */
 	public function getUploadedH5pPath() {
+		if ($this->uploaded_h5p_path === NULL) {
+			$this->setUploadedH5pPath();
+		}
+
 		return $this->uploaded_h5p_path;
 	}
 
@@ -450,6 +447,10 @@ class ilH5P {
 	 * @return string
 	 */
 	public function getUploadedH5pFolderPath() {
+		if ($this->uploaded_h5p_folder_path === NULL) {
+			$this->setUploadedH5pPath();
+		}
+
 		return $this->uploaded_h5p_folder_path;
 	}
 }

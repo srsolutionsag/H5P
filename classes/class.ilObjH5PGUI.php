@@ -21,11 +21,11 @@ require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
  * @ilCtrl_Calls      ilObjH5PGUI: ilInfoScreenGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilObjectCopyGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilCommonActionDispatcherGUI
+ * @ilCtrl_Calls      ilObjH5PGUI: ilH5PActionGUI
  */
 class ilObjH5PGUI extends ilObjectPluginGUI {
 
 	const CMD_ADD_CONTENT = "addContent";
-	const CMD_AJAX_CONTENT = "ajaxContent";
 	const CMD_CREATE_CONTENT = "createContent";
 	const CMD_DELETE_CONTENT = "deleteContent";
 	const CMD_DELETE_CONTENT_CONFIRMED = "deleteContentConfirmed";
@@ -45,8 +45,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const TAB_PERMISSIONS = "perm_settings";
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
-	const H5P_ACTION_CONTENT_USER_DATA = "contentUserData";
-	const H5P_ACTION_SET_FINISHED = "setFinished";
 	/**
 	 * @var \ILIAS\DI\Container
 	 */
@@ -100,7 +98,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	function performCommand($cmd) {
 		switch ($cmd) {
 			case self::CMD_ADD_CONTENT:
-			case self::CMD_AJAX_CONTENT:
 			case self::CMD_CREATE_CONTENT:
 			case self::CMD_DELETE_CONTENT:
 			case self::CMD_DELETE_CONTENT_CONFIRMED:
@@ -116,6 +113,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			case self::CMD_SHOW_CONTENTS:
 			case self::CMD_UPDATE_CONTENT:
 				$this->{$cmd}();
+				break;
+
+			case ilH5PActionGUI::CMD_H5P_ACTION:
+				$this->dic->ctrl()->setReturn($this, self::CMD_MANAGE_CONTENTS);
+				$this->dic->ctrl()->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 		}
 	}
@@ -453,37 +455,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 *
 	 */
-	protected function ajaxContent() {
-		$h5p_action = filter_input(INPUT_GET, "h5p_action");
-
-		switch ($h5p_action) {
-			case self::H5P_ACTION_SET_FINISHED:
-			case self::H5P_ACTION_CONTENT_USER_DATA:
-				$this->{$h5p_action}();
-				break;
-		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function setFinished() {
-		$this->show("");
-	}
-
-
-	/**
-	 *
-	 */
-	protected function contentUserData() {
-		$this->show("");
-	}
-
-
-	/**
-	 *
-	 */
 	protected function embedContent() {
 		$this->show("");
 	}
@@ -620,10 +591,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"url" => $this->h5p->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
-				"setFinished" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action="
-					. self::H5P_ACTION_SET_FINISHED,
-				"contentUserData" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action="
-					. self::H5P_ACTION_CONTENT_USER_DATA . "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
+				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENTS_USER_DATA)
+					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
 			],
 			"saveFreq" => false,
 			"user" => [
@@ -688,7 +658,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					"width" => 50,
 					"height" => 50
 				],
-				"ajaxPath" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_AJAX_CONTENT, "", true, false) . "&h5p_action=",
+				"ajaxPath" => $this->dic->ctrl()->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
+					. ilH5PActionGUI::CMD_H5P_ACTION . "=",
 				"libraryUrl" => ilH5P::EDITOR_PATH,
 				"copyrightSemantics" => $this->h5p->content_validator()->getCopyrightSemantics(),
 				"assets" => $assets,

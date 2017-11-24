@@ -11,18 +11,13 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
 
 /**
- * H5P Config GUI
+ * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
-	const CMD_DELETE_LIBRARY = "deleteLibrary";
-	const CMD_DELETE_LIBRARY_CONFIRMED = "deleteLibraryConfirmed";
+	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
 	const CMD_INFO_LIBRARY = "infoLibrary";
 	const CMD_MANAGE_LIBRARIES = "manageLibraries";
-	const CMD_REBUILD_CACHE = "rebuildCache";
-	const CMD_RESTRICT_LIBRARY = "restrictLibrary";
-	const CMD_UPGRADE_LIBRARY = "upgradeLibrary";
-	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
 	const TAB_LIBRARIES = "xhfp_libraries";
 	/**
 	 * @var ilH5P
@@ -69,15 +64,15 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		}
 
 		switch ($cmd) {
-			case self::CMD_DELETE_LIBRARY:
-			case self::CMD_DELETE_LIBRARY_CONFIRMED:
+			case self::CMD_DELETE_LIBRARY_CONFIRM:
 			case self::CMD_INFO_LIBRARY:
 			case self::CMD_MANAGE_LIBRARIES:
-			case self::CMD_REBUILD_CACHE:
-			case self::CMD_RESTRICT_LIBRARY:
-			case self::CMD_UPGRADE_LIBRARY:
-			case self::CMD_UPLOAD_LIBRARY:
 				$this->$cmd();
+				break;
+
+			case ilH5PActionGUI::CMD_H5P_ACTION:
+				$this->dic->ctrl()->setReturn($this, self::CMD_MANAGE_LIBRARIES);
+				$this->dic->ctrl()->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 
 			default:
@@ -116,11 +111,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function getUploadLibraryForm() {
 		$form = new ilPropertyFormGUI();
 
-		$form->setFormAction($this->dic->ctrl()->getFormAction($this));
+		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_UPLOAD);
+
+		$form->setFormAction($this->dic->ctrl()->getFormActionByClass(ilH5PActionGUI::class));
 
 		$form->setTitle($this->txt("xhfp_upload_library"));
 
-		$form->addCommandButton(self::CMD_UPLOAD_LIBRARY, $this->txt("xhfp_upload"));
+		$form->addCommandButton(ilH5PActionGUI::CMD_H5P_ACTION, $this->txt("xhfp_upload"));
 
 		$upload_library = new ilFileInputGUI($this->txt("xhfp_library"), "xhfp_library");
 		$upload_library->setRequired(true);
@@ -148,98 +145,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	/**
 	 *
 	 */
-	protected function uploadLibrary() {
-		$error = false;
-
-		try {
-			$form = $this->getUploadLibraryForm();
-
-			$form->setValuesByPost();
-
-			if (!$form->checkInput()) {
-				$error = true;
-				ilUtil::sendFailure($this->txt("xhfp_error_no_package"), true);
-				throw new Exception();
-			}
-
-			$h5p_file = $form->getInput("xhfp_library");
-
-			$this->h5p->setUploadedH5pPath();
-
-			// Rename upload package to package name
-			move_uploaded_file($h5p_file["tmp_name"], $this->h5p->getUploadedH5pPath());
-
-			// Validate H5P package
-			$error = (!$this->h5p->validator()->isValidPackage());
-			if ($error) {
-				throw new Exception();
-			}
-
-			$error = ($this->h5p->storage()->savePackage(NULL, NULL, true) !== false);
-			if (!$error) {
-				throw new Exception();
-			}
-		} catch (Exception $ex) {
-			if (!$error) {
-				$error = true;
-				ilUtil::sendFailure($ex->getMessage(), true);
-			}
-		} finally {
-			$this->h5p->cleanUploadedH5PPath();
-
-			if ($error) {
-				$this->dic->ctrl()->redirect($this, self::CMD_MANAGE_LIBRARIES);
-			}
-		}
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_installed"), "?"), true);
-		$this->dic->ctrl()->redirect($this, self::CMD_MANAGE_LIBRARIES);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function restrictLibrary() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
-		$restricted = filter_input(INPUT_GET, "restrict");
-
-		$this->dic->ctrl()->setParameter($this, "xhfp_library", $library_id);
-
-		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
-		if ($h5p_library !== NULL) {
-			$h5p_library->setRestricted($restricted);
-
-			$h5p_library->update();
-
-			$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
-
-			$restricted_url = $this->dic->ctrl()->getLinkTarget($this, self::CMD_RESTRICT_LIBRARY, "", true);
-
-			$this->show($this->h5p->jsonToString([
-				"url" => $restricted_url
-			]));
-		} else {
-			$this->show("");
-		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function upgradeLibrary() {
-		$this->dic->tabs()->activateTab(self::TAB_LIBRARIES);
-
-		// TODO
-
-		$this->show("TODO");
-	}
-
-
-	/**
-	 *
-	 */
 	protected function infoLibrary() {
 		$library_id = filter_input(INPUT_GET, "xhfp_library");
 
@@ -252,70 +157,25 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	/**
 	 *
 	 */
-	protected function deleteLibrary() {
+	protected function deleteLibraryConfirm() {
 		$library_id = filter_input(INPUT_GET, "xhfp_library");
 
 		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
 
-		$this->dic->ctrl()->setParameter($this, "xhfp_library", $h5p_library->getLibraryId());
+		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE);
+
+		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->dic->ctrl()->getFormAction($this));
+		$confirmation->setFormAction($this->dic->ctrl()->getFormActionByClass(ilH5PActionGUI::class));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
 
-		$confirmation->setConfirm($this->dic->language()->txt("delete"), self::CMD_DELETE_LIBRARY_CONFIRMED);
+		$confirmation->setConfirm($this->dic->language()->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
 		$confirmation->setCancel($this->dic->language()->txt("cancel"), self::CMD_MANAGE_LIBRARIES);
 
 		$this->show($confirmation->getHTML());
-	}
-
-
-	/**
-	 *
-	 */
-	protected function deleteLibraryConfirmed() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
-
-		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
-
-		$this->h5p->core()->deleteLibrary((object)[
-			"library_id" => $h5p_library->getLibraryId(),
-			"name" => $h5p_library->getName(),
-			"major_version" => $h5p_library->getMajorVersion(),
-			"minor_version" => $h5p_library->getMinorVersion()
-		]);
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
-
-		$this->dic->ctrl()->redirect($this, self::CMD_MANAGE_LIBRARIES);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function rebuildCache() {
-		$start = microtime(true);
-
-		$h5P_contents = ilH5PContent::getContentsNotFiltered();
-
-		$done = 0;
-
-		foreach ($h5P_contents as $h5P_content) {
-			$content = $this->h5p->core()->loadContent($h5P_content->getContentId());
-
-			$this->h5p->core()->filterParameters($content);
-
-			$done ++;
-
-			if ((microtime(true) - $start) > 5) {
-				break;
-			}
-		}
-
-		$this->show(sizeof($h5P_contents) - $done);
 	}
 
 
@@ -373,12 +233,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 				if ($library->runnable) {
 					$upgrades = $this->h5p->core()->getUpgrades($library, $versions);
-					$upgradeUrl = empty($upgrades) ? NULL : $this->dic->ctrl()->getLinkTarget($this, self::CMD_UPGRADE_LIBRARY, "", false, false);
+					$upgradeUrl = empty($upgrades) ? NULL : ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_UPGRADE_LIBRARY);
 
 					$restricted = ($library->restricted ? true : false);
 					$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
-					$restricted_url = $this->dic->ctrl()->getLinkTarget($this, self::CMD_RESTRICT_LIBRARY, "", true, false);
-					$this->dic->ctrl()->setParameter($this, "restrict", NULL);
+					$restricted_url = ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_RESTRICT_LIBRARY);
 				} else {
 					$upgradeUrl = NULL;
 					$restricted = NULL;
@@ -395,7 +254,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					"numLibraryDependencies" => $usage["libraries"] === 0 ? "" : $usage["libraries"],
 					"upgradeUrl" => $upgradeUrl,
 					"detailsUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_INFO_LIBRARY, "", false, false),
-					"deleteUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_DELETE_LIBRARY, "", false, false)
+					"deleteUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_DELETE_LIBRARY_CONFIRM, "", false, false)
 				];
 			}
 		}
@@ -406,7 +265,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "",NULL, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", NULL, NULL, true);
 
 		return $h5p_integration;
 	}
@@ -471,7 +330,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->dic->ctrl()->clearParameters($this);
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "",NULL, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", NULL, NULL, true);
 
 		return $h5p_integration;
 	}
@@ -485,7 +344,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function getNotCachedSettings($not_cached) {
 		return [
 			"num" => $not_cached,
-			"url" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_REBUILD_CACHE, "", true, false),
+			"url" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_REBUILD_CACHE),
 			"message" => $this->h5p->framework()
 				->t("Not all content has gotten their cache rebuilt. This is required to be able to delete libraries, and to display how many contents that uses the library."),
 			"progress" => $this->h5p->t(($not_cached
