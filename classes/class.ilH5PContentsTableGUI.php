@@ -71,7 +71,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$actions->addItem($this->dic->language()->txt("edit"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-		$actions->addItem($this->dic->language()->txt("delete"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT));
+		$actions->addItem($this->dic->language()->txt("delete"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

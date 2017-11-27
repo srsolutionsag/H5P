@@ -148,18 +148,18 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @return array
+	 * @return ilH5PLibrary|null
 	 */
-	static function getLatestLibraryVersionsArray() {
-		$h5p_libraries = self::getLatestLibraryVersions();
+	static function getCurrentLibrary() {
+		/**
+		 * @var ilH5PLibrary|null $xhfp_library
+		 */
 
-		$libraries = [];
+		$library_id = filter_input(INPUT_GET, "xhfp_library", FILTER_SANITIZE_NUMBER_INT);
 
-		foreach ($h5p_libraries as $h5p_library) {
-			$libraries[$h5p_library->getLibraryId()] = $h5p_library->getTitle();
-		}
+		$xhfp_library = self::getLibraryById($library_id);
 
-		return $libraries;
+		return $xhfp_library;
 	}
 
 

@@ -17,21 +17,70 @@
 			H5PEditor.contentId = H5PIntegration.editor.nodeVersionId;
 		}
 
+		var $library = $('input[name="xhfp_library"]');
 		var $params = $('input[name="xhfp_params"]');
 		var $editor = $("#xhfp_editor");
-		var $xhfp_edit_form = $("#form_xhfp_edit_form");
+		var $form = $("#form_xhfp_edit_form");
 
-		var library = H5PIntegration.editor.library;
-
+		var library = $library.val();
 		var params = $params.val();
 
-		var h5peditor = new ns.Editor(library, params, $editor[0]);
+		// prevent remove id edtor
+		var $tmp = $("<div></div>").appendTo($editor);
 
-		$xhfp_edit_form.submit(function () {
-			var params = h5peditor.getParams();
-			if (params !== undefined) {
-				$params.val(JSON.stringify(params));
+		var h5peditor = new ns.Editor(library, params, $tmp);
+
+		var $frame = $("iframe", $editor);
+		var frame = $frame[0];
+
+		if (library !== "") {
+			$frame.on("load", function () {
+				var appendTo = frame.contentWindow.H5PEditor.LibrarySelector.prototype.appendTo;
+
+				frame.contentWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
+					appendTo.apply(this, arguments);
+
+					var attr = this.$selector.attr;
+
+					this.$selector.attr = function (name) {
+						if (name === "disabled") {
+							// Force disable selector
+							attr.call(this, "disabled", true);
+						} else {
+							attr.apply(this, arguments);
+						}
+					}
+				}
+			});
+		}
+
+		$form.submit(function () {
+			var $button = $form.find('input[type="submit"]:focus, input[type="SUBMIT"]:focus');
+
+			// Only submit button, no cancel button
+			if ($button.attr("id") === "xhfp_edit_form_submit" || $button.attr("id") === "xhfp_edit_form_submit_top") {
+				var library = h5peditor.getLibrary();
+				var params = h5peditor.getParams();
+
+				// Prevent submit when errors
+				var errors = $(".h5p-errors", frame.contentDocument).filter(function (i, el) {
+					return ($(el).html() !== "");
+				});
+				if (errors.length > 0) {
+					// Scroll to error message
+					$("html").scrollTop($(errors[0]).offset().top);
+
+					return false;
+				}
+
+				if (library !== "" && params !== undefined) {
+					$library.val(library);
+
+					$params.val(JSON.stringify(params));
+				}
 			}
+
+			return true;
 		});
 	};
 

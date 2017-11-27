@@ -8,22 +8,17 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PActionGUI {
 
 	const CMD_H5P_ACTION = "h5pAction";
-	const H5P_ACTION_CONTENT_RESULTS = "content_results";
-	const H5P_ACTION_CONTENT_TYPE_CACHE = "content-type-cache";
-	const H5P_ACTION_CONTENT_UPGRADE_LIBRARY = "upgrade_library";
-	const H5P_ACTION_CONTENT_UPGRADE_PROGRESS = "upgrade_progress";
+	const H5P_ACTION_CONTENT_DELETE = "contentDelete";
+	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENTS = "contents";
-	const H5P_ACTION_CONTENTS_USER_DATA = "contents_user_data";
+	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
 	const H5P_ACTION_EMBED = "embed";
 	const H5P_ACTION_FILES = "files";
-	const H5P_ACTION_INSERT_CONTENT = "insert_content";
-	const H5P_ACTION_INSERTED_CONTENT = "inserted";
 	const H5P_ACTION_LIBRARIES = "libraries";
 	const H5P_ACTION_LIBRARY_DELETE = "libraryDelete";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
+	const H5P_ACTION_LIBRARY_UPGRADE = "upgradeLibrary";
 	const H5P_ACTION_LIBRARY_UPLOAD = "libraryUpload";
-	const H5P_ACTION_MY_RESULTS = "my_results";
-	const H5P_ACTION_NOPRIV_H5P_EMBED = "nopriv_h5p_embed";
 	const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
 	const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
 	const H5P_ACTION_SET_FINISHED = "setFinished";
@@ -125,21 +120,24 @@ class ilH5PActionGUI {
 	 * @param string $action
 	 */
 	protected function runAction($action) {
+		// Slashes to camelCase
 		$action = preg_replace_callback("/[-_][A-Z-az]/", function ($matches) {
 			return strtoupper($matches[0][1]);
 		}, $action);
 
 		switch ($action) {
-			case self::H5P_ACTION_CONTENT_RESULTS:
+			case self::H5P_ACTION_CONTENT_DELETE:
 			case self::H5P_ACTION_CONTENT_TYPE_CACHE:
-			case self::H5P_ACTION_CONTENT_UPGRADE_LIBRARY:
+			case self::H5P_ACTION_CONTENT_USER_DATA:
 			case self::H5P_ACTION_FILES:
 			case self::H5P_ACTION_LIBRARIES:
 			case self::H5P_ACTION_LIBRARY_DELETE:
 			case self::H5P_ACTION_LIBRARY_INSTALL:
+			case self::H5P_ACTION_LIBRARY_UPGRADE:
 			case self::H5P_ACTION_LIBRARY_UPLOAD:
 			case self::H5P_ACTION_REBUILD_CACHE:
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
+			case self::H5P_ACTION_SET_FINISHED:
 				$this->{$action}();
 				break;
 
@@ -152,8 +150,16 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	protected function contentResults() {
-		$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+	protected function contentDelete() {
+		$h5p_content = ilH5PContent::getCurrentContent();
+
+		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
+
+		$this->h5p->storage()->deletePackage($content);
+
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
+
+		$this->dic->ctrl()->returnToParent($this);
 	}
 
 
@@ -170,8 +176,67 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
+	protected function contentsUserData() {
+		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		if (!$this->isValidEditorToken($token)) {
+			return;
+		}
+
+		$content_id = filter_input(INPUT_GET, "content_id");
+		$data_id = filter_input(INPUT_GET, "data_type");
+		$sub_content_id = filter_input(INPUT_GET, "sub_content_id");
+		$data = filter_input(INPUT_POST, "data");
+		$preload = filter_input(INPUT_POST, "preload");
+		$invalidate = filter_input(INPUT_POST, "invalidate");
+		$user_id = $this->dic->user()->getId();
+
+		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
+
+		if ($data !== NULL) {
+			if ($data === "0") {
+				if ($h5p_content_user_data !== NULL) {
+					$h5p_content_user_data->delete();
+				}
+			} else {
+				$new = false;
+				if ($h5p_content_user_data === NULL) {
+					$h5p_content_user_data = new ilH5PContentUserData();
+
+					$h5p_content_user_data->setContentId($content_id);
+
+					$h5p_content_user_data->setSubContentId($sub_content_id);
+
+					$h5p_content_user_data->setDataId($data_id);
+
+					$new = true;
+				}
+
+				$h5p_content_user_data->setData($data);
+
+				$h5p_content_user_data->setPreload($preload);
+
+				$h5p_content_user_data->setInvalidate($invalidate);
+
+				if ($new) {
+					$h5p_content_user_data->create();
+				} else {
+					$h5p_content_user_data->update();
+				}
+			}
+
+			H5PCore::ajaxSuccess();
+		} else {
+			H5PCore::ajaxSuccess($h5p_content_user_data !== NULL ? $h5p_content_user_data->getData() : NULL);
+		}
+	}
+
+
+	/**
+	 *
+	 */
 	protected function files() {
 		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
@@ -199,9 +264,7 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function libraryDelete() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
-
-		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
+		$h5p_library = ilH5PLibrary::getCurrentLibrary();
 
 		$this->h5p->core()->deleteLibrary((object)[
 			"library_id" => $h5p_library->getLibraryId(),
@@ -221,6 +284,7 @@ class ilH5PActionGUI {
 	 */
 	protected function libraryInstall() {
 		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+
 		$name = filter_input(INPUT_GET, "id");
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, $token, $name);
@@ -232,12 +296,17 @@ class ilH5PActionGUI {
 	 */
 	protected function libraryUpload() {
 		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+
 		$file_path = $_FILES["xhfp_library"]["tmp_name"];
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
 
-		ob_start();
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
-		ob_end_clean();
+		if ($file_path !== "") {
+			ob_start(); // prevent output from editor
+			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
+			ob_end_clean();
+		} else {
+			$this->h5p->framework()->setErrorMessage($this->txt("xhfp_error_no_package"));
+		}
 
 		$this->dic->ctrl()->returnToParent($this);
 	}
@@ -273,10 +342,9 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function restrictLibrary() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
 		$restricted = filter_input(INPUT_GET, "restrict");
 
-		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
+		$h5p_library = ilH5PLibrary::getCurrentLibrary();
 
 		$h5p_library->setRestricted($restricted);
 
@@ -295,8 +363,78 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	protected function upgradeLibrary() {
+	protected function setFinished() {
+		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		if (!$this->isValidEditorToken($token)) {
+			return;
+		}
 
+		$content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
+		$user_id = $this->dic->user()->getId();
+		$score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);
+		$max_score = filter_input(INPUT_POST, "maxScore", FILTER_VALIDATE_INT);
+		$opened = filter_input(INPUT_POST, "opened", FILTER_VALIDATE_INT);
+		$finished = filter_input(INPUT_POST, "finished", FILTER_VALIDATE_INT);
+		$time = filter_input(INPUT_POST, "time", FILTER_VALIDATE_INT);
+
+		$h5p_result = ilH5PResult::getResultByUser($user_id, $content_id);
+
+		$new = false;
+		if ($h5p_result === NULL) {
+			$h5p_result = new ilH5PResult();
+
+			$h5p_result->setContentId($content_id);
+
+			$new = true;
+		}
+
+		$h5p_result->setScore($score);
+
+		$h5p_result->setMaxScore($max_score);
+
+		$h5p_result->setOpened($opened);
+
+		$h5p_result->setFinished($finished);
+
+		if ($time !== NULL) {
+			$h5p_result->setTime($time);
+		}
+
+		if ($new) {
+			$h5p_result->create();
+		} else {
+			$h5p_result->update();
+		}
+
+		H5PCore::ajaxSuccess();
+	}
+
+
+	/**
+	 *
+	 */
+	protected function upgradeLibrary() {
+		// TODO
+	}
+
+
+	/**
+	 * Validates security tokens used for the editor
+	 *
+	 * @param string $token
+	 *
+	 * @return bool
+	 */
+	private function isValidEditorToken($token) {
+		$isValidToken = $this->h5p->editor_ajax()->validateEditorToken($token);
+
+		if (!$isValidToken) {
+			H5PCore::ajaxError($this->h5p->t("Invalid security token."), "INVALID_TOKEN");
+
+			return false;
+		}
+
+		return true;
 	}
 
 

@@ -58,7 +58,7 @@ class ilObjH5P extends ilObjectPlugin {
 		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
 
 		foreach ($h5p_contents as $h5p_content) {
-			$content = ilH5P::getInstance()->core()->loadContent($h5p_content->getContentId());
+			$content = $h5p->core()->loadContent($h5p_content->getContentId());
 
 			$h5p->storage()->deletePackage($content);
 		}
@@ -71,6 +71,23 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_copy_id
 	 */
 	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
-		// TODO
+		$h5p = ilH5P::getInstance();
+
+		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
+
+		foreach ($h5p_contents as $h5p_content) {
+			/**
+			 * @var ilH5PContent $h5p_content_copy
+			 */
+
+			$h5p_content_copy = $h5p_content->copy();
+
+			$h5p_content_copy->setObjId($new_obj->getId());
+
+			$h5p_content_copy->create();
+
+			$h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+			// TODO May copy content user data or result?
+		}
 	}
 }

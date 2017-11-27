@@ -676,6 +676,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		foreach ($h5p_user_datas as $h5p_user_data) {
 			$h5p_user_data->delete();
 		}
+
+		$h5p_results = ilH5PResult::getResultsByContent($content_id);
+		foreach ($h5p_results as $h5p_result) {
+			$h5p_result->delete();
+		}
 	}
 
 

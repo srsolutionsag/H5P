@@ -24,5 +24,7 @@
 
 	ilH5POption::updateDB();
 
+	ilH5PResult::updateDB();
+
 	ilH5PTmpFile::updateDB();
 ?>

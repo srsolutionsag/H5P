@@ -17,6 +17,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PResult.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PTmpFile.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
@@ -50,11 +51,11 @@ class ilH5P {
 	/**
 	 * Core path
 	 */
-	const CORE_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
+	const CORE_PATH = "/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
 	/**
 	 * Editor path
 	 */
-	const EDITOR_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-editor/";
+	const EDITOR_PATH = "/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-editor/";
 	/**
 	 * CSV seperator
 	 */
@@ -79,6 +80,10 @@ class ilH5P {
 	 * @var ilH5PEditorStorage
 	 */
 	protected $h5p_editor_storage = NULL;
+	/**
+	 * @var H5PFileStorage
+	 */
+	protected $h5p_filesystem = NULL;
 	/**
 	 * @var ilH5PFramework
 	 */
@@ -175,6 +180,18 @@ class ilH5P {
 		}
 
 		return $this->h5p_editor_storage;
+	}
+
+
+	/**
+	 * @return H5PFileStorage
+	 */
+	function filesystem() {
+		if ($this->h5p_filesystem === NULL) {
+			$this->h5p_filesystem = $this->core()->fs;
+		}
+
+		return $this->h5p_filesystem;
 	}
 
 
@@ -364,11 +381,10 @@ class ilH5P {
 	 * @param string      $title
 	 * @param string|null $content_type
 	 * @param int|null    $content_id
-	 * @param bool        $admin
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $title = "", $content_type = "div", $content_id = NULL, $admin = false) {
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $title = "", $content_type = "div", $content_id = NULL) {
 		$h5p_tmpl = $this->pl->getTemplate("H5PIntegration.html");
 
 		$h5p_tmpl->setCurrentBlock("integrationBlock");
@@ -394,27 +410,29 @@ class ilH5P {
 			$h5p_tmpl->parseCurrentBlock();
 		}
 
-		if ($content_id !== NULL) {
-			switch ($content_type) {
-				case "div":
-					$h5p_tmpl->setCurrentBlock("contentDivBlock");
-					$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
-					$h5p_tmpl->parseCurrentBlock();
-					break;
+		switch ($content_type) {
+			case "div":
+				$h5p_tmpl->setCurrentBlock("contentDivBlock");
+				$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+				$h5p_tmpl->parseCurrentBlock();
+				break;
 
-				case "iframe":
-					$h5p_tmpl->setCurrentBlock("contentFrameBlock");
-					$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
-					$h5p_tmpl->parseCurrentBlock();
-					break;
+			case "iframe":
+				$h5p_tmpl->setCurrentBlock("contentFrameBlock");
+				$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
+				$h5p_tmpl->parseCurrentBlock();
+				break;
 
-				default:
-					break;
-			}
-		}
+			case "editor":
+				$h5p_tmpl->touchBlock("editorBlock");
+				break;
 
-		if ($admin) {
-			$h5p_tmpl->touchBlock("adminBlock");
+			case "admin":
+				$h5p_tmpl->touchBlock("adminBlock");
+				break;
+
+			default:
+				break;
 		}
 
 		return $h5p_tmpl->get();

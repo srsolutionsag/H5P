@@ -80,6 +80,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		$db->dropTable(ilH5POption::TABLE_NAME, false);
 
+		$db->dropTable(ilH5PResult::TABLE_NAME, false);
+
 		$db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
 	}
 }

@@ -146,9 +146,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function infoLibrary() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
+		$h5p_library = ilH5PLibrary::getCurrentLibrary();
 
-		$admin_integration = $this->getH5PLibraryInfoIntegration($library_id);
+		$admin_integration = $this->getH5PLibraryInfoIntegration($h5p_library->getLibraryId());
 
 		$this->show($admin_integration);
 	}
@@ -158,9 +158,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deleteLibraryConfirm() {
-		$library_id = filter_input(INPUT_GET, "xhfp_library");
-
-		$h5p_library = ilH5PLibrary::getLibraryById($library_id);
+		$h5p_library = ilH5PLibrary::getCurrentLibrary();
 
 		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE);
 
@@ -233,7 +231,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 				if ($library->runnable) {
 					$upgrades = $this->h5p->core()->getUpgrades($library, $versions);
-					$upgradeUrl = empty($upgrades) ? NULL : ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_UPGRADE_LIBRARY);
+					$upgradeUrl = empty($upgrades) ? NULL : ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_LIBRARY_UPGRADE);
 
 					$restricted = ($library->restricted ? true : false);
 					$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
@@ -265,7 +263,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", NULL, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", "admin", NULL);
 
 		return $h5p_integration;
 	}
@@ -330,7 +328,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->dic->ctrl()->clearParameters($this);
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", NULL, NULL, true);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", "admin", NULL);
 
 		return $h5p_integration;
 	}

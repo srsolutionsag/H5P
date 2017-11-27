@@ -157,7 +157,7 @@ class ilH5PContent extends ActiveRecord {
 		 * @var ilH5PContent|null $h5p_content
 		 */
 
-		$content_id = filter_input(INPUT_GET, "xhfp_content");
+		$content_id = filter_input(INPUT_GET, "xhfp_content", FILTER_SANITIZE_NUMBER_INT);
 
 		$h5p_content = self::getContentById($content_id);
 
@@ -364,7 +364,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @con_length       8
 	 * @con_is_notnull   true
 	 */
-	protected $obj_id;
+	protected $obj_id = NULL;
 	/**
 	 * @var int
 	 *
@@ -471,7 +471,9 @@ class ilH5PContent extends ActiveRecord {
 
 		$this->user_id = $DIC->user()->getId();
 
-		$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
+		if ($this->obj_id === NULL) {
+			$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
+		}
 
 		$this->sort = (sizeof(self::getContentsByObjectId($this->obj_id)) + 1);
 

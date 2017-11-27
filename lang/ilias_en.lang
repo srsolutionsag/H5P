@@ -19,6 +19,7 @@ xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
 xhfp_please_select#:#please select
+xhfp_saved_content#:#%s saved
 xhfp_show_contents#:#Show contents
 xhfp_upload#:#Upload
 xhfp_upload_library#:#Upload library

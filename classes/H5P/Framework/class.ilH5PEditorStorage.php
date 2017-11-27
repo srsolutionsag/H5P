@@ -108,9 +108,9 @@ class ilH5PEditorStorage implements H5peditorStorage {
 				$library = (object)[
 					"name" => $h5p_library->getName(),
 					"title" => $h5p_library->getTitle(),
-					"major_version" => $h5p_library->getMajorVersion(),
-					"minor_version" => $h5p_library->getMinorVersion(),
-					"tutorial_url" => $h5p_library->getTutorialUrl(),
+					"majorVersion" => $h5p_library->getMajorVersion(),
+					"minorVersion" => $h5p_library->getMinorVersion(),
+					"tutorialUrl" => $h5p_library->getTutorialUrl(),
 					"restricted" => ($super_user ? false : $h5p_library->isRestricted())
 				];
 
@@ -177,10 +177,10 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * Marks a file for later cleanup, useful when files are not instantly cleaned
 	 * up. E.g. for files that are uploaded through the editor.
 	 *
-	 * @param H5peditorFile
-	 * @param $content_id
+	 * @param H5peditorFile $file
+	 * @param               $content_id
 	 */
-	public static function markFileForCleanup($file, $content_id) {
+	public static function markFileForCleanup($file, $content_id = NULL) {
 		$path = ilH5P::getInstance()->getH5PFolder();
 
 		if (empty($content_id)) {
@@ -189,6 +189,8 @@ class ilH5PEditorStorage implements H5peditorStorage {
 			$path .= "content/" . $content_id . "/";
 		}
 		$path .= $file->getType() . "s/" . $file->getName();
+
+		// TODO wrong path on reedit
 
 		$h5p_tmp_file = new ilH5PTmpFile();
 
