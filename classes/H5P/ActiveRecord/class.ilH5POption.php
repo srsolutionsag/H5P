@@ -72,9 +72,11 @@ class ilH5POption extends ActiveRecord {
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "value":
-				return ilH5P::getInstance()->jsonToString($this->{$field_name});
+				return json_encode($field_value);
 				break;
 
 			default:
@@ -92,7 +94,7 @@ class ilH5POption extends ActiveRecord {
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
 			case "value":
-				return ilH5P::getInstance()->stringToJson($field_value);
+				return json_decode($field_value);
 				break;
 
 			default:

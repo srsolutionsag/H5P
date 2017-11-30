@@ -14,11 +14,9 @@ xhfp_deleted_content#:#%s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
 xhfp_deleted_library#:#%s deleted
 xhfp_edit_content#:#Edit content
-xhfp_error_no_package#:#Please select a H5P file!
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
-xhfp_please_select#:#please select
 xhfp_saved_content#:#%s saved
 xhfp_show_contents#:#Show contents
 xhfp_upload#:#Upload

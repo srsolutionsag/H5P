@@ -72,9 +72,11 @@ class ilH5PTmpFile extends ActiveRecord {
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "created_at":
-				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				return ilH5P::getInstance()->timestampToDbDate($field_value);
 				break;
 
 			default:

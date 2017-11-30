@@ -10,7 +10,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
  */
 class ilH5PFramework implements H5PFrameworkInterface {
 
-	protected $messages = [
+	private $messages = [
 		"error" => [],
 		"info" => []
 	];
@@ -452,31 +452,31 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		}
 
 		if (isset($library_data["embedTypes"])) {
-			$h5p_library->setEmbedTypesArray($library_data["embedTypes"]);
+			$h5p_library->setEmbedTypes($this->h5p->joinCsv($library_data["embedTypes"]));
 		} else {
 			$h5p_library->setEmbedTypes("");
 		}
 
 		if (isset($library_data["preloadedJs"])) {
-			$h5p_library->setPreloadedJsArray(array_map(function ($preloaded_js) {
+			$h5p_library->setPreloadedJs($this->h5p->joinCsv(array_map(function ($preloaded_js) {
 				return $preloaded_js["path"];
-			}, $library_data["preloadedJs"]));
+			}, $library_data["preloadedJs"])));
 		} else {
 			$h5p_library->setPreloadedJs("");
 		}
 
 		if (isset($library_data["preloadedCss"])) {
-			$h5p_library->setPreloadedCssArray(array_map(function ($preloaded_css) {
+			$h5p_library->setPreloadedCss($this->h5p->joinCsv(array_map(function ($preloaded_css) {
 				return $preloaded_css["path"];
-			}, $library_data["preloadedCss"]));
+			}, $library_data["preloadedCss"])));
 		} else {
 			$h5p_library->setPreloadedCss("");
 		}
 
 		if (isset($library_data["dropLibraryCss"])) {
-			$h5p_library->setDropLibraryCssArray(array_map(function ($drop_library_css) {
+			$h5p_library->setDropLibraryCss($this->h5p->joinCsv(array_map(function ($drop_library_css) {
 				return $drop_library_css["machineName"];
-			}, $library_data["dropLibraryCss"]));
+			}, $library_data["dropLibraryCss"])));
 		} else {
 			$h5p_library->setDropLibraryCss("");
 		}
@@ -617,7 +617,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
 
 		foreach ($h5p_user_datas as $h5p_user_data) {
-			$h5p_user_data->setDataJson(NULL);
+			$h5p_user_data->setData("RESET");
 
 			$h5p_user_data->update();
 		}
@@ -711,14 +711,14 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 		$this->deleteLibraryUsage($content_id);
 
-		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
-		foreach ($h5p_user_datas as $h5p_user_data) {
-			$h5p_user_data->delete();
-		}
-
 		$h5p_results = ilH5PResult::getResultsByContent($content_id);
 		foreach ($h5p_results as $h5p_result) {
 			$h5p_result->delete();
+		}
+
+		$h5p_user_datas = ilH5PContentUserData::getUserDatasByContent($content_id);
+		foreach ($h5p_user_datas as $h5p_user_data) {
+			$h5p_user_data->delete();
 		}
 	}
 
@@ -802,7 +802,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$content = - 1;
 		}
 
-		$libraries = sizeof(ilH5PLibraryDependencies::getRequiredDependencies($library_id));
+		$libraries = ilH5PLibraryDependencies::getLibraryUsage($library_id);
 
 		return [
 			"content" => $content,
@@ -931,7 +931,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$h5p_library = ilH5PLibrary::getLibraryByVersion($machine_name, $major_version, $minor_version);
 
 		if ($h5p_library !== NULL) {
-			$h5p_library->setSemanticsArray($semantics);
+			$h5p_library->setSemantics(json_encode($semantics));
 
 			$h5p_library->update();
 		}
@@ -979,10 +979,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		H5PCore::deleteFileTree($this->h5p->getH5PFolder() . "libraries/" . $library->name . "-" . $library->major_version . "."
 			. $library->minor_version);
 
-		$h5p_dependencies = ilH5PLibraryDependencies::getDependencies($library->library_id);
-		foreach ($h5p_dependencies as $h5p_dependency) {
-			$h5p_dependency->delete();
-		}
+		$this->deleteLibraryDependencies($library->library_id);
 
 		$h5p_languages = ilH5PLibraryLanguage::getLanguagesByLibrary($library->library_id);
 		foreach ($h5p_languages as $h5p_language) {
@@ -1383,40 +1380,32 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->setSummary($content_type->summary);
 
-			$library_hub_cache->setCreatedAt(strtotime($content_type->createdAt));
+			$library_hub_cache->setCreatedAt($this->h5p->dbDateToTimestamp($content_type->createdAt));
 
-			$library_hub_cache->setUpdatedAt(strtotime($content_type->updatedAt));
+			$library_hub_cache->setUpdatedAt($this->h5p->dbDateToTimestamp($content_type->updatedAt));
 
 			$library_hub_cache->setIsRecommended($content_type->isRecommended);
 
 			$library_hub_cache->setPopularity($content_type->popularity);
 
-			$library_hub_cache->setScreenshotsArray($content_type->screenshots);
+			$library_hub_cache->setScreenshots(json_encode($content_type->screenshots));
 
 			if (isset($content_type->license)) {
-				$library_hub_cache->setLicenseArray($content_type->license);
-			} else {
-				$library_hub_cache->setLicense("");
+				$library_hub_cache->setLicense(json_encode($content_type->license));
 			}
 
 			$library_hub_cache->setExample($content_type->example);
 
 			if (isset($content_type->tutorial)) {
 				$library_hub_cache->setTutorial($content_type->tutorial);
-			} else {
-				$library_hub_cache->setTutorial("");
 			}
 
 			if (isset($content_type->keywords)) {
-				$library_hub_cache->setKeywordsArray($content_type->keywords);
-			} else {
-				$library_hub_cache->setKeywords("");
+				$library_hub_cache->setKeywords(json_encode($content_type->keywords));
 			}
 
 			if (isset($content_type->categories)) {
-				$library_hub_cache->setCategoriesArray($content_type->categories);
-			} else {
-				$library_hub_cache->setCategories("");
+				$library_hub_cache->setCategories(json_encode($content_type->categories));
 			}
 
 			$library_hub_cache->setOwner($content_type->owner);

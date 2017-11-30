@@ -133,9 +133,11 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "drop_css":
-				return ($this->{$field_name} ? 1 : 0);
+				return ($field_value ? 1 : 0);
 				break;
 
 			default:

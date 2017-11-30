@@ -136,7 +136,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_fieldtype    clob
 	 * @con_is_notnull   true
 	 */
-	protected $data = "null";
+	protected $data = "RESET";
 	/**
 	 * @var bool
 	 *
@@ -174,36 +174,22 @@ class ilH5PContentUserData extends ActiveRecord {
 
 
 	/**
-	 * @return mixed
-	 */
-	public function getDataJson() {
-		return ilH5P::getInstance()->stringToJson($this->data);
-	}
-
-
-	/**
-	 * @param mixed $data
-	 */
-	public function setDataJson($data) {
-		$this->data = ilH5P::getInstance()->jsonToString($data);
-	}
-
-
-	/**
 	 * @param string $field_name
 	 *
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "preload":
 			case "invalidate":
-				return ($this->{$field_name} ? 1 : 0);
+				return ($field_value ? 1 : 0);
 				break;
 
 			case "created_at":
 			case "updated_at":
-				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				return ilH5P::getInstance()->timestampToDbDate($field_value);
 				break;
 
 			default:

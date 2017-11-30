@@ -105,22 +105,6 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 
 
 	/**
-	 * @return array
-	 */
-	public function getTranslationArray() {
-		return ilH5P::getInstance()->stringToJson($this->translation);
-	}
-
-
-	/**
-	 * @param array $translation
-	 */
-	public function setTranslationArray(array $translation) {
-		$this->translation = ilH5P::getInstance()->jsonToString($translation);
-	}
-
-
-	/**
 	 * @return int
 	 */
 	public function getId() {

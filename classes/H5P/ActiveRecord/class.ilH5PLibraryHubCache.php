@@ -70,7 +70,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @con_length       8
 	 * @con_is_notnull   true
 	 */
-	protected $major_version;
+	protected $major_version = 0;
 	/**
 	 * @var int
 	 *
@@ -97,7 +97,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @con_length       8
 	 * @con_is_notnull   true
 	 */
-	protected $h5p_major_version;
+	protected $h5p_major_version = 0;
 	/**
 	 * @var int
 	 *
@@ -190,7 +190,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @con_fieldtype   text
 	 * @con_is_notnull  true
 	 */
-	protected $license = "[]";
+	protected $license = "{}";
 	/**
 	 * @var string
 	 *
@@ -237,83 +237,21 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 
 
 	/**
-	 * @return string[]
-	 */
-	public function getScreenshotsArray() {
-		return ilH5P::getInstance()->stringToJson($this->screenshots);
-	}
-
-
-	/**
-	 * @param string[] $screenshots
-	 */
-	public function setScreenshotsArray(array $screenshots) {
-		$this->screenshots = ilH5P::getInstance()->jsonToString($screenshots);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getLicenseArray() {
-		return ilH5P::getInstance()->stringToJson($this->license);
-	}
-
-
-	/**
-	 * @param string[] $screenshots
-	 */
-	public function setLicenseArray($license) {
-		$this->license = ilH5P::getInstance()->jsonToString($license);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getKeywordsArray() {
-		return ilH5P::getInstance()->stringToJson($this->keywords);
-	}
-
-
-	/**
-	 * @param string[] $keywords
-	 */
-	public function setKeywordsArray(array $keywords) {
-		$this->keywords = ilH5P::getInstance()->jsonToString($keywords);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getCategoriesArray() {
-		return ilH5P::getInstance()->stringToJson($this->categories);
-	}
-
-
-	/**
-	 * @param string[] $categories
-	 */
-	public function setCategoriesArray(array $categories) {
-		$this->categories = ilH5P::getInstance()->jsonToString($categories);
-	}
-
-
-	/**
 	 * @param string $field_name
 	 *
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "is_recommended":
-				return ($this->{$field_name} ? 1 : 0);
+				return ($field_value ? 1 : 0);
 				break;
 
 			case "created_at":
 			case "updated_at":
-				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				return ilH5P::getInstance()->timestampToDbDate($field_value);
 				break;
 
 			default:

@@ -277,7 +277,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @con_fieldtype   clob
 	 * @con_is_notnull  true
 	 */
-	protected $parameters = "[]";
+	protected $parameters = "";
 	/**
 	 * @var string
 	 *
@@ -377,63 +377,17 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @return array
-	 */
-	public function getParametersArray() {
-		return ilH5P::getInstance()->stringToJson($this->parameters);
-	}
-
-
-	/**
-	 * @param array $parameters
-	 */
-	public function setParametersArray(array $parameters) {
-		$this->parameters = ilH5P::getInstance()->jsonToString($parameters);
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getFilteredArray() {
-		return ilH5P::getInstance()->stringToJson($this->filtered);
-	}
-
-
-	/**
-	 * @param array $filtered
-	 */
-	public function setFilteredArray(array $filtered) {
-		$this->filtered = ilH5P::getInstance()->jsonToString($filtered);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getKeywordsArray() {
-		return ilH5P::getInstance()->stringToJson($this->keywords);
-	}
-
-
-	/**
-	 * @param string[] $keywords
-	 */
-	public function setKeywordsArray(array $keywords) {
-		$this->keywords = ilH5P::getInstance()->jsonToString($keywords);
-	}
-
-
-	/**
 	 * @param string $field_name
 	 *
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "created_at":
 			case "updated_at":
-				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				return ilH5P::getInstance()->timestampToDbDate($field_value);
 				break;
 
 			default:

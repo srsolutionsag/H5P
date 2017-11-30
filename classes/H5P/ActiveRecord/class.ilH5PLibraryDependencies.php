@@ -19,7 +19,7 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 
 
 	/**
-	 * @param int         $library_id
+	 * @param int $library_id
 	 *
 	 * @return ilH5PLibraryDependencies[]
 	 */
@@ -37,20 +37,20 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 
 
 	/**
-	 * @param int $required_library_id
+	 * @param int $library_id
 	 *
-	 * @return ilH5PLibraryDependencies[]
+	 * @return int
 	 */
-	static function getRequiredDependencies($required_library_id) {
+	static function getLibraryUsage($library_id) {
 		/**
 		 * @var ilH5PLibraryDependencies[] $h5p_library_dependencies
 		 */
 
 		$h5p_library_dependencies = self::where([
-			"required_library_id" => $required_library_id
+			"required_library_id" => $library_id
 		])->get();
 
-		return $h5p_library_dependencies;
+		return sizeof($h5p_library_dependencies);
 	}
 
 

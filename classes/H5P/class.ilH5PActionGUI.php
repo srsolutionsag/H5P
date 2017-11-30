@@ -326,7 +326,7 @@ class ilH5PActionGUI {
 			}
 		}
 
-		echo $this->h5p->jsonToString(sizeof($h5P_contents) - $done);
+		echo json_encode(sizeof($h5P_contents) - $done);
 	}
 
 
@@ -346,7 +346,7 @@ class ilH5PActionGUI {
 
 		$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
 
-		echo $this->h5p->jsonToString([
+		echo json_encode([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
 		]);
 	}

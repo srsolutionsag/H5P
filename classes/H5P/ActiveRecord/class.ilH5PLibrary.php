@@ -216,7 +216,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @con_length     8
 	 * @con_is_notnull true
 	 */
-	protected $major_version;
+	protected $major_version = 0;
 	/**
 	 * @var int
 	 *
@@ -302,7 +302,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @con_fieldtype  text
 	 * @con_is_notnull true
 	 */
-	protected $semantics = "[]";
+	protected $semantics = "";
 	/**
 	 * @var string
 	 *
@@ -324,102 +324,24 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
-	 * @return string[]
-	 */
-	public function getEmbedTypesArray() {
-		return ilH5P::getInstance()->splitCsv($this->embed_types);
-	}
-
-
-	/**
-	 * @param string[] $embed_types
-	 */
-	public function setEmbedTypesArray(array $embed_types) {
-		$this->embed_types = ilH5P::getInstance()->joinCsv($embed_types);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getPreloadedJsArray() {
-		return ilH5P::getInstance()->splitCsv($this->preloaded_js);
-	}
-
-
-	/**
-	 * @param string[] $preloaded_js
-	 */
-	public function setPreloadedJsArray(array $preloaded_js) {
-		$this->preloaded_js = ilH5P::getInstance()->joinCsv($preloaded_js);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getPreloadedCssArray() {
-		return ilH5P::getInstance()->splitCsv($this->preloaded_css);
-	}
-
-
-	/**
-	 * @param string[] $preloaded_css
-	 */
-	public function setPreloadedCssArray(array $preloaded_css) {
-		$this->preloaded_css = ilH5P::getInstance()->joinCsv($preloaded_css);
-	}
-
-
-	/**
-	 * @return string[]
-	 */
-	public function getDropLibraryCssArray() {
-		return ilH5P::getInstance()->splitCsv($this->drop_library_css);
-	}
-
-
-	/**
-	 * @param string[] $drop_library_css
-	 */
-	public function setDropLibraryCssArray(array $drop_library_css) {
-		$this->drop_library_css = ilH5P::getInstance()->joinCsv($drop_library_css);
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getSemanticsArray() {
-		return ilH5P::getInstance()->stringToJson($this->semantics);
-	}
-
-
-	/**
-	 * @param array $semantics
-	 */
-	public function setSemanticsArray(array $semantics) {
-		$this->semantics = ilH5P::getInstance()->jsonToString($semantics);
-	}
-
-
-	/**
 	 * @param string $field_name
 	 *
 	 * @return mixed|null
 	 */
 	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
 		switch ($field_name) {
 			case "runnable":
 			case "restricted":
 			case "fullscreen":
 			case "has_icon":
-				return ($this->{$field_name} ? 1 : 0);
+				return ($field_value ? 1 : 0);
 				break;
 
 			case "created_at":
 			case "updated_at":
-				return ilH5P::getInstance()->timestampToDbDate($this->{$field_name});
+				return ilH5P::getInstance()->timestampToDbDate($field_value);
 				break;
 
 			default:

@@ -14,11 +14,9 @@ xhfp_deleted_content#:#%s gelöscht
 xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
 xhfp_deleted_library#:#%s gelöscht
 xhfp_edit_content#:#Inhalt bearbeiten
-xhfp_error_no_package#:#Bitte wählen Sie eine H5P-Datei aus!
 xhfp_installed_libraries#:#Installierte Bibliotheken
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
-xhfp_please_select#:#bitte wählen
 xhfp_saved_content#:#%s gespeichert
 xhfp_show_contents#:#Inhalte anzeigen
 xhfp_upload#:#Hochladen

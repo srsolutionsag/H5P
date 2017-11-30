@@ -106,8 +106,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				break;
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
-				$this->dic->ctrl()->setReturn($this, self::CMD_MANAGE_CONTENTS);
-				$this->dic->ctrl()->forwardCommand(ilH5PActionGUI::getInstance());
+				$this->ctrl->setReturn($this, self::CMD_MANAGE_CONTENTS);
+				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 		}
 	}
@@ -122,13 +122,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			exit();
 		} else {
-			$main_tmpl = $this->dic->ui()->mainTemplate();
+			$this->tpl->setTitle($this->object->getTitle());
 
-			$main_tmpl->setTitle($this->object->getTitle());
+			$this->tpl->setDescription($this->object->getDescription());
 
-			$main_tmpl->setDescription($this->object->getDescription());
-
-			$main_tmpl->setContent($html);
+			$this->tpl->setContent($html);
 		}
 	}
 
@@ -157,24 +155,24 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function manageContents() {
-		$main_tmpl = $this->dic->ui()->mainTemplate();
+		$toolbar = $this->dic->toolbar();
 
-		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$add_content = ilLinkButton::getInstance();
 		$add_content->setCaption($this->txt("xhfp_add_content"), false);
 		$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
 
-		$this->dic->toolbar()->addButtonInstance($add_content);
+		$toolbar->addButtonInstance($add_content);
 
 		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
 
-		$main_tmpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
-		$main_tmpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
-		$main_tmpl->addOnLoadCode('xoctWaiter.init("waiter");');
+		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
+		$this->tpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
+		$this->tpl->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		$main_tmpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
-		$main_tmpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
+		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
+		$this->tpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
 
 		$this->show($table->getHTML());
 	}
@@ -230,13 +228,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
-		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->dic->language()->txt($h5p_content
+		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->lng->txt($h5p_content
 		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
 
 		$form->setPreventDoubleSubmission(false);
 
-		$title = new ilTextInputGUI($this->dic->language()->txt("title"), "xhfp_title");
+		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($content["title"]);
 		$form->addItem($title);
@@ -266,7 +264,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function addContent() {
-		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$form = $this->getEditContentForm();
 
@@ -283,7 +281,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 			$this->show($form->getHTML());
 
@@ -315,7 +313,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			$this->h5p->core()->filterParameters($content);
 
-			$params = $this->h5p->stringToJson($content["params"]);
+			$params = json_decode($content["params"], true);
 
 			$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
 
@@ -328,7 +326,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function editContent() {
-		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$form = $this->getEditContentForm();
 
@@ -345,7 +343,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 			$this->show($form->getHTML());
 
@@ -355,7 +353,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$h5p_content = ilH5PContent::getCurrentContent();
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
-		$oldParams = $this->h5p->stringToJson($content["params"]);
+		$oldParams = json_decode($content["params"], true);
 
 		$title = $form->getInput("xhfp_title");
 		$content["title"] = $title;
@@ -367,7 +365,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->h5p->core()->filterParameters($content);
 
-		$params = $this->h5p->stringToJson($content["params"]);
+		$params = json_decode($content["params"], true);
 
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
@@ -381,11 +379,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteContentConfirm() {
-		$this->dic->tabs()->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE);
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE);
 
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
@@ -395,8 +393,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
-		$confirmation->setConfirm($this->dic->language()->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->dic->language()->txt("cancel"), self::CMD_MANAGE_CONTENTS);
+		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->lng->txt("cancel"), self::CMD_MANAGE_CONTENTS);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -406,7 +404,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function showContents() {
-		$this->dic->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
 		$this->show("");
 	}
@@ -416,21 +414,23 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function showContent() {
-		$this->dic->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
+		$toolbar = $this->dic->toolbar();
+
+		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->dic->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$edit_content = ilLinkButton::getInstance();
 		$edit_content->setCaption($this->lng->txt("edit"), false);
 		$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
-		$this->dic->toolbar()->addButtonInstance($edit_content);
+		$toolbar->addButtonInstance($edit_content);
 
 		$delete_content = ilLinkButton::getInstance();
 		$delete_content->setCaption($this->lng->txt("delete"), false);
 		$delete_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
-		$this->dic->toolbar()->addButtonInstance($delete_content);
+		$toolbar->addButtonInstance($delete_content);
 
 		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
 	}
@@ -460,17 +460,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->setFormAction($this->ctrl->getFormAction($this));
 
-		$form->setTitle($this->dic->language()->txt(self::TAB_SETTINGS));
+		$form->setTitle($this->lng->txt(self::TAB_SETTINGS));
 
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->dic->language()->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->lng->txt("save"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
 
-		$title = new ilTextInputGUI($this->dic->language()->txt("title"), "xhfp_title");
+		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($this->object->getTitle());
 		$form->addItem($title);
 
-		$description = new ilTextAreaInputGUI($this->dic->language()->txt("description"), "xhfp_description");
+		$description = new ilTextAreaInputGUI($this->lng->txt("description"), "xhfp_description");
 		$description->setValue($this->object->getLongDescription());
 		$form->addItem($description);
 
@@ -482,7 +482,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function settings() {
-		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+		$this->tabs_gui->activateTab(self::TAB_SETTINGS);
 
 		$form = $this->getSettingsForm();
 
@@ -494,7 +494,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function settingsStore() {
-		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+		$this->tabs_gui->activateTab(self::TAB_SETTINGS);
 
 		$form = $this->getSettingsForm();
 
@@ -514,7 +514,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->object->update();
 
-		ilUtil::sendSuccess($this->dic->language()->txt("settings_saved"), true);
+		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
 
 		$this->show($form->getHTML());
 
@@ -548,7 +548,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$embed = "editor";
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), $title, $embed, $content_id);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), $title, $embed, $content_id);
 
 		return $h5p_integration;
 	}
@@ -632,7 +632,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return array
 	 */
 	protected function getContentIntegration(&$content) {
-		$this->dic->ctrl()->setParameter($this, "xhfp_content", $content["content_id"]);
+		$user = $this->dic->user();
+
+		$this->ctrl->setParameter($this, "xhfp_content", $content["content_id"]);
 
 		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
@@ -642,11 +644,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"library" => H5PCore::libraryToString($content["library"]),
 			"jsonContent" => $safe_parameters,
 			"fullScreen" => $content["library"]["fullscreen"],
-			"exportUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_EXPORT_CONTENT, "", true, false),
-			"embedCode" => '<iframe src="' . $this->dic->ctrl()->getLinkTarget($this, self::CMD_EMBED_CONTENT, "", true, false)
+			"exportUrl" => $this->ctrl->getLinkTarget($this, self::CMD_EXPORT_CONTENT, "", true, false),
+			"embedCode" => '<iframe src="' . $this->ctrl->getLinkTarget($this, self::CMD_EMBED_CONTENT, "", true, false)
 				. '" width=":w" height=":h" frameborder="0" allowfullscreen="allowfullscreen"></iframe>',
-			"resizeCode" => '<script src="' . ilH5P::CORE_PATH . 'js/h5p-resizer.js" charset="UTF-8"></script>',
-			"url" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_SHOW_CONTENT, "", false, false),
+			"resizeCode" => '<script src="/' . ilH5P::CORE_PATH . 'js/h5p-resizer.js" charset="UTF-8"></script>',
+			"url" => $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENT, "", false, false),
 			"title" => $content["title"],
 			"displayOptions" => $this->h5p->core()->getDisplayOptionsForView($content["disable"], $author_id),
 			"contentUserData" => [
@@ -656,7 +658,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			]
 		];
 
-		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($this->dic->user()->getId(), $content["id"]);
+		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user->getId(), $content["id"]);
 		foreach ($content_user_datas as $content_user_data) {
 			$content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
 		}
@@ -669,20 +671,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function setTabs() {
-		$tabs = $this->dic->tabs();
+		$this->tabs_gui->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
-		$tabs->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
+		$this->tabs_gui->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
 
-		$tabs->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
+		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 
-		$tabs->addTab(self::TAB_SETTINGS, $this->dic->language()->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
-
-		$tabs->addTab(self::TAB_PERMISSIONS, $this->dic->language()->txt(self::TAB_PERMISSIONS), $this->ctrl->getLinkTargetByClass([
+		$this->tabs_gui->addTab(self::TAB_PERMISSIONS, $this->lng->txt(self::TAB_PERMISSIONS), $this->ctrl->getLinkTargetByClass([
 			self::class,
 			ilPermissionGUI::class,
 		], self::CMD_PERMISSIONS));
 
-		$tabs->manual_activation = true; // Show all tabs as links when no activation
+		$this->tabs_gui->manual_activation = true; // Show all tabs as links when no activation
 	}
 
 

@@ -18,7 +18,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
 	const CMD_INFO_LIBRARY = "infoLibrary";
 	const CMD_MANAGE_LIBRARIES = "manageLibraries";
+	const CMD_SETTINGS = "settings";
+	const CMD_SETTINGS_STORE = "settingsStore";
 	const TAB_LIBRARIES = "xhfp_libraries";
+	const TAB_SETTINGS = "settings";
 	/**
 	 * @var ilH5P
 	 */
@@ -59,6 +62,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			case self::CMD_DELETE_LIBRARY_CONFIRM:
 			case self::CMD_INFO_LIBRARY:
 			case self::CMD_MANAGE_LIBRARIES:
+			case self::CMD_SETTINGS:
+			case self::CMD_SETTINGS_STORE:
 				$this->$cmd();
 				break;
 
@@ -80,6 +85,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$tabs = $this->dic->tabs();
 
 		$tabs->addTab(self::TAB_LIBRARIES, $this->txt(self::TAB_LIBRARIES), $this->dic->ctrl()->getLinkTarget($this, self::CMD_MANAGE_LIBRARIES));
+
+		$tabs->addTab(self::TAB_SETTINGS, $this->dic->language()->txt(self::TAB_SETTINGS), $this->dic->ctrl()
+			->getLinkTarget($this, self::CMD_SETTINGS));
 
 		$tabs->manual_activation = true; // Show all tabs as links when no activation
 	}
@@ -150,16 +158,69 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
+	 *
+	 */
+	protected function getSettingsForm() {
+		$form = new ilPropertyFormGUI();
+
+		$form->setFormAction($this->dic->ctrl()->getFormAction($this));
+
+		$form->setTitle($this->dic->language()->txt(self::TAB_SETTINGS));
+
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->dic->language()->txt("save"));
+		$form->addCommandButton(self::CMD_MANAGE_LIBRARIES, $this->dic->language()->txt("cancel"));
+
+		return $form;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function settings() {
+		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+
+		$form = $this->getSettingsForm();
+
+		$this->show($form->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function settingsStore() {
+		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+
+		$form = $this->getSettingsForm();
+
+		$form->setValuesByPost();
+
+		if (!$form->checkInput()) {
+			$this->show($form->getHTML());
+
+			return;
+		}
+
+		ilUtil::sendSuccess($this->dic->language()->txt("settings_saved"), true);
+
+		$this->show($form->getHTML());
+
+		$this->dic->ctrl()->redirect($this, self::CMD_MANAGE_LIBRARIES);
+	}
+
+
+	/**
 	 * @param string[] $scripts
 	 * @param string[] $styles
 	 */
 	protected function addAdminCore(array $scripts = [], array $styles = []) {
 		foreach (array_merge(H5PCore::$adminScripts, $scripts) as $script) {
-			$this->h5p->h5p_scripts[] = ilH5P::CORE_PATH . $script;
+			$this->h5p->h5p_scripts[] = "/" . ilH5P::CORE_PATH . $script;
 		}
 
 		foreach (array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ], $styles) as $style) {
-			$this->h5p->h5p_styles[] = ilH5P::CORE_PATH . $style;
+			$this->h5p->h5p_styles[] = "/" . ilH5P::CORE_PATH . $style;
 		}
 	}
 
@@ -179,7 +240,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			"contentUserData" => ""
 		];
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), "HUB", "editor");
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), "HUB", "editor");
 
 		return $h5p_integration;
 	}
@@ -256,7 +317,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->txt("xhfp_installed_libraries"), "admin", NULL);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", json_encode($admin_integration), $this->txt("xhfp_installed_libraries"), "admin", NULL);
 
 		return $h5p_integration;
 	}
@@ -321,7 +382,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->dic->ctrl()->clearParameters($this);
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), "", "admin", NULL);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", json_encode($admin_integration), "", "admin", NULL);
 
 		return $h5p_integration;
 	}
