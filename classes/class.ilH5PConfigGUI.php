@@ -24,14 +24,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected $h5p;
 	/**
-	 * @var array
-	 */
-	protected $h5p_scripts = [];
-	/**
-	 * @var array
-	 */
-	protected $h5p_styles = [];
-	/**
 	 * @var \ILIAS\DI\Container
 	 */
 	protected $dic;
@@ -109,39 +101,16 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 * @return ilPropertyFormGUI
-	 */
-	protected function getUploadLibraryForm() {
-		$form = new ilPropertyFormGUI();
-
-		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_UPLOAD);
-
-		$form->setFormAction($this->dic->ctrl()->getFormActionByClass(ilH5PActionGUI::class));
-
-		$form->setTitle($this->txt("xhfp_upload_library"));
-
-		$form->addCommandButton(ilH5PActionGUI::CMD_H5P_ACTION, $this->txt("xhfp_upload"));
-
-		$upload_library = new ilFileInputGUI($this->txt("xhfp_library"), "xhfp_library");
-		$upload_library->setRequired(true);
-		$upload_library->setSuffixes([ "h5p" ]);
-		$form->addItem($upload_library);
-
-		return $form;
-	}
-
-
-	/**
 	 *
 	 */
 	protected function manageLibraries() {
 		$this->dic->tabs()->activateTab(self::TAB_LIBRARIES);
 
-		$form = $this->getUploadLibraryForm();
+		$hub_integration = $this->getH5PHubIntegration();
 
 		$admin_integration = $this->getH5PLibraryListIntegration();
 
-		$this->show($form->getHTML() . '<h3 class="ilHeader">' . $this->txt("xhfp_installed_libraries") . '</h3>' . $admin_integration);
+		$this->show($hub_integration . $admin_integration);
 	}
 
 
@@ -186,12 +155,33 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected function addAdminCore(array $scripts = [], array $styles = []) {
 		foreach (array_merge(H5PCore::$adminScripts, $scripts) as $script) {
-			$this->h5p_scripts[] = ilH5P::CORE_PATH . $script;
+			$this->h5p->h5p_scripts[] = ilH5P::CORE_PATH . $script;
 		}
 
 		foreach (array_merge(H5PCore::$styles, [ "styles/h5p-admin.css" ], $styles) as $style) {
-			$this->h5p_styles[] = ilH5P::CORE_PATH . $style;
+			$this->h5p->h5p_styles[] = ilH5P::CORE_PATH . $style;
 		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	protected function getH5PHubIntegration() {
+		$H5PIntegration = $this->h5p->getEditor();
+
+		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/h5p-hub.js";
+
+		$H5PIntegration["hubIsEnabled"] = true;
+
+		$H5PIntegration["ajax"] = [
+			"setFinished" => "",
+			"contentUserData" => ""
+		];
+
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", $this->h5p->jsonToString($H5PIntegration), "HUB", "editor");
+
+		return $h5p_integration;
 	}
 
 
@@ -266,7 +256,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
 		}
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", "admin", NULL);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->txt("xhfp_installed_libraries"), "admin", NULL);
 
 		return $h5p_integration;
 	}
@@ -331,7 +321,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->dic->ctrl()->clearParameters($this);
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), $this->h5p_scripts, $this->h5p_styles, "", "admin", NULL);
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", $this->h5p->jsonToString($admin_integration), "", "admin", NULL);
 
 		return $h5p_integration;
 	}

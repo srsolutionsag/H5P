@@ -121,7 +121,7 @@ class ilH5PActionGUI {
 	 */
 	protected function runAction($action) {
 		// Slashes to camelCase
-		$action = preg_replace_callback("/[-_][A-Z-az]/", function ($matches) {
+		$action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) {
 			return strtoupper($matches[0][1]);
 		}, $action);
 
@@ -297,18 +297,10 @@ class ilH5PActionGUI {
 	protected function libraryUpload() {
 		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
 
-		$file_path = $_FILES["xhfp_library"]["tmp_name"];
-		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
+		$file_path = $_FILES["h5p"]["tmp_name"];
+		$content_id = NULL;
 
-		if ($file_path !== "") {
-			ob_start(); // prevent output from editor
-			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
-			ob_end_clean();
-		} else {
-			$this->h5p->framework()->setErrorMessage($this->txt("xhfp_error_no_package"));
-		}
-
-		$this->dic->ctrl()->returnToParent($this);
+		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
 	}
 
 

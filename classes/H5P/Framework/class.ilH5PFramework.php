@@ -53,9 +53,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 */
 	public function getPlatformInfo() {
 		return [
-			"ILIAS",
-			ILIAS_VERSION_NUMERIC,
-			$this->pl->getVersion()
+			"name" => "ILIAS",
+			"version" => ILIAS_VERSION_NUMERIC,
+			"h5pVersion" => $this->pl->getVersion()
 		];
 	}
 
@@ -75,12 +75,16 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		try {
 			$curlConnection = new ilCurlConnection($url);
 
+			$curlConnection->init();
+
+			$curlConnection->setOpt(CURLOPT_RETURNTRANSFER, true);
+
 			$curlConnection->setOpt(CURLOPT_TIMEOUT, ($blocking) ? 30 : 0.1);
 
 			if ($data !== NULL) {
 				// POST
 				$curlConnection->setOpt(CURLOPT_POST, true);
-				$curlConnection->setOpt(CURLOPT_POSTFIELDS, json_encode($data));
+				$curlConnection->setOpt(CURLOPT_POSTFIELDS, $data);
 			} else {
 				// GET
 			}
@@ -1373,11 +1377,15 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->setTitle($content_type->title);
 
+			$library_hub_cache->setDescription($content_type->description);
+
+			$library_hub_cache->setIcon($content_type->icon);
+
 			$library_hub_cache->setSummary($content_type->summary);
 
-			$library_hub_cache->setCreatedAt($content_type->createdAt);
+			$library_hub_cache->setCreatedAt(strtotime($content_type->createdAt));
 
-			$library_hub_cache->setUpdatedAt($content_type->updatedAt);
+			$library_hub_cache->setUpdatedAt(strtotime($content_type->updatedAt));
 
 			$library_hub_cache->setIsRecommended($content_type->isRecommended);
 

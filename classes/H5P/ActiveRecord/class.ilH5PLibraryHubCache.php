@@ -35,7 +35,9 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 				return NULL;
 			}
 		} else {
-			return self::getArray();
+			return array_map(function ($library_hub_cache) {
+				return (object)$library_hub_cache;
+			}, self::getArray());
 		}
 	}
 
@@ -261,7 +263,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	/**
 	 * @param string[] $screenshots
 	 */
-	public function setLicenseArray(array $license) {
+	public function setLicenseArray($license) {
 		$this->license = ilH5P::getInstance()->jsonToString($license);
 	}
 

@@ -105,6 +105,14 @@ class ilH5P {
 	 */
 	protected $uploaded_h5p_folder_path = NULL;
 	/**
+	 * @var array
+	 */
+	public $h5p_scripts = [];
+	/**
+	 * @var array
+	 */
+	public $h5p_styles = [];
+	/**
 	 * @var \ILIAS\DI\Container
 	 */
 	protected $dic;
@@ -374,17 +382,133 @@ class ilH5P {
 
 
 	/**
+	 * @return array
+	 */
+	protected function getBaseCore() {
+		$user = $this->dic->user();
+
+		$H5PIntegration = [
+			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"url" => "/" . $this->getH5PFolder(),
+			"postUserStatistics" => true,
+			"ajax" => [
+				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
+				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
+					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+			],
+			"saveFreq" => false,
+			"user" => [
+				"name" => $user->getFullname(),
+				"mail" => $user->getEmail()
+			],
+			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"l10n" => [
+				"H5P" => $this->core()->getLocalization()
+			],
+			"hubIsEnabled" => false
+		];
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param array $H5PIntegration
+	 */
+	protected function addCore(&$H5PIntegration) {
+		foreach (H5PCore::$scripts as $script) {
+			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = ilH5P::CORE_PATH . $script;
+		}
+
+		foreach (H5PCore::$styles as $style) {
+			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = ilH5P::CORE_PATH . $style;
+		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	function getCore() {
+		$H5PIntegration = $this->getBaseCore();
+
+		$H5PIntegration = array_merge($H5PIntegration, [
+			"core" => [
+				"scripts" => [],
+				"styles" => []
+			],
+			"loadedJs" => [],
+			"loadedCss" => []
+		]);
+
+		$this->addCore($H5PIntegration);
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	function getEditor() {
+		$H5PIntegration = $this->getCore();
+
+		$assets = [
+			"js" => $H5PIntegration["core"]["scripts"],
+			"css" => $H5PIntegration["core"]["styles"]
+		];
+
+		foreach (H5peditor::$scripts as $script) {
+			if ($script !== "scripts/h5peditor-editor.js") {
+				/*$this->h5p_scripts[] = */
+				$assets["js"][] = ilH5P::EDITOR_PATH . $script;
+			} else {
+				$this->h5p_scripts[] = ilH5P::EDITOR_PATH . $script;
+			}
+		}
+
+		foreach (H5peditor::$styles as $style) {
+			/*$this->h5p_styles[] = */
+			$assets["css"][] = ilH5P::EDITOR_PATH . $style;
+		}
+
+		$H5PIntegration["editor"] = [
+			"filesPath" => "/" . $this->getH5PFolder() . "editor",
+			"fileIcon" => [
+				"path" => ilH5P::EDITOR_PATH . "images/binary-file.png",
+				"width" => 50,
+				"height" => 50
+			],
+			"ajaxPath" => $this->dic->ctrl()->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
+				. ilH5PActionGUI::CMD_H5P_ACTION . "=",
+			"libraryUrl" => ilH5P::EDITOR_PATH,
+			"copyrightSemantics" => $this->content_validator()->getCopyrightSemantics(),
+			"assets" => $assets,
+			"deleteMessage" => $this->t("Are you sure you wish to delete this content?"),
+			"apiVersion" => H5PCore::$coreApi
+		];
+
+		$language = $this->getLanguage();
+		$language_script = ilH5P::EDITOR_PATH . "language/" . $language . ".js";
+		if (!file_exists($language_script)) {
+			$language_script = ilH5P::EDITOR_PATH . "language/en.js";
+		}
+		$this->h5p_scripts[] = $language_script;
+
+		return $H5PIntegration;
+	}
+
+
+	/**
 	 * @param string      $h5p_integration_name
 	 * @param string      $h5p_integration
-	 * @param string[]    $scripts
-	 * @param string[]    $styles
 	 * @param string      $title
 	 * @param string|null $content_type
 	 * @param int|null    $content_id
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", array $scripts = [], array $styles = [], $title = "", $content_type = "div", $content_id = NULL) {
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "div", $content_id = NULL) {
 		$h5p_tmpl = $this->pl->getTemplate("H5PIntegration.html");
 
 		$h5p_tmpl->setCurrentBlock("integrationBlock");
@@ -393,16 +517,18 @@ class ilH5P {
 		$h5p_tmpl->parseCurrentBlock();
 
 		$h5p_tmpl->setCurrentBlock("stylesBlock");
-		foreach (array_unique($styles) as $style) {
+		foreach (array_unique($this->h5p_styles) as $style) {
 			$h5p_tmpl->setVariable("STYLE", $style);
 			$h5p_tmpl->parseCurrentBlock();
 		}
+		$this->h5p_styles = [];
 
 		$h5p_tmpl->setCurrentBlock("scriptsBlock");
-		foreach (array_unique($scripts) as $script) {
+		foreach (array_unique($this->h5p_scripts) as $script) {
 			$h5p_tmpl->setVariable("SCRIPT", $script);
 			$h5p_tmpl->parseCurrentBlock();
 		}
+		$this->h5p_scripts = [];
 
 		if (!empty($title)) {
 			$h5p_tmpl->setCurrentBlock("titleBlock");

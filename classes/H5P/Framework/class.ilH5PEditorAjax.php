@@ -46,7 +46,7 @@ class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 		$libraries = [];
 
 		foreach ($h5p_libraries as $h5p_library) {
-			$libraries[] = [
+			$libraries[] = (object)[
 				"machine_name" => $h5p_library->getName(),
 				"title" => $h5p_library->getTitle(),
 				"major_version" => $h5p_library->getMajorVersion(),
