@@ -81,6 +81,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	}
 
 
+	/**
+	 *
+	 */
 	protected function setTabs() {
 		$tabs = $this->dic->tabs();
 

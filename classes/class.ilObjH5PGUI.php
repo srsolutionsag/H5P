@@ -239,7 +239,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
 		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->dic->language()->txt($h5p_content
-		!== NULL ? "save" : "add"),"xhfp_edit_form_submit");
+		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
 		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->dic->language()->txt("cancel"));
 
 		$form->setPreventDoubleSubmission(false);

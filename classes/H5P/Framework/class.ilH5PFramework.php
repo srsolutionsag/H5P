@@ -10,6 +10,10 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
  */
 class ilH5PFramework implements H5PFrameworkInterface {
 
+	protected $messages = [
+		"error" => [],
+		"info" => []
+	];
 	/**
 	 * @var \ILIAS\DI\Container
 	 */
@@ -122,8 +126,15 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @param string $message
 	 *   The error message
 	 */
-	public function setErrorMessage($message) {
-		ilUtil::sendFailure($message, true);
+	public function setErrorMessage($message, $code = NULL) {
+		$this->messages["error"][] = (object)[
+			"message" => $message,
+			"code" => $code
+		];
+
+		if (!$this->dic->ctrl()->isAsynch()) {
+			ilUtil::sendFailure($message, true);
+		}
 	}
 
 
@@ -134,7 +145,31 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *  The error message
 	 */
 	public function setInfoMessage($message) {
-		ilUtil::sendInfo($message, true);
+		$this->messages["info"][] = $message;
+
+		if (!$this->dic->ctrl()->isAsynch()) {
+			ilUtil::sendInfo($message, true);
+		}
+	}
+
+
+	/**
+	 * Return messages
+	 *
+	 * @param string $type 'info' or 'error'
+	 *
+	 * @return string[]
+	 */
+	public function getMessages($type) {
+		if (empty($this->messages[$type])) {
+			return NULL;
+		}
+
+		$messages = $this->messages[$type];
+
+		$this->messages[$type] = [];
+
+		return $messages;
 	}
 
 
