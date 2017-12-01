@@ -35,16 +35,17 @@
 
 		if (library !== "") {
 			$frame.on("load", function () {
-				var appendTo = frame.contentWindow.H5PEditor.LibrarySelector.prototype.appendTo;
+				var frameWindow = frame.contentWindow;
 
-				frame.contentWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
+				var appendTo = frameWindow.H5PEditor.LibrarySelector.prototype.appendTo;
+				frameWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
+					// Append selector
 					appendTo.apply(this, arguments);
 
+					// Force disable selector
 					var attr = this.$selector.attr;
-
 					this.$selector.attr = function (name) {
 						if (name === "disabled") {
-							// Force disable selector
 							attr.call(this, "disabled", true);
 						} else {
 							attr.apply(this, arguments);

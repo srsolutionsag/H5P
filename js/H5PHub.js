@@ -18,7 +18,25 @@
 		// prevent remove id edtor
 		var $tmp = $("<div></div>").appendTo($editor);
 
-		var h5peditor = new ns.Editor("", "", $tmp);
+		h5peditor = new ns.Editor("", "", $tmp);
+
+		var $frame = $("iframe", $editor);
+		var frame = $frame[0];
+
+		$frame.on("load", function () {
+			var frameWindow = frame.contentWindow;
+
+			var appendTo = frameWindow.H5PEditor.LibrarySelector.prototype.appendTo;
+			frameWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
+				// Append selector
+				appendTo.apply(this, arguments);
+
+				// Remove content create
+				this.selector.client.listeners.select = [];
+				frameWindow.H5PEditor.SelectorHub.prototype.getSelectedLibrary = function () {
+				};
+			};
+		});
 	};
 
 	H5PEditor.getAjaxUrl = function (action, parameters) {
