@@ -13,6 +13,7 @@ xhfp_delete_content#:#Inhalt löschen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 xhfp_deleted_content#:#%s gelöscht
 xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
+xhfp_delete_library_in_use#:#Die Bibliothek wird noch benutzt!
 xhfp_deleted_library#:#%s gelöscht
 xhfp_edit_content#:#Inhalt bearbeiten
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
@@ -26,4 +27,6 @@ xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch üb
 xhfp_show_contents#:#Inhalte anzeigen
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen
+xhfp_usage_contents#:#Inhalte, die es verwenden
+xhfp_usage_libraries#:#Bibliotheken, die es verwenden
 xhfp_usage_statistics#:#Nutzungsstatistik

@@ -51,6 +51,16 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
+	 * @return array
+	 */
+	static function getLibrariesArray() {
+		$h5p_libraries = self::orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->getArray();
+
+		return $h5p_libraries;
+	}
+
+
+	/**
 	 * @param string $name
 	 *
 	 * @return ilH5PLibrary[]
@@ -113,7 +123,7 @@ class ilH5PLibrary extends ActiveRecord {
           JOIN " . ilH5PContent::TABLE_NAME . " AS c ON cl.content_id = c.content_id
           WHERE l.library_id = %s", [ "integer" ], [ $library_id ]);
 
-		$count = $result->fetchAssoc()["count"];
+		$count = intval($result->fetchAssoc()["count"]);
 
 		return $count;
 	}

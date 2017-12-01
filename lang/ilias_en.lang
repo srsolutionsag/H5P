@@ -13,6 +13,7 @@ xhfp_delete_content#:#Delete content
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
 xhfp_deleted_content#:#%s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
+xhfp_delete_library_in_use#:#The library is still in use!
 xhfp_deleted_library#:#%s deleted
 xhfp_edit_content#:#Edit content
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
@@ -25,5 +26,7 @@ xhfp_send_usage_statistics#:#Automatically contribute usage statistics
 xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
 xhfp_show_contents#:#Show contents
 xhfp_upload#:#Upload
+xhfp_usage_contents#:#Contents using it
+xhfp_usage_libraries#:#Libraries using it
 xhfp_upload_library#:#Upload library
 xhfp_usage_statistics#:#Usage statistics

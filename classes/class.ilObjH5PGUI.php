@@ -167,16 +167,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->toolbar->addButtonInstance($add_content);
 
-		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+		$contents_table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
 
 		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
 		$this->tpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
 		$this->tpl->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsList.js");
-		$this->tpl->addOnLoadCode('H5PContentsList.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
+		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsTable.js");
+		$this->tpl->addOnLoadCode('H5PContentsTable.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
 
-		$this->show($table->getHTML());
+		$this->show($contents_table->getHTML());
 	}
 
 
@@ -278,13 +278,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function createContent() {
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+
 		$form = $this->getEditContentForm();
 
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
-
 			$this->show($form->getHTML());
 
 			return;
@@ -576,7 +576,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		if ($type === "editor") {
 			$H5PIntegration = $this->h5p->getEditor();
 
-			$this->h5p->h5p_scripts[] = $this->plugin->getDirectory() . "/js/h5p-editor.js";
+			$this->h5p->h5p_scripts[] = $this->plugin->getDirectory() . "/js/H5PEditor.js";
 
 			$H5PIntegration["editor"]["nodeVersionId"] = $content_id;
 		} else {

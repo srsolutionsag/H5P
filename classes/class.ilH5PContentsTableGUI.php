@@ -50,18 +50,15 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	protected function fillRow($content) {
 		$parent = $this->getParentObject();
 
+		$h5p_library = ilH5PLibrary::getLibraryById($content["library_id"]);
+
 		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
 
 		$this->tpl->setVariable("ID", $content["content_id"]);
 
 		$this->tpl->setVariable("TITLE", $content["title"]);
 
-		$h5p_library = ilH5PLibrary::getLibraryById($content["library_id"]);
-		if ($h5p_library !== NULL) {
-			$this->tpl->setVariable("LIBRARY", $h5p_library->getTitle());
-		} else {
-			$this->tpl->setVariable("LIBRARY", "");
-		}
+		$this->tpl->setVariable("LIBRARY", $h5p_library->getTitle());
 
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->lng->txt("actions"));

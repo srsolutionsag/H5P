@@ -989,6 +989,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_library->delete();
 		}
 
+		$h5p_content_libraries = ilH5PContentLibrary::getContentsByLibrary($library->library_id);
+		foreach ($h5p_content_libraries as $h5p_content_library) {
+			$h5p_content_library->delete();
+		}
+
 		$h5p_event = new ilH5PEvent();
 		$h5p_event->setType("library");
 		$h5p_event->setSubType("delete");
