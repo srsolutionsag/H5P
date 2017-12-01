@@ -10,10 +10,18 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilObjH5P extends ilObjectPlugin {
 
 	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
+
+
+	/**
 	 * @param int $a_ref_id
 	 */
 	function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
+
+		$this->h5p = ilH5P::getInstance();
 	}
 
 
@@ -53,14 +61,12 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	function doDelete() {
-		$h5p = ilH5P::getInstance();
-
 		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
 
 		foreach ($h5p_contents as $h5p_content) {
-			$content = $h5p->core()->loadContent($h5p_content->getContentId());
+			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
-			$h5p->storage()->deletePackage($content);
+			$this->h5p->storage()->deletePackage($content);
 		}
 	}
 
@@ -71,8 +77,6 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_copy_id
 	 */
 	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
-		$h5p = ilH5P::getInstance();
-
 		$h5p_contents = ilH5PContent::getContentsByObjectId($this->getId());
 
 		foreach ($h5p_contents as $h5p_content) {
@@ -86,7 +90,7 @@ class ilObjH5P extends ilObjectPlugin {
 
 			$h5p_content_copy->create();
 
-			$h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+			$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 			// TODO May copy content user data or result?
 		}
 	}

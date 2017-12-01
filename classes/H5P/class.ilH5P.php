@@ -61,6 +61,10 @@ class ilH5P {
 	 */
 	const CSV_SEPARATOR = ", ";
 	/**
+	 * @var ilCtrl
+	 */
+	protected $ctrl;
+	/**
 	 * @var H5PContentValidator
 	 */
 	protected $h5p_content_validator = NULL;
@@ -97,14 +101,6 @@ class ilH5P {
 	 */
 	protected $h5p_validator = NULL;
 	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_path = NULL;
-	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_folder_path = NULL;
-	/**
 	 * @var array
 	 */
 	public $h5p_scripts = [];
@@ -113,21 +109,373 @@ class ilH5P {
 	 */
 	public $h5p_styles = [];
 	/**
-	 * @var \ILIAS\DI\Container
-	 */
-	protected $dic;
-	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_path = NULL;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_folder_path = NULL;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
 
 
 	protected function __construct() {
 		global $DIC;
 
-		$this->dic = $DIC;
-
+		$this->ctrl = $DIC->ctrl();
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->usr = $DIC->user();
+	}
+
+
+	/**
+	 * @param string $csv
+	 *
+	 * @return string[]
+	 */
+	function splitCsv($csv) {
+		return explode(self::CSV_SEPARATOR, $csv);
+	}
+
+
+	/**
+	 * @param string[] $array
+	 *
+	 * @return string
+	 */
+	function joinCsv(array $array) {
+		return implode(self::CSV_SEPARATOR, $array);
+	}
+
+
+	/**
+	 * @param int $timestamp
+	 *
+	 * @return string
+	 */
+	function timestampToDbDate($timestamp) {
+		$date_time = new DateTime("@" . $timestamp);
+
+		$formated = $date_time->format("Y-m-d H:i:s");
+
+		return $formated;
+	}
+
+
+	/**
+	 * @param string $formated
+	 *
+	 * @return int
+	 */
+	function dbDateToTimestamp($formated) {
+		$date_time = new DateTime($formated);
+
+		$timestamp = $date_time->getTimestamp();
+
+		return $timestamp;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	function getH5PFolder() {
+		return "data/" . CLIENT_ID . "/h5p/";
+	}
+
+
+	/**
+	 *
+	 */
+	function removeH5PFolder() {
+		$h5p_folder = $this->getH5PFolder();
+
+		H5PCore::deleteFileTree($h5p_folder);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function setUploadedH5pPath() {
+		$tmp_path = $this->core()->fs->getTmpPath();
+
+		$this->uploaded_h5p_folder_path = $tmp_path;
+
+		$this->uploaded_h5p_path = $tmp_path . ".h5p";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	function getLanguage() {
+		$lang = $this->usr->getLanguage();
+
+		return $lang;
+	}
+
+
+	/**
+	 * @param string $message
+	 * @param array  $replacements
+	 *
+	 * @return string
+	 */
+	function t($message, $replacements = []) {
+		// TODO translate string
+
+		//$message = $this->txt($message);
+
+		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
+			$text = $replacements[$found[0]];
+
+			switch ($found[1]) {
+				case "@":
+					return htmlentities($text);
+					break;
+
+				case "%":
+					return "<b>" . htmlentities($text) . "</b>";
+					break;
+
+				case "!":
+				default:
+					return $text;
+					break;
+			}
+		}, $message);
+
+		return $message;
+	}
+
+
+	/**
+	 * @param string     $name
+	 * @param mixed|null $default
+	 *
+	 * @return mixed
+	 */
+	function getOption($name, $default = NULL) {
+		$h5p_option = ilH5POption::getOption($name);
+
+		if ($h5p_option !== NULL) {
+			return $h5p_option->getValue();
+		} else {
+			return $default;
+		}
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param mixed  $value
+	 */
+	function setOption($name, $value) {
+		$h5p_option = ilH5POption::getOption($name);
+
+		if ($h5p_option !== NULL) {
+			$h5p_option->setValue($value);
+
+			$h5p_option->update();
+		} else {
+			$h5p_option = new ilH5POption();
+
+			$h5p_option->setName($name);
+
+			$h5p_option->setValue($value);
+
+			$h5p_option->create();
+		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	protected function getBaseCore() {
+		$H5PIntegration = [
+			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"url" => "/" . $this->getH5PFolder(),
+			"postUserStatistics" => true,
+			"ajax" => [
+				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
+				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
+					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+			],
+			"saveFreq" => false,
+			"user" => [
+				"name" => $this->usr->getFullname(),
+				"mail" => $this->usr->getEmail()
+			],
+			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"l10n" => [
+				"H5P" => $this->core()->getLocalization()
+			],
+			"hubIsEnabled" => false
+		];
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param array $H5PIntegration
+	 */
+	protected function addCore(&$H5PIntegration) {
+		foreach (H5PCore::$scripts as $script) {
+			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = "/" . ilH5P::CORE_PATH . $script;
+		}
+
+		foreach (H5PCore::$styles as $style) {
+			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = "/" . ilH5P::CORE_PATH . $style;
+		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	function getCore() {
+		$H5PIntegration = $this->getBaseCore();
+
+		$H5PIntegration = array_merge($H5PIntegration, [
+			"core" => [
+				"scripts" => [],
+				"styles" => []
+			],
+			"loadedJs" => [],
+			"loadedCss" => []
+		]);
+
+		$this->addCore($H5PIntegration);
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	function getEditor() {
+		$H5PIntegration = $this->getCore();
+
+		$assets = [
+			"js" => $H5PIntegration["core"]["scripts"],
+			"css" => $H5PIntegration["core"]["styles"]
+		];
+
+		foreach (H5peditor::$scripts as $script) {
+			if ($script !== "scripts/h5peditor-editor.js") {
+				/*$this->h5p_scripts[] = */
+				$assets["js"][] = "/" . ilH5P::EDITOR_PATH . $script;
+			} else {
+				$this->h5p_scripts[] = "/" . ilH5P::EDITOR_PATH . $script;
+			}
+		}
+
+		foreach (H5peditor::$styles as $style) {
+			/*$this->h5p_styles[] = */
+			$assets["css"][] = "/" . ilH5P::EDITOR_PATH . $style;
+		}
+
+		$H5PIntegration["editor"] = [
+			"filesPath" => "/" . $this->getH5PFolder() . "editor",
+			"fileIcon" => [
+				"path" => "/" . ilH5P::EDITOR_PATH . "images/binary-file.png",
+				"width" => 50,
+				"height" => 50
+			],
+			"ajaxPath" => $this->ctrl->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
+				. ilH5PActionGUI::CMD_H5P_ACTION . "=",
+			"libraryUrl" => "/" . ilH5P::EDITOR_PATH,
+			"copyrightSemantics" => $this->content_validator()->getCopyrightSemantics(),
+			"assets" => $assets,
+			"deleteMessage" => $this->t("Are you sure you wish to delete this content?"),
+			"apiVersion" => H5PCore::$coreApi
+		];
+
+		$language = $this->getLanguage();
+		$language_script = ilH5P::EDITOR_PATH . "language/" . $language . ".js";
+		if (!file_exists($language_script)) {
+			$language_script = ilH5P::EDITOR_PATH . "language/en.js";
+		}
+		$this->h5p_scripts[] = "/" . $language_script;
+
+		return $H5PIntegration;
+	}
+
+
+	/**
+	 * @param string      $h5p_integration_name
+	 * @param string      $h5p_integration
+	 * @param string      $title
+	 * @param string|null $content_type
+	 * @param int|null    $content_id
+	 *
+	 * @return string
+	 */
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "div", $content_id = NULL) {
+		$h5p_tpl = $this->pl->getTemplate("H5PIntegration.html");
+
+		$h5p_tpl->setCurrentBlock("integrationBlock");
+		$h5p_tpl->setVariable("H5P_INTEGRATION_NAME", $h5p_integration_name);
+		$h5p_tpl->setVariable("H5P_INTEGRATION", $h5p_integration);
+		$h5p_tpl->parseCurrentBlock();
+
+		$h5p_tpl->setCurrentBlock("stylesBlock");
+		foreach (array_unique($this->h5p_styles) as $style) {
+			$h5p_tpl->setVariable("STYLE", $style);
+			$h5p_tpl->parseCurrentBlock();
+		}
+		$this->h5p_styles = [];
+
+		$h5p_tpl->setCurrentBlock("scriptsBlock");
+		foreach (array_unique($this->h5p_scripts) as $script) {
+			$h5p_tpl->setVariable("SCRIPT", $script);
+			$h5p_tpl->parseCurrentBlock();
+		}
+		$this->h5p_scripts = [];
+
+		if (!empty($title)) {
+			$h5p_tpl->setCurrentBlock("titleBlock");
+			$h5p_tpl->setVariable("TITLE", $title);
+			$h5p_tpl->parseCurrentBlock();
+		}
+
+		switch ($content_type) {
+			case "div":
+				$h5p_tpl->setCurrentBlock("contentDivBlock");
+				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+				$h5p_tpl->parseCurrentBlock();
+				break;
+
+			case "iframe":
+				$h5p_tpl->setCurrentBlock("contentFrameBlock");
+				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+				$h5p_tpl->parseCurrentBlock();
+				break;
+
+			case "editor":
+				$h5p_tpl->touchBlock("editorBlock");
+				break;
+
+			case "admin":
+				$h5p_tpl->touchBlock("adminBlock");
+				break;
+
+			default:
+				break;
+		}
+
+		return $h5p_tpl->get();
 	}
 
 
@@ -236,312 +584,6 @@ class ilH5P {
 		}
 
 		return $this->h5p_validator;
-	}
-
-
-	/**
-	 * @param string $csv
-	 *
-	 * @return string[]
-	 */
-	function splitCsv($csv) {
-		return explode(self::CSV_SEPARATOR, $csv);
-	}
-
-
-	/**
-	 * @param string[] $array
-	 *
-	 * @return string
-	 */
-	function joinCsv(array $array) {
-		return implode(self::CSV_SEPARATOR, $array);
-	}
-
-
-	/**
-	 * @param int $timestamp
-	 *
-	 * @return string
-	 */
-	function timestampToDbDate($timestamp) {
-		$date_time = new DateTime("@" . $timestamp);
-
-		$formated = $date_time->format("Y-m-d H:i:s");
-
-		return $formated;
-	}
-
-
-	/**
-	 * @param string $formated
-	 *
-	 * @return int
-	 */
-	function dbDateToTimestamp($formated) {
-		$date_time = new DateTime($formated);
-
-		$timestamp = $date_time->getTimestamp();
-
-		return $timestamp;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	function getH5PFolder() {
-		return "data/" . CLIENT_ID . "/h5p/";
-	}
-
-
-	/**
-	 *
-	 */
-	function removeH5PFolder() {
-		$h5p_folder = $this->getH5PFolder();
-
-		H5PCore::deleteFileTree($h5p_folder);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function setUploadedH5pPath() {
-		$tmp_path = $this->core()->fs->getTmpPath();
-
-		$this->uploaded_h5p_folder_path = $tmp_path;
-
-		$this->uploaded_h5p_path = $tmp_path . ".h5p";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	function getLanguage() {
-		$lang = $this->dic->user()->getLanguage();
-
-		return $lang;
-	}
-
-
-	/**
-	 * @param string $message
-	 * @param array  $replacements
-	 *
-	 * @return string
-	 */
-	function t($message, $replacements = []) {
-		// TODO translate string
-
-		//$message = $this->txt($message);
-
-		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
-			$text = $replacements[$found[0]];
-
-			switch ($found[1]) {
-				case "@":
-					return htmlentities($text);
-					break;
-
-				case "%":
-					return "<b>" . htmlentities($text) . "</b>";
-					break;
-
-				case "!":
-				default:
-					return $text;
-					break;
-			}
-		}, $message);
-
-		return $message;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	protected function getBaseCore() {
-		$user = $this->dic->user();
-
-		$H5PIntegration = [
-			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => "/" . $this->getH5PFolder(),
-			"postUserStatistics" => true,
-			"ajax" => [
-				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
-				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
-					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
-			],
-			"saveFreq" => false,
-			"user" => [
-				"name" => $user->getFullname(),
-				"mail" => $user->getEmail()
-			],
-			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"l10n" => [
-				"H5P" => $this->core()->getLocalization()
-			],
-			"hubIsEnabled" => false
-		];
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @param array $H5PIntegration
-	 */
-	protected function addCore(&$H5PIntegration) {
-		foreach (H5PCore::$scripts as $script) {
-			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = "/" . ilH5P::CORE_PATH . $script;
-		}
-
-		foreach (H5PCore::$styles as $style) {
-			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = "/" . ilH5P::CORE_PATH . $style;
-		}
-	}
-
-
-	/**
-	 * @return array
-	 */
-	function getCore() {
-		$H5PIntegration = $this->getBaseCore();
-
-		$H5PIntegration = array_merge($H5PIntegration, [
-			"core" => [
-				"scripts" => [],
-				"styles" => []
-			],
-			"loadedJs" => [],
-			"loadedCss" => []
-		]);
-
-		$this->addCore($H5PIntegration);
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	function getEditor() {
-		$H5PIntegration = $this->getCore();
-
-		$assets = [
-			"js" => $H5PIntegration["core"]["scripts"],
-			"css" => $H5PIntegration["core"]["styles"]
-		];
-
-		foreach (H5peditor::$scripts as $script) {
-			if ($script !== "scripts/h5peditor-editor.js") {
-				/*$this->h5p_scripts[] = */
-				$assets["js"][] = "/" . ilH5P::EDITOR_PATH . $script;
-			} else {
-				$this->h5p_scripts[] = "/" . ilH5P::EDITOR_PATH . $script;
-			}
-		}
-
-		foreach (H5peditor::$styles as $style) {
-			/*$this->h5p_styles[] = */
-			$assets["css"][] = "/" . ilH5P::EDITOR_PATH . $style;
-		}
-
-		$H5PIntegration["editor"] = [
-			"filesPath" => "/" . $this->getH5PFolder() . "editor",
-			"fileIcon" => [
-				"path" => "/" . ilH5P::EDITOR_PATH . "images/binary-file.png",
-				"width" => 50,
-				"height" => 50
-			],
-			"ajaxPath" => $this->dic->ctrl()->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
-				. ilH5PActionGUI::CMD_H5P_ACTION . "=",
-			"libraryUrl" => "/" . ilH5P::EDITOR_PATH,
-			"copyrightSemantics" => $this->content_validator()->getCopyrightSemantics(),
-			"assets" => $assets,
-			"deleteMessage" => $this->t("Are you sure you wish to delete this content?"),
-			"apiVersion" => H5PCore::$coreApi
-		];
-
-		$language = $this->getLanguage();
-		$language_script = ilH5P::EDITOR_PATH . "language/" . $language . ".js";
-		if (!file_exists($language_script)) {
-			$language_script = ilH5P::EDITOR_PATH . "language/en.js";
-		}
-		$this->h5p_scripts[] = "/" . $language_script;
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @param string      $h5p_integration_name
-	 * @param string      $h5p_integration
-	 * @param string      $title
-	 * @param string|null $content_type
-	 * @param int|null    $content_id
-	 *
-	 * @return string
-	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "div", $content_id = NULL) {
-		$h5p_tmpl = $this->pl->getTemplate("H5PIntegration.html");
-
-		$h5p_tmpl->setCurrentBlock("integrationBlock");
-		$h5p_tmpl->setVariable("H5P_INTEGRATION_NAME", $h5p_integration_name);
-		$h5p_tmpl->setVariable("H5P_INTEGRATION", $h5p_integration);
-		$h5p_tmpl->parseCurrentBlock();
-
-		$h5p_tmpl->setCurrentBlock("stylesBlock");
-		foreach (array_unique($this->h5p_styles) as $style) {
-			$h5p_tmpl->setVariable("STYLE", $style);
-			$h5p_tmpl->parseCurrentBlock();
-		}
-		$this->h5p_styles = [];
-
-		$h5p_tmpl->setCurrentBlock("scriptsBlock");
-		foreach (array_unique($this->h5p_scripts) as $script) {
-			$h5p_tmpl->setVariable("SCRIPT", $script);
-			$h5p_tmpl->parseCurrentBlock();
-		}
-		$this->h5p_scripts = [];
-
-		if (!empty($title)) {
-			$h5p_tmpl->setCurrentBlock("titleBlock");
-			$h5p_tmpl->setVariable("TITLE", $title);
-			$h5p_tmpl->parseCurrentBlock();
-		}
-
-		switch ($content_type) {
-			case "div":
-				$h5p_tmpl->setCurrentBlock("contentDivBlock");
-				$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
-				$h5p_tmpl->parseCurrentBlock();
-				break;
-
-			case "iframe":
-				$h5p_tmpl->setCurrentBlock("contentFrameBlock");
-				$h5p_tmpl->setVariable("H5P_CONTENT_ID", $content_id);
-				$h5p_tmpl->parseCurrentBlock();
-				break;
-
-			case "editor":
-				$h5p_tmpl->touchBlock("editorBlock");
-				break;
-
-			case "admin":
-				$h5p_tmpl->touchBlock("adminBlock");
-				break;
-
-			default:
-				break;
-		}
-
-		return $h5p_tmpl->get();
 	}
 
 

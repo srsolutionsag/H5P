@@ -45,33 +45,37 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
 	/**
-	 * @var \ILIAS\DI\Container
-	 */
-	protected $dic;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
 	/**
-	 * Fix autocomplete (Not defined in parent, but set)
+	 * Fix autocomplete (Defined in parent)
 	 *
 	 * @var ilObjH5P
 	 */
 	var $object;
 	/**
-	 * Fix autocomplete (Not defined in parent, but set)
+	 * Fix autocomplete (Defined in parent)
 	 *
 	 * @var ilH5PPlugin
 	 */
 	protected $plugin;
+	/**
+	 * @var ilToolbarGUI
+	 */
+	protected $toolbar;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
 
 
 	protected function afterConstructor() {
 		global $DIC;
 
-		$this->dic = $DIC;
-
 		$this->h5p = ilH5P::getInstance();
+		$this->toolbar = $DIC->toolbar();
+		$this->usr = $DIC->user();
 	}
 
 
@@ -155,15 +159,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function manageContents() {
-		$toolbar = $this->dic->toolbar();
-
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$add_content = ilLinkButton::getInstance();
 		$add_content->setCaption($this->txt("xhfp_add_content"), false);
 		$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
 
-		$toolbar->addButtonInstance($add_content);
+		$this->toolbar->addButtonInstance($add_content);
 
 		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
 
@@ -414,8 +416,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function showContent() {
-		$toolbar = $this->dic->toolbar();
-
 		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
@@ -425,12 +425,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$edit_content = ilLinkButton::getInstance();
 		$edit_content->setCaption($this->lng->txt("edit"), false);
 		$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
-		$toolbar->addButtonInstance($edit_content);
+		$this->toolbar->addButtonInstance($edit_content);
 
 		$delete_content = ilLinkButton::getInstance();
 		$delete_content->setCaption($this->lng->txt("delete"), false);
 		$delete_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
-		$toolbar->addButtonInstance($delete_content);
+		$this->toolbar->addButtonInstance($delete_content);
 
 		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
 	}
@@ -632,12 +632,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return array
 	 */
 	protected function getContentIntegration(&$content) {
-		$user = $this->dic->user();
-
 		$this->ctrl->setParameter($this, "xhfp_content", $content["content_id"]);
 
 		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
+		$user_id = $this->usr->getId();
 		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
 
 		$content_integration = [
@@ -658,7 +657,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			]
 		];
 
-		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user->getId(), $content["id"]);
+		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user_id, $content["id"]);
 		foreach ($content_user_datas as $content_user_data) {
 			$content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
 		}

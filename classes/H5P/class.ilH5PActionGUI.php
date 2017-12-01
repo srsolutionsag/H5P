@@ -43,7 +43,7 @@ class ilH5PActionGUI {
 	/**
 	 * @var \ILIAS\DI\Container
 	 */
-	protected $dic;
+	protected $ctrl;
 	/**
 	 * @var ilH5P
 	 */
@@ -52,16 +52,19 @@ class ilH5PActionGUI {
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
 
 
 	function __construct() {
 		global $DIC;
 
-		$this->dic = $DIC;
-
+		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->usr = $DIC->user();
 	}
 
 
@@ -91,7 +94,7 @@ class ilH5PActionGUI {
 	 *
 	 */
 	function executeCommand() {
-		$cmd = $this->dic->ctrl()->getCmd();
+		$cmd = $this->ctrl->getCmd();
 
 		switch ($cmd) {
 			case self::CMD_H5P_ACTION:
@@ -159,7 +162,7 @@ class ilH5PActionGUI {
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 
-		$this->dic->ctrl()->returnToParent($this);
+		$this->ctrl->returnToParent($this);
 	}
 
 
@@ -188,7 +191,7 @@ class ilH5PActionGUI {
 		$data = filter_input(INPUT_POST, "data");
 		$preload = filter_input(INPUT_POST, "preload");
 		$invalidate = filter_input(INPUT_POST, "invalidate");
-		$user_id = $this->dic->user()->getId();
+		$user_id = $this->usr->getId();
 
 		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
 
@@ -275,7 +278,7 @@ class ilH5PActionGUI {
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
 
-		$this->dic->ctrl()->returnToParent($this);
+		$this->ctrl->returnToParent($this);
 	}
 
 
@@ -342,9 +345,9 @@ class ilH5PActionGUI {
 
 		$h5p_library->update();
 
-		$this->dic->ctrl()->setParameter($this, "xhfp_library", $h5p_library->getLibraryId());
+		$this->ctrl->setParameter($this, "xhfp_library", $h5p_library->getLibraryId());
 
-		$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
+		$this->ctrl->setParameter($this, "restrict", (!$restricted));
 
 		echo json_encode([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
@@ -362,7 +365,7 @@ class ilH5PActionGUI {
 		}
 
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
-		$user_id = $this->dic->user()->getId();
+		$user_id = $this->usr->getId();
 		$score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);
 		$max_score = filter_input(INPUT_POST, "maxScore", FILTER_VALIDATE_INT);
 		$opened = filter_input(INPUT_POST, "opened", FILTER_VALIDATE_INT);
@@ -406,7 +409,7 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function upgradeLibrary() {
-		// TODO
+
 	}
 
 

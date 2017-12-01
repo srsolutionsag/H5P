@@ -8,10 +8,6 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PEditorStorage implements H5peditorStorage {
 
 	/**
-	 * @var \ILIAS\DI\Container
-	 */
-	protected $dic;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
@@ -25,12 +21,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {
-		global $DIC;
-
 		$this->h5p = $h5p;
-
-		$this->dic = $DIC;
-
 		$this->pl = ilH5PPlugin::getInstance();
 	}
 

@@ -10,9 +10,9 @@ require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvance
 class ilH5PContentsTableGUI extends ilTable2GUI {
 
 	/**
-	 * @var \ILIAS\DI\Container
+	 * @var ilCtrl
 	 */
-	protected $dic;
+	protected $ctrl;
 	/**
 	 * @var ilH5PPlugin
 	 */
@@ -28,16 +28,15 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		global $DIC;
 
-		$this->dic = $DIC;
-
+		$this->ctrl = $DIC->ctrl();
 		$this->pl = ilH5PPlugin::getInstance();
 
 		$this->addColumn("");
-		$this->addColumn($this->dic->language()->txt("title"));
+		$this->addColumn($this->lng->txt("title"));
 		$this->addColumn($this->txt("xhfp_library"));
-		$this->addColumn($this->dic->language()->txt("actions"));
+		$this->addColumn($this->lng->txt("actions"));
 
-		$this->setFormAction($this->dic->ctrl()->getFormAction($a_parent_obj));
+		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
 		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
 
@@ -51,7 +50,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	protected function fillRow($content) {
 		$parent = $this->getParentObject();
 
-		$this->dic->ctrl()->setParameter($parent, "xhfp_content", $content["content_id"]);
+		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
 
 		$this->tpl->setVariable("ID", $content["content_id"]);
 
@@ -65,17 +64,17 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->dic->language()->txt("actions"));
+		$actions->setListTitle($this->lng->txt("actions"));
 
-		$actions->addItem($this->dic->language()->txt("show"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
+		$actions->addItem($this->lng->txt("show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
 
-		$actions->addItem($this->dic->language()->txt("edit"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+		$actions->addItem($this->lng->txt("edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-		$actions->addItem($this->dic->language()->txt("delete"), "", $this->dic->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+		$actions->addItem($this->lng->txt("delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		$this->dic->ctrl()->setParameter($this, "xhfp_content", NULL);
+		$this->ctrl->setParameter($this, "xhfp_content", NULL);
 	}
 
 

@@ -28,9 +28,9 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 	const ID = "xhfp";
 	/**
-	 * @var \ILIAS\DI\Container
+	 * @var ilDB
 	 */
-	protected $dic;
+	protected $db;
 
 
 	public function __construct() {
@@ -38,7 +38,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		global $DIC;
 
-		$this->dic = $DIC;
+		$this->db = $DIC->database();
 	}
 
 
@@ -54,34 +54,36 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 *
 	 */
 	protected function uninstallCustom() {
-		ilH5P::getInstance()->removeH5PFolder();
+		$h5p = ilH5P::getInstance();
 
-		$db = $this->dic->database();
+		$h5p->removeH5PFolder();
 
-		$db->dropTable(ilH5PContent::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PContent::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PContentUserData::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PContentUserData::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PCounter::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PCounter::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PEvent::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PEvent::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PLibrary::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PLibrary::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
 
-		$db->dropTable(ilH5POption::TABLE_NAME, false);
+		$this->db->dropTable(ilH5POption::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PResult::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PResult::TABLE_NAME, false);
 
-		$db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
+		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
+
+		return true;
 	}
 }

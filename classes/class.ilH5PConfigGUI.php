@@ -9,6 +9,8 @@ require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
+require_once "Services/Form/classes/class.ilCombinationInputGUI.php";
+require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
 
 /**
  * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
@@ -23,27 +25,40 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	const TAB_LIBRARIES = "xhfp_libraries";
 	const TAB_SETTINGS = "settings";
 	/**
+	 * @var ilCtrl
+	 */
+	protected $ctrl;
+	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
 	/**
-	 * @var \ILIAS\DI\Container
+	 * @var ilLanguage
 	 */
-	protected $dic;
+	protected $lng;
 	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var ilTabsGUI
+	 */
+	protected $tabs;
+	/**
+	 * @var ilTemplate
+	 */
+	protected $tpl;
 
 
 	function __construct() {
 		global $DIC;
 
+		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-
-		$this->dic = $DIC;
-
+		$this->lng = $DIC->language();
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->tabs = $DIC->tabs();
+		$this->tpl = $DIC->ui()->mainTemplate();
 	}
 
 
@@ -68,8 +83,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				break;
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
-				$this->dic->ctrl()->setReturn($this, self::CMD_MANAGE_LIBRARIES);
-				$this->dic->ctrl()->forwardCommand(ilH5PActionGUI::getInstance());
+				$this->ctrl->setReturn($this, self::CMD_MANAGE_LIBRARIES);
+				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 
 			default:
@@ -82,14 +97,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function setTabs() {
-		$tabs = $this->dic->tabs();
+		$this->tabs->addTab(self::TAB_LIBRARIES, $this->txt(self::TAB_LIBRARIES), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_LIBRARIES));
 
-		$tabs->addTab(self::TAB_LIBRARIES, $this->txt(self::TAB_LIBRARIES), $this->dic->ctrl()->getLinkTarget($this, self::CMD_MANAGE_LIBRARIES));
+		$this->tabs->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 
-		$tabs->addTab(self::TAB_SETTINGS, $this->dic->language()->txt(self::TAB_SETTINGS), $this->dic->ctrl()
-			->getLinkTarget($this, self::CMD_SETTINGS));
-
-		$tabs->manual_activation = true; // Show all tabs as links when no activation
+		$this->tabs->manual_activation = true; // Show all tabs as links when no activation
 	}
 
 
@@ -98,12 +110,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
-		if ($this->dic->ctrl()->isAsynch()) {
+		if ($this->ctrl->isAsynch()) {
 			echo $html;
 
 			exit();
 		} else {
-			$this->dic->ui()->mainTemplate()->setContent($html);
+			$this->tpl->setContent($html);
 		}
 	}
 
@@ -112,7 +124,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function manageLibraries() {
-		$this->dic->tabs()->activateTab(self::TAB_LIBRARIES);
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
 
 		$hub_integration = $this->getH5PHubIntegration();
 
@@ -140,18 +152,18 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function deleteLibraryConfirm() {
 		$h5p_library = ilH5PLibrary::getCurrentLibrary();
 
-		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE);
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE);
 
-		$this->dic->ctrl()->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->dic->ctrl()->getFormActionByClass(ilH5PActionGUI::class));
+		$confirmation->setFormAction($this->ctrl->getFormActionByClass(ilH5PActionGUI::class));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
 
-		$confirmation->setConfirm($this->dic->language()->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->dic->language()->txt("cancel"), self::CMD_MANAGE_LIBRARIES);
+		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->lng->txt("cancel"), self::CMD_MANAGE_LIBRARIES);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -163,12 +175,30 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function getSettingsForm() {
 		$form = new ilPropertyFormGUI();
 
-		$form->setFormAction($this->dic->ctrl()->getFormAction($this));
+		$form->setFormAction($this->ctrl->getFormAction($this));
 
-		$form->setTitle($this->dic->language()->txt(self::TAB_SETTINGS));
+		$form->setTitle($this->lng->txt(self::TAB_SETTINGS));
 
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->dic->language()->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_LIBRARIES, $this->dic->language()->txt("cancel"));
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->lng->txt("save"));
+		$form->addCommandButton(self::CMD_MANAGE_LIBRARIES, $this->lng->txt("cancel"));
+
+		$content_types = new ilCombinationInputGUI($this->txt("xhfp_content_types"));
+
+		$enable_lrs_content_types = new ilCheckboxInputGUI($this->txt("xhfp_enable_lrs_content_types"), "enable_lrs_content_types");
+		$enable_lrs_content_types->setInfo($this->txt("xhfp_enable_lrs_content_types_info"));
+		$enable_lrs_content_types->setChecked($this->h5p->getOption("enable_lrs_content_types", false));
+		$content_types->addSubItem($enable_lrs_content_types);
+
+		$form->addItem($content_types);
+
+		$usage_statistics = new ilCombinationInputGUI($this->txt("xhfp_usage_statistics"));
+
+		$send_usage_statistics = new ilCheckboxInputGUI($this->txt("xhfp_send_usage_statistics"), "send_usage_statistics");
+		$send_usage_statistics->setInfo(sprintf($this->txt("xhfp_send_usage_statistics_info"), "https://h5p.org/tracking-the-usage-of-h5p"));
+		$send_usage_statistics->setChecked($this->h5p->getOption("send_usage_statistics", true));
+		$usage_statistics->addSubItem($send_usage_statistics);
+
+		$form->addItem($usage_statistics);
 
 		return $form;
 	}
@@ -178,7 +208,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function settings() {
-		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+		$this->tabs->activateTab(self::TAB_SETTINGS);
 
 		$form = $this->getSettingsForm();
 
@@ -190,7 +220,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function settingsStore() {
-		$this->dic->tabs()->activateTab(self::TAB_SETTINGS);
+		$this->tabs->activateTab(self::TAB_SETTINGS);
 
 		$form = $this->getSettingsForm();
 
@@ -202,11 +232,15 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			return;
 		}
 
-		ilUtil::sendSuccess($this->dic->language()->txt("settings_saved"), true);
+		$enable_lrs_content_types = boolval($form->getInput("enable_lrs_content_types"));
+		$this->h5p->setOption("enable_lrs_content_types", $enable_lrs_content_types);
+
+		$send_usage_statistics = boolval($form->getInput("xhfp_send_usage_statistics"));
+		$this->h5p->setOption("send_usage_statistics", $send_usage_statistics);
+
+		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
 
 		$this->show($form->getHTML());
-
-		$this->dic->ctrl()->redirect($this, self::CMD_MANAGE_LIBRARIES);
 	}
 
 
@@ -279,7 +313,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		foreach ($libraries as $versions) {
 			foreach ($versions as $library) {
-				$this->dic->ctrl()->setParameter($this, "xhfp_library", $library->id);
+				$this->ctrl->setParameter($this, "xhfp_library", $library->id);
 
 				$usage = $this->h5p->framework()->getLibraryUsage($library->id, $not_cached ? true : false);
 
@@ -288,7 +322,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					$upgradeUrl = empty($upgrades) ? NULL : ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_LIBRARY_UPGRADE);
 
 					$restricted = ($library->restricted ? true : false);
-					$this->dic->ctrl()->setParameter($this, "restrict", (!$restricted));
+					$this->ctrl->setParameter($this, "restrict", (!$restricted));
 					$restricted_url = ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_RESTRICT_LIBRARY);
 				} else {
 					$upgradeUrl = NULL;
@@ -305,13 +339,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					"numContentDependencies" => $usage["content"] < 1 ? "" : $usage["content"],
 					"numLibraryDependencies" => $usage["libraries"] === 0 ? "" : $usage["libraries"],
 					"upgradeUrl" => $upgradeUrl,
-					"detailsUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_INFO_LIBRARY, "", false, false),
-					"deleteUrl" => $this->dic->ctrl()->getLinkTarget($this, self::CMD_DELETE_LIBRARY_CONFIRM, "", false, false)
+					"detailsUrl" => $this->ctrl->getLinkTarget($this, self::CMD_INFO_LIBRARY, "", false, false),
+					"deleteUrl" => $this->ctrl->getLinkTarget($this, self::CMD_DELETE_LIBRARY_CONFIRM, "", false, false)
 				];
 			}
 		}
 
-		$this->dic->ctrl()->clearParameters($this);
+		$this->ctrl->clearParameters($this);
 
 		if ($not_cached) {
 			$admin_integration["libraryList"]["notCached"] = $this->getNotCachedSettings($not_cached);
@@ -335,7 +369,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$h5p_contents = ilH5PContentLibrary::getContentsByLibrary($h5p_library->getLibraryId());
 
-		$this->dic->tabs()->activateTab(self::TAB_LIBRARIES);
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
 
 		$this->addAdminCore([ "js/h5p-library-details.js" ]);
 
@@ -371,16 +405,16 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			$admin_integration["libraryInfo"]["content"] = [];
 
 			foreach ($h5p_contents as $h5p_content) {
-				$this->dic->ctrl()->setParameter($this, "xhfp_content", $h5p_content["content_id"]);
+				$this->ctrl->setParameter($this, "xhfp_content", $h5p_content["content_id"]);
 
 				$admin_integration["libraryInfo"]["content"][] = [
 					"title" => $h5p_content["title"],
-					"url" => $this->dic->ctrl()->getLinkTargetByClass(ilObjH5PGUI::class, ilObjH5PGUI::CMD_SHOW_CONTENT, "", false, false),
+					"url" => $this->ctrl->getLinkTargetByClass(ilObjH5PGUI::class, ilObjH5PGUI::CMD_SHOW_CONTENT, "", false, false),
 				];
 			}
 		}
 
-		$this->dic->ctrl()->clearParameters($this);
+		$this->ctrl->clearParameters($this);
 
 		$h5p_integration = $this->h5p->getH5PIntegration("H5PAdminIntegration", json_encode($admin_integration), "", "admin", NULL);
 

@@ -8,16 +8,22 @@ xhfp_new#:#Create H5P
 xhfp_add#:#Add
 xhfp_add_content#:#Add content
 xhfp_contents#:#Contents
+xhfp_content_types#:#Content Types
 xhfp_delete_content#:#Delete content
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
 xhfp_deleted_content#:#%s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
 xhfp_deleted_library#:#%s deleted
 xhfp_edit_content#:#Edit content
+xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
+xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
 xhfp_saved_content#:#%s saved
+xhfp_send_usage_statistics#:#Automatically contribute usage statistics
+xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
 xhfp_show_contents#:#Show contents
 xhfp_upload#:#Upload
 xhfp_upload_library#:#Upload library
+xhfp_usage_statistics#:#Usage statistics

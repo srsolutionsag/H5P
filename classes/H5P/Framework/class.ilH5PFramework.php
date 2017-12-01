@@ -15,9 +15,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		"info" => []
 	];
 	/**
-	 * @var \ILIAS\DI\Container
+	 * @var ilCtrl
 	 */
-	protected $dic;
+	protected $ctrl;
 	/**
 	 * @var ilH5P
 	 */
@@ -34,10 +34,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function __construct(ilH5P $h5p) {
 		global $DIC;
 
+		$this->ctrl = $DIC->ctrl();
 		$this->h5p = $h5p;
-
-		$this->dic = $DIC;
-
 		$this->pl = ilH5PPlugin::getInstance();
 	}
 
@@ -136,7 +134,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			"code" => $code
 		];
 
-		if (!$this->dic->ctrl()->isAsynch()) {
+		if (!$this->ctrl->isAsynch()) {
 			ilUtil::sendFailure($message, true);
 		}
 	}
@@ -151,7 +149,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function setInfoMessage($message) {
 		$this->messages["info"][] = $message;
 
-		if (!$this->dic->ctrl()->isAsynch()) {
+		if (!$this->ctrl->isAsynch()) {
 			ilUtil::sendInfo($message, true);
 		}
 	}
@@ -1112,13 +1110,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Whatever has been stored as the setting
 	 */
 	public function getOption($name, $default = NULL) {
-		$h5p_option = ilH5POption::getOption($name);
-
-		if ($h5p_option !== NULL) {
-			return $h5p_option->getValue();
-		} else {
-			return $default;
-		}
+		return $this->h5p->getOption($name, $default);
 	}
 
 
@@ -1132,21 +1124,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *                      Whatever we want to store as the setting
 	 */
 	public function setOption($name, $value) {
-		$h5p_option = ilH5POption::getOption($name);
-
-		if ($h5p_option !== NULL) {
-			$h5p_option->setValue($value);
-
-			$h5p_option->update();
-		} else {
-			$h5p_option = new ilH5POption();
-
-			$h5p_option->setName($name);
-
-			$h5p_option->setValue($value);
-
-			$h5p_option->create();
-		}
+		$this->h5p->setOption($name, $value);
 	}
 
 
@@ -1342,8 +1320,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return boolean
 	 */
 	public function hasPermission($permission, $id = NULL) {
-		// TODO permission
-
 		return true;
 	}
 
