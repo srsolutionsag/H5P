@@ -29,8 +29,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_CREATE_CONTENT = "createContent";
 	const CMD_DELETE_CONTENT_CONFIRM = "deleteContentConfirm";
 	const CMD_EDIT_CONTENT = "editContent";
-	const CMD_EMBED_CONTENT = "embedContent";
-	const CMD_EXPORT_CONTENT = "exportContent";
 	const CMD_MANAGE_CONTENTS = "manageContents";
 	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
 	const CMD_MOVE_CONTENT_UP = "moveContentUp";
@@ -96,8 +94,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			case self::CMD_CREATE_CONTENT:
 			case self::CMD_DELETE_CONTENT_CONFIRM:
 			case self::CMD_EDIT_CONTENT:
-			case self::CMD_EMBED_CONTENT:
-			case self::CMD_EXPORT_CONTENT:
 			case self::CMD_MANAGE_CONTENTS:
 			case self::CMD_MOVE_CONTENT_DOWN:
 			case self::CMD_MOVE_CONTENT_UP:
@@ -439,22 +435,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 *
 	 */
-	protected function embedContent() {
-		$this->show("");
-	}
-
-
-	/**
-	 *
-	 */
-	protected function exportContent() {
-		$this->show("");
-	}
-
-
-	/**
-	 *
-	 */
 	protected function getSettingsForm() {
 		$form = new ilPropertyFormGUI();
 
@@ -643,13 +623,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"library" => H5PCore::libraryToString($content["library"]),
 			"jsonContent" => $safe_parameters,
 			"fullScreen" => $content["library"]["fullscreen"],
-			"exportUrl" => $this->ctrl->getLinkTarget($this, self::CMD_EXPORT_CONTENT, "", true, false),
-			"embedCode" => '<iframe src="' . $this->ctrl->getLinkTarget($this, self::CMD_EMBED_CONTENT, "", true, false)
-				. '" width=":w" height=":h" frameborder="0" allowfullscreen="allowfullscreen"></iframe>',
-			"resizeCode" => '<script src="/' . ilH5P::CORE_PATH . 'js/h5p-resizer.js" charset="UTF-8"></script>',
+			"exportUrl" => "",
+			"embedCode" => "",
+			"resizeCode" => "",
 			"url" => $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENT, "", false, false),
 			"title" => $content["title"],
-			"displayOptions" => $this->h5p->core()->getDisplayOptionsForView($content["disable"], $author_id),
+			"displayOptions" => [
+				"frame" => true,
+				"export" => false,
+				"embed" => false,
+				"copyright" => true,
+				"icon" => true
+			],
 			"contentUserData" => [
 				0 => [
 					"state" => "{}"

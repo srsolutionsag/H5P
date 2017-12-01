@@ -10,14 +10,11 @@ class ilH5PActionGUI {
 	const CMD_H5P_ACTION = "h5pAction";
 	const H5P_ACTION_CONTENT_DELETE = "contentDelete";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
-	const H5P_ACTION_CONTENTS = "contents";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
-	const H5P_ACTION_EMBED = "embed";
 	const H5P_ACTION_FILES = "files";
 	const H5P_ACTION_LIBRARIES = "libraries";
 	const H5P_ACTION_LIBRARY_DELETE = "libraryDelete";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
-	const H5P_ACTION_LIBRARY_UPGRADE = "upgradeLibrary";
 	const H5P_ACTION_LIBRARY_UPLOAD = "libraryUpload";
 	const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
 	const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
@@ -136,7 +133,6 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_LIBRARIES:
 			case self::H5P_ACTION_LIBRARY_DELETE:
 			case self::H5P_ACTION_LIBRARY_INSTALL:
-			case self::H5P_ACTION_LIBRARY_UPGRADE:
 			case self::H5P_ACTION_LIBRARY_UPLOAD:
 			case self::H5P_ACTION_REBUILD_CACHE:
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
@@ -402,14 +398,6 @@ class ilH5PActionGUI {
 		}
 
 		H5PCore::ajaxSuccess();
-	}
-
-
-	/**
-	 *
-	 */
-	protected function upgradeLibrary() {
-
 	}
 
 
