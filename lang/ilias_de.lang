@@ -21,6 +21,8 @@ xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwende
 xhfp_installed_libraries#:#Installierte Bibliotheken
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
+xhfp_no_result#:#Kein Resultat
+xhfp_results#:#Resultate
 xhfp_saved_content#:#%s gespeichert
 xhfp_send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
 xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche <a href="%s" target="_blank">Daten auf h5p. org</a> gesammelt werden.

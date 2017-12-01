@@ -501,6 +501,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$this->deleteLibraryDependencies($h5p_library->getLibraryId());
 		}
 
+		// TODO Remove unnecessary event and counter table
 		$h5p_event = new ilH5PEvent();
 		$h5p_event->setType("library");
 		$h5p_event->setSubType($new ? "create" : "update");

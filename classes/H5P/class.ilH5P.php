@@ -2,23 +2,23 @@
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/autoload.php";
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PFramework.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PEditorStorage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/Framework/class.ilH5PEditorAjax.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/Framework/class.ilH5PFramework.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/Framework/class.ilH5PEditorStorage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/Framework/class.ilH5PEditorAjax.php";
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContent.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PContentUserData.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PCounter.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PEvent.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibrary.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryCachedAsset.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryHubCache.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryLanguage.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PLibraryDependencies.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5POption.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PResult.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/ActiveRecord/class.ilH5PTmpFile.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PContent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PContentLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PContentUserData.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PCounter.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PEvent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibrary.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryCachedAsset.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryHubCache.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryLanguage.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryDependencies.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5POption.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PResult.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PTmpFile.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
 

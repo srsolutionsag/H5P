@@ -6,7 +6,8 @@ require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilSelectInputGUI.php";
 require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PContentsTableGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PContentsTableGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PResultsTableGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
@@ -28,11 +29,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_ADD_CONTENT = "addContent";
 	const CMD_CREATE_CONTENT = "createContent";
 	const CMD_DELETE_CONTENT_CONFIRM = "deleteContentConfirm";
+	const CMD_DELETE_RESULTS_CONFIRM = "deleteResultsConfirm";
 	const CMD_EDIT_CONTENT = "editContent";
 	const CMD_MANAGE_CONTENTS = "manageContents";
 	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
 	const CMD_MOVE_CONTENT_UP = "moveContentUp";
 	const CMD_PERMISSIONS = "perm";
+	const CMD_RESULTS = "results";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
 	const CMD_SHOW_CONTENT = "showContent";
@@ -40,6 +43,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_UPDATE_CONTENT = "updateContent";
 	const TAB_CONTENTS = "contents";
 	const TAB_PERMISSIONS = "perm_settings";
+	const TAB_RESULTS = "results";
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
 	/**
@@ -93,10 +97,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			case self::CMD_ADD_CONTENT:
 			case self::CMD_CREATE_CONTENT:
 			case self::CMD_DELETE_CONTENT_CONFIRM:
+			case self::CMD_DELETE_RESULTS_CONFIRM:
 			case self::CMD_EDIT_CONTENT:
 			case self::CMD_MANAGE_CONTENTS:
 			case self::CMD_MOVE_CONTENT_DOWN:
 			case self::CMD_MOVE_CONTENT_UP:
+			case self::CMD_RESULTS:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
 			case self::CMD_SHOW_CONTENT:
@@ -435,6 +441,26 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 *
 	 */
+	protected function results() {
+		$this->tabs_gui->activateTab(self::TAB_RESULTS);
+
+		$results_table = new ilH5PResultsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+
+		$this->show($results_table->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function deleteResultsConfirm() {
+		// TODO Delete results
+	}
+
+
+	/**
+	 *
+	 */
 	protected function getSettingsForm() {
 		$form = new ilPropertyFormGUI();
 
@@ -658,6 +684,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->tabs_gui->addTab(self::TAB_SHOW_CONTENTS, $this->txt("xhfp_show_contents"), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
 		$this->tabs_gui->addTab(self::TAB_CONTENTS, $this->txt("xhfp_contents"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
+
+		$this->tabs_gui->addTab(self::TAB_RESULTS, $this->txt("xhfp_results"), $this->ctrl->getLinkTarget($this, self::CMD_RESULTS));
 
 		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 

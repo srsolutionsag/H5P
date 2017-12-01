@@ -16,6 +16,7 @@ class ilH5PActionGUI {
 	const H5P_ACTION_LIBRARY_DELETE = "libraryDelete";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
 	const H5P_ACTION_LIBRARY_UPLOAD = "libraryUpload";
+	const H5P_ACTION_RESULTS_DELETE = "resultsDelete";
 	const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
 	const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
 	const H5P_ACTION_SET_FINISHED = "setFinished";
@@ -136,6 +137,7 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_LIBRARY_UPLOAD:
 			case self::H5P_ACTION_REBUILD_CACHE:
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
+			case self::H5P_ACTION_RESULTS_DELETE:
 			case self::H5P_ACTION_SET_FINISHED:
 				$this->{$action}();
 				break;
@@ -348,6 +350,14 @@ class ilH5PActionGUI {
 		echo json_encode([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
 		]);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function resultsDelete() {
+		// TODO Delete results
 	}
 
 

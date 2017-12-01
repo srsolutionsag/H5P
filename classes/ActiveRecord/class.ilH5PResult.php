@@ -57,6 +57,26 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
+	 * @param int $obj_id
+	 *
+	 * @return ilH5PResult[]
+	 */
+	static function getResultsByObjectId($obj_id) {
+		/**
+		 * @var ilH5PResult[] $h5p_results
+		 */
+
+		// TODO ActiveRecord Joins
+
+		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
+			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id
+		])->orderBy(self::TABLE_NAME . ".user_id", "asc")->orderBy("sort", "asc")->get();
+
+		return $h5p_results;
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true

@@ -54,7 +54,7 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param array $content
+	 * @param array $library
 	 */
 	protected function fillRow($library) {
 		$parent = $this->getParentObject();

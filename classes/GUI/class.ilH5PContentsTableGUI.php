@@ -31,9 +31,12 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->ctrl = $DIC->ctrl();
 		$this->pl = ilH5PPlugin::getInstance();
 
+		$this->setTitle($this->txt("xhfp_contents"));
+
 		$this->addColumn("");
 		$this->addColumn($this->lng->txt("title"));
 		$this->addColumn($this->txt("xhfp_library"));
+		$this->addColumn($this->txt("xhfp_results"));
 		$this->addColumn($this->lng->txt("actions"));
 
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
@@ -51,6 +54,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$parent = $this->getParentObject();
 
 		$h5p_library = ilH5PLibrary::getLibraryById($content["library_id"]);
+		$h5p_results = ilH5PResult::getResultsByContent($content["content_id"]);
 
 		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
 
@@ -59,6 +63,8 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("TITLE", $content["title"]);
 
 		$this->tpl->setVariable("LIBRARY", $h5p_library->getTitle());
+
+		$this->tpl->setVariable("RESULTS", sizeof($h5p_results));
 
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->lng->txt("actions"));

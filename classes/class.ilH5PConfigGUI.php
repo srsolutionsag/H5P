@@ -11,7 +11,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
 require_once "Services/Form/classes/class.ilCombinationInputGUI.php";
 require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PLibrariesTableGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PLibrariesTableGUI.php";
 
 /**
  * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
