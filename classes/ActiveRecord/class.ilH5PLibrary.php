@@ -51,10 +51,41 @@ class ilH5PLibrary extends ActiveRecord {
 
 
 	/**
+	 * @param string    $title
+	 * @param bool|null $runnable
+	 * @param bool|null $not_used
+	 *
 	 * @return array
 	 */
-	static function getLibrariesArray() {
-		$h5p_libraries = self::orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->getArray();
+	static function getLibrariesArray($title = "", $runnable = NULL, $not_used = NULL) {
+		$h5p = ilH5P::getInstance();
+
+		$r = self::where([ "title" => "%" . $title . "%" ], "LIKE");
+
+		if ($runnable !== NULL) {
+			$r = $r->where([ "runnable" => $runnable ]);
+		}
+
+		$h5p_libraries = $r->orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->getArray();
+
+		if ($not_used !== NULL) {
+			foreach ($h5p_libraries as $id => $library) {
+				$contents_count = $h5p->framework()->getNumContent($library["library_id"]);
+				$usage = $h5p->framework()->getLibraryUsage($library["library_id"]);
+
+				$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
+
+				if ($not_in_use) {
+					if (!$not_used) {
+						unset($h5p_libraries[$id]);
+					}
+				} else {
+					if ($not_used) {
+						unset($h5p_libraries[$id]);
+					}
+				}
+			}
+		}
 
 		return $h5p_libraries;
 	}

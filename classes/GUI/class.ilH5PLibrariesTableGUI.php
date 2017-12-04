@@ -3,6 +3,8 @@
 require_once "Services/Table/classes/class.ilTable2GUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
+require_once "Services/Form/classes/class.ilTextInputGUI.php";
+require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
 
 /**
  *
@@ -13,6 +15,18 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 	 * @var ilCtrl
 	 */
 	protected $ctrl;
+	/**
+	 * @var ilCheckboxInputGUI
+	 */
+	protected $filter_not_used;
+	/**
+	 * @var ilCheckboxInputGUI
+	 */
+	protected $filter_runnable;
+	/**
+	 * @var ilTextInputGUI
+	 */
+	protected $filter_title;
 	/**
 	 * @var ilH5P
 	 */
@@ -36,21 +50,52 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 
+		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+
 		$this->setTitle($this->txt("xhfp_installed_libraries"));
 
+		$this->addColumns();
+
+		$this->initFilter();
+
+		$this->setRowTemplate("libraries_list_row.html", $this->pl->getDirectory());
+
+		$this->setData(ilH5PLibrary::getLibrariesArray($this->filter_title->getValue(), ($this->filter_runnable->getChecked() ? true : NULL), ($this->filter_not_used->getChecked() ? true : NULL)));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function addColumns() {
 		$this->addColumn("");
 		$this->addColumn($this->txt("xhfp_library"));
 		$this->addColumn($this->lng->txt("version"));
+		$this->addColumn($this->txt("xhfp_runnable"));
 		$this->addColumn($this->txt("xhfp_contents"));
 		$this->addColumn($this->txt("xhfp_usage_contents"));
 		$this->addColumn($this->txt("xhfp_usage_libraries"));
 		$this->addColumn($this->lng->txt("actions"));
+	}
 
-		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
-		$this->setRowTemplate("libraries_list_row.html", $this->pl->getDirectory());
+	/**
+	 *
+	 */
+	function initFilter() {
+		$this->filter_title = new ilTextInputGUI($this->pl->txt("xhfp_library"), "xhfp_title");
+		$this->addFilterItem($this->filter_title);
+		$this->filter_title->readFromSession();
 
-		$this->setData(ilH5PLibrary::getLibrariesArray());
+		$this->filter_runnable = new ilCheckboxInputGUI($this->pl->txt("xhfp_only_runnable"), "xhfp_runnable");
+		$this->addFilterItem($this->filter_runnable);
+		$this->filter_runnable->readFromSession();
+
+		$this->filter_not_used = new ilCheckboxInputGUI($this->pl->txt("xhfp_only_not_used"), "xhfp_not_used");
+		$this->addFilterItem($this->filter_not_used);
+		$this->filter_not_used->readFromSession();
+
+		$this->setDisableFilterHiding(true);
 	}
 
 
@@ -84,6 +129,8 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("LIBRARY", $library["title"]);
 
 		$this->tpl->setVariable("VERSION", H5PCore::libraryVersion((object)$library));
+
+		$this->tpl->setVariable("RUNNABLE", $this->lng->txt($library["runnable"] ? "yes" : "no"));
 
 		$this->tpl->setVariable("CONTENTS", ($contents_count != 0 ? $contents_count : ""));
 

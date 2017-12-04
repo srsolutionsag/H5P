@@ -44,13 +44,15 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		$this->obj_id = $this->getParentObject()->object->getId();
 		$this->pl = ilH5PPlugin::getInstance();
 
-		$this->getResults();
+		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
 		$this->setTitle($this->txt("xhfp_results"));
 
-		$this->setColumns();
+		$this->getResults();
 
-		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+		$this->addColumns();
+
+		$this->initFilter();
 
 		$this->setRowTemplate("results_list_row.html", $this->pl->getDirectory());
 
@@ -85,7 +87,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	protected function setColumns() {
+	protected function addColumns() {
 		$this->addColumn($this->lng->txt("user"));
 
 		foreach ($this->contents as $h5p_content) {
@@ -93,6 +95,14 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		}
 
 		$this->addColumn($this->lng->txt("actions"));
+	}
+
+
+	/**
+	 *
+	 */
+	function initFilter() {
+
 	}
 
 

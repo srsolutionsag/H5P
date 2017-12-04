@@ -89,6 +89,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
 			case self::CMD_UPLOAD_LIBRARY:
+			case "applyFilter":
+			case "resetFilter":
 				$this->$cmd();
 				break;
 
@@ -164,6 +166,32 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$libraries_table = new ilH5PLibrariesTableGUI($this, self::CMD_MANAGE_LIBRARIES);
 
 		$this->show($upload_form->getHTML() . $libraries_table->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function applyFilter() {
+		$libraries_table = new ilH5PLibrariesTableGUI($this, self::CMD_MANAGE_LIBRARIES);
+
+		$libraries_table->writeFilterToSession();
+
+		$this->ctrl->redirect($this, self::CMD_MANAGE_LIBRARIES);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function resetFilter() {
+		$libraries_table = new ilH5PLibrariesTableGUI($this, self::CMD_MANAGE_LIBRARIES);
+
+		$libraries_table->resetFilter();
+
+		$libraries_table->resetOffset();
+
+		$this->ctrl->redirect($this, self::CMD_MANAGE_LIBRARIES);
 	}
 
 

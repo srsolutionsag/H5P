@@ -31,19 +31,37 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->ctrl = $DIC->ctrl();
 		$this->pl = ilH5PPlugin::getInstance();
 
+		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+
 		$this->setTitle($this->txt("xhfp_contents"));
 
+		$this->addColumns();
+
+		$this->initFilter();
+
+		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
+
+		$this->setData(ilH5PContent::getContentsByObjectIdArray($a_parent_obj->object->getId()));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function addColumns() {
 		$this->addColumn("");
 		$this->addColumn($this->lng->txt("title"));
 		$this->addColumn($this->txt("xhfp_library"));
 		$this->addColumn($this->txt("xhfp_results"));
 		$this->addColumn($this->lng->txt("actions"));
+	}
 
-		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
-		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
+	/**
+	 *
+	 */
+	function initFilter() {
 
-		$this->setData(ilH5PContent::getContentsByObjectIdArray($a_parent_obj->object->getId()));
 	}
 
 
