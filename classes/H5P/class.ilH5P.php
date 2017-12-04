@@ -26,6 +26,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
 
+require_once "Services/Calendar/classes/class.ilDatePresentation.php";
+require_once "Services/Calendar/classes/class.ilDateTime.php";
+
 /**
  * H5P
  */
@@ -49,14 +52,6 @@ class ilH5P {
 	}
 
 
-	/**
-	 * Core path
-	 */
-	const CORE_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-core/";
-	/**
-	 * Editor path
-	 */
-	const EDITOR_PATH = "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/lib/h5p/vendor/h5p/h5p-editor/";
 	/**
 	 * CSV seperator
 	 */
@@ -185,10 +180,38 @@ class ilH5P {
 
 
 	/**
+	 * @param int $time
+	 *
+	 * @return string
+	 */
+	function formatTime($time) {
+		$formated_time = ilDatePresentation::formatDate(new ilDateTime($time, IL_CAL_UNIX));
+
+		return $formated_time;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	function getH5PFolder() {
-		return "data/" . CLIENT_ID . "/h5p/";
+		return "data/" . CLIENT_ID . "/h5p";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	protected function getCorePath() {
+		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	protected function getEditoPath() {
+		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
 	}
 
 
@@ -331,12 +354,14 @@ class ilH5P {
 	 * @param array $H5PIntegration
 	 */
 	protected function addCore(&$H5PIntegration) {
+		$core_path = "/" . $this->getCorePath() . "/";
+
 		foreach (H5PCore::$scripts as $script) {
-			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = "/" . ilH5P::CORE_PATH . $script;
+			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = $core_path . $script;
 		}
 
 		foreach (H5PCore::$styles as $style) {
-			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = "/" . ilH5P::CORE_PATH . $style;
+			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = $core_path . $style;
 		}
 	}
 
@@ -368,6 +393,8 @@ class ilH5P {
 	function getEditor() {
 		$H5PIntegration = $this->getCore();
 
+		$editor_path = "/" . $this->getEditoPath();
+
 		$assets = [
 			"js" => $H5PIntegration["core"]["scripts"],
 			"css" => $H5PIntegration["core"]["styles"]
@@ -376,37 +403,37 @@ class ilH5P {
 		foreach (H5peditor::$scripts as $script) {
 			if ($script !== "scripts/h5peditor-editor.js") {
 				/*$this->h5p_scripts[] = */
-				$assets["js"][] = "/" . ilH5P::EDITOR_PATH . $script;
+				$assets["js"][] = $editor_path . "/" . $script;
 			} else {
-				$this->h5p_scripts[] = "/" . ilH5P::EDITOR_PATH . $script;
+				$this->h5p_scripts[] = $editor_path . "/" . $script;
 			}
 		}
 
 		foreach (H5peditor::$styles as $style) {
 			/*$this->h5p_styles[] = */
-			$assets["css"][] = "/" . ilH5P::EDITOR_PATH . $style;
+			$assets["css"][] = $editor_path . "/" . $style;
 		}
 
 		$H5PIntegration["editor"] = [
-			"filesPath" => "/" . $this->getH5PFolder() . "editor",
+			"filesPath" => "/" . $this->getH5PFolder() . "/editor",
 			"fileIcon" => [
-				"path" => "/" . ilH5P::EDITOR_PATH . "images/binary-file.png",
+				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
 				"height" => 50
 			],
 			"ajaxPath" => $this->ctrl->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
 				. ilH5PActionGUI::CMD_H5P_ACTION . "=",
-			"libraryUrl" => "/" . ilH5P::EDITOR_PATH,
+			"libraryUrl" => $editor_path,
 			"copyrightSemantics" => $this->content_validator()->getCopyrightSemantics(),
 			"assets" => $assets,
-			"deleteMessage" => $this->t("Are you sure you wish to delete this content?"),
 			"apiVersion" => H5PCore::$coreApi
 		];
 
 		$language = $this->getLanguage();
-		$language_script = ilH5P::EDITOR_PATH . "language/" . $language . ".js";
+		$language_path = $this->getEditoPath() . "/language/";
+		$language_script = $language_path . $language . ".js";
 		if (!file_exists($language_script)) {
-			$language_script = ilH5P::EDITOR_PATH . "language/en.js";
+			$language_script = $language_path . "en.js";
 		}
 		$this->h5p_scripts[] = "/" . $language_script;
 

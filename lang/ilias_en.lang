@@ -19,6 +19,9 @@ xhfp_deleted_results#:#Results of %s deleted
 xhfp_edit_content#:#Edit content
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
+xhfp_hub#:#HUB
+xhfp_hub_last_refresh#:#HUB last refreshed: %s
+xhfp_hub_refresh#:#Resresh HUB
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries

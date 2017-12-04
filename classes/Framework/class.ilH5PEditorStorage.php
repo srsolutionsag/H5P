@@ -175,9 +175,9 @@ class ilH5PEditorStorage implements H5peditorStorage {
 		$path = ilH5P::getInstance()->getH5PFolder();
 
 		if (empty($content_id)) {
-			$path .= "editor/";
+			$path .= "/editor/";
 		} else {
-			$path .= "content/" . $content_id . "/";
+			$path .= "/content/" . $content_id . "/";
 		}
 		$path .= $file->getType() . "s/" . $file->getName();
 

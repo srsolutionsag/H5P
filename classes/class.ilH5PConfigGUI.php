@@ -11,6 +11,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
 require_once "Services/Form/classes/class.ilCombinationInputGUI.php";
 require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
+require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PLibrariesTableGUI.php";
 
 /**
@@ -19,10 +20,13 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
+	const CMD_HUB = "hub";
 	const CMD_MANAGE_LIBRARIES = "manageLibraries";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
-	const TAB_LIBRARIES = "xhfp_libraries";
+	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
+	const TAB_HUB = "hub";
+	const TAB_LIBRARIES = "libraries";
 	const TAB_SETTINGS = "settings";
 	/**
 	 * @var ilCtrl
@@ -48,6 +52,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 * @var ilTemplate
 	 */
 	protected $tpl;
+	/**
+	 * @var ilToolbarGUI
+	 */
+	protected $toolbar;
 
 
 	function __construct() {
@@ -59,6 +67,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->tabs = $DIC->tabs();
 		$this->tpl = $DIC->ui()->mainTemplate();
+		$this->toolbar = $DIC->toolbar();
 	}
 
 
@@ -75,16 +84,17 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		switch ($cmd) {
 			case self::CMD_DELETE_LIBRARY_CONFIRM:
+			case self::CMD_HUB:
 			case self::CMD_MANAGE_LIBRARIES:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
+			case self::CMD_UPLOAD_LIBRARY:
 				$this->$cmd();
 				break;
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
 			case ilH5PActionGUI::CMD_CANCEL:
-				$this->ctrl->setReturn($this, ilH5PActionGUI::getReturnCmd());
-				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
+				ilH5PActionGUI::forward($this);
 				break;
 
 			default:
@@ -97,7 +107,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function setTabs() {
-		$this->tabs->addTab(self::TAB_LIBRARIES, $this->txt(self::TAB_LIBRARIES), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_LIBRARIES));
+		$this->tabs->addTab(self::TAB_LIBRARIES, $this->txt("xhfp_libraries"), $this->ctrl->getLinkTarget($this, self::CMD_MANAGE_LIBRARIES));
+
+		$this->tabs->addTab(self::TAB_HUB, $this->txt("xhfp_hub"), $this->ctrl->getLinkTarget($this, self::CMD_HUB));
 
 		$this->tabs->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 
@@ -121,16 +133,106 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
+	 * @return ilPropertyFormGUI
+	 */
+	protected function getUploadLibraryForm() {
+		$form = new ilPropertyFormGUI();
+
+		$form->setFormAction($this->ctrl->getFormAction($this));
+
+		$form->setTitle($this->txt("xhfp_upload_library"));
+
+		$form->addCommandButton(self::CMD_UPLOAD_LIBRARY, $this->txt("xhfp_upload"));
+
+		$upload_library = new ilFileInputGUI($this->txt("xhfp_library"), "xhfp_library");
+		$upload_library->setRequired(true);
+		$upload_library->setSuffixes([ "h5p" ]);
+		$form->addItem($upload_library);
+
+		return $form;
+	}
+
+
+	/**
 	 *
 	 */
 	protected function manageLibraries() {
 		$this->tabs->activateTab(self::TAB_LIBRARIES);
 
-		$hub_integration = $this->getH5PHubIntegration();
+		$upload_form = $this->getUploadLibraryForm();
 
 		$libraries_table = new ilH5PLibrariesTableGUI($this, self::CMD_MANAGE_LIBRARIES);
 
-		$this->show($hub_integration . $libraries_table->getHTML());
+		$this->show($upload_form->getHTML() . $libraries_table->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function uploadLibrary() {
+		$this->tabs->activateTab(self::TAB_LIBRARIES);
+
+		$upload_form = $this->getUploadLibraryForm();
+
+		$upload_form->setValuesByPost();
+
+		if (!$upload_form->checkInput()) {
+			$this->show($upload_form->getHTML());
+
+			return;
+		}
+
+		$token = "";
+		$file_path = $upload_form->getInput("xhfp_library")["tmp_name"];
+		$content_id = NULL;
+
+		ob_start(); // prevent output from editor
+		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
+		ob_end_clean();
+
+		$this->ctrl->redirect($this, self::CMD_MANAGE_LIBRARIES);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	protected function getH5PHubIntegration() {
+		$H5PIntegration = $this->h5p->getEditor();
+
+		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PHub.js";
+
+		$H5PIntegration["hubIsEnabled"] = true;
+
+		$H5PIntegration["ajax"] = [
+			"setFinished" => "",
+			"contentUserData" => ""
+		];
+
+		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), $this->txt("xhfp_hub"), "editor");
+
+		return $h5p_integration;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function hub() {
+		$this->tabs->activateTab(self::TAB_HUB);
+
+		$hub_last_refresh = $this->h5p->getOption("content_type_cache_updated_at", "");
+		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
+
+		$hub_refresh = ilLinkButton::getInstance();
+		$hub_refresh->setCaption($this->txt("xhfp_hub_refresh"), false);
+		$hub_refresh->setUrl(ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_HUB_REFRESH, self::CMD_HUB));
+		$this->toolbar->addButtonInstance($hub_refresh);
+
+		$hub_integration = $this->getH5PHubIntegration();
+
+		$this->show('<div class="help-block">' . sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh) . '</div>' . $hub_integration);
 	}
 
 
@@ -156,13 +258,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			// TODO Ev. show whitch
 		}
 
-		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE, self::CMD_MANAGE_LIBRARIES);
-
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->ctrl->getFormActionByClass(ilH5PActionGUI::class));
+		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE, self::CMD_MANAGE_LIBRARIES));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
 
@@ -245,27 +345,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
 
 		$this->show($form->getHTML());
-	}
-
-
-	/**
-	 * @return string
-	 */
-	protected function getH5PHubIntegration() {
-		$H5PIntegration = $this->h5p->getEditor();
-
-		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PHub.js";
-
-		$H5PIntegration["hubIsEnabled"] = true;
-
-		$H5PIntegration["ajax"] = [
-			"setFinished" => "",
-			"contentUserData" => ""
-		];
-
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), "HUB", "editor");
-
-		return $h5p_integration;
 	}
 
 

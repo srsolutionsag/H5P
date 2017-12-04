@@ -12,6 +12,7 @@ require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
+require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 
 /**
  * H5P GUI
@@ -114,8 +115,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
 			case ilH5PActionGUI::CMD_CANCEL:
-				$this->ctrl->setReturn($this, ilH5PActionGUI::getReturnCmd());
-				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
+				ilH5PActionGUI::forward($this);
 				break;
 		}
 	}
@@ -168,7 +168,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$add_content = ilLinkButton::getInstance();
 		$add_content->setCaption($this->txt("xhfp_add_content"), false);
 		$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
-
 		$this->toolbar->addButtonInstance($add_content);
 
 		$contents_table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
@@ -389,13 +388,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, self::CMD_MANAGE_CONTENTS);
-
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->ctrl->getFormActionByClass(ilH5PActionGUI::class));
+		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, self::CMD_MANAGE_CONTENTS));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
@@ -461,13 +458,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 		$user = new ilObjUser($user_id);
 
-		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, self::CMD_RESULTS);
-
 		$this->ctrl->setParameter($this, "xhfp_user", $user->getId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->ctrl->getFormActionByClass(ilH5PActionGUI::class));
+		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, self::CMD_RESULTS));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
 

@@ -38,6 +38,7 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 
 		$this->setTitle($this->txt("xhfp_installed_libraries"));
 
+		$this->addColumn("");
 		$this->addColumn($this->txt("xhfp_library"));
 		$this->addColumn($this->lng->txt("version"));
 		$this->addColumn($this->txt("xhfp_contents"));
@@ -63,6 +64,22 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 		$usage = $this->h5p->framework()->getLibraryUsage($library["library_id"]);
 
 		$this->ctrl->setParameter($parent, "xhfp_library", $library["library_id"]);
+
+		$icon_path = NULL;
+		if ($library["has_icon"]) {
+			$icon_path = $this->h5p->framework()->getLibraryFileUrl(H5PCore::libraryToString([
+				"machineName" => $library["name"],
+				"majorVersion" => $library["major_version"],
+				"minorVersion" => $library["minor_version"]
+			], true), "icon.svg");
+			if (!file_exists(substr($icon_path, 1))) {
+				$icon_path = NULL;
+			}
+		}
+		if ($icon_path == NULL) {
+			$icon_path = $this->pl->getDirectory() . "/templates/images/h5p_placeholder.svg";
+		}
+		$this->tpl->setVariable("ICON", $icon_path);
 
 		$this->tpl->setVariable("LIBRARY", $library["title"]);
 

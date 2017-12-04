@@ -14,6 +14,7 @@ class ilH5PActionGUI {
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
 	const H5P_ACTION_FILES = "files";
+	const H5P_ACTION_HUB_REFRESH = "hubRefresh";
 	const H5P_ACTION_LIBRARIES = "libraries";
 	const H5P_ACTION_LIBRARY_DELETE = "libraryDelete";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
@@ -42,17 +43,20 @@ class ilH5PActionGUI {
 
 	/**
 	 * @param string $action
+	 * @param string $return_cmd
 	 *
 	 * @return string
 	 */
-	static function getUrl($action) {
+	static function getUrl($action, $return_cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
 
-		$ctrl->clearParametersByClass(self::class);
+		//$ctrl->clearParametersByClass(self::class);
 
 		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
+
+		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
 
 		$url = $ctrl->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
 
@@ -65,15 +69,25 @@ class ilH5PActionGUI {
 	/**
 	 * @param string $action
 	 * @param string $return_cmd
+	 *
+	 * @return string
 	 */
-	static function setFormAction($action, $return_cmd) {
+	static function getFormAction($action, $return_cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
 
+		//$ctrl->clearParametersByClass(self::class);
+
 		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
 		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
+
+		$form_action = $ctrl->getFormActionByClass(self::class);
+
+		$ctrl->clearParametersByClass(self::class);
+
+		return $form_action;
 	}
 
 
@@ -84,6 +98,20 @@ class ilH5PActionGUI {
 		$return_cmd = filter_input(INPUT_GET, ilH5PActionGUI::RETURN_CMD);
 
 		return $return_cmd;
+	}
+
+
+	/**
+	 * @param $a_gui_obj
+	 */
+	static function forward($a_gui_obj) {
+		global $DIC;
+
+		$ctrl = $DIC->ctrl();
+
+		$ctrl->setReturn($a_gui_obj, self::getReturnCmd());
+
+		$ctrl->forwardCommand(self::getInstance());
 	}
 
 
@@ -167,6 +195,7 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_CONTENT_TYPE_CACHE:
 			case self::H5P_ACTION_CONTENT_USER_DATA:
 			case self::H5P_ACTION_FILES:
+			case self::H5P_ACTION_HUB_REFRESH:
 			case self::H5P_ACTION_LIBRARIES:
 			case self::H5P_ACTION_LIBRARY_DELETE:
 			case self::H5P_ACTION_LIBRARY_INSTALL:
@@ -204,7 +233,7 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function contentTypeCache() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		$token = "";
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE, $token);
 	}
@@ -214,11 +243,6 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function contentsUserData() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
-		if (!$this->isValidEditorToken($token)) {
-			return;
-		}
-
 		$content_id = filter_input(INPUT_GET, "content_id");
 		$data_id = filter_input(INPUT_GET, "data_type");
 		$sub_content_id = filter_input(INPUT_GET, "sub_content_id");
@@ -272,11 +296,22 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function files() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		$token = "";
 
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function hubRefresh() {
+		$this->h5p->core()->updateContentTypeCache();
+
+		unset($_GET["cmdMode"]); // No async
+		$this->ctrl->returnToParent($this);
 	}
 
 
@@ -320,7 +355,7 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function libraryInstall() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		$token = "";
 
 		$name = filter_input(INPUT_GET, "id");
 
@@ -332,13 +367,14 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function libraryUpload() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+		$token = "";
 
 		$file_path = $_FILES["h5p"]["tmp_name"];
 		$content_id = NULL;
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
 	}
+
 
 
 	/**
@@ -410,11 +446,6 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function setFinished() {
-		$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
-		if (!$this->isValidEditorToken($token)) {
-			return;
-		}
-
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
 		$user_id = $this->usr->getId();
 		$score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);
@@ -453,26 +484,6 @@ class ilH5PActionGUI {
 		}
 
 		H5PCore::ajaxSuccess();
-	}
-
-
-	/**
-	 * Validates security tokens used for the editor
-	 *
-	 * @param string $token
-	 *
-	 * @return bool
-	 */
-	private function isValidEditorToken($token) {
-		$isValidToken = $this->h5p->editor_ajax()->validateEditorToken($token);
-
-		if (!$isValidToken) {
-			H5PCore::ajaxError($this->h5p->t("Invalid security token."), "INVALID_TOKEN");
-
-			return false;
-		}
-
-		return true;
 	}
 
 
