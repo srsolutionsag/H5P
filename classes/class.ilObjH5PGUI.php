@@ -384,7 +384,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteContentConfirm() {
-		$this->tabs_gui->activateTab(self::TAB_RESULTS);
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
@@ -453,7 +453,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteResultsConfirm() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_RESULTS);
 
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 		$user = new ilObjUser($user_id);
