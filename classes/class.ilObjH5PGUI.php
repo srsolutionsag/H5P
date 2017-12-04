@@ -112,7 +112,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				break;
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
-				$this->ctrl->setReturn($this, self::CMD_MANAGE_CONTENTS);
+			case ilH5PActionGUI::CMD_CANCEL:
+				$this->ctrl->setReturn($this, ilH5PActionGUI::getReturnCmd());
 				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 		}
@@ -383,11 +384,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteContentConfirm() {
-		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+		$this->tabs_gui->activateTab(self::TAB_RESULTS);
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE);
+		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, self::CMD_MANAGE_CONTENTS);
 
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
@@ -398,7 +399,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
 		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->lng->txt("cancel"), self::CMD_MANAGE_CONTENTS);
+		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -454,7 +455,25 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteResultsConfirm() {
-		// TODO Delete results
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+
+		$user_id = filter_input(INPUT_GET, "xhfp_user");
+		$user = new ilObjUser($user_id);
+
+		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, self::CMD_RESULTS);
+
+		$this->ctrl->setParameter($this, "xhfp_user", $user->getId());
+
+		$confirmation = new ilConfirmationGUI();
+
+		$confirmation->setFormAction($this->ctrl->getFormActionByClass(ilH5PActionGUI::class));
+
+		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
+
+		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
+
+		$this->show($confirmation->getHTML());
 	}
 
 

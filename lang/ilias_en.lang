@@ -9,12 +9,13 @@ xhfp_add#:#Add
 xhfp_add_content#:#Add content
 xhfp_contents#:#Contents
 xhfp_content_types#:#Content Types
-xhfp_delete_content#:#Delete content
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
-xhfp_deleted_content#:#%s deleted
+xhfp_deleted_content#:#Content %s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
 xhfp_delete_library_in_use#:#The library is still in use!
-xhfp_deleted_library#:#%s deleted
+xhfp_deleted_library#:#Library %s deleted
+xhfp_delete_results_confirm#:#Are you really want to delete the results of %s?
+xhfp_deleted_results#:#Results of %s deleted
 xhfp_edit_content#:#Edit content
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.

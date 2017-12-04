@@ -77,6 +77,26 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
+	 * @return ilH5PResult[]
+	 */
+	static function getCurrentResults() {
+		/**
+		 * @var ilH5PResult[] $h5p_results
+		 */
+
+		$obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
+		$user_id = filter_input(INPUT_GET, "xhfp_user");
+
+		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
+			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
+			self::TABLE_NAME . ".user_id" => $user_id,
+		])->get();
+
+		return $h5p_results;
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true

@@ -9,12 +9,13 @@ xhfp_add#:#Hinzufügen
 xhfp_add_content#:#Inhalt hinzufügen
 xhfp_contents#:#Inhalte
 xhfp_content_types#:#Inhaltstypen
-xhfp_delete_content#:#Inhalt löschen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
-xhfp_deleted_content#:#%s gelöscht
+xhfp_deleted_content#:#Inhalt %s gelöscht
 xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
 xhfp_delete_library_in_use#:#Die Bibliothek wird noch benutzt!
-xhfp_deleted_library#:#%s gelöscht
+xhfp_deleted_library#:#Bibliothek %s gelöscht
+xhfp_delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
+xhfp_deleted_results#:#Resultate von %s gelöscht
 xhfp_edit_content#:#Inhalt bearbeiten
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.

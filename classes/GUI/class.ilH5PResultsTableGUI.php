@@ -104,6 +104,8 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 		$user = new ilObjUser($result["user_id"]);
 
+		$this->ctrl->setParameter($parent, "xhfp_user", $user->getId());
+
 		$this->tpl->setVariable("USER", $user->getFullname());
 
 		$this->tpl->setCurrentBlock("contentBlock");
@@ -124,6 +126,8 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		$actions->addItem($this->lng->txt("delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
+
+		$this->ctrl->setParameter($parent, "xhfp_user", NULL);
 	}
 
 

@@ -8,6 +8,8 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PActionGUI {
 
 	const CMD_H5P_ACTION = "h5pAction";
+	const CMD_CANCEL = "cancel";
+	const RETURN_CMD = "returnCmd";
 	const H5P_ACTION_CONTENT_DELETE = "contentDelete";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
@@ -39,34 +41,6 @@ class ilH5PActionGUI {
 
 
 	/**
-	 * @var \ILIAS\DI\Container
-	 */
-	protected $ctrl;
-	/**
-	 * @var ilH5P
-	 */
-	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-
-
-	function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
-		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->usr = $DIC->user();
-	}
-
-
-	/**
 	 * @param string $action
 	 *
 	 * @return string
@@ -89,6 +63,59 @@ class ilH5PActionGUI {
 
 
 	/**
+	 * @param string $action
+	 * @param string $return_cmd
+	 */
+	static function setFormAction($action, $return_cmd) {
+		global $DIC;
+
+		$ctrl = $DIC->ctrl();
+
+		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
+
+		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	static function getReturnCmd() {
+		$return_cmd = filter_input(INPUT_GET, ilH5PActionGUI::RETURN_CMD);
+
+		return $return_cmd;
+	}
+
+
+	/**
+	 * @var \ILIAS\DI\Container
+	 */
+	protected $ctrl;
+	/**
+	 * @var ilH5P
+	 */
+	protected $h5p;
+	/**
+	 * @var ilH5PPlugin
+	 */
+	protected $pl;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
+
+
+	private function __construct() {
+		global $DIC;
+
+		$this->ctrl = $DIC->ctrl();
+		$this->h5p = ilH5P::getInstance();
+		$this->pl = ilH5PPlugin::getInstance();
+		$this->usr = $DIC->user();
+	}
+
+
+	/**
 	 *
 	 */
 	function executeCommand() {
@@ -96,6 +123,7 @@ class ilH5PActionGUI {
 
 		switch ($cmd) {
 			case self::CMD_H5P_ACTION:
+			case self::CMD_CANCEL:
 				$this->{$cmd}();
 				break;
 
@@ -114,6 +142,14 @@ class ilH5PActionGUI {
 		$action = filter_input(INPUT_GET, ilH5PActionGUI::CMD_H5P_ACTION);
 
 		$this->runAction($action);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function cancel() {
+		$this->ctrl->returnToParent($this);
 	}
 
 
@@ -357,7 +393,16 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function resultsDelete() {
-		// TODO Delete results
+		$h5p_results = ilH5PResult::getCurrentResults();
+		$user = new ilObjUser(filter_input(INPUT_GET, "xhfp_user"));
+
+		foreach ($h5p_results as $h5p_result) {
+			$h5p_result->delete();
+		}
+
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user->getFullname()), true);
+
+		$this->ctrl->returnToParent($this);
 	}
 
 

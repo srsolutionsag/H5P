@@ -82,7 +82,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				break;
 
 			case ilH5PActionGUI::CMD_H5P_ACTION:
-				$this->ctrl->setReturn($this, self::CMD_MANAGE_LIBRARIES);
+			case ilH5PActionGUI::CMD_CANCEL:
+				$this->ctrl->setReturn($this, ilH5PActionGUI::getReturnCmd());
 				$this->ctrl->forwardCommand(ilH5PActionGUI::getInstance());
 				break;
 
@@ -155,7 +156,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			// TODO Ev. show whitch
 		}
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE);
+		ilH5PActionGUI::setFormAction(ilH5PActionGUI::H5P_ACTION_LIBRARY_DELETE, self::CMD_MANAGE_LIBRARIES);
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());
 
@@ -166,7 +167,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
 
 		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->lng->txt("cancel"), self::CMD_MANAGE_LIBRARIES);
+		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
 
 		$this->show($confirmation->getHTML());
 	}
