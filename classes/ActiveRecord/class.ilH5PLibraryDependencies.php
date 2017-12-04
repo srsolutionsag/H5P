@@ -64,11 +64,9 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 		 * @var array[] $h5p_library_dependencies
 		 */
 
-		// TODO working?
-
-		$h5p_library_dependencies = self::where([
-			"library_id" => $library_id
-		])->innerjoin(ilH5PLibrary::TABLE_NAME, "required_library_id", "library_id")->getArray();
+		$h5p_library_dependencies = self::innerjoin(ilH5PLibrary::TABLE_NAME, "required_library_id", "library_id")->where([
+			self::TABLE_NAME . ".library_id" => $library_id
+		])->getArray();
 
 		return $h5p_library_dependencies;
 	}

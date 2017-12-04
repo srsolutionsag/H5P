@@ -60,6 +60,7 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 
 		$this->setRowTemplate("libraries_list_row.html", $this->pl->getDirectory());
 
+		// TODO ev. $this->h5p->editor()->getLatestGlobalLibrariesData()
 		$this->setData(ilH5PLibrary::getLibrariesArray($this->filter_title->getValue(), ($this->filter_runnable->getChecked() ? true : NULL), ($this->filter_not_used->getChecked() ? true : NULL)));
 	}
 

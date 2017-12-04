@@ -52,7 +52,7 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 			ilH5PLibrary::TABLE_NAME . ".name" => $name,
 			ilH5PLibrary::TABLE_NAME . ".major_version" => $majorVersion,
 			ilH5PLibrary::TABLE_NAME . ".minor_version" => $minorVersion,
-			"language_code" => $language
+			self::TABLE_NAME . ".language_code" => $language
 		])->first();
 
 		if ($h5p_library_language !== NULL) {

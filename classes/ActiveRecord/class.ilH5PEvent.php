@@ -26,6 +26,8 @@ class ilH5PEvent extends ActiveRecord {
 
 		$user_id = $DIC->user()->getId();
 
+		// TODO Use ActiveRecord
+
 		$result = $DIC->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
             FROM " . self::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s

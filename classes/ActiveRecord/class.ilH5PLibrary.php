@@ -74,7 +74,6 @@ class ilH5PLibrary extends ActiveRecord {
 				$usage = $h5p->framework()->getLibraryUsage($library["library_id"]);
 
 				$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
-
 				if ($not_in_use) {
 					if (!$not_used) {
 						unset($h5p_libraries[$id]);
@@ -147,6 +146,8 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	static function getLibraryUsage($library_id) {
 		global $DIC;
+
+		// TODO Use ActiveRecord
 
 		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . self::TABLE_NAME . " AS l

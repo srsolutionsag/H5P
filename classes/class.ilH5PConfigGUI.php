@@ -275,9 +275,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$contents_count = $this->h5p->framework()->getNumContent($h5p_library->getLibraryId());
 		$usage = $this->h5p->framework()->getLibraryUsage($h5p_library->getLibraryId());
 
-		$safely = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
-
-		if (!$safely) {
+		$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
+		if (!$not_in_use) {
 			ilUtil::sendFailure($this->txt("xhfp_delete_library_in_use") . "<br><br>" . implode("<br>", [
 					$this->txt("xhfp_contents") . " : " . $contents_count,
 					$this->txt("xhfp_usage_contents") . " : " . $usage["content"],

@@ -1003,7 +1003,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$content = [];
 
 		$h5p_content = ilH5PContent::getContentById($id);
-		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
 
 		if ($h5p_content !== NULL) {
 			$content = [
@@ -1019,6 +1018,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"libraryId" => $h5p_content->getLibraryId(),
 			];
 
+			$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
 			if ($h5p_library !== NULL) {
 				$content = array_merge($content, [
 					"libraryName" => $h5p_library->getName(),
