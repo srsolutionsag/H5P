@@ -974,11 +974,6 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_library->delete();
 		}
 
-		$h5p_content_libraries = ilH5PContentLibrary::getContentsByLibrary($library->library_id);
-		foreach ($h5p_content_libraries as $h5p_content_library) {
-			$h5p_content_library->delete();
-		}
-
 		$h5p_event = new ilH5PEventFramework("library", "delete", NULL, NULL, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
 			. $h5p_library->getMinorVersion()));
 	}
@@ -1005,33 +1000,37 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   - libraryFullscreen: 1 if fullscreen is supported. 0 otherwise.
 	 */
 	public function loadContent($id) {
+		$content = [];
+
 		$h5p_content = ilH5PContent::getContentById($id);
+		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
+
 		if ($h5p_content !== NULL) {
+			$content = [
+				"id" => $h5p_content->getContentId(),
+				"title" => $h5p_content->getTitle(),
+				"params" => $h5p_content->getParameters(),
+				"filtered" => $h5p_content->getFiltered(),
+				"slug" => $h5p_content->getSlug(),
+				"user_id" => $h5p_content->getUserId(),
+				"embedType" => $h5p_content->getEmbedType(),
+				"disable" => $h5p_content->getDisable(),
+				"language" => $this->h5p->getLanguage(),
+				"libraryId" => $h5p_content->getLibraryId(),
+			];
 
-			$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
 			if ($h5p_library !== NULL) {
-
-				return [
-					"id" => $h5p_content->getContentId(),
-					"title" => $h5p_content->getTitle(),
-					"params" => $h5p_content->getParameters(),
-					"filtered" => $h5p_content->getFiltered(),
-					"slug" => $h5p_content->getSlug(),
-					"user_id" => $h5p_content->getUserId(),
-					"embedType" => $h5p_content->getEmbedType(),
-					"disable" => $h5p_content->getDisable(),
-					"libraryId" => $h5p_library->getLibraryId(),
+				$content = array_merge($content, [
 					"libraryName" => $h5p_library->getName(),
 					"libraryMajorVersion" => $h5p_library->getMajorVersion(),
 					"libraryMinorVersion" => $h5p_library->getMinorVersion(),
 					"libraryEmbedTypes" => $h5p_library->getEmbedTypes(),
-					"libraryFullscreen" => $h5p_library->isFullscreen(),
-					"language" => $this->h5p->getLanguage()
-				];
+					"libraryFullscreen" => $h5p_library->isFullscreen()
+				]);
 			}
 		}
 
-		return [];
+		return $content;
 	}
 
 

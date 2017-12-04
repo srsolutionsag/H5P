@@ -219,9 +219,10 @@ class ilH5PActionGUI {
 	protected function contentDelete() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
-
-		$this->h5p->storage()->deletePackage($content);
+		$this->h5p->storage()->deletePackage([
+			"id" => $h5p_content->getContentId(),
+			"slug" => $h5p_content->getSlug()
+		]);
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 
@@ -374,7 +375,6 @@ class ilH5PActionGUI {
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
 	}
-
 
 
 	/**

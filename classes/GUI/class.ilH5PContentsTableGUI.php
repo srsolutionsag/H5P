@@ -62,7 +62,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->tpl->setVariable("TITLE", $content["title"]);
 
-		$this->tpl->setVariable("LIBRARY", $h5p_library->getTitle());
+		$this->tpl->setVariable("LIBRARY", ($h5p_library !== NULL ? $h5p_library->getTitle() : ""));
 
 		$this->tpl->setVariable("RESULTS", sizeof($h5p_results));
 

@@ -102,9 +102,13 @@ class ilH5PEventFramework extends H5PEventBase {
 
 		$h5p_counter->addNum();
 
-		$h5p_counter->setLibraryName($this->library_name);
+		if ($this->library_name != NULL) {
+			$h5p_counter->setLibraryName($this->library_name);
+		}
 
-		$h5p_counter->setLibraryVersion($this->library_version);
+		if ($this->library_version != NULL) {
+			$h5p_counter->setLibraryVersion($this->library_version);
+		}
 
 		if ($new) {
 			$h5p_counter->create();
