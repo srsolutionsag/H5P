@@ -124,15 +124,6 @@ class ilH5PEvent extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $library_version = "";
-	/**
-	 * @var int
-	 *
-	 * @con_has_field    true
-	 * @con_fieldtype    integer
-	 * @con_length       8
-	 * @con_is_notnull   false
-	 */
-	protected $obj_id = NULL;
 
 
 	/**
@@ -181,13 +172,6 @@ class ilH5PEvent extends ActiveRecord {
 		$this->created_at = time();
 
 		$this->user_id = $DIC->user()->getId();
-
-		if ($this->type === "content") {
-			$h5p_content = ilH5PContent::getContentById($this->content_id);
-			if ($h5p_content !== NULL) {
-				$this->obj_id = $h5p_content->getObjId();
-			}
-		}
 
 		parent::create();
 	}

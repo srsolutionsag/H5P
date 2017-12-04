@@ -501,13 +501,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$this->deleteLibraryDependencies($h5p_library->getLibraryId());
 		}
 
-		// TODO Remove unnecessary event and counter table
-		$h5p_event = new ilH5PEvent();
-		$h5p_event->setType("library");
-		$h5p_event->setSubType($new ? "create" : "update");
-		$h5p_event->setLibraryName($h5p_library->getName());
-		$h5p_event->setLibraryVersion($h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion());
-		$h5p_event->create();
+		$h5p_event = new ilH5PEventFramework("library", ($new ? "create" : "update"), NULL, NULL, $h5p_library->getName(), ($h5p_library->getMajorVersion()
+			. "." . $h5p_library->getMinorVersion()));
 
 		$h5p_languages = ilH5PLibraryLanguage::getLanguagesByLibrary($h5p_library->getLibraryId());
 		foreach ($h5p_languages as $h5p_language) {
@@ -594,14 +589,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_content->update();
 		}
 
-		$h5p_event = new ilH5PEvent();
-		$h5p_event->setType("content");
-		$h5p_event->setSubType(($new ? "create" : "update") . (!empty($content["uploaded"]) ? " upload" : ""));
-		$h5p_event->setContentId($h5p_content->getContentId());
-		$h5p_event->setContentTitle($h5p_content->getTitle());
-		$h5p_event->setLibraryName($content["library"]["name"]);
-		$h5p_event->setLibraryVersion($content["library"]["majorVersion"] . "." . $content["library"]["minorVersion"]);
-		$h5p_event->create();
+		$h5p_event = new ilH5PEventFramework("content", (($new ? "create" : "update")
+			. (!empty($content["uploaded"]) ? " upload" : "")), $h5p_content->getContentId(), $h5p_content->getTitle(), $content["library"]["name"], ($content["library"]["majorVersion"]
+			. "." . $content["library"]["minorVersion"]));
 
 		return $h5p_content->getContentId();
 	}
@@ -694,14 +684,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function deleteContentData($content_id) {
 		$content = $this->loadContent($content_id);
 
-		$h5p_event = new ilH5PEvent();
-		$h5p_event->setType("content");
-		$h5p_event->setSubType("delete");
-		$h5p_event->setContentId($content_id);
-		$h5p_event->setContentTitle($content["title"]);
-		$h5p_event->setLibraryName($content["libraryName"]);
-		$h5p_event->setLibraryVersion($content["libraryMajorVersion"] . "." . $content["libraryMinorVersion"]);
-		$h5p_event->create();
+		$h5p_event = new ilH5PEventFramework("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
+			. "." . $content["libraryMinorVersion"]));
 
 		$h5p_content = ilH5PContent::getContentById($content_id);
 		if ($h5p_content !== NULL) {
@@ -995,12 +979,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			$h5p_content_library->delete();
 		}
 
-		$h5p_event = new ilH5PEvent();
-		$h5p_event->setType("library");
-		$h5p_event->setSubType("delete");
-		$h5p_event->setLibraryName($h5p_library->getName());
-		$h5p_event->setLibraryVersion($h5p_library->getMajorVersion() . "." . $h5p_library->getMinorVersion());
-		$h5p_event->create();
+		$h5p_event = new ilH5PEventFramework("library", "delete", NULL, NULL, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
+			. $h5p_library->getMinorVersion()));
 	}
 
 
