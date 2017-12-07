@@ -341,9 +341,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			$content["id"] = $this->h5p->core()->saveContent($content);
 
-			$this->h5p->core()->filterParameters($content);
+			$content["params"] = $this->h5p->core()->filterParameters($content);
 
-			$params = json_decode($content["params"], true);
+			$params = json_decode($content["params"]);
 
 			$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
 
@@ -383,7 +383,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$h5p_content = ilH5PContent::getCurrentContent();
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
-		$oldParams = json_decode($content["params"], true);
+		$oldParams = json_decode($content["params"]);
 
 		$title = $form->getInput("xhfp_title");
 		$content["title"] = $title;
@@ -393,9 +393,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$content["id"] = $this->h5p->core()->saveContent($content);
 
-		$this->h5p->core()->filterParameters($content);
+		$content["params"] = $this->h5p->core()->filterParameters($content);
 
-		$params = json_decode($content["params"], true);
+		$params = json_decode($content["params"]);
 
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
