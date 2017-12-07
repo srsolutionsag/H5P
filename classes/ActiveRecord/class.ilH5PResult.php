@@ -61,7 +61,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getResultsByObjectId($obj_id) {
+	static function getResultsByObject($obj_id) {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */

@@ -87,11 +87,13 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
+		if (ilObjH5PAccess::hasWriteAccess()) {
+			$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
 
-		$actions->addItem($this->txt("xhfp_edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+			$actions->addItem($this->txt("xhfp_edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+			$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+		}
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

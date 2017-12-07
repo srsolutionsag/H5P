@@ -25,6 +25,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PAccess.php";
 
 require_once "Services/Calendar/classes/class.ilDatePresentation.php";
 require_once "Services/Calendar/classes/class.ilDateTime.php";

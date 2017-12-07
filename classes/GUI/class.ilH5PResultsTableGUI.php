@@ -68,7 +68,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 		$this->results = [];
 
-		$h5p_results = ilH5PResult::getResultsByObjectId($this->obj_id);
+		$h5p_results = ilH5PResult::getResultsByObject($this->obj_id);
 
 		foreach ($h5p_results as $h5p_result) {
 			$user_id = $h5p_result->getUserId();
@@ -133,7 +133,9 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+		if (ilObjH5PAccess::hasWriteAccess()) {
+			$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+		}
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

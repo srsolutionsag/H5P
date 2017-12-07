@@ -133,7 +133,7 @@ class ilH5PActionGUI {
 	protected $usr;
 
 
-	private function __construct() {
+	protected function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -152,14 +152,21 @@ class ilH5PActionGUI {
 		switch ($cmd) {
 			case self::CMD_H5P_ACTION:
 			case self::CMD_CANCEL:
+				// Read commands
+				if (!ilObjH5PAccess::hasReadAccess()) {
+					die();
+				}
+
 				$this->{$cmd}();
+
+				exit();
 				break;
 
 			default:
+				// Unknown commands
+				die();
 				break;
 		}
-
-		exit();
 	}
 
 
@@ -191,9 +198,18 @@ class ilH5PActionGUI {
 		}, $action);
 
 		switch ($action) {
+			case self::H5P_ACTION_CONTENT_USER_DATA:
+			case self::H5P_ACTION_SET_FINISHED:
+				// Read actions
+				if (!ilObjH5PAccess::hasReadAccess()) {
+					die();
+				}
+
+				$this->{$action}();
+				break;
+
 			case self::H5P_ACTION_CONTENT_DELETE:
 			case self::H5P_ACTION_CONTENT_TYPE_CACHE:
-			case self::H5P_ACTION_CONTENT_USER_DATA:
 			case self::H5P_ACTION_FILES:
 			case self::H5P_ACTION_HUB_REFRESH:
 			case self::H5P_ACTION_LIBRARIES:
@@ -203,11 +219,17 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_REBUILD_CACHE:
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
 			case self::H5P_ACTION_RESULTS_DELETE:
-			case self::H5P_ACTION_SET_FINISHED:
+				// Write actions
+				if (!ilObjH5PAccess::hasWriteAccess()) {
+					die();
+				}
+
 				$this->{$action}();
 				break;
 
 			default:
+				// Unknown action
+				die();
 				break;
 		}
 	}
