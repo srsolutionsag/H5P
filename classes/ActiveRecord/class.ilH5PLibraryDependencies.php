@@ -50,7 +50,7 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 			"required_library_id" => $library_id
 		])->get();
 
-		return sizeof($h5p_library_dependencies);
+		return count($h5p_library_dependencies);
 	}
 
 

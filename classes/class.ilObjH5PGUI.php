@@ -409,7 +409,60 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function showContents() {
 		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
-		$this->show("");
+		$obj_id = $this->object->getId();
+
+		$h5p_contents = array_values(ilH5PContent::getContentsByObjectId($obj_id));
+		$h5p_results = ilH5PResult::getResultsByObjectId($obj_id);
+
+		$index = - 1;
+		$count = count($h5p_contents);
+
+		// Look after a content without result
+		$h5p_content = NULL;
+		foreach ($h5p_contents as $h5p_content) {
+			/**
+			 * @var ilH5PContent $h5p_content
+			 */
+
+			$results = array_filter($h5p_results, function ($h5p_result) use ($h5p_content) {
+				/**
+				 * @var ilH5PResult $h5p_result
+				 */
+
+				return ($h5p_result->getContentId() === $h5p_content->getContentId());
+			});
+
+			if (count($results) === 0) {
+				// Content has no results
+				$index = array_search($h5p_content, $h5p_contents);
+				break;
+			}
+
+			// Content has results
+			$h5p_content = NULL;
+		}
+
+		if ($h5p_content !== NULL) {
+			// Content without results available
+			$this->h5p->h5p_scripts[] = $this->plugin->getDirectory() . "/js/H5PContent.js";
+
+			$next_content = ilLinkButton::getInstance();
+			if ($index < ($count - 1)) {
+				$next_content->setCaption($this->txt("xhfp_next_content"), false);
+			} else {
+				$next_content->setCaption($this->txt("xhfp_finish"), false);
+			}
+			$next_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
+			$next_content->setDisabled(true);
+			$next_content->setId("xhfp_next_content");
+			$this->toolbar->addButtonInstance($next_content);
+
+			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>"
+				. $this->getH5PCoreIntegration($h5p_content->getContentId()));
+		} else {
+			// No content without results available
+			$this->show($this->txt("xhfp_solved_all_contents"));
+		}
 	}
 
 
@@ -623,7 +676,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				$content_integration = $this->getContentIntegration($content);
 
 				switch ($embed) {
-					case "div":
+					/*case "div":
 						foreach ($scripts as $script) {
 							$this->h5p->h5p_scripts[] = $H5PIntegration["loadedJs"][] = $script;
 						}
@@ -631,9 +684,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 						foreach ($styles as $style) {
 							$this->h5p->h5p_styles[] = $H5PIntegration["loadedCss"][] = $style;
 						}
-						break;
+						break;*/
 
+					case "div":
 					case "iframe":
+						// Load all content types in an iframe
 						$content_integration["scripts"] = $scripts;
 						$content_integration["styles"] = $styles;
 						break;

@@ -8,6 +8,7 @@ xhfp_new#:#Create H5P
 xhfp_add#:#Add
 xhfp_add_content#:#Add content
 xhfp_contents#:#Contents
+xhfp_content_count#:#Content %1$d of %2$d
 xhfp_content_types#:#Content Types
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
 xhfp_deleted_content#:#Content %s deleted
@@ -19,12 +20,14 @@ xhfp_deleted_results#:#Results of %s deleted
 xhfp_edit_content#:#Edit content
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
+xhfp_finish#:#Finish
 xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB last refreshed: %s
 xhfp_hub_refresh#:#Resresh HUB
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
+xhfp_next_content#:#Next content
 xhfp_no_result#:#No result
 xhfp_only_not_used#:#Only not used
 xhfp_only_runnable#:#Only runnable
@@ -34,6 +37,7 @@ xhfp_saved_content#:#%s saved
 xhfp_send_usage_statistics#:#Automatically contribute usage statistics
 xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
 xhfp_show_contents#:#Show contents
+xhfp_solved_all_contents#:#You have already solved all contents.
 xhfp_upload#:#Upload
 xhfp_usage_contents#:#Contents using it
 xhfp_usage_libraries#:#Libraries using it

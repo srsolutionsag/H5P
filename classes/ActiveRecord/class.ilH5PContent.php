@@ -431,7 +431,7 @@ class ilH5PContent extends ActiveRecord {
 			$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
 		}
 
-		$this->sort = (sizeof(self::getContentsByObjectId($this->obj_id)) + 1);
+		$this->sort = ((count(self::getContentsByObjectId($this->obj_id)) + 1) * 10);
 
 		parent::create();
 	}

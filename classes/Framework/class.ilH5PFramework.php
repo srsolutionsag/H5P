@@ -1159,7 +1159,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function getNumNotFiltered() {
 		$h5p_contents = ilH5PContent::getContentsNotFiltered();
 
-		return sizeof($h5p_contents);
+		return count($h5p_contents);
 	}
 
 
@@ -1173,7 +1173,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function getNumContent($library_id) {
 		$h5p_contents = ilH5PContent::getContentsByLibrary($library_id);
 
-		return sizeof($h5p_contents);
+		return count($h5p_contents);
 	}
 
 
@@ -1280,7 +1280,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 		foreach ($h5p_libraries as $h5p_library) {
 			$count[$h5p_library->getName() . " " . $h5p_library->getMajorVersion() . " "
-			. $h5p_library->getMinorVersion()] = sizeof(ilH5PContent::getContentsByLibrary($h5p_library->getLibraryId()));
+			. $h5p_library->getMinorVersion()] = count(ilH5PContent::getContentsByLibrary($h5p_library->getLibraryId()));
 		}
 
 		return $count;

@@ -399,7 +399,7 @@ class ilH5PActionGUI {
 			}
 		}
 
-		echo json_encode(sizeof($h5P_contents) - $done);
+		echo json_encode(count($h5P_contents) - $done);
 	}
 
 

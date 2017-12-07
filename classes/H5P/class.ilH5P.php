@@ -479,13 +479,15 @@ class ilH5P {
 		}
 
 		switch ($content_type) {
-			case "div":
+			/*case "div":
 				$h5p_tpl->setCurrentBlock("contentDivBlock");
 				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 				$h5p_tpl->parseCurrentBlock();
-				break;
+				break;*/
 
+			case "div":
 			case "iframe":
+				// Load all content types in an iframe
 				$h5p_tpl->setCurrentBlock("contentFrameBlock");
 				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 				$h5p_tpl->parseCurrentBlock();

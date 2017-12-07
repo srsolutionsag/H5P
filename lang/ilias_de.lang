@@ -8,6 +8,7 @@ xhfp_new#:#H5P anlegen
 xhfp_add#:#Hinzufügen
 xhfp_add_content#:#Inhalt hinzufügen
 xhfp_contents#:#Inhalte
+xhfp_content_count#:#Inhalt %1$d von %2$d
 xhfp_content_types#:#Inhaltstypen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 xhfp_deleted_content#:#Inhalt %s gelöscht
@@ -19,12 +20,14 @@ xhfp_deleted_results#:#Resultate von %s gelöscht
 xhfp_edit_content#:#Inhalt bearbeiten
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
+xhfp_finish#:#Beenden
 xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB zuletzt aktualisiert: %s
 xhfp_hub_refresh#:#HUB neu laden
 xhfp_installed_libraries#:#Installierte Bibliotheken
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
+xhfp_next_content#:#Nächster Inhalt
 xhfp_no_result#:#Kein Resultat
 xhfp_only_not_used#:#Nur nicht benutzte
 xhfp_only_runnable#:#Nur startbare
@@ -34,6 +37,7 @@ xhfp_saved_content#:#%s gespeichert
 xhfp_send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
 xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche <a href="%s" target="_blank">Daten auf h5p. org</a> gesammelt werden.
 xhfp_show_contents#:#Inhalte anzeigen
+xhfp_solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen
 xhfp_usage_contents#:#Inhalte, die es verwenden

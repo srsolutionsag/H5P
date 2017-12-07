@@ -68,7 +68,7 @@ class ilH5PResult extends ActiveRecord {
 
 		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
 			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id
-		])->orderBy(self::TABLE_NAME . ".user_id", "asc")->orderBy(self::TABLE_NAME . ".sort", "asc")->get();
+		])->orderBy(self::TABLE_NAME . ".user_id", "asc")->orderBy(ilH5PContent::TABLE_NAME . ".sort", "asc")->get();
 
 		return $h5p_results;
 	}
