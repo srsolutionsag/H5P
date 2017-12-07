@@ -254,7 +254,7 @@ class ilH5P {
 	 * @return string
 	 */
 	function t($message, $replacements = []) {
-		// Translate with key map
+		// Translate messages with key map
 		$messages_map = [
 			"Added %new new H5P library and updated %old old one." => "xhfp_added_library_updated_library",
 			"Added %new new H5P library and updated %old old ones." => "xhfp_added_library_updated_libraries",
