@@ -5,11 +5,27 @@ objs_xhfp_duplicate#:#H5P's kopieren
 rbac_create_xhfp#:#H5P anlegen
 xhfp_new#:#H5P anlegen
 
+xhfp_actions#:#Aktionen
 xhfp_add#:#Hinzufügen
 xhfp_add_content#:#Inhalt hinzufügen
-xhfp_contents#:#Inhalte
+xhfp_added_library#:#%new neue H5P Bibliothek hinzugefügt.
+xhfp_added_libraries#:#%new neue H5P Bibliotheken hinzugefügt.
+xhfp_added_library_updated_library#:#%new neue H5P Bibliothek hinzugefügt %old alte aktualisiert.
+xhfp_added_library_updated_libraries#:#%new neue H5P Bibliothek hinzugefügt %old alte aktualisiert.
+xhfp_added_libraries_updated_library#:#%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
+xhfp_added_libraries_updated_libraries#:%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
+xhfp_author#:#Autor
+xhfp_by#:#von
+xhfp_cancel#:#Abbrechen
+xhfp_close#:#Schliessen
+xhfp_confirm#:#Bestätigen
+xhfp_confirm_action#:#Aktion bestätigen
+xhfp_confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
+xhfp_content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
 xhfp_content_count#:#Inhalt %1$d von %2$d
 xhfp_content_types#:#Inhaltstypen
+xhfp_contents#:#Inhalte
+xhfp_delete#:#Löschen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 xhfp_deleted_content#:#Inhalt %s gelöscht
 xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
@@ -17,29 +33,67 @@ xhfp_delete_library_in_use#:#Die Bibliothek wird noch benutzt!
 xhfp_deleted_library#:#Bibliothek %s gelöscht
 xhfp_delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
 xhfp_deleted_results#:#Resultate von %s gelöscht
+xhfp_description#:#Beschreibung
+xhfp_disable_fullscreen#:#Vollbild aus
+xhfp_download#:#Download
+xhfp_download_content#:#Inhalt als H5P Datei herunterladen.
+xhfp_edit#:#Bearbeiten
 xhfp_edit_content#:#Inhalt bearbeiten
+xhfp_edit_permission#:#Rechte bearbeiten
+xhfp_embed#:#Einbetten
+xhfp_embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des eingebetteten Inhalts dynamisch verändert werden soll:
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
 xhfp_finish#:#Beenden
+xhfp_fullscreen#:#Vollbild
+xhfp_hide_advanced#:#Details ausblenden
 xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB zuletzt aktualisiert: %s
 xhfp_hub_refresh#:#HUB neu laden
 xhfp_installed_libraries#:#Installierte Bibliotheken
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
+xhfp_license#:#Lizenz
 xhfp_next_content#:#Nächster Inhalt
+xhfp_no#:#Nein
+xhfp_no_content_copyright#:#Keine Copyright Informationen für diesen Inhalt hinterlegt.
 xhfp_no_result#:#Kein Resultat
 xhfp_only_not_used#:#Nur nicht benutzte
 xhfp_only_runnable#:#Nur startbare
+xhfp_read#:#Lesen
 xhfp_results#:#Resultate
+xhfp_rights_of_use#:#Nutzungsrechte
 xhfp_runnable#:#Startbar
+xhfp_save#:#Speichern
 xhfp_saved_content#:#%s gespeichert
 xhfp_send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
 xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche <a href="%s" target="_blank">Daten auf h5p. org</a> gesammelt werden.
+xhfp_settings#:#Einstellungen
+xhfp_settings_saved#:#Einstellungen gespeichert
+xhfp_show#:#Anzeigen
+xhfp_show_advanced#:#Weitere Details
 xhfp_show_contents#:#Inhalte anzeigen
+xhfp_show_less#:#Weniger anzeigen
+xhfp_show_more#:#Mehr anzeigen
+xhfp_size#:#Grösse
 xhfp_solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
+xhfp_source#:#Quelle
+xhfp_start_over#:#Sie fangen von vorne an.
+xhfp_sublevel#:#Unterebene
+xhfp_thumbnail#:#Vorschaubild
+xhfp_title#:#Titel
+xhfp_updated_library#:#%old H5P Bibliothek aktualisiert.
+xhfp_updated_libraries#:#%old H5P Bibliotheken aktualisiert.
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen
 xhfp_usage_contents#:#Inhalte, die es verwenden
 xhfp_usage_libraries#:#Bibliotheken, die es verwenden
 xhfp_usage_statistics#:#Nutzungsstatistik
+xhfp_user#:#Benutzer
+xhfp_version#:#Version
+xhfp_view_content_copyright#:#Copyright-Informationen für diesen Inhalt zeigen.
+xhfp_view_embed_code#:#Einbetten-Code für diesen Inhalt anzeigen.
+xhfp_visible#:#Sichtbar
+xhfp_write#:#Schreiben
+xhfp_year#:#Jahr
+xhfp_yes#:#Ja

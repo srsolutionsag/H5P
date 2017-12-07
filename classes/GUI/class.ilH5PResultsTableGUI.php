@@ -88,13 +88,13 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function addColumns() {
-		$this->addColumn($this->lng->txt("user"));
+		$this->addColumn($this->txt("xhfp_user"));
 
 		foreach ($this->contents as $h5p_content) {
 			$this->addColumn($h5p_content->getTitle());
 		}
 
-		$this->addColumn($this->lng->txt("actions"));
+		$this->addColumn($this->txt("xhfp_actions"));
 	}
 
 
@@ -131,9 +131,9 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->lng->txt("actions"));
+		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$actions->addItem($this->lng->txt("delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

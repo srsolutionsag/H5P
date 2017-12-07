@@ -5,11 +5,27 @@ objs_xhfp_duplicate#:#Copy H5P's
 rbac_create_xhfp#:#Create H5P
 xhfp_new#:#Create H5P
 
+xhfp_actions#:#Actions
 xhfp_add#:#Add
 xhfp_add_content#:#Add content
-xhfp_contents#:#Contents
+xhfp_added_library#:#Added %new new H5P library.
+xhfp_added_libraries#:#Added %new new H5P libraries.
+xhfp_added_library_updated_library#:#Added %new new H5P library and updated %old old one.
+xhfp_added_library_updated_libraries#:#Added %new new H5P library and updated %old old ones.
+xhfp_added_libraries_updated_library#:#Added %new new H5P libraries and updated %old old one.
+xhfp_added_libraries_updated_libraries#:#Added %new new H5P libraries and updated %old old ones.
+xhfp_author#:#Author
+xhfp_by#:#by
+xhfp_cancel#:#Cancel
+xhfp_close#:#Close
+xhfp_confirm#:#Confirm
+xhfp_confirm_action#:#Confirm action
+xhfp_confirm_action_text#:#Please confirm that you wish to proceed. This action is not reversible.
+xhfp_content_changed#:#This content has changed since you last used it.
 xhfp_content_count#:#Content %1$d of %2$d
 xhfp_content_types#:#Content Types
+xhfp_contents#:#Contents
+xhfp_delete#:#Delete
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
 xhfp_deleted_content#:#Content %s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
@@ -17,29 +33,67 @@ xhfp_delete_library_in_use#:#The library is still in use!
 xhfp_deleted_library#:#Library %s deleted
 xhfp_delete_results_confirm#:#Are you really want to delete the results of %s?
 xhfp_deleted_results#:#Results of %s deleted
+xhfp_description#:#Description
+xhfp_disable_fullscreen#:#Disable fullscreen
+xhfp_download#:#Download
+xhfp_download_content#:#Download this content as a H5P file.
+xhfp_edit#:#Edit
 xhfp_edit_content#:#Edit content
+xhfp_edit_permission#:#Edit permission
+xhfp_embed#:#Embed
+xhfp_embed_include_script#:#Include this script on your website if you want dynamic sizing of the embedded content:
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 xhfp_finish#:#Finish
+xhfp_fullscreen#:#Fullscreen
+xhfp_hide_advanced#:#Hide advanced
 xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB last refreshed: %s
 xhfp_hub_refresh#:#Resresh HUB
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
+xhfp_license#:#License
 xhfp_next_content#:#Next content
+xhfp_no#:#No
+xhfp_no_content_copyright#:#No copyright information available for this content.
 xhfp_no_result#:#No result
 xhfp_only_not_used#:#Only not used
 xhfp_only_runnable#:#Only runnable
+xhfp_read#:#Read
 xhfp_results#:#Results
+xhfp_rights_of_use#:#Rights of use
 xhfp_runnable#:#Runnable
+xhfp_save#:#Save
 xhfp_saved_content#:#%s saved
 xhfp_send_usage_statistics#:#Automatically contribute usage statistics
 xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
+xhfp_settings#:#Settings
+xhfp_settings_saved#:#Settings saved
+xhfp_show#:#Show
+xhfp_show_advanced#:#Show advanced
 xhfp_show_contents#:#Show contents
+xhfp_show_less#:#Show less
+xhfp_show_more#:#Show more
+xhfp_size#:#Size
 xhfp_solved_all_contents#:#You have already solved all contents.
+xhfp_source#:#Source
+xhfp_start_over#:#You'll be starting over.
+xhfp_sublevel#:#Sublevel
+xhfp_thumbnail#:#Thumbnail
+xhfp_title#:#Title
+xhfp_updated_library#:#Updated %old H5P library.
+xhfp_updated_libraries#:#Updated %old H5P libraries.
 xhfp_upload#:#Upload
 xhfp_usage_contents#:#Contents using it
 xhfp_usage_libraries#:#Libraries using it
 xhfp_upload_library#:#Upload library
 xhfp_usage_statistics#:#Usage statistics
+xhfp_user#:#User
+xhfp_version#:#Version
+xhfp_view_content_copyright#:#View copyright information for this content.
+xhfp_view_embed_code#:#View the embed code for this content.
+xhfp_visible#:#Visible
+xhfp_write#:#Write
+xhfp_year#:#Year
+xhfp_yes#:#Yes

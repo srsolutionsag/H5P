@@ -37,10 +37,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected $h5p;
 	/**
-	 * @var ilLanguage
-	 */
-	protected $lng;
-	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
@@ -63,7 +59,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->lng = $DIC->language();
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->tabs = $DIC->tabs();
 		$this->tpl = $DIC->ui()->mainTemplate();
@@ -113,7 +108,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->tabs->addTab(self::TAB_HUB, $this->txt("xhfp_hub"), $this->ctrl->getLinkTarget($this, self::CMD_HUB));
 
-		$this->tabs->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
+		$this->tabs->addTab(self::TAB_SETTINGS, $this->txt("xhfp_settings"), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 
 		$this->tabs->manual_activation = true; // Show all tabs as links when no activation
 	}
@@ -293,8 +288,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
 
-		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
+		$confirmation->setConfirm($this->txt("xhfp_delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->txt("xhfp_cancel"), ilH5PActionGUI::CMD_CANCEL);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -308,10 +303,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form->setFormAction($this->ctrl->getFormAction($this));
 
-		$form->setTitle($this->lng->txt(self::TAB_SETTINGS));
+		$form->setTitle($this->txt("xhfp_settings"));
 
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->lng->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_LIBRARIES, $this->lng->txt("cancel"));
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->txt("xhfp_save"));
+		$form->addCommandButton(self::CMD_MANAGE_LIBRARIES, $this->txt("xhfp_cancel"));
 
 		$content_types = new ilCombinationInputGUI($this->txt("xhfp_content_types"));
 
@@ -369,7 +364,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$send_usage_statistics = boolval($form->getInput("xhfp_send_usage_statistics"));
 		$this->h5p->setOption("send_usage_statistics", $send_usage_statistics);
 
-		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
+		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
 
 		$this->show($form->getHTML());
 	}

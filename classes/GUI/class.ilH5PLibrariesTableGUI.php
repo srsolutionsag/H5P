@@ -71,12 +71,12 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 	protected function addColumns() {
 		$this->addColumn("");
 		$this->addColumn($this->txt("xhfp_library"));
-		$this->addColumn($this->lng->txt("version"));
+		$this->addColumn($this->txt("xhfp_version"));
 		$this->addColumn($this->txt("xhfp_runnable"));
 		$this->addColumn($this->txt("xhfp_contents"));
 		$this->addColumn($this->txt("xhfp_usage_contents"));
 		$this->addColumn($this->txt("xhfp_usage_libraries"));
-		$this->addColumn($this->lng->txt("actions"));
+		$this->addColumn($this->txt("xhfp_actions"));
 	}
 
 
@@ -131,7 +131,7 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 
 		$this->tpl->setVariable("VERSION", H5PCore::libraryVersion((object)$library));
 
-		$this->tpl->setVariable("RUNNABLE", $this->lng->txt($library["runnable"] ? "yes" : "no"));
+		$this->tpl->setVariable("RUNNABLE", $this->txt($library["runnable"] ? "xhfp_yes" : "xhfp_no"));
 
 		$this->tpl->setVariable("CONTENTS", ($contents_count != 0 ? $contents_count : ""));
 
@@ -140,9 +140,9 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("USAGE_LIBRARIES", ($usage["libraries"] != 0 ? $usage["libraries"] : ""));
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->lng->txt("actions"));
+		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$actions->addItem($this->lng->txt("delete"), "", $this->ctrl->getLinkTarget($parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM));
+		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

@@ -233,13 +233,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
-		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->lng->txt($h5p_content
-		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
+		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->txt($h5p_content
+		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->txt("xhfp_cancel"));
 
 		$form->setPreventDoubleSubmission(false);
 
-		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
+		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($content["title"]);
 		$form->addItem($title);
@@ -396,8 +396,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
-		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
+		$confirmation->setConfirm($this->txt("xhfp_delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->txt("xhfp_cancel"), ilH5PActionGUI::CMD_CANCEL);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -477,12 +477,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$edit_content = ilLinkButton::getInstance();
-		$edit_content->setCaption($this->lng->txt("edit"), false);
+		$edit_content->setCaption($this->txt("xhfp_edit"), false);
 		$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
 		$this->toolbar->addButtonInstance($edit_content);
 
 		$delete_content = ilLinkButton::getInstance();
-		$delete_content->setCaption($this->lng->txt("delete"), false);
+		$delete_content->setCaption($this->txt("xhfp_delete"), false);
 		$delete_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
 		$this->toolbar->addButtonInstance($delete_content);
 
@@ -519,8 +519,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
 
-		$confirmation->setConfirm($this->lng->txt("delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->lng->txt("cancel"), ilH5PActionGUI::CMD_CANCEL);
+		$confirmation->setConfirm($this->txt("xhfp_delete"), ilH5PActionGUI::CMD_H5P_ACTION);
+		$confirmation->setCancel($this->txt("xhfp_cancel"), ilH5PActionGUI::CMD_CANCEL);
 
 		$this->show($confirmation->getHTML());
 	}
@@ -534,17 +534,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->setFormAction($this->ctrl->getFormAction($this));
 
-		$form->setTitle($this->lng->txt(self::TAB_SETTINGS));
+		$form->setTitle($this->txt("xhfp_settings"));
 
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->lng->txt("save"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->lng->txt("cancel"));
+		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->txt("xhfp_save"));
+		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->txt("xhfp_cancel"));
 
-		$title = new ilTextInputGUI($this->lng->txt("title"), "xhfp_title");
+		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($this->object->getTitle());
 		$form->addItem($title);
 
-		$description = new ilTextAreaInputGUI($this->lng->txt("description"), "xhfp_description");
+		$description = new ilTextAreaInputGUI($this->txt("xhfp_description"), "xhfp_description");
 		$description->setValue($this->object->getLongDescription());
 		$form->addItem($description);
 
@@ -588,7 +588,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->object->update();
 
-		ilUtil::sendSuccess($this->lng->txt("settings_saved"), true);
+		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
 
 		$this->show($form->getHTML());
 
@@ -757,7 +757,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->tabs_gui->addTab(self::TAB_RESULTS, $this->txt("xhfp_results"), $this->ctrl->getLinkTarget($this, self::CMD_RESULTS));
 
-		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->lng->txt(self::TAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
+		$this->tabs_gui->addTab(self::TAB_SETTINGS, $this->txt("xhfp_settings"), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
 
 		$this->tabs_gui->addTab(self::TAB_PERMISSIONS, $this->lng->txt(self::TAB_PERMISSIONS), $this->ctrl->getLinkTargetByClass([
 			self::class,

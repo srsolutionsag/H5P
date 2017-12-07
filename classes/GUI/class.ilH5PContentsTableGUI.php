@@ -50,10 +50,10 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	 */
 	protected function addColumns() {
 		$this->addColumn("");
-		$this->addColumn($this->lng->txt("title"));
+		$this->addColumn($this->txt("xhfp_title"));
 		$this->addColumn($this->txt("xhfp_library"));
 		$this->addColumn($this->txt("xhfp_results"));
-		$this->addColumn($this->lng->txt("actions"));
+		$this->addColumn($this->txt("xhfp_actions"));
 	}
 
 
@@ -85,13 +85,13 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("RESULTS", count($h5p_results));
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->lng->txt("actions"));
+		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		$actions->addItem($this->lng->txt("show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
+		$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
 
-		$actions->addItem($this->lng->txt("edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+		$actions->addItem($this->txt("xhfp_edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-		$actions->addItem($this->lng->txt("delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+		$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
