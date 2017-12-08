@@ -57,20 +57,6 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return ilH5PContent[]
 	 */
-	static function getContents() {
-		/**
-		 * @var ilH5PContent[] $h5p_contents
-		 */
-
-		$h5p_contents = self::get();
-
-		return $h5p_contents;
-	}
-
-
-	/**
-	 * @return ilH5PContent[]
-	 */
 	static function getContentsNotFiltered() {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
@@ -120,17 +106,19 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @param int $obj_id
+	 * @param int    $obj_id
+	 * @param string $parent_type
 	 *
 	 * @return ilH5PContent[]
 	 */
-	static function getContentsByObject($obj_id) {
+	static function getContentsByObject($obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
 		 */
 
 		$h5p_contents = self::where([
-			"obj_id" => $obj_id
+			"obj_id" => $obj_id,
+			"parent_type" => $parent_type
 		])->orderBy("sort", "asc")->get();
 
 		return $h5p_contents;
@@ -138,13 +126,15 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @param int $obj_id
+	 * @param int    $obj_id
+	 * @param string $parent_type
 	 *
 	 * @return array
 	 */
-	static function getContentsByObjectArray($obj_id) {
+	static function getContentsByObjectArray($obj_id, $parent_type = "object") {
 		$h5p_contents = self::where([
-			"obj_id" => $obj_id
+			"obj_id" => $obj_id,
+			"parent_type" => $parent_type
 		])->orderBy("sort", "asc")->getArray();
 
 		return $h5p_contents;
@@ -367,6 +357,14 @@ class ilH5PContent extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $obj_id = NULL;
+	/**
+	 * @var string
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    text
+	 * @con_is_notnull   true
+	 */
+	protected $parent_type = "object";
 	/**
 	 * @var int
 	 *
@@ -726,6 +724,22 @@ class ilH5PContent extends ActiveRecord {
 	 */
 	public function setObjId($obj_id) {
 		$this->obj_id = $obj_id;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getParentType() {
+		return $this->parent_type;
+	}
+
+
+	/**
+	 * @param string $parent_type
+	 */
+	public function setParentType($parent_type) {
+		$this->parent_type = $parent_type;
 	}
 
 
