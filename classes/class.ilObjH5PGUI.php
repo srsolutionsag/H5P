@@ -158,6 +158,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			$this->tpl->setDescription($this->object->getDescription());
 
+			if (!$this->object->isOnline()) {
+				$this->tpl->setAlertProperties([
+					[
+						"alert" => true,
+						"property" => $this->txt("xhfp_status"),
+						"value" => $this->txt("xhfp_offline")
+					]
+				]);
+			}
+
 			$this->tpl->setContent($html);
 		}
 	}
@@ -194,6 +204,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$add_content->setCaption($this->txt("xhfp_add_content"), false);
 			$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
 			$this->toolbar->addButtonInstance($add_content);
+			// TODO Sobald Resultat vorhanden, Änderung verhindern
 		}
 
 		$contents_table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);

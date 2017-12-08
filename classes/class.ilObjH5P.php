@@ -104,7 +104,6 @@ class ilObjH5P extends ilObjectPlugin {
 			$h5p_content_copy->create();
 
 			$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
-			// TODO May copy content user data or result?
 		}
 	}
 
