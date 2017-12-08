@@ -4,7 +4,7 @@ $(document).ready(function () {
 	var frame = $frame[0];
 
 	// Next content button
-	var $xhfp_next_content = $("#xhfp_next_content");
+	var $xhfp_next_content = $("#xhfp_next_content_top, #xhfp_next_content_bottom");
 
 	if (frame !== undefined) {
 		$frame.on("load", function () {

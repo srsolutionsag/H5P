@@ -485,11 +485,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			}
 			$next_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 			$next_content->setDisabled(true);
-			$next_content->setId("xhfp_next_content");
+			$next_content->setId("xhfp_next_content_bottom"); // Set id for bottom toolbar
 			$this->toolbar->addButtonInstance($next_content);
 
 			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>"
-				. $this->getH5PCoreIntegration($h5p_content->getContentId()));
+				. $this->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
+
+			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
 		} else {
 			// No content without results available
 			$this->show($this->txt("xhfp_solved_all_contents"));
@@ -519,9 +521,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}
 
-		// TODO Toolbar Top and Bottom
-
-		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
+		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
 	}
 
 
