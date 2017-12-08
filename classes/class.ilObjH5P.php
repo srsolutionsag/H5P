@@ -90,6 +90,12 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_copy_id
 	 */
 	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
+		$new_obj->h5p_object = $this->h5p_object->copy();
+
+		$new_obj->h5p_object->setObjId($new_obj->id);
+
+		$new_obj->h5p_object->update();
+
 		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
