@@ -25,7 +25,8 @@ $(document).ready(function () {
 				};
 
 				// There are contents in which you can not score points. To support this an empty result is saved.
-				if (instance.getMaxScore() === 0) {
+				// TODO Make working for each content
+				if ("getMaxScore" in instance && instance.getMaxScore() === 0) {
 					frameWindow.H5P.setFinished(instance.contentId, 0, 0);
 				}
 			}

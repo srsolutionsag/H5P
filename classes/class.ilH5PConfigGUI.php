@@ -277,7 +277,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					$this->txt("xhfp_usage_contents") . " : " . $usage["content"],
 					$this->txt("xhfp_usage_libraries") . " : " . $usage["libraries"]
 				]));
-			// TODO Ev. show whitch
 		}
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_library", $h5p_library->getLibraryId());

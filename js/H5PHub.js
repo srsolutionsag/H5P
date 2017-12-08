@@ -23,6 +23,8 @@
 		var $frame = $("iframe", $editor);
 		var frame = $frame[0];
 
+		// TODO Hide HUB use buttons and replace list click with details click
+
 		$frame.on("load", function () {
 			var frameWindow = frame.contentWindow;
 
