@@ -41,7 +41,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_RESULTS = "results";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
-	const CMD_SHOW_CONTENT = "showContent";
+	//const CMD_SHOW_CONTENT = "showContent";
 	const CMD_SHOW_CONTENTS = "showContents";
 	const CMD_UPDATE_CONTENT = "updateContent";
 	const TAB_CONTENTS = "contents";
@@ -97,7 +97,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	function performCommand($cmd) {
 		switch ($cmd) {
-			case self::CMD_SHOW_CONTENT:
 			case self::CMD_SHOW_CONTENTS:
 				// Read commands
 				if (!ilObjH5PAccess::hasReadAccess()) {
@@ -107,20 +106,29 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				$this->{$cmd}();
 				break;
 
-			case self::CMD_ADD_CONTENT:
-			case self::CMD_CREATE_CONTENT:
-			case self::CMD_DELETE_CONTENT_CONFIRM:
 			case self::CMD_DELETE_RESULTS_CONFIRM:
-			case self::CMD_EDIT_CONTENT:
 			case self::CMD_MANAGE_CONTENTS:
-			case self::CMD_MOVE_CONTENT_DOWN:
-			case self::CMD_MOVE_CONTENT_UP:
 			case self::CMD_RESULTS:
 			case self::CMD_SETTINGS:
 			case self::CMD_SETTINGS_STORE:
-			case self::CMD_UPDATE_CONTENT:
 				// Write commands
 				if (!ilObjH5PAccess::hasWriteAccess()) {
+					ilObjH5PAccess::redirectNonAccess($this);
+				}
+
+				$this->{$cmd}();
+				break;
+
+			case self::CMD_ADD_CONTENT:
+			case self::CMD_CREATE_CONTENT:
+			case self::CMD_DELETE_CONTENT_CONFIRM:
+			case self::CMD_EDIT_CONTENT:
+			case self::CMD_MOVE_CONTENT_DOWN:
+			case self::CMD_MOVE_CONTENT_UP:
+				//case self::CMD_SHOW_CONTENT:
+			case self::CMD_UPDATE_CONTENT:
+				// Write commands only when no results available
+				if (!ilObjH5PAccess::hasWriteAccess() || $this->hasResults()) {
 					ilObjH5PAccess::redirectNonAccess($this);
 				}
 
@@ -194,27 +202,27 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @return bool
+	 */
+	function hasResults() {
+		return (count(ilH5PResult::getResultsByObject($this->obj_id)) > 0);
+	}
+
+
+	/**
 	 *
 	 */
 	protected function manageContents() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
-		if (ilObjH5PAccess::hasWriteAccess()) {
+		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
 			$add_content = ilLinkButton::getInstance();
 			$add_content->setCaption($this->txt("xhfp_add_content"), false);
 			$add_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_ADD_CONTENT));
 			$this->toolbar->addButtonInstance($add_content);
-			// TODO Sobald Resultat vorhanden, Änderung verhindern
 		}
 
 		$contents_table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
-
-		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/lib/waiter/js/waiter.js");
-		$this->tpl->addCss($this->plugin->getDirectory() . "/lib/waiter/css/waiter.css");
-		$this->tpl->addOnLoadCode('xoctWaiter.init("waiter");');
-
-		$this->tpl->addJavaScript($this->plugin->getDirectory() . "/js/H5PContentsTable.js");
-		$this->tpl->addOnLoadCode('H5PContentsTable.init("' . $this->ctrl->getLinkTarget($this, "", "", true) . '");');
 
 		$this->show($contents_table->getHTML());
 	}
@@ -225,9 +233,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function moveContentDown() {
 		$content_id = filter_input(INPUT_GET, "xhfp_content");
-		$obi_id = $this->object->getId();
 
-		ilH5PContent::moveContentDown($content_id, $obi_id);
+		ilH5PContent::moveContentDown($content_id, $this->obj_id);
 
 		$this->show("");
 	}
@@ -238,9 +245,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function moveContentUp() {
 		$content_id = filter_input(INPUT_GET, "xhfp_content");
-		$obi_id = $this->object->getId();
 
-		ilH5PContent::moveContentUp($content_id, $obi_id);
+		ilH5PContent::moveContentUp($content_id, $this->obj_id);
 
 		$this->show("");
 	}
@@ -446,10 +452,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function showContents() {
 		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
-		$obj_id = $this->object->getId();
 		$user_id = $this->usr->getId();
 
-		$h5p_contents = array_values(ilH5PContent::getContentsByObject($obj_id));
+		$h5p_contents = array_values(ilH5PContent::getContentsByObject($this->obj_id));
 
 		$index = - 1;
 		$count = count($h5p_contents);
@@ -509,7 +514,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
-		if (ilObjH5PAccess::hasWriteAccess()) {
+		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
 			$edit_content = ilLinkButton::getInstance();
 			$edit_content->setCaption($this->txt("xhfp_edit"), false);
 			$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
@@ -764,7 +769,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			"exportUrl" => "",
 			"embedCode" => "",
 			"resizeCode" => "",
-			"url" => $this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENT, "", false, false),
+			"url" => "",
 			"title" => $content["title"],
 			"displayOptions" => [
 				"frame" => true,

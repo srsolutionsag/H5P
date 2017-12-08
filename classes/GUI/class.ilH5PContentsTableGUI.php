@@ -14,6 +14,10 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	 */
 	protected $ctrl;
 	/**
+	 * @var ilTemplate
+	 */
+	protected $main_tpl;
+	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
@@ -29,6 +33,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
+		$this->main_tpl = $DIC->ui()->mainTemplate();
 		$this->pl = ilH5PPlugin::getInstance();
 
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
@@ -41,13 +46,35 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
 
+		if (!$this->hasResults()) {
+			$this->initUpDown();
+		}
+
 		$this->setData(ilH5PContent::getContentsByObjectArray($a_parent_obj->object->getId()));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	protected function hasResults() {
+		return $this->getParentObject()->hasResults();
 	}
 
 
 	/**
 	 *
 	 */
+	protected function initUpDown() {
+		$this->main_tpl->addJavaScript($this->pl->getDirectory() . "/lib/waiter/js/waiter.js");
+		$this->main_tpl->addCss($this->pl->getDirectory() . "/lib/waiter/css/waiter.css");
+		$this->main_tpl->addOnLoadCode('xoctWaiter.init("waiter");');
+
+		$this->main_tpl->addJavaScript($this->pl->getDirectory() . "/js/H5PContentsTable.js");
+		$this->main_tpl->addOnLoadCode('H5PContentsTable.init("' . $this->ctrl->getLinkTarget($this->getParentObject(), "", "", true) . '");');
+	}
+
+
 	protected function addColumns() {
 		$this->addColumn("");
 		$this->addColumn($this->txt("xhfp_title"));
@@ -76,6 +103,10 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
 
+		if (!$this->hasResults()) {
+			$this->tpl->touchBlock("upDownBlock");
+		}
+
 		$this->tpl->setVariable("ID", $content["content_id"]);
 
 		$this->tpl->setVariable("TITLE", $content["title"]);
@@ -87,8 +118,8 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle($this->txt("xhfp_actions"));
 
-		if (ilObjH5PAccess::hasWriteAccess()) {
-			$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
+		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
+			//$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
 
 			$actions->addItem($this->txt("xhfp_edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
