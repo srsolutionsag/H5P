@@ -43,6 +43,24 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 
 
 	/**
+	 * @return array
+	 */
+	function getProperties() {
+		$props = [];
+
+		if (ilObjH5PAccess::_isOffline($this->obj_id)) {
+			$props[] = [
+				"alert" => true,
+				"property" => $this->txt("xhfp_status"),
+				"value" => $this->txt("xhfp_offline")
+			];
+		}
+
+		return $props;
+	}
+
+
+	/**
 	 *
 	 */
 	function initType() {

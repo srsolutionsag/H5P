@@ -22,6 +22,8 @@
 
 	ilH5PLibraryDependencies::updateDB();
 
+	ilH5PObject::updateDB();
+
 	ilH5POption::updateDB();
 
 	ilH5PResult::updateDB();

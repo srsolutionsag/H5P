@@ -41,7 +41,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
 
-		$this->setData(ilH5PContent::getContentsByObjectIdArray($a_parent_obj->object->getId()));
+		$this->setData(ilH5PContent::getContentsByObjectArray($a_parent_obj->object->getId()));
 	}
 
 

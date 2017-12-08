@@ -12,6 +12,7 @@ require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
+require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
 require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 
 /**
@@ -437,7 +438,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$obj_id = $this->object->getId();
 		$user_id = $this->usr->getId();
 
-		$h5p_contents = array_values(ilH5PContent::getContentsByObjectId($obj_id));
+		$h5p_contents = array_values(ilH5PContent::getContentsByObject($obj_id));
 
 		$index = - 1;
 		$count = count($h5p_contents);
@@ -507,6 +508,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}
 
+		// TODO Toolbar Top and Bottom
+
 		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()));
 	}
 
@@ -569,6 +572,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$description->setValue($this->object->getLongDescription());
 		$form->addItem($description);
 
+		$online = new ilCheckboxInputGUI($this->txt("xhfp_online"), "xhfp_online");
+		$online->setChecked($this->object->isOnline());
+		$form->addItem($online);
+
 		return $form;
 	}
 
@@ -606,6 +613,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$description = $form->getInput("xhfp_description");
 		$this->object->setDescription($description);
+
+		$online = boolval($form->getInput("xhfp_online"));
+		$this->object->setOnline($online);
 
 		$this->object->update();
 

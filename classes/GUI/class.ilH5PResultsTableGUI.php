@@ -64,7 +64,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function getResults() {
-		$this->contents = $h5p_contents = ilH5PContent::getContentsByObjectId($this->obj_id);
+		$this->contents = $h5p_contents = ilH5PContent::getContentsByObject($this->obj_id);
 
 		$this->results = [];
 

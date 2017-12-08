@@ -124,7 +124,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return ilH5PContent[]
 	 */
-	static function getContentsByObjectId($obj_id) {
+	static function getContentsByObject($obj_id) {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
 		 */
@@ -142,7 +142,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return array
 	 */
-	static function getContentsByObjectIdArray($obj_id) {
+	static function getContentsByObjectArray($obj_id) {
 		$h5p_contents = self::where([
 			"obj_id" => $obj_id
 		])->orderBy("sort", "asc")->getArray();
@@ -171,7 +171,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @param int $obj_id
 	 */
 	static function reSort($obj_id) {
-		$h5p_contents = self::getContentsByObjectId($obj_id);
+		$h5p_contents = self::getContentsByObject($obj_id);
 
 		$i = 1;
 		foreach ($h5p_contents as $h5p_content) {
@@ -431,7 +431,7 @@ class ilH5PContent extends ActiveRecord {
 			$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
 		}
 
-		$this->sort = ((count(self::getContentsByObjectId($this->obj_id)) + 1) * 10);
+		$this->sort = ((count(self::getContentsByObject($this->obj_id)) + 1) * 10);
 
 		parent::create();
 	}

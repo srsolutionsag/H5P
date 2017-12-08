@@ -65,20 +65,16 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 			$a_user_id = $this->usr->getId();
 		}
 
-		if (!self::checkOnline($a_obj_id)) {
-			return false;
-		}
-
 		switch ($a_permission) {
+			case "visible":
 			case "read":
-				return ($this->access->checkAccessOfUser($a_user_id, "read", "", $a_ref_id)
+				return (($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
 					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "delete":
 				return ($this->access->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
 					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
-			case "visible":
 			case "write":
 			case "edit_permission":
 			default:
@@ -127,8 +123,14 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	protected static function checkOnline($obj_id) {
-		return true;
+	static function _isOffline($a_obj_id) {
+		$h5p_object = ilH5PObject::getObjectById($a_obj_id);
+
+		if ($h5p_object !== NULL) {
+			return (!$h5p_object->isOnline());
+		} else {
+			return true;
+		}
 	}
 
 

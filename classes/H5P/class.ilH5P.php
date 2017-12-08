@@ -17,6 +17,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryHubCache.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryLanguage.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PLibraryDependencies.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PObject.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5POption.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PResult.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PTmpFile.php";

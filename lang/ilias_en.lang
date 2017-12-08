@@ -58,6 +58,8 @@ xhfp_next_content#:#Next content
 xhfp_no#:#No
 xhfp_no_content_copyright#:#No copyright information available for this content.
 xhfp_no_result#:#No result
+xhfp_offline#:#Offline
+xhfp_online#:#Online
 xhfp_only_not_used#:#Only not used
 xhfp_only_runnable#:#Only runnable
 xhfp_read#:#Read
@@ -79,6 +81,7 @@ xhfp_size#:#Size
 xhfp_solved_all_contents#:#You have already solved all contents.
 xhfp_source#:#Source
 xhfp_start_over#:#You'll be starting over.
+xhfp_status#:#Status
 xhfp_sublevel#:#Sublevel
 xhfp_thumbnail#:#Thumbnail
 xhfp_title#:#Title
