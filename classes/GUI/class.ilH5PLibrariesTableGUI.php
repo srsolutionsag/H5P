@@ -7,7 +7,7 @@ require_once "Services/Form/classes/class.ilTextInputGUI.php";
 require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
 
 /**
- *
+ * H5P Library Table
  */
 class ilH5PLibrariesTableGUI extends ilTable2GUI {
 

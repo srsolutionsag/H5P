@@ -5,7 +5,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 
 /**
- * H5P List-GUI
+ * H5P List GUI
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI {
 

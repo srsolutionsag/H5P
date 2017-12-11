@@ -1,9 +1,12 @@
 <?php
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
+require_once "Services/UIComponent/classes/class.ilUIPluginRouterGUI.php";
 
 /**
  * H5P ajax action
+ *
+ * @ilCtrl_isCalledBy ilH5PActionGUI: ilUIPluginRouterGUI
  */
 class ilH5PActionGUI {
 
@@ -32,7 +35,7 @@ class ilH5PActionGUI {
 	/**
 	 * @return ilH5PActionGUI
 	 */
-	static function getInstance() {
+	protected static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -43,11 +46,12 @@ class ilH5PActionGUI {
 
 	/**
 	 * @param string $action
+	 * @param string $return_class
 	 * @param string $return_cmd
 	 *
 	 * @return string
 	 */
-	static function getUrl($action, $return_cmd = "") {
+	static function getUrl($action, $return_class = NULL, $return_cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
@@ -58,7 +62,11 @@ class ilH5PActionGUI {
 
 		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
 
-		$url = $ctrl->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
+		if (self::isPageComponent()) {
+			$url = $ctrl->getLinkTargetByClass([ ilUIPluginRouterGUI::class, self::class ], self::CMD_H5P_ACTION, "", true, false);
+		} else {
+			$url = $ctrl->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
+		}
 
 		$ctrl->clearParametersByClass(self::class);
 
@@ -68,11 +76,12 @@ class ilH5PActionGUI {
 
 	/**
 	 * @param string $action
+	 * @param string $return_class
 	 * @param string $return_cmd
 	 *
 	 * @return string
 	 */
-	static function getFormAction($action, $return_cmd = "") {
+	static function getFormAction($action, $return_class = NULL, $return_cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
@@ -83,7 +92,11 @@ class ilH5PActionGUI {
 
 		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
 
-		$form_action = $ctrl->getFormActionByClass(self::class);
+		if (self::isPageComponent()) {
+			$form_action = $ctrl->getFormActionByClass([ ilUIPluginRouterGUI::class, self::class ]);
+		} else {
+			$form_action = $ctrl->getFormActionByClass(self::class);
+		}
 
 		$ctrl->clearParametersByClass(self::class);
 
@@ -94,7 +107,7 @@ class ilH5PActionGUI {
 	/**
 	 * @return string
 	 */
-	static function getReturnCmd() {
+	protected static function getReturnCmd() {
 		$return_cmd = filter_input(INPUT_GET, ilH5PActionGUI::RETURN_CMD);
 
 		return $return_cmd;
@@ -116,6 +129,26 @@ class ilH5PActionGUI {
 
 
 	/**
+	 * @return bool
+	 */
+	protected static function isPageComponent() {
+		global $DIC;
+
+		$ctrl = $DIC->ctrl();
+
+		$callHistory = $ctrl->getCallHistory();
+
+		foreach ($callHistory as $history) {
+			if (strtolower($history["class"]) === strtolower(ilH5PConfigGUI::class) ||strtolower($history["class"]) === strtolower(ilObjH5PGUI::class)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	/**
 	 * @var \ILIAS\DI\Container
 	 */
 	protected $ctrl;
@@ -133,7 +166,7 @@ class ilH5PActionGUI {
 	protected $usr;
 
 
-	protected function __construct() {
+	function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -147,24 +180,30 @@ class ilH5PActionGUI {
 	 *
 	 */
 	function executeCommand() {
-		$cmd = $this->ctrl->getCmd();
+		$next_class = $this->ctrl->getNextClass($this);
 
-		switch ($cmd) {
-			case self::CMD_H5P_ACTION:
-			case self::CMD_CANCEL:
-				// Read commands
-				if (!ilObjH5PAccess::hasReadAccess()) {
-					die();
-				}
-
-				$this->{$cmd}();
-
-				exit();
-				break;
-
+		switch ($next_class) {
 			default:
-				// Unknown commands
-				die();
+				$cmd = $this->ctrl->getCmd();
+
+				switch ($cmd) {
+					case self::CMD_H5P_ACTION:
+					case self::CMD_CANCEL:
+						// Read commands
+						/*if (!ilObjH5PAccess::hasReadAccess()) {
+							die();
+						}*/
+
+						$this->{$cmd}();
+
+						exit();
+						break;
+
+					default:
+						// Unknown commands
+						die();
+						break;
+				}
 				break;
 		}
 	}
@@ -201,9 +240,9 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_CONTENT_USER_DATA:
 			case self::H5P_ACTION_SET_FINISHED:
 				// Read actions
-				if (!ilObjH5PAccess::hasReadAccess()) {
+				/*if (!ilObjH5PAccess::hasReadAccess()) {
 					die();
-				}
+				}*/
 
 				$this->{$action}();
 				break;
@@ -220,9 +259,9 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
 			case self::H5P_ACTION_RESULTS_DELETE:
 				// Write actions
-				if (!ilObjH5PAccess::hasWriteAccess()) {
+				/*if (!ilObjH5PAccess::hasWriteAccess()) {
 					die();
-				}
+				}*/
 
 				$this->{$action}();
 				break;

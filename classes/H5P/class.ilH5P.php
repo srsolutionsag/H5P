@@ -23,6 +23,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PTmpFile.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PHUB.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowContent.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PEditor.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
@@ -208,13 +211,6 @@ class ilH5P {
 		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
 	}
 
-
-	/**
-	 * @return string
-	 */
-	protected function getEditoPath() {
-		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
-	}
 
 
 	/**
@@ -432,60 +428,6 @@ class ilH5P {
 
 
 	/**
-	 * @return array
-	 */
-	function getEditor() {
-		$H5PIntegration = $this->getCore();
-
-		$editor_path = "/" . $this->getEditoPath();
-
-		$assets = [
-			"js" => $H5PIntegration["core"]["scripts"],
-			"css" => $H5PIntegration["core"]["styles"]
-		];
-
-		foreach (H5peditor::$scripts as $script) {
-			if ($script !== "scripts/h5peditor-editor.js") {
-				/*$this->h5p_scripts[] = */
-				$assets["js"][] = $editor_path . "/" . $script;
-			} else {
-				$this->h5p_scripts[] = $editor_path . "/" . $script;
-			}
-		}
-
-		foreach (H5peditor::$styles as $style) {
-			/*$this->h5p_styles[] = */
-			$assets["css"][] = $editor_path . "/" . $style;
-		}
-
-		$H5PIntegration["editor"] = [
-			"filesPath" => "/" . $this->getH5PFolder() . "/editor",
-			"fileIcon" => [
-				"path" => $editor_path . "/images/binary-file.png",
-				"width" => 50,
-				"height" => 50
-			],
-			"ajaxPath" => $this->ctrl->getLinkTargetByClass(ilH5PActionGUI::class, ilH5PActionGUI::CMD_H5P_ACTION, "", true, false) . "&"
-				. ilH5PActionGUI::CMD_H5P_ACTION . "=",
-			"libraryUrl" => $editor_path,
-			"copyrightSemantics" => $this->content_validator()->getCopyrightSemantics(),
-			"assets" => $assets,
-			"apiVersion" => H5PCore::$coreApi
-		];
-
-		$language = $this->getLanguage();
-		$language_path = $this->getEditoPath() . "/language/";
-		$language_script = $language_path . $language . ".js";
-		if (!file_exists($language_script)) {
-			$language_script = $language_path . "en.js";
-		}
-		$this->h5p_scripts[] = "/" . $language_script;
-
-		return $H5PIntegration;
-	}
-
-
-	/**
 	 * @param string      $h5p_integration_name
 	 * @param string      $h5p_integration
 	 * @param string      $title
@@ -494,7 +436,7 @@ class ilH5P {
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "div", $content_id = NULL) {
+	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "iframe", $content_id = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PIntegration.html");
 
 		$h5p_tpl->setCurrentBlock("integrationBlock");
@@ -529,16 +471,11 @@ class ilH5P {
 				$h5p_tpl->parseCurrentBlock();
 				break;*/
 
-			case "div":
 			case "iframe":
 				// Load all content types in an iframe
 				$h5p_tpl->setCurrentBlock("contentFrameBlock");
 				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 				$h5p_tpl->parseCurrentBlock();
-				break;
-
-			case "editor":
-				$h5p_tpl->touchBlock("editorBlock");
 				break;
 
 			case "admin":

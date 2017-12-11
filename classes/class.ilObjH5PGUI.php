@@ -3,22 +3,19 @@
 require_once "Services/Repository/classes/class.ilObjectPluginGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/Form/classes/class.ilSelectInputGUI.php";
 require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PContentsTableGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PResultsTableGUI.php";
 require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Services/Form/classes/class.ilCustomInputGUI.php";
-require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
 require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
 require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 
 /**
  * H5P GUI
  *
- * @ilCtrl_isCalledBy ilObjH5PGUI: ilRepositoryGUI,
+ * @ilCtrl_isCalledBy ilObjH5PGUI: ilRepositoryGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilObjPluginDispatchGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilAdministrationGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilPermissionGUI
@@ -96,58 +93,64 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param string $cmd
 	 */
 	function performCommand($cmd) {
-		switch ($cmd) {
-			case self::CMD_SHOW_CONTENTS:
-				// Read commands
-				if (!ilObjH5PAccess::hasReadAccess()) {
-					ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
-				}
+		$next_class = $this->ctrl->getNextClass($this);
 
-				$this->{$cmd}();
-				break;
-
-			case self::CMD_DELETE_RESULTS_CONFIRM:
-			case self::CMD_MANAGE_CONTENTS:
-			case self::CMD_RESULTS:
-			case self::CMD_SETTINGS:
-			case self::CMD_SETTINGS_STORE:
-				// Write commands
-				if (!ilObjH5PAccess::hasWriteAccess()) {
-					ilObjH5PAccess::redirectNonAccess($this);
-				}
-
-				$this->{$cmd}();
-				break;
-
-			case self::CMD_ADD_CONTENT:
-			case self::CMD_CREATE_CONTENT:
-			case self::CMD_DELETE_CONTENT_CONFIRM:
-			case self::CMD_EDIT_CONTENT:
-			case self::CMD_MOVE_CONTENT_DOWN:
-			case self::CMD_MOVE_CONTENT_UP:
-				//case self::CMD_SHOW_CONTENT:
-			case self::CMD_UPDATE_CONTENT:
-				// Write commands only when no results available
-				if (!ilObjH5PAccess::hasWriteAccess() || $this->hasResults()) {
-					ilObjH5PAccess::redirectNonAccess($this);
-				}
-
-				$this->{$cmd}();
-				break;
-
-			case ilH5PActionGUI::CMD_H5P_ACTION:
-			case ilH5PActionGUI::CMD_CANCEL:
-				// Read commands
-				if (!ilObjH5PAccess::hasReadAccess()) {
-					ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
-				}
-
-				ilH5PActionGUI::forward($this);
-				break;
-
+		switch ($next_class) {
 			default:
-				// Unknown command
-				ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+				switch ($cmd) {
+					case self::CMD_SHOW_CONTENTS:
+						// Read commands
+						if (!ilObjH5PAccess::hasReadAccess()) {
+							ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+						}
+
+						$this->{$cmd}();
+						break;
+
+					case self::CMD_DELETE_RESULTS_CONFIRM:
+					case self::CMD_MANAGE_CONTENTS:
+					case self::CMD_RESULTS:
+					case self::CMD_SETTINGS:
+					case self::CMD_SETTINGS_STORE:
+						// Write commands
+						if (!ilObjH5PAccess::hasWriteAccess()) {
+							ilObjH5PAccess::redirectNonAccess($this);
+						}
+
+						$this->{$cmd}();
+						break;
+
+					case self::CMD_ADD_CONTENT:
+					case self::CMD_CREATE_CONTENT:
+					case self::CMD_DELETE_CONTENT_CONFIRM:
+					case self::CMD_EDIT_CONTENT:
+					case self::CMD_MOVE_CONTENT_DOWN:
+					case self::CMD_MOVE_CONTENT_UP:
+						//case self::CMD_SHOW_CONTENT:
+					case self::CMD_UPDATE_CONTENT:
+						// Write commands only when no results available
+						if (!ilObjH5PAccess::hasWriteAccess() || $this->hasResults()) {
+							ilObjH5PAccess::redirectNonAccess($this);
+						}
+
+						$this->{$cmd}();
+						break;
+
+					case ilH5PActionGUI::CMD_H5P_ACTION:
+					case ilH5PActionGUI::CMD_CANCEL:
+						// Read commands
+						if (!ilObjH5PAccess::hasReadAccess()) {
+							ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+						}
+
+						ilH5PActionGUI::forward($this);
+						break;
+
+					default:
+						// Unknown command
+						ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+						break;
+				}
 				break;
 		}
 	}
@@ -255,54 +258,20 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return ilPropertyFormGUI
 	 */
-	protected function getEditContentForm() {
+	protected function getEditorForm() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
+		$form = ilH5PEditor::getInstance()->getEditorForm($h5p_content);
+
 		if ($h5p_content !== NULL) {
-			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
-			$params = $this->h5p->core()->filterParameters($content);
-		} else {
-			$content = [];
-			$params = "";
+			$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 		}
 
-		$this->ctrl->setParameter($this, "xhfp_content", $content["id"]);
-
-		$form = new ilPropertyFormGUI();
-
 		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->setId("xhfp_edit_form");
-
-		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
 		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->txt($h5p_content
 		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
 		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->txt("xhfp_cancel"));
-
-		$form->setPreventDoubleSubmission(false);
-
-		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
-		$title->setRequired(true);
-		$title->setValue($content["title"]);
-		$form->addItem($title);
-
-		$h5p_library = new ilHiddenInputGUI("xhfp_library");
-		$h5p_library->setRequired(true);
-		if ($h5p_content !== NULL) {
-			$h5p_library->setValue(H5PCore::libraryToString($content["library"]));
-		}
-		$form->addItem($h5p_library);
-
-		$h5p = new ilCustomInputGUI($this->txt("xhfp_library"), "xhfp_library");
-		$h5p->setRequired(true);
-		$h5p->setHtml($this->getH5PEditorIntegration($content["id"]));
-		$form->addItem($h5p);
-
-		$h5p_params = new ilHiddenInputGUI("xhfp_params");
-		$h5p_params->setRequired(true);
-		$h5p_params->setValue($params);
-		$form->addItem($h5p_params);
 
 		return $form;
 	}
@@ -314,7 +283,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function addContent() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
-		$form = $this->getEditContentForm();
+		$form = $this->getEditorForm();
 
 		$this->show($form->getHTML());
 	}
@@ -326,7 +295,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function createContent() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
-		$form = $this->getEditContentForm();
+		$form = $this->getEditorForm();
 
 		$form->setValuesByPost();
 
@@ -336,37 +305,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		$title = $form->getInput("xhfp_title");
+		ilH5PEditor::getInstance()->createContent($form);
 
-		$params = $form->getInput("xhfp_params");
-
-		$library_id = H5PCore::libraryFromString($form->getInput("xhfp_library"));
-
-		$h5p_library = ilH5PLibrary::getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
-
-		if ($h5p_library !== NULL) {
-
-			$content = [
-				"title" => $title,
-				"library" => [
-					"libraryId" => $h5p_library->getLibraryId(),
-					"name" => $h5p_library->getName(),
-					"majorVersion" => $h5p_library->getMajorVersion(),
-					"minorVersion" => $h5p_library->getMinorVersion()
-				],
-				"params" => $params
-			];
-
-			$content["id"] = $this->h5p->core()->saveContent($content);
-
-			$content["params"] = $this->h5p->core()->filterParameters($content);
-
-			$params = json_decode($content["params"]);
-
-			$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
-
-			$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
-		}
+		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
 
 
@@ -376,7 +317,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function editContent() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
-		$form = $this->getEditContentForm();
+		$form = $this->getEditorForm();
 
 		$this->show($form->getHTML());
 	}
@@ -386,38 +327,21 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function updateContent() {
-		$form = $this->getEditContentForm();
+		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
+
+		$form = $this->getEditorForm();
 
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->tabs_gui->activateTab(self::TAB_CONTENTS);
-
 			$this->show($form->getHTML());
 
 			return;
 		}
 
 		$h5p_content = ilH5PContent::getCurrentContent();
-		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
-		$oldParams = json_decode($content["params"]);
-
-		$title = $form->getInput("xhfp_title");
-		$content["title"] = $title;
-
-		$params = $form->getInput("xhfp_params");
-		$content["params"] = $params;
-
-		$content["id"] = $this->h5p->core()->saveContent($content);
-
-		$content["params"] = $this->h5p->core()->filterParameters($content);
-
-		$params = json_decode($content["params"]);
-
-		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $content["title"]), true);
+		ilH5PEditor::getInstance()->updateContent($h5p_content, $form);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -431,11 +355,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_content", $h5p_content->getContentId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, self::CMD_MANAGE_CONTENTS));
+		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, $this, self::CMD_MANAGE_CONTENTS));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
@@ -493,8 +417,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$next_content->setId("xhfp_next_content_bottom"); // Set id for bottom toolbar
 			$this->toolbar->addButtonInstance($next_content);
 
-			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>"
-				. $this->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
+			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>" . ilH5PShowContent::getInstance()
+					->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
 
 			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
 		} else {
@@ -526,7 +450,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}
 
-		$this->show($this->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
+		$this->show(ilH5PShowContent::getInstance()->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
 	}
 
 
@@ -551,11 +475,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 		$user = new ilObjUser($user_id);
 
-		$this->ctrl->setParameter($this, "xhfp_user", $user->getId());
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_user", $user->getId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, self::CMD_RESULTS));
+		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, $this, self::CMD_RESULTS));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
 
@@ -640,157 +564,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->show($form->getHTML());
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
-	}
-
-
-	/**
-	 * @param int $content_id
-	 *
-	 * @return string
-	 */
-	protected function getH5PCoreIntegration($content_id, $type = "preloaded") {
-		$H5PIntegration = $this->getContents($content_id, $type);
-
-		$content = $this->h5p->core()->loadContent($content_id);
-		$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
-
-		if ($type !== "editor") {
-			$title = $content["title"];
-
-			$h5p_library = ilH5PLibrary::getLibraryById($content["library"]["id"]);
-			if ($h5p_library !== NULL) {
-				$title .= " - " . $h5p_library->getTitle();
-			}
-		} else {
-			$title = "";
-		}
-
-		if ($type === "editor") {
-			$embed = "editor";
-		}
-
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), $title, $embed, $content_id);
-
-		return $h5p_integration;
-	}
-
-
-	/**
-	 * @param int $content_id
-	 *
-	 * @return string
-	 */
-	protected function getH5PEditorIntegration($content_id) {
-		return $this->getH5PCoreIntegration($content_id, "editor");
-	}
-
-
-	/**
-	 * @param int    $content_id
-	 * @param string $type
-	 *
-	 * @return array
-	 */
-	protected function getContents($content_id, $type) {
-		$content = $this->h5p->core()->loadContent($content_id);
-
-		if ($type === "editor") {
-			$H5PIntegration = $this->h5p->getEditor();
-
-			$this->h5p->h5p_scripts[] = $this->plugin->getDirectory() . "/js/H5PEditor.js";
-
-			$H5PIntegration["editor"]["nodeVersionId"] = $content_id;
-		} else {
-			$H5PIntegration = $this->h5p->getCore();
-
-			$H5PIntegration["contents"] = [];
-
-			$content_dependencies = $this->h5p->core()->loadContentDependencies($content["id"], $type);
-
-			$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->h5p->getH5PFolder());
-			$scripts = array_map(function ($file) {
-				return $file->path;
-			}, $files["scripts"]);
-			$styles = array_map(function ($file) {
-				return $file->path;
-			}, $files["styles"]);
-
-			$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
-
-			$cid = "cid-" . $content["id"];
-
-			if (!isset($H5PIntegration["contents"][$cid])) {
-				$content_integration = $this->getContentIntegration($content);
-
-				switch ($embed) {
-					/*case "div":
-						foreach ($scripts as $script) {
-							$this->h5p->h5p_scripts[] = $H5PIntegration["loadedJs"][] = $script;
-						}
-
-						foreach ($styles as $style) {
-							$this->h5p->h5p_styles[] = $H5PIntegration["loadedCss"][] = $style;
-						}
-						break;*/
-
-					case "div":
-					case "iframe":
-						// Load all content types in an iframe
-						$content_integration["scripts"] = $scripts;
-						$content_integration["styles"] = $styles;
-						break;
-				}
-
-				$H5PIntegration["contents"][$cid] = $content_integration;
-			}
-		}
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @param array $content
-	 *
-	 * @return array
-	 */
-	protected function getContentIntegration(&$content) {
-		$this->ctrl->setParameter($this, "xhfp_content", $content["content_id"]);
-
-		$safe_parameters = $this->h5p->core()->filterParameters($content);
-
-		$user_id = $this->usr->getId();
-		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
-
-		$content_integration = [
-			"library" => H5PCore::libraryToString($content["library"]),
-			"jsonContent" => $safe_parameters,
-			"fullScreen" => $content["library"]["fullscreen"],
-			"exportUrl" => "",
-			"embedCode" => "",
-			"resizeCode" => "",
-			"url" => "",
-			"title" => $content["title"],
-			"displayOptions" => [
-				"frame" => true,
-				"export" => false,
-				"embed" => false,
-				"copyright" => true,
-				"icon" => true
-			],
-			"contentUserData" => [
-				0 => [
-					"state" => "{}"
-				]
-			]
-		];
-
-		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user_id, $content["id"]);
-		foreach ($content_user_datas as $content_user_data) {
-			$content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
-		}
-
-		return $content_integration;
 	}
 
 

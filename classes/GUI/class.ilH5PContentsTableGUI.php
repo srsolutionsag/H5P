@@ -5,7 +5,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
 
 /**
- *
+ * H5P Content Table
  */
 class ilH5PContentsTableGUI extends ilTable2GUI {
 

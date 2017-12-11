@@ -3,7 +3,7 @@
 require_once "Services/ActiveRecord/class.ActiveRecord.php";
 
 /**
- * H5P object
+ * H5P object active record
  */
 class ilH5PObject extends ActiveRecord {
 
