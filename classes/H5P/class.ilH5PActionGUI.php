@@ -68,7 +68,7 @@ class ilH5PActionGUI {
 			$url = $ctrl->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
 		}
 
-		$ctrl->clearParametersByClass(self::class);
+		//$ctrl->clearParametersByClass(self::class);
 
 		return $url;
 	}
@@ -98,7 +98,7 @@ class ilH5PActionGUI {
 			$form_action = $ctrl->getFormActionByClass(self::class);
 		}
 
-		$ctrl->clearParametersByClass(self::class);
+		//$ctrl->clearParametersByClass(self::class);
 
 		return $form_action;
 	}
@@ -139,7 +139,8 @@ class ilH5PActionGUI {
 		$callHistory = $ctrl->getCallHistory();
 
 		foreach ($callHistory as $history) {
-			if (strtolower($history["class"]) === strtolower(ilH5PConfigGUI::class) ||strtolower($history["class"]) === strtolower(ilObjH5PGUI::class)) {
+			if (strtolower($history["class"]) === strtolower(ilH5PConfigGUI::class)
+				|| strtolower($history["class"]) === strtolower(ilObjH5PGUI::class)) {
 				return false;
 			}
 		}
@@ -190,9 +191,9 @@ class ilH5PActionGUI {
 					case self::CMD_H5P_ACTION:
 					case self::CMD_CANCEL:
 						// Read commands
-						/*if (!ilObjH5PAccess::hasReadAccess()) {
+						if (!ilObjH5PAccess::hasReadAccess()) {
 							die();
-						}*/
+						}
 
 						$this->{$cmd}();
 
@@ -240,9 +241,9 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_CONTENT_USER_DATA:
 			case self::H5P_ACTION_SET_FINISHED:
 				// Read actions
-				/*if (!ilObjH5PAccess::hasReadAccess()) {
+				if (!ilObjH5PAccess::hasReadAccess()) {
 					die();
-				}*/
+				}
 
 				$this->{$action}();
 				break;
@@ -259,9 +260,9 @@ class ilH5PActionGUI {
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
 			case self::H5P_ACTION_RESULTS_DELETE:
 				// Write actions
-				/*if (!ilObjH5PAccess::hasWriteAccess()) {
+				if (!ilObjH5PAccess::hasWriteAccess()) {
 					die();
-				}*/
+				}
 
 				$this->{$action}();
 				break;

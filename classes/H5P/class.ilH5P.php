@@ -62,10 +62,6 @@ class ilH5P {
 	 */
 	const CSV_SEPARATOR = ", ";
 	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
 	 * @var H5PContentValidator
 	 */
 	protected $h5p_content_validator = NULL;
@@ -130,7 +126,6 @@ class ilH5P {
 	protected function __construct() {
 		global $DIC;
 
-		$this->ctrl = $DIC->ctrl();
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->usr = $DIC->user();
 	}
@@ -202,15 +197,6 @@ class ilH5P {
 	function getH5PFolder() {
 		return "data/" . CLIENT_ID . "/h5p";
 	}
-
-
-	/**
-	 * @return string
-	 */
-	protected function getCorePath() {
-		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
-	}
-
 
 
 	/**
@@ -358,135 +344,6 @@ class ilH5P {
 
 			$h5p_option->create();
 		}
-	}
-
-
-	/**
-	 * @return array
-	 */
-	protected function getBaseCore() {
-		$H5PIntegration = [
-			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => "/" . $this->getH5PFolder(),
-			"postUserStatistics" => true,
-			"ajax" => [
-				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
-				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
-					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
-			],
-			"saveFreq" => false,
-			"user" => [
-				"name" => $this->usr->getFullname(),
-				"mail" => $this->usr->getEmail()
-			],
-			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"l10n" => [
-				"H5P" => $this->core()->getLocalization()
-			],
-			"hubIsEnabled" => false
-		];
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @param array $H5PIntegration
-	 */
-	protected function addCore(&$H5PIntegration) {
-		$core_path = "/" . $this->getCorePath() . "/";
-
-		foreach (H5PCore::$scripts as $script) {
-			$this->h5p_scripts[] = $H5PIntegration["core"]["scripts"][] = $core_path . $script;
-		}
-
-		foreach (H5PCore::$styles as $style) {
-			$this->h5p_styles[] = $H5PIntegration["core"]["styles"][] = $core_path . $style;
-		}
-	}
-
-
-	/**
-	 * @return array
-	 */
-	function getCore() {
-		$H5PIntegration = $this->getBaseCore();
-
-		$H5PIntegration = array_merge($H5PIntegration, [
-			"core" => [
-				"scripts" => [],
-				"styles" => []
-			],
-			"loadedJs" => [],
-			"loadedCss" => []
-		]);
-
-		$this->addCore($H5PIntegration);
-
-		return $H5PIntegration;
-	}
-
-
-	/**
-	 * @param string      $h5p_integration_name
-	 * @param string      $h5p_integration
-	 * @param string      $title
-	 * @param string|null $content_type
-	 * @param int|null    $content_id
-	 *
-	 * @return string
-	 */
-	function getH5PIntegration($h5p_integration_name = "H5PIntegration", $h5p_integration = "{}", $title = "", $content_type = "iframe", $content_id = NULL) {
-		$h5p_tpl = $this->pl->getTemplate("H5PIntegration.html");
-
-		$h5p_tpl->setCurrentBlock("integrationBlock");
-		$h5p_tpl->setVariable("H5P_INTEGRATION_NAME", $h5p_integration_name);
-		$h5p_tpl->setVariable("H5P_INTEGRATION", $h5p_integration);
-		$h5p_tpl->parseCurrentBlock();
-
-		$h5p_tpl->setCurrentBlock("stylesBlock");
-		foreach (array_unique($this->h5p_styles) as $style) {
-			$h5p_tpl->setVariable("STYLE", $style);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p_styles = [];
-
-		$h5p_tpl->setCurrentBlock("scriptsBlock");
-		foreach (array_unique($this->h5p_scripts) as $script) {
-			$h5p_tpl->setVariable("SCRIPT", $script);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p_scripts = [];
-
-		if (!empty($title)) {
-			$h5p_tpl->setCurrentBlock("titleBlock");
-			$h5p_tpl->setVariable("TITLE", $title);
-			$h5p_tpl->parseCurrentBlock();
-		}
-
-		switch ($content_type) {
-			/*case "div":
-				$h5p_tpl->setCurrentBlock("contentDivBlock");
-				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
-				$h5p_tpl->parseCurrentBlock();
-				break;*/
-
-			case "iframe":
-				// Load all content types in an iframe
-				$h5p_tpl->setCurrentBlock("contentFrameBlock");
-				$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
-				$h5p_tpl->parseCurrentBlock();
-				break;
-
-			case "admin":
-				$h5p_tpl->touchBlock("adminBlock");
-				break;
-
-			default:
-				break;
-		}
-
-		return $h5p_tpl->get();
 	}
 
 

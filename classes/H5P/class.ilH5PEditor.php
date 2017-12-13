@@ -35,6 +35,10 @@ class ilH5PEditor {
 	 */
 	protected $h5p;
 	/**
+	 * @var ilH5PShowContent
+	 */
+	protected $h5p_show_content;
+	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
@@ -44,6 +48,7 @@ class ilH5PEditor {
 		global $DIC;
 
 		$this->h5p = ilH5P::getInstance();
+		$this->h5p_show_content = ilH5PShowContent::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 	}
 
@@ -64,14 +69,12 @@ class ilH5PEditor {
 	function getH5PEditorIntegration($h5p_content) {
 		$content_id = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$H5PIntegration = $this->getEditor();
-		$H5PIntegration["editor"]["nodeVersionId"] = $content_id;
+		$h5p_integration = $this->getEditor();
+		$h5p_integration["editor"]["nodeVersionId"] = $content_id;
 
 		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PEditor.js";
 
-		$h5p_integration = $this->getH5PIntegration(json_encode($H5PIntegration));
-
-		return $h5p_integration;
+		return $this->getH5PIntegration($h5p_integration);
 	}
 
 
@@ -79,13 +82,13 @@ class ilH5PEditor {
 	 * @return array
 	 */
 	function getEditor() {
-		$H5PIntegration = $this->h5p->getCore();
+		$h5p_integration = $this->h5p_show_content->getCore();
 
 		$editor_path = "/" . $this->getEditorPath();
 
 		$assets = [
-			"js" => $H5PIntegration["core"]["scripts"],
-			"css" => $H5PIntegration["core"]["styles"]
+			"js" => $h5p_integration["core"]["scripts"],
+			"css" => $h5p_integration["core"]["styles"]
 		];
 
 		foreach (H5peditor::$scripts as $script) {
@@ -102,7 +105,7 @@ class ilH5PEditor {
 			$assets["css"][] = $editor_path . "/" . $style;
 		}
 
-		$H5PIntegration["editor"] = [
+		$h5p_integration["editor"] = [
 			"filesPath" => "/" . $this->h5p->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
@@ -124,19 +127,19 @@ class ilH5PEditor {
 		}
 		$this->h5p->h5p_scripts[] = "/" . $language_script;
 
-		return $H5PIntegration;
+		return $h5p_integration;
 	}
 
 
 	/**
-	 * @param string $h5p_integration
+	 * @param array $h5p_integration
 	 *
 	 * @return string
 	 */
-	protected function getH5PIntegration($h5p_integration = "{}") {
+	function getH5PIntegration(array $h5p_integration) {
 		$h5p_tpl = $this->pl->getTemplate("H5PEditor.html");
 
-		$h5p_tpl->setVariable("H5P_INTEGRATION", $h5p_integration);
+		$h5p_tpl->setVariable("H5P_INTEGRATION", json_encode($h5p_integration));
 
 		$h5p_tpl->setCurrentBlock("stylesBlock");
 		foreach (array_unique($this->h5p->h5p_styles) as $style) {

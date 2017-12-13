@@ -61,18 +61,19 @@ class ilH5PHUB {
 		$hub_last_refresh = $this->h5p->getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		$H5PIntegration = ilH5PEditor::getInstance()->getEditor();
-		$H5PIntegration["hubIsEnabled"] = true;
-		$H5PIntegration["ajax"] = [
+		$h5p_editor = ilH5PEditor::getInstance();
+
+		$h5p_integration = $h5p_editor->getEditor();
+		$h5p_integration["hubIsEnabled"] = true;
+		$h5p_integration["ajax"] = [
 			"setFinished" => "",
 			"contentUserData" => ""
 		];
 
 		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PHub.js";
 
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), $this->txt("xhfp_hub"), "editor");
-
-		return '<div class="help-block">' . sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh) . '</div>' . $h5p_integration;
+		return '<div class="help-block">' . sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh) . '</div>'
+			. $h5p_editor->getH5PIntegration($h5p_integration);
 	}
 
 

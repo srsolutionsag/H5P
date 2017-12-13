@@ -54,100 +54,119 @@ class ilH5PShowContent {
 
 
 	/**
-	 * @param int $content_id
-	 *
 	 * @return string
 	 */
-	function getH5PCoreIntegration($content_id, $type = "preloaded") {
-		$H5PIntegration = $this->getContents($content_id, $type);
+	protected function getCorePath() {
+		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
+	}
 
-		$content = $this->h5p->core()->loadContent($content_id);
-		//$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
 
-		$title = $content["title"];
+	/**
+	 * @return array
+	 */
+	function getCore() {
+		$h5p_integration = [
+			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"url" => "/" . $this->h5p->getH5PFolder(),
+			"postUserStatistics" => true,
+			"ajax" => [
+				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
+				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
+					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+			],
+			"saveFreq" => false,
+			"user" => [
+				"name" => $this->usr->getFullname(),
+				"mail" => $this->usr->getEmail()
+			],
+			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+			"l10n" => [
+				"H5P" => $this->h5p->core()->getLocalization()
+			],
+			"hubIsEnabled" => false,
+			"core" => [
+				"scripts" => [],
+				"styles" => []
+			],
+			"loadedJs" => [],
+			"loadedCss" => []
+		];
 
-		$h5p_library = ilH5PLibrary::getLibraryById($content["library"]["id"]);
-		if ($h5p_library !== NULL) {
-			$title .= " - " . $h5p_library->getTitle();
-		}
-
-		$content_type = "iframe";
-
-		// TODO iFrame for each content
-
-		$h5p_integration = $this->h5p->getH5PIntegration("H5PIntegration", json_encode($H5PIntegration), $title, $content_type, $content_id);
+		$this->addCore($h5p_integration);
 
 		return $h5p_integration;
 	}
 
 
 	/**
-	 * @param int    $content_id
-	 * @param string $type
-	 *
-	 * @return array
+	 * @param array $h5p_integration
 	 */
-	function getContents($content_id, $type) {
-		$content = $this->h5p->core()->loadContent($content_id);
+	protected function addCore(&$h5p_integration) {
+		$core_path = "/" . $this->getCorePath() . "/";
 
-		$H5PIntegration = $this->h5p->getCore();
-
-		$H5PIntegration["contents"] = [];
-
-		$content_dependencies = $this->h5p->core()->loadContentDependencies($content["id"], $type);
-
-		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->h5p->getH5PFolder());
-		$scripts = array_map(function ($file) {
-			return $file->path;
-		}, $files["scripts"]);
-		$styles = array_map(function ($file) {
-			return $file->path;
-		}, $files["styles"]);
-
-		$cid = "cid-" . $content["id"];
-
-		if (!isset($H5PIntegration["contents"][$cid])) {
-			$content_integration = $this->getContentIntegration($content);
-
-			/*$embed = H5PCore::determineEmbedType($content["embedType"], $content["library"]["embedTypes"]);
-			switch ($embed) {
-				case "div":
-					foreach ($scripts as $script) {
-						$this->h5p->h5p_scripts[] = $H5PIntegration["loadedJs"][] = $script;
-					}
-
-					foreach ($styles as $style) {
-						$this->h5p->h5p_styles[] = $H5PIntegration["loadedCss"][] = $style;
-					}
-					break;
-
-				case "iframe":*/
-
-			// Load all content types in an iframe
-			$content_integration["scripts"] = $scripts;
-			$content_integration["styles"] = $styles;
-			/*break;
-	}*/
-
-			$H5PIntegration["contents"][$cid] = $content_integration;
+		foreach (H5PCore::$scripts as $script) {
+			$this->h5p->h5p_scripts[] = $h5p_integration["core"]["scripts"][] = $core_path . $script;
 		}
 
-		return $H5PIntegration;
+		foreach (H5PCore::$styles as $style) {
+			$this->h5p->h5p_styles[] = $h5p_integration["core"]["styles"][] = $core_path . $style;
+		}
 	}
 
 
 	/**
-	 * @param array $content
+	 * @param ilH5PContent $h5p_content
+	 *
+	 * @return string
+	 */
+	function getH5PContentIntegration(ilH5PContent $h5p_content) {
+		$h5p_integration = $this->getContents([ $h5p_content ]);
+
+		$title = $h5p_content->getTitle();
+
+		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
+		if ($h5p_library !== NULL) {
+			$title .= " - " . $h5p_library->getTitle();
+		}
+
+		return $this->getH5PIntegration($h5p_integration, $h5p_content->getContentId(), $title);
+	}
+
+
+	/**
+	 * @param ilH5PContent[] $h5p_content
 	 *
 	 * @return array
 	 */
-	protected function getContentIntegration(&$content) {
-		$this->ctrl->setParameter($this, "xhfp_content", $content["content_id"]);
+	protected function getContents(array $h5p_contents) {
+		$h5p_integration = $this->getCore();
+
+		$h5p_integration["contents"] = [];
+		foreach ($h5p_contents as $h5p_content) {
+			/**
+			 * @var ilH5PContent $h5p_content
+			 */
+
+			$h5p_integration["contents"]["cid-" . $h5p_content->getContentId()] = $this->getContent($h5p_content);
+		}
+
+		return $h5p_integration;
+	}
+
+
+	/**
+	 * @param ilH5PContent $h5p_content
+	 *
+	 * @return array
+	 */
+	protected function getContent(ilH5PContent $h5p_content) {
+		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+
+		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
 		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
 		$user_id = $this->usr->getId();
-		$author_id = (int)(is_array($content) ? $content["user_id"] : $content->user_id);
 
 		$content_integration = [
 			"library" => H5PCore::libraryToString($content["library"]),
@@ -157,7 +176,7 @@ class ilH5PShowContent {
 			"embedCode" => "",
 			"resizeCode" => "",
 			"url" => "",
-			"title" => $content["title"],
+			"title" => $h5p_content->getTitle(),
 			"displayOptions" => [
 				"frame" => true,
 				"export" => false,
@@ -172,12 +191,56 @@ class ilH5PShowContent {
 			]
 		];
 
-		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user_id, $content["id"]);
+		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
+
+		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->h5p->getH5PFolder());
+		$content_integration["scripts"] = array_map(function ($file) {
+			return $file->path;
+		}, $files["scripts"]);
+		$content_integration["styles"] = array_map(function ($file) {
+			return $file->path;
+		}, $files["styles"]);
+
+		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user_id, $h5p_content->getContentId());
 		foreach ($content_user_datas as $content_user_data) {
 			$content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
 		}
 
 		return $content_integration;
+	}
+
+
+	/**
+	 * @param array  $h5p_integration
+	 * @param int    $content_id
+	 * @param string $title
+	 *
+	 * @return string
+	 */
+	protected function getH5PIntegration(array $h5p_integration, $content_id, $title) {
+		$h5p_tpl = $this->pl->getTemplate("H5PContent.html");
+
+		$h5p_tpl->setVariable("H5P_INTEGRATION", json_encode($h5p_integration));
+
+		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+
+		$h5p_tpl->setVariable("H5P_TITLE", $title);
+
+		$h5p_tpl->setCurrentBlock("stylesBlock");
+		foreach (array_unique($this->h5p->h5p_styles) as $style) {
+			$h5p_tpl->setVariable("STYLE", $style);
+			$h5p_tpl->parseCurrentBlock();
+		}
+		$this->h5p->h5p_styles = [];
+
+		$h5p_tpl->setCurrentBlock("scriptsBlock");
+		foreach (array_unique($this->h5p->h5p_scripts) as $script) {
+			$h5p_tpl->setVariable("SCRIPT", $script);
+			$h5p_tpl->parseCurrentBlock();
+		}
+		$this->h5p->h5p_scripts = [];
+
+		return $h5p_tpl->get();
 	}
 
 

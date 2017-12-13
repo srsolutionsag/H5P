@@ -418,7 +418,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($next_content);
 
 			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>" . ilH5PShowContent::getInstance()
-					->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
+					->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
 
 			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
 		} else {
@@ -450,7 +450,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}
 
-		$this->show(ilH5PShowContent::getInstance()->getH5PCoreIntegration($h5p_content->getContentId()) . "<br>" . $this->toolbar->getHTML());
+		$this->show(ilH5PShowContent::getInstance()->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
 	}
 
 
