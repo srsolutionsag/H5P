@@ -50,6 +50,7 @@ xhfp_hide_advanced#:#Hide advanced
 xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB last refreshed: %s
 xhfp_hub_refresh#:#Resresh HUB
+xhfp_hub_refreshed#:#HUB was successfully refreshed
 xhfp_installed_libraries#:#Installed libraries
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries

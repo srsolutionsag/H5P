@@ -2,7 +2,6 @@
 
 require_once "Services/Repository/classes/class.ilObjectPluginListGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 
 /**
  * H5P List GUI
@@ -33,7 +32,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		$commands = [
 			[
 				"permission" => "read",
-				"cmd" => ilObjH5PGUI::getCmd(),
+				"cmd" => ilObjH5PGUI::getStartCmd(),
 				"default" => true,
 			]
 		];

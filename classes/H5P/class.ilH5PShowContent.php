@@ -56,14 +56,6 @@ class ilH5PShowContent {
 
 
 	/**
-	 * @return string
-	 */
-	protected function getCorePath() {
-		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
-	}
-
-
-	/**
 	 * @param string $style
 	 */
 	function addH5pStyle($style) {
@@ -139,7 +131,7 @@ class ilH5PShowContent {
 	function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => "/" . $this->h5p->getH5PFolder(),
+			"url" => "/" . $this->pl->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -174,7 +166,7 @@ class ilH5PShowContent {
 	 * @param array $core
 	 */
 	protected function addCore(&$core) {
-		$core_path = "/" . $this->getCorePath() . "/";
+		$core_path = "/" . $this->pl->getCorePath() . "/";
 
 		foreach (H5PCore::$styles as $style) {
 			$core["core"]["styles"][] = $core_path . $style;
@@ -185,6 +177,27 @@ class ilH5PShowContent {
 			$core["core"]["scripts"][] = $core_path . $script;
 			$this->addH5pScript($core_path . $script);
 		}
+	}
+
+
+	/**
+	 * @param ilH5PContent $h5p_content
+	 * @param string       $count
+	 *
+	 * @return string
+	 */
+	function getH5PContentsIntegration(ilH5PContent $h5p_content, $count) {
+		$h5p_tpl = $this->pl->getTemplate("H5PContents.html");
+
+		$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content));
+
+		$h5p_tpl->setVariable("CONTENTS_COUNT", $count);
+
+		$this->outputH5pStyles($h5p_tpl);
+
+		$this->outputH5pScripts($h5p_tpl);
+
+		return $h5p_tpl->get();
 	}
 
 
@@ -250,7 +263,7 @@ class ilH5PShowContent {
 
 		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->h5p->getH5PFolder());
+		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->pl->getH5PFolder());
 		$content_integration["scripts"] = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
@@ -315,6 +328,102 @@ class ilH5PShowContent {
 		$this->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get();
+	}
+
+
+	/**
+	 * @param int      $content_id
+	 * @param int      $score
+	 * @param int      $max_score
+	 * @param int      $opened
+	 * @param int      $finished
+	 * @param int|null $time
+	 */
+	function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
+		$user_id = $this->usr->getId();
+
+		$h5p_result = ilH5PResult::getResultByUser($user_id, $content_id);
+
+		$new = false;
+		if ($h5p_result === NULL) {
+			$h5p_result = new ilH5PResult();
+
+			$h5p_result->setContentId($content_id);
+
+			$new = true;
+		}
+
+		$h5p_result->setScore($score);
+
+		$h5p_result->setMaxScore($max_score);
+
+		$h5p_result->setOpened($opened);
+
+		$h5p_result->setFinished($finished);
+
+		if ($time !== NULL) {
+			$h5p_result->setTime($time);
+		}
+
+		if ($new) {
+			$h5p_result->create();
+		} else {
+			$h5p_result->update();
+		}
+	}
+
+
+	/**
+	 * @param int         $content_id
+	 * @param int         $data_id
+	 * @param int         $sub_content_id
+	 * @param string|null $data
+	 * @param bool        $preload
+	 * @param bool        $invalidate
+	 *
+	 * @return string|null
+	 */
+	function contentsUserData($content_id, $data_id, $sub_content_id, $data = NULL, $preload = false, $invalidate = false) {
+		$user_id = $this->usr->getId();
+
+		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
+
+		if ($data !== NULL) {
+			if ($data === "0") {
+				if ($h5p_content_user_data !== NULL) {
+					$h5p_content_user_data->delete();
+				}
+			} else {
+				$new = false;
+				if ($h5p_content_user_data === NULL) {
+					$h5p_content_user_data = new ilH5PContentUserData();
+
+					$h5p_content_user_data->setContentId($content_id);
+
+					$h5p_content_user_data->setSubContentId($sub_content_id);
+
+					$h5p_content_user_data->setDataId($data_id);
+
+					$new = true;
+				}
+
+				$h5p_content_user_data->setData($data);
+
+				$h5p_content_user_data->setPreload($preload);
+
+				$h5p_content_user_data->setInvalidate($invalidate);
+
+				if ($new) {
+					$h5p_content_user_data->create();
+				} else {
+					$h5p_content_user_data->update();
+				}
+			}
+
+			return NULL;
+		} else {
+			return ($h5p_content_user_data !== NULL ? $h5p_content_user_data->getData() : NULL);
+		}
 	}
 
 

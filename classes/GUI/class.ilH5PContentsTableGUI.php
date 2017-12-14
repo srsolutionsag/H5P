@@ -1,7 +1,7 @@
 <?php
 
 require_once "Services/Table/classes/class.ilTable2GUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
 
 /**
@@ -44,7 +44,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->initFilter();
 
-		$this->setRowTemplate("contents_list_row.html", $this->pl->getDirectory());
+		$this->setRowTemplate("contents_table_row.html", $this->pl->getDirectory());
 
 		if (!$this->hasResults()) {
 			$this->initUpDown();
@@ -119,8 +119,6 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$actions->setListTitle($this->txt("xhfp_actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			//$actions->addItem($this->txt("xhfp_show"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_SHOW_CONTENT));
-
 			$actions->addItem($this->txt("xhfp_edit"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
 			$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));

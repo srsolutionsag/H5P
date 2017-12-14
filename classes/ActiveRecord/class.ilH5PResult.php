@@ -57,17 +57,19 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
-	 * @param int $obj_id
+	 * @param int    $obj_id
+	 * @param string $parent_type
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getResultsByObject($obj_id) {
+	static function getResultsByObject($obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
 
 		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
-			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id
+			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
+			ilH5PContent::TABLE_NAME . ".parent_type" => $parent_type
 		])->orderBy(self::TABLE_NAME . ".user_id", "asc")->orderBy(ilH5PContent::TABLE_NAME . ".sort", "asc")->get();
 
 		return $h5p_results;
@@ -75,9 +77,12 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
+	 *
+	 * @param string $parent_type
+	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getCurrentResults() {
+	static function getCurrentResults($parent_type = "object") {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
@@ -87,6 +92,7 @@ class ilH5PResult extends ActiveRecord {
 
 		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
 			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
+			ilH5PContent::TABLE_NAME . ".parent_type" => $parent_type,
 			self::TABLE_NAME . ".user_id" => $user_id,
 		])->get();
 

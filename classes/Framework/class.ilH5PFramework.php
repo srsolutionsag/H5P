@@ -3,7 +3,6 @@
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 require_once "Services/WebServices/Curl/classes/class.ilCurlConnection.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 
 /**
  * H5P framework
@@ -26,6 +25,18 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_path = NULL;
+	/**
+	 * @var string
+	 */
+	protected $uploaded_h5p_folder_path = NULL;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
 
 
 	/**
@@ -37,6 +48,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		$this->ctrl = $DIC->ctrl();
 		$this->h5p = $h5p;
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->usr = $DIC->user();
 	}
 
 
@@ -193,7 +205,73 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * Translated string
 	 */
 	public function t($message, $replacements = array()) {
-		return $this->h5p->t($message, $replacements);
+		// Translate messages with key map
+		$messages_map = [
+			"Added %new new H5P library and updated %old old one." => "xhfp_added_library_updated_library",
+			"Added %new new H5P library and updated %old old ones." => "xhfp_added_library_updated_libraries",
+			"Added %new new H5P libraries and updated %old old one." => "xhfp_added_libraries_updated_library",
+			"Added %new new H5P libraries and updated %old old ones." => "xhfp_added_libraries_updated_libraries",
+			"Added %new new H5P library." => "xhfp_added_library",
+			"Added %new new H5P libraries." => "xhfp_added_libraries",
+			"Author" => "xhfp_author",
+			"by" => "xhfp_by",
+			"Cancel" => "xhfp_cancel",
+			"Close" => "xhfp_close",
+			"Confirm" => "xhfp_confirm",
+			"Confirm action" => "xhfp_confirm_action",
+			"This content has changed since you last used it." => "xhfp_content_changed",
+			"Disable fullscreen" => "xhfp_disable_fullscreen",
+			"Download" => "xhfp_download",
+			"Download this content as a H5P file." => "xhfp_download_content",
+			"Embed" => "xhfp_embed",
+			"Fullscreen" => "xhfp_fullscreen",
+			"Include this script on your website if you want dynamic sizing of the embedded content:" => "xhfp_embed_include_script",
+			"Hide advanced" => "xhfp_hide_advanced",
+			"Library cache was successfully updated!" => "xhfp_hub_refreshed",
+			"License" => "xhfp_license",
+			"No copyright information available for this content." => "xhfp_no_content_copyright",
+			"Please confirm that you wish to proceed. This action is not reversible." => "xhfp_confirm_action_text",
+			"Rights of use" => "xhfp_rights_of_use",
+			"Show advanced" => "xhfp_show_advanced",
+			"Show less" => "xhfp_show_less",
+			"Show more" => "xhfp_show_more",
+			"Size" => "xhfp_size",
+			"Source" => "xhfp_source",
+			"Sublevel" => "xhfp_sublevel",
+			"Thumbnail" => "xhfp_thumbnail",
+			"Title" => "xhfp_title",
+			"Updated %old H5P library." => "xhfp_updated_library",
+			"Updated %old H5P libraries." => "xhfp_updated_libraries",
+			"View copyright information for this content." => "xhfp_view_content_copyright",
+			"View the embed code for this content." => "xhfp_view_embed_code",
+			"Year" => "xhfp_year",
+			"You'll be starting over." => "xhfp_start_over"
+		];
+		if (isset($messages_map[$message])) {
+			$message = $this->txt($messages_map[$message]);
+		}
+
+		// Replace placeholders
+		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
+			$text = $replacements[$found[0]];
+
+			switch ($found[1]) {
+				case "@":
+					return htmlentities($text);
+					break;
+
+				case "%":
+					return "<b>" . htmlentities($text) . "</b>";
+					break;
+
+				case "!":
+				default:
+					return $text;
+					break;
+			}
+		}, $message);
+
+		return $message;
 	}
 
 
@@ -206,7 +284,19 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return string URL to file
 	 */
 	public function getLibraryFileUrl($library_folder_name, $file_name) {
-		return "/" . $this->h5p->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+		return "/" . $this->pl->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function setUploadedH5pPath() {
+		$tmp_path = $this->h5p->core()->fs->getTmpPath();
+
+		$this->uploaded_h5p_folder_path = $tmp_path;
+
+		$this->uploaded_h5p_path = $tmp_path . ".h5p";
 	}
 
 
@@ -217,7 +307,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Path to the folder where the last uploaded h5p for this session is located.
 	 */
 	public function getUploadedH5pFolderPath() {
-		return $this->h5p->getUploadedH5pFolderPath();
+		if ($this->uploaded_h5p_folder_path === NULL) {
+			$this->setUploadedH5pPath();
+		}
+
+		return $this->uploaded_h5p_folder_path;
 	}
 
 
@@ -228,7 +322,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Path to the last uploaded h5p
 	 */
 	public function getUploadedH5pPath() {
-		return $this->h5p->getUploadedH5pPath();
+		if ($this->uploaded_h5p_path === NULL) {
+			$this->setUploadedH5pPath();
+		}
+
+		return $this->uploaded_h5p_path;
 	}
 
 
@@ -959,7 +1057,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Library object with id, name, major version and minor version.
 	 */
 	public function deleteLibrary($library) {
-		H5PCore::deleteFileTree($this->h5p->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+		H5PCore::deleteFileTree($this->pl->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
 			. $library->minor_version);
 
 		$this->deleteLibraryDependencies($library->library_id);
@@ -1014,7 +1112,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"user_id" => $h5p_content->getUserId(),
 				"embedType" => $h5p_content->getEmbedType(),
 				"disable" => $h5p_content->getDisable(),
-				"language" => $this->h5p->getLanguage(),
+				"language" => $this->usr->getLanguage(),
 				"libraryId" => $h5p_content->getLibraryId(),
 			];
 
@@ -1095,7 +1193,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Whatever has been stored as the setting
 	 */
 	public function getOption($name, $default = NULL) {
-		return $this->h5p->getOption($name, $default);
+		return ilH5POption::getOption($name, $default);
 	}
 
 
@@ -1109,7 +1207,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *                      Whatever we want to store as the setting
 	 */
 	public function setOption($name, $value) {
-		$this->h5p->setOption($name, $value);
+		ilH5POption::setOption($name, $value);
 	}
 
 
@@ -1373,5 +1471,15 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->create();
 		}
+	}
+
+
+	/**
+	 * @param string $a_var
+	 *
+	 * @return string
+	 */
+	protected function txt($a_var) {
+		return $this->pl->txt($a_var);
 	}
 }

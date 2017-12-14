@@ -1,7 +1,7 @@
 <?php
 
 require_once "Services/Table/classes/class.ilTable2GUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
 require_once "Services/Form/classes/class.ilTextInputGUI.php";
 require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
@@ -58,7 +58,7 @@ class ilH5PLibrariesTableGUI extends ilTable2GUI {
 
 		$this->initFilter();
 
-		$this->setRowTemplate("libraries_list_row.html", $this->pl->getDirectory());
+		$this->setRowTemplate("libraries_table_row.html", $this->pl->getDirectory());
 
 		// TODO ev. $this->h5p->editor()->getLatestGlobalLibrariesData() for manually all available libraries and updates
 		$this->setData(ilH5PLibrary::getLibrariesArray($this->filter_title->getValue(), ($this->filter_runnable->getChecked() ? true : NULL), ($this->filter_not_used->getChecked() ? true : NULL)));

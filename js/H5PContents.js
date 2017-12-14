@@ -24,7 +24,7 @@ $(document).ready(function () {
 					$xhfp_next_content.removeAttr("disabled");
 				};
 
-				// There are contents in which you can not score points. To support this an empty result is saved.
+				// There are contents in which you can not score points. To support this an empty result will be saved.
 				// TODO Make working for each content
 				if ("getMaxScore" in instance && instance.getMaxScore() === 0) {
 					frameWindow.H5P.setFinished(instance.contentId, 0, 0);

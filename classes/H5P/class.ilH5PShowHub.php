@@ -6,8 +6,12 @@ require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 /**
  * H5P show HUB
  */
-class ilH5PShowHUB {
+class ilH5PShowHub {
 
+	/**
+	 * @var ilCtrl
+	 */
+	protected $ctrl;
 	/**
 	 * @var ilH5P
 	 */
@@ -25,6 +29,7 @@ class ilH5PShowHUB {
 	function __construct() {
 		global $DIC;
 
+		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->toolbar = $DIC->toolbar();
@@ -37,10 +42,10 @@ class ilH5PShowHUB {
 	function getH5PHubIntegration() {
 		$hub_refresh = ilLinkButton::getInstance();
 		$hub_refresh->setCaption($this->txt("xhfp_hub_refresh"), false);
-		$hub_refresh->setUrl(ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_HUB_REFRESH, $this, ilH5PConfigGUI::CMD_HUB));
+		$hub_refresh->setUrl($this->ctrl->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
 		$this->toolbar->addButtonInstance($hub_refresh);
 
-		$hub_last_refresh = $this->h5p->getOption("content_type_cache_updated_at", "");
+		$hub_last_refresh = ilH5POption::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
 		$hub = $this->h5p->show_editor()->getEditor();
@@ -59,22 +64,43 @@ class ilH5PShowHUB {
 
 	/**
 	 * @param string $hub
-	 * @param string $last_refresh
+	 * @param string $hub_last_refresh
 	 *
 	 * @return string
 	 */
-	protected function getH5PIntegration($hub, $last_refresh) {
-		$h5p_tpl = $this->pl->getTemplate("H5PHUB.html");
+	protected function getH5PIntegration($hub, $hub_last_refresh) {
+		$h5p_tpl = $this->pl->getTemplate("H5PHub.html");
 
 		$h5p_tpl->setVariable("H5P_HUB", $hub);
 
-		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", $last_refresh);
+		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", $hub_last_refresh);
 
 		$this->h5p->show_content()->outputH5pStyles($h5p_tpl);
 
 		$this->h5p->show_content()->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get();
+	}
+
+
+	/**
+	 *
+	 */
+	function refreshHub() {
+		$this->h5p->core()->updateContentTypeCache();
+	}
+
+
+	/**
+	 * @param ilH5PLibrary $h5p_library
+	 */
+	function deleteLibrary(ilH5PLibrary $h5p_library) {
+		$this->h5p->core()->deleteLibrary((object)[
+			"library_id" => $h5p_library->getLibraryId(),
+			"name" => $h5p_library->getName(),
+			"major_version" => $h5p_library->getMajorVersion(),
+			"minor_version" => $h5p_library->getMinorVersion()
+		]);
 	}
 
 

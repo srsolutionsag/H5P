@@ -23,7 +23,7 @@ class ilH5POption extends ActiveRecord {
 	 *
 	 * @return ilH5POption|null
 	 */
-	static function getOption($name) {
+	static function getH5POption($name) {
 		/**
 		 * @var ilH5POption|null $h5p_option
 		 */
@@ -33,6 +33,46 @@ class ilH5POption extends ActiveRecord {
 		])->first();
 
 		return $h5p_option;
+	}
+
+
+	/**
+	 * @param string     $name
+	 * @param mixed|null $default
+	 *
+	 * @return mixed
+	 */
+	static function getOption($name, $default = NULL) {
+		$h5p_option = self::getH5POption($name);
+
+		if ($h5p_option !== NULL) {
+			return $h5p_option->getValue();
+		} else {
+			return $default;
+		}
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param mixed  $value
+	 */
+	static function setOption($name, $value) {
+		$h5p_option = self::getH5POption($name);
+
+		if ($h5p_option !== NULL) {
+			$h5p_option->setValue($value);
+
+			$h5p_option->update();
+		} else {
+			$h5p_option = new ilH5POption();
+
+			$h5p_option->setName($name);
+
+			$h5p_option->setValue($value);
+
+			$h5p_option->create();
+		}
 	}
 
 

@@ -56,12 +56,12 @@ class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 	 * Get locally stored Content Type Cache. If machine name is provided
 	 * it will only get the given content type from the cache
 	 *
-	 * @param $machineName
+	 * @param $machine_name
 	 *
 	 * @return array|object|null Returns results from querying the database
 	 */
-	public function getContentTypeCache($machineName = NULL) {
-		return ilH5PLibraryHubCache::getLibraryHubCacheArray($machineName);
+	public function getContentTypeCache($machine_name = NULL) {
+		return ilH5PLibraryHubCache::getLibraryHubCacheArray($machine_name);
 	}
 
 

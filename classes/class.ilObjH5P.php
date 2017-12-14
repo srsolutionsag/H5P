@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/Repository/classes/class.ilObjectPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 
 /**
@@ -76,11 +75,9 @@ class ilObjH5P extends ilObjectPlugin {
 		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
-			$this->h5p->storage()->deletePackage([
-				"id" => $h5p_content->getContentId(),
-				"slug" => $h5p_content->getSlug()
-			]);
+			$this->h5p->show_editor()->deleteContent($h5p_content);
 		}
+		unset($_SESSION["success"]); // Delete message
 	}
 
 

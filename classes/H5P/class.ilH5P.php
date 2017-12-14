@@ -25,7 +25,7 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowContent.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowEditor.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowHUB.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowHub.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
@@ -35,7 +35,7 @@ require_once "Services/Calendar/classes/class.ilDatePresentation.php";
 require_once "Services/Calendar/classes/class.ilDateTime.php";
 
 /**
- * H5P
+ * H5P instances
  */
 class ilH5P {
 
@@ -96,15 +96,15 @@ class ilH5P {
 	/**
 	 * @var ilH5PShowContent
 	 */
-	protected $show_content;
+	protected $show_content = NULL;
 	/**
 	 * @var ilH5PShowEditor
 	 */
-	protected $show_editor;
+	protected $show_editor = NULL;
 	/**
-	 * @var ilH5PShowHUB
+	 * @var ilH5PShowHub
 	 */
-	protected $show_hub;
+	protected $show_hub = NULL;
 	/**
 	 * @var H5PStorage
 	 */
@@ -117,14 +117,6 @@ class ilH5P {
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
-	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_path = NULL;
-	/**
-	 * @var string
-	 */
-	protected $uploaded_h5p_folder_path = NULL;
 	/**
 	 * @var ilObjUser
 	 */
@@ -200,158 +192,14 @@ class ilH5P {
 
 
 	/**
-	 * @return string
+	 * @return ilH5PActionGUI
 	 */
-	function getH5PFolder() {
-		return "data/" . CLIENT_ID . "/h5p";
-	}
-
-
-	/**
-	 *
-	 */
-	function removeH5PFolder() {
-		$h5p_folder = $this->getH5PFolder();
-
-		H5PCore::deleteFileTree($h5p_folder);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function setUploadedH5pPath() {
-		$tmp_path = $this->core()->fs->getTmpPath();
-
-		$this->uploaded_h5p_folder_path = $tmp_path;
-
-		$this->uploaded_h5p_path = $tmp_path . ".h5p";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	function getLanguage() {
-		$lang = $this->usr->getLanguage();
-
-		return $lang;
-	}
-
-
-	/**
-	 * @param string $message
-	 * @param array  $replacements
-	 *
-	 * @return string
-	 */
-	function t($message, $replacements = []) {
-		// Translate messages with key map
-		$messages_map = [
-			"Added %new new H5P library and updated %old old one." => "xhfp_added_library_updated_library",
-			"Added %new new H5P library and updated %old old ones." => "xhfp_added_library_updated_libraries",
-			"Added %new new H5P libraries and updated %old old one." => "xhfp_added_libraries_updated_library",
-			"Added %new new H5P libraries and updated %old old ones." => "xhfp_added_libraries_updated_libraries",
-			"Added %new new H5P library." => "xhfp_added_library",
-			"Added %new new H5P libraries." => "xhfp_added_libraries",
-			"Author" => "xhfp_author",
-			"by" => "xhfp_by",
-			"Cancel" => "xhfp_cancel",
-			"Close" => "xhfp_close",
-			"Confirm" => "xhfp_confirm",
-			"Confirm action" => "xhfp_confirm_action",
-			"This content has changed since you last used it." => "xhfp_content_changed",
-			"Disable fullscreen" => "xhfp_disable_fullscreen",
-			"Download" => "xhfp_download",
-			"Download this content as a H5P file." => "xhfp_download_content",
-			"Embed" => "xhfp_embed",
-			"Fullscreen" => "xhfp_fullscreen",
-			"Include this script on your website if you want dynamic sizing of the embedded content:" => "xhfp_embed_include_script",
-			"Hide advanced" => "xhfp_hide_advanced",
-			"License" => "xhfp_license",
-			"No copyright information available for this content." => "xhfp_no_content_copyright",
-			"Please confirm that you wish to proceed. This action is not reversible." => "xhfp_confirm_action_text",
-			"Rights of use" => "xhfp_rights_of_use",
-			"Show advanced" => "xhfp_show_advanced",
-			"Show less" => "xhfp_show_less",
-			"Show more" => "xhfp_show_more",
-			"Size" => "xhfp_size",
-			"Source" => "xhfp_source",
-			"Sublevel" => "xhfp_sublevel",
-			"Thumbnail" => "xhfp_thumbnail",
-			"Title" => "xhfp_title",
-			"Updated %old H5P library." => "xhfp_updated_library",
-			"Updated %old H5P libraries." => "xhfp_updated_libraries",
-			"View copyright information for this content." => "xhfp_view_content_copyright",
-			"View the embed code for this content." => "xhfp_view_embed_code",
-			"Year" => "xhfp_year",
-			"You'll be starting over." => "xhfp_start_over"
-		];
-		if (isset($messages_map[$message])) {
-			$message = $this->txt($messages_map[$message]);
+	function action() {
+		if ($this->action === NULL) {
+			$this->action = new ilH5PActionGUI();
 		}
 
-		// Replace placeholders
-		$message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", function ($found) use ($replacements) {
-			$text = $replacements[$found[0]];
-
-			switch ($found[1]) {
-				case "@":
-					return htmlentities($text);
-					break;
-
-				case "%":
-					return "<b>" . htmlentities($text) . "</b>";
-					break;
-
-				case "!":
-				default:
-					return $text;
-					break;
-			}
-		}, $message);
-
-		return $message;
-	}
-
-
-	/**
-	 * @param string     $name
-	 * @param mixed|null $default
-	 *
-	 * @return mixed
-	 */
-	function getOption($name, $default = NULL) {
-		$h5p_option = ilH5POption::getOption($name);
-
-		if ($h5p_option !== NULL) {
-			return $h5p_option->getValue();
-		} else {
-			return $default;
-		}
-	}
-
-
-	/**
-	 * @param string $name
-	 * @param mixed  $value
-	 */
-	function setOption($name, $value) {
-		$h5p_option = ilH5POption::getOption($name);
-
-		if ($h5p_option !== NULL) {
-			$h5p_option->setValue($value);
-
-			$h5p_option->update();
-		} else {
-			$h5p_option = new ilH5POption();
-
-			$h5p_option->setName($name);
-
-			$h5p_option->setValue($value);
-
-			$h5p_option->create();
-		}
+		return $this->action;
 	}
 
 
@@ -368,23 +216,12 @@ class ilH5P {
 
 
 	/**
-	 * @return ilH5PActionGUI
-	 */
-	function action() {
-		if ($this->action === NULL) {
-			$this->action = new ilH5PActionGUI();
-		}
-
-		return $this->action;
-	}
-
-
-	/**
 	 * @return H5PCore
 	 */
 	function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), $this->getLanguage(), false);
+			$this->core = new H5PCore($this->framework(), $this->pl->getH5PFolder(), "/"
+				. $this->pl->getH5PFolder(), $this->usr->getLanguage(), false);
 		}
 
 		return $this->core;
@@ -476,11 +313,11 @@ class ilH5P {
 
 
 	/**
-	 * @return ilH5PShowHUB
+	 * @return ilH5PShowHub
 	 */
 	function show_hub() {
 		if ($this->show_hub === NULL) {
-			$this->show_hub = new ilH5PShowHUB();
+			$this->show_hub = new ilH5PShowHub();
 		}
 
 		return $this->show_hub;
@@ -508,39 +345,5 @@ class ilH5P {
 		}
 
 		return $this->validator;
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getUploadedH5pPath() {
-		if ($this->uploaded_h5p_path === NULL) {
-			$this->setUploadedH5pPath();
-		}
-
-		return $this->uploaded_h5p_path;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getUploadedH5pFolderPath() {
-		if ($this->uploaded_h5p_folder_path === NULL) {
-			$this->setUploadedH5pPath();
-		}
-
-		return $this->uploaded_h5p_folder_path;
 	}
 }

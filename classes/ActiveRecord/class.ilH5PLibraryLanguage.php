@@ -38,20 +38,20 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 
 	/**
 	 * @param string $name
-	 * @param int    $majorVersion
-	 * @param int    $minorVersion
+	 * @param int    $major_version
+	 * @param int    $minor_version
 	 * @param string $language
 	 *
 	 * @return string
 	 */
-	static function getTranslationJson($name, $majorVersion, $minorVersion, $language) {
+	static function getTranslationJson($name, $major_version, $minor_version, $language) {
 		/**
 		 * @var ilH5PLibraryLanguage $h5p_library_language
 		 */
 		$h5p_library_language = self::innerjoin(ilH5PLibrary::TABLE_NAME, "library_id", "library_id")->where([
 			ilH5PLibrary::TABLE_NAME . ".name" => $name,
-			ilH5PLibrary::TABLE_NAME . ".major_version" => $majorVersion,
-			ilH5PLibrary::TABLE_NAME . ".minor_version" => $minorVersion,
+			ilH5PLibrary::TABLE_NAME . ".major_version" => $major_version,
+			ilH5PLibrary::TABLE_NAME . ".minor_version" => $minor_version,
 			self::TABLE_NAME . ".language_code" => $language
 		])->first();
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once "Services/Repository/classes/class.ilObjectPluginAccess.php";
+require_once "Services/Utilities/classes/class.ilUtil.php";
 
 /**
  * H5P Access

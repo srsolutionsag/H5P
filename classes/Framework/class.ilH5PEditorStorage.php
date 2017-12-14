@@ -37,8 +37,8 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 *
 	 * @return string Translation in JSON format
 	 */
-	public function getLanguage($machineName, $majorVersion, $minorVersion, $language) {
-		return ilH5PLibraryLanguage::getTranslationJson($machineName, $majorVersion, $minorVersion, $language);
+	public function getLanguage($machine_name, $major_version, $minor_version, $language) {
+		return ilH5PLibraryLanguage::getTranslationJson($machine_name, $major_version, $minor_version, $language);
 	}
 
 
@@ -46,10 +46,10 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * "Callback" for mark the given file as a permanent file.
 	 * Used when saving content that has new uploaded files.
 	 *
-	 * @param int $fileId
+	 * @param int $file_id
 	 */
-	public function keepFile($fileId) {
-		$h5p_tmp_files = ilH5PTmpFile::getFilesByPath($fileId);
+	public function keepFile($file_id) {
+		$h5p_tmp_files = ilH5PTmpFile::getFilesByPath($file_id);
 
 		foreach ($h5p_tmp_files as $h5p_tmp_file) {
 			$h5p_tmp_file->delete();
@@ -172,7 +172,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param               $content_id
 	 */
 	public static function markFileForCleanup($file, $content_id = NULL) {
-		$path = ilH5P::getInstance()->getH5PFolder();
+		$path = ilH5PPlugin::getInstance()->getH5PFolder();
 
 		if (empty($content_id)) {
 			$path .= "/editor/";
@@ -181,7 +181,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 		}
 		$path .= $file->getType() . "s/" . $file->getName();
 
-		// TODO wrong path on reedit
+		// TODO wrong path on reupload
 
 		$h5p_tmp_file = new ilH5PTmpFile();
 
@@ -194,14 +194,14 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	/**
 	 * Clean up temporary files
 	 *
-	 * @param string $filePath Path to file or directory
+	 * @param string $file_path Path to file or directory
 	 */
-	public static function removeTemporarilySavedFiles($filePath) {
-		if (file_exists($filePath)) {
-			if (is_dir($filePath)) {
-				H5PCore::deleteFileTree($filePath);
+	public static function removeTemporarilySavedFiles($file_path) {
+		if (file_exists($file_path)) {
+			if (is_dir($file_path) && !is_link($file_path)) {
+				H5PCore::deleteFileTree($file_path);
 			} else {
-				unlink($filePath);
+				unlink($file_path);
 			}
 		}
 	}

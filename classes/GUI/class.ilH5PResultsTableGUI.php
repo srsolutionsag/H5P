@@ -1,7 +1,7 @@
 <?php
 
 require_once "Services/Table/classes/class.ilTable2GUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
 require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
 
 /**
@@ -54,7 +54,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 		$this->initFilter();
 
-		$this->setRowTemplate("results_list_row.html", $this->pl->getDirectory());
+		$this->setRowTemplate("results_table_row.html", $this->pl->getDirectory());
 
 		$this->setData($this->results);
 	}

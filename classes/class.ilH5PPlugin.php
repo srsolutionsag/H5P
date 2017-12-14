@@ -51,12 +51,34 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
+	 * @return string
+	 */
+	function getH5PFolder() {
+		return "data/" . CLIENT_ID . "/h5p";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	function getCorePath() {
+		return $this->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	function getEditorPath() {
+		return $this->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
+	}
+
+
+	/**
 	 *
 	 */
 	protected function uninstallCustom() {
-		$h5p = ilH5P::getInstance();
-
-		$h5p->removeH5PFolder();
+		$this->removeH5PFolder();
 
 		$this->db->dropTable(ilH5PContent::TABLE_NAME, false);
 
@@ -87,5 +109,15 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
 
 		return true;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function removeH5PFolder() {
+		$h5p_folder = $this->getH5PFolder();
+
+		H5PCore::deleteFileTree($h5p_folder);
 	}
 }

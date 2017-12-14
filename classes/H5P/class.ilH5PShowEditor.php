@@ -20,6 +20,10 @@ class ilH5PShowEditor {
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var ilObjUser
+	 */
+	protected $usr;
 
 
 	function __construct() {
@@ -27,29 +31,7 @@ class ilH5PShowEditor {
 
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
-	}
-
-
-	/**
-	 * @return string
-	 */
-	protected function getEditorPath() {
-		return $this->pl->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
-	}
-
-
-	/**
-	 * @param ilH5PContent|null $h5p_content
-	 *
-	 * @return string
-	 */
-	function getH5PEditorIntegration($h5p_content) {
-		$editor = $this->getEditor();
-		$editor["editor"]["nodeVersionId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
-
-		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PEditor.js");
-
-		return $this->getH5PIntegration($editor);
+		$this->usr = $DIC->user();
 	}
 
 
@@ -59,7 +41,7 @@ class ilH5PShowEditor {
 	function getEditor() {
 		$editor = $this->h5p->show_content()->getCore();
 
-		$editor_path = "/" . $this->getEditorPath();
+		$editor_path = "/" . $this->pl->getEditorPath();
 
 		$assets = [
 			"js" => $editor["core"]["scripts"],
@@ -81,7 +63,7 @@ class ilH5PShowEditor {
 		}
 
 		$editor["editor"] = [
-			"filesPath" => "/" . $this->h5p->getH5PFolder() . "/editor",
+			"filesPath" => "/" . $this->pl->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
@@ -94,8 +76,8 @@ class ilH5PShowEditor {
 			"apiVersion" => H5PCore::$coreApi
 		];
 
-		$language = $this->h5p->getLanguage();
-		$language_path = $this->getEditorPath() . "/language/";
+		$language = $this->usr->getLanguage();
+		$language_path = $this->pl->getEditorPath() . "/language/";
 		$language_script = $language_path . $language . ".js";
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
@@ -103,6 +85,21 @@ class ilH5PShowEditor {
 		$this->h5p->show_content()->addH5pScript("/" . $language_script);
 
 		return $editor;
+	}
+
+
+	/**
+	 * @param ilH5PContent|null $h5p_content
+	 *
+	 * @return string
+	 */
+	function getH5PEditorIntegration(ilH5PContent $h5p_content = NULL) {
+		$editor = $this->getEditor();
+		$editor["editor"]["nodeVersionId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+
+		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PEditor.js");
+
+		return $this->getH5PIntegration($editor);
 	}
 
 
@@ -129,7 +126,7 @@ class ilH5PShowEditor {
 	 *
 	 * @return ilPropertyFormGUI
 	 */
-	function getEditorForm($h5p_content) {
+	function getEditorForm(ilH5PContent $h5p_content = NULL) {
 		if ($h5p_content !== NULL) {
 			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 			$params = $this->h5p->core()->filterParameters($content);
@@ -148,7 +145,7 @@ class ilH5PShowEditor {
 
 		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
 		$title->setRequired(true);
-		$title->setValue($content["title"]);
+		$title->setValue($h5p_content !== NULL ? $h5p_content->getTitle() : "");
 		$form->addItem($title);
 
 		$h5p_library = new ilHiddenInputGUI("xhfp_library");
@@ -230,6 +227,19 @@ class ilH5PShowEditor {
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+	}
+
+
+	/**
+	 * @param ilH5PContent $h5p_content
+	 */
+	function deleteContent(ilH5PContent $h5p_content) {
+		$this->h5p->storage()->deletePackage([
+			"id" => $h5p_content->getContentId(),
+			"slug" => $h5p_content->getSlug()
+		]);
+
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
 	}
 
 

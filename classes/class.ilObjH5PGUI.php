@@ -1,7 +1,6 @@
 <?php
 
 require_once "Services/Repository/classes/class.ilObjectPluginGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
@@ -28,7 +27,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 	const CMD_ADD_CONTENT = "addContent";
 	const CMD_CREATE_CONTENT = "createContent";
+	const CMD_DELETE_CONTENT = "deleteContent";
 	const CMD_DELETE_CONTENT_CONFIRM = "deleteContentConfirm";
+	const CMD_DELETE_RESULTS = "deleteResults";
 	const CMD_DELETE_RESULTS_CONFIRM = "deleteResultsConfirm";
 	const CMD_EDIT_CONTENT = "editContent";
 	const CMD_MANAGE_CONTENTS = "manageContents";
@@ -38,7 +39,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_RESULTS = "results";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
-	//const CMD_SHOW_CONTENT = "showContent";
 	const CMD_SHOW_CONTENTS = "showContents";
 	const CMD_UPDATE_CONTENT = "updateContent";
 	const TAB_CONTENTS = "contents";
@@ -107,6 +107,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 						$this->{$cmd}();
 						break;
 
+					case self::CMD_DELETE_RESULTS:
 					case self::CMD_DELETE_RESULTS_CONFIRM:
 					case self::CMD_MANAGE_CONTENTS:
 					case self::CMD_RESULTS:
@@ -122,11 +123,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 					case self::CMD_ADD_CONTENT:
 					case self::CMD_CREATE_CONTENT:
+					case self::CMD_DELETE_CONTENT:
 					case self::CMD_DELETE_CONTENT_CONFIRM:
 					case self::CMD_EDIT_CONTENT:
 					case self::CMD_MOVE_CONTENT_DOWN:
 					case self::CMD_MOVE_CONTENT_UP:
-						//case self::CMD_SHOW_CONTENT:
 					case self::CMD_UPDATE_CONTENT:
 						// Write commands only when no results available
 						if (!ilObjH5PAccess::hasWriteAccess() || $this->hasResults()) {
@@ -137,7 +138,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 						break;
 
 					case ilH5PActionGUI::CMD_H5P_ACTION:
-					case ilH5PActionGUI::CMD_CANCEL:
 						// Read commands
 						if (!ilObjH5PAccess::hasReadAccess()) {
 							ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
@@ -355,18 +355,30 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_content", $h5p_content->getContentId());
+		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE, $this, self::CMD_MANAGE_CONTENTS));
+		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
 
-		$confirmation->setConfirm($this->txt("xhfp_delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->txt("xhfp_cancel"), ilH5PActionGUI::CMD_CANCEL);
+		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_CONTENT);
+		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_MANAGE_CONTENTS);
 
 		$this->show($confirmation->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function deleteContent() {
+		$h5p_content = ilH5PContent::getCurrentContent();
+
+		$this->h5p->show_editor()->deleteContent($h5p_content);
+
+		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
 
 
@@ -404,7 +416,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		if ($h5p_content !== NULL) {
 			// Content without results available
-			$this->h5p->show_content()->addH5pScript($this->plugin->getDirectory() . "/js/H5PContent.js");
+			$this->h5p->show_content()->addH5pScript($this->plugin->getDirectory() . "/js/H5PContents.js");
 
 			$next_content = ilLinkButton::getInstance();
 			if ($index < ($count - 1)) {
@@ -417,40 +429,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$next_content->setId("xhfp_next_content_bottom"); // Set id for bottom toolbar
 			$this->toolbar->addButtonInstance($next_content);
 
-			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>" . $this->h5p->show_content()
-					->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
+			$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, sprintf($this->txt("xhfp_content_count"), ($index
+					+ 1), $count)) . $this->toolbar->getHTML());
 
 			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
 		} else {
 			// No content without results available
 			$this->show($this->txt("xhfp_solved_all_contents"));
 		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function showContent() {
-		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
-
-		$h5p_content = ilH5PContent::getCurrentContent();
-
-		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
-
-		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$edit_content = ilLinkButton::getInstance();
-			$edit_content->setCaption($this->txt("xhfp_edit"), false);
-			$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
-			$this->toolbar->addButtonInstance($edit_content);
-
-			$delete_content = ilLinkButton::getInstance();
-			$delete_content->setCaption($this->txt("xhfp_delete"), false);
-			$delete_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
-			$this->toolbar->addButtonInstance($delete_content);
-		}
-
-		$this->show($this->h5p->show_content()->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
 	}
 
 
@@ -475,18 +461,35 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 		$user = new ilObjUser($user_id);
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "xhfp_user", $user->getId());
+		$this->ctrl->setParameter($this, "xhfp_user", $user->getId());
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction(ilH5PActionGUI::getFormAction(ilH5PActionGUI::H5P_ACTION_RESULTS_DELETE, $this, self::CMD_RESULTS));
+		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
 
-		$confirmation->setConfirm($this->txt("xhfp_delete"), ilH5PActionGUI::CMD_H5P_ACTION);
-		$confirmation->setCancel($this->txt("xhfp_cancel"), ilH5PActionGUI::CMD_CANCEL);
+		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_RESULTS);
+		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_RESULTS);
 
 		$this->show($confirmation->getHTML());
+	}
+
+
+	/**
+	 *
+	 */
+	protected function deleteResults() {
+		$h5p_results = ilH5PResult::getCurrentResults();
+		$user = new ilObjUser(filter_input(INPUT_GET, "xhfp_user"));
+
+		foreach ($h5p_results as $h5p_result) {
+			$h5p_result->delete();
+		}
+
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user->getFullname()), true);
+
+		$this->ctrl->redirect($this, self::CMD_RESULTS);
 	}
 
 
@@ -562,8 +565,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
 
 		$this->show($form->getHTML());
-
-		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
 
 
@@ -595,7 +596,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return string
 	 */
-	static function getCmd() {
+	static function getStartCmd() {
 		if (ilObjH5PAccess::hasWriteAccess()) {
 			return self::CMD_MANAGE_CONTENTS;
 		} else {
@@ -608,7 +609,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return string
 	 */
 	function getAfterCreationCmd() {
-		return self::getCmd();
+		return self::getStartCmd();
 	}
 
 
@@ -616,6 +617,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return string
 	 */
 	function getStandardCmd() {
-		return self::getCmd();
+		return self::getStartCmd();
 	}
 }

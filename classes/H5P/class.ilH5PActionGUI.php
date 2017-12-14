@@ -11,18 +11,12 @@ require_once "Services/UIComponent/classes/class.ilUIPluginRouterGUI.php";
 class ilH5PActionGUI {
 
 	const CMD_H5P_ACTION = "h5pAction";
-	const CMD_CANCEL = "cancel";
-	const RETURN_CMD = "returnCmd";
-	const H5P_ACTION_CONTENT_DELETE = "contentDelete";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
 	const H5P_ACTION_FILES = "files";
-	const H5P_ACTION_HUB_REFRESH = "hubRefresh";
 	const H5P_ACTION_LIBRARIES = "libraries";
-	const H5P_ACTION_LIBRARY_DELETE = "libraryDelete";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
 	const H5P_ACTION_LIBRARY_UPLOAD = "libraryUpload";
-	const H5P_ACTION_RESULTS_DELETE = "resultsDelete";
 	const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
 	const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
 	const H5P_ACTION_SET_FINISHED = "setFinished";
@@ -44,8 +38,6 @@ class ilH5PActionGUI {
 
 		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
-		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
-
 		if (self::isPageComponent()) {
 			$url = $ctrl->getLinkTargetByClass([ ilUIPluginRouterGUI::class, self::class ], self::CMD_H5P_ACTION, "", true, false);
 		} else {
@@ -59,46 +51,6 @@ class ilH5PActionGUI {
 
 
 	/**
-	 * @param string $action
-	 * @param string $return_class
-	 * @param string $return_cmd
-	 *
-	 * @return string
-	 */
-	static function getFormAction($action, $return_class = NULL, $return_cmd = "") {
-		global $DIC;
-
-		$ctrl = $DIC->ctrl();
-
-		//$ctrl->clearParametersByClass(self::class);
-
-		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
-
-		$ctrl->setParameterByClass(self::class, self::RETURN_CMD, $return_cmd);
-
-		if (self::isPageComponent()) {
-			$form_action = $ctrl->getFormActionByClass([ ilUIPluginRouterGUI::class, self::class ]);
-		} else {
-			$form_action = $ctrl->getFormActionByClass(self::class);
-		}
-
-		//$ctrl->clearParametersByClass(self::class);
-
-		return $form_action;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	protected static function getReturnCmd() {
-		$return_cmd = filter_input(INPUT_GET, ilH5PActionGUI::RETURN_CMD);
-
-		return $return_cmd;
-	}
-
-
-	/**
 	 * @param $a_gui_obj
 	 */
 	static function forward($a_gui_obj) {
@@ -106,7 +58,7 @@ class ilH5PActionGUI {
 
 		$ctrl = $DIC->ctrl();
 
-		$ctrl->setReturn($a_gui_obj, self::getReturnCmd());
+		$ctrl->setReturn($a_gui_obj, "");
 
 		$ctrl->forwardCommand(ilH5P::getInstance()->action());
 	}
@@ -173,7 +125,6 @@ class ilH5PActionGUI {
 
 				switch ($cmd) {
 					case self::CMD_H5P_ACTION:
-					case self::CMD_CANCEL:
 						// Read commands
 						if (!ilObjH5PAccess::hasReadAccess()) {
 							die();
@@ -200,22 +151,6 @@ class ilH5PActionGUI {
 	protected function h5pAction() {
 		$action = filter_input(INPUT_GET, ilH5PActionGUI::CMD_H5P_ACTION);
 
-		$this->runAction($action);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function cancel() {
-		$this->ctrl->returnToParent($this);
-	}
-
-
-	/**
-	 * @param string $action
-	 */
-	  function runAction($action) {
 		// Slashes to camelCase
 		$action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) {
 			return strtoupper($matches[0][1]);
@@ -232,17 +167,13 @@ class ilH5PActionGUI {
 				$this->{$action}();
 				break;
 
-			case self::H5P_ACTION_CONTENT_DELETE:
 			case self::H5P_ACTION_CONTENT_TYPE_CACHE:
 			case self::H5P_ACTION_FILES:
-			case self::H5P_ACTION_HUB_REFRESH:
 			case self::H5P_ACTION_LIBRARIES:
-			case self::H5P_ACTION_LIBRARY_DELETE:
 			case self::H5P_ACTION_LIBRARY_INSTALL:
 			case self::H5P_ACTION_LIBRARY_UPLOAD:
 			case self::H5P_ACTION_REBUILD_CACHE:
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
-			case self::H5P_ACTION_RESULTS_DELETE:
 				// Write actions
 				if (!ilObjH5PAccess::hasWriteAccess()) {
 					die();
@@ -262,23 +193,6 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	protected function contentDelete() {
-		$h5p_content = ilH5PContent::getCurrentContent();
-
-		$this->h5p->storage()->deletePackage([
-			"id" => $h5p_content->getContentId(),
-			"slug" => $h5p_content->getSlug()
-		]);
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
-
-		$this->ctrl->returnToParent($this);
-	}
-
-
-	/**
-	 *
-	 */
 	protected function contentTypeCache() {
 		$token = "";
 
@@ -290,52 +204,16 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function contentsUserData() {
-		$content_id = filter_input(INPUT_GET, "content_id");
-		$data_id = filter_input(INPUT_GET, "data_type");
-		$sub_content_id = filter_input(INPUT_GET, "sub_content_id");
+		$content_id = filter_input(INPUT_GET, "content_id", FILTER_SANITIZE_NUMBER_INT);
+		$data_id = filter_input(INPUT_GET, "data_type", FILTER_SANITIZE_NUMBER_INT);
+		$sub_content_id = filter_input(INPUT_GET, "sub_content_id", FILTER_SANITIZE_NUMBER_INT);
 		$data = filter_input(INPUT_POST, "data");
-		$preload = filter_input(INPUT_POST, "preload");
-		$invalidate = filter_input(INPUT_POST, "invalidate");
-		$user_id = $this->usr->getId();
+		$preload = filter_input(INPUT_POST, "preload", FILTER_SANITIZE_NUMBER_INT);
+		$invalidate = filter_input(INPUT_POST, "invalidate", FILTER_SANITIZE_NUMBER_INT);
 
-		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
+		$data = $this->h5p->show_content()->contentsUserData($content_id, $data_id, $sub_content_id, $data, $preload, $invalidate);
 
-		if ($data !== NULL) {
-			if ($data === "0") {
-				if ($h5p_content_user_data !== NULL) {
-					$h5p_content_user_data->delete();
-				}
-			} else {
-				$new = false;
-				if ($h5p_content_user_data === NULL) {
-					$h5p_content_user_data = new ilH5PContentUserData();
-
-					$h5p_content_user_data->setContentId($content_id);
-
-					$h5p_content_user_data->setSubContentId($sub_content_id);
-
-					$h5p_content_user_data->setDataId($data_id);
-
-					$new = true;
-				}
-
-				$h5p_content_user_data->setData($data);
-
-				$h5p_content_user_data->setPreload($preload);
-
-				$h5p_content_user_data->setInvalidate($invalidate);
-
-				if ($new) {
-					$h5p_content_user_data->create();
-				} else {
-					$h5p_content_user_data->update();
-				}
-			}
-
-			H5PCore::ajaxSuccess();
-		} else {
-			H5PCore::ajaxSuccess($h5p_content_user_data !== NULL ? $h5p_content_user_data->getData() : NULL);
-		}
+		H5PCore::ajaxSuccess($data);
 	}
 
 
@@ -354,47 +232,17 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	protected function hubRefresh() {
-		$this->h5p->core()->updateContentTypeCache();
-
-		unset($_GET["cmdMode"]); // No async
-		$this->ctrl->returnToParent($this);
-	}
-
-
-	/**
-	 *
-	 */
 	protected function libraries() {
 		$name = filter_input(INPUT_GET, "machineName", FILTER_SANITIZE_STRING);
 		$major_version = filter_input(INPUT_GET, "majorVersion", FILTER_SANITIZE_NUMBER_INT);
 		$minor_version = filter_input(INPUT_GET, "minorVersion", FILTER_SANITIZE_NUMBER_INT);
 
 		if (!empty($name)) {
-			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, $this->h5p->getLanguage(), "", $this->h5p->getH5PFolder());
+			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, $this->usr->getLanguage(), "", $this->pl->getH5PFolder());
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
 			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
 		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function libraryDelete() {
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
-
-		$this->h5p->core()->deleteLibrary((object)[
-			"library_id" => $h5p_library->getLibraryId(),
-			"name" => $h5p_library->getName(),
-			"major_version" => $h5p_library->getMajorVersion(),
-			"minor_version" => $h5p_library->getMinorVersion()
-		]);
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
-
-		$this->ctrl->returnToParent($this);
 	}
 
 
@@ -474,60 +322,15 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	protected function resultsDelete() {
-		$h5p_results = ilH5PResult::getCurrentResults();
-		$user = new ilObjUser(filter_input(INPUT_GET, "xhfp_user"));
-
-		foreach ($h5p_results as $h5p_result) {
-			$h5p_result->delete();
-		}
-
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user->getFullname()), true);
-
-		$this->ctrl->returnToParent($this);
-	}
-
-
-	/**
-	 *
-	 */
 	protected function setFinished() {
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
-		$user_id = $this->usr->getId();
 		$score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);
 		$max_score = filter_input(INPUT_POST, "maxScore", FILTER_VALIDATE_INT);
 		$opened = filter_input(INPUT_POST, "opened", FILTER_VALIDATE_INT);
 		$finished = filter_input(INPUT_POST, "finished", FILTER_VALIDATE_INT);
 		$time = filter_input(INPUT_POST, "time", FILTER_VALIDATE_INT);
 
-		$h5p_result = ilH5PResult::getResultByUser($user_id, $content_id);
-
-		$new = false;
-		if ($h5p_result === NULL) {
-			$h5p_result = new ilH5PResult();
-
-			$h5p_result->setContentId($content_id);
-
-			$new = true;
-		}
-
-		$h5p_result->setScore($score);
-
-		$h5p_result->setMaxScore($max_score);
-
-		$h5p_result->setOpened($opened);
-
-		$h5p_result->setFinished($finished);
-
-		if ($time !== NULL) {
-			$h5p_result->setTime($time);
-		}
-
-		if ($new) {
-			$h5p_result->create();
-		} else {
-			$h5p_result->update();
-		}
+		$this->h5p->show_content()->setFinished($content_id, $score, $max_score, $opened, $finished, $time);
 
 		H5PCore::ajaxSuccess();
 	}
