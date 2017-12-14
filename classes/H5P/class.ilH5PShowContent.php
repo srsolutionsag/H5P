@@ -8,23 +8,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PShowContent {
 
 	/**
-	 * @var ilH5PShowContent
+	 * @var bool
 	 */
-	protected static $instance = NULL;
-
-
-	/**
-	 * @return ilH5PShowContent
-	 */
-	static function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-
+	protected $core_output = false;
 	/**
 	 * @var ilCtrl
 	 */
@@ -33,6 +19,22 @@ class ilH5PShowContent {
 	 * @var ilH5P
 	 */
 	protected $h5p;
+	/**
+	 * @var array
+	 */
+	protected $h5p_scripts = [];
+	/**
+	 * @var array
+	 */
+	protected $h5p_scripts_output = [];
+	/**
+	 * @var array
+	 */
+	protected $h5p_styles = [];
+	/**
+	 * @var array
+	 */
+	protected $h5p_styles_output = [];
 	/**
 	 * @var ilH5PPlugin
 	 */
@@ -43,7 +45,7 @@ class ilH5PShowContent {
 	protected $usr;
 
 
-	protected function __construct() {
+	function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -62,10 +64,80 @@ class ilH5PShowContent {
 
 
 	/**
+	 * @param string $style
+	 */
+	function addH5pStyle($style) {
+		if (!isset($this->h5p_styles[$style])) {
+			// Output style only once
+			$this->h5p_styles[$style] = true;
+
+			$this->h5p_styles_output[] = $style;
+		}
+	}
+
+
+	/**
+	 * @param ilTemplate $h5p_tpl
+	 */
+	function outputH5pStyles(ilTemplate $h5p_tpl) {
+		foreach ($this->h5p_styles_output as $style) {
+			$h5p_tpl->setCurrentBlock("stylesBlock");
+
+			$h5p_tpl->setVariable("STYLE", $style);
+
+			$h5p_tpl->parseCurrentBlock();
+		}
+
+		$this->h5p_styles_output = [];
+	}
+
+
+	/**
+	 * @param string $script
+	 */
+	function addH5pScript($script) {
+		if (!isset($this->h5p_scripts[$script])) {
+			// Output script only once
+			$this->h5p_scripts[$script] = true;
+
+			$this->h5p_scripts_output[] = $script;
+		}
+	}
+
+
+	/**
+	 * @param ilTemplate $h5p_tpl
+	 */
+	function outputH5pScripts(ilTemplate $h5p_tpl) {
+		foreach ($this->h5p_scripts_output as $script) {
+			$h5p_tpl->setCurrentBlock("scriptsBlock");
+
+			$h5p_tpl->setVariable("SCRIPT", $script);
+
+			$h5p_tpl->parseCurrentBlock();
+		}
+
+		$this->h5p_scripts_output = [];
+	}
+
+
+	/**
+	 * @return array
+	 */
+	function getH5pScripts() {
+		$scripts = $this->h5p_scripts_output;
+
+		$this->h5p_scripts_output = [];
+
+		return $scripts;
+	}
+
+
+	/**
 	 * @return array
 	 */
 	function getCore() {
-		$h5p_integration = [
+		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"url" => "/" . $this->h5p->getH5PFolder(),
 			"postUserStatistics" => true,
@@ -85,31 +157,33 @@ class ilH5PShowContent {
 			],
 			"hubIsEnabled" => false,
 			"core" => [
-				"scripts" => [],
-				"styles" => []
+				"styles" => [],
+				"scripts" => []
 			],
-			"loadedJs" => [],
-			"loadedCss" => []
+			"loadedCss" => [],
+			"loadedJs" => []
 		];
 
-		$this->addCore($h5p_integration);
+		$this->addCore($core);
 
-		return $h5p_integration;
+		return $core;
 	}
 
 
 	/**
-	 * @param array $h5p_integration
+	 * @param array $core
 	 */
-	protected function addCore(&$h5p_integration) {
+	protected function addCore(&$core) {
 		$core_path = "/" . $this->getCorePath() . "/";
 
-		foreach (H5PCore::$scripts as $script) {
-			$this->h5p->h5p_scripts[] = $h5p_integration["core"]["scripts"][] = $core_path . $script;
+		foreach (H5PCore::$styles as $style) {
+			$core["core"]["styles"][] = $core_path . $style;
+			$this->addH5pStyle($core_path . $style);
 		}
 
-		foreach (H5PCore::$styles as $style) {
-			$this->h5p->h5p_styles[] = $h5p_integration["core"]["styles"][] = $core_path . $style;
+		foreach (H5PCore::$scripts as $script) {
+			$core["core"]["scripts"][] = $core_path . $script;
+			$this->addH5pScript($core_path . $script);
 		}
 	}
 
@@ -120,7 +194,9 @@ class ilH5PShowContent {
 	 * @return string
 	 */
 	function getH5PContentIntegration(ilH5PContent $h5p_content) {
-		$h5p_integration = $this->getContents([ $h5p_content ]);
+		$output = $this->getCoreIntegration();
+
+		$content = $this->getContent($h5p_content);
 
 		$title = $h5p_content->getTitle();
 
@@ -129,28 +205,9 @@ class ilH5PShowContent {
 			$title .= " - " . $h5p_library->getTitle();
 		}
 
-		return $this->getH5PIntegration($h5p_integration, $h5p_content->getContentId(), $title);
-	}
+		$output .= $this->getH5PIntegration($content, $h5p_content->getContentId(), $title);
 
-
-	/**
-	 * @param ilH5PContent[] $h5p_content
-	 *
-	 * @return array
-	 */
-	protected function getContents(array $h5p_contents) {
-		$h5p_integration = $this->getCore();
-
-		$h5p_integration["contents"] = [];
-		foreach ($h5p_contents as $h5p_content) {
-			/**
-			 * @var ilH5PContent $h5p_content
-			 */
-
-			$h5p_integration["contents"]["cid-" . $h5p_content->getContentId()] = $this->getContent($h5p_content);
-		}
-
-		return $h5p_integration;
+		return $output;
 	}
 
 
@@ -211,34 +268,51 @@ class ilH5PShowContent {
 
 
 	/**
-	 * @param array  $h5p_integration
+	 * @return string
+	 */
+	protected function getCoreIntegration() {
+		if (!$this->core_output) {
+			// Output core only once
+			$this->core_output = true;
+
+			$core = $this->getCore();
+
+			$core["contents"] = [];
+
+			$h5p_tpl = $this->pl->getTemplate("H5PCore.html");
+
+			$h5p_tpl->setVariable("H5P_CORE", json_encode($core));
+
+			$this->outputH5pStyles($h5p_tpl);
+
+			$this->outputH5pScripts($h5p_tpl);
+
+			return $h5p_tpl->get();
+		} else {
+			return "";
+		}
+	}
+
+
+	/**
+	 * @param array  $content
 	 * @param int    $content_id
 	 * @param string $title
 	 *
 	 * @return string
 	 */
-	protected function getH5PIntegration(array $h5p_integration, $content_id, $title) {
+	protected function getH5PIntegration(array $content, $content_id, $title) {
 		$h5p_tpl = $this->pl->getTemplate("H5PContent.html");
 
-		$h5p_tpl->setVariable("H5P_INTEGRATION", json_encode($h5p_integration));
+		$h5p_tpl->setVariable("H5P_CONTENT", json_encode($content));
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
 		$h5p_tpl->setVariable("H5P_TITLE", $title);
 
-		$h5p_tpl->setCurrentBlock("stylesBlock");
-		foreach (array_unique($this->h5p->h5p_styles) as $style) {
-			$h5p_tpl->setVariable("STYLE", $style);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p->h5p_styles = [];
+		$this->outputH5pStyles($h5p_tpl);
 
-		$h5p_tpl->setCurrentBlock("scriptsBlock");
-		foreach (array_unique($this->h5p->h5p_scripts) as $script) {
-			$h5p_tpl->setVariable("SCRIPT", $script);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p->h5p_scripts = [];
+		$this->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get();
 	}

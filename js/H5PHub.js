@@ -11,7 +11,7 @@
 
 		H5PEditor.assets = H5PIntegration.editor.assets;
 
-		H5PEditor.baseUrl = '';
+		H5PEditor.baseUrl = "";
 
 		var $editor = $("#xhfp_editor");
 
@@ -47,7 +47,7 @@
 		if (parameters !== undefined) {
 			for (var property in parameters) {
 				if (parameters.hasOwnProperty(property)) {
-					url += '&' + property + '=' + parameters[property];
+					url += "&" + property + "=" + parameters[property];
 				}
 			}
 		}

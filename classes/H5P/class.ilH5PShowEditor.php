@@ -8,47 +8,24 @@ require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
 
 /**
- * H5P editor
+ * H5P show editor
  */
-class ilH5PEditor {
-
-	/**
-	 * @var ilH5PEditor
-	 */
-	protected static $instance = NULL;
-
-
-	/**
-	 * @return ilH5PEditor
-	 */
-	static function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
+class ilH5PShowEditor {
 
 	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
 	/**
-	 * @var ilH5PShowContent
-	 */
-	protected $h5p_show_content;
-	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
 
 
-	protected function __construct() {
+	function __construct() {
 		global $DIC;
 
 		$this->h5p = ilH5P::getInstance();
-		$this->h5p_show_content = ilH5PShowContent::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 	}
 
@@ -67,14 +44,12 @@ class ilH5PEditor {
 	 * @return string
 	 */
 	function getH5PEditorIntegration($h5p_content) {
-		$content_id = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+		$editor = $this->getEditor();
+		$editor["editor"]["nodeVersionId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$h5p_integration = $this->getEditor();
-		$h5p_integration["editor"]["nodeVersionId"] = $content_id;
+		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PEditor.js");
 
-		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PEditor.js";
-
-		return $this->getH5PIntegration($h5p_integration);
+		return $this->getH5PIntegration($editor);
 	}
 
 
@@ -82,13 +57,13 @@ class ilH5PEditor {
 	 * @return array
 	 */
 	function getEditor() {
-		$h5p_integration = $this->h5p_show_content->getCore();
+		$editor = $this->h5p->show_content()->getCore();
 
 		$editor_path = "/" . $this->getEditorPath();
 
 		$assets = [
-			"js" => $h5p_integration["core"]["scripts"],
-			"css" => $h5p_integration["core"]["styles"]
+			"js" => $editor["core"]["scripts"],
+			"css" => $editor["core"]["styles"]
 		];
 
 		foreach (H5peditor::$scripts as $script) {
@@ -96,7 +71,7 @@ class ilH5PEditor {
 				/*$this->h5p_scripts[] = */
 				$assets["js"][] = $editor_path . "/" . $script;
 			} else {
-				$this->h5p->h5p_scripts[] = $editor_path . "/" . $script;
+				$this->h5p->show_content()->addH5pScript($editor_path . "/" . $script);
 			}
 		}
 
@@ -105,7 +80,7 @@ class ilH5PEditor {
 			$assets["css"][] = $editor_path . "/" . $style;
 		}
 
-		$h5p_integration["editor"] = [
+		$editor["editor"] = [
 			"filesPath" => "/" . $this->h5p->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
@@ -125,35 +100,25 @@ class ilH5PEditor {
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
 		}
-		$this->h5p->h5p_scripts[] = "/" . $language_script;
+		$this->h5p->show_content()->addH5pScript("/" . $language_script);
 
-		return $h5p_integration;
+		return $editor;
 	}
 
 
 	/**
-	 * @param array $h5p_integration
+	 * @param array $editor
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration(array $h5p_integration) {
+	function getH5PIntegration(array $editor) {
 		$h5p_tpl = $this->pl->getTemplate("H5PEditor.html");
 
-		$h5p_tpl->setVariable("H5P_INTEGRATION", json_encode($h5p_integration));
+		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
 
-		$h5p_tpl->setCurrentBlock("stylesBlock");
-		foreach (array_unique($this->h5p->h5p_styles) as $style) {
-			$h5p_tpl->setVariable("STYLE", $style);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p->h5p_styles = [];
+		$this->h5p->show_content()->outputH5pStyles($h5p_tpl);
 
-		$h5p_tpl->setCurrentBlock("scriptsBlock");
-		foreach (array_unique($this->h5p->h5p_scripts) as $script) {
-			$h5p_tpl->setVariable("SCRIPT", $script);
-			$h5p_tpl->parseCurrentBlock();
-		}
-		$this->h5p->h5p_scripts = [];
+		$this->h5p->show_content()->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get();
 	}

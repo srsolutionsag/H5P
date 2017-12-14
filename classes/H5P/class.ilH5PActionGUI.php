@@ -26,22 +26,6 @@ class ilH5PActionGUI {
 	const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
 	const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
 	const H5P_ACTION_SET_FINISHED = "setFinished";
-	/**
-	 * @var ilH5PActionGUI
-	 */
-	protected static $instance = NULL;
-
-
-	/**
-	 * @return ilH5PActionGUI
-	 */
-	protected static function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
 
 
 	/**
@@ -124,7 +108,7 @@ class ilH5PActionGUI {
 
 		$ctrl->setReturn($a_gui_obj, self::getReturnCmd());
 
-		$ctrl->forwardCommand(self::getInstance());
+		$ctrl->forwardCommand(ilH5P::getInstance()->action());
 	}
 
 
@@ -231,7 +215,7 @@ class ilH5PActionGUI {
 	/**
 	 * @param string $action
 	 */
-	protected function runAction($action) {
+	  function runAction($action) {
 		// Slashes to camelCase
 		$action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) {
 			return strtoupper($matches[0][1]);

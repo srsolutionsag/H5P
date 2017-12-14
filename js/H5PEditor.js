@@ -11,7 +11,7 @@
 
 		H5PEditor.assets = H5PIntegration.editor.assets;
 
-		H5PEditor.baseUrl = '';
+		H5PEditor.baseUrl = "";
 
 		if (H5PIntegration.editor.nodeVersionId !== undefined) {
 			H5PEditor.contentId = H5PIntegration.editor.nodeVersionId;
@@ -74,7 +74,7 @@
 					return false;
 				}
 
-				if (library !== "" && params !== undefined) {
+				if (typeof library === "string" && library !== "" && library !== "-" && typeof params === "object") {
 					$library.val(library);
 
 					$params.val(JSON.stringify(params));
@@ -91,7 +91,7 @@
 		if (parameters !== undefined) {
 			for (var property in parameters) {
 				if (parameters.hasOwnProperty(property)) {
-					url += '&' + property + '=' + parameters[property];
+					url += "&" + property + "=" + parameters[property];
 				}
 			}
 		}

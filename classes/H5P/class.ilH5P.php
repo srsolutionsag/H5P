@@ -23,9 +23,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/ActiveRecord/class.ilH5PTmpFile.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PActionGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PHUB.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowContent.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PEditor.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowEditor.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5PShowHUB.php";
 
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilH5PPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5P.php";
@@ -62,49 +62,57 @@ class ilH5P {
 	 */
 	const CSV_SEPARATOR = ", ";
 	/**
+	 * @var ilH5PActionGUI
+	 */
+	protected $action = NULL;
+	/**
 	 * @var H5PContentValidator
 	 */
-	protected $h5p_content_validator = NULL;
+	protected $content_validator = NULL;
 	/**
 	 * @var H5PCore
 	 */
-	protected $h5p_core = NULL;
+	protected $core = NULL;
 	/**
 	 * @var H5peditor
 	 */
-	protected $h5p_editor = NULL;
+	protected $editor = NULL;
 	/**
 	 * @var ilH5PEditorAjax
 	 */
-	protected $h5p_editor_ajax = NULL;
+	protected $editor_ajax = NULL;
 	/**
 	 * @var ilH5PEditorStorage
 	 */
-	protected $h5p_editor_storage = NULL;
+	protected $editor_storage = NULL;
 	/**
 	 * @var H5PFileStorage
 	 */
-	protected $h5p_filesystem = NULL;
+	protected $filesystem = NULL;
 	/**
 	 * @var ilH5PFramework
 	 */
-	protected $h5p_framework = NULL;
+	protected $framework = NULL;
+	/**
+	 * @var ilH5PShowContent
+	 */
+	protected $show_content;
+	/**
+	 * @var ilH5PShowEditor
+	 */
+	protected $show_editor;
+	/**
+	 * @var ilH5PShowHUB
+	 */
+	protected $show_hub;
 	/**
 	 * @var H5PStorage
 	 */
-	protected $h5p_storage = NULL;
+	protected $storage = NULL;
 	/**
 	 * @var H5PValidator
 	 */
-	protected $h5p_validator = NULL;
-	/**
-	 * @var array
-	 */
-	public $h5p_scripts = [];
-	/**
-	 * @var array
-	 */
-	public $h5p_styles = [];
+	protected $validator = NULL;
 	/**
 	 * @var ilH5PPlugin
 	 */
@@ -351,11 +359,23 @@ class ilH5P {
 	 * @return H5PContentValidator
 	 */
 	function content_validator() {
-		if ($this->h5p_content_validator === NULL) {
-			$this->h5p_content_validator = new H5PContentValidator($this->framework(), $this->core());
+		if ($this->content_validator === NULL) {
+			$this->content_validator = new H5PContentValidator($this->framework(), $this->core());
 		}
 
-		return $this->h5p_content_validator;
+		return $this->content_validator;
+	}
+
+
+	/**
+	 * @return ilH5PActionGUI
+	 */
+	function action() {
+		if ($this->action === NULL) {
+			$this->action = new ilH5PActionGUI();
+		}
+
+		return $this->action;
 	}
 
 
@@ -363,11 +383,11 @@ class ilH5P {
 	 * @return H5PCore
 	 */
 	function core() {
-		if ($this->h5p_core === NULL) {
-			$this->h5p_core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), $this->getLanguage(), false);
+		if ($this->core === NULL) {
+			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), $this->getLanguage(), false);
 		}
 
-		return $this->h5p_core;
+		return $this->core;
 	}
 
 
@@ -375,11 +395,11 @@ class ilH5P {
 	 * @return H5peditor
 	 */
 	function editor() {
-		if ($this->h5p_editor === NULL) {
-			$this->h5p_editor = new H5peditor($this->core(), $this->editor_storage(), $this->editor_ajax());
+		if ($this->editor === NULL) {
+			$this->editor = new H5peditor($this->core(), $this->editor_storage(), $this->editor_ajax());
 		}
 
-		return $this->h5p_editor;
+		return $this->editor;
 	}
 
 
@@ -387,11 +407,11 @@ class ilH5P {
 	 * @return ilH5PEditorAjax
 	 */
 	function editor_ajax() {
-		if ($this->h5p_editor_ajax === NULL) {
-			$this->h5p_editor_ajax = new ilH5PEditorAjax($this);
+		if ($this->editor_ajax === NULL) {
+			$this->editor_ajax = new ilH5PEditorAjax($this);
 		}
 
-		return $this->h5p_editor_ajax;
+		return $this->editor_ajax;
 	}
 
 
@@ -399,11 +419,11 @@ class ilH5P {
 	 * @return ilH5PEditorStorage
 	 */
 	function editor_storage() {
-		if ($this->h5p_editor_storage === NULL) {
-			$this->h5p_editor_storage = new ilH5PEditorStorage($this);
+		if ($this->editor_storage === NULL) {
+			$this->editor_storage = new ilH5PEditorStorage($this);
 		}
 
-		return $this->h5p_editor_storage;
+		return $this->editor_storage;
 	}
 
 
@@ -411,11 +431,11 @@ class ilH5P {
 	 * @return H5PFileStorage
 	 */
 	function filesystem() {
-		if ($this->h5p_filesystem === NULL) {
-			$this->h5p_filesystem = $this->core()->fs;
+		if ($this->filesystem === NULL) {
+			$this->filesystem = $this->core()->fs;
 		}
 
-		return $this->h5p_filesystem;
+		return $this->filesystem;
 	}
 
 
@@ -423,11 +443,47 @@ class ilH5P {
 	 * @return ilH5PFramework
 	 */
 	function framework() {
-		if ($this->h5p_framework === NULL) {
-			$this->h5p_framework = new ilH5PFramework($this);
+		if ($this->framework === NULL) {
+			$this->framework = new ilH5PFramework($this);
 		}
 
-		return $this->h5p_framework;
+		return $this->framework;
+	}
+
+
+	/**
+	 * @return ilH5PShowContent
+	 */
+	function show_content() {
+		if ($this->show_content === NULL) {
+			$this->show_content = new ilH5PShowContent();
+		}
+
+		return $this->show_content;
+	}
+
+
+	/**
+	 * @return ilH5PShowEditor
+	 */
+	function show_editor() {
+		if ($this->show_editor === NULL) {
+			$this->show_editor = new ilH5PShowEditor();
+		}
+
+		return $this->show_editor;
+	}
+
+
+	/**
+	 * @return ilH5PShowHUB
+	 */
+	function show_hub() {
+		if ($this->show_hub === NULL) {
+			$this->show_hub = new ilH5PShowHUB();
+		}
+
+		return $this->show_hub;
 	}
 
 
@@ -435,11 +491,11 @@ class ilH5P {
 	 * @return H5PStorage
 	 */
 	function storage() {
-		if ($this->h5p_storage === NULL) {
-			$this->h5p_storage = new H5PStorage($this->framework(), $this->core());
+		if ($this->storage === NULL) {
+			$this->storage = new H5PStorage($this->framework(), $this->core());
 		}
 
-		return $this->h5p_storage;
+		return $this->storage;
 	}
 
 
@@ -447,11 +503,11 @@ class ilH5P {
 	 * @return H5PValidator
 	 */
 	function validator() {
-		if ($this->h5p_validator === NULL) {
-			$this->h5p_validator = new H5PValidator($this->framework(), $this->core());
+		if ($this->validator === NULL) {
+			$this->validator = new H5PValidator($this->framework(), $this->core());
 		}
 
-		return $this->h5p_validator;
+		return $this->validator;
 	}
 
 

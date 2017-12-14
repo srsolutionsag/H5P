@@ -261,7 +261,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getEditorForm() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$form = ilH5PEditor::getInstance()->getEditorForm($h5p_content);
+		$form = $this->h5p->show_editor()->getEditorForm($h5p_content);
 
 		if ($h5p_content !== NULL) {
 			$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
@@ -305,7 +305,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		ilH5PEditor::getInstance()->createContent($form);
+		$this->h5p->show_editor()->createContent($form);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -341,7 +341,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		ilH5PEditor::getInstance()->updateContent($h5p_content, $form);
+		$this->h5p->show_editor()->updateContent($h5p_content, $form);
 
 		$this->ctrl->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -404,7 +404,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		if ($h5p_content !== NULL) {
 			// Content without results available
-			$this->h5p->h5p_scripts[] = $this->plugin->getDirectory() . "/js/H5PContent.js";
+			$this->h5p->show_content()->addH5pScript($this->plugin->getDirectory() . "/js/H5PContent.js");
 
 			$next_content = ilLinkButton::getInstance();
 			if ($index < ($count - 1)) {
@@ -417,7 +417,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$next_content->setId("xhfp_next_content_bottom"); // Set id for bottom toolbar
 			$this->toolbar->addButtonInstance($next_content);
 
-			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>" . ilH5PShowContent::getInstance()
+			$this->show(sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . "<br>" . $this->h5p->show_content()
 					->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
 
 			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
@@ -450,7 +450,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}
 
-		$this->show(ilH5PShowContent::getInstance()->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
+		$this->show($this->h5p->show_content()->getH5PContentIntegration($h5p_content) . "<br>" . $this->toolbar->getHTML());
 	}
 
 

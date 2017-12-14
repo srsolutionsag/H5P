@@ -4,27 +4,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 
 /**
- * H5P HUB
+ * H5P show HUB
  */
-class ilH5PHUB {
-
-	/**
-	 * @var ilH5PHUB
-	 */
-	protected static $instance = NULL;
-
-
-	/**
-	 * @return ilH5PHUB
-	 */
-	static function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
+class ilH5PShowHUB {
 
 	/**
 	 * @var ilH5P
@@ -40,7 +22,7 @@ class ilH5PHUB {
 	protected $toolbar;
 
 
-	protected function __construct() {
+	function __construct() {
 		global $DIC;
 
 		$this->h5p = ilH5P::getInstance();
@@ -61,19 +43,38 @@ class ilH5PHUB {
 		$hub_last_refresh = $this->h5p->getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		$h5p_editor = ilH5PEditor::getInstance();
-
-		$h5p_integration = $h5p_editor->getEditor();
-		$h5p_integration["hubIsEnabled"] = true;
-		$h5p_integration["ajax"] = [
+		$hub = $this->h5p->show_editor()->getEditor();
+		$hub["hubIsEnabled"] = true;
+		$hub["ajax"] = [
 			"setFinished" => "",
 			"contentUserData" => ""
 		];
 
-		$this->h5p->h5p_scripts[] = $this->pl->getDirectory() . "/js/H5PHub.js";
+		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PHub.js");
 
-		return '<div class="help-block">' . sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh) . '</div>'
-			. $h5p_editor->getH5PIntegration($h5p_integration);
+		return $this->getH5PIntegration($this->h5p->show_editor()
+			->getH5PIntegration($hub), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh));
+	}
+
+
+	/**
+	 * @param string $hub
+	 * @param string $last_refresh
+	 *
+	 * @return string
+	 */
+	protected function getH5PIntegration($hub, $last_refresh) {
+		$h5p_tpl = $this->pl->getTemplate("H5PHUB.html");
+
+		$h5p_tpl->setVariable("H5P_HUB", $hub);
+
+		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", $last_refresh);
+
+		$this->h5p->show_content()->outputH5pStyles($h5p_tpl);
+
+		$this->h5p->show_content()->outputH5pScripts($h5p_tpl);
+
+		return $h5p_tpl->get();
 	}
 
 

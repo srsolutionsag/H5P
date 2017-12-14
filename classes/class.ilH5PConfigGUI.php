@@ -228,9 +228,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function hub() {
 		$this->tabs->activateTab(self::TAB_HUB);
 
-		$hub_integration = ilH5PHUB::getInstance()->getH5PHubIntegration();
+		$hub = $this->h5p->show_hub()->getH5PHubIntegration();
 
-		$this->show($hub_integration);
+		$this->show($hub);
 	}
 
 
