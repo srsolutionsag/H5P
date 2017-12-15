@@ -21,7 +21,7 @@ Please add the follow line to file `/etc/cron.d/ilias` on your server.
 */1 * * * * www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client > /dev/null
 ```
 
-Username, password and client need to be customized.
+ILIAS username, password and client need to be customized.
 
 ## Contact
 studer + raimann ag  

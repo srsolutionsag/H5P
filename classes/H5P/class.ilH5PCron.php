@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * H5P cronjob
  */
 class ilH5PCron {
 
