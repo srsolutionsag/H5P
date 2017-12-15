@@ -96,7 +96,7 @@ class ilH5PContent extends ActiveRecord {
 
 		// TODO Use ActiveRecord
 
-		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT user_id) AS count
+		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
           FROM " . self::TABLE_NAME, [], []);
 
 		$count = $result->fetchAssoc()["count"];
@@ -243,7 +243,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @con_length       8
 	 * @con_is_notnull   true
 	 */
-	protected $user_id;
+	protected $content_user_id;
 	/**
 	 * @var string
 	 *
@@ -423,7 +423,7 @@ class ilH5PContent extends ActiveRecord {
 
 		$this->created_at = $this->updated_at = time();
 
-		$this->user_id = $DIC->user()->getId();
+		$this->content_user_id = $DIC->user()->getId();
 
 		if ($this->obj_id === NULL) {
 			$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
@@ -506,16 +506,16 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	public function getUserId() {
-		return $this->user_id;
+	public function getContentUserId() {
+		return $this->content_user_id;
 	}
 
 
 	/**
-	 * @param int $user_id
+	 * @param int $content_user_id
 	 */
-	public function setUserId($user_id) {
-		$this->user_id = $user_id;
+	public function setContentUserId($content_user_id) {
+		$this->content_user_id = $content_user_id;
 	}
 
 

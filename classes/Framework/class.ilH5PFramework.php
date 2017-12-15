@@ -1109,7 +1109,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"params" => $h5p_content->getParameters(),
 				"filtered" => $h5p_content->getFiltered(),
 				"slug" => $h5p_content->getSlug(),
-				"user_id" => $h5p_content->getUserId(),
+				"user_id" => $h5p_content->getContentUserId(),
 				"embedType" => $h5p_content->getEmbedType(),
 				"disable" => $h5p_content->getDisable(),
 				"language" => $this->usr->getLanguage(),
