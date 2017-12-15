@@ -181,8 +181,6 @@ class ilH5PEditorStorage implements H5peditorStorage {
 		}
 		$path .= $file->getType() . "s/" . $file->getName();
 
-		// TODO wrong path on reupload
-
 		$h5p_tmp_file = new ilH5PTmpFile();
 
 		$h5p_tmp_file->setPath($path);

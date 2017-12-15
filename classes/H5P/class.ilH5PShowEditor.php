@@ -70,7 +70,7 @@ class ilH5PShowEditor {
 				"height" => 50
 			],
 			"ajaxPath" => ilH5PActionGUI::getUrl("") . "&" . ilH5PActionGUI::CMD_H5P_ACTION . "=",
-			"libraryUrl" => $editor_path,
+			"libraryUrl" => $editor_path . "/",
 			"copyrightSemantics" => $this->h5p->content_validator()->getCopyrightSemantics(),
 			"assets" => $assets,
 			"apiVersion" => H5PCore::$coreApi
@@ -194,7 +194,7 @@ class ilH5PShowEditor {
 		];
 
 		$content["id"] = $this->h5p->core()->saveContent($content);
-		$content["params"] = $this->h5p->core()->filterParameters($content);
+		//$content["params"] = $this->h5p->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
@@ -221,7 +221,7 @@ class ilH5PShowEditor {
 		$content["params"] = $params;
 
 		$this->h5p->core()->saveContent($content);
-		$content["params"] = $this->h5p->core()->filterParameters($content);
+		//$content["params"] = $this->h5p->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
