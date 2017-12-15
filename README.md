@@ -15,10 +15,16 @@ This files should be cleaned up from time to time.
 
 We recommend you to use an unix cronjob.
 
-Please add the follow line to file `/etc/cron.d/ilias` on your server.
+Please add the follow line to file `/etc/cron.d/ilias` on your server
 
 ```
 */1 * * * * www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client > /dev/null
+```
+
+or run it manually
+
+```
+sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client
 ```
 
 ILIAS username, password and client need to be customized.
