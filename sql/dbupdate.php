@@ -28,5 +28,7 @@
 
 	ilH5PResult::updateDB();
 
+	ilH5PSolveStatus::updateDB();
+
 	ilH5PTmpFile::updateDB();
 ?>

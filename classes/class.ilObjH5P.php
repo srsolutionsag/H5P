@@ -78,6 +78,11 @@ class ilObjH5P extends ilObjectPlugin {
 			$this->h5p->show_editor()->deleteContent($h5p_content);
 		}
 		unset($_SESSION["success"]); // Delete message
+
+		$h5p_solve_statuses = ilH5PSolveStatus::getByObject($this->id);
+		foreach ($h5p_solve_statuses as $h5p_solve_status) {
+			$h5p_solve_status->delete();
+		}
 	}
 
 
@@ -124,5 +129,21 @@ class ilObjH5P extends ilObjectPlugin {
 	 */
 	public function setOnline($is_online = true) {
 		$this->h5p_object->setOnline($is_online);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isSolveOnlyOnce() {
+		return $this->h5p_object->isSolveOnlyOnce();
+	}
+
+
+	/**
+	 * @param bool $solve_only_once
+	 */
+	public function setSolveOnlyOnce($solve_only_once) {
+		$this->h5p_object->setSolveOnlyOnce($solve_only_once);
 	}
 }

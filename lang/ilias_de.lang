@@ -26,6 +26,7 @@ xhfp_content_count#:#Inhalt %1$d von %2$d
 xhfp_content_types#:#Inhaltstypen
 xhfp_contents#:#Inhalte
 xhfp_delete#:#Löschen
+xhfp_delete_content#:#Inhalt löschen
 xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 xhfp_deleted_content#:#Inhalt %s gelöscht
 xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
@@ -45,6 +46,7 @@ xhfp_embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
 xhfp_finish#:#Beenden
+xhfp_finished#:#Beendet
 xhfp_fullscreen#:#Vollbild
 xhfp_hide_advanced#:#Details ausblenden
 xhfp_hub#:#HUB
@@ -63,6 +65,7 @@ xhfp_offline#:#Offline
 xhfp_online#:#Online
 xhfp_only_not_used#:#Nur nicht benutzte
 xhfp_only_runnable#:#Nur startbare
+xhfp_previous_content#:#Vorheriger Inhalt
 xhfp_read#:#Lesen
 xhfp_results#:#Resultate
 xhfp_rights_of_use#:#Nutzungsrechte
@@ -79,7 +82,10 @@ xhfp_show_contents#:#Inhalte anzeigen
 xhfp_show_less#:#Weniger anzeigen
 xhfp_show_more#:#Mehr anzeigen
 xhfp_size#:#Grösse
+xhfp_solve_contents_only_once#:#Inhalte nur einmal lösen
+xhfp_solve_contents_only_once_note#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden!
 xhfp_solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
+xhfp_solved_content#:#Sie haben diesen Inhalt bereits gelöst.
 xhfp_source#:#Quelle
 xhfp_start_over#:#Sie fangen von vorne an.
 xhfp_status#:#Status

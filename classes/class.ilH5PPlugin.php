@@ -106,6 +106,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 		$this->db->dropTable(ilH5PResult::TABLE_NAME, false);
 
+		$this->db->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
+
 		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
 
 		return true;

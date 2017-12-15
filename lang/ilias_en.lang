@@ -26,6 +26,7 @@ xhfp_content_count#:#Content %1$d of %2$d
 xhfp_content_types#:#Content Types
 xhfp_contents#:#Contents
 xhfp_delete#:#Delete
+xhfp_delete_content#:#Delete content
 xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
 xhfp_deleted_content#:#Content %s deleted
 xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
@@ -45,6 +46,7 @@ xhfp_embed_include_script#:#Include this script on your website if you want dyna
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 xhfp_finish#:#Finish
+xhfp_finished#:#Finished
 xhfp_fullscreen#:#Fullscreen
 xhfp_hide_advanced#:#Hide advanced
 xhfp_hub#:#HUB
@@ -63,6 +65,7 @@ xhfp_offline#:#Offline
 xhfp_online#:#Online
 xhfp_only_not_used#:#Only not used
 xhfp_only_runnable#:#Only runnable
+xhfp_previous_content#:#Previous content
 xhfp_read#:#Read
 xhfp_results#:#Results
 xhfp_rights_of_use#:#Rights of use
@@ -79,7 +82,10 @@ xhfp_show_contents#:#Show contents
 xhfp_show_less#:#Show less
 xhfp_show_more#:#Show more
 xhfp_size#:#Size
+xhfp_solve_contents_only_once#:#Solve contents only once
+xhfp_solve_contents_only_once_note#:#Note: For some contents may it is necessary the turn off the solution / retry button!
 xhfp_solved_all_contents#:#You have already solved all contents.
+xhfp_solved_content#:#You have already solved this content.
 xhfp_source#:#Source
 xhfp_start_over#:#You'll be starting over.
 xhfp_status#:#Status

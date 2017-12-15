@@ -65,7 +65,7 @@ class ilH5POption extends ActiveRecord {
 
 			$h5p_option->update();
 		} else {
-			$h5p_option = new ilH5POption();
+			$h5p_option = new self();
 
 			$h5p_option->setName($name);
 

@@ -40,6 +40,10 @@ class ilH5PShowContent {
 	 */
 	protected $pl;
 	/**
+	 * @var ilToolbarGUI
+	 */
+	protected $toolbar;
+	/**
 	 * @var ilObjUser
 	 */
 	protected $usr;
@@ -51,6 +55,7 @@ class ilH5PShowContent {
 		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->toolbar = $DIC->toolbar();
 		$this->usr = $DIC->user();
 	}
 
@@ -182,40 +187,47 @@ class ilH5PShowContent {
 
 	/**
 	 * @param ilH5PContent $h5p_content
-	 * @param string       $count
+	 * @param int          $index
+	 * @param int          $count
+	 * @param string|null  $text
 	 *
 	 * @return string
 	 */
-	function getH5PContentsIntegration(ilH5PContent $h5p_content, $count) {
+	function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PContents.html");
 
-		$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content));
+		if ($text === NULL) {
+			$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content, false));
+		} else {
+			$h5p_tpl->setVariable("H5P_CONTENT", $text);
+		}
 
-		$h5p_tpl->setVariable("CONTENTS_COUNT", $count);
+		$h5p_tpl->setVariable("H5P_TITLE", $count_text = sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . " - "
+			. $h5p_content->getTitle());
 
 		$this->outputH5pStyles($h5p_tpl);
 
 		$this->outputH5pScripts($h5p_tpl);
 
-		return $h5p_tpl->get();
+		return $h5p_tpl->get() . $this->toolbar->getHTML();
 	}
 
 
 	/**
 	 * @param ilH5PContent $h5p_content
+	 * @param bool         $title
 	 *
 	 * @return string
 	 */
-	function getH5PContentIntegration(ilH5PContent $h5p_content) {
+	function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
 		$output = $this->getCoreIntegration();
 
 		$content = $this->getContent($h5p_content);
 
-		$title = $h5p_content->getTitle();
-
-		$h5p_library = ilH5PLibrary::getLibraryById($h5p_content->getLibraryId());
-		if ($h5p_library !== NULL) {
-			$title .= " - " . $h5p_library->getTitle();
+		if ($title) {
+			$title = $h5p_content->getTitle();
+		} else {
+			$title = NULL;
 		}
 
 		$output .= $this->getH5PIntegration($content, $h5p_content->getContentId(), $title);
@@ -308,9 +320,9 @@ class ilH5PShowContent {
 
 
 	/**
-	 * @param array  $content
-	 * @param int    $content_id
-	 * @param string $title
+	 * @param array       $content
+	 * @param int         $content_id
+	 * @param string|null $title
 	 *
 	 * @return string
 	 */
@@ -321,7 +333,11 @@ class ilH5PShowContent {
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
-		$h5p_tpl->setVariable("H5P_TITLE", $title);
+		if ($title !== NULL) {
+			$h5p_tpl->setCurrentBlock("titleBlock");
+
+			$h5p_tpl->setVariable("H5P_TITLE", $title);
+		}
 
 		$this->outputH5pStyles($h5p_tpl);
 

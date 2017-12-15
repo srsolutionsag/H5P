@@ -121,7 +121,8 @@ class ilH5PContent extends ActiveRecord {
 			"parent_type" => $parent_type
 		])->orderBy("sort", "asc")->get();
 
-		return $h5p_contents;
+		// Fix index with array_values
+		return array_values($h5p_contents);
 	}
 
 

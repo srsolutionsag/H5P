@@ -55,6 +55,15 @@ class ilH5PObject extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $is_online = false;
+	/**
+	 * @var bool
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    integer
+	 * @con_length       1
+	 * @con_is_notnull   true
+	 */
+	protected $solve_only_once = false;
 
 
 	/**
@@ -67,6 +76,7 @@ class ilH5PObject extends ActiveRecord {
 
 		switch ($field_name) {
 			case "is_online":
+			case "solve_only_once":
 				return ($field_value ? 1 : 0);
 				break;
 
@@ -85,6 +95,7 @@ class ilH5PObject extends ActiveRecord {
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
 			case "is_online":
+			case "solve_only_once":
 				return boolval($field_value);
 				break;
 
@@ -123,5 +134,21 @@ class ilH5PObject extends ActiveRecord {
 	 */
 	public function setOnline($is_online = true) {
 		$this->is_online = $is_online;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isSolveOnlyOnce() {
+		return $this->solve_only_once;
+	}
+
+
+	/**
+	 * @param bool $solve_only_once
+	 */
+	public function setSolveOnlyOnce($solve_only_once) {
+		$this->solve_only_once = $solve_only_once;
 	}
 }

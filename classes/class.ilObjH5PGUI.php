@@ -32,10 +32,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_DELETE_RESULTS = "deleteResults";
 	const CMD_DELETE_RESULTS_CONFIRM = "deleteResultsConfirm";
 	const CMD_EDIT_CONTENT = "editContent";
+	const CMD_FINISH_CONTENTS = "finishContents";
 	const CMD_MANAGE_CONTENTS = "manageContents";
 	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
 	const CMD_MOVE_CONTENT_UP = "moveContentUp";
+	const CMD_NEXT_CONTENT = "nextContent";
 	const CMD_PERMISSIONS = "perm";
+	const CMD_PREVIOUS_CONTENT = "previousContent";
 	const CMD_RESULTS = "results";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
@@ -98,6 +101,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		switch ($next_class) {
 			default:
 				switch ($cmd) {
+					case self::CMD_FINISH_CONTENTS:
+					case self::CMD_NEXT_CONTENT:
+					case self::CMD_PREVIOUS_CONTENT:
 					case self::CMD_SHOW_CONTENTS:
 						// Read commands
 						if (!ilObjH5PAccess::hasReadAccess()) {
@@ -388,55 +394,147 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function showContents() {
 		$this->tabs_gui->activateTab(self::TAB_SHOW_CONTENTS);
 
-		$user_id = $this->usr->getId();
+		$h5p_contents = ilH5PContent::getContentsByObject($this->obj_id);
 
-		$h5p_contents = array_values(ilH5PContent::getContentsByObject($this->obj_id));
-
-		$index = - 1;
 		$count = count($h5p_contents);
 
-		// Look after a content without result
-		$h5p_content = NULL;
-		foreach ($h5p_contents as $h5p_content) {
-			/**
-			 * @var ilH5PContent $h5p_content
-			 */
-
-			$h5p_result = ilH5PResult::getResultByUser($user_id, $h5p_content->getContentId());
-
-			if ($h5p_result === NULL) {
-				// Content has no results
-				$index = array_search($h5p_content, $h5p_contents);
-				break;
-			}
-
-			// Content has results
-			$h5p_content = NULL;
-		}
-
-		if ($h5p_content !== NULL) {
-			// Content without results available
-			$this->h5p->show_content()->addH5pScript($this->plugin->getDirectory() . "/js/H5PContents.js");
-
-			$next_content = ilLinkButton::getInstance();
-			if ($index < ($count - 1)) {
-				$next_content->setCaption($this->txt("xhfp_next_content"), false);
-			} else {
-				$next_content->setCaption($this->txt("xhfp_finish"), false);
-			}
-			$next_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
-			$next_content->setDisabled(true);
-			$next_content->setId("xhfp_next_content_bottom"); // Set id for bottom toolbar
-			$this->toolbar->addButtonInstance($next_content);
-
-			$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, sprintf($this->txt("xhfp_content_count"), ($index
-					+ 1), $count)) . $this->toolbar->getHTML());
-
-			$next_content->setId("xhfp_next_content_top"); // Set id for top toolbar (Main Template)
-		} else {
-			// No content without results available
+		if (ilH5PSolveStatus::isUserFinished($this->obj_id, $this->usr->getId()) || $count === 0) {
 			$this->show($this->txt("xhfp_solved_all_contents"));
+
+			return;
 		}
+
+		$h5p_content = ilH5PSolveStatus::getContentByUser($this->obj_id, $this->usr->getId());
+		if ($h5p_content === NULL) {
+			// Take first content
+			$h5p_content = $h5p_contents[0];
+		}
+
+		$index = array_search($h5p_content, $h5p_contents);
+
+		if ($index > 0) {
+			$previous_content = ilLinkButton::getInstance();
+			$previous_content->setCaption($this->txt("xhfp_previous_content"), false);
+			$previous_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_PREVIOUS_CONTENT));
+			$this->toolbar->addButtonInstance($previous_content);
+		}
+
+		if ($index < ($count - 1)) {
+			$next_content = ilLinkButton::getInstance();
+			$next_content->setCaption($this->txt("xhfp_next_content"), false);
+			$next_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_NEXT_CONTENT));
+			$this->toolbar->addButtonInstance($next_content);
+		}
+
+		if ($this->object->isSolveOnlyOnce()) {
+			if ($index === ($count - 1)) {
+				$finish_contents = ilLinkButton::getInstance();
+				$finish_contents->setCaption($this->txt("xhfp_finish"), false);
+				$finish_contents->setUrl($this->ctrl->getLinkTarget($this, self::CMD_FINISH_CONTENTS));
+				$this->toolbar->addButtonInstance($finish_contents);
+			}
+
+			$h5p_result = ilH5PResult::getResultByUser($this->usr->getId(), $h5p_content->getContentId());
+			if ($h5p_result !== NULL) {
+				$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, $this->txt("xhfp_solved_content")));
+
+				return;
+			}
+		}
+
+		/*if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
+			$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+
+			$this->toolbar->addSeparator();
+
+			$edit_content = ilLinkButton::getInstance();
+			$edit_content->setCaption($this->txt("xhfp_edit_content"), false);
+			$edit_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_EDIT_CONTENT));
+			$this->toolbar->addButtonInstance($edit_content);
+
+			$delete_content = ilLinkButton::getInstance();
+			$delete_content->setCaption($this->txt("xhfp_delete_content"), false);
+			$delete_content->setUrl($this->ctrl->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
+			$this->toolbar->addButtonInstance($delete_content);
+		}*/
+
+		$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function previousContent() {
+		if (ilH5PSolveStatus::isUserFinished($this->obj_id, $this->usr->getId())) {
+			return;
+		}
+
+		$h5p_contents = ilH5PContent::getContentsByObject($this->obj_id);
+
+		$h5p_content = ilH5PSolveStatus::getContentByUser($this->obj_id, $this->usr->getId());
+
+		if ($h5p_content === NULL) {
+			// Take first content
+			$h5p_content = $h5p_contents[0];
+		}
+
+		$index = array_search($h5p_content, $h5p_contents);
+
+		$index --;
+
+		if (isset($h5p_contents[$index])) {
+			$h5p_content = $h5p_contents[$index];
+
+			ilH5PSolveStatus::setContentByUser($this->obj_id, $this->usr->getId(), $h5p_content->getContentId());
+		}
+
+		$this->ctrl->redirect($this, self::CMD_SHOW_CONTENTS);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function nextContent() {
+		if (ilH5PSolveStatus::isUserFinished($this->obj_id, $this->usr->getId())) {
+			return;
+		}
+
+		$h5p_contents = ilH5PContent::getContentsByObject($this->obj_id);
+
+		$h5p_content = ilH5PSolveStatus::getContentByUser($this->obj_id, $this->usr->getId());
+
+		if ($h5p_content === NULL) {
+			// Take first content
+			$h5p_content = $h5p_contents[0];
+		}
+
+		$index = array_search($h5p_content, $h5p_contents);
+
+		$index ++;
+
+		if (isset($h5p_contents[$index])) {
+			$h5p_content = $h5p_contents[$index];
+
+			ilH5PSolveStatus::setContentByUser($this->obj_id, $this->usr->getId(), $h5p_content->getContentId());
+		}
+
+		$this->ctrl->redirect($this, self::CMD_SHOW_CONTENTS);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function finishContents() {
+		if (!$this->object->isSolveOnlyOnce() || ilH5PSolveStatus::isUserFinished($this->obj_id, $this->usr->getId())) {
+			return;
+		}
+
+		ilH5PSolveStatus::setUserFinished($this->obj_id, $this->usr->getId());
+
+		$this->ctrl->redirect($this, self::CMD_SHOW_CONTENTS);
 	}
 
 
@@ -487,6 +585,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$h5p_result->delete();
 		}
 
+		$h5p_solve_status = ilH5PSolveStatus::getByUser($this->obj_id, $this->usr->getId());
+		if ($h5p_solve_status !== NULL) {
+			$h5p_solve_status->delete();
+		}
+
 		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user->getFullname()), true);
 
 		$this->ctrl->redirect($this, self::CMD_RESULTS);
@@ -518,6 +621,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$online = new ilCheckboxInputGUI($this->txt("xhfp_online"), "xhfp_online");
 		$online->setChecked($this->object->isOnline());
 		$form->addItem($online);
+
+		if (!$this->hasResults()) {
+			$solve_only_once = new ilCheckboxInputGUI($this->txt("xhfp_solve_contents_only_once"), "xhfp_solve_only_once");
+			$solve_only_once->setInfo($this->txt("xhfp_solve_contents_only_once_note"));
+			$solve_only_once->setChecked($this->object->isSolveOnlyOnce());
+			$form->addItem($solve_only_once);
+		}
 
 		return $form;
 	}
@@ -559,6 +669,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$online = boolval($form->getInput("xhfp_online"));
 		$this->object->setOnline($online);
+
+		if (!$this->hasResults()) {
+			$solve_only_once = boolval($form->getInput("xhfp_solve_only_once"));
+			$this->object->setSolveOnlyOnce($solve_only_once);
+		}
 
 		$this->object->update();
 

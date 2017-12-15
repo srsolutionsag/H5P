@@ -75,7 +75,8 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 			if (!isset($this->results[$user_id])) {
 				$this->results[$user_id] = [
-					"user_id" => $user_id
+					"user_id" => $user_id,
+					"finished" => ilH5PSolveStatus::isUserFinished($this->obj_id, $user_id)
 				];
 			}
 
@@ -94,6 +95,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 			$this->addColumn($h5p_content->getTitle());
 		}
 
+		$this->addColumn($this->txt("xhfp_finished"));
 		$this->addColumn($this->txt("xhfp_actions"));
 	}
 
@@ -136,6 +138,8 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 		if (ilObjH5PAccess::hasWriteAccess()) {
 			$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
+
+		$this->tpl->setVariable("FINISHED", $this->txt($result["finished"] ? "xhfp_yes" : "xhfp_no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

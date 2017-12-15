@@ -149,6 +149,8 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 *  if saving succeeded
 	 */
 	public static function saveFileTemporarily($data, $move_file) {
+		// TODO Cronjob which delete temp files
+
 		$path = ilH5P::getInstance()->framework()->getUploadedH5pPath();
 
 		if ($move_file) {
