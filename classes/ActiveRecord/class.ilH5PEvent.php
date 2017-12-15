@@ -45,6 +45,24 @@ class ilH5PEvent extends ActiveRecord {
 
 
 	/**
+	 * @param int $older_than
+	 *
+	 * @return ilH5PEvent[]
+	 */
+	static function getOldEvents($older_than) {
+		/**
+		 * @var ilH5PEvent[] $h5p_events
+		 */
+
+		$h5p_events = self::where([
+			"created_at" => $older_than
+		], "<")->get();
+
+		return $h5p_events;
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true

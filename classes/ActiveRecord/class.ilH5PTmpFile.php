@@ -37,6 +37,24 @@ class ilH5PTmpFile extends ActiveRecord {
 
 
 	/**
+	 * @param int $older_than
+	 *
+	 * @return ilH5PTmpFile[]
+	 */
+	static function getOldTmpFiles($older_than) {
+		/**
+		 * @var ilH5PTmpFile[] $h5p_tmp_files
+		 */
+
+		$h5p_tmp_files = self::where([
+			"created_at" => $older_than
+		], "<")->get();
+
+		return $h5p_tmp_files;
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true
