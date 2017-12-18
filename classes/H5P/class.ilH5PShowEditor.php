@@ -171,10 +171,11 @@ class ilH5PShowEditor {
 
 	/**
 	 * @param ilPropertyFormGUI $form
+	 * @param bool              $message
 	 *
 	 * @return ilH5PContent
 	 */
-	function createContent(ilPropertyFormGUI $form) {
+	function createContent(ilPropertyFormGUI $form, $message = true) {
 		$title = $form->getInput("xhfp_title");
 		$library = $form->getInput("xhfp_library");
 		$params = $form->getInput("xhfp_params");
@@ -201,7 +202,9 @@ class ilH5PShowEditor {
 
 		$h5p_content = ilH5PContent::getContentById($content["id"]);
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+		if ($message) {
+			ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+		}
 
 		return $h5p_content;
 	}
@@ -209,8 +212,9 @@ class ilH5PShowEditor {
 
 	/**
 	 * @param ilH5PContent $h5p_content
+	 * @param bool         $message
 	 */
-	function updateContent(ilH5PContent $h5p_content, ilPropertyFormGUI $form) {
+	function updateContent(ilH5PContent $h5p_content, ilPropertyFormGUI $form, $message = true) {
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
 		$title = $form->getInput("xhfp_title");
@@ -226,20 +230,25 @@ class ilH5PShowEditor {
 		$params = json_decode($content["params"]);
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+		if ($message) {
+			ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+		}
 	}
 
 
 	/**
 	 * @param ilH5PContent $h5p_content
+	 * @param bool         $message
 	 */
-	function deleteContent(ilH5PContent $h5p_content) {
+	function deleteContent(ilH5PContent $h5p_content, $message = true) {
 		$this->h5p->storage()->deletePackage([
 			"id" => $h5p_content->getContentId(),
 			"slug" => $h5p_content->getSlug()
 		]);
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
+		if ($message) {
+			ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
+		}
 	}
 
 

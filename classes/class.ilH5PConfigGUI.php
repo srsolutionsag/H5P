@@ -288,8 +288,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$this->h5p->show_hub()->deleteLibrary($h5p_library);
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
-
 		$this->ctrl->redirect($this, self::CMD_MANAGE_LIBRARIES);
 	}
 

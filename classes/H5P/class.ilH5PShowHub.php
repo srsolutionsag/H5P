@@ -93,14 +93,19 @@ class ilH5PShowHub {
 
 	/**
 	 * @param ilH5PLibrary $h5p_library
+	 * @param bool         $message
 	 */
-	function deleteLibrary(ilH5PLibrary $h5p_library) {
+	function deleteLibrary(ilH5PLibrary $h5p_library, $message = true) {
 		$this->h5p->core()->deleteLibrary((object)[
 			"library_id" => $h5p_library->getLibraryId(),
 			"name" => $h5p_library->getName(),
 			"major_version" => $h5p_library->getMajorVersion(),
 			"minor_version" => $h5p_library->getMinorVersion()
 		]);
+
+		if ($message) {
+			ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
+		}
 	}
 
 

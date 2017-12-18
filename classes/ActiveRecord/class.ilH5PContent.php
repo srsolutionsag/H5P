@@ -106,8 +106,8 @@ class ilH5PContent extends ActiveRecord {
 
 
 	/**
-	 * @param int    $obj_id
-	 * @param string $parent_type
+	 * @param int|null $obj_id
+	 * @param string   $parent_type
 	 *
 	 * @return ilH5PContent[]
 	 */
@@ -116,10 +116,14 @@ class ilH5PContent extends ActiveRecord {
 		 * @var ilH5PContent[] $h5p_contents
 		 */
 
-		$h5p_contents = self::where([
-			"obj_id" => $obj_id,
+		$where = [
 			"parent_type" => $parent_type
-		])->orderBy("sort", "asc")->get();
+		];
+		if ($obj_id !== NULL) {
+			$where["obj_id"] = $obj_id;
+		}
+
+		$h5p_contents = self::where($where)->orderBy("sort", "asc")->get();
 
 		// Fix index with array_values
 		return array_values($h5p_contents);

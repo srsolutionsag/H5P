@@ -421,6 +421,8 @@ class ilH5PShowContent {
 					$h5p_content_user_data->setDataId($data_id);
 
 					$new = true;
+				} else {
+					// TODO Prevent update result on object "solve_only_once"?
 				}
 
 				$h5p_content_user_data->setData($data);

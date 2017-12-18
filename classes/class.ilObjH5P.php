@@ -75,9 +75,8 @@ class ilObjH5P extends ilObjectPlugin {
 		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
-			$this->h5p->show_editor()->deleteContent($h5p_content);
+			$this->h5p->show_editor()->deleteContent($h5p_content, false);
 		}
-		unset($_SESSION["success"]); // Delete message
 
 		$h5p_solve_statuses = ilH5PSolveStatus::getByObject($this->id);
 		foreach ($h5p_solve_statuses as $h5p_solve_status) {
