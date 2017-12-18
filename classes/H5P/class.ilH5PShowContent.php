@@ -141,7 +141,7 @@ class ilH5PShowContent {
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
 				"contentUserData" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
-					. "&xhfp_content=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+					. "&content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId",
 			],
 			"saveFreq" => false,
 			"user" => [
@@ -391,7 +391,7 @@ class ilH5PShowContent {
 
 	/**
 	 * @param int         $content_id
-	 * @param int         $data_id
+	 * @param string      $data_id
 	 * @param int         $sub_content_id
 	 * @param string|null $data
 	 * @param bool        $preload

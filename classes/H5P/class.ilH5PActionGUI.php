@@ -204,12 +204,12 @@ class ilH5PActionGUI {
 	 *
 	 */
 	protected function contentsUserData() {
-		$content_id = filter_input(INPUT_GET, "content_id", FILTER_SANITIZE_NUMBER_INT);
-		$data_id = filter_input(INPUT_GET, "data_type", FILTER_SANITIZE_NUMBER_INT);
-		$sub_content_id = filter_input(INPUT_GET, "sub_content_id", FILTER_SANITIZE_NUMBER_INT);
+		$content_id = filter_input(INPUT_GET, "content_id");
+		$data_id = filter_input(INPUT_GET, "data_type");
+		$sub_content_id = filter_input(INPUT_GET, "sub_content_id");
 		$data = filter_input(INPUT_POST, "data");
-		$preload = filter_input(INPUT_POST, "preload", FILTER_SANITIZE_NUMBER_INT);
-		$invalidate = filter_input(INPUT_POST, "invalidate", FILTER_SANITIZE_NUMBER_INT);
+		$preload = filter_input(INPUT_POST, "preload");
+		$invalidate = filter_input(INPUT_POST, "invalidate");
 
 		$data = $this->h5p->show_content()->contentsUserData($content_id, $data_id, $sub_content_id, $data, $preload, $invalidate);
 
