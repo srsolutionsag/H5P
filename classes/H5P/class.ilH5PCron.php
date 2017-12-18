@@ -11,22 +11,13 @@ class ilH5PCron {
 	protected $h5p;
 
 
-	/**
-	 * @param array $data
-	 *
-	 * @throws ilCronException
-	 */
-	function __construct(array $data) {
-		$this->initILIAS($data);
-	}
+	function __construct() { }
 
 
 	/**
 	 * @param array $data
-	 *
-	 * @throws ilCronException
 	 */
-	protected function initILIAS(array $data) {
+	function initILIAS(array $data) {
 		// Set ilias root folder
 		chdir(substr($_SERVER["SCRIPT_FILENAME"], 0, strpos($_SERVER["SCRIPT_FILENAME"], "/Customizing")));
 
