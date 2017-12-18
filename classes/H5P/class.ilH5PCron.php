@@ -6,10 +6,6 @@
 class ilH5PCron {
 
 	/**
-	 * @var ilDB
-	 */
-	protected $db;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
@@ -17,6 +13,8 @@ class ilH5PCron {
 
 	/**
 	 * @param array $data
+	 *
+	 * @throws ilCronException
 	 */
 	function __construct(array $data) {
 		$this->initILIAS($data);
@@ -47,8 +45,6 @@ class ilH5PCron {
 		$ilCronStartup = new ilCronStartUp($data[3], $data[1], $data[2]);
 		$ilCronStartup->initIlias();
 		$ilCronStartup->authenticate();
-
-		$this->db = $DIC->database();
 	}
 
 
@@ -64,7 +60,7 @@ class ilH5PCron {
 
 		$this->deleteOldEvents();
 
-		$this->deleteDeletedPageComponentContents();
+		$this->pageComponentCron();
 	}
 
 
@@ -101,72 +97,18 @@ class ilH5PCron {
 
 
 	/**
-	 * @return bool
-	 */
-	protected function checkPageComponentPlugin() {
-		// H5P page component plugin is installed
-		return file_exists("Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/classes/class.ilH5PPageComponentPlugin.php");
-	}
-
-
-	/**
-	 * @return int[]
-	 */
-	protected function getPageComponentContentsInUse() {
-		require_once "Services/COPage/classes/class.ilPageObjectFactory.php";
-		require_once "Services/COPage/classes/class.ilPCPlugged.php";
-
-		$result = $this->db->query("SELECT page_id, parent_type FROM page_object");
-
-		$page_component_contents_in_use = [];
-		while (($page_component = $result->fetchAssoc()) !== false) {
-			/**
-			 * @var ilPageObject $page_obj
-			 */
-
-			$page_obj = ilPageObjectFactory::getInstance($page_component["parent_type"], $page_component["page_id"]);
-			$page_obj->buildDom();
-			$page_obj->addHierIDs();
-
-			foreach ($page_obj->getHierIds() as $hier_id) {
-				try {
-					/**
-					 * @var ilPageContent $content_obj
-					 */
-
-					$content_obj = $page_obj->getContentObject($hier_id);
-
-					if ($content_obj instanceof ilPCPlugged) {
-						$properties = $content_obj->getProperties();
-
-						if (isset($properties["content_id"])) {
-							$page_component_contents_in_use[] = $properties["content_id"];
-						};
-					}
-				} catch (Exception $ex) {
-				}
-			}
-		}
-
-		return $page_component_contents_in_use;
-	}
-
-
-	/**
 	 *
 	 */
-	protected function deleteDeletedPageComponentContents() {
-		if (!$this->checkPageComponentPlugin()) {
-			return;
-		}
+	protected function pageComponentCron() {
+		$h5p_page_component_cron_file = "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/classes/class.ilH5PPageComponentCron.php";
 
-		$h5p_contents = ilH5PContent::getContentsByObject(NULL, "page");
-		$page_component_contents_in_use = $this->getPageComponentContentsInUse();
+		// H5P page component plugin is installed
+		if (file_exists($h5p_page_component_cron_file)) {
+			require_once $h5p_page_component_cron_file;
 
-		foreach ($h5p_contents as $h5p_content) {
-			if (!in_array($h5p_content->getContentId(), $page_component_contents_in_use)) {
-				$this->h5p->show_editor()->deleteContent($h5p_content, false);
-			}
+			$h5p_page_component_cron = new ilH5PPageComponentCron();
+
+			$h5p_page_component_cron->run();
 		}
 	}
 }

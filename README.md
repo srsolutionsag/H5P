@@ -10,6 +10,7 @@ git clone https://git.studer-raimann.ch/ILIAS/Plugins/H5P H5P
 
 ### Configure cronjob
 H5P may accumulate temporary files.
+
 This files should be cleaned up from time to time.
 
 We recommend you to use an unix cronjob.
@@ -23,7 +24,6 @@ Please add the follow line to file `/etc/cron.d/ilias` on your server
 
 or run it manually
 
-// TODO Cronjob interval
 ```
 sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client
 ```
