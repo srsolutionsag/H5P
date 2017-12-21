@@ -333,6 +333,8 @@ class ilH5PShowContent {
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
+		// TODO Fix iframe height to small
+
 		if ($title !== NULL) {
 			$h5p_tpl->setCurrentBlock("titleBlock");
 
