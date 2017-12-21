@@ -214,7 +214,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return bool
 	 */
 	function hasResults() {
-		return (count(ilH5PResult::getResultsByObject($this->obj_id)) > 0);
+		return (count(ilH5PResult::getResultsByObject($this->obj_id)) > 0 || count(ilH5PSolveStatus::getByObject($this->obj_id)) > 0);
 	}
 
 
@@ -267,17 +267,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getEditorForm() {
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$form = $this->h5p->show_editor()->getEditorForm($h5p_content);
-
-		if ($h5p_content !== NULL) {
-			$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
-		}
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE_CONTENT : self::CMD_CREATE_CONTENT, $this->txt($h5p_content
-		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->txt("xhfp_cancel"));
+		$form = $this->h5p->show_editor()
+			->getEditorForm($h5p_content, $this, self::CMD_CREATE_CONTENT, self::CMD_UPDATE_CONTENT, self::CMD_MANAGE_CONTENTS);
 
 		return $form;
 	}
@@ -434,7 +425,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				$this->toolbar->addButtonInstance($finish_contents);
 			}
 
-			$h5p_result = ilH5PResult::getResultByUser($this->usr->getId(), $h5p_content->getContentId());
+			$h5p_result = ilH5PResult::getResultByUserContent($this->usr->getId(), $h5p_content->getContentId());
 			if ($h5p_result !== NULL) {
 				$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, $this->txt("xhfp_solved_content")));
 
@@ -557,15 +548,20 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$this->tabs_gui->activateTab(self::TAB_RESULTS);
 
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
-		$user = new ilObjUser($user_id);
 
-		$this->ctrl->setParameter($this, "xhfp_user", $user->getId());
+		$this->ctrl->setParameter($this, "xhfp_user", $user_id);
 
 		$confirmation = new ilConfirmationGUI();
 
 		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
-		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user->getFullname()));
+		try {
+			$user = new ilObjUser($user_id);
+		} catch (Exception $ex) {
+			// User not exists anymore
+			$user = NULL;
+		}
+		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user !== NULL ? $user->getFullname() : ""));
 
 		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_RESULTS);
 		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_RESULTS);
@@ -578,19 +574,25 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function deleteResults() {
-		$h5p_results = ilH5PResult::getCurrentResults();
-		$user = new ilObjUser(filter_input(INPUT_GET, "xhfp_user"));
+		$user_id = filter_input(INPUT_GET, "xhfp_user");
 
-		foreach ($h5p_results as $h5p_result) {
-			$h5p_result->delete();
-		}
-
-		$h5p_solve_status = ilH5PSolveStatus::getByUser($this->obj_id, $this->usr->getId());
+		$h5p_solve_status = ilH5PSolveStatus::getByUser($this->obj_id, $user_id);
 		if ($h5p_solve_status !== NULL) {
 			$h5p_solve_status->delete();
 		}
 
-		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user->getFullname()), true);
+		$h5p_results = ilH5PResult::getResultsByUserObject($user_id, $this->obj_id);
+		foreach ($h5p_results as $h5p_result) {
+			$h5p_result->delete();
+		}
+
+		try {
+			$user = new ilObjUser($user_id);
+		} catch (Exception $ex) {
+			// User not exists anymore
+			$user = NULL;
+		}
+		ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_results"), $user !== NULL ? $user->getFullname() : ""), true);
 
 		$this->ctrl->redirect($this, self::CMD_RESULTS);
 	}

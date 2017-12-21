@@ -14,9 +14,11 @@ xhfp_added_library_updated_library#:#%new neue H5P Bibliothek hinzugefügt %old 
 xhfp_added_library_updated_libraries#:#%new neue H5P Bibliothek hinzugefügt %old alte aktualisiert.
 xhfp_added_libraries_updated_library#:#%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
 xhfp_added_libraries_updated_libraries#:%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
+xhfp_all#:#Alle
 xhfp_author#:#Autor
 xhfp_by#:#von
 xhfp_cancel#:#Abbrechen
+xhfp_categories#:#Kategorien
 xhfp_close#:#Schliessen
 xhfp_confirm#:#Bestätigen
 xhfp_confirm_action#:#Aktion bestätigen
@@ -35,6 +37,7 @@ xhfp_deleted_library#:#Bibliothek %s gelöscht
 xhfp_delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
 xhfp_deleted_results#:#Resultate von %s gelöscht
 xhfp_description#:#Beschreibung
+xhfp_details#:#Details
 xhfp_disable_fullscreen#:#Vollbild aus
 xhfp_download#:#Download
 xhfp_download_content#:#Inhalt als H5P Datei herunterladen.
@@ -45,6 +48,7 @@ xhfp_embed#:#Einbetten
 xhfp_embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des eingebetteten Inhalts dynamisch verändert werden soll:
 xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
+xhfp_example#:#Beispiel
 xhfp_finish#:#Beenden
 xhfp_finished#:#Beendet
 xhfp_fullscreen#:#Vollbild
@@ -53,14 +57,21 @@ xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB zuletzt aktualisiert: %s
 xhfp_hub_refresh#:#HUB neu laden
 xhfp_hub_refreshed#:#HUB wurde erfolgreich neu geladen
+xhfp_install#:#Installieren
+xhfp_installed#:#Installiert
 xhfp_installed_libraries#:#Installierte Bibliotheken
+xhfp_installed_version#:#Installierte Version
+xhfp_keywords#:#Keywords
+xhfp_latest_version#:#Neuste Version
 xhfp_library#:#Bibliothek
 xhfp_libraries#:#Bibliotheken
 xhfp_license#:#Lizenz
 xhfp_next_content#:#Nächster Inhalt
 xhfp_no#:#Nein
+xhfp_not_available#:#Nicht verfügbar
 xhfp_no_content_copyright#:#Keine Copyright Informationen für diesen Inhalt hinterlegt.
 xhfp_no_result#:#Kein Resultat
+xhfp_not_installed#:#Nicht installiert
 xhfp_offline#:#Offline
 xhfp_online#:#Online
 xhfp_only_not_used#:#Nur nicht benutzte
@@ -90,10 +101,14 @@ xhfp_source#:#Quelle
 xhfp_start_over#:#Sie fangen von vorne an.
 xhfp_status#:#Status
 xhfp_sublevel#:#Unterebene
+xhfp_summary#:#Zusammenfassung
 xhfp_thumbnail#:#Vorschaubild
 xhfp_title#:#Titel
+xhfp_tutorial#:#Tutorial
 xhfp_updated_library#:#%old H5P Bibliothek aktualisiert.
 xhfp_updated_libraries#:#%old H5P Bibliotheken aktualisiert.
+xhfp_upgrade#:#Upgrade
+xhfp_upgrade_available#:#Upgrade verfügbar
 xhfp_upload#:#Hochladen
 xhfp_upload_library#:#Bibliothek hochladen
 xhfp_usage_contents#:#Inhalte, die es verwenden

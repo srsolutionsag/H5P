@@ -68,19 +68,29 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 		$this->results = [];
 
-		$h5p_results = ilH5PResult::getResultsByObject($this->obj_id);
+		$h5p_solve_statuses = ilH5PSolveStatus::getByObject($this->obj_id);
 
-		foreach ($h5p_results as $h5p_result) {
-			$user_id = $h5p_result->getUserId();
+		foreach ($h5p_solve_statuses as $h5p_solve_status) {
+			$user_id = $h5p_solve_status->getUserId();
 
 			if (!isset($this->results[$user_id])) {
 				$this->results[$user_id] = [
 					"user_id" => $user_id,
-					"finished" => ilH5PSolveStatus::isUserFinished($this->obj_id, $user_id)
+					"finished" => $h5p_solve_status->isFinished()
 				];
 			}
 
-			$this->results[$user_id]["content_" . $h5p_result->getContentId()] = ($h5p_result->getScore() . "/" . $h5p_result->getMaxScore());
+			foreach ($this->contents as $h5p_content) {
+				$content_key = "content_" . $h5p_content->getContentId();
+
+				$h5p_result = ilH5PResult::getResultByUserContent($user_id, $h5p_content->getContentId());
+
+				if ($h5p_result !== NULL) {
+					$this->results[$user_id][$content_key] = ($h5p_result->getScore() . "/" . $h5p_result->getMaxScore());
+				} else {
+					$this->results[$user_id][$content_key] = NULL;
+				}
+			}
 		}
 	}
 
@@ -114,18 +124,22 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	protected function fillRow($result) {
 		$parent = $this->getParentObject();
 
-		$user = new ilObjUser($result["user_id"]);
+		$this->ctrl->setParameter($parent, "xhfp_user", $result["user_id"]);
 
-		$this->ctrl->setParameter($parent, "xhfp_user", $user->getId());
-
-		$this->tpl->setVariable("USER", $user->getFullname());
+		try {
+			$user = new ilObjUser($result["user_id"]);
+		} catch (Exception $ex) {
+			// User not exists anymore
+			$user = NULL;
+		}
+		$this->tpl->setVariable("USER", $user !== NULL ? $user->getFullname() : "");
 
 		$this->tpl->setCurrentBlock("contentBlock");
 		foreach ($this->contents as $h5p_content) {
-			$content_id = "content_" . $h5p_content->getContentId();
+			$content_key = "content_" . $h5p_content->getContentId();
 
-			if (isset($result[$content_id])) {
-				$this->tpl->setVariable("POINTS", $result[$content_id]);
+			if ($result[$content_key] !== NULL) {
+				$this->tpl->setVariable("POINTS", $result[$content_key]);
 			} else {
 				$this->tpl->setVariable("POINTS", $this->txt("xhfp_no_result"));
 			}

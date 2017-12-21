@@ -38,6 +38,7 @@ class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 
 		foreach ($h5p_libraries as $h5p_library) {
 			$libraries[] = (object)[
+				"id" => $h5p_library->getLibraryId(),
 				"machine_name" => $h5p_library->getName(),
 				"title" => $h5p_library->getTitle(),
 				"major_version" => $h5p_library->getMajorVersion(),
@@ -61,7 +62,7 @@ class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 	 * @return array|object|null Returns results from querying the database
 	 */
 	public function getContentTypeCache($machine_name = NULL) {
-		return ilH5PLibraryHubCache::getLibraryHubCacheArray($machine_name);
+		return ilH5PLibraryHubCache::getContentTypeCache($machine_name);
 	}
 
 

@@ -19,11 +19,25 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 
 
 	/**
+	 * @return ilH5PLibraryHubCache[]
+	 */
+	static function getLibraries() {
+		/**
+		 * @var ilH5PLibraryHubCache[] $h5p_libraries
+		 */
+
+		$h5p_libraries = self::get();
+
+		return $h5p_libraries;
+	}
+
+
+	/**
 	 * @param string|null $name
 	 *
 	 * @return object|array|null
 	 */
-	static function getLibraryHubCacheArray($name = NULL) {
+	static function getContentTypeCache($name = NULL) {
 		if ($name != NULL) {
 			$library_hub_cache = self::where([
 				"machine_name" => $name
@@ -52,7 +66,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @con_is_primary   true
 	 * @con_sequence     true
 	 */
-	protected $hub_id;
+	protected $id;
 	/**
 	 * @var string
 	 *
@@ -286,16 +300,16 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	public function getHubId() {
-		return $this->hub_id;
+	public function getId() {
+		return $this->id;
 	}
 
 
 	/**
-	 * @param int $hub_id
+	 * @param int $id
 	 */
-	public function setHubId($hub_id) {
-		$this->hub_id = $hub_id;
+	public function setId($id) {
+		$this->id = $id;
 	}
 
 

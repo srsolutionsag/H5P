@@ -1,21 +1,20 @@
 (function ($) {
 	H5PEditor.init = function () {
 		H5PEditor.$ = H5P.jQuery;
+
+		H5PEditor.apiVersion = H5PIntegration.editor.apiVersion;
+
+		H5PEditor.baseUrl = "";
 		H5PEditor.basePath = H5PIntegration.editor.libraryUrl;
 		H5PEditor.fileIcon = H5PIntegration.editor.fileIcon;
 		H5PEditor.ajaxPath = H5PIntegration.editor.ajaxPath;
 		H5PEditor.filesPath = H5PIntegration.editor.filesPath;
-		H5PEditor.apiVersion = H5PIntegration.editor.apiVersion;
 
 		H5PEditor.copyrightSemantics = H5PIntegration.editor.copyrightSemantics;
 
 		H5PEditor.assets = H5PIntegration.editor.assets;
 
-		H5PEditor.baseUrl = "";
-
-		if (H5PIntegration.editor.nodeVersionId !== undefined) {
-			H5PEditor.contentId = H5PIntegration.editor.nodeVersionId;
-		}
+		H5PEditor.contentId = H5PIntegration.editor.contentId;
 
 		var $library = $('input[name="xhfp_library"]');
 		var $params = $('input[name="xhfp_params"]');
@@ -33,13 +32,15 @@
 		var $frame = $("iframe", $editor);
 		var frame = $frame[0];
 
+		// TODO Show tutorial and example button
 		if (library !== "") {
+			// Library already selected
 			$frame.on("load", function () {
 				var frameWindow = frame.contentWindow;
 
 				var appendTo = frameWindow.H5PEditor.LibrarySelector.prototype.appendTo;
 				frameWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
-					// Append selector
+					// Original appendTo()
 					appendTo.apply(this, arguments);
 
 					// Force disable selector
@@ -48,6 +49,7 @@
 						if (name === "disabled") {
 							attr.call(this, "disabled", true);
 						} else {
+							// Original attr()
 							attr.apply(this, arguments);
 						}
 					}

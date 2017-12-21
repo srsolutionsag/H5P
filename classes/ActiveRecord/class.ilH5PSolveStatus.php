@@ -119,7 +119,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 		$h5p_solve_status = self::getByUser($obj_id, $user_id);
 
 		if ($h5p_solve_status !== NULL) {
-			return $h5p_solve_status->isFinsihed();
+			return $h5p_solve_status->isFinished();
 		} else {
 			return false;
 		}
@@ -137,15 +137,12 @@ class ilH5PSolveStatus extends ActiveRecord {
 		 * @var ilH5PSolveStatus|null $h5p_solve_status
 		 */
 
-		$h5p_solve_status = self::where([
-			"obj_id" => $obj_id,
-			"user_id" => $user_id
-		])->first();
+		$h5p_solve_status = self::getByUser($obj_id, $user_id);
 
 		if ($h5p_solve_status !== NULL) {
 			$h5p_solve_status->setContentId(NULL);
 
-			$h5p_solve_status->setFinsihed(true);
+			$h5p_solve_status->setFinished(true);
 
 			$h5p_solve_status->update();
 		} else {
@@ -157,7 +154,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 
 			$h5p_solve_status->setContentId(NULL);
 
-			$h5p_solve_status->setFinsihed(true);
+			$h5p_solve_status->setFinished(true);
 
 			$h5p_solve_status->create();
 		}
@@ -210,7 +207,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 * @con_length       1
 	 * @con_is_notnull   true
 	 */
-	protected $finsihed = false;
+	protected $finished = false;
 
 
 	/**
@@ -222,7 +219,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 		$field_value = $this->{$field_name};
 
 		switch ($field_name) {
-			case "finsihed":
+			case "finished":
 				return ($field_value ? 1 : 0);
 				break;
 
@@ -240,7 +237,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
-			case "finsihed":
+			case "finished":
 				return boolval($field_value);
 				break;
 
@@ -329,15 +326,15 @@ class ilH5PSolveStatus extends ActiveRecord {
 	/**
 	 * @return bool
 	 */
-	public function isFinsihed() {
-		return $this->finsihed;
+	public function isFinished() {
+		return $this->finished;
 	}
 
 
 	/**
-	 * @param bool $finsihed
+	 * @param bool $finished
 	 */
-	public function setFinsihed($finsihed) {
-		$this->finsihed = $finsihed;
+	public function setFinished($finished) {
+		$this->finished = $finished;
 	}
 }

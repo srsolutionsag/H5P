@@ -126,7 +126,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		$this->ctrl->setParameter($this, "xhfp_content", NULL);
+		$this->ctrl->setParameter($parent, "xhfp_content", NULL);
 	}
 
 

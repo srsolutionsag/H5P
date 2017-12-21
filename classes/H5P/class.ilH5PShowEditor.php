@@ -13,6 +13,10 @@ require_once "Services/Utilities/classes/class.ilUtil.php";
 class ilH5PShowEditor {
 
 	/**
+	 * @var ilCtrl
+	 */
+	protected $ctrl;
+	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
@@ -29,6 +33,7 @@ class ilH5PShowEditor {
 	function __construct() {
 		global $DIC;
 
+		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->usr = $DIC->user();
@@ -95,7 +100,7 @@ class ilH5PShowEditor {
 	 */
 	function getH5PEditorIntegration(ilH5PContent $h5p_content = NULL) {
 		$editor = $this->getEditor();
-		$editor["editor"]["nodeVersionId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
 		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PEditor.js");
 
@@ -123,10 +128,14 @@ class ilH5PShowEditor {
 
 	/**
 	 * @param ilH5PContent|null $h5p_content
+	 * @param object            $gui
+	 * @param string            $cmd_create
+	 * @param string            $cmd_update
+	 * @param string            $cmd_cancel
 	 *
 	 * @return ilPropertyFormGUI
 	 */
-	function getEditorForm(ilH5PContent $h5p_content = NULL) {
+	function getEditorForm(ilH5PContent $h5p_content = NULL, $gui, $cmd_create, $cmd_update, $cmd_cancel) {
 		if ($h5p_content !== NULL) {
 			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 			$params = $this->h5p->core()->filterParameters($content);
@@ -137,11 +146,20 @@ class ilH5PShowEditor {
 
 		$form = new ilPropertyFormGUI();
 
+		if ($h5p_content !== NULL) {
+			$this->ctrl->setParameter($gui, "xhfp_content", $h5p_content->getContentId());
+		}
+		$form->setFormAction($this->ctrl->getFormAction($gui));
+
 		$form->setId("xhfp_edit_form");
 
 		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
-		$form->setPreventDoubleSubmission(false);
+		$form->setPreventDoubleSubmission(false); // Handle in JavaScript
+
+		$form->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, $this->txt($h5p_content
+		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
+		$form->addCommandButton($cmd_cancel, $this->txt("xhfp_cancel"));
 
 		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
 		$title->setRequired(true);

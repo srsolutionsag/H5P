@@ -356,9 +356,16 @@ class ilH5PShowContent {
 	 * @param int|null $time
 	 */
 	function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
+		$h5p_content = ilH5PContent::getContentById($content_id);
+		if ($h5p_content->getParentType() === "object") {
+			$h5p_object = ilH5PObject::getObjectById($h5p_content->getObjId());
+		} else {
+			$h5p_object = NULL;
+		}
+
 		$user_id = $this->usr->getId();
 
-		$h5p_result = ilH5PResult::getResultByUser($user_id, $content_id);
+		$h5p_result = ilH5PResult::getResultByUserContent($user_id, $content_id);
 
 		$new = false;
 		if ($h5p_result === NULL) {
@@ -367,6 +374,11 @@ class ilH5PShowContent {
 			$h5p_result->setContentId($content_id);
 
 			$new = true;
+		} else {
+			// Prevent update result on a repository object with "Solve only once"
+			if ($h5p_object !== NULL && $h5p_object->isSolveOnlyOnce()) {
+				die();
+			}
 		}
 
 		$h5p_result->setScore($score);
@@ -385,6 +397,11 @@ class ilH5PShowContent {
 			$h5p_result->create();
 		} else {
 			$h5p_result->update();
+		}
+
+		if ($h5p_object !== NULL) {
+			// Store solve status because user may not scroll to contents
+			ilH5PSolveStatus::setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
 		}
 	}
 
@@ -422,7 +439,7 @@ class ilH5PShowContent {
 
 					$new = true;
 				} else {
-					// TODO Prevent update result on object "solve_only_once"?
+					// TODO Prevent update result on object "solve_only_once"
 				}
 
 				$h5p_content_user_data->setData($data);

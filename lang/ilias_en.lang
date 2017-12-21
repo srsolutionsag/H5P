@@ -14,9 +14,11 @@ xhfp_added_library_updated_library#:#Added %new new H5P library and updated %old
 xhfp_added_library_updated_libraries#:#Added %new new H5P library and updated %old old ones.
 xhfp_added_libraries_updated_library#:#Added %new new H5P libraries and updated %old old one.
 xhfp_added_libraries_updated_libraries#:#Added %new new H5P libraries and updated %old old ones.
+xhfp_all#:#All
 xhfp_author#:#Author
 xhfp_by#:#by
 xhfp_cancel#:#Cancel
+xhfp_categories#:#Categories
 xhfp_close#:#Close
 xhfp_confirm#:#Confirm
 xhfp_confirm_action#:#Confirm action
@@ -35,6 +37,7 @@ xhfp_deleted_library#:#Library %s deleted
 xhfp_delete_results_confirm#:#Are you really want to delete the results of %s?
 xhfp_deleted_results#:#Results of %s deleted
 xhfp_description#:#Description
+xhfp_details#:#Details
 xhfp_disable_fullscreen#:#Disable fullscreen
 xhfp_download#:#Download
 xhfp_download_content#:#Download this content as a H5P file.
@@ -45,6 +48,7 @@ xhfp_embed#:#Embed
 xhfp_embed_include_script#:#Include this script on your website if you want dynamic sizing of the embedded content:
 xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
 xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
+xhfp_example#:#Example
 xhfp_finish#:#Finish
 xhfp_finished#:#Finished
 xhfp_fullscreen#:#Fullscreen
@@ -53,14 +57,21 @@ xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB last refreshed: %s
 xhfp_hub_refresh#:#Resresh HUB
 xhfp_hub_refreshed#:#HUB was successfully refreshed
+xhfp_install#:#Install
+xhfp_installed#:#Installed
 xhfp_installed_libraries#:#Installed libraries
+xhfp_installed_version#:#Installed version
+xhfp_keywords#:#Keywords
+xhfp_latest_version#:#Latest version
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
 xhfp_license#:#License
 xhfp_next_content#:#Next content
 xhfp_no#:#No
+xhfp_not_available#:#Not available
 xhfp_no_content_copyright#:#No copyright information available for this content.
 xhfp_no_result#:#No result
+xhfp_not_installed#:#Not installed
 xhfp_offline#:#Offline
 xhfp_online#:#Online
 xhfp_only_not_used#:#Only not used
@@ -90,10 +101,14 @@ xhfp_source#:#Source
 xhfp_start_over#:#You'll be starting over.
 xhfp_status#:#Status
 xhfp_sublevel#:#Sublevel
+xhfp_summary#:#Summary
 xhfp_thumbnail#:#Thumbnail
 xhfp_title#:#Title
+xhfp_tutorial#:#Tutorial
 xhfp_updated_library#:#Updated %old H5P library.
 xhfp_updated_libraries#:#Updated %old H5P libraries.
+xhfp_upgrade#:#Upgrade
+xhfp_upgrade_available#:#Upgrade available
 xhfp_upload#:#Upload
 xhfp_usage_contents#:#Contents using it
 xhfp_usage_libraries#:#Libraries using it

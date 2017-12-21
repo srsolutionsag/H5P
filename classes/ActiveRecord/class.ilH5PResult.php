@@ -24,7 +24,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult|null
 	 */
-	static function getResultByUser($user_id, $content_id) {
+	static function getResultByUserContent($user_id, $content_id) {
 		/**
 		 * @var ilH5PResult|null $h5p_result
 		 */
@@ -78,17 +78,16 @@ class ilH5PResult extends ActiveRecord {
 
 	/**
 	 *
+	 * @param int    $user_id
+	 * @param int    $obj_id
 	 * @param string $parent_type
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getCurrentResults($parent_type = "object") {
+	static function getResultsByUserObject($user_id, $obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
-
-		$obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));
-		$user_id = filter_input(INPUT_GET, "xhfp_user");
 
 		$h5p_results = self::innerjoin(ilH5PContent::TABLE_NAME, "content_id", "content_id")->where([
 			ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
