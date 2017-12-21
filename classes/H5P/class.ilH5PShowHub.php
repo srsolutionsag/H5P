@@ -81,6 +81,7 @@ class ilH5PShowHub {
 				"screenshots" => json_decode($hub_library->getScreenshots()),
 				"example_url" => $hub_library->getExample(),
 				"tutorial_url" => $hub_library->getTutorial(),
+				"license" => json_decode($hub_library->getLicense()),
 				"runnable" => true, // Hub libraries are all runnable
 				"latest_version" => $latest_version,
 				"status" => self::STATUS_NOT_INSTALLED,
@@ -136,7 +137,8 @@ class ilH5PShowHub {
 					"author" => "",
 					"screenshots" => [],
 					"example_url" => "",
-					"tutorial_url" => ""
+					"tutorial_url" => "",
+					"license" => NULL
 				];
 				$libraries[$key] = &$library;
 			}
@@ -408,6 +410,12 @@ class ilH5PShowHub {
 		$author = new ilNonEditableValueGUI($this->txt("xhfp_author"));
 		$author->setValue($library["author"]);
 		$details_form->addItem($author);
+
+		if (is_object($library["license"])) {
+			$license = new ilNonEditableValueGUI($this->txt("xhfp_license"));
+			$license->setValue($library["license"]->id);
+			$details_form->addItem($license);
+		}
 
 		$runnable = new ilNonEditableValueGUI($this->txt("xhfp_runnable"));
 		$runnable->setValue($this->txt($library["runnable"] ? "xhfp_yes" : "xhfp_no"));
