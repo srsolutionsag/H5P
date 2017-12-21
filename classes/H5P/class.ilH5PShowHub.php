@@ -195,8 +195,6 @@ class ilH5PShowHub {
 		$hub_last_refresh = ilH5POption::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		// TODO Upgrade all library button
-
 		$hub_table = new ilH5PHubTableGUI($gui, ilH5PConfigGUI::CMD_HUB);
 
 		return $this->getH5PIntegration($hub_table->getHTML(), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());

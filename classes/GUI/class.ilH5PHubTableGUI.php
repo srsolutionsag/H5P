@@ -67,7 +67,6 @@ class ilH5PHubTableGUI extends ilTable2GUI {
 		$this->setRowTemplate("hub_table_row.html", $this->pl->getDirectory());
 
 		$this->parseData();
-		// TODO Selection install
 	}
 
 
