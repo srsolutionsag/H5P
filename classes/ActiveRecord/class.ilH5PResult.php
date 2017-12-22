@@ -100,6 +100,16 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
+	 * @param int obj_id
+	 *
+	 * @return bool
+	 */
+	static function hasObjectResults($obj_id) {
+		return (count(self::getResultsByObject($obj_id)) > 0 || count(ilH5PSolveStatus::getByObject($obj_id)) > 0);
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true

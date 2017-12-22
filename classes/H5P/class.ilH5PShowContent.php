@@ -393,7 +393,7 @@ class ilH5PShowContent {
 	 */
 	function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
 		$h5p_content = ilH5PContent::getContentById($content_id);
-		if ($h5p_content->getParentType() === "object") {
+		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
 			$h5p_object = ilH5PObject::getObjectById($h5p_content->getObjId());
 		} else {
 			$h5p_object = NULL;
@@ -453,6 +453,13 @@ class ilH5PShowContent {
 	 * @return string|null
 	 */
 	function contentsUserData($content_id, $data_id, $sub_content_id, $data = NULL, $preload = false, $invalidate = false) {
+		$h5p_content = ilH5PContent::getContentById($content_id);
+		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
+			$h5p_object = ilH5PObject::getObjectById($h5p_content->getObjId());
+		} else {
+			$h5p_object = NULL;
+		}
+
 		$user_id = $this->usr->getId();
 
 		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
@@ -475,7 +482,10 @@ class ilH5PShowContent {
 
 					$new = true;
 				} else {
-					// TODO Prevent update result on object "solve_only_once"
+					// Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
+					if ($h5p_object !== NULL && $h5p_object->isSolveOnlyOnce() && ilH5PResult::hasObjectResults($h5p_object->getObjId())) {
+						die();
+					}
 				}
 
 				$h5p_content_user_data->setData($data);

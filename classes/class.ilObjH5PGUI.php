@@ -213,8 +213,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return bool
 	 */
-	function hasResults() {
-		return (count(ilH5PResult::getResultsByObject($this->obj_id)) > 0 || count(ilH5PSolveStatus::getByObject($this->obj_id)) > 0);
+	protected function hasResults() {
+		return ilH5PResult::hasObjectResults($this->obj_id);
 	}
 
 

@@ -18,6 +18,10 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	 */
 	protected $main_tpl;
 	/**
+	 * @var int
+	 */
+	protected $obj_id;
+	/**
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
@@ -35,6 +39,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->ctrl = $DIC->ctrl();
 		$this->main_tpl = $DIC->ui()->mainTemplate();
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->obj_id = $a_parent_obj->obj_id;
 
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
 
@@ -58,7 +63,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	 * @return bool
 	 */
 	protected function hasResults() {
-		return $this->getParentObject()->hasResults();
+		return ilH5PResult::hasObjectResults($this->obj_id);
 	}
 
 
