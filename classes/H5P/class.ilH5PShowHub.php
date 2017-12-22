@@ -5,6 +5,7 @@ require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
 require_once "Services/Form/classes/class.ilNonEditableValueGUI.php";
 require_once "Services/UIComponent/Button/classes/class.ilImageLinkButton.php";
+require_once "Services/Form/classes/class.ilFormSectionHeaderGUI.php";
 
 /**
  * H5P show HUB
@@ -428,10 +429,10 @@ class ilH5PShowHub {
 		}
 		$details_form->addItem($latest_version);
 
-		$h5p_tpl->setVariable("DETAILS", $details_form->getHTML());
-
 		// Status
-		$status_form = new ilPropertyFormGUI();
+		$status_title = new ilFormSectionHeaderGUI();
+		$status_title->setTitle($this->txt("xhfp_status"));
+		$details_form->addItem($status_title);
 
 		$status = new ilNonEditableValueGUI($this->txt("xhfp_status"));
 		switch ($library["status"]) {
@@ -450,7 +451,7 @@ class ilH5PShowHub {
 			default:
 				break;
 		}
-		$status_form->addItem($status);
+		$details_form->addItem($status);
 
 		if ($library["status"] !== self::STATUS_NOT_INSTALLED) {
 			$installed_version = new ilNonEditableValueGUI($this->txt("xhfp_installed_version"));
@@ -459,22 +460,22 @@ class ilH5PShowHub {
 			} else {
 				$installed_version->setValue("-");
 			}
-			$status_form->addItem($installed_version);
+			$details_form->addItem($installed_version);
 
 			$contents_count = new ilNonEditableValueGUI($this->txt("xhfp_contents"));
 			$contents_count->setValue($library["contents_count"]);
-			$status_form->addItem($contents_count);
+			$details_form->addItem($contents_count);
 
 			$usage_contents = new ilNonEditableValueGUI($this->txt("xhfp_usage_contents"));
 			$usage_contents->setValue($library["usage_contents"]);
-			$status_form->addItem($usage_contents);
+			$details_form->addItem($usage_contents);
 
 			$usage_libraries = new ilNonEditableValueGUI($this->txt("xhfp_usage_libraries"));
 			$usage_libraries->setValue($library["usage_libraries"]);
-			$status_form->addItem($usage_libraries);
+			$details_form->addItem($usage_libraries);
 		}
 
-		$h5p_tpl->setVariable("STATUS", $status_form->getHTML());
+		$h5p_tpl->setVariable("DETAILS", $details_form->getHTML());
 
 		// Screenshots
 		$h5p_tpl->setCurrentBlock("screenshotBlock");
