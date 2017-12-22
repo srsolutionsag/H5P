@@ -110,6 +110,16 @@ class ilH5PResult extends ActiveRecord {
 
 
 	/**
+	 * @param int $content_id
+	 *
+	 * @return bool
+	 */
+	static function hasContentResults($content_id) {
+		return (count(self::getResultsByContent($content_id)) > 0);
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field    true

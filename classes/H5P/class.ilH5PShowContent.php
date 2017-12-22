@@ -483,7 +483,7 @@ class ilH5PShowContent {
 					$new = true;
 				} else {
 					// Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
-					if ($h5p_object !== NULL && $h5p_object->isSolveOnlyOnce() && ilH5PResult::hasObjectResults($h5p_object->getObjId())) {
+					if ($h5p_object !== NULL && $h5p_object->isSolveOnlyOnce() && ilH5PResult::hasContentResults($h5p_content->getContentId())) {
 						die();
 					}
 				}
