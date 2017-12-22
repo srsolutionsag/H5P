@@ -129,6 +129,8 @@ class ilH5P {
 
 		$this->pl = ilH5PPlugin::getInstance();
 		$this->usr = $DIC->user();
+
+		//$this->pl->fixWAC();
 	}
 
 

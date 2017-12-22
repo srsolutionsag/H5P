@@ -2,6 +2,7 @@
 
 require_once "Services/Repository/classes/class.ilRepositoryObjectPlugin.php";
 require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
+require_once "Services/WebAccessChecker/classes/class.ilWACSignedPath.php";
 
 /**
  * H5P Plugin
@@ -71,6 +72,14 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 */
 	function getEditorPath() {
 		return $this->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
+	}
+
+
+	/**
+	 *
+	 */
+	function fixWAC() {
+		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
 	}
 
 
