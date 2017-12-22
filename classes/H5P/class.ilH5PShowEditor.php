@@ -6,6 +6,8 @@ require_once "Services/Form/classes/class.ilTextInputGUI.php";
 require_once "Services/Form/classes/class.ilCustomInputGUI.php";
 require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
 require_once "Services/Utilities/classes/class.ilUtil.php";
+require_once "Services/UIComponent/Toolbar/classes/class.ilToolbarGUI.php";
+require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
 
 /**
  * H5P show editor
@@ -104,19 +106,42 @@ class ilH5PShowEditor {
 
 		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PEditor.js");
 
-		return $this->getH5PIntegration($editor);
+		$tutorial_toolbar = new ilToolbarGUI();
+		$tutorial_toolbar->setId("xhfp_edit_toolbar");
+		$tutorial_toolbar->setHidden(true);
+
+		$tutorial = ilLinkButton::getInstance();
+		$tutorial->setCaption($this->txt("xhfp_tutorial"), false);
+		$tutorial->setTarget("_blank");
+		$tutorial->setId("xhfp_edit_toolbar_tutorial");
+		$tutorial_toolbar->addButtonInstance($tutorial);
+
+		$example = ilLinkButton::getInstance();
+		$example->setCaption($this->txt("xhfp_example"), false);
+		$example->setTarget("_blank");
+		$example->setId("xhfp_edit_toolbar_example");
+		$tutorial_toolbar->addButtonInstance($example);
+
+		return $this->getH5PIntegration($editor, $tutorial_toolbar->getHTML());
 	}
 
 
 	/**
-	 * @param array $editor
+	 * @param array       $editor
+	 * @param string|null $tutorial
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration(array $editor) {
+	function getH5PIntegration(array $editor, $tutorial = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PEditor.html");
 
 		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
+
+		if ($tutorial !== NULL) {
+			$h5p_tpl->setCurrentBlock("tutorialBlock");
+
+			$h5p_tpl->setVariable("TUTORIAL", $tutorial);
+		}
 
 		$this->h5p->show_content()->outputH5pStyles($h5p_tpl);
 

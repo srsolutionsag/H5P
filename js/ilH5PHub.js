@@ -58,11 +58,9 @@
 		var url = H5PIntegration.editor.ajaxPath + action;
 
 		if (parameters !== undefined) {
-			for (var property in parameters) {
-				if (parameters.hasOwnProperty(property)) {
-					url += "&" + property + "=" + parameters[property];
-				}
-			}
+			Object.keys(parameters).forEach(function (property) {
+				url += "&" + property + "=" + parameters[property];
+			});
 		}
 
 		return url;

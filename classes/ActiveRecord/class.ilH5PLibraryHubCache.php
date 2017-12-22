@@ -23,12 +23,30 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 */
 	static function getLibraries() {
 		/**
-		 * @var ilH5PLibraryHubCache[] $h5p_libraries
+		 * @var ilH5PLibraryHubCache[] $h5p_hub_libraries
 		 */
 
-		$h5p_libraries = self::get();
+		$h5p_hub_libraries = self::get();
 
-		return $h5p_libraries;
+		return $h5p_hub_libraries;
+	}
+
+
+	/**
+	 * @param string $name
+	 *
+	 * @return ilH5PLibraryHubCache|null
+	 */
+	static function getLibraryByName($name) {
+		/**
+		 * @var ilH5PLibraryHubCache|null $h5p_hub_library
+		 */
+
+		$h5p_hub_library = self::where([
+			"machine_name" => $name
+		])->first();
+
+		return $h5p_hub_library;
 	}
 
 

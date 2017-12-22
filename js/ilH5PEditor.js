@@ -20,6 +20,9 @@
 		var $params = $('input[name="xhfp_params"]');
 		var $editor = $("#xhfp_editor");
 		var $form = $("#form_xhfp_edit_form");
+		var $toolbar = $("#xhfp_edit_toolbar");
+		var $toolbar_tutorial = $("#xhfp_edit_toolbar_tutorial");
+		var $toolbar_example = $("#xhfp_edit_toolbar_example");
 
 		var library = $library.val();
 		var params = $params.val();
@@ -32,17 +35,15 @@
 		var $frame = $("iframe", $editor);
 		var frame = $frame[0];
 
-		// TODO Show tutorial and example button
-		if (library !== "") {
-			// Library already selected
-			$frame.on("load", function () {
-				var frameWindow = frame.contentWindow;
+		$frame.on("load", function () {
+			var frameWindow = frame.contentWindow;
 
+			if (library !== "") {
+				// Library already selected. Disable selector
 				var appendTo = frameWindow.H5PEditor.LibrarySelector.prototype.appendTo;
 				frameWindow.H5PEditor.LibrarySelector.prototype.appendTo = function () {
 					// Original appendTo()
 					appendTo.apply(this, arguments);
-
 					// Force disable selector
 					var attr = this.$selector.attr;
 					this.$selector.attr = function (name) {
@@ -53,9 +54,52 @@
 							attr.apply(this, arguments);
 						}
 					}
+				};
+			}
+
+			var loadSemantics = frameWindow.H5PEditor.LibrarySelector.prototype.loadSemantics;
+			frameWindow.H5PEditor.LibrarySelector.prototype.loadSemantics = function (library) {
+				// Original loadSemantics()
+				loadSemantics.apply(this, arguments);
+
+				// Tutorial and example button
+				$toolbar.addClass("ilNoDisplay");
+				$toolbar_tutorial.addClass("ilNoDisplay");
+				$toolbar_example.addClass("ilNoDisplay");
+
+				if (typeof library === "string" && library !== "" && library !== "-") {
+					var get_url = H5PEditor.getAjaxUrl("getTutorial", {
+						library: h5peditor.getLibrary()
+					});
+
+					$.get(get_url, function (data) {
+						data = JSON.parse(data);
+
+						var button_count = 0;
+
+						if ("tutorial_urL" in data) {
+							$toolbar_tutorial.attr("href", data.tutorial_urL);
+
+							$toolbar_tutorial.removeClass("ilNoDisplay");
+
+							button_count++;
+						}
+
+						if ("example_url" in data) {
+							$toolbar_example.attr("href", data.example_url);
+
+							$toolbar_example.removeClass("ilNoDisplay");
+
+							button_count++;
+						}
+
+						if (button_count > 0) {
+							$toolbar.removeClass("ilNoDisplay");
+						}
+					});
 				}
-			});
-		}
+			};
+		});
 
 		$form.submit(function () {
 			var $button = $form.find('input[type="submit"]:focus, input[type="SUBMIT"]:focus');
@@ -91,11 +135,9 @@
 		var url = H5PIntegration.editor.ajaxPath + action;
 
 		if (parameters !== undefined) {
-			for (var property in parameters) {
-				if (parameters.hasOwnProperty(property)) {
-					url += "&" + property + "=" + parameters[property];
-				}
-			}
+			Object.keys(parameters).forEach(function (property) {
+				url += "&" + property + "=" + parameters[property];
+			});
 		}
 
 		return url;

@@ -14,6 +14,7 @@ class ilH5PActionGUI {
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
 	const H5P_ACTION_FILES = "files";
+	const H5P_ACTION_GET_TUTORIAL = "getTutorial";
 	const H5P_ACTION_LIBRARIES = "libraries";
 	const H5P_ACTION_LIBRARY_INSTALL = "libraryInstall";
 	const H5P_ACTION_LIBRARY_UPLOAD = "libraryUpload";
@@ -169,6 +170,7 @@ class ilH5PActionGUI {
 
 			case self::H5P_ACTION_CONTENT_TYPE_CACHE:
 			case self::H5P_ACTION_FILES:
+			case self::H5P_ACTION_GET_TUTORIAL:
 			case self::H5P_ACTION_LIBRARIES:
 			case self::H5P_ACTION_LIBRARY_INSTALL:
 			case self::H5P_ACTION_LIBRARY_UPLOAD:
@@ -226,6 +228,34 @@ class ilH5PActionGUI {
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
 
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function getTutorial() {
+		$library = filter_input(INPUT_GET, "library");
+
+		$name = H5PCore::libraryFromString($library)["machineName"];
+
+		$h5p_hub_library = ilH5PLibraryHubCache::getLibraryByName($name);
+
+		$output = [];
+
+		if ($h5p_hub_library !== NULL) {
+			$tutorial_urL = $h5p_hub_library->getTutorial();
+			if ($tutorial_urL !== "") {
+				$output["tutorial_urL"] = $tutorial_urL;
+			}
+
+			$example_url = $h5p_hub_library->getExample();
+			if ($example_url !== "") {
+				$output["example_url"] = $example_url;
+			}
+		}
+
+		echo json_encode($output);
 	}
 
 
