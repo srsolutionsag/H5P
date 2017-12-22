@@ -75,8 +75,8 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->main_tpl->addCss($this->pl->getDirectory() . "/lib/waiter/css/waiter.css");
 		$this->main_tpl->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		$this->main_tpl->addJavaScript($this->pl->getDirectory() . "/js/H5PContentsTable.js");
-		$this->main_tpl->addOnLoadCode('H5PContentsTable.init("' . $this->ctrl->getLinkTarget($this->getParentObject(), "", "", true) . '");');
+		$this->main_tpl->addJavaScript($this->pl->getDirectory() . "/js/ilH5PContentsTable.js");
+		$this->main_tpl->addOnLoadCode('ilH5PContentsTable.init("' . $this->ctrl->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}
 
 

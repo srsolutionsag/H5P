@@ -1,16 +1,16 @@
-var H5PContentsTable = {
+var ilH5PContentsTable = {
 
 	base_link: '',
 
 	init: function (base_link) {
-		H5PContentsTable.base_link = base_link;
+		ilH5PContentsTable.base_link = base_link;
 	},
 
 	up: function (event, cid) {
 		event.preventDefault();
 		xoctWaiter.show();
 		var row = $('#xhfp_row_' + cid);
-		var ajax_url = H5PContentsTable.base_link;
+		var ajax_url = ilH5PContentsTable.base_link;
 		$.ajax({
 			url: ajax_url,
 			type: "GET",
@@ -28,7 +28,7 @@ var H5PContentsTable = {
 		event.preventDefault();
 		xoctWaiter.show();
 		var row = $('#xhfp_row_' + cid);
-		var ajax_url = H5PContentsTable.base_link;
+		var ajax_url = ilH5PContentsTable.base_link;
 		$.ajax({
 			url: ajax_url,
 			type: "GET",

@@ -102,7 +102,7 @@ class ilH5PShowEditor {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PEditor.js");
+		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PEditor.js");
 
 		return $this->getH5PIntegration($editor);
 	}

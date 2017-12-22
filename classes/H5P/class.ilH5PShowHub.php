@@ -205,7 +205,7 @@ class ilH5PShowHub {
 		   "contentUserData" => ""
 	   ];
 
-	   $this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/H5PHub.js");
+	   $this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PHub.js");
 
 	   return $this->getH5PIntegration($this->h5p->show_editor()
 		   ->getH5PIntegration($hub), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());*/
