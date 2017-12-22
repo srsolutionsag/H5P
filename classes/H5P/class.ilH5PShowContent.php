@@ -8,9 +8,9 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
 class ilH5PShowContent {
 
 	/**
-	 * @var bool
+	 * @var array
 	 */
-	protected $core_output = false;
+	protected $core = NULL;
 	/**
 	 * @var ilCtrl
 	 */
@@ -222,7 +222,7 @@ class ilH5PShowContent {
 	function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
 		$output = $this->getCoreIntegration();
 
-		$content = $this->getContent($h5p_content);
+		$content_integration = $this->getContent($h5p_content);
 
 		if ($title) {
 			$title = $h5p_content->getTitle();
@@ -230,7 +230,7 @@ class ilH5PShowContent {
 			$title = NULL;
 		}
 
-		$output .= $this->getH5PIntegration($content, $h5p_content->getContentId(), $title);
+		$output .= $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
 
 		return $output;
 	}
@@ -270,18 +270,38 @@ class ilH5PShowContent {
 				0 => [
 					"state" => "{}"
 				]
-			]
+			],
+			"embedType" => H5PCore::determineEmbedType($h5p_content->getEmbedType(), $content["library"]["embedTypes"])
 		];
 
 		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
 		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->pl->getH5PFolder());
-		$content_integration["scripts"] = array_map(function ($file) {
+		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
-		$content_integration["styles"] = array_map(function ($file) {
+		$styles = array_map(function ($file) {
 			return $file->path;
 		}, $files["styles"]);
+
+		switch ($content_integration["embedType"]) {
+			case "div":
+				foreach ($scripts as $script) {
+					$this->addH5pScript($script);
+					$this->core["loadedJs"][] = $script;
+				}
+
+				foreach ($styles as $style) {
+					$this->addH5pStyle($style);
+					$this->core["loadedCss"][] = $style;
+				}
+				break;
+
+			case "iframe":
+				$content_integration["scripts"] = $scripts;
+				$content_integration["styles"] = $styles;
+				break;
+		}
 
 		$content_user_datas = ilH5PContentUserData::getUserDatasByUser($user_id, $h5p_content->getContentId());
 		foreach ($content_user_datas as $content_user_data) {
@@ -296,17 +316,15 @@ class ilH5PShowContent {
 	 * @return string
 	 */
 	protected function getCoreIntegration() {
-		if (!$this->core_output) {
+		if ($this->core === NULL) {
 			// Output core only once
-			$this->core_output = true;
+			$this->core = $this->getCore();
 
-			$core = $this->getCore();
-
-			$core["contents"] = [];
+			$this->core["contents"] = [];
 
 			$h5p_tpl = $this->pl->getTemplate("H5PCore.html");
 
-			$h5p_tpl->setVariable("H5P_CORE", json_encode($core));
+			$h5p_tpl->setVariable("H5P_CORE", json_encode($this->core));
 
 			$this->outputH5pStyles($h5p_tpl);
 
@@ -323,23 +341,39 @@ class ilH5PShowContent {
 	 * @param array       $content
 	 * @param int         $content_id
 	 * @param string|null $title
+	 * @param string      $embed_type
 	 *
 	 * @return string
 	 */
-	protected function getH5PIntegration(array $content, $content_id, $title) {
+	protected function getH5PIntegration(array $content, $content_id, $title, $embed_type) {
 		$h5p_tpl = $this->pl->getTemplate("H5PContent.html");
 
 		$h5p_tpl->setVariable("H5P_CONTENT", json_encode($content));
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
-		// TODO Fix iframe height to small
-
 		if ($title !== NULL) {
 			$h5p_tpl->setCurrentBlock("titleBlock");
 
 			$h5p_tpl->setVariable("H5P_TITLE", $title);
 		}
+
+		switch ($embed_type) {
+			case "div":
+				$h5p_tpl->setCurrentBlock("contentDivBlock");
+				$h5p_tpl->parseCurrentBlock();
+				break;
+
+			case "iframe":
+				$h5p_tpl->setCurrentBlock("contentFrameBlock");
+				$h5p_tpl->parseCurrentBlock();
+				break;
+
+			default:
+				break;
+		}
+
+		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
 		$this->outputH5pStyles($h5p_tpl);
 

@@ -449,6 +449,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($delete_content);
 		}*/
 
+		//$this->h5p->show_content()->addH5pScript($this->plugin->getDirectory() . "/js/H5PContents.js");
+
 		$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
 	}
 
