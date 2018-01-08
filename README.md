@@ -17,9 +17,8 @@ We recommend you to use an unix cronjob.
 
 Please add the follow line to file `/etc/cron.d/ilias` on your server
 
-// TODO Cronjob interval
 ```
-*/1 * * * * www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client > /dev/null
+*0 0 * * * www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client > /dev/null
 ```
 
 or run it manually
@@ -28,7 +27,7 @@ or run it manually
 sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client
 ```
 
-ILIAS username, password and client need to be customized.
+ILIAS username, password, client and interval need to be customized.
 
 ## Contact
 studer + raimann ag  
