@@ -29,11 +29,7 @@ sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services
 
 ILIAS username, password, client and interval need to be customized.
 
-## Contact
-studer + raimann ag  
-Farbweg 9  
-3400 Burgdorf  
-Switzerland 
-
+### Contact
 info@studer-raimann.ch  
-www.studer-raimann.ch  
+https://studer-raimann.ch  
+
