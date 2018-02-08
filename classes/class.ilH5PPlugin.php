@@ -55,7 +55,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 * @return string
 	 */
 	function getH5PFolder() {
-		return "data/" . CLIENT_ID . "/h5p";
+		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
 	}
 
 
