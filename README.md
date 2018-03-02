@@ -5,7 +5,7 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
-git clone https://git.studer-raimann.ch/ILIAS/Plugins/H5P H5P
+git clone git@git.studer-raimann.ch:ILIAS/Plugins/H5P.git H5P
 ```
 
 ### Configure cronjob
