@@ -1,13 +1,5 @@
 <?php
 
-require_once "Services/Table/classes/class.ilTable2GUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
-require_once "Services/Form/classes/class.ilTextInputGUI.php";
-require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
-require_once "Services/Form/classes/class.ilSelectInputGUI.php";
-require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
-
 /**
  * H5P Hub Table
  */

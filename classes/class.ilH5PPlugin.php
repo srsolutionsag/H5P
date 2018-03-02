@@ -1,8 +1,5 @@
 <?php
-
-require_once "Services/Repository/classes/class.ilRepositoryObjectPlugin.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/WebAccessChecker/classes/class.ilWACSignedPath.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 /**
  * H5P Plugin
@@ -63,7 +60,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 * @return string
 	 */
 	function getCorePath() {
-		return $this->getDirectory() . "/lib/h5p/vendor/h5p/h5p-core";
+		return $this->getDirectory() . "/vendor/h5p/h5p-core";
 	}
 
 
@@ -71,7 +68,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 * @return string
 	 */
 	function getEditorPath() {
-		return $this->getDirectory() . "/lib/h5p/vendor/h5p/h5p-editor";
+		return $this->getDirectory() . "/vendor/h5p/h5p-editor";
 	}
 
 

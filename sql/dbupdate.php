@@ -1,6 +1,6 @@
 <#1>
 <?php
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
+	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 	ilH5PContent::updateDB();
 

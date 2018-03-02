@@ -1,9 +1,5 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Services/WebServices/Curl/classes/class.ilCurlConnection.php";
-
 /**
  * H5P framework
  */

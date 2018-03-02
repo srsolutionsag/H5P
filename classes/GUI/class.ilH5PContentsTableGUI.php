@@ -1,9 +1,5 @@
 <?php
 
-require_once "Services/Table/classes/class.ilTable2GUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php";
-
 /**
  * H5P Content Table
  */

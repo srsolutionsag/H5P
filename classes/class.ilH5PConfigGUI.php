@@ -1,15 +1,5 @@
 <?php
-
-require_once "Services/Component/classes/class.ilPluginConfigGUI.php";
-require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/Form/classes/class.ilFileInputGUI.php";
-require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
-require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";;
-require_once "Services/Form/classes/class.ilCustomInputGUI.php";
-require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PHubTableGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 /**
  * H5P config GUI

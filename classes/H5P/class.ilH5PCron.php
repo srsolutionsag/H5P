@@ -43,8 +43,6 @@ class ilH5PCron {
 	 *
 	 */
 	function run() {
-		require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-
 		$this->h5p = ilH5P::getInstance();
 
 		$this->deleteOldTmpFiles();
@@ -91,7 +89,7 @@ class ilH5PCron {
 	 *
 	 */
 	protected function pageComponentCron() {
-		$h5p_page_component_cron_file = "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/classes/class.ilH5PPageComponentCron.php";
+		$h5p_page_component_cron_file = "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/vendor/autoload.php";
 
 		// H5P page component plugin is installed
 		if (file_exists($h5p_page_component_cron_file)) {

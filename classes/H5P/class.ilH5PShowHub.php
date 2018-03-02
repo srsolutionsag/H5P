@@ -1,12 +1,5 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
-require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/Form/classes/class.ilNonEditableValueGUI.php";
-require_once "Services/UIComponent/Button/classes/class.ilImageLinkButton.php";
-require_once "Services/Form/classes/class.ilFormSectionHeaderGUI.php";
-
 /**
  * H5P show HUB
  */

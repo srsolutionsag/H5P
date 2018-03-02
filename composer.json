@@ -1,0 +1,45 @@
+{
+  "require": {
+    "h5p/h5p-core": "^1.17.0",
+    "h5p/h5p-editor": "^1.17.0"
+  },
+  "autoload": {
+    "classmap": [
+      "classes/",
+      "../../../../../../../Services/AccessControl/classes/class.ilPermissionGUI.php",
+      "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",
+      "../../../../../../../Services/Calendar/classes/class.ilDatePresentation.php",
+      "../../../../../../../Services/Calendar/classes/class.ilDateTime.php",
+      "../../../../../../../Services/Component/classes/class.ilPluginConfigGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilCheckboxInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilCustomInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilFileInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilFormSectionHeaderGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilHiddenInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilNonEditableValueGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilPropertyFormGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilSelectInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilTextInputGUI.php",
+      "../../../../../../../Services/Repository/classes/class.ilObjectPlugin.php",
+      "../../../../../../../Services/Repository/classes/class.ilObjectPluginAccess.php",
+      "../../../../../../../Services/Repository/classes/class.ilObjectPluginGUI.php",
+      "../../../../../../../Services/Repository/classes/class.ilObjectPluginListGUI.php",
+      "../../../../../../../Services/Repository/classes/class.ilRepositoryObjectPlugin.php",
+      "../../../../../../../Services/Table/classes/class.ilTable2GUI.php",
+      "../../../../../../../Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php",
+      "../../../../../../../Services/UIComponent/Button/classes/class.ilLinkButton.php",
+      "../../../../../../../Services/UIComponent/Button/classes/class.ilImageLinkButton.php",
+      "../../../../../../../Services/UIComponent/classes/class.ilUIPluginRouterGUI.php",
+      "../../../../../../../Services/UIComponent/Toolbar/classes/class.ilToolbarGUI.php",
+      "../../../../../../../Services/Utilities/classes/class.ilConfirmationGUI.php",
+      "../../../../../../../Services/Utilities/classes/class.ilUtil.php",
+      "../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php",
+      "../../../../../../../Services/WebServices/Curl/classes/class.ilCurlConnection.php"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "classmap-authoritative": true
+  }
+}

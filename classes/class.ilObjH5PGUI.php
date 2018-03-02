@@ -1,15 +1,5 @@
 <?php
-
-require_once "Services/Repository/classes/class.ilObjectPluginGUI.php";
-require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/AccessControl/classes/class.ilPermissionGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PContentsTableGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/GUI/class.ilH5PResultsTableGUI.php";
-require_once "Services/Utilities/classes/class.ilConfirmationGUI.php";
-require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Services/Form/classes/class.ilCheckboxInputGUI.php";
-require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 /**
  * H5P GUI

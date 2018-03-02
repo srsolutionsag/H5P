@@ -1,8 +1,5 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/UIComponent/classes/class.ilUIPluginRouterGUI.php";
-
 /**
  * H5P ajax action
  *

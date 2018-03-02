@@ -1,6 +1,6 @@
 <?php
 
-require_once "classes/H5P/class.ilH5PCron.php";
+require_once "vendor/autoload.php";
 
 $cron = new ilH5PCron();
 

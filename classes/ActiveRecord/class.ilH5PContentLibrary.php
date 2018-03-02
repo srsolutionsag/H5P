@@ -1,7 +1,5 @@
 <?php
 
-require_once "Services/ActiveRecord/class.ActiveRecord.php";
-
 /**
  * H5P content library active record
  */
@@ -41,7 +39,7 @@ class ilH5PContentLibrary extends ActiveRecord {
 
 		return $h5p_content_libraries;
 	}
-	
+
 
 	/**
 	 * Workaround for multiple primary keys: content_id, library_id, dependency_type

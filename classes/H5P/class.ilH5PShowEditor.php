@@ -1,14 +1,5 @@
 <?php
 
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-require_once "Services/Form/classes/class.ilPropertyFormGUI.php";
-require_once "Services/Form/classes/class.ilTextInputGUI.php";
-require_once "Services/Form/classes/class.ilCustomInputGUI.php";
-require_once "Services/Form/classes/class.ilHiddenInputGUI.php";
-require_once "Services/Utilities/classes/class.ilUtil.php";
-require_once "Services/UIComponent/Toolbar/classes/class.ilToolbarGUI.php";
-require_once "Services/UIComponent/Button/classes/class.ilLinkButton.php";
-
 /**
  * H5P show editor
  */

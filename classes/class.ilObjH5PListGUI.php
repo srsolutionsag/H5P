@@ -1,7 +1,5 @@
 <?php
-
-require_once "Services/Repository/classes/class.ilObjectPluginListGUI.php";
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/class.ilObjH5PGUI.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 /**
  * H5P List GUI

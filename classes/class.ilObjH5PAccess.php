@@ -1,7 +1,5 @@
 <?php
-
-require_once "Services/Repository/classes/class.ilObjectPluginAccess.php";
-require_once "Services/Utilities/classes/class.ilUtil.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
 
 /**
  * H5P Access
