@@ -8,12 +8,14 @@ require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
+	const CMD_APPLY_FILTER = "applyFilter";
 	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
 	const CMD_DELETE_LIBRARY = "deleteLibrary";
 	const CMD_INSTALL_LIBRARY = "installLibrary";
 	const CMD_HUB = "hub";
 	const CMD_LIBRARY_DETAILS = "libraryDetails";
 	const CMD_REFRESH_HUB = "refreshHub";
+	const CMD_RESET_FILTER = "resetFilter";
 	const CMD_SETTINGS = "settings";
 	const CMD_SETTINGS_STORE = "settingsStore";
 	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
@@ -77,8 +79,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 					case self::CMD_SETTINGS:
 					case self::CMD_SETTINGS_STORE:
 					case self::CMD_UPLOAD_LIBRARY:
-					case "applyFilter":
-					case "resetFilter":
+					case self::CMD_APPLY_FILTER:
+					case self::CMD_RESET_FILTER:
 						$this->$cmd();
 						break;
 
