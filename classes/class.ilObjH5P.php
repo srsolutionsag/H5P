@@ -1,5 +1,5 @@
 <?php
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 /**
  * H5P Object
