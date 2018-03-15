@@ -6,6 +6,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
+	const PLUGIN_ID = "xhfp";
+	const PLUGIN_NAME = "H5P";
 	/**
 	 * @var ilH5PPlugin
 	 */
@@ -24,7 +26,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	}
 
 
-	const ID = "xhfp";
 	/**
 	 * @var ilDB
 	 */
@@ -44,7 +45,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 * @return string
 	 */
 	function getPluginName() {
-		return "H5P";
+		return self::PLUGIN_NAME;
 	}
 
 

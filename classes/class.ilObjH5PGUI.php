@@ -78,7 +78,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return string
 	 */
 	final function getType() {
-		return ilH5PPlugin::ID;
+		return ilH5PPlugin::PLUGIN_ID;
 	}
 
 

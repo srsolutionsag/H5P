@@ -61,6 +61,6 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 	 *
 	 */
 	function initType() {
-		$this->setType(ilH5PPlugin::ID);
+		$this->setType(ilH5PPlugin::PLUGIN_ID);
 	}
 }

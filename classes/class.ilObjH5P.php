@@ -30,7 +30,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	final function initType() {
-		$this->setType(ilH5PPlugin::ID);
+		$this->setType(ilH5PPlugin::PLUGIN_ID);
 	}
 
 
