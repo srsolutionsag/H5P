@@ -15,7 +15,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	/**
 	 * @return ilObjH5PAccess
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -34,7 +34,10 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	protected $usr;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->access = $DIC->access();
@@ -51,7 +54,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	function _checkAccess($a_cmd, $a_permission, $a_ref_id = NULL, $a_obj_id = NULL, $a_user_id = NULL) {
+	public function _checkAccess($a_cmd, $a_permission, $a_ref_id = NULL, $a_obj_id = NULL, $a_user_id = NULL) {
 		if ($a_ref_id === NULL) {
 			$a_ref_id = filter_input(INPUT_GET, "ref_id");
 		}
@@ -100,7 +103,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * @param class|string $class
 	 * @param string       $cmd
 	 */
-	static function redirectNonAccess($class, $cmd = "") {
+	public static function redirectNonAccess($class, $cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
@@ -122,7 +125,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function _isOffline($a_obj_id) {
+	public static function _isOffline($a_obj_id) {
 		$h5p_object = ilH5PObject::getObjectById($a_obj_id);
 
 		if ($h5p_object !== NULL) {
@@ -138,7 +141,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function hasVisibleAccess($ref_id = NULL) {
+	public static function hasVisibleAccess($ref_id = NULL) {
 		return self::checkAccess("visible", "visible", $ref_id);
 	}
 
@@ -148,7 +151,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function hasReadAccess($ref_id = NULL) {
+	public static function hasReadAccess($ref_id = NULL) {
 		return self::checkAccess("read", "read", $ref_id);
 	}
 
@@ -158,7 +161,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function hasWriteAccess($ref_id = NULL) {
+	public static function hasWriteAccess($ref_id = NULL) {
 		return self::checkAccess("write", "write", $ref_id);
 	}
 
@@ -168,7 +171,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function hasDeleteAccess($ref_id = NULL) {
+	public static function hasDeleteAccess($ref_id = NULL) {
 		return self::checkAccess("delete", "delete", $ref_id);
 	}
 
@@ -178,7 +181,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 * @return bool
 	 */
-	static function hasEditPermissionAccess($ref_id = NULL) {
+	public static function hasEditPermissionAccess($ref_id = NULL) {
 		return self::checkAccess("edit_permission", "edit_permission", $ref_id);
 	}
 }

@@ -11,7 +11,16 @@ class ilH5PEvent extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -19,12 +28,10 @@ class ilH5PEvent extends ActiveRecord {
 	/**
 	 * @return string[]
 	 */
-	static function getAuthorsRecentlyUsedLibraries() {
+	public static function getAuthorsRecentlyUsedLibraries() {
 		global $DIC;
 
 		$user_id = $DIC->user()->getId();
-
-		// TODO Use ActiveRecord
 
 		$result = $DIC->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
             FROM " . self::TABLE_NAME . "
@@ -47,7 +54,7 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 * @return ilH5PEvent[]
 	 */
-	static function getOldEvents($older_than) {
+	public static function getOldEvents($older_than) {
 		/**
 		 * @var ilH5PEvent[] $h5p_events
 		 */
@@ -171,8 +178,21 @@ class ilH5PEvent extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "event_id":
+			case "user_id":
+				return intval($field_value);
+				break;
+
 			case "created_at":
 				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			case "content_id":
+				if ($field_value !== NULL) {
+					return intval($field_value);
+				} else {
+					return NULL;
+				}
 				break;
 
 			default:

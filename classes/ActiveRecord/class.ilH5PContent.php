@@ -11,7 +11,16 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return ilH5PContent|null
 	 */
-	static function getContentById($content_id) {
+	public static function getContentById($content_id) {
 		/**
 		 * @var ilH5PContent|null $h5p_content
 		 */
@@ -39,7 +48,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return ilH5PContent[]
 	 */
-	static function getContentsByLibrary($library_id) {
+	public static function getContentsByLibrary($library_id) {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
 		 */
@@ -55,7 +64,7 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return ilH5PContent[]
 	 */
-	static function getContentsNotFiltered() {
+	public static function getContentsNotFiltered() {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
 		 */
@@ -73,7 +82,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return ilH5PContent|null
 	 */
-	static function getContentsBySlug($slug) {
+	public static function getContentsBySlug($slug) {
 		/**
 		 * @var ilH5PContent|null $h5p_content
 		 */
@@ -89,10 +98,8 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	static function getNumAuthors() {
+	public static function getNumAuthors() {
 		global $DIC;
-
-		// TODO Use ActiveRecord
 
 		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
           FROM " . self::TABLE_NAME, [], []);
@@ -109,7 +116,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return ilH5PContent[]
 	 */
-	static function getContentsByObject($obj_id, $parent_type = "object") {
+	public static function getContentsByObject($obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PContent[] $h5p_contents
 		 */
@@ -134,7 +141,7 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 * @return array
 	 */
-	static function getContentsByObjectArray($obj_id, $parent_type = "object") {
+	public static function getContentsByObjectArray($obj_id, $parent_type = "object") {
 		$h5p_contents = self::where([
 			"obj_id" => $obj_id,
 			"parent_type" => $parent_type
@@ -147,7 +154,7 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @return ilH5PContent|null
 	 */
-	static function getCurrentContent() {
+	public static function getCurrentContent() {
 		/**
 		 * @var ilH5PContent|null $h5p_content
 		 */
@@ -163,14 +170,14 @@ class ilH5PContent extends ActiveRecord {
 	/**
 	 * @param int $obj_id
 	 */
-	static function reSort($obj_id) {
+	public static function reSort($obj_id) {
 		$h5p_contents = self::getContentsByObject($obj_id);
 
 		$i = 1;
 		foreach ($h5p_contents as $h5p_content) {
 			$h5p_content->setSort($i * 10);
 
-			$h5p_content->update();
+			$h5p_content->store();
 
 			$i ++;
 		}
@@ -181,13 +188,13 @@ class ilH5PContent extends ActiveRecord {
 	 * @param int $content_id
 	 * @param int $obj_id
 	 */
-	static function moveContentUp($content_id, $obj_id) {
+	public static function moveContentUp($content_id, $obj_id) {
 		$h5p_content = self::getContentById($content_id);
 
 		if ($h5p_content !== NULL) {
 			$h5p_content->setSort($h5p_content->sort - 15);
 
-			$h5p_content->update();
+			$h5p_content->store();
 
 			self::reSort($obj_id);
 		}
@@ -198,13 +205,13 @@ class ilH5PContent extends ActiveRecord {
 	 * @param int $content_id
 	 * @param int $obj_id
 	 */
-	static function moveContentDown($content_id, $obj_id) {
+	public static function moveContentDown($content_id, $obj_id) {
 		$h5p_content = self::getContentById($content_id);
 
 		if ($h5p_content !== NULL) {
 			$h5p_content->setSort($h5p_content->sort + 15);
 
-			$h5p_content->update();
+			$h5p_content->store();
 
 			self::reSort($obj_id);
 		}
@@ -407,9 +414,25 @@ class ilH5PContent extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "content_id":
+			case "content_user_id":
+			case "library_id":
+			case "disable":
+			case "sort":
+				return intval($field_value);
+				break;
+
 			case "created_at":
 			case "updated_at":
 				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
+				break;
+
+			case "obj_id":
+				if ($field_value !== NULL) {
+					return intval($field_value);
+				} else {
+					return NULL;
+				}
 				break;
 
 			default:

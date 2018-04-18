@@ -19,7 +19,7 @@ class ilObjH5P extends ilObjectPlugin {
 	/**
 	 * @param int $a_ref_id
 	 */
-	function __construct($a_ref_id = 0) {
+	public function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
 
 		$this->h5p = ilH5P::getInstance();
@@ -29,7 +29,7 @@ class ilObjH5P extends ilObjectPlugin {
 	/**
 	 *
 	 */
-	final function initType() {
+	public final function initType() {
 		$this->setType(ilH5PPlugin::PLUGIN_ID);
 	}
 
@@ -37,19 +37,19 @@ class ilObjH5P extends ilObjectPlugin {
 	/**
 	 *
 	 */
-	function doCreate() {
+	public function doCreate() {
 		$this->h5p_object = new ilH5PObject();
 
 		$this->h5p_object->setObjId($this->id);
 
-		$this->h5p_object->create();
+		$this->h5p_object->store();
 	}
 
 
 	/**
 	 *
 	 */
-	function doRead() {
+	public function doRead() {
 		$this->h5p_object = ilH5PObject::getObjectById($this->id);
 	}
 
@@ -57,15 +57,15 @@ class ilObjH5P extends ilObjectPlugin {
 	/**
 	 *
 	 */
-	function doUpdate() {
-		$this->h5p_object->update();
+	public function doUpdate() {
+		$this->h5p_object->store();
 	}
 
 
 	/**
 	 *
 	 */
-	function doDelete() {
+	public function doDelete() {
 		if ($this->h5p_object !== NULL) {
 			$this->h5p_object->delete();
 		}
@@ -93,7 +93,7 @@ class ilObjH5P extends ilObjectPlugin {
 
 		$new_obj->h5p_object->setObjId($new_obj->id);
 
-		$new_obj->h5p_object->update();
+		$new_obj->h5p_object->store();
 
 		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
 
@@ -106,7 +106,7 @@ class ilObjH5P extends ilObjectPlugin {
 
 			$h5p_content_copy->setObjId($new_obj->id);
 
-			$h5p_content_copy->create();
+			$h5p_content_copy->store();
 
 			$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 		}

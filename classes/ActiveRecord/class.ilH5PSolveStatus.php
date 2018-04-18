@@ -11,7 +11,16 @@ class ilH5PSolveStatus extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -22,7 +31,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 *
 	 * @return ilH5PSolveStatus|null
 	 */
-	static function getByUser($obj_id, $user_id) {
+	public static function getByUser($obj_id, $user_id) {
 		/**
 		 * @var ilH5PSolveStatus|null $h5p_solve_status
 		 */
@@ -41,7 +50,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 *
 	 * @return ilH5PSolveStatus[]
 	 */
-	static function getByObject($obj_id) {
+	public static function getByObject($obj_id) {
 		/**
 		 * @var ilH5PSolveStatus[] $h5p_solve_statuses
 		 */
@@ -60,7 +69,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 *
 	 * @return ilH5PContent|null
 	 */
-	static function getContentByUser($obj_id, $user_id) {
+	public static function getContentByUser($obj_id, $user_id) {
 		$h5p_solve_status = self::getByUser($obj_id, $user_id);
 
 		if ($h5p_solve_status === NULL) {
@@ -78,7 +87,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 * @param int $user_id
 	 * @param int $content_id
 	 */
-	static function setContentByUser($obj_id, $user_id, $content_id) {
+	public static function setContentByUser($obj_id, $user_id, $content_id) {
 		/**
 		 * @var ilH5PSolveStatus|null $h5p_solve_status
 		 */
@@ -109,7 +118,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 *
 	 * @return bool
 	 */
-	static function isUserFinished($obj_id, $user_id) {
+	public static function isUserFinished($obj_id, $user_id) {
 		/**
 		 * @var ilH5PSolveStatus|null $h5p_solve_status
 		 */
@@ -127,10 +136,8 @@ class ilH5PSolveStatus extends ActiveRecord {
 	/**
 	 * @param int $obj_id
 	 * @param int $user_id
-	 *
-	 * @return bool
 	 */
-	static function setUserFinished($obj_id, $user_id) {
+	public static function setUserFinished($obj_id, $user_id) {
 		/**
 		 * @var ilH5PSolveStatus|null $h5p_solve_status
 		 */
@@ -235,6 +242,20 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+			case "obj_id":
+			case "user_id":
+				return intval($field_value);
+				break;
+
+			case "content_id":
+				if ($field_value !== NULL) {
+					return intval($field_value);
+				} else {
+					return NULL;
+				}
+				break;
+
 			case "finished":
 				return boolval($field_value);
 				break;

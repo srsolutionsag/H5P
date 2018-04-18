@@ -69,12 +69,12 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Fetches a file from a remote server using HTTP GET
 	 *
-	 * @param string $url      Where you want to get or send data.
-	 * @param array  $data     Data to post to the URL.
-	 * @param bool   $blocking Set to 'FALSE' to instantly time out (fire and forget).
-	 * @param string $stream   Path to where the file should be saved.
+	 * @param string      $url      Where you want to get or send data.
+	 * @param array|null  $data     Data to post to the URL.
+	 * @param bool|null   $blocking Set to 'FALSE' to instantly time out (fire and forget).
+	 * @param string|null $stream   Path to where the file should be saved.
 	 *
-	 * @return string The content (response body). NULL if something went wrong
+	 * @return string|null The content (response body). NULL if something went wrong
 	 */
 	public function fetchExternalData($url, $data = NULL, $blocking = true, $stream = NULL) {
 		$curlConnection = NULL;
@@ -125,7 +125,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		foreach ($h5p_libraries as $h5p_library) {
 			$h5p_library->setTutorialUrl($tutorial_url);
 
-			$h5p_library->update();
+			$h5p_library->store();
 		}
 	}
 
@@ -168,7 +168,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *
 	 * @param string $type 'info' or 'error'
 	 *
-	 * @return string[]
+	 * @return string[]|null
 	 */
 	public function getMessages($type) {
 		if (empty($this->messages[$type])) {
@@ -377,14 +377,14 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * Get id to an existing library.
 	 * If version number is not specified, the newest version will be returned.
 	 *
-	 * @param string $machine_name
+	 * @param string   $machine_name
 	 *   The librarys machine name
-	 * @param int    $major_version
+	 * @param int|null $major_version
 	 *   Optional major version number for library
-	 * @param int    $minor_version
+	 * @param int|null $minor_version
 	 *   Optional minor version number for library
 	 *
-	 * @return int
+	 * @return int|false
 	 *   The id of the specified library or FALSE
 	 */
 	public function getLibraryId($machine_name, $major_version = NULL, $minor_version = NULL) {
@@ -427,7 +427,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Is the library a patched version of an existing library?
 	 *
-	 * @param object $library
+	 * @param array $library
 	 *   An associative array containing:
 	 *   - machineName: The library machineName
 	 *   - majorVersion: The librarys majorVersion
@@ -484,7 +484,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *
 	 * Also fills in the libraryId in the libraryData object if the object is new
 	 *
-	 * @param object $library_data
+	 * @param array $library_data
 	 *     Associative array containing:
 	 *     - libraryId: The id of the library if it is an existing library.
 	 *     - title: The library's name
@@ -504,9 +504,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *     - semantics(optional): Json describing the content structure for the library
 	 *     - language(optional): associative array containing:
 	 *     - languageCode: Translation in json format
-	 * @param bool   $new
-	 *
-	 * @return
+	 * @param bool  $new
 	 */
 	public function saveLibraryData(&$library_data, $new = true) {
 		if ($new) {
@@ -613,7 +611,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 				$h5p_language->setTranslation($language_json);
 
-				$h5p_language->create();
+				$h5p_language->store();
 			}
 		}
 	}
@@ -622,14 +620,16 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Insert new content.
 	 *
-	 * @param array $content
+	 * @param array    $content
 	 *     An associative array containing:
 	 *     - id: The content id
 	 *     - params: The content in json format
 	 *     - library: An associative array containing:
 	 *     - libraryId: The id of the main library for this content
-	 * @param int   $content_main_id
+	 * @param int|null $content_main_id
 	 *     Main id for the content if this is a system that supports versions
+	 *
+	 * @return int
 	 */
 	public function insertContent($content, $content_main_id = NULL) {
 		return $this->updateContent($content, $content_main_id);
@@ -639,14 +639,16 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Update old content.
 	 *
-	 * @param array $content
+	 * @param array    $content
 	 *     An associative array containing:
 	 *     - id: The content id
 	 *     - params: The content in json format
 	 *     - library: An associative array containing:
 	 *     - libraryId: The id of the main library for this content
-	 * @param int   $content_main_id
+	 * @param int|null $content_main_id
 	 *     Main id for the content if this is a system that supports versions
+	 *
+	 * @return int
 	 */
 	public function updateContent($content, $content_main_id = NULL) {
 		$h5p_content = ilH5PContent::getContentById($content["id"]);
@@ -702,7 +704,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		foreach ($h5p_user_datas as $h5p_user_data) {
 			$h5p_user_data->setData("RESET");
 
-			$h5p_user_data->update();
+			$h5p_user_data->store();
 		}
 	}
 
@@ -735,7 +737,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_dependency->setDependencyType($dependency_type);
 
-			$h5p_dependency->create();
+			$h5p_dependency->store();
 		}
 	}
 
@@ -743,11 +745,11 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Give an H5P the same library dependencies as a given H5P
 	 *
-	 * @param int $content_id
+	 * @param int      $content_id
 	 *   Id identifying the content
-	 * @param int $copy_from_id
+	 * @param int      $copy_from_id
 	 *   Id identifying the content to be copied
-	 * @param int $content_main_id
+	 * @param int|null $content_main_id
 	 *   Main id for the content, typically used in frameworks
 	 *   That supports versions. (In this case the content id will typically be
 	 *   the version id, and the contentMainId will be the frameworks content id
@@ -764,7 +766,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content_library_copy->setContentId($content_id);
 
-			$h5p_content_library_copy->create();
+			$h5p_content_library_copy->store();
 		}
 	}
 
@@ -853,7 +855,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content_library->setWeight($library_in_use["weight"]);
 
-			$h5p_content_library->create();
+			$h5p_content_library->store();
 		}
 	}
 
@@ -898,7 +900,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @param int    $minor_version
 	 *   The library's minor version
 	 *
-	 * @return array|FALSE
+	 * @return array|false
 	 *   FALSE if the library does not exist.
 	 *   Otherwise an associative array containing:
 	 *   - libraryId: The id of the library if it is an existing library.
@@ -978,7 +980,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @param int    $minor_version
 	 *   The library's minor version
 	 *
-	 * @return string
+	 * @return string|null
 	 *   The library's semantics as json
 	 */
 	public function loadLibrarySemantics($machine_name, $major_version, $minor_version) {
@@ -1010,7 +1012,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		if ($h5p_library !== NULL) {
 			$h5p_library->setSemantics(json_encode($semantics));
 
-			$h5p_library->update();
+			$h5p_library->store();
 		}
 	}
 
@@ -1131,9 +1133,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Load dependencies for the given content of the given type.
 	 *
-	 * @param int $id
+	 * @param int      $id
 	 *   Content identifier
-	 * @param int $type
+	 * @param int|null $type
 	 *   Dependency types. Allowed values:
 	 *   - editor
 	 *   - preloaded
@@ -1180,9 +1182,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Get stored setting.
 	 *
-	 * @param string $name
+	 * @param string      $name
 	 *   Identifier for the setting
-	 * @param string $default
+	 * @param string|null $default
 	 *   Optional default value if settings is not set
 	 *
 	 * @return mixed
@@ -1221,7 +1223,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_content->setSlug($fields["slug"]);
 
-			$h5p_content->update();
+			$h5p_content->store();
 		}
 	}
 
@@ -1239,7 +1241,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		foreach ($h5p_contents as $h5p_content) {
 			$h5p_content->setFiltered("");
 
-			$h5p_content->update();
+			$h5p_content->store();
 		}
 	}
 
@@ -1333,7 +1335,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$h5p_cached_asset->setHash($key);
 
-			$h5p_cached_asset->create();
+			$h5p_cached_asset->store();
 		}
 	}
 
@@ -1365,7 +1367,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 	/**
 	 * Get the amount of content items associated to a library
-	 * return int
+	 *
+	 * @return array
 	 */
 	public function getLibraryContentCount() {
 		$h5p_libraries = ilH5PLibrary::getLibraries();
@@ -1383,6 +1386,9 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 	/**
 	 * Will trigger after the export file is created.
+	 *
+	 * @param array  $content
+	 * @param string $filename
 	 */
 	public function afterExportCreated($content, $filename) {
 
@@ -1392,9 +1398,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Check if user has permissions to an action
 	 *
-	 * @method hasPermission
-	 * @param  [H5PPermission] $permission Permission type, ref H5PPermission
-	 * @param  [int]           $id         Id need by platform to determine permission
+	 * @param H5PPermission $permission Permission type, ref H5PPermission
+	 * @param int|null      $id         Id need by platform to determine permission
 	 *
 	 * @return boolean
 	 */
@@ -1406,8 +1411,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	/**
 	 * Replaces existing content type cache with the one passed in
 	 *
-	 * @param object $content_type_cache Json with an array called 'libraries'
-	 *                                   containing the new content type cache that should replace the old one.
+	 * @param stdClass $content_type_cache Json with an array called 'libraries'
+	 *                                     containing the new content type cache that should replace the old one.
 	 */
 	public function replaceContentTypeCache($content_type_cache) {
 		ilH5PLibraryHubCache::truncateDB();
@@ -1465,7 +1470,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->setOwner($content_type->owner);
 
-			$library_hub_cache->create();
+			$library_hub_cache->store();
 		}
 	}
 

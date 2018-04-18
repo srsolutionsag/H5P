@@ -18,6 +18,9 @@ $(document).ready(function () {
 		$(frameWindow).on("load", o);
 	}
 
+	/**
+	 *
+	 */
 	function o() {
 		// Current H5P content
 		contentInstance = frameWindow.H5P.instances[0];

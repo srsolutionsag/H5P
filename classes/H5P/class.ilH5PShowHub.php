@@ -27,7 +27,10 @@ class ilH5PShowHub {
 	protected $toolbar;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -45,7 +48,7 @@ class ilH5PShowHub {
 	 *
 	 * @return array
 	 */
-	function getLibraries($title = "", $status = self::STATUS_ALL, $runnable = NULL, $not_used = NULL) {
+	public function getLibraries($title = "", $status = self::STATUS_ALL, $runnable = NULL, $not_used = NULL) {
 		$libraries = [];
 
 		// Hub libraries
@@ -175,12 +178,13 @@ class ilH5PShowHub {
 
 	/**
 	 *
-	 * @param ilPropertyFormGUI $upload_form
-	 * @param ilH5PConfigGUI    $gui
+	 * @param ilH5PUploadLibraryFormGUI $upload_form
+	 * @param ilH5PConfigGUI            $gui
+	 * @param ilH5PHubTableGUI          $table
 	 *
 	 * @return string
 	 */
-	function getH5PHubIntegration(ilPropertyFormGUI $upload_form, ilH5PConfigGUI $gui) {
+	public function getH5PHubIntegration(ilH5PUploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, ilH5PHubTableGUI $table) {
 		$hub_refresh = ilLinkButton::getInstance();
 		$hub_refresh->setCaption($this->txt("xhfp_hub_refresh"), false);
 		$hub_refresh->setUrl($this->ctrl->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
@@ -189,20 +193,19 @@ class ilH5PShowHub {
 		$hub_last_refresh = ilH5POption::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		$hub_table = new ilH5PHubTableGUI($gui, ilH5PConfigGUI::CMD_HUB);
-
-		return $this->getH5PIntegration($hub_table->getHTML(), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());
-		/*$hub = $this->h5p->show_editor()->getEditor();
-	   $hub["hubIsEnabled"] = true;
-	   $hub["ajax"] = [
-		   "setFinished" => "",
-		   "contentUserData" => ""
-	   ];
-
-	   $this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PHub.js");
-
-	   return $this->getH5PIntegration($this->h5p->show_editor()
-		   ->getH5PIntegration($hub), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());*/
+		return $this->getH5PIntegration($table->getHTML(), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());
+		/* @deprecated H5P Hub is not suitable for this ILIAS plugin
+		 * $hub = $this->h5p->show_editor()->getEditor();
+		 * $hub["hubIsEnabled"] = true;
+		 * $hub["ajax"] = [
+		 * "setFinished" => "",
+		 * "contentUserData" => ""
+		 * ];
+		 *
+		 * $this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PHub.js");
+		 *
+		 * return $this->getH5PIntegration($this->h5p->show_editor()
+		 * ->getH5PIntegration($hub), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());*/
 	}
 
 
@@ -233,50 +236,27 @@ class ilH5PShowHub {
 	/**
 	 *
 	 */
-	function refreshHub() {
+	public function refreshHub() {
 		$this->h5p->core()->updateContentTypeCache();
 	}
 
 
 	/**
-	 * @return ilPropertyFormGUI
+	 * @param ilH5PConfigGUI $parent
+	 *
+	 * @return ilH5PUploadLibraryFormGUI
 	 */
-	function getUploadLibraryForm() {
-		$form = new ilPropertyFormGUI();
-
-		$form->setFormAction($this->ctrl->getFormActionByClass(ilH5PConfigGUI::class));
-
-		$form->setTitle($this->txt("xhfp_upload_library"));
-
-		$form->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, $this->txt("xhfp_upload"));
-
-		$upload_library = new ilFileInputGUI($this->txt("xhfp_library"), "xhfp_library");
-		$upload_library->setRequired(true);
-		$upload_library->setSuffixes([ "h5p" ]);
-		$form->addItem($upload_library);
+	public function getUploadLibraryForm(ilH5PConfigGUI $parent) {
+		$form = new ilH5PUploadLibraryFormGUI($parent);
 
 		return $form;
 	}
 
 
 	/**
-	 * @param ilPropertyFormGUI $form
-	 */
-	function uploadLibrary(ilPropertyFormGUI $form) {
-		$file_path = $form->getInput("xhfp_library")["tmp_name"];
-
-		ob_start(); // prevent output from editor
-
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, NULL);
-
-		ob_end_clean();
-	}
-
-
-	/**
 	 * @param string $name
 	 */
-	function installLibrary($name) {
+	public function installLibrary($name) {
 		ob_start(); // prevent output from editor
 
 		$_SERVER["REQUEST_METHOD"] = "POST"; // Fix
@@ -291,7 +271,7 @@ class ilH5PShowHub {
 	 * @param ilH5PLibrary $h5p_library
 	 * @param bool         $message
 	 */
-	function deleteLibrary(ilH5PLibrary $h5p_library, $message = true) {
+	public function deleteLibrary(ilH5PLibrary $h5p_library, $message = true) {
 		$this->h5p->core()->deleteLibrary((object)[
 			"library_id" => $h5p_library->getLibraryId(),
 			"name" => $h5p_library->getName(),
@@ -306,190 +286,15 @@ class ilH5PShowHub {
 
 
 	/**
+	 * @param ilH5PConfigGUI $parent
 	 * @param string         $key
-	 * @param ilH5PConfigGUI $gui
 	 *
 	 * @return string
 	 */
-	function getH5PLibraryDetailsIntegration($key, ilH5PConfigGUI $gui) {
-		// Library
-		$libraries = $this->getLibraries();
-		$library = $libraries[$key];
+	public function getH5PLibraryDetailsIntegration(ilH5PConfigGUI $parent, $key) {
+		$details_form = new ilH5HubDetailsFormGUI($parent, $key);
 
-		$h5p_tpl = $this->pl->getTemplate("H5PLibraryDetails.html");
-
-		// Links
-		$this->ctrl->setParameter($gui, "xhfp_library_name", $library["name"]);
-		$install_link = $this->ctrl->getLinkTarget($gui, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
-		$this->ctrl->setParameter($gui, "xhfp_library_name", NULL);
-
-		$this->ctrl->setParameter($gui, "xhfp_library", $library["installed_id"]);
-		$delete_link = $this->ctrl->getLinkTarget($gui, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
-		$this->ctrl->setParameter($gui, "xhfp_library", NULL);
-
-		// Buttons
-		if ($library["tutorial_url"] !== "") {
-			$tutorial = ilLinkButton::getInstance();
-			$tutorial->setCaption($this->txt("xhfp_tutorial"), false);
-			$tutorial->setUrl($library["tutorial_url"]);
-			$tutorial->setTarget("_blank");
-			$this->toolbar->addButtonInstance($tutorial);
-		}
-
-		if ($library["example_url"] !== "") {
-			$example = ilLinkButton::getInstance();
-			$example->setCaption($this->txt("xhfp_example"), false);
-			$example->setUrl($library["example_url"]);
-			$example->setTarget("_blank");
-			$this->toolbar->addButtonInstance($example);
-		}
-
-		if ($library["status"] === self::STATUS_NOT_INSTALLED) {
-			$install = ilLinkButton::getInstance();
-			$install->setCaption($this->txt("xhfp_install"), false);
-			$install->setUrl($install_link);
-			$this->toolbar->addButtonInstance($install);
-		}
-
-		if ($library["status"] === self::STATUS_UPGRADE_AVAILABLE) {
-			$upgrade = ilLinkButton::getInstance();
-			$upgrade->setCaption($this->txt("xhfp_upgrade"), false);
-			$upgrade->setUrl($install_link);
-			$this->toolbar->addButtonInstance($upgrade);
-		}
-
-		if ($library["status"] !== self::STATUS_NOT_INSTALLED) {
-			$delete = ilLinkButton::getInstance();
-			$delete->setCaption($this->txt("xhfp_delete"), false);
-			$delete->setUrl($delete_link);
-			$this->toolbar->addButtonInstance($delete);
-		}
-
-		// Icon
-		if ($library["icon"] !== "") {
-			$h5p_tpl->setCurrentBlock("iconBlock");
-
-			$h5p_tpl->setVariable("TITLE", $library["title"]);
-
-			$h5p_tpl->setVariable("ICON", $library["icon"]);
-		}
-
-		// Details
-		$details_form = new ilPropertyFormGUI();
-
-		$details_form->setTitle($this->txt("xhfp_details"));
-
-		$title = new ilNonEditableValueGUI($this->txt("xhfp_title"));
-		$title->setValue($library["title"]);
-		$details_form->addItem($title);
-
-		$summary = new ilNonEditableValueGUI($this->txt("xhfp_summary"));
-		$summary->setValue($library["summary"]);
-		$details_form->addItem($summary);
-
-		$description = new ilNonEditableValueGUI($this->txt("xhfp_description"));
-		$description->setValue($library["description"]);
-		$details_form->addItem($description);
-
-		$keywords = new ilNonEditableValueGUI($this->txt("xhfp_keywords"));
-		$keywords->setValue(implode(", ", $library["keywords"]));
-		$details_form->addItem($keywords);
-
-		$categories = new ilNonEditableValueGUI($this->txt("xhfp_categories"));
-		$categories->setValue(implode(", ", $library["categories"]));
-		$details_form->addItem($categories);
-
-		$author = new ilNonEditableValueGUI($this->txt("xhfp_author"));
-		$author->setValue($library["author"]);
-		$details_form->addItem($author);
-
-		if (is_object($library["license"])) {
-			$license = new ilNonEditableValueGUI($this->txt("xhfp_license"));
-			$license->setValue($library["license"]->id);
-			$details_form->addItem($license);
-		}
-
-		$runnable = new ilNonEditableValueGUI($this->txt("xhfp_runnable"));
-		$runnable->setValue($this->txt($library["runnable"] ? "xhfp_yes" : "xhfp_no"));
-		$details_form->addItem($runnable);
-
-		$latest_version = new ilNonEditableValueGUI($this->txt("xhfp_latest_version"));
-		if (isset($library["latest_version"])) {
-			$latest_version->setValue($library["latest_version"]);
-		} else {
-			// Library is not available on the hub
-			$latest_version->setValue($this->txt("xhfp_not_available"));
-		}
-		$details_form->addItem($latest_version);
-
-		// Status
-		$status_title = new ilFormSectionHeaderGUI();
-		$status_title->setTitle($this->txt("xhfp_status"));
-		$details_form->addItem($status_title);
-
-		$status = new ilNonEditableValueGUI($this->txt("xhfp_status"));
-		switch ($library["status"]) {
-			case self::STATUS_INSTALLED:
-				$status->setValue($this->txt("xhfp_installed"));
-				break;
-
-			case self::STATUS_UPGRADE_AVAILABLE:
-				$status->setValue($this->txt("xhfp_upgrade_available"));
-				break;
-
-			case self::STATUS_NOT_INSTALLED:
-				$status->setValue($this->txt("xhfp_not_installed"));
-				break;
-
-			default:
-				break;
-		}
-		$details_form->addItem($status);
-
-		if ($library["status"] !== self::STATUS_NOT_INSTALLED) {
-			$installed_version = new ilNonEditableValueGUI($this->txt("xhfp_installed_version"));
-			if (isset($library["installed_version"])) {
-				$installed_version->setValue($library["installed_version"]);
-			} else {
-				$installed_version->setValue("-");
-			}
-			$details_form->addItem($installed_version);
-
-			$contents_count = new ilNonEditableValueGUI($this->txt("xhfp_contents"));
-			$contents_count->setValue($library["contents_count"]);
-			$details_form->addItem($contents_count);
-
-			$usage_contents = new ilNonEditableValueGUI($this->txt("xhfp_usage_contents"));
-			$usage_contents->setValue($library["usage_contents"]);
-			$details_form->addItem($usage_contents);
-
-			$usage_libraries = new ilNonEditableValueGUI($this->txt("xhfp_usage_libraries"));
-			$usage_libraries->setValue($library["usage_libraries"]);
-			$details_form->addItem($usage_libraries);
-		}
-
-		$h5p_tpl->setVariable("DETAILS", $details_form->getHTML());
-
-		// Screenshots
-		$h5p_tpl->setCurrentBlock("screenshotBlock");
-		foreach ($library["screenshots"] as $screenshot) {
-			$screenshot_img = ilImageLinkButton::getInstance();
-
-			$screenshot_img->setImage($screenshot->url, false);
-
-			$screenshot_img->setCaption($screenshot->alt, false);
-			$screenshot_img->forceTitle(true);
-
-			$screenshot_img->setUrl($screenshot->url);
-
-			$screenshot_img->setTarget("_blank");
-
-			$h5p_tpl->setVariable("SCREENSHOT", $screenshot_img->getToolbarHTML());
-
-			$h5p_tpl->parseCurrentBlock();
-		}
-
-		return $h5p_tpl->get();
+		return $details_form->getHTML();
 	}
 
 

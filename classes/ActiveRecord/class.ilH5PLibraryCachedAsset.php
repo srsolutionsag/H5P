@@ -11,7 +11,16 @@ class ilH5PLibraryCachedAsset extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PLibraryCachedAsset extends ActiveRecord {
 	 *
 	 * @return ilH5PLibraryCachedAsset[]
 	 */
-	static function getCachedAssetsByLibrary($library_id) {
+	public static function getCachedAssetsByLibrary($library_id) {
 		/**
 		 * @var ilH5PLibraryCachedAsset[] $h5p_cached_assets
 		 */
@@ -66,6 +75,40 @@ class ilH5PLibraryCachedAsset extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $hash = "";
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
+		switch ($field_name) {
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "id":
+			case "library_id":
+				return intval($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
 
 
 	/**

@@ -24,20 +24,30 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param ilObjH5PGUI $a_parent_obj
-	 * @param string      $a_parent_cmd
+	 * @param ilObjH5PGUI $parent
+	 * @param string      $parent_cmd
 	 */
-	public function __construct(ilObjH5PGUI $a_parent_obj, $a_parent_cmd) {
-		parent::__construct($a_parent_obj, $a_parent_cmd);
+	public function __construct(ilObjH5PGUI $parent, $parent_cmd) {
+		parent::__construct($parent, $parent_cmd);
 
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
 		$this->main_tpl = $DIC->ui()->mainTemplate();
 		$this->pl = ilH5PPlugin::getInstance();
-		$this->obj_id = $a_parent_obj->obj_id;
+		$this->obj_id = $parent->obj_id;
 
-		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+		$this->setTable();
+	}
+
+
+	/**
+	 *
+	 */
+	protected function setTable() {
+		$parent = $this->getParentObject();
+
+		$this->setFormAction($this->ctrl->getFormAction($parent));
 
 		$this->setTitle($this->txt("xhfp_contents"));
 
@@ -51,7 +61,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 			$this->initUpDown();
 		}
 
-		$this->setData(ilH5PContent::getContentsByObjectArray($a_parent_obj->object->getId()));
+		$this->setData(ilH5PContent::getContentsByObjectArray($parent->object->getId()));
 	}
 
 
@@ -88,7 +98,7 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	function initFilter() {
+	public function initFilter() {
 
 	}
 

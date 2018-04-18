@@ -11,7 +11,16 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -19,7 +28,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	/**
 	 * @return ilH5PLibraryHubCache[]
 	 */
-	static function getLibraries() {
+	public static function getLibraries() {
 		/**
 		 * @var ilH5PLibraryHubCache[] $h5p_hub_libraries
 		 */
@@ -35,7 +44,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 *
 	 * @return ilH5PLibraryHubCache|null
 	 */
-	static function getLibraryByName($name) {
+	public static function getLibraryByName($name) {
 		/**
 		 * @var ilH5PLibraryHubCache|null $h5p_hub_library
 		 */
@@ -53,7 +62,7 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 *
 	 * @return object|array|null
 	 */
-	static function getContentTypeCache($name = NULL) {
+	public static function getContentTypeCache($name = NULL) {
 		if ($name != NULL) {
 			$library_hub_cache = self::where([
 				"machine_name" => $name
@@ -298,6 +307,17 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+			case "major_version":
+			case "minor_version":
+			case "patch_version":
+			case "h5p_major_version":
+			case "h5p_minor_version":
+			case "h5p_patch_version":
+			case "popularity":
+				return intval($field_value);
+				break;
+
 			case "is_recommended":
 				return boolval($field_value);
 				break;

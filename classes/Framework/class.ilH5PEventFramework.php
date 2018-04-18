@@ -30,20 +30,22 @@ class ilH5PEventFramework extends H5PEventBase {
 	 *           create – new library installed
 	 *           update – old library updated
 	 *
-	 * @param string $type
+	 * @param string      $type
 	 *  Name of event type
-	 * @param string $sub_type
+	 * @param string|null $sub_type
 	 *  Name of event sub type
-	 * @param string $content_id
+	 * @param string|null $content_id
 	 *  Identifier for content affected by the event
-	 * @param string $content_title
+	 * @param string|null $content_title
 	 *  Content title (makes it easier to know which content was deleted etc.)
-	 * @param string $library_name
+	 * @param string|null $library_name
 	 *  Name of the library affected by the event
-	 * @param string $library_version
+	 * @param string|null $library_version
 	 *  Library version
 	 */
-	function __construct($type, $sub_type = NULL, $content_id = NULL, $content_title = NULL, $library_name = NULL, $library_version = NULL) { parent::__construct($type, $sub_type, $content_id, $content_title, $library_name, $library_version); }
+	public function __construct($type, $sub_type = NULL, $content_id = NULL, $content_title = NULL, $library_name = NULL, $library_version = NULL) {
+		parent::__construct($type, $sub_type, $content_id, $content_title, $library_name, $library_version);
+	}
 
 
 	/**
@@ -76,7 +78,7 @@ class ilH5PEventFramework extends H5PEventBase {
 			$h5p_event->setLibraryVersion($this->library_version);
 		}
 
-		$h5p_event->create();
+		$h5p_event->store();
 	}
 
 

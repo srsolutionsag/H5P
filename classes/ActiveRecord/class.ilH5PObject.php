@@ -11,7 +11,16 @@ class ilH5PObject extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PObject extends ActiveRecord {
 	 *
 	 * @return ilH5PObject|null
 	 */
-	static function getObjectById($obj_id) {
+	public static function getObjectById($obj_id) {
 		/**
 		 * @var ilH5PObject|null $h5p_object
 		 */
@@ -92,6 +101,10 @@ class ilH5PObject extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "obj_id":
+				return intval($field_value);
+				break;
+
 			case "is_online":
 			case "solve_only_once":
 				return boolval($field_value);

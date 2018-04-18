@@ -27,7 +27,7 @@ class ilH5PActionGUI {
 	 *
 	 * @return string
 	 */
-	static function getUrl($action, $return_class = NULL, $return_cmd = "") {
+	public static function getUrl($action, $return_class = NULL, $return_cmd = "") {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
@@ -51,7 +51,7 @@ class ilH5PActionGUI {
 	/**
 	 * @param $a_gui_obj
 	 */
-	static function forward($a_gui_obj) {
+	public static function forward($a_gui_obj) {
 		global $DIC;
 
 		$ctrl = $DIC->ctrl();
@@ -101,7 +101,10 @@ class ilH5PActionGUI {
 	protected $usr;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -114,7 +117,7 @@ class ilH5PActionGUI {
 	/**
 	 *
 	 */
-	function executeCommand() {
+	public function executeCommand() {
 		$next_class = $this->ctrl->getNextClass($this);
 
 		switch ($next_class) {
@@ -334,9 +337,9 @@ class ilH5PActionGUI {
 
 		$h5p_library->setRestricted($restricted);
 
-		$h5p_library->update();
+		$h5p_library->store();
 
-		$this->ctrl->setParameter($this, "xhfp_library", $h5p_library->getLibraryId());
+		$this->ctrl->saveParameter($this, "xhfp_library");
 
 		$this->ctrl->setParameter($this, "restrict", (!$restricted));
 

@@ -11,7 +11,16 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 *
 	 * @return ilH5PLibrary|null
 	 */
-	static function getLibraryById($library_id) {
+	public static function getLibraryById($library_id) {
 		/**
 		 * @var ilH5PLibrary|null $h5p_library
 		 */
@@ -37,7 +46,7 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return ilH5PLibrary[]
 	 */
-	static function getLibraries() {
+	public static function getLibraries() {
 		/**
 		 * @var ilH5PLibrary[] $h5p_libraries
 		 */
@@ -53,7 +62,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 *
 	 * @return ilH5PLibrary[]
 	 */
-	static function getLibraryAllVersions($name) {
+	public static function getLibraryAllVersions($name) {
 		/**
 		 * @var ilH5PLibrary[] $h5p_libraries
 		 */
@@ -73,7 +82,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 *
 	 * @return ilH5PLibrary|null
 	 */
-	static function getLibraryByVersion($name, $major_version = NULL, $minor_version = NULL) {
+	public static function getLibraryByVersion($name, $major_version = NULL, $minor_version = NULL) {
 		/**
 		 * @var ilH5PLibrary|null $h5p_library
 		 */
@@ -102,10 +111,8 @@ class ilH5PLibrary extends ActiveRecord {
 	 *
 	 * @return int
 	 */
-	static function getLibraryUsage($library_id) {
+	public static function getLibraryUsage($library_id) {
 		global $DIC;
-
-		// TODO Use ActiveRecord
 
 		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . self::TABLE_NAME . " AS l
@@ -122,7 +129,7 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return ilH5PLibrary[]
 	 */
-	static function getLatestLibraryVersions() {
+	public static function getLatestLibraryVersions() {
 		/**
 		 * @var ilH5PLibrary[] $h5p_libraries_
 		 */
@@ -138,7 +145,7 @@ class ilH5PLibrary extends ActiveRecord {
 	/**
 	 * @return ilH5PLibrary|null
 	 */
-	static function getCurrentLibrary() {
+	public static function getCurrentLibrary() {
 		/**
 		 * @var ilH5PLibrary|null $xhfp_library
 		 */
@@ -346,6 +353,13 @@ class ilH5PLibrary extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "library_id":
+			case "major_version":
+			case "minor_version":
+			case "patch_version":
+				return intval($field_value);
+				break;
+
 			case "runnable":
 			case "restricted":
 			case "fullscreen":

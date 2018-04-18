@@ -11,7 +11,16 @@ class ilH5PContentLibrary extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -22,7 +31,7 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 *
 	 * @return ilH5PContentLibrary[]
 	 */
-	static function getContentLibraries($content_id, $dependency_type = NULL) {
+	public static function getContentLibraries($content_id, $dependency_type = NULL) {
 		/**
 		 * @var ilH5PContentLibrary[] $h5p_content_libraries
 		 */
@@ -128,6 +137,13 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+			case "content_id":
+			case "library_id":
+			case "weight":
+				return intval($field_value);
+				break;
+
 			case "drop_css":
 				return boolval($field_value);
 				break;

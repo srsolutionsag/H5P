@@ -11,7 +11,16 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 *
 	 * @return ilH5PLibraryLanguage[]
 	 */
-	static function getLanguagesByLibrary($library_id) {
+	public static function getLanguagesByLibrary($library_id) {
 		/**
 		 * @var ilH5PLibraryLanguage[] $h5p_languages
 		 */
@@ -42,7 +51,7 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 *
 	 * @return string
 	 */
-	static function getTranslationJson($name, $major_version, $minor_version, $language) {
+	public static function getTranslationJson($name, $major_version, $minor_version, $language) {
 		/**
 		 * @var ilH5PLibraryLanguage $h5p_library_language
 		 */
@@ -100,6 +109,40 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $translation = "{}";
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
+		switch ($field_name) {
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "id":
+			case "library_id":
+				return intval($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
 
 
 	/**

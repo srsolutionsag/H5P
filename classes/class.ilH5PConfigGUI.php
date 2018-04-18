@@ -9,6 +9,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 	const CMD_APPLY_FILTER = "applyFilter";
+	const CMD_CONFIGURE = "configure";
 	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
 	const CMD_DELETE_LIBRARY = "deleteLibrary";
 	const CMD_INSTALL_LIBRARY = "installLibrary";
@@ -43,7 +44,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected $tpl;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -58,14 +62,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 * @param string $cmd
 	 */
-	function performCommand($cmd) {
+	public function performCommand($cmd) {
 		$next_class = $this->ctrl->getNextClass($this);
 
 		switch ($next_class) {
 			default:
 				$this->setTabs();
 
-				if ($cmd === "configure") {
+				if ($cmd === self::CMD_CONFIGURE) {
 					$cmd = self::CMD_HUB;
 				}
 
@@ -124,14 +128,24 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
+	 * @return ilH5PHubTableGUI
+	 */
+	protected function getHubTable() {
+		$table = new ilH5PHubTableGUI($this, self::CMD_HUB);
+
+		return $table;
+	}
+
+
+	/**
 	 *
 	 */
 	protected function hub() {
 		$this->tabs->activateTab(self::TAB_HUB);
 
-		$upload_form = $this->h5p->show_hub()->getUploadLibraryForm();
+		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
 
-		$hub = $this->h5p->show_hub()->getH5PHubIntegration($upload_form, $this);
+		$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
 		$this->show($hub);
 	}
@@ -153,19 +167,19 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function uploadLibrary() {
 		$this->tabs->activateTab(self::TAB_HUB);
 
-		$upload_form = $this->h5p->show_hub()->getUploadLibraryForm();
+		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
 
-		$upload_form->setValuesByPost();
+		$form->setValuesByPost();
 
-		if (!$upload_form->checkInput()) {
-			$hub = $this->h5p->show_hub()->getH5PHubIntegration($upload_form, $this);
+		if (!$form->checkInput()) {
+			$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
 			$this->show($hub);
 
 			return;
 		}
 
-		$this->h5p->show_hub()->uploadLibrary($upload_form);
+		$form->uploadLibrary();
 
 		$this->ctrl->redirect($this, self::CMD_HUB);
 	}
@@ -175,9 +189,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function applyFilter() {
-		$hub_table = new ilH5PHubTableGUI($this, self::CMD_HUB);
+		$table = $this->getHubTable();
 
-		$hub_table->writeFilterToSession();
+		$table->writeFilterToSession();
 
 		$this->ctrl->redirect($this, self::CMD_HUB);
 	}
@@ -187,11 +201,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function resetFilter() {
-		$hub_table = new ilH5PHubTableGUI($this, self::CMD_HUB);
+		$table = $this->getHubTable();
 
-		$hub_table->resetFilter();
+		$table->resetFilter();
 
-		$hub_table->resetOffset();
+		$table->resetOffset();
 
 		$this->ctrl->redirect($this, self::CMD_HUB);
 	}
@@ -219,7 +233,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$key = filter_input(INPUT_GET, "xhfp_library_key");
 
-		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($key, $this);
+		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
 
 		$this->show($details);
 	}
@@ -245,13 +259,15 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 				]));
 		}
 
-		$this->ctrl->setParameter($this, "xhfp_library", $h5p_library->getLibraryId());
+		$this->ctrl->saveParameter($this, "xhfp_library");
 
 		$confirmation = new ilConfirmationGUI();
 
 		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
+
+		$confirmation->addItem("xhfp_library", $h5p_library->getLibraryId(), $h5p_library->getTitle());
 
 		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_LIBRARY);
 		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_HUB);
@@ -273,35 +289,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 *
+	 * @return ilH5HubSettingsFormGUI
 	 */
 	protected function getSettingsForm() {
-		$form = new ilPropertyFormGUI();
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->setTitle($this->txt("xhfp_settings"));
-
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->txt("xhfp_save"));
-		$form->addCommandButton(self::CMD_HUB, $this->txt("xhfp_cancel"));
-
-		$content_types = new ilCustomInputGUI($this->txt("xhfp_content_types"));
-
-		$enable_lrs_content_types = new ilCheckboxInputGUI($this->txt("xhfp_enable_lrs_content_types"), "enable_lrs_content_types");
-		$enable_lrs_content_types->setInfo($this->txt("xhfp_enable_lrs_content_types_info"));
-		$enable_lrs_content_types->setChecked(ilH5POption::getOption("enable_lrs_content_types", false));
-		$content_types->addSubItem($enable_lrs_content_types);
-
-		$form->addItem($content_types);
-
-		$usage_statistics = new ilCustomInputGUI($this->txt("xhfp_usage_statistics"));
-
-		$send_usage_statistics = new ilCheckboxInputGUI($this->txt("xhfp_send_usage_statistics"), "send_usage_statistics");
-		$send_usage_statistics->setInfo(sprintf($this->txt("xhfp_send_usage_statistics_info"), "https://h5p.org/tracking-the-usage-of-h5p"));
-		$send_usage_statistics->setChecked(ilH5POption::getOption("send_usage_statistics", true));
-		$usage_statistics->addSubItem($send_usage_statistics);
-
-		$form->addItem($usage_statistics);
+		$form = new ilH5HubSettingsFormGUI($this);
 
 		return $form;
 	}
@@ -335,11 +326,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 			return;
 		}
 
-		$enable_lrs_content_types = boolval($form->getInput("enable_lrs_content_types"));
-		ilH5POption::setOption("enable_lrs_content_types", $enable_lrs_content_types);
-
-		$send_usage_statistics = boolval($form->getInput("xhfp_send_usage_statistics"));
-		ilH5POption::setOption("send_usage_statistics", $send_usage_statistics);
+		$form->updateSettings();
 
 		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
 

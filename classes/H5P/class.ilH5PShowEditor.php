@@ -23,7 +23,10 @@ class ilH5PShowEditor {
 	protected $usr;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -36,7 +39,7 @@ class ilH5PShowEditor {
 	/**
 	 * @return array
 	 */
-	function getEditor() {
+	public function getEditor() {
 		$editor = $this->h5p->show_content()->getCore();
 
 		$editor_path = "/" . $this->pl->getEditorPath();
@@ -91,7 +94,7 @@ class ilH5PShowEditor {
 	 *
 	 * @return string
 	 */
-	function getH5PEditorIntegration(ilH5PContent $h5p_content = NULL) {
+	public function getH5PEditorIntegration(ilH5PContent $h5p_content = NULL) {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
@@ -123,7 +126,7 @@ class ilH5PShowEditor {
 	 *
 	 * @return string
 	 */
-	function getH5PIntegration(array $editor, $tutorial = NULL) {
+	public function getH5PIntegration(array $editor, $tutorial = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PEditor.html");
 
 		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
@@ -144,72 +147,27 @@ class ilH5PShowEditor {
 
 	/**
 	 * @param ilH5PContent|null $h5p_content
-	 * @param object            $gui
+	 * @param object            $parent
 	 * @param string            $cmd_create
 	 * @param string            $cmd_update
 	 * @param string            $cmd_cancel
 	 *
-	 * @return ilPropertyFormGUI
+	 * @return ilH5PEditContentFormGUI
 	 */
-	function getEditorForm(ilH5PContent $h5p_content = NULL, $gui, $cmd_create, $cmd_update, $cmd_cancel) {
-		if ($h5p_content !== NULL) {
-			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
-			$params = $this->h5p->core()->filterParameters($content);
-		} else {
-			$content = [];
-			$params = "";
-		}
-
-		$form = new ilPropertyFormGUI();
-
-		if ($h5p_content !== NULL) {
-			$this->ctrl->setParameter($gui, "xhfp_content", $h5p_content->getContentId());
-		}
-		$form->setFormAction($this->ctrl->getFormAction($gui));
-
-		$form->setId("xhfp_edit_form");
-
-		$form->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
-
-		$form->setPreventDoubleSubmission(false); // Handle in JavaScript
-
-		$form->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, $this->txt($h5p_content
-		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
-		$form->addCommandButton($cmd_cancel, $this->txt("xhfp_cancel"));
-
-		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
-		$title->setRequired(true);
-		$title->setValue($h5p_content !== NULL ? $h5p_content->getTitle() : "");
-		$form->addItem($title);
-
-		$h5p_library = new ilHiddenInputGUI("xhfp_library");
-		$h5p_library->setRequired(true);
-		if ($h5p_content !== NULL) {
-			$h5p_library->setValue(H5PCore::libraryToString($content["library"]));
-		}
-		$form->addItem($h5p_library);
-
-		$h5p = new ilCustomInputGUI($this->txt("xhfp_library"), "xhfp_library");
-		$h5p->setRequired(true);
-		$h5p->setHtml($this->getH5PEditorIntegration($h5p_content));
-		$form->addItem($h5p);
-
-		$h5p_params = new ilHiddenInputGUI("xhfp_params");
-		$h5p_params->setRequired(true);
-		$h5p_params->setValue($params);
-		$form->addItem($h5p_params);
+	public function getEditorForm(ilH5PContent $h5p_content = NULL, $parent, $cmd_create, $cmd_update, $cmd_cancel) {
+		$form = new ilH5PEditContentFormGUI($parent, $h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 
 		return $form;
 	}
 
 
 	/**
-	 * @param ilPropertyFormGUI $form
-	 * @param bool              $message
+	 * @param ilH5PEditContentFormGUI $form
+	 * @param bool                    $message
 	 *
 	 * @return ilH5PContent
 	 */
-	function createContent(ilPropertyFormGUI $form, $message = true) {
+	public function createContent(ilH5PEditContentFormGUI $form, $message = true) {
 		$title = $form->getInput("xhfp_title");
 		$library = $form->getInput("xhfp_library");
 		$params = $form->getInput("xhfp_params");
@@ -245,10 +203,11 @@ class ilH5PShowEditor {
 
 
 	/**
-	 * @param ilH5PContent $h5p_content
-	 * @param bool         $message
+	 * @param ilH5PContent            $h5p_content
+	 * @param ilH5PEditContentFormGUI $form
+	 * @param bool                    $message
 	 */
-	function updateContent(ilH5PContent $h5p_content, ilPropertyFormGUI $form, $message = true) {
+	public function updateContent(ilH5PContent $h5p_content, ilH5PEditContentFormGUI $form, $message = true) {
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
 		$title = $form->getInput("xhfp_title");
@@ -274,7 +233,7 @@ class ilH5PShowEditor {
 	 * @param ilH5PContent $h5p_content
 	 * @param bool         $message
 	 */
-	function deleteContent(ilH5PContent $h5p_content, $message = true) {
+	public function deleteContent(ilH5PContent $h5p_content, $message = true) {
 		$this->h5p->storage()->deletePackage([
 			"id" => $h5p_content->getContentId(),
 			"slug" => $h5p_content->getSlug()

@@ -9,7 +9,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 	/**
 	 * @return string
 	 */
-	function getGuiClass() {
+	public function getGuiClass() {
 		return ilObjH5PGUI::class;
 	}
 
@@ -17,7 +17,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 	/**
 	 * @return array
 	 */
-	function initCommands() {
+	public function initCommands() {
 		$this->timings_enabled = false;
 		$this->subscribe_enabled = false;
 		$this->payment_enabled = false;
@@ -42,7 +42,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 	/**
 	 * @return array
 	 */
-	function getProperties() {
+	public function getProperties() {
 		$props = [];
 
 		if (ilObjH5PAccess::_isOffline($this->obj_id)) {
@@ -60,7 +60,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 	/**
 	 *
 	 */
-	function initType() {
+	public function initType() {
 		$this->setType(ilH5PPlugin::PLUGIN_ID);
 	}
 }

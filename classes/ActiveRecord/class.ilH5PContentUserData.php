@@ -11,7 +11,16 @@ class ilH5PContentUserData extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 *
 	 * @return ilH5PContentUserData[]
 	 */
-	static function getUserDatasByContent($content_id) {
+	public static function getUserDatasByContent($content_id) {
 		/**
 		 * @var ilH5PContentUserData[] $h5p_content_user_datas
 		 */
@@ -42,7 +51,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 *
 	 * @return ilH5PContentUserData|null
 	 */
-	static function getUserData($content_id, $data_id, $user_id, $sub_content_id) {
+	public static function getUserData($content_id, $data_id, $user_id, $sub_content_id) {
 		/**
 		 * @var ilH5PContentUserData|null $h5p_content_user_data
 		 */
@@ -64,7 +73,7 @@ class ilH5PContentUserData extends ActiveRecord {
 	 *
 	 * @return ilH5PContentUserData[]
 	 */
-	static function getUserDatasByUser($user_id, $content_id) {
+	public static function getUserDatasByUser($user_id, $content_id) {
 		/**
 		 * @var ilH5PContentUserData[] $h5p_content_user_datas
 		 */
@@ -204,6 +213,13 @@ class ilH5PContentUserData extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+			case "content_id":
+			case "user_id":
+			case "sub_content_id":
+				return intval($field_value);
+				break;
+
 			case "preload":
 			case "invalidate":
 				return boolval($field_value);

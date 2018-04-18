@@ -17,7 +17,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return ilH5PPlugin
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -32,6 +32,9 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	protected $db;
 
 
+	/**
+	 *
+	 */
 	public function __construct() {
 		parent::__construct();
 
@@ -44,7 +47,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return string
 	 */
-	function getPluginName() {
+	public function getPluginName() {
 		return self::PLUGIN_NAME;
 	}
 
@@ -52,7 +55,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return string
 	 */
-	function getH5PFolder() {
+	public function getH5PFolder() {
 		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
 	}
 
@@ -60,7 +63,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return string
 	 */
-	function getCorePath() {
+	public function getCorePath() {
 		return $this->getDirectory() . "/vendor/h5p/h5p-core";
 	}
 
@@ -68,7 +71,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return string
 	 */
-	function getEditorPath() {
+	public function getEditorPath() {
 		return $this->getDirectory() . "/vendor/h5p/h5p-editor";
 	}
 
@@ -76,45 +79,31 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 *
 	 */
-	function fixWAC() {
+	public function fixWAC() {
 		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
 	}
 
 
 	/**
-	 *
+	 * @return bool
 	 */
 	protected function uninstallCustom() {
 		$this->removeH5PFolder();
 
 		$this->db->dropTable(ilH5PContent::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PContentUserData::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PCounter::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PEvent::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PLibrary::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PObject::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5POption::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PResult::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
-
 		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
 
 		return true;

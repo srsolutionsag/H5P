@@ -11,7 +11,16 @@ class ilH5PResult extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -22,7 +31,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult|null
 	 */
-	static function getResultByUserContent($user_id, $content_id) {
+	public static function getResultByUserContent($user_id, $content_id) {
 		/**
 		 * @var ilH5PResult|null $h5p_result
 		 */
@@ -41,7 +50,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getResultsByContent($content_id) {
+	public static function getResultsByContent($content_id) {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
@@ -60,7 +69,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getResultsByObject($obj_id, $parent_type = "object") {
+	public static function getResultsByObject($obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
@@ -82,7 +91,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return ilH5PResult[]
 	 */
-	static function getResultsByUserObject($user_id, $obj_id, $parent_type = "object") {
+	public static function getResultsByUserObject($user_id, $obj_id, $parent_type = "object") {
 		/**
 		 * @var ilH5PResult[] $h5p_results
 		 */
@@ -102,7 +111,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return bool
 	 */
-	static function hasObjectResults($obj_id) {
+	public static function hasObjectResults($obj_id) {
 		return (count(self::getResultsByObject($obj_id)) > 0 || count(ilH5PSolveStatus::getByObject($obj_id)) > 0);
 	}
 
@@ -112,7 +121,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 * @return bool
 	 */
-	static function hasContentResults($content_id) {
+	public static function hasContentResults($content_id) {
 		return (count(self::getResultsByContent($content_id)) > 0);
 	}
 
@@ -219,6 +228,15 @@ class ilH5PResult extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+			case "content_id":
+			case "user_id":
+			case "score":
+			case "max_score":
+			case "time":
+				return intval($field_value);
+				break;
+
 			case "opened":
 			case "finished":
 				return ilH5P::getInstance()->dbDateToTimestamp($field_value);

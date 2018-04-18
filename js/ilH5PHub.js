@@ -1,3 +1,6 @@
+/**
+ * @deprecated H5P Hub is not suitable for this ILIAS plugin
+ */
 (function ($) {
 	H5PEditor.init = function () {
 		H5PEditor.$ = H5P.jQuery;
@@ -19,14 +22,14 @@
 		// prevent remove id edtor
 		var $tmp = $("<div></div>").appendTo($editor);
 
-		h5peditor = new ns.Editor("", "", $tmp);
+		var h5peditor = new ns.Editor("", "", $tmp);
 
 		var $frame = $("iframe", $editor);
 		var frame = $frame[0];
 
 		// TODO Hide HUB use buttons and replace list click with details click
 		// TODO Remove upload button
-		// TODO Hub immer auklappen
+		// TODO Always open HUB
 
 		$frame.on("load", function () {
 			var frameWindow = frame.contentWindow;
@@ -48,7 +51,7 @@
 				client.setPanelTitle = function () {
 					// Original setPanelTitle()
 					setPanelTitle.call(client, "HUB");
-				}
+				};
 				client.setPanelTitle();
 			};
 		});

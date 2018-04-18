@@ -11,7 +11,16 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 	 *
 	 * @return ilH5PLibraryDependencies[]
 	 */
-	static function getDependencies($library_id) {
+	public static function getDependencies($library_id) {
 		/**
 		 * @var ilH5PLibraryDependencies[] $h5p_library_dependencies
 		 */
@@ -39,7 +48,7 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 	 *
 	 * @return int
 	 */
-	static function getLibraryUsage($library_id) {
+	public static function getLibraryUsage($library_id) {
 		/**
 		 * @var ilH5PLibraryDependencies[] $h5p_library_dependencies
 		 */
@@ -57,7 +66,7 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 	 *
 	 * @return array[]
 	 */
-	static function getDependenciesJoin($library_id) {
+	public static function getDependenciesJoin($library_id) {
 		/**
 		 * @var array[] $h5p_library_dependencies
 		 */
@@ -109,6 +118,41 @@ class ilH5PLibraryDependencies extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $dependency_type = "";
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return mixed|null
+	 */
+	public function sleep($field_name) {
+		$field_value = $this->{$field_name};
+
+		switch ($field_name) {
+			default:
+				return NULL;
+		}
+	}
+
+
+	/**
+	 * @param string $field_name
+	 * @param mixed  $field_value
+	 *
+	 * @return mixed|null
+	 */
+	public function wakeUp($field_name, $field_value) {
+		switch ($field_name) {
+			case "id":
+			case "library_id":
+			case "required_library_id":
+				return intval($field_value);
+				break;
+
+			default:
+				return NULL;
+		}
+	}
 
 
 	/**

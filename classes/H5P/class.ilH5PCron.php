@@ -11,13 +11,16 @@ class ilH5PCron {
 	protected $h5p;
 
 
-	function __construct() { }
+	/**
+	 *
+	 */
+	public function __construct() { }
 
 
 	/**
 	 * @param array $data
 	 */
-	function initILIAS(array $data) {
+	public function initILIAS(array $data) {
 		// Set ilias root folder
 		chdir(substr($_SERVER["SCRIPT_FILENAME"], 0, strpos($_SERVER["SCRIPT_FILENAME"], "/Customizing")));
 
@@ -42,7 +45,7 @@ class ilH5PCron {
 	/**
 	 *
 	 */
-	function run() {
+	public 	function run() {
 		$this->h5p = ilH5P::getInstance();
 
 		$this->deleteOldTmpFiles();

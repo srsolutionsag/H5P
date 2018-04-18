@@ -28,10 +28,10 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * Load language file(JSON) from database.
 	 * This is used to translate the editor fields(title, description etc.)
 	 *
-	 * @param string $name  The machine readable name of the library(content type)
-	 * @param int    $major Major part of version number
-	 * @param int    $minor Minor part of version number
-	 * @param string $lang  Language code
+	 * @param string $machine_name  The machine readable name of the library(content type)
+	 * @param int    $major_version Major part of version number
+	 * @param int    $minor_version Minor part of version number
+	 * @param string $language      Language code
 	 *
 	 * @return string Translation in JSON format
 	 */
@@ -65,7 +65,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * Editor that already knows which content types are supported in its
 	 * slides.
 	 *
-	 * @param array $libraries List of library names + version to load info for
+	 * @param array|null $libraries List of library names + version to load info for
 	 *
 	 * @return array List of all libraries loaded
 	 */
@@ -167,7 +167,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * up. E.g. for files that are uploaded through the editor.
 	 *
 	 * @param H5peditorFile $file
-	 * @param               $content_id
+	 * @param int|null      $content_id
 	 */
 	public static function markFileForCleanup($file, $content_id = NULL) {
 		$path = ilH5PPlugin::getInstance()->getH5PFolder();
@@ -183,7 +183,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 
 		$h5p_tmp_file->setPath($path);
 
-		$h5p_tmp_file->create();
+		$h5p_tmp_file->store();
 	}
 
 

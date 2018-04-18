@@ -47,7 +47,10 @@ class ilH5PShowContent {
 	protected $usr;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
@@ -61,7 +64,7 @@ class ilH5PShowContent {
 	/**
 	 * @param string $style
 	 */
-	function addH5pStyle($style) {
+	public function addH5pStyle($style) {
 		if (!isset($this->h5p_styles[$style])) {
 			// Output style only once
 			$this->h5p_styles[$style] = true;
@@ -74,7 +77,7 @@ class ilH5PShowContent {
 	/**
 	 * @param ilTemplate $h5p_tpl
 	 */
-	function outputH5pStyles(ilTemplate $h5p_tpl) {
+	public function outputH5pStyles(ilTemplate $h5p_tpl) {
 		foreach ($this->h5p_styles_output as $style) {
 			$h5p_tpl->setCurrentBlock("stylesBlock");
 
@@ -90,7 +93,7 @@ class ilH5PShowContent {
 	/**
 	 * @param string $script
 	 */
-	function addH5pScript($script) {
+	public function addH5pScript($script) {
 		if (!isset($this->h5p_scripts[$script])) {
 			// Output script only once
 			$this->h5p_scripts[$script] = true;
@@ -103,7 +106,7 @@ class ilH5PShowContent {
 	/**
 	 * @param ilTemplate $h5p_tpl
 	 */
-	function outputH5pScripts(ilTemplate $h5p_tpl) {
+	public function outputH5pScripts(ilTemplate $h5p_tpl) {
 		foreach ($this->h5p_scripts_output as $script) {
 			$h5p_tpl->setCurrentBlock("scriptsBlock");
 
@@ -119,7 +122,7 @@ class ilH5PShowContent {
 	/**
 	 * @return array
 	 */
-	function getH5pScripts() {
+	public function getH5pScripts() {
 		$scripts = $this->h5p_scripts_output;
 
 		$this->h5p_scripts_output = [];
@@ -131,7 +134,7 @@ class ilH5PShowContent {
 	/**
 	 * @return array
 	 */
-	function getCore() {
+	public function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"url" => "/" . $this->pl->getH5PFolder(),
@@ -191,7 +194,7 @@ class ilH5PShowContent {
 	 *
 	 * @return string
 	 */
-	function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
+	public 	function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PContents.html");
 
 		if ($text === NULL) {
@@ -217,7 +220,7 @@ class ilH5PShowContent {
 	 *
 	 * @return string
 	 */
-	function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
+	public 	function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
 		$output = $this->getCoreIntegration();
 
 		$content_integration = $this->getContent($h5p_content);
@@ -389,7 +392,7 @@ class ilH5PShowContent {
 	 * @param int      $finished
 	 * @param int|null $time
 	 */
-	function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
+	public function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
 		$h5p_content = ilH5PContent::getContentById($content_id);
 		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
 			$h5p_object = ilH5PObject::getObjectById($h5p_content->getObjId());
@@ -450,7 +453,7 @@ class ilH5PShowContent {
 	 *
 	 * @return string|null
 	 */
-	function contentsUserData($content_id, $data_id, $sub_content_id, $data = NULL, $preload = false, $invalidate = false) {
+	public function contentsUserData($content_id, $data_id, $sub_content_id, $data = NULL, $preload = false, $invalidate = false) {
 		$h5p_content = ilH5PContent::getContentById($content_id);
 		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
 			$h5p_object = ilH5PObject::getObjectById($h5p_content->getObjId());

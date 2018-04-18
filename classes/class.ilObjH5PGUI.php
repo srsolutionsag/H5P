@@ -65,6 +65,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected $usr;
 
 
+	/**
+	 *
+	 */
 	protected function afterConstructor() {
 		global $DIC;
 
@@ -77,7 +80,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return string
 	 */
-	final function getType() {
+	public final function getType() {
 		return ilH5PPlugin::PLUGIN_ID;
 	}
 
@@ -85,7 +88,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @param string $cmd
 	 */
-	function performCommand($cmd) {
+	public function performCommand($cmd) {
 		$next_class = $this->ctrl->getNextClass($this);
 
 		switch ($next_class) {
@@ -185,7 +188,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 * @return ilPropertyFormGUI
 	 */
-	function initCreateForm($a_new_type) {
+	public function initCreateForm($a_new_type) {
 		$form = parent::initCreateForm($a_new_type);
 
 		return $form;
@@ -195,7 +198,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @param ilObjH5P $a_new_object
 	 */
-	function afterSave(ilObject $a_new_object) {
+	public function afterSave(ilObject $a_new_object) {
 		parent::afterSave($a_new_object);
 	}
 
@@ -203,8 +206,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return bool
 	 */
-	protected function hasResults() {
+	public function hasResults() {
 		return ilH5PResult::hasObjectResults($this->obj_id);
+	}
+
+
+	/**
+	 * @return ilH5PContentsTableGUI
+	 */
+	protected function getContentsTable() {
+		$table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+
+		return $table;
 	}
 
 
@@ -221,9 +234,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$this->toolbar->addButtonInstance($add_content);
 		}
 
-		$contents_table = new ilH5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+		$table = $this->getContentsTable();
 
-		$this->show($contents_table->getHTML());
+		$this->show($table->getHTML());
 	}
 
 
@@ -252,7 +265,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
-	 * @return ilPropertyFormGUI
+	 * @return ilH5PEditContentFormGUI
 	 */
 	protected function getEditorForm() {
 		$h5p_content = ilH5PContent::getCurrentContent();
@@ -342,13 +355,15 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = ilH5PContent::getCurrentContent();
 
-		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+		$this->ctrl->saveParameter($this, "xhfp_content");
 
 		$confirmation = new ilConfirmationGUI();
 
 		$confirmation->setFormAction($this->ctrl->getFormAction($this));
 
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_content_confirm"), $h5p_content->getTitle()));
+
+		$confirmation->addItem("xhfp_content", $h5p_content->getContentId(), $h5p_content->getTitle());
 
 		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_CONTENT);
 		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_MANAGE_CONTENTS);
@@ -424,7 +439,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		}
 
 		/*if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+			$this->ctrl->saveParamter($this, "xhfp_content");
 
 			$this->toolbar->addSeparator();
 
@@ -522,14 +537,24 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @return ilH5PResultsTableGUI
+	 */
+	protected function getResultsTable() {
+		$table = new ilH5PResultsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+
+		return $table;
+	}
+
+
+	/**
 	 *
 	 */
 	protected function results() {
 		$this->tabs_gui->activateTab(self::TAB_RESULTS);
 
-		$results_table = new ilH5PResultsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+		$table = $this->getResultsTable();
 
-		$this->show($results_table->getHTML());
+		$this->show($table->getHTML());
 	}
 
 
@@ -541,7 +566,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 
-		$this->ctrl->setParameter($this, "xhfp_user", $user_id);
+		$this->ctrl->saveParameter($this, "xhfp_user");
 
 		$confirmation = new ilConfirmationGUI();
 
@@ -554,6 +579,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$user = NULL;
 		}
 		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_results_confirm"), $user !== NULL ? $user->getFullname() : ""));
+
+		if ($user !== NULL) {
+			$confirmation->addItem("xhfp_user", $user->getId(), $user->getFullname());
+		}
 
 		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_RESULTS);
 		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_RESULTS);
@@ -591,37 +620,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
-	 *
+	 * @return ilH5PObjSettingsFormGUI
 	 */
 	protected function getSettingsForm() {
-		$form = new ilPropertyFormGUI();
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->setTitle($this->txt("xhfp_settings"));
-
-		$form->addCommandButton(self::CMD_SETTINGS_STORE, $this->txt("xhfp_save"));
-		$form->addCommandButton(self::CMD_MANAGE_CONTENTS, $this->txt("xhfp_cancel"));
-
-		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
-		$title->setRequired(true);
-		$title->setValue($this->object->getTitle());
-		$form->addItem($title);
-
-		$description = new ilTextAreaInputGUI($this->txt("xhfp_description"), "xhfp_description");
-		$description->setValue($this->object->getLongDescription());
-		$form->addItem($description);
-
-		$online = new ilCheckboxInputGUI($this->txt("xhfp_online"), "xhfp_online");
-		$online->setChecked($this->object->isOnline());
-		$form->addItem($online);
-
-		if (!$this->hasResults()) {
-			$solve_only_once = new ilCheckboxInputGUI($this->txt("xhfp_solve_contents_only_once"), "xhfp_solve_only_once");
-			$solve_only_once->setInfo($this->txt("xhfp_solve_contents_only_once_note"));
-			$solve_only_once->setChecked($this->object->isSolveOnlyOnce());
-			$form->addItem($solve_only_once);
-		}
+		$form = new ilH5PObjSettingsFormGUI($this);
 
 		return $form;
 	}
@@ -655,21 +657,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		$title = $form->getInput("xhfp_title");
-		$this->object->setTitle($title);
-
-		$description = $form->getInput("xhfp_description");
-		$this->object->setDescription($description);
-
-		$online = boolval($form->getInput("xhfp_online"));
-		$this->object->setOnline($online);
-
-		if (!$this->hasResults()) {
-			$solve_only_once = boolval($form->getInput("xhfp_solve_only_once"));
-			$this->object->setSolveOnlyOnce($solve_only_once);
-		}
-
-		$this->object->update();
+		$form->updateSettings();
 
 		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
 
@@ -705,7 +693,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return string
 	 */
-	static function getStartCmd() {
+	public static function getStartCmd() {
 		if (ilObjH5PAccess::hasWriteAccess()) {
 			return self::CMD_MANAGE_CONTENTS;
 		} else {
@@ -717,7 +705,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return string
 	 */
-	function getAfterCreationCmd() {
+	public function getAfterCreationCmd() {
 		return self::getStartCmd();
 	}
 
@@ -725,7 +713,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	/**
 	 * @return string
 	 */
-	function getStandardCmd() {
+	public function getStandardCmd() {
 		return self::getStartCmd();
 	}
 }

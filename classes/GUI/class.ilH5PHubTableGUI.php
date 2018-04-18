@@ -36,11 +36,11 @@ class ilH5PHubTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param ilH5PConfigGUI $a_parent_obj
-	 * @param string         $a_parent_cmd
+	 * @param ilH5PConfigGUI $parent
+	 * @param string         $parent_cmd
 	 */
-	public function __construct(ilH5PConfigGUI $a_parent_obj, $a_parent_cmd) {
-		parent::__construct($a_parent_obj, $a_parent_cmd);
+	public function __construct(ilH5PConfigGUI $parent, $parent_cmd) {
+		parent::__construct($parent, $parent_cmd);
 
 		global $DIC;
 
@@ -48,7 +48,17 @@ class ilH5PHubTableGUI extends ilTable2GUI {
 		$this->h5p = ilH5P::getInstance();
 		$this->pl = ilH5PPlugin::getInstance();
 
-		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj));
+		$this->setTable();
+	}
+
+
+	/**
+	 *
+	 */
+	protected function setTable() {
+		$parent = $this->getParentObject();
+
+		$this->setFormAction($this->ctrl->getFormAction($parent));
 
 		$this->setTitle($this->txt("xhfp_installed_libraries"));
 
@@ -84,7 +94,7 @@ class ilH5PHubTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	function initFilter() {
+	public function initFilter() {
 		$this->filter_title = new ilTextInputGUI($this->pl->txt("xhfp_library"), "xhfp_hub_title");
 		$this->addFilterItem($this->filter_title);
 		$this->filter_title->readFromSession();

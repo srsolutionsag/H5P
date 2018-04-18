@@ -11,7 +11,16 @@ class ilH5POption extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5POption extends ActiveRecord {
 	 *
 	 * @return ilH5POption|null
 	 */
-	static function getH5POption($name) {
+	public static function getH5POption($name) {
 		/**
 		 * @var ilH5POption|null $h5p_option
 		 */
@@ -40,7 +49,7 @@ class ilH5POption extends ActiveRecord {
 	 *
 	 * @return mixed
 	 */
-	static function getOption($name, $default = NULL) {
+	public static function getOption($name, $default = NULL) {
 		$h5p_option = self::getH5POption($name);
 
 		if ($h5p_option !== NULL) {
@@ -55,7 +64,7 @@ class ilH5POption extends ActiveRecord {
 	 * @param string $name
 	 * @param mixed  $value
 	 */
-	static function setOption($name, $value) {
+	public static function setOption($name, $value) {
 		$h5p_option = self::getH5POption($name);
 
 		if ($h5p_option !== NULL) {
@@ -131,6 +140,10 @@ class ilH5POption extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "id":
+				return intval($field_value);
+				break;
+
 			case "value":
 				return json_decode($field_value);
 				break;

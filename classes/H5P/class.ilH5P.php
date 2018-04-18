@@ -14,7 +14,7 @@ class ilH5P {
 	/**
 	 * @return ilH5P
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -89,6 +89,9 @@ class ilH5P {
 	protected $usr;
 
 
+	/**
+	 *
+	 */
 	protected function __construct() {
 		global $DIC;
 
@@ -103,7 +106,7 @@ class ilH5P {
 	 *
 	 * @return string[]
 	 */
-	function splitCsv($csv) {
+	public function splitCsv($csv) {
 		return explode(self::CSV_SEPARATOR, $csv);
 	}
 
@@ -113,7 +116,7 @@ class ilH5P {
 	 *
 	 * @return string
 	 */
-	function joinCsv(array $array) {
+	public function joinCsv(array $array) {
 		return implode(self::CSV_SEPARATOR, $array);
 	}
 
@@ -123,7 +126,7 @@ class ilH5P {
 	 *
 	 * @return string
 	 */
-	function timestampToDbDate($timestamp) {
+	public function timestampToDbDate($timestamp) {
 		$date_time = new DateTime("@" . $timestamp);
 
 		$formated = $date_time->format("Y-m-d H:i:s");
@@ -137,7 +140,7 @@ class ilH5P {
 	 *
 	 * @return int
 	 */
-	function dbDateToTimestamp($formated) {
+	public function dbDateToTimestamp($formated) {
 		$date_time = new DateTime($formated);
 
 		$timestamp = $date_time->getTimestamp();
@@ -151,7 +154,7 @@ class ilH5P {
 	 *
 	 * @return string
 	 */
-	function formatTime($time) {
+	public function formatTime($time) {
 		$formated_time = ilDatePresentation::formatDate(new ilDateTime($time, IL_CAL_UNIX));
 
 		return $formated_time;
@@ -161,7 +164,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PActionGUI
 	 */
-	function action() {
+	public function action() {
 		if ($this->action === NULL) {
 			$this->action = new ilH5PActionGUI();
 		}
@@ -173,7 +176,7 @@ class ilH5P {
 	/**
 	 * @return H5PContentValidator
 	 */
-	function content_validator() {
+	public function content_validator() {
 		if ($this->content_validator === NULL) {
 			$this->content_validator = new H5PContentValidator($this->framework(), $this->core());
 		}
@@ -185,7 +188,7 @@ class ilH5P {
 	/**
 	 * @return H5PCore
 	 */
-	function core() {
+	public function core() {
 		if ($this->core === NULL) {
 			$this->core = new H5PCore($this->framework(), $this->pl->getH5PFolder(), "/"
 				. $this->pl->getH5PFolder(), $this->usr->getLanguage(), false);
@@ -198,7 +201,7 @@ class ilH5P {
 	/**
 	 * @return H5peditor
 	 */
-	function editor() {
+	public function editor() {
 		if ($this->editor === NULL) {
 			$this->editor = new H5peditor($this->core(), $this->editor_storage(), $this->editor_ajax());
 		}
@@ -210,7 +213,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PEditorAjax
 	 */
-	function editor_ajax() {
+	public function editor_ajax() {
 		if ($this->editor_ajax === NULL) {
 			$this->editor_ajax = new ilH5PEditorAjax($this);
 		}
@@ -222,7 +225,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PEditorStorage
 	 */
-	function editor_storage() {
+	public function editor_storage() {
 		if ($this->editor_storage === NULL) {
 			$this->editor_storage = new ilH5PEditorStorage($this);
 		}
@@ -234,7 +237,7 @@ class ilH5P {
 	/**
 	 * @return H5PFileStorage
 	 */
-	function filesystem() {
+	public function filesystem() {
 		if ($this->filesystem === NULL) {
 			$this->filesystem = $this->core()->fs;
 		}
@@ -246,7 +249,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PFramework
 	 */
-	function framework() {
+	public function framework() {
 		if ($this->framework === NULL) {
 			$this->framework = new ilH5PFramework($this);
 		}
@@ -258,7 +261,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PShowContent
 	 */
-	function show_content() {
+	public function show_content() {
 		if ($this->show_content === NULL) {
 			$this->show_content = new ilH5PShowContent();
 		}
@@ -270,7 +273,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PShowEditor
 	 */
-	function show_editor() {
+	public function show_editor() {
 		if ($this->show_editor === NULL) {
 			$this->show_editor = new ilH5PShowEditor();
 		}
@@ -282,7 +285,7 @@ class ilH5P {
 	/**
 	 * @return ilH5PShowHub
 	 */
-	function show_hub() {
+	public function show_hub() {
 		if ($this->show_hub === NULL) {
 			$this->show_hub = new ilH5PShowHub();
 		}
@@ -294,7 +297,7 @@ class ilH5P {
 	/**
 	 * @return H5PStorage
 	 */
-	function storage() {
+	public function storage() {
 		if ($this->storage === NULL) {
 			$this->storage = new H5PStorage($this->framework(), $this->core());
 		}
@@ -306,7 +309,7 @@ class ilH5P {
 	/**
 	 * @return H5PValidator
 	 */
-	function validator() {
+	public function validator() {
 		if ($this->validator === NULL) {
 			$this->validator = new H5PValidator($this->framework(), $this->core());
 		}

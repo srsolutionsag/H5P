@@ -11,7 +11,16 @@ class ilH5PTmpFile extends ActiveRecord {
 	/**
 	 * @return string
 	 */
-	static function returnDbTableName() {
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
 		return self::TABLE_NAME;
 	}
 
@@ -21,7 +30,7 @@ class ilH5PTmpFile extends ActiveRecord {
 	 *
 	 * @return ilH5PTmpFile[]
 	 */
-	static function getFilesByPath($path) {
+	public static function getFilesByPath($path) {
 		/**
 		 * @var ilH5PTmpFile[] $h5p_tmp_files
 		 */
@@ -39,7 +48,7 @@ class ilH5PTmpFile extends ActiveRecord {
 	 *
 	 * @return ilH5PTmpFile[]
 	 */
-	static function getOldTmpFiles($older_than) {
+	public static function getOldTmpFiles($older_than) {
 		/**
 		 * @var ilH5PTmpFile[] $h5p_tmp_files
 		 */
@@ -109,6 +118,10 @@ class ilH5PTmpFile extends ActiveRecord {
 	 */
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
+			case "tmp_id":
+				return intval($field_value);
+				break;
+
 			case "created_at":
 				return ilH5P::getInstance()->dbDateToTimestamp($field_value);
 				break;
