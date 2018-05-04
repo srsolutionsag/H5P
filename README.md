@@ -29,6 +29,10 @@ sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services
 
 ILIAS username, password, client and interval need to be customized.
 
+### Documentation
+
+Click [here](./doc/Documentation.pdf) for a more detailed documentation.
+
 ### Contact
 info@studer-raimann.ch  
 https://studer-raimann.ch  
