@@ -5,7 +5,7 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
-git clone git@git.studer-raimann.ch:ILIAS/Plugins/H5P.git H5P
+git clone https://github.com/studer-raimann/H5P.git H5P
 ```
 
 ### Configure cronjob
@@ -28,6 +28,10 @@ sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services
 ```
 
 ILIAS username, password, client and interval need to be customized.
+
+### Documentation
+
+Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 
 ### Contact
 info@studer-raimann.ch  

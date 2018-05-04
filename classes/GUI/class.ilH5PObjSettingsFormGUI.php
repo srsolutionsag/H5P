@@ -59,12 +59,11 @@ class ilH5PObjSettingsFormGUI extends ilPropertyFormGUI {
 		$online->setChecked($this->parent->object->isOnline());
 		$this->addItem($online);
 
-		if (!$this->parent->hasResults()) {
-			$solve_only_once = new ilCheckboxInputGUI($this->txt("xhfp_solve_contents_only_once"), "xhfp_solve_only_once");
-			$solve_only_once->setInfo($this->txt("xhfp_solve_contents_only_once_note"));
-			$solve_only_once->setChecked($this->parent->object->isSolveOnlyOnce());
-			$this->addItem($solve_only_once);
-		}
+		$solve_only_once = new ilCheckboxInputGUI($this->txt("xhfp_solve_contents_only_once"), "xhfp_solve_only_once");
+		$solve_only_once->setInfo($this->txt("xhfp_solve_contents_only_once_note"));
+		$solve_only_once->setChecked($this->parent->object->isSolveOnlyOnce());
+		$solve_only_once->setDisabled($this->parent->hasResults());
+		$this->addItem($solve_only_once);
 	}
 
 
