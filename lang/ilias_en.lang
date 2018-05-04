@@ -59,7 +59,7 @@ xhfp_hub_refresh#:#Resresh HUB
 xhfp_hub_refreshed#:#HUB was successfully refreshed
 xhfp_install#:#Install
 xhfp_installed#:#Installed
-xhfp_installed_libraries#:#Installed libraries
+xhfp_installed_libraries#:#Libraries
 xhfp_installed_version#:#Installed version
 xhfp_keywords#:#Keywords
 xhfp_latest_version#:#Latest version
@@ -122,3 +122,4 @@ xhfp_visible#:#Visible
 xhfp_write#:#Write
 xhfp_year#:#Year
 xhfp_yes#:#Yes
+xhfp_msg_content_not_editable#:#The contents can not be edited, since there are already results.

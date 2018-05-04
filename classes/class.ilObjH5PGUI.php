@@ -227,6 +227,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function manageContents() {
 		$this->tabs_gui->activateTab(self::TAB_CONTENTS);
 
+		if ($this->hasResults()) {
+			ilUtil::sendInfo($this->txt('xhfp_msg_content_not_editable'));
+		}
+
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
 			$add_content = ilLinkButton::getInstance();
 			$add_content->setCaption($this->txt("xhfp_add_content"), false);
