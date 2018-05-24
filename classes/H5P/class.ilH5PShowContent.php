@@ -137,7 +137,7 @@ class ilH5PShowContent {
 	public function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => "/" . $this->pl->getH5PFolder(),
+			"url" => ILIAS_HTTP_PATH . "/" . $this->pl->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -172,7 +172,7 @@ class ilH5PShowContent {
 	 * @param array $core
 	 */
 	protected function addCore(&$core) {
-		$core_path = "/" . $this->pl->getCorePath() . "/";
+		$core_path = ILIAS_HTTP_PATH . "/" . $this->pl->getCorePath() . "/";
 
 		foreach (H5PCore::$styles as $style) {
 			$core["core"]["styles"][] = $core_path . $style;
@@ -194,7 +194,7 @@ class ilH5PShowContent {
 	 *
 	 * @return string
 	 */
-	public 	function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
+	public function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
 		$h5p_tpl = $this->pl->getTemplate("H5PContents.html");
 
 		if ($text === NULL) {
@@ -220,7 +220,7 @@ class ilH5PShowContent {
 	 *
 	 * @return string
 	 */
-	public 	function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
+	public function getH5PContentIntegration(ilH5PContent $h5p_content, $title = true) {
 		$output = $this->getCoreIntegration();
 
 		$content_integration = $this->getContent($h5p_content);
