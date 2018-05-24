@@ -34,7 +34,7 @@ class ilH5PCron {
 
 		// fix ilias init
 		global $DIC, $ilSetting;
-		$DIC["ilSetting"] = $ilSetting = new ilSessionMock();
+		$DIC["ilSetting"] = $ilSetting = new ilH5PSessionMock();
 
 		$ilCronStartup = new ilCronStartUp($data[3], $data[1], $data[2]);
 		$ilCronStartup->initIlias();
@@ -105,7 +105,7 @@ class ilH5PCron {
 	}
 }
 
-class ilSessionMock {
+class ilH5PSessionMock {
 
 	function get($what, $default) {
 		return $default;
