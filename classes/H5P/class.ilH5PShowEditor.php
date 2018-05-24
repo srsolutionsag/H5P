@@ -42,7 +42,7 @@ class ilH5PShowEditor {
 	public function getEditor() {
 		$editor = $this->h5p->show_content()->getCore();
 
-		$editor_path = "/" . $this->pl->getEditorPath();
+		$editor_path = ILIAS_HTTP_PATH . "/" . $this->pl->getEditorPath();
 
 		$assets = [
 			"js" => $editor["core"]["scripts"],
@@ -64,7 +64,7 @@ class ilH5PShowEditor {
 		}
 
 		$editor["editor"] = [
-			"filesPath" => "/" . $this->pl->getH5PFolder() . "/editor",
+			"filesPath" => ILIAS_HTTP_PATH . "/" . $this->pl->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
@@ -83,7 +83,7 @@ class ilH5PShowEditor {
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
 		}
-		$this->h5p->show_content()->addH5pScript("/" . $language_script);
+		$this->h5p->show_content()->addH5pScript(ILIAS_HTTP_PATH . "/" . $language_script);
 
 		return $editor;
 	}

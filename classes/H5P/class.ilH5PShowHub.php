@@ -108,7 +108,9 @@ class ilH5PShowHub {
 				"majorVersion" => $installed_library->getMajorVersion(),
 				"minorVersion" => $installed_library->getMinorVersion(),
 			], true), "icon.svg");
-			if (!file_exists(substr($icon, 1))) {
+			if (file_exists(substr($icon, 1))) {
+				$icon = ILIAS_HTTP_PATH . $icon;
+			} else {
 				$icon = "";
 			}
 
