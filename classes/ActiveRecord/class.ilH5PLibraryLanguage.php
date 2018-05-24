@@ -49,7 +49,7 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 	 * @param int    $minor_version
 	 * @param string $language
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public static function getTranslationJson($name, $major_version, $minor_version, $language) {
 		/**
@@ -65,7 +65,7 @@ class ilH5PLibraryLanguage extends ActiveRecord {
 		if ($h5p_library_language !== NULL) {
 			return $h5p_library_language->getTranslation();
 		} else {
-			return "{}";
+			return false;
 		}
 	}
 

@@ -33,7 +33,7 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 * @param int    $minor_version Minor part of version number
 	 * @param string $language      Language code
 	 *
-	 * @return string Translation in JSON format
+	 * @return string|false Translation in JSON format
 	 */
 	public function getLanguage($machine_name, $major_version, $minor_version, $language) {
 		return ilH5PLibraryLanguage::getTranslationJson($machine_name, $major_version, $minor_version, $language);
