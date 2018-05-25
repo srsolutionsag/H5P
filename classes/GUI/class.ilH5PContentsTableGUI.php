@@ -115,7 +115,9 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 		$this->ctrl->setParameter($parent, "xhfp_content", $content["content_id"]);
 
 		if (!$this->hasResults()) {
-			$this->tpl->touchBlock("upDownBlock");
+			$this->tpl->setCurrentBlock("upDownBlock");
+			$this->tpl->setVariable("IMG_ARROW_UP", ilUtil::getImagePath("arrow_up.svg"));
+			$this->tpl->setVariable("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
 		}
 
 		$this->tpl->setVariable("ID", $content["content_id"]);

@@ -21,6 +21,10 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 	 * @var ilH5PPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var ilTemplate
+	 */
+	protected $tpl;
 
 
 	/**
@@ -39,6 +43,7 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 		$this->h5p = ilH5P::getInstance();
 		$this->parent = $parent;
 		$this->pl = ilH5PPlugin::getInstance();
+		$this->tpl = $DIC->ui()->mainTemplate();
 
 		$this->setForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 	}

@@ -23,6 +23,7 @@
 		var $toolbar = $("#xhfp_edit_toolbar");
 		var $toolbar_tutorial = $("#xhfp_edit_toolbar_tutorial");
 		var $toolbar_example = $("#xhfp_edit_toolbar_example");
+		var $editor_error = $("#xhfp_editor_error");
 
 		var library = $library.val();
 		var params = $params.val();
@@ -61,6 +62,9 @@
 			frameWindow.H5PEditor.LibrarySelector.prototype.loadSemantics = function (library) {
 				// Original loadSemantics()
 				loadSemantics.apply(this, arguments);
+
+				// Hide error message
+				$editor_error.addClass("ilNoDisplay");
 
 				// Tutorial and example button
 				$toolbar.addClass("ilNoDisplay");
@@ -102,6 +106,8 @@
 		});
 
 		$form.submit(function () {
+			$editor_error.addClass("ilNoDisplay");
+
 			var $button = $form.find('input[type="submit"]:focus, input[type="SUBMIT"]:focus');
 
 			// Only submit button, no cancel button
@@ -114,7 +120,10 @@
 					return ($(el).html() !== "");
 				});
 				if (errors.length > 0) {
-					// Scroll to error message
+					// General error message
+					$editor_error.removeClass("ilNoDisplay");
+
+					// Scroll to first h5p content error message
 					$("html").scrollTop($(errors[0]).offset().top);
 
 					return false;
