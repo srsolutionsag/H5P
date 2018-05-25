@@ -4,7 +4,6 @@ objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#Copy H5P's
 rbac_create_xhfp#:#Create H5P
 xhfp_new#:#Create H5P
-
 xhfp_actions#:#Actions
 xhfp_add#:#Add
 xhfp_add_content#:#Add content
@@ -57,6 +56,7 @@ xhfp_hub#:#HUB
 xhfp_hub_last_refresh#:#HUB last refreshed: %s
 xhfp_hub_refresh#:#Resresh HUB
 xhfp_hub_refreshed#:#HUB was successfully refreshed
+xhfp_incomplete_content#:#The H5P content is incomplete! Please check all inputs and required fields!
 xhfp_install#:#Install
 xhfp_installed#:#Installed
 xhfp_installed_libraries#:#Libraries
@@ -66,6 +66,7 @@ xhfp_latest_version#:#Latest version
 xhfp_library#:#Library
 xhfp_libraries#:#Libraries
 xhfp_license#:#License
+xhfp_msg_content_not_editable#:#The contents can not be edited, since there are already results.
 xhfp_next_content#:#Next content
 xhfp_no#:#No
 xhfp_not_available#:#Not available
@@ -122,4 +123,3 @@ xhfp_visible#:#Visible
 xhfp_write#:#Write
 xhfp_year#:#Year
 xhfp_yes#:#Yes
-xhfp_msg_content_not_editable#:#The contents can not be edited, since there are already results.
