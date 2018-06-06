@@ -45,7 +45,7 @@ class ilH5PCron {
 	/**
 	 *
 	 */
-	public 	function run() {
+	public function run() {
 		$this->h5p = ilH5P::getInstance();
 
 		$this->deleteOldTmpFiles();
@@ -105,9 +105,18 @@ class ilH5PCron {
 	}
 }
 
+/**
+ *
+ */
 class ilH5PSessionMock {
 
-	function get($what, $default) {
+	/**
+	 * @param string       $what
+	 * @param string|false $default
+	 *
+	 * @return string|false
+	 */
+	function get($what, $default = false) {
 		return $default;
 	}
 }
