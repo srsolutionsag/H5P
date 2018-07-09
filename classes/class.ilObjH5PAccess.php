@@ -38,6 +38,10 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 *
 	 */
 	public function __construct() {
+		if (ILIAS_VERSION_NUMERIC >= "5.3") {
+			parent::__construct();
+		}
+
 		global $DIC;
 
 		$this->access = $DIC->access();
