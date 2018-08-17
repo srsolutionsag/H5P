@@ -5,7 +5,8 @@
  */
 class ilH5PObject extends ActiveRecord {
 
-b
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_obj";
 
 
