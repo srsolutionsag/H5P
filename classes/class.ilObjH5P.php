@@ -6,6 +6,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilObjH5P extends ilObjectPlugin {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */

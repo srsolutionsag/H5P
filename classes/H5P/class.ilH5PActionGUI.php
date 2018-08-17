@@ -7,6 +7,8 @@
  */
 class ilH5PActionGUI {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_H5P_ACTION = "h5pAction";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
 	const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
@@ -28,18 +30,12 @@ class ilH5PActionGUI {
 	 * @return string
 	 */
 	public static function getUrl($action, $return_class = NULL, $return_cmd = "") {
-		global $DIC;
-
-		$ctrl = $DIC->ctrl();
-
-		//$ctrl->clearParametersByClass(self::class);
-
-		$ctrl->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
+		self::dic()->ctrl()->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
 		if (self::isPageComponent()) {
-			$url = $ctrl->getLinkTargetByClass([ ilUIPluginRouterGUI::class, self::class ], self::CMD_H5P_ACTION, "", true, false);
+			$url = self::dic()->ctrl()->getLinkTargetByClass([ ilUIPluginRouterGUI::class, self::class ], self::CMD_H5P_ACTION, "", true, false);
 		} else {
-			$url = $ctrl->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
+			$url = self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
 		}
 
 		//$ctrl->clearParametersByClass(self::class);
@@ -52,13 +48,9 @@ class ilH5PActionGUI {
 	 * @param $a_gui_obj
 	 */
 	public static function forward($a_gui_obj) {
-		global $DIC;
+		self::dic()->ctrl()->setReturn($a_gui_obj, "");
 
-		$ctrl = $DIC->ctrl();
-
-		$ctrl->setReturn($a_gui_obj, "");
-
-		$ctrl->forwardCommand(ilH5P::getInstance()->action());
+		self::dic()->ctrl()->forwardCommand(ilH5P::getInstance()->action());
 	}
 
 
@@ -66,11 +58,7 @@ class ilH5PActionGUI {
 	 * @return bool
 	 */
 	protected static function isPageComponent() {
-		global $DIC;
-
-		$ctrl = $DIC->ctrl();
-
-		$callHistory = $ctrl->getCallHistory();
+		$callHistory = self::dic()->ctrl()->getCallHistory();
 
 		foreach ($callHistory as $history) {
 			if (strtolower($history["class"]) === strtolower(ilH5PConfigGUI::class)
@@ -84,33 +72,16 @@ class ilH5PActionGUI {
 
 
 	/**
-	 * @var \ILIAS\DI\Container
-	 */
-	protected $ctrl;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
 
 
 	/**
 	 *
 	 */
 	public function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->usr = $DIC->user();
 	}
 
 
@@ -118,11 +89,11 @@ class ilH5PActionGUI {
 	 *
 	 */
 	public function executeCommand() {
-		$next_class = $this->ctrl->getNextClass($this);
+		$next_class = self::dic()->ctrl()->getNextClass($this);
 
 		switch ($next_class) {
 			default:
-				$cmd = $this->ctrl->getCmd();
+				$cmd = self::dic()->ctrl()->getCmd();
 
 				switch ($cmd) {
 					case self::CMD_H5P_ACTION:
@@ -268,7 +239,8 @@ class ilH5PActionGUI {
 		$minor_version = filter_input(INPUT_GET, "minorVersion", FILTER_SANITIZE_NUMBER_INT);
 
 		if (!empty($name)) {
-			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, $this->usr->getLanguage(), "", $this->pl->getH5PFolder());
+			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
+				->getLanguage(), "", self::pl()->getH5PFolder());
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
 			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
@@ -339,9 +311,9 @@ class ilH5PActionGUI {
 
 		$h5p_library->store();
 
-		$this->ctrl->saveParameter($this, "xhfp_library");
+		self::dic()->ctrl()->saveParameter($this, "xhfp_library");
 
-		$this->ctrl->setParameter($this, "restrict", (!$restricted));
+		self::dic()->ctrl()->setParameter($this, "restrict", (!$restricted));
 
 		echo json_encode([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
@@ -363,15 +335,5 @@ class ilH5PActionGUI {
 		$this->h5p->show_content()->setFinished($content_id, $score, $max_score, $opened, $finished, $time);
 
 		H5PCore::ajaxSuccess();
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

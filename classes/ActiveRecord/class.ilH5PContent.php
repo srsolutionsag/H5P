@@ -5,6 +5,8 @@
  */
 class ilH5PContent extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_cont";
 
 
@@ -99,9 +101,7 @@ class ilH5PContent extends ActiveRecord {
 	 * @return int
 	 */
 	public static function getNumAuthors() {
-		global $DIC;
-
-		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
+		$result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
           FROM " . self::TABLE_NAME, [], []);
 
 		$count = $result->fetchAssoc()["count"];
@@ -445,11 +445,9 @@ class ilH5PContent extends ActiveRecord {
 	 *
 	 */
 	public function create() {
-		global $DIC;
-
 		$this->created_at = $this->updated_at = time();
 
-		$this->content_user_id = $DIC->user()->getId();
+		$this->content_user_id = self::dic()->user()->getId();
 
 		if ($this->obj_id === NULL) {
 			$this->obj_id = ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id"));

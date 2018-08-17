@@ -5,6 +5,7 @@
  */
 class ilH5PObject extends ActiveRecord {
 
+b
 	const TABLE_NAME = "rep_robj_xhfp_obj";
 
 

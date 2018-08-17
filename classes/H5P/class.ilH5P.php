@@ -5,6 +5,8 @@
  */
 class ilH5P {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
@@ -79,25 +81,13 @@ class ilH5P {
 	 * @var H5PValidator
 	 */
 	protected $validator = NULL;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
 
 
 	/**
 	 *
 	 */
 	protected function __construct() {
-		global $DIC;
-
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->usr = $DIC->user();
-		//$this->pl->fixWAC();
+		//self::pl()->fixWAC();
 	}
 
 
@@ -190,8 +180,8 @@ class ilH5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), $this->pl->getH5PFolder(), "/"
-				. $this->pl->getH5PFolder(), $this->usr->getLanguage(), false);
+			$this->core = new H5PCore($this->framework(), self::pl()->getH5PFolder(), "/" . self::pl()->getH5PFolder(), self::dic()->user()
+				->getLanguage(), false);
 		}
 
 		return $this->core;

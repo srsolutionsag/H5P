@@ -5,14 +5,12 @@
  */
 class ilH5PEditorStorage implements H5peditorStorage {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
 
 
 	/**
@@ -20,7 +18,6 @@ class ilH5PEditorStorage implements H5peditorStorage {
 	 */
 	public function __construct(ilH5P $h5p) {
 		$this->h5p = $h5p;
-		$this->pl = ilH5PPlugin::getInstance();
 	}
 
 

@@ -5,6 +5,8 @@
  */
 class ilH5PSolveStatus extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_solv";
 
 
@@ -270,9 +272,7 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 *
 	 */
 	public function create() {
-		global $DIC;
-
-		$this->user_id = $DIC->user()->getId();
+		$this->user_id = self::dic()->user()->getId();
 
 		parent::create();
 	}

@@ -5,38 +5,23 @@
  */
 class ilH5PShowHub {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const STATUS_ALL = "all";
 	const STATUS_INSTALLED = "installed";
 	const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
 	const STATUS_NOT_INSTALLED = "not_installed";
 	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilToolbarGUI
-	 */
-	protected $toolbar;
 
 
 	/**
 	 *
 	 */
 	public function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->toolbar = $DIC->toolbar();
 	}
 
 
@@ -188,14 +173,14 @@ class ilH5PShowHub {
 	 */
 	public function getH5PHubIntegration(ilH5PUploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, ilH5PHubTableGUI $table) {
 		$hub_refresh = ilLinkButton::getInstance();
-		$hub_refresh->setCaption($this->txt("xhfp_hub_refresh"), false);
-		$hub_refresh->setUrl($this->ctrl->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
-		$this->toolbar->addButtonInstance($hub_refresh);
+		$hub_refresh->setCaption(self::translate("xhfp_hub_refresh"), false);
+		$hub_refresh->setUrl(self::dic()->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
+		self::dic()->toolbar()->addButtonInstance($hub_refresh);
 
 		$hub_last_refresh = ilH5POption::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		return $this->getH5PIntegration($table->getHTML(), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());
+		return $this->getH5PIntegration($table->getHTML(), self::translate("xhfp_hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
 		/* @deprecated H5P Hub is not suitable for this ILIAS plugin
 		 * $hub = $this->h5p->show_editor()->getEditor();
 		 * $hub["hubIsEnabled"] = true;
@@ -204,10 +189,10 @@ class ilH5PShowHub {
 		 * "contentUserData" => ""
 		 * ];
 		 *
-		 * $this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PHub.js");
+		 * $this->h5p->show_content()->addH5pScript(self::directory() . "/js/ilH5PHub.js");
 		 *
 		 * return $this->getH5PIntegration($this->h5p->show_editor()
-		 * ->getH5PIntegration($hub), sprintf($this->txt("xhfp_hub_last_refresh"), $hub_last_refresh), $upload_form->getHTML());*/
+		 * ->getH5PIntegration($hub), self::translate("xhfp_hub_last_refresh", "",[$hub_last_refresh]), $upload_form->getHTML());*/
 	}
 
 
@@ -219,7 +204,7 @@ class ilH5PShowHub {
 	 * @return string
 	 */
 	protected function getH5PIntegration($hub, $hub_last_refresh, $upload_library) {
-		$h5p_tpl = $this->pl->getTemplate("H5PHub.html");
+		$h5p_tpl = self::template("H5PHub.html");
 
 		$h5p_tpl->setVariable("H5P_HUB", $hub);
 
@@ -282,7 +267,7 @@ class ilH5PShowHub {
 		]);
 
 		if ($message) {
-			ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_library"), $h5p_library->getTitle()), true);
+			ilUtil::sendSuccess(self::translate("xhfp_deleted_library", "", [ $h5p_library->getTitle() ]), true);
 		}
 	}
 
@@ -297,15 +282,5 @@ class ilH5PShowHub {
 		$details_form = new ilH5HubDetailsFormGUI($parent, $key);
 
 		return $details_form->getHTML();
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

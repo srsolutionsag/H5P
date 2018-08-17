@@ -5,34 +5,19 @@
  */
 class ilH5PShowEditor {
 
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
 
 
 	/**
 	 *
 	 */
 	public function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->usr = $DIC->user();
 	}
 
 
@@ -42,7 +27,7 @@ class ilH5PShowEditor {
 	public function getEditor() {
 		$editor = $this->h5p->show_content()->getCore();
 
-		$editor_path = ILIAS_HTTP_PATH . "/" . $this->pl->getEditorPath();
+		$editor_path = ILIAS_HTTP_PATH . "/" . self::pl()->getEditorPath();
 
 		$assets = [
 			"js" => $editor["core"]["scripts"],
@@ -64,7 +49,7 @@ class ilH5PShowEditor {
 		}
 
 		$editor["editor"] = [
-			"filesPath" => ILIAS_HTTP_PATH . "/" . $this->pl->getH5PFolder() . "/editor",
+			"filesPath" => ILIAS_HTTP_PATH . "/" . self::pl()->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
@@ -77,8 +62,8 @@ class ilH5PShowEditor {
 			"apiVersion" => H5PCore::$coreApi
 		];
 
-		$language = $this->usr->getLanguage();
-		$language_path = $this->pl->getEditorPath() . "/language/";
+		$language = self::dic()->user()->getLanguage();
+		$language_path = self::pl()->getEditorPath() . "/language/";
 		$language_script = $language_path . $language . ".js";
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
@@ -98,20 +83,20 @@ class ilH5PShowEditor {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$this->h5p->show_content()->addH5pScript($this->pl->getDirectory() . "/js/ilH5PEditor.js");
+		$this->h5p->show_content()->addH5pScript(self::directory() . "/js/ilH5PEditor.js");
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
 		$tutorial_toolbar->setHidden(true);
 
 		$tutorial = ilLinkButton::getInstance();
-		$tutorial->setCaption($this->txt("xhfp_tutorial"), false);
+		$tutorial->setCaption(self::translate("xhfp_tutorial"), false);
 		$tutorial->setTarget("_blank");
 		$tutorial->setId("xhfp_edit_toolbar_tutorial");
 		$tutorial_toolbar->addButtonInstance($tutorial);
 
 		$example = ilLinkButton::getInstance();
-		$example->setCaption($this->txt("xhfp_example"), false);
+		$example->setCaption(self::translate("xhfp_example"), false);
 		$example->setTarget("_blank");
 		$example->setId("xhfp_edit_toolbar_example");
 		$tutorial_toolbar->addButtonInstance($example);
@@ -127,7 +112,7 @@ class ilH5PShowEditor {
 	 * @return string
 	 */
 	public function getH5PIntegration(array $editor, $tutorial = NULL) {
-		$h5p_tpl = $this->pl->getTemplate("H5PEditor.html");
+		$h5p_tpl = self::template("H5PEditor.html");
 
 		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
 
@@ -143,7 +128,7 @@ class ilH5PShowEditor {
 
 		$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-		$h5p_tpl->setVariable("TXT_ALERT", $this->txt("xhfp_incomplete_content"));
+		$h5p_tpl->setVariable("TXT_ALERT", self::translate("xhfp_incomplete_content"));
 
 		return $h5p_tpl->get();
 	}
@@ -199,7 +184,7 @@ class ilH5PShowEditor {
 		$h5p_content = ilH5PContent::getContentById($content["id"]);
 
 		if ($message) {
-			ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+			ilUtil::sendSuccess(self::translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 
 		return $h5p_content;
@@ -228,7 +213,7 @@ class ilH5PShowEditor {
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		if ($message) {
-			ilUtil::sendSuccess(sprintf($this->txt("xhfp_saved_content"), $h5p_content->getTitle()), true);
+			ilUtil::sendSuccess(self::translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 	}
 
@@ -244,17 +229,7 @@ class ilH5PShowEditor {
 		]);
 
 		if ($message) {
-			ilUtil::sendSuccess(sprintf($this->txt("xhfp_deleted_content"), $h5p_content->getTitle()), true);
+			ilUtil::sendSuccess(self::translate("xhfp_deleted_content", "", [ $h5p_content->getTitle() ]), true);
 		}
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

@@ -5,10 +5,8 @@
  */
 class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
@@ -17,10 +15,6 @@ class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 	 * @var ilH5PConfigGUI
 	 */
 	protected $parent;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
 
 
 	/**
@@ -29,12 +23,8 @@ class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 	public function __construct(ilH5PConfigGUI $parent) {
 		parent::__construct();
 
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
 		$this->parent = $parent;
-		$this->pl = ilH5PPlugin::getInstance();
 
 		$this->setForm();
 	}
@@ -44,13 +34,13 @@ class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 	 *
 	 */
 	protected function setForm() {
-		$this->setFormAction($this->ctrl->getFormAction($this->parent));
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
-		$this->setTitle($this->txt("xhfp_upload_library"));
+		$this->setTitle(self::translate("xhfp_upload_library"));
 
-		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, $this->txt("xhfp_upload"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::translate("xhfp_upload"));
 
-		$upload_library = new ilFileInputGUI($this->txt("xhfp_library"), "xhfp_library");
+		$upload_library = new ilFileInputGUI(self::translate("xhfp_library"), "xhfp_library");
 		$upload_library->setRequired(true);
 		$upload_library->setSuffixes([ "h5p" ]);
 		$this->addItem($upload_library);
@@ -68,15 +58,5 @@ class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, NULL);
 
 		ob_end_clean();
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

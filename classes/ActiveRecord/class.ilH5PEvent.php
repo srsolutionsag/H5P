@@ -5,6 +5,8 @@
  */
 class ilH5PEvent extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_ev";
 
 
@@ -29,11 +31,9 @@ class ilH5PEvent extends ActiveRecord {
 	 * @return string[]
 	 */
 	public static function getAuthorsRecentlyUsedLibraries() {
-		global $DIC;
+		$user_id = self::dic()->user()->getId();
 
-		$user_id = $DIC->user()->getId();
-
-		$result = $DIC->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
+		$result = self::dic()->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
             FROM " . self::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
             GROUP BY library_name
@@ -205,11 +205,9 @@ class ilH5PEvent extends ActiveRecord {
 	 *
 	 */
 	public function create() {
-		global $DIC;
-
 		$this->created_at = time();
 
-		$this->user_id = $DIC->user()->getId();
+		$this->user_id = self::dic()->user()->getId();
 
 		parent::create();
 	}

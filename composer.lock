@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "90b1b65ccc8b5a750e833b7685d9596a",
+    "content-hash": "867a770e246f639f0086bb13c991f16e",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -118,6 +118,48 @@
                 "quiz"
             ],
             "time": "2018-01-22T12:39:38+00:00"
+        },
+        {
+            "name": "srag/dic",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/DIC.git",
+                "reference": "1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51",
+                "reference": "1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "srag\\DIC\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "srag",
+                    "email": "support@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Use all ILIAS globals in your class",
+            "homepage": "https://github.com/studer-raimann/DIC",
+            "keywords": [
+                "ILIAS",
+                "dic",
+                "globals",
+                "trait"
+            ],
+            "time": "2018-08-16T11:09:38+00:00"
         }
     ],
     "packages-dev": [],

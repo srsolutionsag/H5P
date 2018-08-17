@@ -5,14 +5,12 @@
  */
 class ilH5PShowContent {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var array
 	 */
 	protected $core = NULL;
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
 	/**
 	 * @var ilH5P
 	 */
@@ -33,31 +31,13 @@ class ilH5PShowContent {
 	 * @var array
 	 */
 	protected $h5p_styles_output = [];
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilToolbarGUI
-	 */
-	protected $toolbar;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
 
 
 	/**
 	 *
 	 */
 	public function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->toolbar = $DIC->toolbar();
-		$this->usr = $DIC->user();
 	}
 
 
@@ -137,7 +117,7 @@ class ilH5PShowContent {
 	public function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => ILIAS_HTTP_PATH . "/" . $this->pl->getH5PFolder(),
+			"url" => ILIAS_HTTP_PATH . "/" . self::pl()->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -146,8 +126,8 @@ class ilH5PShowContent {
 			],
 			"saveFreq" => false,
 			"user" => [
-				"name" => $this->usr->getFullname(),
-				"mail" => $this->usr->getEmail()
+				"name" => self::dic()->user()->getFullname(),
+				"mail" => self::dic()->user()->getEmail()
 			],
 			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"l10n" => [
@@ -172,7 +152,7 @@ class ilH5PShowContent {
 	 * @param array $core
 	 */
 	protected function addCore(&$core) {
-		$core_path = ILIAS_HTTP_PATH . "/" . $this->pl->getCorePath() . "/";
+		$core_path = ILIAS_HTTP_PATH . "/" . self::pl()->getCorePath() . "/";
 
 		foreach (H5PCore::$styles as $style) {
 			$core["core"]["styles"][] = $core_path . $style;
@@ -195,7 +175,7 @@ class ilH5PShowContent {
 	 * @return string
 	 */
 	public function getH5PContentsIntegration(ilH5PContent $h5p_content, $index, $count, $text = NULL) {
-		$h5p_tpl = $this->pl->getTemplate("H5PContents.html");
+		$h5p_tpl = self::template("H5PContents.html");
 
 		if ($text === NULL) {
 			$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content, false));
@@ -203,14 +183,14 @@ class ilH5PShowContent {
 			$h5p_tpl->setVariable("H5P_CONTENT", $text);
 		}
 
-		$h5p_tpl->setVariable("H5P_TITLE", $count_text = sprintf($this->txt("xhfp_content_count"), ($index + 1), $count) . " - "
+		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::translate("xhfp_content_count", "", [ ($index + 1), $count ]) . " - "
 			. $h5p_content->getTitle());
 
 		$this->outputH5pStyles($h5p_tpl);
 
 		$this->outputH5pScripts($h5p_tpl);
 
-		return $h5p_tpl->get() . $this->toolbar->getHTML();
+		return $h5p_tpl->get() . self::dic()->toolbar()->getHTML();
 	}
 
 
@@ -243,13 +223,13 @@ class ilH5PShowContent {
 	 * @return array
 	 */
 	protected function getContent(ilH5PContent $h5p_content) {
-		$this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+		self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 
 		$safe_parameters = $this->h5p->core()->filterParameters($content);
 
-		$user_id = $this->usr->getId();
+		$user_id = self::dic()->user()->getId();
 
 		$content_integration = [
 			"library" => H5PCore::libraryToString($content["library"]),
@@ -277,7 +257,7 @@ class ilH5PShowContent {
 
 		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, $this->pl->getH5PFolder());
+		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, self::pl()->getH5PFolder());
 		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
@@ -323,7 +303,7 @@ class ilH5PShowContent {
 
 			$this->core["contents"] = [];
 
-			$h5p_tpl = $this->pl->getTemplate("H5PCore.html");
+			$h5p_tpl = self::template("H5PCore.html");
 
 			$h5p_tpl->setVariable("H5P_CORE", json_encode($this->core));
 
@@ -347,7 +327,7 @@ class ilH5PShowContent {
 	 * @return string
 	 */
 	protected function getH5PIntegration(array $content, $content_id, $title, $embed_type) {
-		$h5p_tpl = $this->pl->getTemplate("H5PContent.html");
+		$h5p_tpl = self::template("H5PContent.html");
 
 		$h5p_tpl->setVariable("H5P_CONTENT", json_encode($content));
 
@@ -400,7 +380,7 @@ class ilH5PShowContent {
 			$h5p_object = NULL;
 		}
 
-		$user_id = $this->usr->getId();
+		$user_id = self::dic()->user()->getId();
 
 		$h5p_result = ilH5PResult::getResultByUserContent($user_id, $content_id);
 
@@ -461,7 +441,7 @@ class ilH5PShowContent {
 			$h5p_object = NULL;
 		}
 
-		$user_id = $this->usr->getId();
+		$user_id = self::dic()->user()->getId();
 
 		$h5p_content_user_data = ilH5PContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
 
@@ -506,15 +486,5 @@ class ilH5PShowContent {
 		} else {
 			return ($h5p_content_user_data !== NULL ? $h5p_content_user_data->getData() : NULL);
 		}
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

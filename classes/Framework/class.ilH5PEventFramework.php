@@ -5,6 +5,10 @@
  */
 class ilH5PEventFramework extends H5PEventBase {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+
+
 	/**
 	 * Adds event type, h5p library and timestamp to event before saving it.
 	 *

@@ -5,6 +5,8 @@
  */
 class ilH5PContentUserData extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_cont_dat";
 
 
@@ -240,11 +242,9 @@ class ilH5PContentUserData extends ActiveRecord {
 	 *
 	 */
 	public function create() {
-		global $DIC;
-
 		$this->created_at = $this->updated_at = time();
 
-		$this->user_id = $DIC->user()->getId();
+		$this->user_id = self::dic()->user()->getId();
 
 		parent::create();
 	}

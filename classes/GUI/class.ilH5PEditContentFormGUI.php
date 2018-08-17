@@ -5,10 +5,8 @@
  */
 class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
@@ -17,14 +15,6 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 	 * @var object
 	 */
 	protected $parent;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl;
 
 
 	/**
@@ -37,13 +27,8 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 	public function __construct($parent, ilH5PContent $h5p_content = NULL, $cmd_create, $cmd_update, $cmd_cancel) {
 		parent::__construct();
 
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
 		$this->parent = $parent;
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->tpl = $DIC->ui()->mainTemplate();
 
 		$this->setForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 	}
@@ -65,21 +50,21 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 		}
 
 		if ($h5p_content !== NULL) {
-			$this->ctrl->setParameter($this->parent, "xhfp_content", $h5p_content->getContentId());
+			self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $h5p_content->getContentId());
 		}
-		$this->setFormAction($this->ctrl->getFormAction($this->parent));
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
 		$this->setId("xhfp_edit_form");
 
-		$this->setTitle($this->txt($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
+		$this->setTitle(self::translate($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
 
 		$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
-		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, $this->txt($h5p_content
+		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, self::translate($h5p_content
 		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
-		$this->addCommandButton($cmd_cancel, $this->txt("xhfp_cancel"));
+		$this->addCommandButton($cmd_cancel, self::translate("xhfp_cancel"));
 
-		$title = new ilTextInputGUI($this->txt("xhfp_title"), "xhfp_title");
+		$title = new ilTextInputGUI(self::translate("xhfp_title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($h5p_content !== NULL ? $h5p_content->getTitle() : "");
 		$this->addItem($title);
@@ -91,7 +76,7 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 		}
 		$this->addItem($h5p_library);
 
-		$h5p = new ilCustomInputGUI($this->txt("xhfp_library"), "xhfp_library");
+		$h5p = new ilCustomInputGUI(self::translate("xhfp_library"), "xhfp_library");
 		$h5p->setRequired(true);
 		$h5p->setHtml($this->h5p->show_editor()->getH5PEditorIntegration($h5p_content));
 		$this->addItem($h5p);
@@ -100,15 +85,5 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 		$h5p_params->setRequired(true);
 		$h5p_params->setValue($params);
 		$this->addItem($h5p_params);
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

@@ -5,22 +5,16 @@
  */
 class ilH5PFramework implements H5PFrameworkInterface {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	private $messages = [
 		"error" => [],
 		"info" => []
 	];
 	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
 	/**
 	 * @var string
 	 */
@@ -29,22 +23,13 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @var string
 	 */
 	protected $uploaded_h5p_folder_path = NULL;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
 
 
 	/**
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = $h5p;
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->usr = $DIC->user();
 	}
 
 
@@ -61,7 +46,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 		return [
 			"name" => "ILIAS",
 			"version" => ILIAS_VERSION_NUMERIC,
-			"h5pVersion" => $this->pl->getVersion()
+			"h5pVersion" => self::pl()->getVersion()
 		];
 	}
 
@@ -142,7 +127,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			"code" => $code
 		];
 
-		if (!$this->ctrl->isAsynch()) {
+		if (!self::dic()->ctrl()->isAsynch()) {
 			ilUtil::sendFailure($message, true);
 		}
 	}
@@ -157,7 +142,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	public function setInfoMessage($message) {
 		$this->messages["info"][] = $message;
 
-		if (!$this->ctrl->isAsynch()) {
+		if (!self::dic()->ctrl()->isAsynch()) {
 			ilUtil::sendInfo($message, true);
 		}
 	}
@@ -244,7 +229,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 			"You'll be starting over." => "xhfp_start_over"
 		];
 		if (isset($messages_map[$message])) {
-			$message = $this->txt($messages_map[$message]);
+			$message = self::translate($messages_map[$message]);
 		}
 
 		// Replace placeholders
@@ -280,7 +265,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 * @return string URL to file
 	 */
 	public function getLibraryFileUrl($library_folder_name, $file_name) {
-		return "/" . $this->pl->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+		return "/" . self::pl()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
 	}
 
 
@@ -1055,7 +1040,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 	 *   Library object with id, name, major version and minor version.
 	 */
 	public function deleteLibrary($library) {
-		H5PCore::deleteFileTree($this->pl->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+		H5PCore::deleteFileTree(self::pl()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
 			. $library->minor_version);
 
 		$this->deleteLibraryDependencies($library->library_id);
@@ -1110,7 +1095,7 @@ class ilH5PFramework implements H5PFrameworkInterface {
 				"user_id" => $h5p_content->getContentUserId(),
 				"embedType" => $h5p_content->getEmbedType(),
 				"disable" => $h5p_content->getDisable(),
-				"language" => $this->usr->getLanguage(),
+				"language" => self::dic()->user()->getLanguage(),
 				"libraryId" => $h5p_content->getLibraryId(),
 			];
 
@@ -1472,15 +1457,5 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->store();
 		}
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
 	}
 }

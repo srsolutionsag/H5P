@@ -6,6 +6,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilObjH5PAccess extends ilObjectPluginAccess {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilObjH5PAccess
 	 */
@@ -25,27 +27,12 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 
 
 	/**
-	 * @var ilAccessHandler
-	 */
-	protected $access;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-
-
-	/**
 	 *
 	 */
 	public function __construct() {
 		if (ILIAS_VERSION_NUMERIC >= "5.3") {
 			parent::__construct();
 		}
-
-		global $DIC;
-
-		$this->access = $DIC->access();
-		$this->usr = $DIC->user();
 	}
 
 
@@ -68,23 +55,23 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 		}
 
 		if ($a_user_id == NULL) {
-			$a_user_id = $this->usr->getId();
+			$a_user_id = self::dic()->user()->getId();
 		}
 
 		switch ($a_permission) {
 			case "visible":
 			case "read":
-				return (($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
-					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+				return ((self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
+					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "delete":
-				return ($this->access->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
-					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+				return (self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
+					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "write":
 			case "edit_permission":
 			default:
-				return $this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id);
+				return self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id);
 		}
 	}
 
@@ -104,22 +91,18 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 
 
 	/**
-	 * @param class|string $class
-	 * @param string       $cmd
+	 * @param object|string $class
+	 * @param string        $cmd
 	 */
 	public static function redirectNonAccess($class, $cmd = "") {
-		global $DIC;
-
-		$ctrl = $DIC->ctrl();
-
-		ilUtil::sendFailure($DIC->language()->txt("permission_denied"), true);
+		ilUtil::sendFailure(self::translate("permission_denied", "", [], false), true); // TODO: Translate plugin
 
 		if (is_object($class)) {
-			$ctrl->clearParameters($class);
-			$ctrl->redirect($class, $cmd);
+			self::dic()->ctrl()->clearParameters($class);
+			self::dic()->ctrl()->redirect($class, $cmd);
 		} else {
-			$ctrl->clearParametersByClass($class);
-			$ctrl->redirectByClass($class, $cmd);
+			self::dic()->ctrl()->clearParametersByClass($class);
+			self::dic()->ctrl()->redirectByClass($class, $cmd);
 		}
 	}
 

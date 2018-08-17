@@ -19,6 +19,20 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         '101279c1523ab77899b4b6921c749836' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'srag\\DIC\\' => 9,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'srag\\DIC\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/dic/src',
+        ),
+    );
+
     public static $classMap = array (
         'ActiveRecord' => __DIR__ . '/../..' . '/../../../../../../../Services/ActiveRecord/class.ActiveRecord.php',
         'ilAdvancedSelectionListGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php',
@@ -89,11 +103,20 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'ilUIPluginRouterGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/classes/class.ilUIPluginRouterGUI.php',
         'ilUtil' => __DIR__ . '/../..' . '/../../../../../../../Services/Utilities/classes/class.ilUtil.php',
         'ilWACSignedPath' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php',
+        'srag\\DIC\\AbstractDIC' => __DIR__ . '/..' . '/srag/dic/src/AbstractDIC.php',
+        'srag\\DIC\\DICCache' => __DIR__ . '/..' . '/srag/dic/src/DICCache.php',
+        'srag\\DIC\\DICException' => __DIR__ . '/..' . '/srag/dic/src/DICException.php',
+        'srag\\DIC\\DICInterface' => __DIR__ . '/..' . '/srag/dic/src/DICInterface.php',
+        'srag\\DIC\\DICTrait' => __DIR__ . '/..' . '/srag/dic/src/DICTrait.php',
+        'srag\\DIC\\LegacyDIC' => __DIR__ . '/..' . '/srag/dic/src/LegacyDIC.php',
+        'srag\\DIC\\NewDIC' => __DIR__ . '/..' . '/srag/dic/src/NewDIC.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$classMap;
 
         }, null, ClassLoader::class);

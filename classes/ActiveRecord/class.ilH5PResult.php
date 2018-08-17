@@ -5,6 +5,8 @@
  */
 class ilH5PResult extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_res";
 
 
@@ -252,9 +254,7 @@ class ilH5PResult extends ActiveRecord {
 	 *
 	 */
 	public function create() {
-		global $DIC;
-
-		$this->user_id = $DIC->user()->getId();
+		$this->user_id = self::dic()->user()->getId();
 
 		parent::create();
 	}

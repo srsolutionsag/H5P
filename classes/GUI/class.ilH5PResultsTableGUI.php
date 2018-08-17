@@ -5,22 +5,16 @@
  */
 class ilH5PResultsTableGUI extends ilTable2GUI {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5PContent[]
 	 */
 	protected $contents;
 	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
 	 * @var int
 	 */
 	protected $obj_id;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
 	/**
 	 * @var array
 	 */
@@ -34,11 +28,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	public function __construct(ilObjH5PGUI $parent, $parent_cmd) {
 		parent::__construct($parent, $parent_cmd);
 
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->obj_id = $this->getParentObject()->object->getId();
-		$this->pl = ilH5PPlugin::getInstance();
 
 		$this->setTable();
 	}
@@ -50,9 +40,9 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	protected function setTable() {
 		$parent = $this->getParentObject();
 
-		$this->setFormAction($this->ctrl->getFormAction($parent));
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle($this->txt("xhfp_results"));
+		$this->setTitle(self::translate("xhfp_results"));
 
 		$this->getResults();
 
@@ -60,7 +50,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 		$this->initFilter();
 
-		$this->setRowTemplate("results_table_row.html", $this->pl->getDirectory());
+		$this->setRowTemplate("results_table_row.html", self::directory());
 
 		$this->setData($this->results);
 	}
@@ -105,14 +95,14 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function addColumns() {
-		$this->addColumn($this->txt("xhfp_user"));
+		$this->addColumn(self::translate("xhfp_user"));
 
 		foreach ($this->contents as $h5p_content) {
 			$this->addColumn($h5p_content->getTitle());
 		}
 
-		$this->addColumn($this->txt("xhfp_finished"));
-		$this->addColumn($this->txt("xhfp_actions"));
+		$this->addColumn(self::translate("xhfp_finished"));
+		$this->addColumn(self::translate("xhfp_actions"));
 	}
 
 
@@ -130,7 +120,7 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 	protected function fillRow($result) {
 		$parent = $this->getParentObject();
 
-		$this->ctrl->setParameter($parent, "xhfp_user", $result["user_id"]);
+		self::dic()->ctrl()->setParameter($parent, "xhfp_user", $result["user_id"]);
 
 		try {
 			$user = new ilObjUser($result["user_id"]);
@@ -147,32 +137,23 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 			if ($result[$content_key] !== NULL) {
 				$this->tpl->setVariable("POINTS", $result[$content_key]);
 			} else {
-				$this->tpl->setVariable("POINTS", $this->txt("xhfp_no_result"));
+				$this->tpl->setVariable("POINTS", self::translate("xhfp_no_result"));
 			}
 			$this->tpl->parseCurrentBlock();
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle($this->txt("xhfp_actions"));
+		$actions->setListTitle(self::translate("xhfp_actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
-			$actions->addItem($this->txt("xhfp_delete"), "", $this->ctrl->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+			$actions->addItem(self::translate("xhfp_delete"), "", self::dic()->ctrl()
+				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
 
-		$this->tpl->setVariable("FINISHED", $this->txt($result["finished"] ? "xhfp_yes" : "xhfp_no"));
+		$this->tpl->setVariable("FINISHED", self::translate($result["finished"] ? "xhfp_yes" : "xhfp_no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		$this->ctrl->setParameter($parent, "xhfp_user", NULL);
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
+		self::dic()->ctrl()->setParameter($parent, "xhfp_user", NULL);
 	}
 }

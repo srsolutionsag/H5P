@@ -6,6 +6,10 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+
+
 	/**
 	 * @return string
 	 */
@@ -64,8 +68,8 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		if (ilObjH5PAccess::_isOffline($this->obj_id)) {
 			$props[] = [
 				"alert" => true,
-				"property" => $this->txt("xhfp_status"),
-				"value" => $this->txt("xhfp_offline")
+				"property" => self::translate("xhfp_status"),
+				"value" => self::translate("xhfp_offline")
 			];
 		}
 

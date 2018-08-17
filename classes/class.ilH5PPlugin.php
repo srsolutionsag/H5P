@@ -6,6 +6,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = self::class;
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	/**
@@ -27,20 +29,10 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 * @var ilDB
-	 */
-	protected $db;
-
-
-	/**
 	 *
 	 */
 	public function __construct() {
 		parent::__construct();
-
-		global $DIC;
-
-		$this->db = $DIC->database();
 	}
 
 
@@ -90,21 +82,21 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	protected function uninstallCustom() {
 		$this->removeH5PFolder();
 
-		$this->db->dropTable(ilH5PContent::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PContentUserData::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PCounter::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PEvent::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibrary::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PObject::TABLE_NAME, false);
-		$this->db->dropTable(ilH5POption::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PResult::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PContent::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PContentUserData::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PCounter::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PEvent::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PLibrary::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PObject::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5POption::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PResult::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5PTmpFile::TABLE_NAME, false);
 
 		return true;
 	}

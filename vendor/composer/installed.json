@@ -115,5 +115,49 @@
             "interactive",
             "quiz"
         ]
+    },
+    {
+        "name": "srag/dic",
+        "version": "0.1.2",
+        "version_normalized": "0.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/studer-raimann/DIC.git",
+            "reference": "1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51",
+            "reference": "1c8f11103131bcaed8b330e4cf7e12f2ec3e7a51",
+            "shasum": ""
+        },
+        "time": "2018-08-16T11:09:38+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "srag\\DIC\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-only"
+        ],
+        "authors": [
+            {
+                "name": "srag",
+                "email": "support@studer-raimann.ch",
+                "homepage": "https://studer-raimann.ch",
+                "role": "Developer"
+            }
+        ],
+        "description": "Use all ILIAS globals in your class",
+        "homepage": "https://github.com/studer-raimann/DIC",
+        "keywords": [
+            "ILIAS",
+            "dic",
+            "globals",
+            "trait"
+        ]
     }
 ]

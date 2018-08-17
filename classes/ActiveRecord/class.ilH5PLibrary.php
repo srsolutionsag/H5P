@@ -5,6 +5,8 @@
  */
 class ilH5PLibrary extends ActiveRecord {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_lib";
 
 
@@ -112,9 +114,7 @@ class ilH5PLibrary extends ActiveRecord {
 	 * @return int
 	 */
 	public static function getLibraryUsage($library_id) {
-		global $DIC;
-
-		$result = $DIC->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
+		$result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . self::TABLE_NAME . " AS l
           JOIN " . ilH5PContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
           JOIN " . ilH5PContent::TABLE_NAME . " AS c ON cl.content_id = c.content_id
