@@ -11,7 +11,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	/**
-	 * @var self
+	 * @var self|null
 	 */
 	protected static $instance = NULL;
 
