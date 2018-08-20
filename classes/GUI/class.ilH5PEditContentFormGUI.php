@@ -39,7 +39,7 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 
 
 	/**
-	 * @param ilH5PContent|NULL $h5p_content
+	 * @param ilH5PContent|null $h5p_content
 	 * @param string            $cmd_create
 	 * @param string            $cmd_update
 	 * @param string            $cmd_cancel
