@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Result Table
+ * Class ilH5PResultsTableGUI
  */
 class ilH5PResultsTableGUI extends ilTable2GUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5PContent[]
@@ -22,6 +24,8 @@ class ilH5PResultsTableGUI extends ilTable2GUI {
 
 
 	/**
+	 * ilH5PResultsTableGUI constructor
+	 *
 	 * @param ilObjH5PGUI $parent
 	 * @param string      $parent_cmd
 	 */

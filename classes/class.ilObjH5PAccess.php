@@ -1,12 +1,15 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Access
+ * Class ilObjH5PAccess
  */
 class ilObjH5PAccess extends ilObjectPluginAccess {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var self
@@ -27,7 +30,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 
 
 	/**
-	 *
+	 * ilObjH5PAccess constructor
 	 */
 	public function __construct() {
 		if (ILIAS_VERSION_NUMERIC >= "5.3") {
@@ -95,7 +98,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * @param string        $cmd
 	 */
 	public static function redirectNonAccess($class, $cmd = "") {
-		ilUtil::sendFailure(self::translate("permission_denied", "", [], false), true); // TODO: Translate plugin
+		ilUtil::sendFailure(self::translate("xhfp_permission_denied"), true);
 
 		if (is_object($class)) {
 			self::dic()->ctrl()->clearParameters($class);

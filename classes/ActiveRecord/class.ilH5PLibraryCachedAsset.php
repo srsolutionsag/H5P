@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P library cached assets active record
+ * Class ilH5PLibraryCachedAsset
  */
 class ilH5PLibraryCachedAsset extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_lib_ca";
 
@@ -77,6 +79,17 @@ class ilH5PLibraryCachedAsset extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $hash = "";
+
+
+	/**
+	 * ilH5PLibraryCachedAsset constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

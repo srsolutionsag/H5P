@@ -1,6 +1,6 @@
 {
   "require": {
-    "srag/dic": "^0.1.2",
+    "srag/dic": "^0.2.1",
     "h5p/h5p-core": "^1.18.0",
     "h5p/h5p-editor": "^1.17.1"
   },

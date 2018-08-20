@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Hub Table
+ * Class ilH5PHubTableGUI
  */
 class ilH5PHubTableGUI extends ilTable2GUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilCheckboxInputGUI
@@ -30,6 +32,8 @@ class ilH5PHubTableGUI extends ilTable2GUI {
 
 
 	/**
+	 * ilH5PHubTableGUI constructor
+	 *
 	 * @param ilH5PConfigGUI $parent
 	 * @param string         $parent_cmd
 	 */

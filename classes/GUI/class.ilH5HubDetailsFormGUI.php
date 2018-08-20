@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Hub Details Form GUI
+ * Class ilH5HubDetailsFormGUI
  */
 class ilH5HubDetailsFormGUI extends ilPropertyFormGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -22,6 +24,8 @@ class ilH5HubDetailsFormGUI extends ilPropertyFormGUI {
 
 
 	/**
+	 * ilH5HubDetailsFormGUI constructor
+	 *
 	 * @param ilH5PConfigGUI $parent
 	 * @param string         $key
 	 */

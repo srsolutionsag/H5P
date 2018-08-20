@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Obj Settings Form GUI
+ * Class ilH5PObjSettingsFormGUI
  */
 class ilH5PObjSettingsFormGUI extends ilPropertyFormGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilObjH5PGUI
@@ -14,6 +16,8 @@ class ilH5PObjSettingsFormGUI extends ilPropertyFormGUI {
 
 
 	/**
+	 * ilH5PObjSettingsFormGUI constructor
+	 *
 	 * @param ilObjH5PGUI $parent
 	 */
 	public function __construct(ilObjH5PGUI $parent) {

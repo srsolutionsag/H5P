@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P framework
+ * Class ilH5PFramework
  */
 class ilH5PFramework implements H5PFrameworkInterface {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	private $messages = [
 		"error" => [],
@@ -26,6 +28,8 @@ class ilH5PFramework implements H5PFrameworkInterface {
 
 
 	/**
+	 * ilH5PFramework constructor
+	 *
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {

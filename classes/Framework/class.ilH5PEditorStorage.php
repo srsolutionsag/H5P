@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P editor storage
+ * Class ilH5PEditorStorage
  */
 class ilH5PEditorStorage implements H5peditorStorage {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -14,6 +16,8 @@ class ilH5PEditorStorage implements H5peditorStorage {
 
 
 	/**
+	 * ilH5PEditorStorage constructor
+	 *
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {

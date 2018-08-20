@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Upload Library Form GUI
+ * Class ilH5PUploadLibraryFormGUI
  */
 class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -18,6 +20,8 @@ class ilH5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
 
 	/**
+	 * ilH5PUploadLibraryFormGUI constructor
+	 *
 	 * @param ilH5PConfigGUI $parent
 	 */
 	public function __construct(ilH5PConfigGUI $parent) {

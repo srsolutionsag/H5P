@@ -1,15 +1,19 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P event
+ * Class ilH5PEventFramework
  */
 class ilH5PEventFramework extends H5PEventBase {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
 	/**
+	 * ilH5PEventFramework constructor
+	 *
 	 * Adds event type, h5p library and timestamp to event before saving it.
 	 *
 	 * Common event types with sub type:

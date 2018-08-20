@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P library hub cache active record
+ * Class ilH5PLibraryHubCache
  */
 class ilH5PLibraryHubCache extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_lib_hub";
 
@@ -275,6 +277,17 @@ class ilH5PLibraryHubCache extends ActiveRecord {
 	 * @con_is_notnull  true
 	 */
 	protected $owner = "";
+
+
+	/**
+	 * ilH5PLibraryHubCache constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

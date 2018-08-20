@@ -1,14 +1,17 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P config GUI
+ * Class ilH5PConfigGUI
  *
  * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_APPLY_FILTER = "applyFilter";
 	const CMD_CONFIGURE = "configure";
@@ -31,7 +34,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 *
+	 * ilH5PConfigGUI constructor
 	 */
 	public function __construct() {
 		$this->h5p = ilH5P::getInstance();
@@ -45,7 +48,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	public function performCommand($cmd) {
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
-		switch ($next_class) {
+		switch (strtolower($next_class)) {
 			default:
 				$this->setTabs();
 
@@ -98,13 +101,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
-		if (self::dic()->ctrl()->isAsynch()) {
-			echo $html;
-
-			exit();
-		} else {
-			self::dic()->tpl()->setContent($html);
-		}
+		self::output($html);
 	}
 
 

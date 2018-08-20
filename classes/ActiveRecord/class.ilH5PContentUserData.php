@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P content user data active record
+ * Class ilH5PContentUserData
  */
 class ilH5PContentUserData extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_cont_dat";
 
@@ -180,6 +182,17 @@ class ilH5PContentUserData extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $updated_at = 0;
+
+
+	/**
+	 * ilH5PContentUserData constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

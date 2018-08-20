@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P option active record
+ * Class ilH5POption
  */
 class ilH5POption extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_opt";
 
@@ -113,6 +115,17 @@ class ilH5POption extends ActiveRecord {
 	 * @con_is_notnull true
 	 */
 	protected $value = NULL;
+
+
+	/**
+	 * ilH5POption constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

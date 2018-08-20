@@ -1,13 +1,26 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P List GUI
+ * Class ilObjH5PListGUI
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+
+
+	/**
+	 * ilObjH5PListGUI constructor
+	 *
+	 * @param int $a_context
+	 */
+	public function __construct(int $a_context = self::CONTEXT_REPOSITORY) {
+		parent::__construct($a_context);
+	}
 
 
 	/**

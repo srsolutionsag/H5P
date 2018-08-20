@@ -1,8 +1,11 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P GUI
+ * Class ilObjH5PGUI
  *
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilRepositoryGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilObjPluginDispatchGUI
@@ -15,7 +18,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilObjH5PGUI extends ilObjectPluginGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_ADD_CONTENT = "addContent";
 	const CMD_CREATE_CONTENT = "createContent";
@@ -75,7 +78,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	public function performCommand($cmd) {
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
-		switch ($next_class) {
+		switch (strtolower($next_class)) {
 			default:
 				switch ($cmd) {
 					case self::CMD_FINISH_CONTENTS:
@@ -143,11 +146,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
-		if (self::dic()->ctrl()->isAsynch()) {
-			echo $html;
-
-			exit();
-		} else {
+		if (!self::dic()->ctrl()->isAsynch()) {
 			self::dic()->tpl()->setTitle($this->object->getTitle());
 
 			self::dic()->tpl()->setDescription($this->object->getDescription());
@@ -161,9 +160,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					]
 				]);
 			}
-
-			self::dic()->tpl()->setContent($html);
 		}
+
+		self::output($html);
 	}
 
 

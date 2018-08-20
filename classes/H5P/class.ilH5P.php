@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P instances
+ * Class ilH5P
  */
 class ilH5P {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var self
@@ -84,7 +86,7 @@ class ilH5P {
 
 
 	/**
-	 *
+	 * ilH5P constructor
 	 */
 	protected function __construct() {
 		//self::pl()->fixWAC();

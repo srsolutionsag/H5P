@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P counters active record
+ * Class ilH5PCounter
  */
 class ilH5PCounter extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_cnt";
 
@@ -119,9 +121,20 @@ class ilH5PCounter extends ActiveRecord {
 
 
 	/**
+	 * ilH5PCounter constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
+
+
+	/**
 	 *
 	 */
-	function addNum() {
+	public function addNum() {
 		$this->num ++;
 	}
 

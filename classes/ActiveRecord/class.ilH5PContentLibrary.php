@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P content library active record
+ * Class ilH5PContentLibrary
  */
 class ilH5PContentLibrary extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_cont_lib";
 
@@ -110,6 +112,17 @@ class ilH5PContentLibrary extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $drop_css = false;
+
+
+	/**
+	 * ilH5PContentLibrary constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

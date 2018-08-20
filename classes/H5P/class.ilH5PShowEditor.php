@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P show editor
+ * Class ilH5PShowEditor
  */
 class ilH5PShowEditor {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -14,7 +16,7 @@ class ilH5PShowEditor {
 
 
 	/**
-	 *
+	 * ilH5PShowEditor constructor
 	 */
 	public function __construct() {
 		$this->h5p = ilH5P::getInstance();

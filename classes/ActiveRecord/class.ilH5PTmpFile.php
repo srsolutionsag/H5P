@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P tmp files active record
+ * Class ilH5PTmpFile
  */
 class ilH5PTmpFile extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_tmp";
 
@@ -91,6 +93,17 @@ class ilH5PTmpFile extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $created_at = 0;
+
+
+	/**
+	 * ilH5PTmpFile constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

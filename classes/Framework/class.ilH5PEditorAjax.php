@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P editor ajax
+ * Class ilH5PEditorAjax
  */
 class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -14,6 +16,8 @@ class ilH5PEditorAjax implements H5PEditorAjaxInterface {
 
 
 	/**
+	 * ilH5PEditorAjax constructor
+	 *
 	 * @param ilH5P $h5p
 	 */
 	public function __construct(ilH5P $h5p) {

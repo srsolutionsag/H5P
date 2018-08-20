@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Content Table
+ * Class ilH5PContentsTableGUI
  */
 class ilH5PContentsTableGUI extends ilTable2GUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var int
@@ -14,6 +16,8 @@ class ilH5PContentsTableGUI extends ilTable2GUI {
 
 
 	/**
+	 * ilH5PContentsTableGUI constructor
+	 *
 	 * @param ilObjH5PGUI $parent
 	 * @param string      $parent_cmd
 	 */

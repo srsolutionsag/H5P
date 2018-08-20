@@ -1,13 +1,15 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P ajax action
+ * Class ilH5PActionGUI
  *
  * @ilCtrl_isCalledBy ilH5PActionGUI: ilUIPluginRouterGUI
  */
 class ilH5PActionGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_H5P_ACTION = "h5pAction";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
@@ -78,7 +80,7 @@ class ilH5PActionGUI {
 
 
 	/**
-	 *
+	 * ilH5PActionGUI constructor
 	 */
 	public function __construct() {
 		$this->h5p = ilH5P::getInstance();
@@ -91,7 +93,7 @@ class ilH5PActionGUI {
 	public function executeCommand() {
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
-		switch ($next_class) {
+		switch (strtolower($next_class)) {
 			default:
 				$cmd = self::dic()->ctrl()->getCmd();
 

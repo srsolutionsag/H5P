@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P show HUB
+ * Class ilH5PShowHub
  */
 class ilH5PShowHub {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const STATUS_ALL = "all";
 	const STATUS_INSTALLED = "installed";
@@ -18,7 +20,7 @@ class ilH5PShowHub {
 
 
 	/**
-	 *
+	 * ilH5PShowHub constructor
 	 */
 	public function __construct() {
 		$this->h5p = ilH5P::getInstance();

@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P solve status active record
+ * Class ilH5PSolveStatus
  */
 class ilH5PSolveStatus extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_solv";
 
@@ -215,6 +217,17 @@ class ilH5PSolveStatus extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $finished = false;
+
+
+	/**
+	 * ilH5PSolveStatus constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

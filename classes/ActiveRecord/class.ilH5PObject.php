@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P object active record
+ * Class ilH5PObject
  */
 class ilH5PObject extends ActiveRecord {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_obj";
 
@@ -73,6 +75,17 @@ class ilH5PObject extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $solve_only_once = false;
+
+
+	/**
+	 * ilH5PObject constructor
+	 *
+	 * @param int              $primary_key_value
+	 * @param arConnector|null $connector
+	 */
+	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+		parent::__construct($primary_key_value, $connector);
+	}
 
 
 	/**

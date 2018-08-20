@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P cronjob
+ * Class ilH5PCron
  */
 class ilH5PCron {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -14,9 +16,11 @@ class ilH5PCron {
 
 
 	/**
-	 *
+	 * ilH5PCron constructor
 	 */
-	public function __construct() { }
+	public function __construct() {
+
+	}
 
 
 	/**
@@ -108,9 +112,17 @@ class ilH5PCron {
 }
 
 /**
- *
+ * Class ilH5PSessionMock
  */
 class ilH5PSessionMock {
+
+	/**
+	 * ilH5PSessionMock constructor
+	 */
+	public function __construct() {
+
+	}
+
 
 	/**
 	 * @param string       $what

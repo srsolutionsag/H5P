@@ -1,11 +1,13 @@
 <?php
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Edit Content Form GUI
+ * Class ilH5PEditContentFormGUI
  */
 class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5P
@@ -18,8 +20,10 @@ class ilH5PEditContentFormGUI extends ilPropertyFormGUI {
 
 
 	/**
+	 * ilH5PEditContentFormGUI constructor
+	 *
 	 * @param object            $parent
-	 * @param ilH5PContent|NULL $h5p_content
+	 * @param ilH5PContent|null $h5p_content
 	 * @param string            $cmd_create
 	 * @param string            $cmd_update
 	 * @param string            $cmd_cancel

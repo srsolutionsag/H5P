@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/DIC.git DIC
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/dic": "^0.1.2"
+  "srag/dic": "^0.2.0"
 },
 ```
 And run a `composer install`.
@@ -26,16 +26,17 @@ If you deliver your plugin, the plugin has it's own copy of this library and the
 Hint: Because of multiple autoloaders of plugins, it could be, that different versions of this library exists and suddenly your plugin use an old version of an other plugin! So you should keep up to date your plugin with `composer update`.
 
 #### Use trait
-Then add the follow line to your class at top:
+Declare your class like follow:
 ```php
-...
+//...
+use srag\DIC\DICTrait;
+//...
 class x {
-
-	use srag\DIC\DICTrait;
-	
+	//...
+	use DICTrait;
+	//...
 	const PLUGIN_CLASS_NAME = ilXPlugin::class;
-	
-	...
+	//...
 }
 ```
 `ilXPlugin` is the name of your plugin class.
@@ -69,21 +70,25 @@ You can access the plugin class:
 self::pl();
 ```
 
-For translate use:
+For plugin dir use:
 ```php
 /**
- * Translate text
+ * Get plugin directory
  * 
- * @param string $key          Language key
- * @param string $module       Language module
- * @param array  $placeholders Placeholders in your language texst to replace with vsprintf
- * @param bool   $plugin       Plugin language or ILIAS core language?
- * @param string $lang         Possibly specific language, otherwise current language, if empty
- * @param string $default      Default text, if language key not exists
- *
- * @return string Translated text
+ * @return string Plugin directory
  */
-self::translate($key, $module = "", $placeholders = [], $plugin = true, $lang = "", $default = "MISSING %s");
+self::directory();
+```
+
+For Output html use:
+```php
+/**
+ * Output html
+ * 
+ * @param string|ilTemplate $html HTML code or ilTemplate instance
+ * @param bool              $main Display main skin?
+ */
+self::output($html, $main = true);
 ```
 
 For get a template use:
@@ -101,14 +106,21 @@ For get a template use:
 self::template($template, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true);
 ```
 
-For plugin dir use:
+For translate use:
 ```php
 /**
- * Get plugin directory
+ * Translate text
  * 
- * @return string Plugin directory
+ * @param string $key          Language key
+ * @param string $module       Language module
+ * @param array  $placeholders Placeholders in your language texst to replace with vsprintf
+ * @param bool   $plugin       Plugin language or ILIAS core language?
+ * @param string $lang         Possibly specific language, otherwise current language, if empty
+ * @param string $default      Default text, if language key not exists
+ *
+ * @return string Translated text
  */
-self::directory();
+self::translate($key, $module = "", $placeholders = [], $plugin = true, $lang = "", $default = "MISSING %s");
 ```
 
 #### Clean up
