@@ -8,13 +8,13 @@ class ilH5P {
 	use srag\DIC\DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var ilH5P
+	 * @var self
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return ilH5P
+	 * @return self
 	 */
 	public static function getInstance() {
 		if (self::$instance === NULL) {

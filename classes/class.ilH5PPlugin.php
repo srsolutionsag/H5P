@@ -11,13 +11,13 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	/**
-	 * @var ilH5PPlugin
+	 * @var self
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return ilH5PPlugin
+	 * @return self
 	 */
 	public static function getInstance() {
 		if (self::$instance === NULL) {

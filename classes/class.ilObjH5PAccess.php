@@ -9,13 +9,13 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	use srag\DIC\DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var ilObjH5PAccess
+	 * @var self
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return ilObjH5PAccess
+	 * @return self
 	 */
 	public static function getInstance() {
 		if (self::$instance === NULL) {
