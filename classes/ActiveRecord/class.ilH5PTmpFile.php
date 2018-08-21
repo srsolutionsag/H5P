@@ -8,8 +8,8 @@ use srag\DIC\DICTrait;
 class ilH5PTmpFile extends ActiveRecord {
 
 	use DICTrait;
-	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const TABLE_NAME = "rep_robj_xhfp_tmp";
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
 	/**
@@ -22,6 +22,7 @@ class ilH5PTmpFile extends ActiveRecord {
 
 	/**
 	 * @return string
+	 *
 	 * @deprecated
 	 */
 	public static function returnDbTableName() {
