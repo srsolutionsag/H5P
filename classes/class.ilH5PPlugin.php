@@ -10,9 +10,9 @@ use srag\DIC\DICTrait;
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 	use DICTrait;
-	const PLUGIN_CLASS_NAME = self::class;
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
+	const PLUGIN_CLASS_NAME = self::class;
 	/**
 	 * @var self|null
 	 */
