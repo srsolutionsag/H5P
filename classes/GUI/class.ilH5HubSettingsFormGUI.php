@@ -67,7 +67,7 @@ class ilH5HubSettingsFormGUI extends ilPropertyFormGUI {
 		$enable_lrs_content_types = boolval($this->getInput("enable_lrs_content_types"));
 		ilH5POption::setOption("enable_lrs_content_types", $enable_lrs_content_types);
 
-		$send_usage_statistics = boolval($this->getInput("xhfp_send_usage_statistics"));
+		$send_usage_statistics = boolval($this->getInput("send_usage_statistics"));
 		ilH5POption::setOption("send_usage_statistics", $send_usage_statistics);
 	}
 }
