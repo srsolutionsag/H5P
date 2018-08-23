@@ -18,7 +18,7 @@ class ilH5POption extends ActiveRecordConfig {
 	 * @return mixed
 	 */
 	public static function getOption($name, $default_value = NULL) {
-		return self::getJsonValue($name, $default_value);
+		return self::getJsonValue($name, false, $default_value);
 	}
 
 
