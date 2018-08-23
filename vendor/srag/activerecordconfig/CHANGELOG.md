@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.2]
+- Second example update step in README.md
+
 ## [0.4.1]
 - Second example update step in README.md
 

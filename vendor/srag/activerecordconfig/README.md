@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.4.1"
+  "srag/activerecordconfig": "^0.4.2"
 },
 ```
 And run a `composer install`.
@@ -108,7 +108,13 @@ if (\srag\DIC\DICCache::dic()->database()->tableExists(ilXConfigOld::TABLE_NAME)
 		/**
 		 * @var ilXConfigOld $config
 		 */
-		ilXConfig::setStringValue($config->getName(), $config->getValue());
+		switch($config->getName()) {
+			case ilXConfig::KEY_SOME:
+				ilXConfig::setSome($config->getValue());
+				break;
+			default:
+				break;
+		}
 	}
 
 	\srag\DIC\DICCache::dic()->database()->dropTable(ilXConfigOld::TABLE_NAME);
