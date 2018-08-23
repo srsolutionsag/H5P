@@ -271,14 +271,14 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 
 
 	/**
-	 * @param string $name
-	 * @param bool   $assoc
-	 * @param mixed  $default_value
+	 * @param string     $name
+	 * @param bool       $assoc
+	 * @param mixed|null $default_value
 	 *
 	 * @return mixed
 	 */
 	public static final function getJsonValue($name, $assoc = false, $default_value = NULL) {
-		return json_decode(self::getXValue($name, $default_value), $assoc);
+		return json_decode(self::getXValue($name, json_encode($default_value)), $assoc);
 	}
 
 

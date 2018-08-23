@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.3]
+- Fix json default value
+
 ## [0.4.2]
 - Second example update step in README.md
 
