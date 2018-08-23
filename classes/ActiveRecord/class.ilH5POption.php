@@ -7,7 +7,7 @@ use srag\ActiveRecordConfig\ActiveRecordConfig;
  */
 class ilH5POption extends ActiveRecordConfig {
 
-	const TABLE_NAME = "rep_robj_xhfp_opt";
+	const TABLE_NAME = "rep_robj_xhfp_opt_n";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
