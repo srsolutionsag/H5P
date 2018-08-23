@@ -23,6 +23,7 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         's' => 
         array (
             'srag\\DIC\\' => 9,
+            'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
 
@@ -30,6 +31,10 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
+        ),
+        'srag\\ActiveRecordConfig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
     );
 
@@ -70,6 +75,7 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'ilH5PObjSettingsFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PObjSettingsFormGUI.php',
         'ilH5PObject' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PObject.php',
         'ilH5POption' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5POption.php',
+        'ilH5POptionOld' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5POptionOld.php',
         'ilH5PPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPlugin.php',
         'ilH5PResult' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PResult.php',
         'ilH5PResultsTableGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PResultsTableGUI.php',
@@ -103,6 +109,7 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'ilUIPluginRouterGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/classes/class.ilUIPluginRouterGUI.php',
         'ilUtil' => __DIR__ . '/../..' . '/../../../../../../../Services/Utilities/classes/class.ilUtil.php',
         'ilWACSignedPath' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php',
+        'srag\\ActiveRecordConfig\\ActiveRecordConfig' => __DIR__ . '/..' . '/srag/activerecordconfig/src/class.ActiveRecordConfig.php',
         'srag\\DIC\\AbstractDIC' => __DIR__ . '/..' . '/srag/dic/src/AbstractDIC.php',
         'srag\\DIC\\DICCache' => __DIR__ . '/..' . '/srag/dic/src/DICCache.php',
         'srag\\DIC\\DICException' => __DIR__ . '/..' . '/srag/dic/src/DICException.php',

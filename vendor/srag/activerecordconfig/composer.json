@@ -1,0 +1,33 @@
+{
+  "name": "srag/activerecordconfig",
+  "description": "Simple ActiveRecord config for ILIAS plugins",
+  "version": "0.4.1",
+  "type": "library",
+  "keywords": [
+    "ILIAS",
+    "ActiveRecord",
+    "Config"
+  ],
+  "homepage": "https://github.com/studer-raimann/ActiveRecordConfig",
+  "time": "",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "srag",
+      "email": "support@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support@studer-raimann.ch"
+  },
+  "require": {
+    "srag/dic": "^0.2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "srag\\ActiveRecordConfig\\": "src/"
+    }
+  }
+}

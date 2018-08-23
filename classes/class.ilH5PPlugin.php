@@ -97,6 +97,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		self::dic()->database()->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
 		self::dic()->database()->dropTable(ilH5PObject::TABLE_NAME, false);
 		self::dic()->database()->dropTable(ilH5POption::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilH5POptionOld::TABLE_NAME, false);
 		self::dic()->database()->dropTable(ilH5PResult::TABLE_NAME, false);
 		self::dic()->database()->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
 		self::dic()->database()->dropTable(ilH5PTmpFile::TABLE_NAME, false);

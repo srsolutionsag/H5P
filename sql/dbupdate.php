@@ -30,3 +30,18 @@ ilH5PSolveStatus::updateDB();
 
 ilH5PTmpFile::updateDB();
 ?>
+<#2>
+<?php
+ilH5POption::updateDB();
+
+if (\srag\DIC\DICCache::dic()->database()->tableExists(ilH5POptionOld::TABLE_NAME)) {
+	foreach (ilH5POptionOld::get() as $option) {
+		/**
+		 * @var ilH5POptionOld $option
+		 */
+		ilH5POption::setOption($option->getName(), $option->getValue());
+	}
+
+	\srag\DIC\DICCache::dic()->database()->dropTable(ilH5POptionOld::TABLE_NAME);
+}
+?>

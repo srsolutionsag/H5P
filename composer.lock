@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d15f10efe50863c15be3f0d9edda506a",
+    "content-hash": "2960d1dae136cd82cd708ae9765807c4",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -118,6 +118,50 @@
                 "quiz"
             ],
             "time": "2018-01-22T12:39:38+00:00"
+        },
+        {
+            "name": "srag/activerecordconfig",
+            "version": "0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
+                "reference": "dcf8a196ade7682283cf8014584bce52278af791"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/dcf8a196ade7682283cf8014584bce52278af791",
+                "reference": "dcf8a196ade7682283cf8014584bce52278af791",
+                "shasum": ""
+            },
+            "require": {
+                "srag/dic": "^0.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "srag\\ActiveRecordConfig\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "srag",
+                    "email": "support@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple ActiveRecord config for ILIAS plugins",
+            "homepage": "https://github.com/studer-raimann/ActiveRecordConfig",
+            "keywords": [
+                "ILIAS",
+                "activerecord",
+                "config"
+            ],
+            "time": "2018-08-23T08:44:13+00:00"
         },
         {
             "name": "srag/dic",

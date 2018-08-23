@@ -1,6 +1,6 @@
 <?php
 $id = "xhfp";
-$version = "1.0.0";
+$version = "1.0.1";
 $ilias_min_version = "5.2.0";
 $ilias_max_version = "5.3.999";
 $responsible = "studer + raimann ag";
