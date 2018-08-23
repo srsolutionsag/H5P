@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'srag\\Plugins\\H5P\\' => array($baseDir . '/src'),
     'srag\\DIC\\' => array($vendorDir . '/srag/dic/src'),
     'srag\\ActiveRecordConfig\\' => array($vendorDir . '/srag/activerecordconfig/src'),
 );

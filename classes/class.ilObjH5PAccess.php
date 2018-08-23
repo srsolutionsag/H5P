@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\ilH5PObject;
 
 /**
  * Class ilObjH5PAccess
@@ -116,10 +117,10 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * @return bool
 	 */
 	public static function _isOffline($a_obj_id) {
-		$h5p_object = ilH5PObject::getObjectById($a_obj_id);
+		$object = ilH5PObject::getObjectById(intval($a_obj_id));
 
-		if ($h5p_object !== NULL) {
-			return (!$h5p_object->isOnline());
+		if ($object !== NULL) {
+			return (!$object->isOnline());
 		} else {
 			return true;
 		}

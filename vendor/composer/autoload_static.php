@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
+class ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52
 {
     public static $files = array (
         '0c6f877f03a67a7485a2a748706e2f2f' => __DIR__ . '/..' . '/h5p/h5p-core/h5p.classes.php',
@@ -22,12 +22,17 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
+            'srag\\Plugins\\H5P\\' => 17,
             'srag\\DIC\\' => 9,
             'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'srag\\Plugins\\H5P\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
         'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
@@ -49,43 +54,9 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'ilDateTime' => __DIR__ . '/../..' . '/../../../../../../../Services/Calendar/classes/class.ilDateTime.php',
         'ilFileInputGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/Form/classes/class.ilFileInputGUI.php',
         'ilFormSectionHeaderGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/Form/classes/class.ilFormSectionHeaderGUI.php',
-        'ilH5HubDetailsFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5HubDetailsFormGUI.php',
-        'ilH5HubSettingsFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5HubSettingsFormGUI.php',
-        'ilH5P' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5P.php',
-        'ilH5PActionGUI' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PActionGUI.php',
+        'ilH5PActionGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PActionGUI.php',
         'ilH5PConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PConfigGUI.php',
-        'ilH5PContent' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PContent.php',
-        'ilH5PContentLibrary' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PContentLibrary.php',
-        'ilH5PContentUserData' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PContentUserData.php',
-        'ilH5PContentsTableGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PContentsTableGUI.php',
-        'ilH5PCounter' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PCounter.php',
-        'ilH5PCron' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PCron.php',
-        'ilH5PEditContentFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PEditContentFormGUI.php',
-        'ilH5PEditorAjax' => __DIR__ . '/../..' . '/classes/Framework/class.ilH5PEditorAjax.php',
-        'ilH5PEditorStorage' => __DIR__ . '/../..' . '/classes/Framework/class.ilH5PEditorStorage.php',
-        'ilH5PEvent' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PEvent.php',
-        'ilH5PEventFramework' => __DIR__ . '/../..' . '/classes/Framework/class.ilH5PEventFramework.php',
-        'ilH5PFramework' => __DIR__ . '/../..' . '/classes/Framework/class.ilH5PFramework.php',
-        'ilH5PHubTableGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PHubTableGUI.php',
-        'ilH5PLibrary' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PLibrary.php',
-        'ilH5PLibraryCachedAsset' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PLibraryCachedAsset.php',
-        'ilH5PLibraryDependencies' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PLibraryDependencies.php',
-        'ilH5PLibraryHubCache' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PLibraryHubCache.php',
-        'ilH5PLibraryLanguage' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PLibraryLanguage.php',
-        'ilH5PObjSettingsFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PObjSettingsFormGUI.php',
-        'ilH5PObject' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PObject.php',
-        'ilH5POption' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5POption.php',
-        'ilH5POptionOld' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5POptionOld.php',
         'ilH5PPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPlugin.php',
-        'ilH5PResult' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PResult.php',
-        'ilH5PResultsTableGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PResultsTableGUI.php',
-        'ilH5PSessionMock' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PCron.php',
-        'ilH5PShowContent' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PShowContent.php',
-        'ilH5PShowEditor' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PShowEditor.php',
-        'ilH5PShowHub' => __DIR__ . '/../..' . '/classes/H5P/class.ilH5PShowHub.php',
-        'ilH5PSolveStatus' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PSolveStatus.php',
-        'ilH5PTmpFile' => __DIR__ . '/../..' . '/classes/ActiveRecord/class.ilH5PTmpFile.php',
-        'ilH5PUploadLibraryFormGUI' => __DIR__ . '/../..' . '/classes/GUI/class.ilH5PUploadLibraryFormGUI.php',
         'ilHiddenInputGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/Form/classes/class.ilHiddenInputGUI.php',
         'ilImageLinkButton' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/Button/classes/class.ilImageLinkButton.php',
         'ilLinkButton' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/Button/classes/class.ilLinkButton.php',
@@ -117,14 +88,48 @@ class ComposerStaticInitd686d2bf313673ee642a483e992b9db3
         'srag\\DIC\\DICTrait' => __DIR__ . '/..' . '/srag/dic/src/DICTrait.php',
         'srag\\DIC\\LegacyDIC' => __DIR__ . '/..' . '/srag/dic/src/LegacyDIC.php',
         'srag\\DIC\\NewDIC' => __DIR__ . '/..' . '/srag/dic/src/NewDIC.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PContent' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PContent.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PContentLibrary' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PContentLibrary.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PContentUserData' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PContentUserData.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PCounter' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PCounter.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PEvent' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PEvent.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PLibrary' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PLibrary.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PLibraryCachedAsset' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PLibraryCachedAsset.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PLibraryDependencies' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PLibraryDependencies.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PLibraryHubCache' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PLibraryHubCache.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PLibraryLanguage' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PLibraryLanguage.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PObject' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PObject.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5POption' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5POption.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5POptionOld' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5POptionOld.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PResult' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PResult.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PSolveStatus' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PSolveStatus.php',
+        'srag\\Plugins\\H5P\\ActiveRecord\\ilH5PTmpFile' => __DIR__ . '/../..' . '/src/ActiveRecord/class.ilH5PTmpFile.php',
+        'srag\\Plugins\\H5P\\Cron\\ilH5PCron' => __DIR__ . '/../..' . '/src/Cron/class.ilH5PCron.php',
+        'srag\\Plugins\\H5P\\Cron\\ilH5PSessionMock' => __DIR__ . '/../..' . '/src/Cron/class.ilH5PSessionMock.php',
+        'srag\\Plugins\\H5P\\Framework\\ilH5PEditorAjax' => __DIR__ . '/../..' . '/src/Framework/class.ilH5PEditorAjax.php',
+        'srag\\Plugins\\H5P\\Framework\\ilH5PEditorStorage' => __DIR__ . '/../..' . '/src/Framework/class.ilH5PEditorStorage.php',
+        'srag\\Plugins\\H5P\\Framework\\ilH5PEventFramework' => __DIR__ . '/../..' . '/src/Framework/class.ilH5PEventFramework.php',
+        'srag\\Plugins\\H5P\\Framework\\ilH5PFramework' => __DIR__ . '/../..' . '/src/Framework/class.ilH5PFramework.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5HubDetailsFormGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5HubDetailsFormGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5HubSettingsFormGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5HubSettingsFormGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PContentsTableGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PContentsTableGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PEditContentFormGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PEditContentFormGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PHubTableGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PHubTableGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PObjSettingsFormGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PObjSettingsFormGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PResultsTableGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PResultsTableGUI.php',
+        'srag\\Plugins\\H5P\\GUI\\ilH5PUploadLibraryFormGUI' => __DIR__ . '/../..' . '/src/GUI/class.ilH5PUploadLibraryFormGUI.php',
+        'srag\\Plugins\\H5P\\H5P\\ilH5P' => __DIR__ . '/../..' . '/src/H5P/class.ilH5P.php',
+        'srag\\Plugins\\H5P\\H5P\\ilH5PShowContent' => __DIR__ . '/../..' . '/src/H5P/class.ilH5PShowContent.php',
+        'srag\\Plugins\\H5P\\H5P\\ilH5PShowEditor' => __DIR__ . '/../..' . '/src/H5P/class.ilH5PShowEditor.php',
+        'srag\\Plugins\\H5P\\H5P\\ilH5PShowHub' => __DIR__ . '/../..' . '/src/H5P/class.ilH5PShowHub.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd686d2bf313673ee642a483e992b9db3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$classMap;
 
         }, null, ClassLoader::class);
     }

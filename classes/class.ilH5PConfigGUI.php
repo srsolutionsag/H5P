@@ -3,6 +3,10 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibrary;
+use srag\Plugins\H5P\GUI\ilH5HubSettingsFormGUI;
+use srag\Plugins\H5P\GUI\ilH5PHubTableGUI;
+use srag\Plugins\H5P\H5P\ilH5P;
 
 /**
  * Class ilH5PConfigGUI

@@ -6,6 +6,9 @@
     "srag/dic": "^0.2.1"
   },
   "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\H5P\\": "src/"
+    },
     "classmap": [
       "classes/",
       "../../../../../../../Services/AccessControl/classes/class.ilPermissionGUI.php",

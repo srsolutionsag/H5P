@@ -3,6 +3,14 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
+use srag\Plugins\H5P\ActiveRecord\ilH5PResult;
+use srag\Plugins\H5P\ActiveRecord\ilH5PSolveStatus;
+use srag\Plugins\H5P\GUI\ilH5PContentsTableGUI;
+use srag\Plugins\H5P\GUI\ilH5PEditContentFormGUI;
+use srag\Plugins\H5P\GUI\ilH5PObjSettingsFormGUI;
+use srag\Plugins\H5P\GUI\ilH5PResultsTableGUI;
+use srag\Plugins\H5P\H5P\ilH5P;
 
 /**
  * Class ilObjH5PGUI

@@ -3,6 +3,22 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
+use srag\Plugins\H5P\ActiveRecord\ilH5PContentLibrary;
+use srag\Plugins\H5P\ActiveRecord\ilH5PContentUserData;
+use srag\Plugins\H5P\ActiveRecord\ilH5PCounter;
+use srag\Plugins\H5P\ActiveRecord\ilH5PEvent;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibrary;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryCachedAsset;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryDependencies;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryHubCache;
+use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryLanguage;
+use srag\Plugins\H5P\ActiveRecord\ilH5PObject;
+use srag\Plugins\H5P\ActiveRecord\ilH5POption;
+use srag\Plugins\H5P\ActiveRecord\ilH5POptionOld;
+use srag\Plugins\H5P\ActiveRecord\ilH5PResult;
+use srag\Plugins\H5P\ActiveRecord\ilH5PSolveStatus;
+use srag\Plugins\H5P\ActiveRecord\ilH5PTmpFile;
 
 /**
  * Class ilH5PPlugin
