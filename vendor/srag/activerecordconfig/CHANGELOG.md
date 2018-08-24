@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.5]
+- PSR-4
+
 ## [0.4.4]
 - New DICTrait version
 
