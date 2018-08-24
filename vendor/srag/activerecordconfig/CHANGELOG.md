@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.7]
+- Removed `il` prefix from examples
+
+## [0.4.6]
+- Require ActiveRecord hint
+
 ## [0.4.5]
 - PSR-4
 

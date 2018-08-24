@@ -16,9 +16,18 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.4.5"
+  "srag/activerecordconfig": "^0.4.7"
 },
 ```
+
+If your plugin should support ILIAS 5.2 or earlier you need to require `ActiveRecord` like follow in your `composer.json` file:
+```json
+"autoload": {
+    "classmap": [
+      "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",
+```
+May you need to adjust the relative `ActiveRecord` path
+
 And run a `composer install`.
 
 If you deliver your plugin, the plugin has it's own copy of this library and the user doesn't need to install the library.
@@ -31,11 +40,11 @@ Declare your config class basically like follow:
 //...
 use srag\ActiveRecordConfig\ActiveRecordConfig;
 //...
-class ilXConfig extends ActiveRecordConfig {
+class XConfig extends ActiveRecordConfig {
 	//...
 	const TABLE_NAME = "db_table_name";
 	//...
-	const PLUGIN_CLASS_NAME = ilXPlugin::class;
+	const PLUGIN_CLASS_NAME = XPlugin::class;
 	//...
 }
 ```
@@ -64,7 +73,7 @@ And now add some configs:
 	}
 ```
 
-You can now access your config like `ilXConfig::getSome()` and set it like `ilXConfig::setSome("some")`.
+You can now access your config like `XConfig::getSome()` and set it like `XConfig::setSome("some")`.
 
 Internally all values are stored as strings and will casted with appropriates methods
 
@@ -85,15 +94,15 @@ Here some example update steps that can help you to migrate your data:
 ```php
 <#2>
 <?php
-ilXConfig::updateDB();
+XConfig::updateDB();
 
-if (\srag\DIC\DICCache::dic()->database()->tableExists(ilXConfigOld::TABLE_NAME)) {
-	$config = ilXConfigOld::getConfig();
+if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
+	$config = XConfigOld::getConfig();
 
-	ilXConfig::setSome($config->getSome());
+ 	XConfig::setSome($config->getSome());
 	///...
 
-	\srag\DIC\DICCache::dic()->database()->dropTable(ilXConfigOld::TABLE_NAME);
+	\srag\DIC\DICCache::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
 }
 ?>
 ```
@@ -101,23 +110,23 @@ or
 ```php
 <#2>
 <?php
-ilXConfig::updateDB();
+XConfig::updateDB();
 
-if (\srag\DIC\DICCache::dic()->database()->tableExists(ilXConfigOld::TABLE_NAME)) {
-	foreach (ilXConfigOld::get() as $config) {
+if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
+	foreach (XConfigOld::get() as $config) {
 		/**
-		 * @var ilXConfigOld $config
+		 * @var XConfigOld $config
 		 */
 		switch($config->getName()) {
-			case ilXConfig::KEY_SOME:
-				ilXConfig::setSome($config->getValue());
+			case XConfig::KEY_SOME:
+			 	XConfig::setSome($config->getValue());
 				break;
 			default:
 				break;
 		}
 	}
 
-	\srag\DIC\DICCache::dic()->database()->dropTable(ilXConfigOld::TABLE_NAME);
+	\srag\DIC\DICCache::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
 }
 ?>
 ```

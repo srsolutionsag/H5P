@@ -3,10 +3,10 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
-use srag\Plugins\H5P\ActiveRecord\ilH5PObject;
-use srag\Plugins\H5P\ActiveRecord\ilH5PSolveStatus;
-use srag\Plugins\H5P\H5P\ilH5P;
+use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\ActiveRecord\H5PObject;
+use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
+use srag\Plugins\H5P\H5P\H5P;
 
 /**
  * Class ilObjH5P
@@ -16,11 +16,11 @@ class ilObjH5P extends ilObjectPlugin {
 	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var ilH5P
+	 * @var H5P
 	 */
 	protected $h5p;
 	/**
-	 * @var ilH5PObject
+	 * @var H5PObject
 	 */
 	protected $object;
 
@@ -33,7 +33,7 @@ class ilObjH5P extends ilObjectPlugin {
 	public function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
 
-		$this->h5p = ilH5P::getInstance();
+		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -49,7 +49,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doCreate() {
-		$this->object = new ilH5PObject();
+		$this->object = new H5PObject();
 
 		$this->object->setObjId($this->id);
 
@@ -61,7 +61,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doRead() {
-		$this->object = ilH5PObject::getObjectById(intval($this->id));
+		$this->object = H5PObject::getObjectById(intval($this->id));
 	}
 
 
@@ -81,13 +81,13 @@ class ilObjH5P extends ilObjectPlugin {
 			$this->object->delete();
 		}
 
-		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
+		$h5p_contents = H5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
 			$this->h5p->show_editor()->deleteContent($h5p_content, false);
 		}
 
-		$h5p_solve_statuses = ilH5PSolveStatus::getByObject($this->id);
+		$h5p_solve_statuses = H5PSolveStatus::getByObject($this->id);
 		foreach ($h5p_solve_statuses as $h5p_solve_status) {
 			$h5p_solve_status->delete();
 		}
@@ -106,11 +106,11 @@ class ilObjH5P extends ilObjectPlugin {
 
 		$new_obj->object->store();
 
-		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
+		$h5p_contents = H5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
 			/**
-			 * @var ilH5PContent $h5p_content_copy
+			 * @var H5PContent $h5p_content_copy
 			 */
 
 			$h5p_content_copy = $h5p_content->copy();

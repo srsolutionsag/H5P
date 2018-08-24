@@ -3,10 +3,10 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibrary;
-use srag\Plugins\H5P\GUI\ilH5HubSettingsFormGUI;
-use srag\Plugins\H5P\GUI\ilH5PHubTableGUI;
-use srag\Plugins\H5P\H5P\ilH5P;
+use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
+use srag\Plugins\H5P\GUI\H5HubSettingsFormGUI;
+use srag\Plugins\H5P\GUI\H5PHubTableGUI;
+use srag\Plugins\H5P\H5P\H5P;
 
 /**
  * Class ilH5PConfigGUI
@@ -32,7 +32,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	const TAB_HUB = "hub";
 	const TAB_SETTINGS = "settings";
 	/**
-	 * @var ilH5P
+	 * @var H5P
 	 */
 	protected $h5p;
 
@@ -41,7 +41,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 * ilH5PConfigGUI constructor
 	 */
 	public function __construct() {
-		$this->h5p = ilH5P::getInstance();
+		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -110,10 +110,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 * @return ilH5PHubTableGUI
+	 * @return H5PHubTableGUI
 	 */
 	protected function getHubTable() {
-		$table = new ilH5PHubTableGUI($this, self::CMD_HUB);
+		$table = new H5PHubTableGUI($this, self::CMD_HUB);
 
 		return $table;
 	}
@@ -227,7 +227,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function deleteLibraryConfirm() {
 		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
+		$h5p_library = H5PLibrary::getCurrentLibrary();
 
 		$contents_count = $this->h5p->framework()->getNumContent($h5p_library->getLibraryId());
 		$usage = $this->h5p->framework()->getLibraryUsage($h5p_library->getLibraryId());
@@ -262,7 +262,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deleteLibrary() {
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
+		$h5p_library = H5PLibrary::getCurrentLibrary();
 
 		$this->h5p->show_hub()->deleteLibrary($h5p_library);
 
@@ -271,10 +271,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 * @return ilH5HubSettingsFormGUI
+	 * @return H5HubSettingsFormGUI
 	 */
 	protected function getSettingsForm() {
-		$form = new ilH5HubSettingsFormGUI($this);
+		$form = new H5HubSettingsFormGUI($this);
 
 		return $form;
 	}

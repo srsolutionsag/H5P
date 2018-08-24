@@ -3,22 +3,22 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContentLibrary;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContentUserData;
-use srag\Plugins\H5P\ActiveRecord\ilH5PCounter;
-use srag\Plugins\H5P\ActiveRecord\ilH5PEvent;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibrary;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryCachedAsset;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryDependencies;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryHubCache;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryLanguage;
-use srag\Plugins\H5P\ActiveRecord\ilH5PObject;
-use srag\Plugins\H5P\ActiveRecord\ilH5POption;
-use srag\Plugins\H5P\ActiveRecord\ilH5POptionOld;
-use srag\Plugins\H5P\ActiveRecord\ilH5PResult;
-use srag\Plugins\H5P\ActiveRecord\ilH5PSolveStatus;
-use srag\Plugins\H5P\ActiveRecord\ilH5PTmpFile;
+use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\ActiveRecord\H5PContentLibrary;
+use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
+use srag\Plugins\H5P\ActiveRecord\H5PCounter;
+use srag\Plugins\H5P\ActiveRecord\H5PEvent;
+use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
+use srag\Plugins\H5P\ActiveRecord\H5PLibraryCachedAsset;
+use srag\Plugins\H5P\ActiveRecord\H5PLibraryDependencies;
+use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
+use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
+use srag\Plugins\H5P\ActiveRecord\H5PObject;
+use srag\Plugins\H5P\ActiveRecord\H5POption;
+use srag\Plugins\H5P\ActiveRecord\H5POptionOld;
+use srag\Plugins\H5P\ActiveRecord\H5PResult;
+use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
+use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
 
 /**
  * Class ilH5PPlugin
@@ -101,22 +101,22 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	protected function uninstallCustom() {
 		$this->removeH5PFolder();
 
-		self::dic()->database()->dropTable(ilH5PContent::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PContentUserData::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PCounter::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PEvent::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PLibrary::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PObject::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5POption::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5POptionOld::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PResult::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilH5PTmpFile::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PContent::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PContentLibrary::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PContentUserData::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PCounter::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PEvent::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PLibrary::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PLibraryCachedAsset::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PLibraryHubCache::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PLibraryLanguage::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PLibraryDependencies::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PObject::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5POption::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5POptionOld::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PResult::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PSolveStatus::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PTmpFile::TABLE_NAME, false);
 
 		return true;
 	}

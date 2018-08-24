@@ -3,10 +3,10 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibrary;
-use srag\Plugins\H5P\ActiveRecord\ilH5PLibraryHubCache;
-use srag\Plugins\H5P\H5P\ilH5P;
+use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
+use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
+use srag\Plugins\H5P\H5P\H5P;
 
 /**
  * Class ilH5PActionGUI
@@ -58,7 +58,7 @@ class ilH5PActionGUI {
 	public static function forward($a_gui_obj) {
 		self::dic()->ctrl()->setReturn($a_gui_obj, "");
 
-		self::dic()->ctrl()->forwardCommand(ilH5P::getInstance()->action());
+		self::dic()->ctrl()->forwardCommand(H5P::getInstance()->action());
 	}
 
 
@@ -80,7 +80,7 @@ class ilH5PActionGUI {
 
 
 	/**
-	 * @var ilH5P
+	 * @var H5P
 	 */
 	protected $h5p;
 
@@ -89,7 +89,7 @@ class ilH5PActionGUI {
 	 * ilH5PActionGUI constructor
 	 */
 	public function __construct() {
-		$this->h5p = ilH5P::getInstance();
+		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -218,7 +218,7 @@ class ilH5PActionGUI {
 
 		$name = H5PCore::libraryFromString($library)["machineName"];
 
-		$h5p_hub_library = ilH5PLibraryHubCache::getLibraryByName($name);
+		$h5p_hub_library = H5PLibraryHubCache::getLibraryByName($name);
 
 		$output = [];
 
@@ -287,7 +287,7 @@ class ilH5PActionGUI {
 	protected function rebuildCache() {
 		$start = microtime(true);
 
-		$h5P_contents = ilH5PContent::getContentsNotFiltered();
+		$h5P_contents = H5PContent::getContentsNotFiltered();
 
 		$done = 0;
 
@@ -313,7 +313,7 @@ class ilH5PActionGUI {
 	protected function restrictLibrary() {
 		$restricted = filter_input(INPUT_GET, "restrict");
 
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
+		$h5p_library = H5PLibrary::getCurrentLibrary();
 
 		$h5p_library->setRestricted($restricted);
 
