@@ -145,7 +145,7 @@ trait DICTrait {
 			}
 		}
 
-		if (!(empty($txt) || ($txt[0] === "-" && $txt[strlen($txt) - 1] === "-"))) {
+		if (!(empty($txt) || ($txt[0] === "-" && $txt[strlen($txt) - 1] === "-") || $txt === "MISSING" || strpos($txt, "MISSING ") === 0)) {
 			$txt = vsprintf($txt, $placeholders);
 		} else {
 			if ($default !== NULL) {

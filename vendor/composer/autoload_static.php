@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52
+class ComposerStaticInit53c49459733c67ee06415d635bba0815
 {
     public static $files = array (
         '0c6f877f03a67a7485a2a748706e2f2f' => __DIR__ . '/..' . '/h5p/h5p-core/h5p.classes.php',
@@ -127,9 +127,9 @@ class ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9a629a2cd00db868dd666bc56b9a8e52::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit53c49459733c67ee06415d635bba0815::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit53c49459733c67ee06415d635bba0815::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit53c49459733c67ee06415d635bba0815::$classMap;
 
         }, null, ClassLoader::class);
     }

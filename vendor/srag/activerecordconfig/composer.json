@@ -1,7 +1,7 @@
 {
   "name": "srag/activerecordconfig",
   "description": "Simple ActiveRecord config for ILIAS plugins",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -23,7 +23,7 @@
     "email": "support@studer-raimann.ch"
   },
   "require": {
-    "srag/dic": "^0.2.1"
+    "srag/dic": "^0.2.2"
   },
   "autoload": {
     "psr-4": {
