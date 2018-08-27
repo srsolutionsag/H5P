@@ -1,4 +1,26 @@
 {
+  "name": "srag/Plugins/H5P",
+  "description": "",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "ILIAS",
+    "Plugin",
+    "H5P"
+  ],
+  "homepage": "https://github.com/studer-raimann/H5P",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "srag",
+      "email": "support-custom1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support-custom1@studer-raimann.ch"
+  },
   "require": {
     "php": "^5.6",
     "h5p/h5p-core": "^1.18.0",
