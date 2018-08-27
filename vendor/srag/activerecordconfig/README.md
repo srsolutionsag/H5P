@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.4.7"
+  "srag/activerecordconfig": "^0.5.0"
 },
 ```
 
@@ -48,7 +48,7 @@ class XConfig extends ActiveRecordConfig {
 	//...
 }
 ```
-`db_table_name` is the name of your db table.
+`db_table_name` is the name of your database table.
 `ilXPlugin` is the name of your plugin class ([DICTrait](https://github.com/studer-raimann/DIC)).
 
 And now add some configs:
@@ -73,9 +73,20 @@ And now add some configs:
 	}
 ```
 
+If you need to delete a config add:
+```php
+/**
+ * @param string $some
+ */
+public static function deleteSome() {
+	self::deleteName(self::KEY_SOME);
+}
+```
+
 You can now access your config like `XConfig::getSome()` and set it like `XConfig::setSome("some")`.
 
-Internally all values are stored as strings and will casted with appropriates methods
+Internally all values are stored as strings and will casted with appropriates methods.
+You can define a default value, if the value is `null`.
 
 It exists the follow datatypes:
 
@@ -89,8 +100,64 @@ It exists the follow datatypes:
 | json      | * getJsonValue<br>* setJsonValue           |
 | null      | * isNullValue<br>* setNullValue            |
 
-### Update steps
-Here some example update steps that can help you to migrate your data:
+The following additional methods exist:
+```php
+/**
+ * Get all names
+ *
+ * @return string[] [ "name", ... ]
+ */
+self::getNames();
+
+/**
+ * Get all values
+ *
+ * @return string[] [ [ "name" => value ], ... ]
+ */
+self::getValues();
+
+/**
+ * Set all values
+ *
+ * @param array $configs        [ [ "name" => value ], ... ]
+ * @param bool  $delete_existss Delete all exists name before
+ */
+self::setValues(array $configs, $delete_exists = false);
+
+/**
+ * Delete a name
+ * 
+ * @param string $name Name
+ */
+self::deleteName($name);
+```
+
+Other `ActiveRecord` methods should be not used!
+
+### Migrate from your old config class
+
+If you need to migrate from your old config class, so you need to keep your old config class in the code, so you can migrate the data
+
+Do the follow in your old config class:
+1. Rename your old config class from `XConfig` to `XConfigOld` (May simple `Old` subfix)
+2. Keep the old database name in `XConfigOld`
+3. Set all in `XConfigOld` to `@deprecated`
+4. May refactoring also you old config class, so all code is in one class (Such as use `TABLE_NAME` const)
+
+Do the follow in your new config class:
+1. Create a new class `XConfig` with a new database new (May simple `_n` subfix)
+2. Implement `XConfig` with `ActiveRecordConfig` like described above
+3. Replace all usages of `XConfigOld` with `XConfig` in your code
+
+Finally you need to add an update step to migrate your data
+1. Remove the old config class database install
+2. Add the new config class database install
+3. Migrate the data from the old config class to the new config class if the old exists and delete the old
+4. Add an uninstall step for both old and new config classes
+
+Here some examples, depending how yould old config class was:
+
+Column name based:
 ```php
 <#2>
 <?php
@@ -106,7 +173,8 @@ if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) 
 }
 ?>
 ```
-or
+
+Key and value based (Similar to this library):
 ```php
 <#2>
 <?php

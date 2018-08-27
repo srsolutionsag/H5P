@@ -1,10 +1,18 @@
 # Changelog
 
+## [0.5.0]
+- Updated PHPDoc
+- Make all methods `protected` and rename some
+  - `getAll` to `getValues`
+  - `setAll` to `setValues`
+  - `deleteConfig` to `deleteName`
+- Updated Readme
+
 ## [0.4.7]
 - Removed `il` prefix from examples
 
 ## [0.4.6]
-- Require ActiveRecord hint
+- Require `ActiveRecord` hint
 
 ## [0.4.5]
 - PSR-4
@@ -30,7 +38,7 @@
 - Supports default values for strings
 
 ## [0.2.0]
-- Rename `key` column to `name` because bug in ILIAS ActiveRecord (Not escape Keys in `WHERE`)
+- Rename `key` column to `name` because bug in ILIAS `ActiveRecord` (Not escape Keys in `WHERE`)
 
 ## [0.1.0]
 - First version
