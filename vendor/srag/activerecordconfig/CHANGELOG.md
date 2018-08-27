@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.5.2]
+- Adjustment suggestions
+
 ## [0.5.1]
 - Updated Readme
 

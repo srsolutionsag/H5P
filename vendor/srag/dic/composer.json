@@ -1,7 +1,7 @@
 {
   "name": "srag/dic",
   "description": "Use all ILIAS globals in your class",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -15,13 +15,13 @@
   "authors": [
     {
       "name": "srag",
-      "email": "support@studer-raimann.ch",
+      "email": "support-custom1@studer-raimann.ch",
       "homepage": "https://studer-raimann.ch",
       "role": "Developer"
     }
   ],
   "support": {
-    "email": "support@studer-raimann.ch"
+    "email": "support-custom1@studer-raimann.ch"
   },
   "autoload": {
     "psr-4": {

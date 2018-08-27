@@ -2,8 +2,8 @@
   "require": {
     "h5p/h5p-core": "^1.18.0",
     "h5p/h5p-editor": "^1.17.1",
-    "srag/activerecordconfig": "^0.5.1",
-    "srag/dic": "^0.2.2"
+    "srag/activerecordconfig": "^0.5.2",
+    "srag/dic": "^0.2.3"
   },
   "autoload": {
     "psr-4": {

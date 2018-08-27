@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e8136a8833cd7df0fe5e08068e14be1",
+    "content-hash": "6916c00cc2c90696032b532b76a4de05",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -121,20 +121,20 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "0.5.1",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "be450de922b6c903828703b1eb5c4795c46d290a"
+                "reference": "9be51c77c68544c5a763fa614460975a49cc5bb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/be450de922b6c903828703b1eb5c4795c46d290a",
-                "reference": "be450de922b6c903828703b1eb5c4795c46d290a",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/9be51c77c68544c5a763fa614460975a49cc5bb6",
+                "reference": "9be51c77c68544c5a763fa614460975a49cc5bb6",
                 "shasum": ""
             },
             "require": {
-                "srag/dic": "^0.2.2"
+                "srag/dic": "^0.2.3"
             },
             "type": "library",
             "autoload": {
@@ -149,7 +149,7 @@
             "authors": [
                 {
                     "name": "srag",
-                    "email": "support@studer-raimann.ch",
+                    "email": "support-custom1@studer-raimann.ch",
                     "homepage": "https://studer-raimann.ch",
                     "role": "Developer"
                 }
@@ -161,20 +161,20 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2018-08-27T07:37:50+00:00"
+            "time": "2018-08-27T09:05:58+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "0.2.2",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "592ee2c3640a24563b6367d7ce4d63f123ffea9a"
+                "reference": "4c36aa7d1240d8bf4966f9e2d1c5a5f37a991878"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/592ee2c3640a24563b6367d7ce4d63f123ffea9a",
-                "reference": "592ee2c3640a24563b6367d7ce4d63f123ffea9a",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/4c36aa7d1240d8bf4966f9e2d1c5a5f37a991878",
+                "reference": "4c36aa7d1240d8bf4966f9e2d1c5a5f37a991878",
                 "shasum": ""
             },
             "type": "library",
@@ -190,7 +190,7 @@
             "authors": [
                 {
                     "name": "srag",
-                    "email": "support@studer-raimann.ch",
+                    "email": "support-custom1@studer-raimann.ch",
                     "homepage": "https://studer-raimann.ch",
                     "role": "Developer"
                 }
@@ -203,7 +203,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-08-23T13:41:34+00:00"
+            "time": "2018-08-27T08:56:04+00:00"
         }
     ],
     "packages-dev": [],

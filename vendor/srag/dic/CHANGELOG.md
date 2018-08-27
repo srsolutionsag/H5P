@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.2.3]
+- Adjustment suggestions
+
 ## [0.2.2]
 - Use default if language text is MISSING
 
