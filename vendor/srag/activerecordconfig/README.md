@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.5.0"
+  "srag/activerecordconfig": "^0.5.1"
 },
 ```
 
@@ -150,10 +150,10 @@ Do the follow in your new config class:
 3. Replace all usages of `XConfigOld` with `XConfig` in your code
 
 Finally you need to add an update step to migrate your data
-1. Remove the old config class database install
-2. Add the new config class database install
-3. Migrate the data from the old config class to the new config class if the old exists and delete the old
-4. Add an uninstall step for both old and new config classes
+1. Remove the old config class database install in the `dbupdate.php` file. The old config class doesn't need anymore to be installed
+2. Add the new config class database install like `XConfig::updateDB();` in the `dbupdate.php` file
+3. Migrate the data from the old config class to the new config class if the old exists and delete the old in the `dbupdate.php` file
+4. Add an uninstall step for both old and new config classes in `beforeUninstall` or `uninstallCustom` of your plugin class. Also remove the old config database table to make sure that it also be removed if the plugin should be unistalled without update before it
 
 Here some examples, depending how yould old config class was:
 
@@ -167,7 +167,7 @@ if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) 
 	$config = XConfigOld::getConfig();
 
  	XConfig::setSome($config->getSome());
-	///...
+	//...
 
 	\srag\DIC\DICCache::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
 }
@@ -189,6 +189,7 @@ if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) 
 			case XConfig::KEY_SOME:
 			 	XConfig::setSome($config->getValue());
 				break;
+			//...
 			default:
 				break;
 		}

@@ -118,23 +118,23 @@
     },
     {
         "name": "srag/activerecordconfig",
-        "version": "0.5.0",
-        "version_normalized": "0.5.0.0",
+        "version": "0.5.1",
+        "version_normalized": "0.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-            "reference": "01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8"
+            "reference": "be450de922b6c903828703b1eb5c4795c46d290a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8",
-            "reference": "01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8",
+            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/be450de922b6c903828703b1eb5c4795c46d290a",
+            "reference": "be450de922b6c903828703b1eb5c4795c46d290a",
             "shasum": ""
         },
         "require": {
             "srag/dic": "^0.2.2"
         },
-        "time": "2018-08-27T06:32:30+00:00",
+        "time": "2018-08-27T07:37:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

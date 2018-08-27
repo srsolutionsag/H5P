@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8f365d77bffff33f264d6a9a96170b4",
+    "content-hash": "2e8136a8833cd7df0fe5e08068e14be1",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -121,16 +121,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "0.5.0",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8"
+                "reference": "be450de922b6c903828703b1eb5c4795c46d290a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8",
-                "reference": "01df0e1eabd418dadcc9e42c0e4c8a71a31b3fc8",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/be450de922b6c903828703b1eb5c4795c46d290a",
+                "reference": "be450de922b6c903828703b1eb5c4795c46d290a",
                 "shasum": ""
             },
             "require": {
@@ -161,7 +161,7 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2018-08-27T06:32:30+00:00"
+            "time": "2018-08-27T07:37:50+00:00"
         },
         {
             "name": "srag/dic",
