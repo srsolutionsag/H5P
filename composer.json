@@ -1,5 +1,6 @@
 {
   "require": {
+    "php": "^5.6",
     "h5p/h5p-core": "^1.18.0",
     "h5p/h5p-editor": "^1.17.1",
     "srag/activerecordconfig": "^0.5.2",
