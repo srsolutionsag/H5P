@@ -1,5 +1,5 @@
 {
-  "name": "srag/Plugins/H5P",
+  "name": "srag/plugins/h5p",
   "description": "",
   "version": "1.0.0",
   "type": "library",
