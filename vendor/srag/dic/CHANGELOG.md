@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.0]
+- DICStatic
+
 ## [0.3.0]
 - Rename some DIC functions:
   - `lng` to `language`

@@ -125,7 +125,7 @@ trait DICTrait {
 			if (empty($lang)) {
 				$txt = self::pl()->txt($key);
 			} else {
-				$lng = DICCache::lng($lang);
+				$lng = DICCache::language($lang);
 
 				$lng->loadLanguageModule(self::pl()->getPrefix());
 
@@ -135,7 +135,7 @@ trait DICTrait {
 			if (empty($lang)) {
 				$txt = self::dic()->language()->txt($key);
 			} else {
-				$lng = DICCache::lng($lang);
+				$lng = DICCache::language($lang);
 
 				if (!empty($module)) {
 					$lng->loadLanguageModule($module);

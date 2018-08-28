@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.5.3"
+  "srag/activerecordconfig": "^0.5.4"
 },
 ```
 
@@ -163,13 +163,13 @@ Column name based:
 <?php
 XConfig::updateDB();
 
-if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
+if (\srag\DIC\DICStatic::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
 	$config = XConfigOld::getConfig();
 
  	XConfig::setSome($config->getSome());
 	//...
 
-	\srag\DIC\DICCache::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
+	\srag\DIC\DICStatic::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
 }
 ?>
 ```
@@ -180,7 +180,7 @@ Key and value based (Similar to this library):
 <?php
 XConfig::updateDB();
 
-if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
+if (\srag\DIC\DICStatic::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) {
 	foreach (XConfigOld::get() as $config) {
 		/**
 		 * @var XConfigOld $config
@@ -195,7 +195,7 @@ if (\srag\DIC\DICCache::dic()->database()->tableExists(XConfigOld::TABLE_NAME)) 
 		}
 	}
 
-	\srag\DIC\DICCache::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
+	\srag\DIC\DICStatic::dic()->database()->dropTable(XConfigOld::TABLE_NAME);
 }
 ?>
 ```

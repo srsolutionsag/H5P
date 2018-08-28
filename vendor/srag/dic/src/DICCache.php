@@ -19,7 +19,7 @@ final class DICCache {
 	/**
 	 * @var ilLanguage[]
 	 */
-	private static $lng = [];
+	private static $languages = [];
 	/**
 	 * @var ilPlugin[]
 	 */
@@ -49,12 +49,12 @@ final class DICCache {
 	 *
 	 * @return ilLanguage
 	 */
-	public static function lng($lang) {
-		if (!isset(self::$lng[$lang])) {
-			self::$lng[$lang] = new ilLanguage($lang);
+	public static function language($lang) {
+		if (!isset(self::$languages[$lang])) {
+			self::$languages[$lang] = new ilLanguage($lang);
 		}
 
-		return self::$lng[$lang];
+		return self::$languages[$lang];
 	}
 
 

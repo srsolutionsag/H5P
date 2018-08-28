@@ -118,24 +118,24 @@
     },
     {
         "name": "srag/activerecordconfig",
-        "version": "0.5.3",
-        "version_normalized": "0.5.3.0",
+        "version": "0.5.4",
+        "version_normalized": "0.5.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-            "reference": "b2d4a4bed0e6a73bcb58a0aebaa1952b71526d2b"
+            "reference": "0e9b1cb38a09c0349504c4f9c61797ab1c601c8f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/b2d4a4bed0e6a73bcb58a0aebaa1952b71526d2b",
-            "reference": "b2d4a4bed0e6a73bcb58a0aebaa1952b71526d2b",
+            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/0e9b1cb38a09c0349504c4f9c61797ab1c601c8f",
+            "reference": "0e9b1cb38a09c0349504c4f9c61797ab1c601c8f",
             "shasum": ""
         },
         "require": {
             "php": "^5.6 || ^7.0",
-            "srag/dic": "^0.3.0"
+            "srag/dic": "^0.4.0"
         },
-        "time": "2018-08-28T09:00:20+00:00",
+        "time": "2018-08-28T09:51:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -165,23 +165,23 @@
     },
     {
         "name": "srag/dic",
-        "version": "0.3.0",
-        "version_normalized": "0.3.0.0",
+        "version": "0.4.0",
+        "version_normalized": "0.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "01a7b20792fc6c49ed60aabda8027548b7aabb02"
+            "reference": "add33e5c5cc3a8ea7bf433719f320d8910d71bc2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/01a7b20792fc6c49ed60aabda8027548b7aabb02",
-            "reference": "01a7b20792fc6c49ed60aabda8027548b7aabb02",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/add33e5c5cc3a8ea7bf433719f320d8910d71bc2",
+            "reference": "add33e5c5cc3a8ea7bf433719f320d8910d71bc2",
             "shasum": ""
         },
         "require": {
             "php": "^5.6 || ^7.0"
         },
-        "time": "2018-08-28T08:56:11+00:00",
+        "time": "2018-08-28T09:49:32+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
