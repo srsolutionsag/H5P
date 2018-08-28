@@ -73,10 +73,10 @@ trait DICTrait {
 			echo $html;
 		} else {
 			if ($main) {
-				self::dic()->tpl()->getStandardTemplate();
+				self::dic()->template()->getStandardTemplate();
 			}
-			self::dic()->tpl()->setContent($html);
-			self::dic()->tpl()->show();
+			self::dic()->template()->setContent($html);
+			self::dic()->template()->show();
 		}
 
 		exit;
@@ -133,7 +133,7 @@ trait DICTrait {
 			}
 		} else {
 			if (empty($lang)) {
-				$txt = self::dic()->lng()->txt($key);
+				$txt = self::dic()->language()->txt($key);
 			} else {
 				$lng = DICCache::lng($lang);
 

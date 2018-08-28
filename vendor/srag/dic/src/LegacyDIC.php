@@ -176,7 +176,7 @@ final class LegacyDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function lng() {
+	public function language() {
 		return $this->globals["lng"];
 	}
 
@@ -312,16 +312,16 @@ final class LegacyDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function toolbar() {
-		return $this->globals["ilToolbar"];
+	public function template() {
+		return $this->globals["tpl"];
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function tpl() {
-		return $this->globals["tpl"];
+	public function toolbar() {
+		return $this->globals["ilToolbar"];
 	}
 
 

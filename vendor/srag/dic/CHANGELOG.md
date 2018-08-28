@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.0]
+- Rename some DIC functions:
+  - `lng` to `language`
+  - `tpl` to `template`
+
 ## [0.2.3]
 - Adjustment suggestions
 

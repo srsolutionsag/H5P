@@ -200,7 +200,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function lng() {
+	public function language() {
 		return $this->dic->language();
 	}
 
@@ -344,16 +344,16 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function toolbar() {
-		return $this->dic->toolbar();
+	public function template() {
+		return $this->dic->ui()->mainTemplate();
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function tpl() {
-		return $this->dic->ui()->mainTemplate();
+	public function toolbar() {
+		return $this->dic->toolbar();
 	}
 
 

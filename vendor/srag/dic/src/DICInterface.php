@@ -167,7 +167,7 @@ interface DICInterface {
 	/**
 	 * @return ilLanguage
 	 */
-	public function lng();
+	public function language();
 
 
 	/**
@@ -271,15 +271,15 @@ interface DICInterface {
 
 
 	/**
-	 * @return ilToolbarGUI
+	 * @return ilTemplate Main-Template
 	 */
-	public function toolbar();
+	public function template();
 
 
 	/**
-	 * @return ilTemplate Main-Template
+	 * @return ilToolbarGUI
 	 */
-	public function tpl();
+	public function toolbar();
 
 
 	/**

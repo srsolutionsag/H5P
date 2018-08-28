@@ -155,12 +155,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 */
 	protected function show($html) {
 		if (!self::dic()->ctrl()->isAsynch()) {
-			self::dic()->tpl()->setTitle($this->object->getTitle());
+			self::dic()->template()->setTitle($this->object->getTitle());
 
-			self::dic()->tpl()->setDescription($this->object->getDescription());
+			self::dic()->template()->setDescription($this->object->getDescription());
 
 			if (!$this->object->isOnline()) {
-				self::dic()->tpl()->setAlertProperties([
+				self::dic()->template()->setAlertProperties([
 					[
 						"alert" => true,
 						"property" => self::translate("xhfp_status"),

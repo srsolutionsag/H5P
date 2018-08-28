@@ -79,12 +79,12 @@ class H5PContentsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function initUpDown() {
-		self::dic()->tpl()->addJavaScript(self::directory() . "/lib/waiter/js/waiter.js");
-		self::dic()->tpl()->addCss(self::directory() . "/lib/waiter/css/waiter.css");
-		self::dic()->tpl()->addOnLoadCode('xoctWaiter.init("waiter");');
+		self::dic()->template()->addJavaScript(self::directory() . "/lib/waiter/js/waiter.js");
+		self::dic()->template()->addCss(self::directory() . "/lib/waiter/css/waiter.css");
+		self::dic()->template()->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		self::dic()->tpl()->addJavaScript(self::directory() . "/js/ilH5PContentsTable.js");
-		self::dic()->tpl()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->getParentObject(), "", "", true)
+		self::dic()->template()->addJavaScript(self::directory() . "/js/ilH5PContentsTable.js");
+		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->getParentObject(), "", "", true)
 			. '");');
 	}
 

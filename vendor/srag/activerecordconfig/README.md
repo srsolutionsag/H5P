@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveR
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.5.2"
+  "srag/activerecordconfig": "^0.5.3"
 },
 ```
 

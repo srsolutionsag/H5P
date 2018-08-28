@@ -16,7 +16,7 @@ git clone git@git.studer-raimann.ch:ILIAS/Plugins/DIC.git DIC
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/dic": "^0.2.3"
+  "srag/dic": "^0.3.0"
 },
 ```
 And run a `composer install`.
@@ -122,6 +122,8 @@ For translate use:
  */
 self::translate($key, $module = "", $placeholders = [], $plugin = true, $lang = "", $default = "MISSING %s");
 ```
+
+Should you get an exception like `Warning: sprintf(): Too few arguments`, please use the placeholders feature and not direct `sprintf` in your code.
 
 If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICCache::dic()`
 
