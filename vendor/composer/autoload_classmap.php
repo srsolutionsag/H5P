@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ActiveRecord' => $baseDir . '/../../../../../../../Services/ActiveRecord/class.ActiveRecord.php',
+    'H5PRemoveDataConfirm' => $baseDir . '/classes/uninstall/class.H5PRemoveDataConfirm.php',
     'ilAdvancedSelectionListGUI' => $baseDir . '/../../../../../../../Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php',
     'ilCheckboxInputGUI' => $baseDir . '/../../../../../../../Services/Form/classes/class.ilCheckboxInputGUI.php',
     'ilConfirmationGUI' => $baseDir . '/../../../../../../../Services/Utilities/classes/class.ilConfirmationGUI.php',

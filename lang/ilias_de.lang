@@ -107,6 +107,13 @@ xhfp_summary#:#Zusammenfassung
 xhfp_thumbnail#:#Vorschaubild
 xhfp_title#:#Titel
 xhfp_tutorial#:#Tutorial
+xhfp_uninstall_confirm_remove_data#:#Möchten Sie die H5P-Daten auch entfernen? Allenfalls möchten Sie das H5P-Plugin nur deaktivieren?
+xhfp_uninstall_deactivate#:#H5P-Plugin nur deaktivieren
+xhfp_uninstall_data#:#H5P-Daten
+xhfp_uninstall_keep_data#:#H5P-Daten behalten
+xhfp_uninstall_msg_kept_data#:#Die H5P-Daten wurden behalten!
+xhfp_uninstall_msg_removed_data#:#Die H5P-Daten wurden auch entfernt!
+xhfp_uninstall_remove_data#:#Entferne H5P-Daten
 xhfp_updated_library#:#%old H5P Bibliothek aktualisiert.
 xhfp_updated_libraries#:#%old H5P Bibliotheken aktualisiert.
 xhfp_upgrade#:#Upgrade

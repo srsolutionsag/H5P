@@ -98,7 +98,37 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @return bool
 	 */
-	protected function uninstallCustom() {
+	protected function beforeUninstallCustom() {
+		$uninstall_remove_data = H5POption::getUninstallRemoveData();
+
+		if ($uninstall_remove_data === NULL) {
+			H5PRemoveDataConfirm::saveParameterByClass();
+
+			self::dic()->ctrl()->redirectByClass([
+				ilUIPluginRouterGUI::class,
+				H5PRemoveDataConfirm::class
+			], H5PRemoveDataConfirm::CMD_CONFIRM_REMOVE_DATA);
+
+			return false;
+		}
+
+		$uninstall_remove_data = boolval($uninstall_remove_data);
+
+		if ($uninstall_remove_data) {
+			$this->removeData();
+		} else {
+			// Ask again if reinstalled
+			H5POption::deleteUninstallRemoveData();
+		}
+
+		return true;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function removeData() {
 		$this->removeH5PFolder();
 
 		self::dic()->database()->dropTable(H5PContent::TABLE_NAME, false);
@@ -117,8 +147,14 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		self::dic()->database()->dropTable(H5PResult::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PSolveStatus::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PTmpFile::TABLE_NAME, false);
+	}
 
-		return true;
+
+	/**
+	 *
+	 */
+	protected function uninstallCustom() {
+
 	}
 
 

@@ -107,6 +107,13 @@ xhfp_summary#:#Samenvatting
 xhfp_thumbnail#:#Miniatuur
 xhfp_title#:#Titel
 xhfp_tutorial#:#Zelfstudie
+xhfp_uninstall_confirm_remove_data#:#MISSING xhfp_uninstall_confirm_remove_data
+xhfp_uninstall_deactivate#:#MISSING xhfp_uninstall_deactivate
+xhfp_uninstall_data#:#MISSING xhfp_uninstall_data
+xhfp_uninstall_keep_data#:#MISSING xhfp_uninstall_keep_data
+xhfp_uninstall_msg_kept_data#:#MISSING xhfp_uninstall_msg_kept_data
+xhfp_uninstall_msg_removed_data#:#MISSING xhfp_uninstall_msg_removed_data
+xhfp_uninstall_remove_data#:#MISSING xhfp_uninstall_remove_data
 xhfp_updated_library#:#Bijgewerkt %old H5P bibliotheek.
 xhfp_updated_libraries#:#Bijgewerkt %old H5P bibliotheken.
 xhfp_upgrade#:#Bijwerken
