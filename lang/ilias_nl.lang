@@ -1,108 +1,107 @@
 obj_xhfp#:#H5P
-obj_xhfp_duplicate#:#Copy H5P
+obj_xhfp_duplicate#:#MISSING obj_xhfp_duplicate
 objs_xhfp#:#H5P's
-objs_xhfp_duplicate#:#Copy H5P's
-rbac_create_xhfp#:#Create H5P
-xhfp_new#:#Create H5P
-xhfp_actions#:#Actions
-xhfp_add#:#Add
-xhfp_add_content#:#Add content
-xhfp_added_library#:#Added %new new H5P library.
-xhfp_added_libraries#:#Added %new new H5P libraries.
-xhfp_added_library_updated_library#:#Added %new new H5P library and updated %old old one.
-xhfp_added_library_updated_libraries#:#Added %new new H5P library and updated %old old ones.
-xhfp_added_libraries_updated_library#:#Added %new new H5P libraries and updated %old old one.
-xhfp_added_libraries_updated_libraries#:#Added %new new H5P libraries and updated %old old ones.
-xhfp_all#:#All
-xhfp_author#:#Author
-xhfp_by#:#by
-xhfp_cancel#:#Cancel
-xhfp_categories#:#Categories
-xhfp_close#:#Close
-xhfp_confirm#:#Confirm
-xhfp_confirm_action#:#Confirm action
-xhfp_confirm_action_text#:#Please confirm that you wish to proceed. This action is not reversible.
-xhfp_content_changed#:#This content has changed since you last used it.
-xhfp_content_count#:#Content %1$d of %2$d
-xhfp_content_types#:#Content Types
-xhfp_contents#:#Contents
-xhfp_delete#:#Delete
-xhfp_delete_content#:#Delete content
-xhfp_delete_content_confirm#:#Are you really want to delete the content: %s ?
-xhfp_deleted_content#:#Content %s deleted
-xhfp_delete_library_confirm#:#Are you really want to delete the library: %s ?
-xhfp_delete_library_in_use#:#The library is still in use!
-xhfp_deleted_library#:#Library %s deleted
-xhfp_delete_results_confirm#:#Are you really want to delete the results of %s?
-xhfp_deleted_results#:#Results of %s deleted
-xhfp_description#:#Description
-xhfp_details#:#Details
-xhfp_disable_fullscreen#:#Disable fullscreen
-xhfp_download#:#Download
-xhfp_download_content#:#Download this content as a H5P file.
-xhfp_edit#:#Edit
-xhfp_edit_content#:#Edit content
-xhfp_edit_permission#:#Edit permission
-xhfp_embed#:#Embed
-xhfp_embed_include_script#:#Include this script on your website if you want dynamic sizing of the embedded content:
-xhfp_enable_lrs_content_types#:#Enable LRS dependent content types.
-xhfp_enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
-xhfp_example#:#Example
-xhfp_finish#:#Finish
-xhfp_finished#:#Finished
-xhfp_fullscreen#:#Fullscreen
-xhfp_hide_advanced#:#Hide advanced
-xhfp_hub#:#HUB
-xhfp_hub_last_refresh#:#HUB last refreshed: %s
-xhfp_hub_refresh#:#Resresh HUB
-xhfp_hub_refreshed#:#HUB was successfully refreshed
-xhfp_incomplete_content#:#The H5P content is incomplete! Please check all inputs and required fields!
-xhfp_install#:#Install
-xhfp_installed#:#Installed
-xhfp_installed_libraries#:#Libraries
-xhfp_installed_version#:#Installed version
-xhfp_keywords#:#Keywords
-xhfp_latest_version#:#Latest version
-xhfp_library#:#Library
-xhfp_libraries#:#Libraries
-xhfp_license#:#License
-xhfp_msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn (eerst wissen).
-xhfp_next_content#:#Next content
-xhfp_no#:#No
-xhfp_not_available#:#Not available
-xhfp_no_content_copyright#:#No copyright information available for this content.
-xhfp_no_result#:#No result
-xhfp_not_installed#:#Not installed
-xhfp_offline#:#Offline
-xhfp_online#:#Online
-xhfp_only_not_used#:#Only not used
-xhfp_only_runnable#:#Only runnable
+objs_xhfp_duplicate#:#MISSING objs_xhfp_duplicate
+rbac_create_xhfp#:#MISSING rbac_create_xhfp
+xhfp_new#:#MISSING xhfp_new
+xhfp_actions#:#MISSING xhfp_actions
+xhfp_add#:#MISSING xhfp_add
+xhfp_add_content#:#MISSING xhfp_add_content
+xhfp_added_library#:#MISSING xhfp_added_library
+xhfp_added_libraries#:#MISSING xhfp_added_libraries
+xhfp_added_library_updated_library#:#MISSING xhfp_added_library_updated_library
+xhfp_added_library_updated_libraries#:#MISSING xhfp_added_library_updated_libraries
+xhfp_added_libraries_updated_library#:#MISSING xhfp_added_libraries_updated_library
+xhfp_added_libraries_updated_libraries#:#MISSING xhfp_added_libraries_updated_libraries
+xhfp_all#:#MISSING xhfp_all
+xhfp_author#:#MISSING xhfp_author
+xhfp_by#:#MISSING xhfp_by
+xhfp_cancel#:#MISSING xhfp_cancel
+xhfp_categories#:#MISSING xhfp_categories
+xhfp_close#:#MISSING xhfp_close
+xhfp_confirm#:#MISSING xhfp_confirm
+xhfp_confirm_action#:#MISSING xhfp_confirm_action
+xhfp_confirm_action_text#:#MISSING xhfp_confirm_action_text
+xhfp_content_changed#:#MISSING xhfp_content_changed
+xhfp_content_count#:#MISSING xhfp_content_count
+xhfp_content_types#:#MISSING xhfp_content_types
+xhfp_contents#:#MISSING xhfp_contents
+xhfp_delete#:#MISSING xhfp_delete
+xhfp_delete_content#:#MISSING xhfp_delete_content
+xhfp_delete_content_confirm#:#MISSING xhfp_delete_content_confirm
+xhfp_deleted_content#:#MISSING xhfp_deleted_content
+xhfp_delete_library_confirm#:#MISSING xhfp_delete_library_confirm
+xhfp_delete_library_in_use#:#MISSING xhfp_delete_library_in_use
+xhfp_deleted_library#:#MISSING xhfp_deleted_library
+xhfp_delete_results_confirm#:#MISSING xhfp_delete_results_confirm
+xhfp_deleted_results#:#MISSING xhfp_deleted_results
+xhfp_description#:#MISSING xhfp_description
+xhfp_details#:#MISSING xhfp_details
+xhfp_disable_fullscreen#:#MISSING xhfp_disable_fullscreen
+xhfp_download#:#MISSING xhfp_download
+xhfp_download_content#:#MISSING xhfp_download_content
+xhfp_edit#:#MISSING xhfp_edit
+xhfp_edit_content#:#MISSING xhfp_edit_content
+xhfp_edit_permission#:#MISSING xhfp_edit_permission
+xhfp_embed#:#MISSING xhfp_embed
+xhfp_embed_include_script#:#MISSING xhfp_embed_include_script
+xhfp_enable_lrs_content_types#:#MISSING xhfp_enable_lrs_content_types
+xhfp_enable_lrs_content_types_info#:#MISSING xhfp_enable_lrs_content_types_info
+xhfp_example#:#MISSING xhfp_example
+xhfp_finish#:#MISSING xhfp_finish
+xhfp_finished#:#MISSING xhfp_finished
+xhfp_fullscreen#:#MISSING xhfp_fullscreen
+xhfp_hide_advanced#:#MISSING xhfp_hide_advanced
+xhfp_hub#:#MISSING xhfp_hub
+xhfp_hub_last_refresh#:#MISSING xhfp_hub_last_refresh
+xhfp_hub_refresh#:#MISSING xhfp_hub_refresh
+xhfp_hub_refreshed#:#MISSING xhfp_hub_refreshed
+xhfp_incomplete_content#:#MISSING xhfp_incomplete_content
+xhfp_install#:#MISSING xhfp_install
+xhfp_installed#:#MISSING xhfp_installed
+xhfp_installed_libraries#:#MISSING xhfp_installed_libraries
+xhfp_installed_version#:#MISSING xhfp_installed_version
+xhfp_keywords#:#MISSING xhfp_keywords
+xhfp_latest_version#:#MISSING xhfp_latest_version
+xhfp_library#:#MISSING xhfp_library
+xhfp_libraries#:#MISSING xhfp_libraries
+xhfp_license#:#MISSING xhfp_license
+xhfp_msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn.
+xhfp_next_content#:#MISSING xhfp_next_content
+xhfp_no#:#MISSING xhfp_no
+xhfp_not_available#:#MISSING xhfp_not_available
+xhfp_no_content_copyright#:#MISSING xhfp_no_content_copyright
+xhfp_no_result#:#MISSING xhfp_no_result
+xhfp_not_installed#:#MISSING xhfp_not_installed
+xhfp_offline#:#MISSING xhfp_offline
+xhfp_online#:#MISSING xhfp_online
+xhfp_only_not_used#:#MISSING xhfp_only_not_used
+xhfp_only_runnable#:#MISSING xhfp_only_runnable
 xhfp_permission_denied#:#MISSING xhfp_permission_denied
-xhfp_previous_content#:#Previous content
-xhfp_read#:#Read
-xhfp_results#:#Results
-xhfp_rights_of_use#:#Rights of use
-xhfp_runnable#:#Runnable
-xhfp_save#:#Save
-xhfp_saved_content#:#%s saved
-xhfp_send_usage_statistics#:#Automatically contribute usage statistics
-xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
-xhfp_settings#:#Settings
-xhfp_settings_saved#:#Settings saved
-xhfp_show#:#Show
-xhfp_show_advanced#:#Show advanced
-xhfp_show_contents#:#Show contents
-xhfp_show_less#:#Show less
-xhfp_show_more#:#Show more
-xhfp_size#:#Size
-xhfp_solve_contents_only_once#:#Solve contents only once
-xhfp_solve_contents_only_once_note#:#Note: For some contents may it is necessary the turn off the solution / retry button!
-xhfp_solved_all_contents#:#You have already solved all contents.
-xhfp_solved_content#:#You have already solved this content.
-xhfp_source#:#Source
-xhfp_start_over#:#You'll be starting over.
-xhfp_status#:#Status
-xhfp_sublevel#:#Sublevel
+xhfp_previous_content#:#MISSING xhfp_previous_content
+xhfp_read#:#MISSING xhfp_read
+xhfp_results#:#MISSING xhfp_results
+xhfp_rights_of_use#:#MISSING xhfp_rights_of_use
+xhfp_runnable#:#MISSING xhfp_runnable
+xhfp_save#:#MISSING xhfp_save
+xhfp_saved_content#:#MISSING xhfp_saved_content
+xhfp_send_usage_statistics#:#MISSING xhfp_send_usage_statistics
+xhfp_send_usage_statistics_info#:#MISSING xhfp_send_usage_statistics_info
+xhfp_settings#:#MISSING xhfp_settings
+xhfp_settings_saved#:#MISSING xhfp_settings_saved
+xhfp_show#:#MISSING xhfp_show
+xhfp_show_advanced#:#MISSING xhfp_show_advanced
+xhfp_show_contents#:#MISSING xhfp_show_contents
+xhfp_show_less#:#MISSING xhfp_show_less
+xhfp_show_more#:#MISSING xhfp_show_more
+xhfp_size#:#MISSING xhfp_size
+xhfp_solve_contents_only_once#:#MISSING xhfp_solve_contents_only_once
+xhfp_solve_contents_only_once_note#:#MISSING xhfp_solve_contents_only_once_note
+xhfp_solved_content#:#MISSING xhfp_solved_content
+xhfp_source#:#MISSING xhfp_source
+xhfp_start_over#:#MISSING xhfp_start_over
+xhfp_status#:#MISSING xhfp_status
+xhfp_sublevel#:#MISSING xhfp_sublevel
 xhfp_summary#:#Samenvatting
 xhfp_thumbnail#:#Miniatuur
 xhfp_title#:#Titel
