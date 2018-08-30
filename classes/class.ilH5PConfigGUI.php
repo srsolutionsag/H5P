@@ -245,7 +245,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$confirmation->setConfirm(self::translate("xhfp_delete"), self::CMD_DELETE_LIBRARY);
 		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_HUB);
 
-		self::output($confirmation->getHTML());
+		self::output($confirmation);
 	}
 
 
@@ -279,7 +279,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form = $this->getSettingsForm();
 
-		self::output($form->getHTML());
+		self::output($form);
 	}
 
 
@@ -294,7 +294,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::output($form->getHTML());
+			self::output($form);
 
 			return;
 		}
@@ -303,6 +303,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		ilUtil::sendSuccess(self::translate("xhfp_settings_saved"), true);
 
-		self::output($form->getHTML());
+		self::output($form);
 	}
 }
