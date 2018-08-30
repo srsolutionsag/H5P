@@ -128,7 +128,7 @@ class H5PRemoveDataConfirm {
 		$confirmation->addButton(self::translate("xhfp_uninstall_deactivate"), self::CMD_DEACTIVATE);
 		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_CANCEL);
 
-		self::output($confirmation->getHTML());
+		self::output($confirmation);
 	}
 
 

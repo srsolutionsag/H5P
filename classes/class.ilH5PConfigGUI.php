@@ -101,15 +101,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 *
-	 * @param string $html
-	 */
-	protected function show($html) {
-		self::output($html);
-	}
-
-
-	/**
 	 * @return H5PHubTableGUI
 	 */
 	protected function getHubTable() {
@@ -129,7 +120,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
-		$this->show($hub);
+		self::output($hub);
 	}
 
 
@@ -156,7 +147,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		if (!$form->checkInput()) {
 			$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
-			$this->show($hub);
+			self::output($hub);
 
 			return;
 		}
@@ -217,7 +208,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
 
-		$this->show($details);
+		self::output($details);
 	}
 
 
@@ -254,7 +245,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$confirmation->setConfirm(self::translate("xhfp_delete"), self::CMD_DELETE_LIBRARY);
 		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_HUB);
 
-		$this->show($confirmation->getHTML());
+		self::output($confirmation->getHTML());
 	}
 
 
@@ -288,7 +279,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form = $this->getSettingsForm();
 
-		$this->show($form->getHTML());
+		self::output($form->getHTML());
 	}
 
 
@@ -303,7 +294,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			self::output($form->getHTML());
 
 			return;
 		}
@@ -312,6 +303,6 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		ilUtil::sendSuccess(self::translate("xhfp_settings_saved"), true);
 
-		$this->show($form->getHTML());
+		self::output($form->getHTML());
 	}
 }

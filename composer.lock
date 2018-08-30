@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a161924044c053fbaa7ed3fb6dd34b78",
+    "content-hash": "134c7c20e10ce5182a698cc7b65cb44d",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -121,21 +121,21 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "0.5.4",
+            "version": "0.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "0e9b1cb38a09c0349504c4f9c61797ab1c601c8f"
+                "reference": "77051b06306fc5d4ecd98f057f7adf3ce93ff704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/0e9b1cb38a09c0349504c4f9c61797ab1c601c8f",
-                "reference": "0e9b1cb38a09c0349504c4f9c61797ab1c601c8f",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/77051b06306fc5d4ecd98f057f7adf3ce93ff704",
+                "reference": "77051b06306fc5d4ecd98f057f7adf3ce93ff704",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.6 || ^7.0",
-                "srag/dic": "^0.4.0"
+                "srag/dic": ">=0.1.0"
             },
             "type": "library",
             "autoload": {
@@ -162,20 +162,20 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2018-08-28T09:51:27+00:00"
+            "time": "2018-08-30T13:22:01+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "0.4.0",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "add33e5c5cc3a8ea7bf433719f320d8910d71bc2"
+                "reference": "7009722505f786561c959458dcabc48f14668459"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/add33e5c5cc3a8ea7bf433719f320d8910d71bc2",
-                "reference": "add33e5c5cc3a8ea7bf433719f320d8910d71bc2",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/7009722505f786561c959458dcabc48f14668459",
+                "reference": "7009722505f786561c959458dcabc48f14668459",
                 "shasum": ""
             },
             "require": {
@@ -207,7 +207,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-08-28T09:49:32+00:00"
+            "time": "2018-08-30T13:18:36+00:00"
         }
     ],
     "packages-dev": [],

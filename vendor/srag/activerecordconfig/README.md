@@ -1,22 +1,12 @@
 Simple ActiveRecord config for ILIAS plugins
 
-### Install
-For development you should install this library like follow:
-
-Start at your ILIAS root directory 
-```bash
-mkdir -p Customizing/global/plugins/Libraries/  
-cd Customizing/global/plugins/Libraries/  
-git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveRecordConfig
-```
-
 ### Usage
 
 #### Composer
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/activerecordconfig": "^0.5.4"
+  "srag/activerecordconfig": ">=0.1.0"
 },
 ```
 
@@ -76,7 +66,7 @@ And now add some configs:
 If you need to delete a config add:
 ```php
 /**
- * @param string $some
+ *
  */
 public static function deleteSome() {
 	self::deleteName(self::KEY_SOME);
@@ -153,7 +143,7 @@ Finally you need to add an update step to migrate your data
 1. Remove the old config class database install in the `dbupdate.php` file. The old config class doesn't need anymore to be installed
 2. Add the new config class database install like `XConfig::updateDB();` in the `dbupdate.php` file
 3. Migrate the data from the old config class to the new config class if the old exists and delete the old in the `dbupdate.php` file
-4. Add an uninstall step for both old and new config classes in `beforeUninstall` or `uninstallCustom` of your plugin class. Also remove the old config database table to make sure that it also be removed if the plugin should be unistalled without update before it
+4. Add an uninstall step for both old and new config classes in `beforeUninstall` or `beforeUninstallCustom` of your plugin class. Also remove the old config database table to make sure that it also be removed if the plugin should be unistalled without update before it
 
 Here some examples, depending how yould old config class was:
 
@@ -205,3 +195,13 @@ if (\srag\DIC\DICStatic::dic()->database()->tableExists(XConfigOld::TABLE_NAME))
 * Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/ACCONF
 * Bug reports under https://jira.studer-raimann.ch/projects/ACCONF
 * For external developers please send an email to support-custom1@studer-raimann.ch
+
+### Development
+If you want development in this library you should install this library like follow:
+
+Start at your ILIAS root directory 
+```bash
+mkdir -p Customizing/global/plugins/Libraries/  
+cd Customizing/global/plugins/Libraries/  
+git clone git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveRecordConfig
+```
