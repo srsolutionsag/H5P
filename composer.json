@@ -22,7 +22,7 @@
     "email": "support-custom1@studer-raimann.ch"
   },
   "require": {
-    "php": "^5.6 || ^7.0",
+    "php": "^>=5.6",
     "h5p/h5p-core": "^1.18.0",
     "h5p/h5p-editor": "^1.17.1",
     "srag/activerecordconfig": ">=0.1.0",
