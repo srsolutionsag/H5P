@@ -107,13 +107,6 @@ xhfp_summary#:#Zusammenfassung
 xhfp_thumbnail#:#Vorschaubild
 xhfp_title#:#Titel
 xhfp_tutorial#:#Tutorial
-xhfp_uninstall_confirm_remove_data#:#Möchten Sie die H5P-Daten auch entfernen? Allenfalls möchten Sie das H5P-Plugin nur deaktivieren?
-xhfp_uninstall_deactivate#:#H5P-Plugin nur deaktivieren
-xhfp_uninstall_data#:#H5P-Daten
-xhfp_uninstall_keep_data#:#H5P-Daten behalten
-xhfp_uninstall_msg_kept_data#:#Die H5P-Daten wurden behalten!
-xhfp_uninstall_msg_removed_data#:#Die H5P-Daten wurden auch entfernt!
-xhfp_uninstall_remove_data#:#Entferne H5P-Daten
 xhfp_updated_library#:#%old H5P Bibliothek aktualisiert.
 xhfp_updated_libraries#:#%old H5P Bibliotheken aktualisiert.
 xhfp_upgrade#:#Upgrade
@@ -131,3 +124,11 @@ xhfp_visible#:#Sichtbar
 xhfp_write#:#Schreiben
 xhfp_year#:#Jahr
 xhfp_yes#:#Ja
+removeplugindataconfirm_cancel#:#Abbrechen
+removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch entfernen? Allenfalls möchten Sie das %1$s-Plugin nur deaktivieren?
+removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren
+removeplugindataconfirm_data#:#%1$s-Daten
+removeplugindataconfirm_keep_data#:#%1$s-Daten behalten
+removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten!
+removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt!
+removeplugindataconfirm_remove_data#:#Entferne %1$s-Daten

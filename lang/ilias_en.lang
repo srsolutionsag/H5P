@@ -107,13 +107,6 @@ xhfp_summary#:#Summary
 xhfp_thumbnail#:#Thumbnail
 xhfp_title#:#Title
 xhfp_tutorial#:#Tutorial
-xhfp_uninstall_confirm_remove_data#:#Do you want to remove the H5P data as well? At most, you just want to disable the H5P plugin?
-xhfp_uninstall_deactivate#:#Just deactivate H5P plugin
-xhfp_uninstall_data#:#H5P data
-xhfp_uninstall_keep_data#:#Keep H5P data
-xhfp_uninstall_msg_kept_data#:#The H5P data was kept!
-xhfp_uninstall_msg_removed_data#:#The H5P data was also removed!
-xhfp_uninstall_remove_data#:#Remove H5P data
 xhfp_updated_library#:#Updated %old H5P library.
 xhfp_updated_libraries#:#Updated %old H5P libraries.
 xhfp_upgrade#:#Upgrade
@@ -131,3 +124,11 @@ xhfp_visible#:#Visible
 xhfp_write#:#Write
 xhfp_year#:#Year
 xhfp_yes#:#Yes
+removeplugindataconfirm_cancel#:#Cancel
+removeplugindataconfirm_confirm_remove_data#:#Do you want to remove the %1$s data as well? At most, you just want to disable the %1$s plugin?
+removeplugindataconfirm_deactivate#:#Just deactivate %1$s plugin
+removeplugindataconfirm_data#:#%1$s data
+removeplugindataconfirm_keep_data#:#Keep %1$s data
+removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept!
+removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed!
+removeplugindataconfirm_remove_data#:#Remove %1$s data

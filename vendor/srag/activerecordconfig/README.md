@@ -63,13 +63,13 @@ And now add some configs:
 	}
 ```
 
-If you need to delete a config add:
+If you need to remove a config add:
 ```php
 /**
  *
  */
-public static function deleteSome() {
-	self::deleteName(self::KEY_SOME);
+public static function removeSome() {
+	self::removeName(self::KEY_SOME);
 }
 ```
 
@@ -115,11 +115,11 @@ self::getValues();
 self::setValues(array $configs, $delete_exists = false);
 
 /**
- * Delete a name
+ * Remove a name
  * 
  * @param string $name Name
  */
-self::deleteName($name);
+self::removeName($name);
 ```
 
 Other `ActiveRecord` methods should be not used!
@@ -191,7 +191,7 @@ if (\srag\DIC\DICStatic::dic()->database()->tableExists(XConfigOld::TABLE_NAME))
 ```
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/PluginGenerator/tree/develop
+* Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/ActiveRecordConfig/tree/develop
 * Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/ACCONF
 * Bug reports under https://jira.studer-raimann.ch/projects/ACCONF
 * For external developers please send an email to support-custom1@studer-raimann.ch

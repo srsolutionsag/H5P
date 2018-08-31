@@ -2,7 +2,6 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PContentLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
@@ -19,16 +18,18 @@ use srag\Plugins\H5P\ActiveRecord\H5POptionOld;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
+use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
 
 /**
  * Class ilH5PPlugin
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
-	use DICTrait;
+	use RepositoryObjectPluginUninstallTrait;
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	const PLUGIN_CLASS_NAME = self::class;
+	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = H5PRemoveDataConfirm::class;
 	/**
 	 * @var self|null
 	 */
@@ -96,39 +97,9 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 * @return bool
-	 */
-	protected function beforeUninstallCustom() {
-		$uninstall_remove_data = H5POption::getUninstallRemoveData();
-
-		if ($uninstall_remove_data === NULL) {
-			H5PRemoveDataConfirm::saveParameterByClass();
-
-			self::dic()->ctrl()->redirectByClass([
-				ilUIPluginRouterGUI::class,
-				H5PRemoveDataConfirm::class
-			], H5PRemoveDataConfirm::CMD_CONFIRM_REMOVE_DATA);
-
-			return false;
-		}
-
-		$uninstall_remove_data = boolval($uninstall_remove_data);
-
-		if ($uninstall_remove_data) {
-			$this->removeData();
-		} else {
-			// Ask again if reinstalled
-			H5POption::deleteUninstallRemoveData();
-		}
-
-		return true;
-	}
-
-
-	/**
 	 *
 	 */
-	protected function removeData() {
+	protected function deleteData() {
 		$this->removeH5PFolder();
 
 		self::dic()->database()->dropTable(H5PContent::TABLE_NAME, false);
@@ -147,14 +118,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		self::dic()->database()->dropTable(H5PResult::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PSolveStatus::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PTmpFile::TABLE_NAME, false);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function uninstallCustom() {
-
 	}
 
 

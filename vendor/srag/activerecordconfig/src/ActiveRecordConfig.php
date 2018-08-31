@@ -141,10 +141,10 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 	 * Set all values
 	 *
 	 * @param array $configs       [ [ "name" => value ], ... ]
-	 * @param bool  $delete_exists Delete all exists name before
+	 * @param bool  $remove_exists Delete all exists name before
 	 */
-	protected static final function setValues(array $configs, $delete_exists = false) {
-		if ($delete_exists) {
+	protected static final function setValues(array $configs, $remove_exists = false) {
+		if ($remove_exists) {
 			self::truncateDB();
 		}
 
@@ -155,11 +155,11 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 
 
 	/**
-	 * Delete a name
+	 * Remove a name
 	 *
 	 * @param string $name Name
 	 */
-	protected static final function deleteName($name) {
+	protected static final function removeName($name) {
 		$config = self::getConfig($name, false);
 
 		$config->delete();

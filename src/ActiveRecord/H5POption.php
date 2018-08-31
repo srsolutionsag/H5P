@@ -2,6 +2,7 @@
 
 namespace srag\Plugins\H5P\ActiveRecord;
 
+use H5PRemoveDataConfirm;
 use ilH5PPlugin;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
 
@@ -14,8 +15,6 @@ class H5POption extends ActiveRecordConfig {
 
 	const TABLE_NAME = "rep_robj_xhfp_opt_n";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	const KEY_UNINSTALL_REMOVE_DATA = "uninstall_remove_data";
-	const DEFAULT_UNINSTALL_REMOVE_DATA = NULL;
 
 
 	/**
@@ -41,23 +40,23 @@ class H5POption extends ActiveRecordConfig {
 	/**
 	 * @return bool|null
 	 */
-	public static function getUninstallRemoveData() {
-		return self::getXValue(self::KEY_UNINSTALL_REMOVE_DATA, self::DEFAULT_UNINSTALL_REMOVE_DATA);
+	public static function getUninstallRemovesData() {
+		return self::getXValue(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA, H5PRemoveDataConfirm::DEFAULT_UNINSTALL_REMOVES_DATA);
 	}
 
 
 	/**
-	 * @param bool|null $uninstall_remove_data
+	 * @param bool $uninstall_removes_data
 	 */
-	public static function setUninstallRemoveData($uninstall_remove_data) {
-		self::setXValue(self::KEY_UNINSTALL_REMOVE_DATA, $uninstall_remove_data);
+	public static function setUninstallRemovesData($uninstall_removes_data) {
+		self::setBooleanValue(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA, $uninstall_removes_data);
 	}
 
 
 	/**
 	 *
 	 */
-	public static function deleteUninstallRemoveData() {
-		self::deleteName(self::KEY_UNINSTALL_REMOVE_DATA);
+	public static function removeUninstallRemovesData() {
+		self::removeName(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA);
 	}
 }

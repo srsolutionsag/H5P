@@ -22,6 +22,7 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
+            'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\DIC\\' => 9,
             'srag\\ActiveRecordConfig\\' => 24,
@@ -29,6 +30,10 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
     );
 
     public static $prefixDirsPsr4 = array (
+        'srag\\RemovePluginDataConfirm\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
+        ),
         'srag\\Plugins\\H5P\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -124,6 +129,11 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
         'srag\\Plugins\\H5P\\H5P\\H5PShowContent' => __DIR__ . '/../..' . '/src/H5P/H5PShowContent.php',
         'srag\\Plugins\\H5P\\H5P\\H5PShowEditor' => __DIR__ . '/../..' . '/src/H5P/H5PShowEditor.php',
         'srag\\Plugins\\H5P\\H5P\\H5PShowHub' => __DIR__ . '/../..' . '/src/H5P/H5PShowHub.php',
+        'srag\\RemovePluginDataConfirm\\AbstractPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
+        'srag\\RemovePluginDataConfirm\\AbstractRemovePluginDataConfirm' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
+        'srag\\RemovePluginDataConfirm\\PluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
+        'srag\\RemovePluginDataConfirm\\RemovePluginDataConfirmException' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RemovePluginDataConfirmException.php',
+        'srag\\RemovePluginDataConfirm\\RepositoryObjectPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
