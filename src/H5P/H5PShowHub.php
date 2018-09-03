@@ -198,7 +198,8 @@ class H5PShowHub {
 		$hub_last_refresh = H5POption::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = $this->h5p->formatTime($hub_last_refresh);
 
-		return $this->getH5PIntegration($table->getHTML(), self::plugin()->translate("xhfp_hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
+		return $this->getH5PIntegration($table->getHTML(), self::plugin()
+			->translate("xhfp_hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
 		/* @deprecated H5P Hub is not suitable for this ILIAS plugin
 		 * $hub = $this->h5p->show_editor()->getEditor();
 		 * $hub["hubIsEnabled"] = true;
@@ -294,11 +295,11 @@ class H5PShowHub {
 	 * @param ilH5PConfigGUI $parent
 	 * @param string         $key
 	 *
-	 * @return string
+	 * @return H5HubDetailsFormGUI
 	 */
 	public function getH5PLibraryDetailsIntegration(ilH5PConfigGUI $parent, $key) {
 		$details_form = new H5HubDetailsFormGUI($parent, $key);
 
-		return $details_form->getHTML();
+		return $details_form;
 	}
 }
