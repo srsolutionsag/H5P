@@ -45,7 +45,6 @@ return array(
     'ilWACSignedPath' => $baseDir . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php',
     'srag\\ActiveRecordConfig\\ActiveRecordConfig' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
     'srag\\DIC\\AbstractDIC' => $vendorDir . '/srag/dic/src/AbstractDIC.php',
-    'srag\\DIC\\DICCache' => $vendorDir . '/srag/dic/src/DICCache.php',
     'srag\\DIC\\DICException' => $vendorDir . '/srag/dic/src/DICException.php',
     'srag\\DIC\\DICInterface' => $vendorDir . '/srag/dic/src/DICInterface.php',
     'srag\\DIC\\DICStatic' => $vendorDir . '/srag/dic/src/DICStatic.php',

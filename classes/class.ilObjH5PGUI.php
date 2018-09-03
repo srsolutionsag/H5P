@@ -231,7 +231,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$table = $this->getContentsTable();
 
-		$this->show($table->getHTML());
+		$this->show($table);
 	}
 
 
@@ -280,7 +280,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getEditorForm();
 
-		$this->show($form->getHTML());
+		$this->show($form);
 	}
 
 
@@ -295,7 +295,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			$this->show($form);
 
 			return;
 		}
@@ -314,7 +314,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getEditorForm();
 
-		$this->show($form->getHTML());
+		$this->show($form);
 	}
 
 
@@ -329,7 +329,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			$this->show($form);
 
 			return;
 		}
@@ -363,7 +363,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$confirmation->setConfirm(self::translate("xhfp_delete"), self::CMD_DELETE_CONTENT);
 		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_MANAGE_CONTENTS);
 
-		$this->show($confirmation->getHTML());
+		$this->show($confirmation);
 	}
 
 
@@ -550,7 +550,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$table = $this->getResultsTable();
 
-		$this->show($table->getHTML());
+		$this->show($table);
 	}
 
 
@@ -583,7 +583,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$confirmation->setConfirm(self::translate("xhfp_delete"), self::CMD_DELETE_RESULTS);
 		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_RESULTS);
 
-		$this->show($confirmation->getHTML());
+		$this->show($confirmation);
 	}
 
 
@@ -633,7 +633,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getSettingsForm();
 
-		$this->show($form->getHTML());
+		$this->show($form);
 	}
 
 
@@ -648,7 +648,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			$this->show($form);
 
 			return;
 		}
@@ -657,7 +657,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		ilUtil::sendSuccess(self::translate("xhfp_settings_saved"), true);
 
-		$this->show($form->getHTML());
+		$this->show($form);
 	}
 
 
