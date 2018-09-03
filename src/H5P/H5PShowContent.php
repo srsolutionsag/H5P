@@ -132,7 +132,7 @@ class H5PShowContent {
 	public function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => ILIAS_HTTP_PATH . "/" . self::pl()->getH5PFolder(),
+			"url" => ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -167,7 +167,7 @@ class H5PShowContent {
 	 * @param array $core
 	 */
 	protected function addCore(&$core) {
-		$core_path = ILIAS_HTTP_PATH . "/" . self::pl()->getCorePath() . "/";
+		$core_path = ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getCorePath() . "/";
 
 		foreach (H5PCore::$styles as $style) {
 			$core["core"]["styles"][] = $core_path . $style;
@@ -190,7 +190,7 @@ class H5PShowContent {
 	 * @return string
 	 */
 	public function getH5PContentsIntegration(H5PContent $h5p_content, $index, $count, $text = NULL) {
-		$h5p_tpl = self::template("H5PContents.html");
+		$h5p_tpl = self::plugin()->template("H5PContents.html");
 
 		if ($text === NULL) {
 			$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content, false));
@@ -198,7 +198,7 @@ class H5PShowContent {
 			$h5p_tpl->setVariable("H5P_CONTENT", $text);
 		}
 
-		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::translate("xhfp_content_count", "", [ ($index + 1), $count ]) . " - "
+		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("xhfp_content_count", "", [ ($index + 1), $count ]) . " - "
 			. $h5p_content->getTitle());
 
 		$this->outputH5pStyles($h5p_tpl);
@@ -272,7 +272,7 @@ class H5PShowContent {
 
 		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, self::pl()->getH5PFolder());
+		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, self::plugin()->getPluginObject()->getH5PFolder());
 		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
@@ -318,7 +318,7 @@ class H5PShowContent {
 
 			$this->core["contents"] = [];
 
-			$h5p_tpl = self::template("H5PCore.html");
+			$h5p_tpl = self::plugin()->template("H5PCore.html");
 
 			$h5p_tpl->setVariable("H5P_CORE", json_encode($this->core));
 
@@ -342,7 +342,7 @@ class H5PShowContent {
 	 * @return string
 	 */
 	protected function getH5PIntegration(array $content, $content_id, $title, $embed_type) {
-		$h5p_tpl = self::template("H5PContent.html");
+		$h5p_tpl = self::plugin()->template("H5PContent.html");
 
 		$h5p_tpl->setVariable("H5P_CONTENT", json_encode($content));
 

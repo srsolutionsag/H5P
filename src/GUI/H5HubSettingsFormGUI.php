@@ -45,24 +45,24 @@ class H5HubSettingsFormGUI extends ilPropertyFormGUI {
 	protected function setForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
-		$this->setTitle(self::translate("xhfp_settings"));
+		$this->setTitle(self::plugin()->translate("xhfp_settings"));
 
-		$this->addCommandButton(ilH5PConfigGUI::CMD_SETTINGS_STORE, self::translate("xhfp_save"));
-		$this->addCommandButton(ilH5PConfigGUI::CMD_HUB, self::translate("xhfp_cancel"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_SETTINGS_STORE, self::plugin()->translate("xhfp_save"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_HUB, self::plugin()->translate("xhfp_cancel"));
 
-		$content_types = new ilCustomInputGUI(self::translate("xhfp_content_types"));
+		$content_types = new ilCustomInputGUI(self::plugin()->translate("xhfp_content_types"));
 
-		$enable_lrs_content_types = new ilCheckboxInputGUI(self::translate("xhfp_enable_lrs_content_types"), "enable_lrs_content_types");
-		$enable_lrs_content_types->setInfo(self::translate("xhfp_enable_lrs_content_types_info"));
+		$enable_lrs_content_types = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_enable_lrs_content_types"), "enable_lrs_content_types");
+		$enable_lrs_content_types->setInfo(self::plugin()->translate("xhfp_enable_lrs_content_types_info"));
 		$enable_lrs_content_types->setChecked(H5POption::getOption("enable_lrs_content_types", false));
 		$content_types->addSubItem($enable_lrs_content_types);
 
 		$this->addItem($content_types);
 
-		$usage_statistics = new ilCustomInputGUI(self::translate("xhfp_usage_statistics"));
+		$usage_statistics = new ilCustomInputGUI(self::plugin()->translate("xhfp_usage_statistics"));
 
-		$send_usage_statistics = new ilCheckboxInputGUI(self::translate("xhfp_send_usage_statistics"), "send_usage_statistics");
-		$send_usage_statistics->setInfo(self::translate("xhfp_send_usage_statistics_info", "", [ "https://h5p.org/tracking-the-usage-of-h5p" ]));
+		$send_usage_statistics = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_send_usage_statistics"), "send_usage_statistics");
+		$send_usage_statistics->setInfo(self::plugin()->translate("xhfp_send_usage_statistics_info", "", [ "https://h5p.org/tracking-the-usage-of-h5p" ]));
 		$send_usage_statistics->setChecked(H5POption::getOption("send_usage_statistics", true));
 		$usage_statistics->addSubItem($send_usage_statistics);
 

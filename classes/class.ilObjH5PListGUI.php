@@ -81,8 +81,8 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		if (ilObjH5PAccess::_isOffline($this->obj_id)) {
 			$props[] = [
 				"alert" => true,
-				"property" => self::translate("xhfp_status"),
-				"value" => self::translate("xhfp_offline")
+				"property" => self::plugin()->translate("xhfp_status"),
+				"value" => self::plugin()->translate("xhfp_offline")
 			];
 		}
 

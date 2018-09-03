@@ -51,13 +51,13 @@ class H5PContentsTableGUI extends ilTable2GUI {
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle(self::translate("xhfp_contents"));
+		$this->setTitle(self::plugin()->translate("xhfp_contents"));
 
 		$this->addColumns();
 
 		$this->initFilter();
 
-		$this->setRowTemplate("contents_table_row.html", self::directory());
+		$this->setRowTemplate("contents_table_row.html", self::plugin()->directory());
 
 		if (!$this->hasResults()) {
 			$this->initUpDown();
@@ -79,11 +79,11 @@ class H5PContentsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function initUpDown() {
-		self::dic()->template()->addJavaScript(self::directory() . "/lib/waiter/js/waiter.js");
-		self::dic()->template()->addCss(self::directory() . "/lib/waiter/css/waiter.css");
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/lib/waiter/js/waiter.js");
+		self::dic()->template()->addCss(self::plugin()->directory() . "/lib/waiter/css/waiter.css");
 		self::dic()->template()->addOnLoadCode('xoctWaiter.init("waiter");');
 
-		self::dic()->template()->addJavaScript(self::directory() . "/js/ilH5PContentsTable.js");
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/js/ilH5PContentsTable.js");
 		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->getParentObject(), "", "", true)
 			. '");');
 	}
@@ -91,10 +91,10 @@ class H5PContentsTableGUI extends ilTable2GUI {
 
 	protected function addColumns() {
 		$this->addColumn("");
-		$this->addColumn(self::translate("xhfp_title"));
-		$this->addColumn(self::translate("xhfp_library"));
-		$this->addColumn(self::translate("xhfp_results"));
-		$this->addColumn(self::translate("xhfp_actions"));
+		$this->addColumn(self::plugin()->translate("xhfp_title"));
+		$this->addColumn(self::plugin()->translate("xhfp_library"));
+		$this->addColumn(self::plugin()->translate("xhfp_results"));
+		$this->addColumn(self::plugin()->translate("xhfp_actions"));
 	}
 
 
@@ -132,12 +132,12 @@ class H5PContentsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("RESULTS", count($h5p_results));
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::translate("xhfp_actions"));
+		$actions->setListTitle(self::plugin()->translate("xhfp_actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$actions->addItem(self::translate("xhfp_edit"), "", self::dic()->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+			$actions->addItem(self::plugin()->translate("xhfp_edit"), "", self::dic()->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-			$actions->addItem(self::translate("xhfp_delete"), "", self::dic()->ctrl()
+			$actions->addItem(self::plugin()->translate("xhfp_delete"), "", self::dic()->ctrl()
 				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 		}
 

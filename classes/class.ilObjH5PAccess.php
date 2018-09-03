@@ -99,7 +99,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * @param string        $cmd
 	 */
 	public static function redirectNonAccess($class, $cmd = "") {
-		ilUtil::sendFailure(self::translate("xhfp_permission_denied"), true);
+		ilUtil::sendFailure(self::plugin()->translate("xhfp_permission_denied"), true);
 
 		if (is_object($class)) {
 			self::dic()->ctrl()->clearParameters($class);

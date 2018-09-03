@@ -43,7 +43,7 @@ class H5PShowEditor {
 	public function getEditor() {
 		$editor = $this->h5p->show_content()->getCore();
 
-		$editor_path = ILIAS_HTTP_PATH . "/" . self::pl()->getEditorPath();
+		$editor_path = ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getEditorPath();
 
 		$assets = [
 			"js" => $editor["core"]["scripts"],
@@ -65,7 +65,7 @@ class H5PShowEditor {
 		}
 
 		$editor["editor"] = [
-			"filesPath" => ILIAS_HTTP_PATH . "/" . self::pl()->getH5PFolder() . "/editor",
+			"filesPath" => ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
@@ -79,7 +79,7 @@ class H5PShowEditor {
 		];
 
 		$language = self::dic()->user()->getLanguage();
-		$language_path = self::pl()->getEditorPath() . "/language/";
+		$language_path = self::plugin()->getPluginObject()->getEditorPath() . "/language/";
 		$language_script = $language_path . $language . ".js";
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
@@ -99,20 +99,20 @@ class H5PShowEditor {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$this->h5p->show_content()->addH5pScript(self::directory() . "/js/ilH5PEditor.js");
+		$this->h5p->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PEditor.js");
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
 		$tutorial_toolbar->setHidden(true);
 
 		$tutorial = ilLinkButton::getInstance();
-		$tutorial->setCaption(self::translate("xhfp_tutorial"), false);
+		$tutorial->setCaption(self::plugin()->translate("xhfp_tutorial"), false);
 		$tutorial->setTarget("_blank");
 		$tutorial->setId("xhfp_edit_toolbar_tutorial");
 		$tutorial_toolbar->addButtonInstance($tutorial);
 
 		$example = ilLinkButton::getInstance();
-		$example->setCaption(self::translate("xhfp_example"), false);
+		$example->setCaption(self::plugin()->translate("xhfp_example"), false);
 		$example->setTarget("_blank");
 		$example->setId("xhfp_edit_toolbar_example");
 		$tutorial_toolbar->addButtonInstance($example);
@@ -128,7 +128,7 @@ class H5PShowEditor {
 	 * @return string
 	 */
 	public function getH5PIntegration(array $editor, $tutorial = NULL) {
-		$h5p_tpl = self::template("H5PEditor.html");
+		$h5p_tpl = self::plugin()->template("H5PEditor.html");
 
 		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
 
@@ -144,7 +144,7 @@ class H5PShowEditor {
 
 		$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-		$h5p_tpl->setVariable("TXT_ALERT", self::translate("xhfp_incomplete_content"));
+		$h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("xhfp_incomplete_content"));
 
 		return $h5p_tpl->get();
 	}
@@ -200,7 +200,7 @@ class H5PShowEditor {
 		$h5p_content = H5PContent::getContentById($content["id"]);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 
 		return $h5p_content;
@@ -229,7 +229,7 @@ class H5PShowEditor {
 		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 	}
 
@@ -245,7 +245,7 @@ class H5PShowEditor {
 		]);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::translate("xhfp_deleted_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("xhfp_deleted_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 	}
 }

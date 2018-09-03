@@ -234,7 +234,7 @@ class ilH5PActionGUI {
 			}
 		}
 
-		self::output(json_encode($output), false);
+		self::plugin()->output(json_encode($output), false);
 	}
 
 
@@ -248,7 +248,7 @@ class ilH5PActionGUI {
 
 		if (!empty($name)) {
 			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
-				->getLanguage(), "", self::pl()->getH5PFolder());
+				->getLanguage(), "", self::plugin()->getPluginObject()->getH5PFolder());
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
 			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
@@ -303,7 +303,7 @@ class ilH5PActionGUI {
 			}
 		}
 
-		self::output(count($h5P_contents) - $done, false);
+		self::plugin()->output(count($h5P_contents) - $done, false);
 	}
 
 
@@ -323,7 +323,7 @@ class ilH5PActionGUI {
 
 		self::dic()->ctrl()->setParameter($this, "restrict", (!$restricted));
 
-		self::output(json_encode([
+		self::plugin()->output(json_encode([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
 		]));
 	}

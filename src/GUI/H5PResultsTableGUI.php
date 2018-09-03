@@ -60,7 +60,7 @@ class H5PResultsTableGUI extends ilTable2GUI {
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle(self::translate("xhfp_results"));
+		$this->setTitle(self::plugin()->translate("xhfp_results"));
 
 		$this->getResults();
 
@@ -68,7 +68,7 @@ class H5PResultsTableGUI extends ilTable2GUI {
 
 		$this->initFilter();
 
-		$this->setRowTemplate("results_table_row.html", self::directory());
+		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
 
 		$this->setData($this->results);
 	}
@@ -113,14 +113,14 @@ class H5PResultsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function addColumns() {
-		$this->addColumn(self::translate("xhfp_user"));
+		$this->addColumn(self::plugin()->translate("xhfp_user"));
 
 		foreach ($this->contents as $h5p_content) {
 			$this->addColumn($h5p_content->getTitle());
 		}
 
-		$this->addColumn(self::translate("xhfp_finished"));
-		$this->addColumn(self::translate("xhfp_actions"));
+		$this->addColumn(self::plugin()->translate("xhfp_finished"));
+		$this->addColumn(self::plugin()->translate("xhfp_actions"));
 	}
 
 
@@ -155,20 +155,20 @@ class H5PResultsTableGUI extends ilTable2GUI {
 			if ($result[$content_key] !== NULL) {
 				$this->tpl->setVariable("POINTS", $result[$content_key]);
 			} else {
-				$this->tpl->setVariable("POINTS", self::translate("xhfp_no_result"));
+				$this->tpl->setVariable("POINTS", self::plugin()->translate("xhfp_no_result"));
 			}
 			$this->tpl->parseCurrentBlock();
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::translate("xhfp_actions"));
+		$actions->setListTitle(self::plugin()->translate("xhfp_actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
-			$actions->addItem(self::translate("xhfp_delete"), "", self::dic()->ctrl()
+			$actions->addItem(self::plugin()->translate("xhfp_delete"), "", self::dic()->ctrl()
 				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
 
-		$this->tpl->setVariable("FINISHED", self::translate($result["finished"] ? "xhfp_yes" : "xhfp_no"));
+		$this->tpl->setVariable("FINISHED", self::plugin()->translate($result["finished"] ? "xhfp_yes" : "xhfp_no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

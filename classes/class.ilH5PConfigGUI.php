@@ -91,9 +91,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function setTabs() {
-		self::dic()->tabs()->addTab(self::TAB_HUB, self::translate("xhfp_hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
+		self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("xhfp_hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
 
-		self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::translate("xhfp_settings"), self::dic()->ctrl()
+		self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("xhfp_settings"), self::dic()->ctrl()
 			->getLinkTarget($this, self::CMD_SETTINGS));
 
 		self::dic()->tabs()->manual_activation = true; // Show all tabs as links when no activation
@@ -120,7 +120,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
-		self::output($hub);
+		self::plugin()->output($hub);
 	}
 
 
@@ -147,7 +147,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		if (!$form->checkInput()) {
 			$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
-			self::output($hub);
+			self::plugin()->output($hub);
 
 			return;
 		}
@@ -202,13 +202,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function libraryDetails() {
 		self::dic()->tabs()->clearTargets();
 
-		self::dic()->tabs()->setBackTarget(self::translate("xhfp_hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
+		self::dic()->tabs()->setBackTarget(self::plugin()->translate("xhfp_hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
 
 		$key = filter_input(INPUT_GET, "xhfp_library_key");
 
 		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
 
-		self::output($details);
+		self::plugin()->output($details);
 	}
 
 
@@ -225,10 +225,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
 		if (!$not_in_use) {
-			ilUtil::sendFailure(self::translate("xhfp_delete_library_in_use") . "<br><br>" . implode("<br>", [
-					self::translate("xhfp_contents") . " : " . $contents_count,
-					self::translate("xhfp_usage_contents") . " : " . $usage["content"],
-					self::translate("xhfp_usage_libraries") . " : " . $usage["libraries"]
+			ilUtil::sendFailure(self::plugin()->translate("xhfp_delete_library_in_use") . "<br><br>" . implode("<br>", [
+					self::plugin()->translate("xhfp_contents") . " : " . $contents_count,
+					self::plugin()->translate("xhfp_usage_contents") . " : " . $usage["content"],
+					self::plugin()->translate("xhfp_usage_libraries") . " : " . $usage["libraries"]
 				]));
 		}
 
@@ -238,14 +238,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$confirmation->setFormAction(self::dic()->ctrl()->getFormAction($this));
 
-		$confirmation->setHeaderText(self::translate("xhfp_delete_library_confirm", "", [ $h5p_library->getTitle() ]));
+		$confirmation->setHeaderText(self::plugin()->translate("xhfp_delete_library_confirm", "", [ $h5p_library->getTitle() ]));
 
 		$confirmation->addItem("xhfp_library", $h5p_library->getLibraryId(), $h5p_library->getTitle());
 
-		$confirmation->setConfirm(self::translate("xhfp_delete"), self::CMD_DELETE_LIBRARY);
-		$confirmation->setCancel(self::translate("xhfp_cancel"), self::CMD_HUB);
+		$confirmation->setConfirm(self::plugin()->translate("xhfp_delete"), self::CMD_DELETE_LIBRARY);
+		$confirmation->setCancel(self::plugin()->translate("xhfp_cancel"), self::CMD_HUB);
 
-		self::output($confirmation);
+		self::plugin()->output($confirmation);
 	}
 
 
@@ -279,7 +279,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form = $this->getSettingsForm();
 
-		self::output($form);
+		self::plugin()->output($form);
 	}
 
 
@@ -294,15 +294,15 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::output($form);
+			self::plugin()->output($form);
 
 			return;
 		}
 
 		$form->updateSettings();
 
-		ilUtil::sendSuccess(self::translate("xhfp_settings_saved"), true);
+		ilUtil::sendSuccess(self::plugin()->translate("xhfp_settings_saved"), true);
 
-		self::output($form);
+		self::plugin()->output($form);
 	}
 }

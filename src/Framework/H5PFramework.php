@@ -74,7 +74,7 @@ class H5PFramework implements H5PFrameworkInterface {
 		return [
 			"name" => "ILIAS",
 			"version" => ILIAS_VERSION_NUMERIC,
-			"h5pVersion" => self::pl()->getVersion()
+			"h5pVersion" => self::plugin()->getPluginObject()->getVersion()
 		];
 	}
 
@@ -257,7 +257,7 @@ class H5PFramework implements H5PFrameworkInterface {
 			"You'll be starting over." => "xhfp_start_over"
 		];
 		if (isset($messages_map[$message])) {
-			$message = self::translate($messages_map[$message]);
+			$message = self::plugin()->translate($messages_map[$message]);
 		}
 
 		// Replace placeholders
@@ -293,7 +293,7 @@ class H5PFramework implements H5PFrameworkInterface {
 	 * @return string URL to file
 	 */
 	public function getLibraryFileUrl($library_folder_name, $file_name) {
-		return "/" . self::pl()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+		return "/" . self::plugin()->getPluginObject()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
 	}
 
 
@@ -1068,7 +1068,7 @@ class H5PFramework implements H5PFrameworkInterface {
 	 *   Library object with id, name, major version and minor version.
 	 */
 	public function deleteLibrary($library) {
-		H5PCore::deleteFileTree(self::pl()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+		H5PCore::deleteFileTree(self::plugin()->getPluginObject()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
 			. $library->minor_version);
 
 		$this->deleteLibraryDependencies($library->library_id);

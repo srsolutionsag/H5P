@@ -107,7 +107,7 @@ class H5P {
 	 * H5P constructor
 	 */
 	protected function __construct() {
-		//self::pl()->fixWAC();
+		//self::plugin()->getPluginObject()->fixWAC();
 	}
 
 
@@ -200,7 +200,7 @@ class H5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), self::pl()->getH5PFolder(), "/" . self::pl()->getH5PFolder(), self::dic()->user()
+			$this->core = new H5PCore($this->framework(), self::plugin()->getPluginObject()->getH5PFolder(), "/" . self::plugin()->getPluginObject()->getH5PFolder(), self::dic()->user()
 				->getLanguage(), false);
 		}
 
