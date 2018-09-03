@@ -234,7 +234,7 @@ class ilH5PActionGUI {
 			}
 		}
 
-		self::plugin()->output(json_encode($output), false);
+		self::plugin()->output($output);
 	}
 
 
@@ -323,9 +323,9 @@ class ilH5PActionGUI {
 
 		self::dic()->ctrl()->setParameter($this, "restrict", (!$restricted));
 
-		self::plugin()->output(json_encode([
+		self::plugin()->output([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
-		]));
+		]);
 	}
 
 
