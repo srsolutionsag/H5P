@@ -69,7 +69,10 @@ class H5PCron {
 
 		$this->deleteOldEvents();
 
-		$this->pageComponentCron();
+		if (ILIAS_VERSION_NUMERIC < "5.3") {
+			// H5P page component cron job only needed for ILIAS 5.2 because never version supports it native :)
+			$this->pageComponentCron();
+		}
 	}
 
 
