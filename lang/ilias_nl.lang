@@ -106,8 +106,8 @@ xhfp_summary#:#Samenvatting
 xhfp_thumbnail#:#Miniatuur
 xhfp_title#:#Titel
 xhfp_tutorial#:#Zelfstudie
-xhfp_updated_library#:#Bijgewerkt %old H5P bibliotheek.
-xhfp_updated_libraries#:#Bijgewerkt %old H5P bibliotheken.
+xhfp_updated_library#:#Bijgewerkt %%old H5P bibliotheek.
+xhfp_updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
 xhfp_upgrade#:#Bijwerken
 xhfp_upgrade_available#:#Opwaardering beschikbaar
 xhfp_upload#:#Uploaden

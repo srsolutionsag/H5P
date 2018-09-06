@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.8.7]
+- Fix output
+
 ## [0.8.6]
 - PHP7 comments
 

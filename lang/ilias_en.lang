@@ -7,12 +7,12 @@ xhfp_new#:#Create H5P
 xhfp_actions#:#Actions
 xhfp_add#:#Add
 xhfp_add_content#:#Add content
-xhfp_added_library#:#Added %new new H5P library.
-xhfp_added_libraries#:#Added %new new H5P libraries.
-xhfp_added_library_updated_library#:#Added %new new H5P library and updated %old old one.
-xhfp_added_library_updated_libraries#:#Added %new new H5P library and updated %old old ones.
-xhfp_added_libraries_updated_library#:#Added %new new H5P libraries and updated %old old one.
-xhfp_added_libraries_updated_libraries#:#Added %new new H5P libraries and updated %old old ones.
+xhfp_added_library#:#Added %%new new H5P library.
+xhfp_added_libraries#:#Added %%new new H5P libraries.
+xhfp_added_library_updated_library#:#Added %%new new H5P library and updated %%old old one.
+xhfp_added_library_updated_libraries#:#Added %%new new H5P library and updated %%old old ones.
+xhfp_added_libraries_updated_library#:#Added %%new new H5P libraries and updated %%old old one.
+xhfp_added_libraries_updated_libraries#:#Added %%new new H5P libraries and updated %%old old ones.
 xhfp_all#:#All
 xhfp_author#:#Author
 xhfp_by#:#by
@@ -107,8 +107,8 @@ xhfp_summary#:#Summary
 xhfp_thumbnail#:#Thumbnail
 xhfp_title#:#Title
 xhfp_tutorial#:#Tutorial
-xhfp_updated_library#:#Updated %old H5P library.
-xhfp_updated_libraries#:#Updated %old H5P libraries.
+xhfp_updated_library#:#Updated %%old H5P library.
+xhfp_updated_libraries#:#Updated %%old H5P libraries.
 xhfp_upgrade#:#Upgrade
 xhfp_upgrade_available#:#Upgrade available
 xhfp_upload#:#Upload

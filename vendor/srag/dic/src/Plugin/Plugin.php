@@ -12,6 +12,7 @@ use ilTemplate;
 use JsonSerializable;
 use srag\DIC\DICTrait;
 use srag\DIC\Exception\DICException;
+use stdClass;
 
 /**
  * Class Plugin
@@ -62,7 +63,7 @@ final class Plugin implements PluginInterface {
 			case (is_double($value)):
 			case (is_bool($value)):
 			case (is_array($value)):
-			case (is_object($value)):
+			case ($value instanceof stdClass):
 			case ($value === NULL):
 			case ($value instanceof JsonSerializable):
 				$value = json_encode($value);
