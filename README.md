@@ -23,7 +23,7 @@ Please add the follow line to file `/etc/cron.d/ilias` on your server
 
 or run it manually
 
-```
+```bash
 sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client
 ```
 
