@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.11]
+- PHP7 comments
+
+## [0.5.10]
+- PHP7 comments
+
 ## [0.5.9]
 - Fix
 

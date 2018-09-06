@@ -51,14 +51,14 @@ And now add some configs:
 	/**
 	 * @return string
 	 */
-	public static function getSome() {
+	public static function getSome()/*: string*/ {
 		return self::getStringValue(self::KEY_SOME, self::DEFAULT_SOME);
 	}
 
 	/**
 	 * @param string $some
 	 */
-	public static function setSome($some) {
+	public static function setSome(/*string*/$some)/*: void*/ {
 		self::setStringValue(self::KEY_SOME, $some);
 	}
 ```
@@ -68,7 +68,7 @@ If you need to remove a config add:
 /**
  *
  */
-public static function removeSome() {
+public static function removeSome()/*: void*/ {
 	self::removeName(self::KEY_SOME);
 }
 ```
@@ -97,14 +97,14 @@ The following additional methods exist:
  *
  * @return string[] [ "name", ... ]
  */
-self::getNames();
+self::getNames()/*: array*/;
 
 /**
  * Get all values
  *
  * @return string[] [ [ "name" => value ], ... ]
  */
-self::getValues();
+self::getValues()/*: array*/;
 
 /**
  * Set all values
@@ -112,14 +112,14 @@ self::getValues();
  * @param array $configs        [ [ "name" => value ], ... ]
  * @param bool  $delete_existss Delete all exists name before
  */
-self::setValues(array $configs, $delete_exists = false);
+self::setValues(array $configs, /*bool*/$delete_exists = false)/*: void*/;
 
 /**
  * Remove a name
  * 
  * @param string $name Name
  */
-self::removeName($name);
+self::removeName(/*string*/$name)/*: void*/;
 ```
 
 Other `ActiveRecord` methods should be not used!
