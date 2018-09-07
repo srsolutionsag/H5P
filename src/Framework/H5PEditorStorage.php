@@ -16,6 +16,7 @@ use srag\Plugins\H5P\H5P\H5P;
  * Class H5PEditorStorage
  *
  * @package srag\Plugins\H5P\Framework
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PEditorStorage implements H5peditorStorageInterface {

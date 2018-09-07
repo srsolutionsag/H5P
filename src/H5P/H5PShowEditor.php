@@ -18,6 +18,7 @@ use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
  * Class H5PShowEditor
  *
  * @package srag\Plugins\H5P\H5P
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PShowEditor {

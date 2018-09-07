@@ -28,6 +28,7 @@ use stdClass;
  * Class H5PFramework
  *
  * @package srag\Plugins\H5P\Framework
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PFramework implements H5PFrameworkInterface {

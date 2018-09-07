@@ -14,6 +14,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POption;
  * Class H5HubSettingsFormGUI
  *
  * @package srag\Plugins\H5P\GUI
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5HubSettingsFormGUI extends ilPropertyFormGUI {

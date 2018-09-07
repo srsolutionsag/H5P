@@ -15,6 +15,7 @@ use srag\Plugins\H5PPageComponent\Cron\H5PPageComponentCron;
  * Class H5PCron
  *
  * @package srag\Plugins\H5P\Cron
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PCron {

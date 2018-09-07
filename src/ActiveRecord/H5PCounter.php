@@ -11,6 +11,7 @@ use srag\DIC\DICTrait;
  * Class H5PCounter
  *
  * @package srag\Plugins\H5P\ActiveRecord
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PCounter extends ActiveRecord {

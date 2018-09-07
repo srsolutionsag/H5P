@@ -17,6 +17,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PResult;
  * Class H5PContentsTableGUI
  *
  * @package srag\Plugins\H5P\GUI
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PContentsTableGUI extends ilTable2GUI {
