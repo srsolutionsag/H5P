@@ -67,17 +67,17 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 		switch ($a_permission) {
 			case "visible":
 			case "read":
-				return ((self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
+				return boolval((self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
 					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "delete":
-				return (self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
+				return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
 					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "write":
 			case "edit_permission":
 			default:
-				return self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id);
+				return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id));
 		}
 	}
 
