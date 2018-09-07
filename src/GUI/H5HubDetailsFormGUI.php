@@ -17,6 +17,7 @@ use srag\Plugins\H5P\H5P\H5PShowHub;
  * Class H5HubDetailsFormGUI
  *
  * @package srag\Plugins\H5P\GUI
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5HubDetailsFormGUI extends ilPropertyFormGUI {
 

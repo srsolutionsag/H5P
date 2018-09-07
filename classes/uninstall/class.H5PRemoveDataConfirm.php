@@ -8,6 +8,8 @@ use srag\RemovePluginDataConfirm\AbstractRemovePluginDataConfirm;
 /**
  * Class H5PRemoveDataConfirm
  *
+ * @author            studer + raimann ag <support-custom1@studer-raimann.ch>
+ *
  * @ilCtrl_isCalledBy H5PRemoveDataConfirm: ilUIPluginRouterGUI
  */
 class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {

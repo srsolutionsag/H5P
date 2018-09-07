@@ -28,6 +28,7 @@ use stdClass;
  * Class H5PFramework
  *
  * @package srag\Plugins\H5P\Framework
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PFramework implements H5PFrameworkInterface {
 
@@ -1068,8 +1069,8 @@ class H5PFramework implements H5PFrameworkInterface {
 	 *   Library object with id, name, major version and minor version.
 	 */
 	public function deleteLibrary($library) {
-		H5PCore::deleteFileTree(self::plugin()->getPluginObject()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
-			. $library->minor_version);
+		H5PCore::deleteFileTree(self::plugin()->getPluginObject()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version
+			. "." . $library->minor_version);
 
 		$this->deleteLibraryDependencies($library->library_id);
 

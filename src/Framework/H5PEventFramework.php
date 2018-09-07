@@ -12,6 +12,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PEvent;
  * Class H5PEventFramework
  *
  * @package srag\Plugins\H5P\Framework
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PEventFramework extends H5PEventBase {
 
@@ -104,8 +105,8 @@ class H5PEventFramework extends H5PEventBase {
 	 * Must be overridden by plugin.
 	 */
 	protected function saveStats() {
-		$h5p_counter = H5PCounter::getCounterByLibrary($this->type, ($this->library_name
-		!= NULL ? $this->library_name : ""), ($this->library_version != NULL ? $this->library_version : ""));
+		$h5p_counter = H5PCounter::getCounterByLibrary($this->type, ($this->library_name != NULL ? $this->library_name : ""), ($this->library_version
+		!= NULL ? $this->library_version : ""));
 
 		if ($h5p_counter !== NULL) {
 			$new = false;

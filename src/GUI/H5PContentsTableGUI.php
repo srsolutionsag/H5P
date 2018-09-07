@@ -17,6 +17,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PResult;
  * Class H5PContentsTableGUI
  *
  * @package srag\Plugins\H5P\GUI
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PContentsTableGUI extends ilTable2GUI {
 
@@ -84,8 +85,8 @@ class H5PContentsTableGUI extends ilTable2GUI {
 		self::dic()->template()->addOnLoadCode('xoctWaiter.init("waiter");');
 
 		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/js/ilH5PContentsTable.js");
-		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->getParentObject(), "", "", true)
-			. '");');
+		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()
+				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}
 
 

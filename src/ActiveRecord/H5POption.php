@@ -10,6 +10,7 @@ use srag\ActiveRecordConfig\ActiveRecordConfig;
  * Class H5POption
  *
  * @package srag\Plugins\H5P\ActiveRecord
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5POption extends ActiveRecordConfig {
 

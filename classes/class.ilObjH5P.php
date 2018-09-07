@@ -10,6 +10,8 @@ use srag\Plugins\H5P\H5P\H5P;
 
 /**
  * Class ilObjH5P
+ *
+ * @author studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class ilObjH5P extends ilObjectPlugin {
 

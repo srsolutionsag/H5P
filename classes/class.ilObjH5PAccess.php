@@ -7,6 +7,8 @@ use srag\Plugins\H5P\ActiveRecord\H5PObject;
 
 /**
  * Class ilObjH5PAccess
+ *
+ * @author studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class ilObjH5PAccess extends ilObjectPluginAccess {
 

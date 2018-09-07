@@ -22,6 +22,7 @@ use srag\Plugins\H5P\Framework\H5PFramework;
  * Class H5P
  *
  * @package srag\Plugins\H5P\H5P
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5P {
 
@@ -200,8 +201,8 @@ class H5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), self::plugin()->getPluginObject()->getH5PFolder(), "/" . self::plugin()->getPluginObject()->getH5PFolder(), self::dic()->user()
-				->getLanguage(), false);
+			$this->core = new H5PCore($this->framework(), self::plugin()->getPluginObject()->getH5PFolder(), "/" . self::plugin()->getPluginObject()
+					->getH5PFolder(), self::dic()->user()->getLanguage(), false);
 		}
 
 		return $this->core;

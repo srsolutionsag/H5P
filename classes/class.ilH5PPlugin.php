@@ -22,6 +22,8 @@ use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
 
 /**
  * Class ilH5PPlugin
+ *
+ * @author studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 

@@ -14,6 +14,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POption;
  * Class H5HubSettingsFormGUI
  *
  * @package srag\Plugins\H5P\GUI
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5HubSettingsFormGUI extends ilPropertyFormGUI {
 
@@ -62,7 +63,8 @@ class H5HubSettingsFormGUI extends ilPropertyFormGUI {
 		$usage_statistics = new ilCustomInputGUI(self::plugin()->translate("xhfp_usage_statistics"));
 
 		$send_usage_statistics = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_send_usage_statistics"), "send_usage_statistics");
-		$send_usage_statistics->setInfo(self::plugin()->translate("xhfp_send_usage_statistics_info", "", [ "https://h5p.org/tracking-the-usage-of-h5p" ]));
+		$send_usage_statistics->setInfo(self::plugin()
+			->translate("xhfp_send_usage_statistics_info", "", [ "https://h5p.org/tracking-the-usage-of-h5p" ]));
 		$send_usage_statistics->setChecked(H5POption::getOption("send_usage_statistics", true));
 		$usage_statistics->addSubItem($send_usage_statistics);
 

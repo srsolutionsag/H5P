@@ -6,6 +6,8 @@ use srag\DIC\DICTrait;
 
 /**
  * Class ilObjH5PListGUI
+ *
+ * @author studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI {
 

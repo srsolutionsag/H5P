@@ -11,6 +11,7 @@ use srag\DIC\DICTrait;
  * Class H5PLibraryCachedAsset
  *
  * @package srag\Plugins\H5P\ActiveRecord
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PLibraryCachedAsset extends ActiveRecord {
 
