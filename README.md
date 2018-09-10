@@ -30,8 +30,16 @@ sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services
 ILIAS username, password, client and interval need to be customized.
 
 ### Documentation
-
 Click [here](./doc/Documentation.pdf) for a more detailed documentation.
+
+### Dependencies
+* [h5p/h5p-core](https://packagist.org/packages/h5p/h5p-core)
+* [h5p/h5p-editor](https://packagist.org/packages/h5p/h5p-editor)
+* [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
+* [srag/dic](https://packagist.org/packages/srag/dic)
+* [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
+
+Please use it for further development!
 
 ### Contact
 info@studer-raimann.ch  
