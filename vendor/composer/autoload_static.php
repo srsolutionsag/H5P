@@ -114,7 +114,6 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
         'srag\\Plugins\\H5P\\ActiveRecord\\H5PSolveStatus' => __DIR__ . '/../..' . '/src/ActiveRecord/H5PSolveStatus.php',
         'srag\\Plugins\\H5P\\ActiveRecord\\H5PTmpFile' => __DIR__ . '/../..' . '/src/ActiveRecord/H5PTmpFile.php',
         'srag\\Plugins\\H5P\\Cron\\H5PCron' => __DIR__ . '/../..' . '/src/Cron/H5PCron.php',
-        'srag\\Plugins\\H5P\\Cron\\H5PSessionMock' => __DIR__ . '/../..' . '/src/Cron/H5PSessionMock.php',
         'srag\\Plugins\\H5P\\Framework\\H5PEditorAjax' => __DIR__ . '/../..' . '/src/Framework/H5PEditorAjax.php',
         'srag\\Plugins\\H5P\\Framework\\H5PEditorStorage' => __DIR__ . '/../..' . '/src/Framework/H5PEditorStorage.php',
         'srag\\Plugins\\H5P\\Framework\\H5PEventFramework' => __DIR__ . '/../..' . '/src/Framework/H5PEventFramework.php',

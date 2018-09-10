@@ -71,7 +71,6 @@ return array(
     'srag\\Plugins\\H5P\\ActiveRecord\\H5PSolveStatus' => $baseDir . '/src/ActiveRecord/H5PSolveStatus.php',
     'srag\\Plugins\\H5P\\ActiveRecord\\H5PTmpFile' => $baseDir . '/src/ActiveRecord/H5PTmpFile.php',
     'srag\\Plugins\\H5P\\Cron\\H5PCron' => $baseDir . '/src/Cron/H5PCron.php',
-    'srag\\Plugins\\H5P\\Cron\\H5PSessionMock' => $baseDir . '/src/Cron/H5PSessionMock.php',
     'srag\\Plugins\\H5P\\Framework\\H5PEditorAjax' => $baseDir . '/src/Framework/H5PEditorAjax.php',
     'srag\\Plugins\\H5P\\Framework\\H5PEditorStorage' => $baseDir . '/src/Framework/H5PEditorStorage.php',
     'srag\\Plugins\\H5P\\Framework\\H5PEventFramework' => $baseDir . '/src/Framework/H5PEventFramework.php',

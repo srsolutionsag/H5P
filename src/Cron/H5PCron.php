@@ -3,7 +3,7 @@
 namespace srag\Plugins\H5P\Cron;
 
 use H5PEventBase;
-use ilCronStartUp;
+use ilCronJobResult;
 use ilH5PPlugin;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
@@ -32,40 +32,15 @@ class H5PCron {
 	 * H5PCron constructor
 	 */
 	public function __construct() {
-
+		$this->h5p = H5P::getInstance();
 	}
 
 
 	/**
-	 * @param array $data
-	 */
-	public function initILIAS(array $data) {
-		// Set ilias root folder
-		chdir(substr($_SERVER["SCRIPT_FILENAME"], 0, strpos($_SERVER["SCRIPT_FILENAME"], "/Customizing")));
-
-		$_COOKIE["ilClientId"] = $data[3];
-		$_POST["username"] = $data[1];
-		$_POST["password"] = $data[2];
-
-		require_once "include/inc.ilias_version.php";
-		require_once "Services/Component/classes/class.ilComponent.php";
-		require_once "Services/Cron/classes/class.ilCronStartUp.php";
-
-		// fix ilias init
-		global $DIC, $ilSetting;
-		$DIC["ilSetting"] = $ilSetting = new H5PSessionMock();
-
-		$ilCronStartup = new ilCronStartUp($data[3], $data[1], $data[2]);
-		$ilCronStartup->initIlias();
-		$ilCronStartup->authenticate();
-	}
-
-
-	/**
-	 *
+	 * @return ilCronJobResult
 	 */
 	public function run() {
-		$this->h5p = H5P::getInstance();
+		$result = new ilCronJobResult();
 
 		$this->deleteOldTmpFiles();
 
@@ -75,6 +50,10 @@ class H5PCron {
 			// H5P page component cron job only needed for ILIAS 5.2 because never version supports it native :)
 			$this->pageComponentCron();
 		}
+
+		$result->setStatus(ilCronJobResult::STATUS_OK);
+
+		return $result;
 	}
 
 

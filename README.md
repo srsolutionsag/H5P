@@ -7,32 +7,16 @@ mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
 git clone https://github.com/studer-raimann/H5P.git H5P
 ```
+Update and activate the plugin in the ILIAS Plugin Administration
 
-### Configure cronjob
-H5P may accumulate temporary files.
-
-This files should be cleaned up from time to time.
-
-We recommend you to use an unix cronjob.
-
-Please add the follow line to file `/etc/cron.d/ilias` on your server
-
-```
-*0 0 * * * www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client > /dev/null
-```
-
-or run it manually
-
-```bash
-sudo -u www-data /usr/bin/php /var/www/ilias/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/cron.php username password client
-```
-
-ILIAS username, password, client and interval need to be customized.
+Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent)
 
 ### Documentation
 Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 
 ### Dependencies
+* [H5PCron](https://github.com/studer-raimann/H5PCron)
+* [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent)
 * [h5p/h5p-core](https://packagist.org/packages/h5p/h5p-core)
 * [h5p/h5p-editor](https://packagist.org/packages/h5p/h5p-editor)
 * [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
