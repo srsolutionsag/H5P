@@ -27,5 +27,5 @@ Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 Please use it for further development!
 
 ### Contact
-info@studer-raimann.ch  
-https://studer-raimann.ch  
+support-custom1@studer-raimann.ch
+https://studer-raimann.ch
