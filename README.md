@@ -1,7 +1,7 @@
 ## Installation
 
 ### Install H5P repository plugin
-Start at your ILIAS root directory 
+Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
