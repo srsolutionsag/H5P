@@ -77,7 +77,9 @@
 					});
 
 					$.get(get_url, function (data) {
-						data = JSON.parse(data);
+						if (typeof data !== "object") {
+							data = JSON.parse(data);
+						}
 
 						var button_count = 0;
 
