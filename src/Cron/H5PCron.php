@@ -90,7 +90,7 @@ class H5PCron {
 
 
 	/**
-	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	protected function pageComponentCron() {
 		$h5p_page_component_cron_file = __DIR__ . "/../../../../../COPage/PageComponent/H5PPageComponent/vendor/autoload.php";
