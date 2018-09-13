@@ -11,7 +11,7 @@ use srag\ActiveRecordConfig\ActiveRecordConfig;
  *
  * @package srag\Plugins\H5P\ActiveRecord
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5POption extends ActiveRecordConfig {
 

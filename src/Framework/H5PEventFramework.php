@@ -13,7 +13,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PEvent;
  *
  * @package srag\Plugins\H5P\Framework
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5PEventFramework extends H5PEventBase {
 

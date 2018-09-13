@@ -13,7 +13,7 @@ use srag\Plugins\H5P\H5P\H5P;
  *
  * @package srag\Plugins\H5P\ActiveRecord
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5PContentUserData extends ActiveRecord {
 

@@ -29,7 +29,7 @@ use stdClass;
  *
  * @package srag\Plugins\H5P\Framework
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5PFramework implements H5PFrameworkInterface {
 

@@ -15,7 +15,7 @@ use srag\DIC\DICTrait;
  *
  * @package srag\Plugins\H5P\GUI
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5PObjSettingsFormGUI extends ilPropertyFormGUI {
 

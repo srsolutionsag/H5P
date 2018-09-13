@@ -19,7 +19,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
  *
  * @package srag\Plugins\H5P\GUI
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class H5PResultsTableGUI extends ilTable2GUI {
 

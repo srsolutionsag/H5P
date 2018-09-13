@@ -11,7 +11,7 @@ use srag\Plugins\H5P\H5P\H5P;
 /**
  * Class ilH5PActionGUI
  *
- * @author            studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
  * @ilCtrl_isCalledBy ilH5PActionGUI: ilUIPluginRouterGUI
  */
