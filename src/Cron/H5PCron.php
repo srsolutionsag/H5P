@@ -42,6 +42,8 @@ class H5PCron {
 	public function run() {
 		$result = new ilCronJobResult();
 
+		$this->refreshHub();
+
 		$this->deleteOldTmpFiles();
 
 		$this->deleteOldEvents();
@@ -54,6 +56,14 @@ class H5PCron {
 		$result->setStatus(ilCronJobResult::STATUS_OK);
 
 		return $result;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function refreshHub() {
+		$this->h5p->show_hub()->refreshHub();
 	}
 
 
