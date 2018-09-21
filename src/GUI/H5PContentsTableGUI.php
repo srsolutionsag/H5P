@@ -91,6 +91,9 @@ class H5PContentsTableGUI extends ilTable2GUI {
 	}
 
 
+	/**
+	 *
+	 */
 	protected function addColumns() {
 		$this->addColumn("");
 		$this->addColumn(self::plugin()->translate("xhfp_title"));
