@@ -1,8 +1,7 @@
 {
   "name": "srag/plugins/h5p",
   "description": "",
-  "version": "1.1.0",
-  "type": "library",
+  "type": "project",
   "keywords": [
     "ILIAS",
     "Plugin",
