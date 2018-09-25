@@ -3,6 +3,8 @@
 namespace srag\Plugins\H5P\GUI;
 
 use ilAdvancedSelectionListGUI;
+use ilCSVWriter;
+use ilExcel;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
@@ -41,31 +43,33 @@ class H5PContentsTableGUI extends ilTable2GUI {
 
 		$this->obj_id = $parent->obj_id;
 
-		$this->setTable();
+		$this->initTable();
 	}
 
 
 	/**
 	 *
 	 */
-	protected function setTable() {
+	protected function initTable() {
 		$parent = $this->getParentObject();
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
 		$this->setTitle(self::plugin()->translate("xhfp_contents"));
 
-		$this->addColumns();
-
 		$this->initFilter();
+
+		$this->initData();
+
+		$this->initColumns();
+
+		$this->initExport();
 
 		$this->setRowTemplate("contents_table_row.html", self::plugin()->directory());
 
 		if (!$this->hasResults()) {
 			$this->initUpDown();
 		}
-
-		$this->setData(H5PContent::getContentsByObjectArray($parent->object->getId()));
 	}
 
 
@@ -80,21 +84,25 @@ class H5PContentsTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	protected function initUpDown() {
-		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/lib/waiter/js/waiter.js");
-		self::dic()->template()->addCss(self::plugin()->directory() . "/lib/waiter/css/waiter.css");
-		self::dic()->template()->addOnLoadCode('xoctWaiter.init("waiter");');
+	public function initFilter() {
 
-		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/js/ilH5PContentsTable.js");
-		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()
-				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}
 
 
 	/**
 	 *
 	 */
-	protected function addColumns() {
+	protected function initData() {
+		$parent = $this->getParentObject();
+
+		$this->setData(H5PContent::getContentsByObjectArray($parent->object->getId()));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initColumns() {
 		$this->addColumn("");
 		$this->addColumn(self::plugin()->translate("xhfp_title"));
 		$this->addColumn(self::plugin()->translate("xhfp_library"));
@@ -106,8 +114,22 @@ class H5PContentsTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	public function initFilter() {
+	protected function initExport() {
 
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initUpDown() {
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/lib/waiter/js/waiter.js");
+		self::dic()->template()->addCss(self::plugin()->directory() . "/lib/waiter/css/waiter.css");
+		self::dic()->template()->addOnLoadCode('xoctWaiter.init("waiter");');
+
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . "/js/ilH5PContentsTable.js");
+		self::dic()->template()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()
+				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}
 
 
@@ -149,5 +171,41 @@ class H5PContentsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
 		self::dic()->ctrl()->setParameter($parent, "xhfp_content", NULL);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 */
+	protected function fillHeaderCSV($csv) {
+		parent::fillHeaderCSV($csv);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 * @param array       $content
+	 */
+	protected function fillRowCSV($csv, $content) {
+		parent::fillRowCSV($csv, $content);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 */
+	protected function fillHeaderExcel(ilExcel $excel, &$row) {
+		parent::fillHeaderExcel($excel, $row);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 * @param array   $content
+	 */
+	protected function fillRowExcel(ilExcel $excel, &$row, $content) {
+		parent::fillRowExcel($excel, $row, $content);
 	}
 }

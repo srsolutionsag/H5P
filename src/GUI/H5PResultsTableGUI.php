@@ -4,6 +4,8 @@ namespace srag\Plugins\H5P\GUI;
 
 use Exception;
 use ilAdvancedSelectionListGUI;
+use ilCSVWriter;
+use ilExcel;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
@@ -50,36 +52,44 @@ class H5PResultsTableGUI extends ilTable2GUI {
 
 		$this->obj_id = $this->getParentObject()->object->getId();
 
-		$this->setTable();
+		$this->initTable();
 	}
 
 
 	/**
 	 *
 	 */
-	protected function setTable() {
+	protected function initTable() {
 		$parent = $this->getParentObject();
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
 		$this->setTitle(self::plugin()->translate("xhfp_results"));
 
-		$this->getResults();
-
-		$this->addColumns();
-
 		$this->initFilter();
 
-		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
+		$this->initData();
 
-		$this->setData($this->results);
+		$this->initColumns();
+
+		$this->initExport();
+
+		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
 	}
 
 
 	/**
 	 *
 	 */
-	protected function getResults() {
+	public function initFilter() {
+
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initData() {
 		$this->contents = H5PContent::getContentsByObject($this->obj_id);
 
 		$this->results = [];
@@ -108,13 +118,15 @@ class H5PResultsTableGUI extends ilTable2GUI {
 				}
 			}
 		}
+
+		$this->setData($this->results);
 	}
 
 
 	/**
 	 *
 	 */
-	protected function addColumns() {
+	protected function initColumns() {
 		$this->addColumn(self::plugin()->translate("xhfp_user"));
 
 		foreach ($this->contents as $h5p_content) {
@@ -129,7 +141,7 @@ class H5PResultsTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	public function initFilter() {
+	protected function initExport() {
 
 	}
 
@@ -175,5 +187,41 @@ class H5PResultsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
 		self::dic()->ctrl()->setParameter($parent, "xhfp_user", NULL);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 */
+	protected function fillHeaderCSV($csv) {
+		parent::fillHeaderCSV($csv);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 * @param array       $result
+	 */
+	protected function fillRowCSV($csv, $result) {
+		parent::fillRowCSV($csv, $result);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 */
+	protected function fillHeaderExcel(ilExcel $excel, &$row) {
+		parent::fillHeaderExcel($excel, $row);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 * @param array   $result
+	 */
+	protected function fillRowExcel(ilExcel $excel, &$row, $result) {
+		parent::fillRowExcel($excel, $row, $result);
 	}
 }

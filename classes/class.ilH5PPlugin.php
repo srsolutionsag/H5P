@@ -99,9 +99,9 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function deleteData() {
+	protected function deleteData()/*: void*/ {
 		$this->removeH5PFolder();
 
 		self::dic()->database()->dropTable(H5PContent::TABLE_NAME, false);

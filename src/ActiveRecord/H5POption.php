@@ -42,7 +42,7 @@ class H5POption extends ActiveRecordConfig {
 	/**
 	 * @return bool|null
 	 */
-	public static function getUninstallRemovesData() {
+	public static function getUninstallRemovesData()/*: ?bool*/ {
 		return self::getXValue(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA, H5PRemoveDataConfirm::DEFAULT_UNINSTALL_REMOVES_DATA);
 	}
 
@@ -50,7 +50,7 @@ class H5POption extends ActiveRecordConfig {
 	/**
 	 * @param bool $uninstall_removes_data
 	 */
-	public static function setUninstallRemovesData($uninstall_removes_data) {
+	public static function setUninstallRemovesData(bool $uninstall_removes_data)/*: void*/ {
 		self::setBooleanValue(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA, $uninstall_removes_data);
 	}
 
@@ -58,7 +58,7 @@ class H5POption extends ActiveRecordConfig {
 	/**
 	 *
 	 */
-	public static function removeUninstallRemovesData() {
+	public static function removeUninstallRemovesData()/*: void*/ {
 		self::removeName(H5PRemoveDataConfirm::KEY_UNINSTALL_REMOVES_DATA);
 	}
 }

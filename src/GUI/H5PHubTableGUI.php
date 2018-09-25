@@ -4,6 +4,8 @@ namespace srag\Plugins\H5P\GUI;
 
 use ilAdvancedSelectionListGUI;
 use ilCheckboxInputGUI;
+use ilCSVWriter;
+use ilExcel;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilSelectInputGUI;
@@ -57,46 +59,29 @@ class H5PHubTableGUI extends ilTable2GUI {
 
 		$this->h5p = H5P::getInstance();
 
-		$this->setTable();
+		$this->initTable();
 	}
 
 
 	/**
 	 *
 	 */
-	protected function setTable() {
+	protected function initTable() {
 		$parent = $this->getParentObject();
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
 		$this->setTitle(self::plugin()->translate("xhfp_installed_libraries"));
 
-		$this->addColumns();
-
 		$this->initFilter();
 
+		$this->initData();
+
+		$this->initColumns();
+
+		$this->initExport();
+
 		$this->setRowTemplate("hub_table_row.html", self::plugin()->directory());
-
-		$this->parseData();
-	}
-
-
-	/**
-	 *
-	 */
-	protected function addColumns() {
-		$this->addColumn("");
-		$this->addColumn(self::plugin()->translate("xhfp_library"), "title");
-		$this->addColumn(self::plugin()->translate("xhfp_status"), "status");
-		$this->addColumn(self::plugin()->translate("xhfp_installed_version"));
-		$this->addColumn(self::plugin()->translate("xhfp_latest_version"));
-		$this->addColumn(self::plugin()->translate("xhfp_runnable"), "runnable");
-		$this->addColumn(self::plugin()->translate("xhfp_contents"));
-		$this->addColumn(self::plugin()->translate("xhfp_usage_contents"));
-		$this->addColumn(self::plugin()->translate("xhfp_usage_libraries"));
-		$this->addColumn(self::plugin()->translate("xhfp_actions"));
-
-		$this->setDefaultOrderField("title");
 	}
 
 
@@ -135,20 +120,9 @@ class H5PHubTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param string $field_id
-	 *
-	 * @return bool
-	 */
-	protected function hasSessionValue($field_id) {
-		// Not set on first visit, false on reset filter, string if is set
-		return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
-	}
-
-
-	/**
 	 *
 	 */
-	protected function parseData() {
+	protected function initData() {
 		// Filter
 		$title = $this->filter_title->getValue();
 		if ($title === false) {
@@ -165,6 +139,44 @@ class H5PHubTableGUI extends ilTable2GUI {
 		$libraries = $this->h5p->show_hub()->getLibraries($title, $status, $runnable, $not_used);
 
 		$this->setData($libraries);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initColumns() {
+		$this->addColumn("");
+		$this->addColumn(self::plugin()->translate("xhfp_library"), "title");
+		$this->addColumn(self::plugin()->translate("xhfp_status"), "status");
+		$this->addColumn(self::plugin()->translate("xhfp_installed_version"));
+		$this->addColumn(self::plugin()->translate("xhfp_latest_version"));
+		$this->addColumn(self::plugin()->translate("xhfp_runnable"), "runnable");
+		$this->addColumn(self::plugin()->translate("xhfp_contents"));
+		$this->addColumn(self::plugin()->translate("xhfp_usage_contents"));
+		$this->addColumn(self::plugin()->translate("xhfp_usage_libraries"));
+		$this->addColumn(self::plugin()->translate("xhfp_actions"));
+
+		$this->setDefaultOrderField("title");
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initExport() {
+
+	}
+
+
+	/**
+	 * @param string $field_id
+	 *
+	 * @return bool
+	 */
+	protected function hasSessionValue($field_id) {
+		// Not set on first visit, false on reset filter, string if is set
+		return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
 	}
 
 
@@ -248,5 +260,41 @@ class H5PHubTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
 		self::dic()->ctrl()->setParameter($parent, "xhfp_library", NULL);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 */
+	protected function fillHeaderCSV($csv) {
+		parent::fillHeaderCSV($csv);
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 * @param array       $library
+	 */
+	protected function fillRowCSV($csv, $library) {
+		parent::fillRowCSV($csv, $library);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 */
+	protected function fillHeaderExcel(ilExcel $excel, &$row) {
+		parent::fillHeaderExcel($excel, $row);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 * @param array   $library
+	 */
+	protected function fillRowExcel(ilExcel $excel, &$row, $library) {
+		parent::fillRowExcel($excel, $row, $library);
 	}
 }

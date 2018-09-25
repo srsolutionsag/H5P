@@ -20,7 +20,7 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	/**
 	 * @inheritdoc
 	 */
-	public function getUninstallRemovesData() {
+	public function getUninstallRemovesData()/*: ?bool*/ {
 		return H5POption::getUninstallRemovesData();
 	}
 
@@ -28,7 +28,8 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	/**
 	 * @inheritdoc
 	 */
-	public function setUninstallRemovesData($uninstall_removes_data) {
+	public function setUninstallRemovesData(/*bool*/
+		$uninstall_removes_data)/*: void*/ {
 		H5POption::setUninstallRemovesData($uninstall_removes_data);
 	}
 
@@ -36,7 +37,7 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	/**
 	 * @inheritdoc
 	 */
-	public function removeUninstallRemovesData() {
+	public function removeUninstallRemovesData()/*: void*/ {
 		H5POption::removeUninstallRemovesData();
 	}
 }
