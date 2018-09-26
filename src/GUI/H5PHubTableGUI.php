@@ -61,6 +61,8 @@ class H5PHubTableGUI extends ilTable2GUI {
 			$this->h5p = H5P::getInstance();
 
 			$this->initTable();
+		} else {
+			$this->initFilter();
 		}
 	}
 
