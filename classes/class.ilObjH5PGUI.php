@@ -686,10 +686,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		}
 
 		if (ilObjH5PAccess::hasEditPermissionAccess()) {
-			self::dic()->tabs()->addTab(self::TAB_PERMISSIONS, $this->lng->txt(self::TAB_PERMISSIONS), self::dic()->ctrl()->getLinkTargetByClass([
-				self::class,
-				ilPermissionGUI::class,
-			], self::CMD_PERMISSIONS));
+			self::dic()->tabs()->addTab(self::TAB_PERMISSIONS, self::plugin()->translate(self::TAB_PERMISSIONS, "", [], false), self::dic()->ctrl()
+				->getLinkTargetByClass([
+					self::class,
+					ilPermissionGUI::class,
+				], self::CMD_PERMISSIONS));
 		}
 
 		self::dic()->tabs()->manual_activation = true; // Show all tabs as links when no activation
