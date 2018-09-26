@@ -13,6 +13,7 @@ use ilDatePresentation;
 use ilDateTime;
 use ilH5PActionGUI;
 use ilH5PPlugin;
+use srag\ActiveRecordConfig\ActiveRecordConfig;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Framework\H5PEditorAjax;
 use srag\Plugins\H5P\Framework\H5PEditorStorage;
@@ -141,7 +142,7 @@ class H5P {
 	public function timestampToDbDate($timestamp) {
 		$date_time = new DateTime("@" . $timestamp);
 
-		$formated = $date_time->format("Y-m-d H:i:s");
+		$formated = $date_time->format(ActiveRecordConfig::SQL_DATE_FORMAT);
 
 		return $formated;
 	}
