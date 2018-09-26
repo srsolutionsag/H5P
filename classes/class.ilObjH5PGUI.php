@@ -205,10 +205,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @param string $cmd
+	 *
 	 * @return H5PContentsTableGUI
 	 */
-	protected function getContentsTable() {
-		$table = new H5PContentsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+	protected function getContentsTable($cmd = self::CMD_MANAGE_CONTENTS) {
+		$table = new H5PContentsTableGUI($this, $cmd);
 
 		return $table;
 	}
@@ -430,7 +432,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$h5p_result = H5PResult::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
 			if ($h5p_result !== NULL) {
 				$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, self::plugin()
-						->translate("xhfp_solved_content")));
+					->translate("xhfp_solved_content")));
 
 				return;
 			}
@@ -535,10 +537,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 
 	/**
+	 * @param string $cmd
+	 *
 	 * @return H5PResultsTableGUI
 	 */
-	protected function getResultsTable() {
-		$table = new H5PResultsTableGUI($this, self::CMD_MANAGE_CONTENTS);
+	protected function getResultsTable($cmd = self::CMD_MANAGE_CONTENTS) {
+		$table = new H5PResultsTableGUI($this, $cmd);
 
 		return $table;
 	}

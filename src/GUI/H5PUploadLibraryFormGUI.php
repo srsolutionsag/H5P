@@ -42,14 +42,14 @@ class H5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 		$this->h5p = H5P::getInstance();
 		$this->parent = $parent;
 
-		$this->setForm();
+		$this->initForm();
 	}
 
 
 	/**
 	 *
 	 */
-	protected function setForm() {
+	protected function initForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
 		$this->setTitle(self::plugin()->translate("xhfp_upload_library"));

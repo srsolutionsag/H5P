@@ -48,7 +48,7 @@ class H5PEditContentFormGUI extends ilPropertyFormGUI {
 		$this->h5p = H5P::getInstance();
 		$this->parent = $parent;
 
-		$this->setForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
+		$this->initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 	}
 
 
@@ -58,7 +58,7 @@ class H5PEditContentFormGUI extends ilPropertyFormGUI {
 	 * @param string          $cmd_update
 	 * @param string          $cmd_cancel
 	 */
-	protected function setForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel) {
+	protected function initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel) {
 		if ($h5p_content !== NULL) {
 			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
 			$params = $this->h5p->core()->filterParameters($content);

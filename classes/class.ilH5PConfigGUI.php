@@ -103,10 +103,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
+	 * @param string $cmd
+	 *
 	 * @return H5PHubTableGUI
 	 */
-	protected function getHubTable() {
-		$table = new H5PHubTableGUI($this, self::CMD_HUB);
+	protected function getHubTable($cmd = self::CMD_HUB) {
+		$table = new H5PHubTableGUI($this, $cmd);
 
 		return $table;
 	}
@@ -164,7 +166,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function applyFilter() {
-		$table = $this->getHubTable();
+		$table = $this->getHubTable(self::CMD_APPLY_FILTER);
 
 		$table->writeFilterToSession();
 
@@ -176,7 +178,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function resetFilter() {
-		$table = $this->getHubTable();
+		$table = $this->getHubTable(self::CMD_RESET_FILTER);
 
 		$table->resetFilter();
 

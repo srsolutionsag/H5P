@@ -57,9 +57,11 @@ class H5PHubTableGUI extends ilTable2GUI {
 	public function __construct(ilH5PConfigGUI $parent, $parent_cmd) {
 		parent::__construct($parent, $parent_cmd);
 
-		$this->h5p = H5P::getInstance();
+		if (!($parent_cmd === ilH5PConfigGUI::CMD_APPLY_FILTER || $parent_cmd === ilH5PConfigGUI::CMD_RESET_FILTER)) {
+			$this->h5p = H5P::getInstance();
 
-		$this->initTable();
+			$this->initTable();
+		}
 	}
 
 

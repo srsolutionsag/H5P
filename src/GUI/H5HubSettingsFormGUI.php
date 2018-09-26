@@ -37,14 +37,14 @@ class H5HubSettingsFormGUI extends ilPropertyFormGUI {
 
 		$this->parent = $parent;
 
-		$this->setForm();
+		$this->initForm();
 	}
 
 
 	/**
 	 *
 	 */
-	protected function setForm() {
+	protected function initForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
 		$this->setTitle(self::plugin()->translate("xhfp_settings"));
