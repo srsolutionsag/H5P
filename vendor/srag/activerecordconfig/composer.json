@@ -1,7 +1,7 @@
 {
   "name": "srag/activerecordconfig",
   "description": "Simple ActiveRecord config for ILIAS plugins",
-  "version": "0.5.11",
+  "version": "0.6.4",
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -12,7 +12,7 @@
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "srag",
+      "name": "studer + raimann ag - Team Custom 1",
       "email": "support-custom1@studer-raimann.ch",
       "homepage": "https://studer-raimann.ch",
       "role": "Developer"

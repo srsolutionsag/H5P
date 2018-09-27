@@ -18,6 +18,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POptionOld;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
 
 /**
@@ -27,7 +28,11 @@ use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
-	use RepositoryObjectPluginUninstallTrait;
+	use H5PTrait, RepositoryObjectPluginUninstallTrait {
+		H5PTrait::dic insteadof RepositoryObjectPluginUninstallTrait;
+		H5PTrait::plugin insteadof RepositoryObjectPluginUninstallTrait;
+		H5PTrait::checkPluginClassNameConst insteadof RepositoryObjectPluginUninstallTrait;
+	}
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	const PLUGIN_CLASS_NAME = self::class;

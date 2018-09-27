@@ -5,7 +5,7 @@ namespace srag\Plugins\H5P\ActiveRecord;
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PLibraryCachedAsset
@@ -16,7 +16,7 @@ use srag\DIC\DICTrait;
  */
 class H5PLibraryCachedAsset extends ActiveRecord {
 
-	use DICTrait;
+	use H5PTrait;
 	const TABLE_NAME = "rep_robj_xhfp_lib_ca";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

@@ -6,11 +6,11 @@ use H5PCore;
 use H5peditorFile;
 use H5peditorStorage as H5peditorStorageInterface;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
 use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PEditorStorage
@@ -21,21 +21,15 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class H5PEditorStorage implements H5peditorStorageInterface {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
 	 * H5PEditorStorage constructor
-	 *
-	 * @param H5P $h5p
 	 */
-	public function __construct(H5P $h5p) {
-		$this->h5p = $h5p;
+	public function __construct() {
+
 	}
 
 
@@ -85,7 +79,7 @@ class H5PEditorStorage implements H5peditorStorageInterface {
 	 * @return array List of all libraries loaded
 	 */
 	public function getLibraries($libraries = NULL) {
-		$super_user = $this->h5p->framework()->hasPermission("manage_h5p_libraries");
+		$super_user = self::h5p()->framework()->hasPermission("manage_h5p_libraries");
 
 		if ($libraries !== NULL) {
 			$librariesWithDetails = [];

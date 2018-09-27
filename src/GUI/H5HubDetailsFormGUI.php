@@ -9,9 +9,8 @@ use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
 use ilPropertyFormGUI;
-use srag\DIC\DICTrait;
-use srag\Plugins\H5P\H5P\H5P;
 use srag\Plugins\H5P\H5P\H5PShowHub;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5HubDetailsFormGUI
@@ -22,12 +21,8 @@ use srag\Plugins\H5P\H5P\H5PShowHub;
  */
 class H5HubDetailsFormGUI extends ilPropertyFormGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var string
 	 */
@@ -47,7 +42,6 @@ class H5HubDetailsFormGUI extends ilPropertyFormGUI {
 	public function __construct(ilH5PConfigGUI $parent, $key) {
 		parent::__construct();
 
-		$this->h5p = H5P::getInstance();
 		$this->key = $key;
 		$this->parent = $parent;
 	}
@@ -58,7 +52,7 @@ class H5HubDetailsFormGUI extends ilPropertyFormGUI {
 	 */
 	public function getHTML() {
 		// Library
-		$libraries = $this->h5p->show_hub()->getLibraries();
+		$libraries = self::h5p()->show_hub()->getLibraries();
 		$library = $libraries[$this->key];
 
 		$h5p_tpl = self::plugin()->template("H5PLibraryDetails.html");

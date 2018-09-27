@@ -2,11 +2,11 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
 use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilH5PActionGUI
@@ -17,7 +17,7 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class ilH5PActionGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_H5P_ACTION = "h5pAction";
 	const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
@@ -82,16 +82,10 @@ class ilH5PActionGUI {
 
 
 	/**
-	 * @var H5P
-	 */
-	protected $h5p;
-
-
-	/**
 	 * ilH5PActionGUI constructor
 	 */
 	public function __construct() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -179,7 +173,7 @@ class ilH5PActionGUI {
 	protected function contentTypeCache() {
 		$token = "";
 
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE, $token);
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE, $token);
 	}
 
 
@@ -194,7 +188,7 @@ class ilH5PActionGUI {
 		$preload = filter_input(INPUT_POST, "preload");
 		$invalidate = filter_input(INPUT_POST, "invalidate");
 
-		$data = $this->h5p->show_content()->contentsUserData($content_id, $data_id, $sub_content_id, $data, $preload, $invalidate);
+		$data = self::h5p()->show_content()->contentsUserData($content_id, $data_id, $sub_content_id, $data, $preload, $invalidate);
 
 		H5PCore::ajaxSuccess($data);
 	}
@@ -208,7 +202,7 @@ class ilH5PActionGUI {
 
 		$content_id = filter_input(INPUT_POST, "contentId", FILTER_SANITIZE_NUMBER_INT);
 
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
 	}
 
 
@@ -249,11 +243,11 @@ class ilH5PActionGUI {
 		$minor_version = filter_input(INPUT_GET, "minorVersion", FILTER_SANITIZE_NUMBER_INT);
 
 		if (!empty($name)) {
-			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
+			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
 				->getLanguage(), "", self::plugin()->getPluginObject()->getH5PFolder());
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
-			$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
+			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
 		}
 	}
 
@@ -266,7 +260,7 @@ class ilH5PActionGUI {
 
 		$name = filter_input(INPUT_GET, "id");
 
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, $token, $name);
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, $token, $name);
 	}
 
 
@@ -279,7 +273,7 @@ class ilH5PActionGUI {
 		$file_path = $_FILES["h5p"]["tmp_name"];
 		$content_id = NULL;
 
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
 	}
 
 
@@ -294,9 +288,9 @@ class ilH5PActionGUI {
 		$done = 0;
 
 		foreach ($h5P_contents as $h5P_content) {
-			$content = $this->h5p->core()->loadContent($h5P_content->getContentId());
+			$content = self::h5p()->core()->loadContent($h5P_content->getContentId());
 
-			$this->h5p->core()->filterParameters($content);
+			self::h5p()->core()->filterParameters($content);
 
 			$done ++;
 
@@ -342,7 +336,7 @@ class ilH5PActionGUI {
 		$finished = filter_input(INPUT_POST, "finished", FILTER_VALIDATE_INT);
 		$time = filter_input(INPUT_POST, "time", FILTER_VALIDATE_INT);
 
-		$this->h5p->show_content()->setFinished($content_id, $score, $max_score, $opened, $finished, $time);
+		self::h5p()->show_content()->setFinished($content_id, $score, $max_score, $opened, $finished, $time);
 
 		H5PCore::ajaxSuccess();
 	}

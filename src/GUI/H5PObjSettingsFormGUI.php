@@ -8,7 +8,7 @@ use ilObjH5PGUI;
 use ilPropertyFormGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\DIC\DICTrait;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PObjSettingsFormGUI
@@ -19,7 +19,7 @@ use srag\DIC\DICTrait;
  */
 class H5PObjSettingsFormGUI extends ilPropertyFormGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilObjH5PGUI

@@ -4,9 +4,9 @@ namespace srag\Plugins\H5P\Framework;
 
 use H5PEventBase;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PCounter;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PEventFramework
@@ -17,7 +17,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PEvent;
  */
 class H5PEventFramework extends H5PEventBase {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 

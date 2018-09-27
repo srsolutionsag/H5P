@@ -8,9 +8,8 @@ use ilH5PPlugin;
 use ilHiddenInputGUI;
 use ilPropertyFormGUI;
 use ilTextInputGUI;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PEditContentFormGUI
@@ -21,12 +20,8 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class H5PEditContentFormGUI extends ilPropertyFormGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var object
 	 */
@@ -45,7 +40,6 @@ class H5PEditContentFormGUI extends ilPropertyFormGUI {
 	public function __construct($parent, H5PContent $h5p_content = NULL, $cmd_create, $cmd_update, $cmd_cancel) {
 		parent::__construct();
 
-		$this->h5p = H5P::getInstance();
 		$this->parent = $parent;
 
 		$this->initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
@@ -60,8 +54,8 @@ class H5PEditContentFormGUI extends ilPropertyFormGUI {
 	 */
 	protected function initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel) {
 		if ($h5p_content !== NULL) {
-			$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
-			$params = $this->h5p->core()->filterParameters($content);
+			$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+			$params = self::h5p()->core()->filterParameters($content);
 		} else {
 			$content = [];
 			$params = "";
@@ -96,7 +90,7 @@ class H5PEditContentFormGUI extends ilPropertyFormGUI {
 
 		$h5p = new ilCustomInputGUI(self::plugin()->translate("xhfp_library"), "xhfp_library");
 		$h5p->setRequired(true);
-		$h5p->setHtml($this->h5p->show_editor()->getH5PEditorIntegration($h5p_content));
+		$h5p->setHtml(self::h5p()->show_editor()->getH5PEditorIntegration($h5p_content));
 		$this->addItem($h5p);
 
 		$h5p_params = new ilHiddenInputGUI("xhfp_params");

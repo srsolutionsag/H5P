@@ -2,8 +2,8 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PObject;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilObjH5PAccess
@@ -12,7 +12,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PObject;
  */
 class ilObjH5PAccess extends ilObjectPluginAccess {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var self

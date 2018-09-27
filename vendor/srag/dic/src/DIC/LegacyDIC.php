@@ -9,6 +9,8 @@ use srag\DIC\Exception\DICException;
  * Class LegacyDIC
  *
  * @package srag\DIC\DIC
+ *
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class LegacyDIC extends AbstractDIC {
 

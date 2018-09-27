@@ -7,8 +7,8 @@ use ilCustomInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilPropertyFormGUI;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5POption;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5HubSettingsFormGUI
@@ -19,7 +19,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POption;
  */
 class H5HubSettingsFormGUI extends ilPropertyFormGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilH5PConfigGUI

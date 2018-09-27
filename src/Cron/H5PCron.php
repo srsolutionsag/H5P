@@ -5,10 +5,9 @@ namespace srag\Plugins\H5P\Cron;
 use H5PEventBase;
 use ilCronJobResult;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 use srag\Plugins\H5PPageComponent\Cron\H5PPageComponentCron;
 
 /**
@@ -20,19 +19,15 @@ use srag\Plugins\H5PPageComponent\Cron\H5PPageComponentCron;
  */
 class H5PCron {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
 	 * H5PCron constructor
 	 */
 	public function __construct() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -63,7 +58,7 @@ class H5PCron {
 	 *
 	 */
 	protected function refreshHub() {
-		$this->h5p->show_hub()->refreshHub();
+		self::h5p()->show_hub()->refreshHub();
 	}
 
 

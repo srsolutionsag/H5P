@@ -14,10 +14,10 @@ use ilDateTime;
 use ilH5PActionGUI;
 use ilH5PPlugin;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Framework\H5PEditorAjax;
 use srag\Plugins\H5P\Framework\H5PEditorStorage;
 use srag\Plugins\H5P\Framework\H5PFramework;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5P
@@ -28,7 +28,7 @@ use srag\Plugins\H5P\Framework\H5PFramework;
  */
 class H5P {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var self
@@ -39,7 +39,7 @@ class H5P {
 	/**
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance()/*: self*/ {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -228,7 +228,7 @@ class H5P {
 	 */
 	public function editor_ajax() {
 		if ($this->editor_ajax === NULL) {
-			$this->editor_ajax = new H5PEditorAjax($this);
+			$this->editor_ajax = new H5PEditorAjax();
 		}
 
 		return $this->editor_ajax;
@@ -240,7 +240,7 @@ class H5P {
 	 */
 	public function editor_storage() {
 		if ($this->editor_storage === NULL) {
-			$this->editor_storage = new H5PEditorStorage($this);
+			$this->editor_storage = new H5PEditorStorage();
 		}
 
 		return $this->editor_storage;
@@ -264,7 +264,7 @@ class H5P {
 	 */
 	public function framework() {
 		if ($this->framework === NULL) {
-			$this->framework = new H5PFramework($this);
+			$this->framework = new H5PFramework();
 		}
 
 		return $this->framework;

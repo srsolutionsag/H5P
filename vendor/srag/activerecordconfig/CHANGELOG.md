@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.6.4]
+- Update readme
+
+## [0.6.3]
+- Update readme
+
+## [0.6.2]
+- Fix create `ActiveRecordConfigFormGUI` instance again
+
+## [0.6.1]
+- Fix create `ActiveRecordConfigFormGUI` instance
+
+## [0.6.0]
+- Base `ActiveRecordConfigGUI` and `ActiveRecordConfigFormGUI`
+
+## [0.5.14]
+- Added dependencies to readme
+
+## [0.5.13]
+- Add `@author` to classes
+
+## [0.5.12]
+- Update readme
+
 ## [0.5.11]
 - PHP7 comments
 
@@ -75,4 +99,3 @@
 
 ## [0.1.0]
 - First version
-

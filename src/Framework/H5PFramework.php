@@ -9,7 +9,6 @@ use H5PPermission;
 use ilCurlConnection;
 use ilH5PPlugin;
 use ilUtil;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PContentLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
@@ -21,7 +20,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
 use srag\Plugins\H5P\ActiveRecord\H5POption;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 use stdClass;
 
 /**
@@ -33,16 +32,12 @@ use stdClass;
  */
 class H5PFramework implements H5PFrameworkInterface {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	private $messages = [
 		"error" => [],
 		"info" => []
 	];
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var string
 	 */
@@ -55,11 +50,9 @@ class H5PFramework implements H5PFrameworkInterface {
 
 	/**
 	 * H5PFramework constructor
-	 *
-	 * @param H5P $h5p
 	 */
-	public function __construct(H5P $h5p) {
-		$this->h5p = $h5p;
+	public function __construct() {
+
 	}
 
 
@@ -303,7 +296,7 @@ class H5PFramework implements H5PFrameworkInterface {
 	 *
 	 */
 	protected function setUploadedH5pPath() {
-		$tmp_path = $this->h5p->core()->fs->getTmpPath();
+		$tmp_path = self::h5p()->core()->fs->getTmpPath();
 
 		$this->uploaded_h5p_folder_path = $tmp_path;
 
@@ -557,13 +550,13 @@ class H5PFramework implements H5PFrameworkInterface {
 		}
 
 		if (isset($library_data["embedTypes"])) {
-			$h5p_library->setEmbedTypes($this->h5p->joinCsv($library_data["embedTypes"]));
+			$h5p_library->setEmbedTypes(self::h5p()->joinCsv($library_data["embedTypes"]));
 		} else {
 			$h5p_library->setEmbedTypes("");
 		}
 
 		if (isset($library_data["preloadedJs"])) {
-			$h5p_library->setPreloadedJs($this->h5p->joinCsv(array_map(function ($preloaded_js) {
+			$h5p_library->setPreloadedJs(self::h5p()->joinCsv(array_map(function ($preloaded_js) {
 				return $preloaded_js["path"];
 			}, $library_data["preloadedJs"])));
 		} else {
@@ -571,7 +564,7 @@ class H5PFramework implements H5PFrameworkInterface {
 		}
 
 		if (isset($library_data["preloadedCss"])) {
-			$h5p_library->setPreloadedCss($this->h5p->joinCsv(array_map(function ($preloaded_css) {
+			$h5p_library->setPreloadedCss(self::h5p()->joinCsv(array_map(function ($preloaded_css) {
 				return $preloaded_css["path"];
 			}, $library_data["preloadedCss"])));
 		} else {
@@ -579,7 +572,7 @@ class H5PFramework implements H5PFrameworkInterface {
 		}
 
 		if (isset($library_data["dropLibraryCss"])) {
-			$h5p_library->setDropLibraryCss($this->h5p->joinCsv(array_map(function ($drop_library_css) {
+			$h5p_library->setDropLibraryCss(self::h5p()->joinCsv(array_map(function ($drop_library_css) {
 				return $drop_library_css["machineName"];
 			}, $library_data["dropLibraryCss"])));
 		} else {
@@ -853,7 +846,7 @@ class H5PFramework implements H5PFrameworkInterface {
 
 		foreach ($libraries_in_use as $library_in_use) {
 			if (!empty($library_in_use["library"]["dropLibraryCss"])) {
-				$drop_library_css_list = array_merge($drop_library_css_list, $this->h5p->splitCsv($library_in_use["library"]["dropLibraryCss"]));
+				$drop_library_css_list = array_merge($drop_library_css_list, self::h5p()->splitCsv($library_in_use["library"]["dropLibraryCss"]));
 			}
 		}
 
@@ -1455,9 +1448,9 @@ class H5PFramework implements H5PFrameworkInterface {
 
 			$library_hub_cache->setSummary($content_type->summary);
 
-			$library_hub_cache->setCreatedAt($this->h5p->dbDateToTimestamp($content_type->createdAt));
+			$library_hub_cache->setCreatedAt(self::h5p()->dbDateToTimestamp($content_type->createdAt));
 
-			$library_hub_cache->setUpdatedAt($this->h5p->dbDateToTimestamp($content_type->updatedAt));
+			$library_hub_cache->setUpdatedAt(self::h5p()->dbDateToTimestamp($content_type->updatedAt));
 
 			$library_hub_cache->setIsRecommended($content_type->isRecommended);
 

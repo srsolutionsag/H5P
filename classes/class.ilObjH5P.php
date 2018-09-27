@@ -2,11 +2,10 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PObject;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilObjH5P
@@ -15,12 +14,8 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class ilObjH5P extends ilObjectPlugin {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var H5PObject
 	 */
@@ -34,8 +29,6 @@ class ilObjH5P extends ilObjectPlugin {
 	 */
 	public function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
-
-		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -86,7 +79,7 @@ class ilObjH5P extends ilObjectPlugin {
 		$h5p_contents = H5PContent::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
-			$this->h5p->show_editor()->deleteContent($h5p_content, false);
+			self::h5p()->show_editor()->deleteContent($h5p_content, false);
 		}
 
 		$h5p_solve_statuses = H5PSolveStatus::getByObject($this->id);
@@ -121,7 +114,7 @@ class ilObjH5P extends ilObjectPlugin {
 
 			$h5p_content_copy->store();
 
-			$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+			self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 		}
 	}
 

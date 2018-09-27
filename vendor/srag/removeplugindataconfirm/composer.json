@@ -1,7 +1,7 @@
 {
   "name": "srag/removeplugindataconfirm",
   "description": "Demand if plugin data should be removed on uninstall",
-  "version": "0.2.1",
+  "version": "0.2.5",
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -14,7 +14,7 @@
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "srag",
+      "name": "studer + raimann ag - Team Custom 1",
       "email": "support-custom1@studer-raimann.ch",
       "homepage": "https://studer-raimann.ch",
       "role": "Developer"

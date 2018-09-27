@@ -7,8 +7,7 @@ use ilFileInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilPropertyFormGUI;
-use srag\DIC\DICTrait;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PUploadLibraryFormGUI
@@ -19,12 +18,8 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class H5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var ilH5PConfigGUI
 	 */
@@ -39,7 +34,6 @@ class H5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 	public function __construct(ilH5PConfigGUI $parent) {
 		parent::__construct();
 
-		$this->h5p = H5P::getInstance();
 		$this->parent = $parent;
 
 		$this->initForm();
@@ -71,7 +65,7 @@ class H5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
 		ob_start(); // prevent output from editor
 
-		$this->h5p->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, NULL);
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, NULL);
 
 		ob_end_clean();
 	}

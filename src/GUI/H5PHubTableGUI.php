@@ -11,9 +11,8 @@ use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTable2GUI;
 use ilTextInputGUI;
-use srag\DIC\DICTrait;
-use srag\Plugins\H5P\H5P\H5P;
 use srag\Plugins\H5P\H5P\H5PShowHub;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PHubTableGUI
@@ -24,7 +23,7 @@ use srag\Plugins\H5P\H5P\H5PShowHub;
  */
 class H5PHubTableGUI extends ilTable2GUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var ilCheckboxInputGUI
@@ -42,10 +41,6 @@ class H5PHubTableGUI extends ilTable2GUI {
 	 * @var ilTextInputGUI
 	 */
 	protected $filter_title;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
@@ -58,8 +53,6 @@ class H5PHubTableGUI extends ilTable2GUI {
 		parent::__construct($parent, $parent_cmd);
 
 		if (!($parent_cmd === ilH5PConfigGUI::CMD_APPLY_FILTER || $parent_cmd === ilH5PConfigGUI::CMD_RESET_FILTER)) {
-			$this->h5p = H5P::getInstance();
-
 			$this->initTable();
 		} else {
 			$this->initFilter();
@@ -140,7 +133,7 @@ class H5PHubTableGUI extends ilTable2GUI {
 		$not_used = ($this->filter_not_used->getChecked() ? true : NULL);
 
 		// Get libraries
-		$libraries = $this->h5p->show_hub()->getLibraries($title, $status, $runnable, $not_used);
+		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
 
 		$this->setData($libraries);
 	}

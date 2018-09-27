@@ -2,7 +2,6 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
@@ -10,7 +9,7 @@ use srag\Plugins\H5P\GUI\H5PContentsTableGUI;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
 use srag\Plugins\H5P\GUI\H5PObjSettingsFormGUI;
 use srag\Plugins\H5P\GUI\H5PResultsTableGUI;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilObjH5PGUI
@@ -28,7 +27,7 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class ilObjH5PGUI extends ilObjectPluginGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_ADD_CONTENT = "addContent";
 	const CMD_CREATE_CONTENT = "createContent";
@@ -55,10 +54,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const TAB_SETTINGS = "settings";
 	const TAB_SHOW_CONTENTS = "showContent";
 	/**
-	 * @var H5P
-	 */
-	protected $h5p;
-	/**
 	 * Fix autocomplete (Defined in parent)
 	 *
 	 * @var ilObjH5P
@@ -70,7 +65,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function afterConstructor() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -269,7 +264,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function getEditorForm() {
 		$h5p_content = H5PContent::getCurrentContent();
 
-		$form = $this->h5p->show_editor()
+		$form = self::h5p()->show_editor()
 			->getEditorForm($h5p_content, $this, self::CMD_CREATE_CONTENT, self::CMD_UPDATE_CONTENT, self::CMD_MANAGE_CONTENTS);
 
 		return $form;
@@ -304,7 +299,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		$this->h5p->show_editor()->createContent($form);
+		self::h5p()->show_editor()->createContent($form);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -340,7 +335,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = H5PContent::getCurrentContent();
 
-		$this->h5p->show_editor()->updateContent($h5p_content, $form);
+		self::h5p()->show_editor()->updateContent($h5p_content, $form);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -377,7 +372,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	protected function deleteContent() {
 		$h5p_content = H5PContent::getCurrentContent();
 
-		$this->h5p->show_editor()->deleteContent($h5p_content);
+		self::h5p()->show_editor()->deleteContent($h5p_content);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -431,7 +426,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			$h5p_result = H5PResult::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
 			if ($h5p_result !== NULL) {
-				$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, self::plugin()
+				$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, self::plugin()
 					->translate("xhfp_solved_content")));
 
 				return;
@@ -454,9 +449,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			self::dic()->toolbar()->addButtonInstance($delete_content);
 		}*/
 
-		//$this->h5p->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PContents.js");
+		//self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PContents.js");
 
-		$this->show($this->h5p->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
+		$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
 	}
 
 

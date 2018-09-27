@@ -9,10 +9,10 @@ use ilH5PPlugin;
 use ilLinkButton;
 use ilToolbarGUI;
 use ilUtil;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PShowEditor
@@ -23,19 +23,15 @@ use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
  */
 class H5PShowEditor {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
 	 * H5PShowEditor constructor
 	 */
 	public function __construct() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -43,7 +39,7 @@ class H5PShowEditor {
 	 * @return array
 	 */
 	public function getEditor() {
-		$editor = $this->h5p->show_content()->getCore();
+		$editor = self::h5p()->show_content()->getCore();
 
 		$editor_path = ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getEditorPath();
 
@@ -57,7 +53,7 @@ class H5PShowEditor {
 				/*$this->h5p_scripts[] = */
 				$assets["js"][] = $editor_path . "/" . $script;
 			} else {
-				$this->h5p->show_content()->addH5pScript($editor_path . "/" . $script);
+				self::h5p()->show_content()->addH5pScript($editor_path . "/" . $script);
 			}
 		}
 
@@ -75,7 +71,7 @@ class H5PShowEditor {
 			],
 			"ajaxPath" => ilH5PActionGUI::getUrl("") . "&" . ilH5PActionGUI::CMD_H5P_ACTION . "=",
 			"libraryUrl" => $editor_path . "/",
-			"copyrightSemantics" => $this->h5p->content_validator()->getCopyrightSemantics(),
+			"copyrightSemantics" => self::h5p()->content_validator()->getCopyrightSemantics(),
 			"assets" => $assets,
 			"apiVersion" => H5PCore::$coreApi
 		];
@@ -86,7 +82,7 @@ class H5PShowEditor {
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
 		}
-		$this->h5p->show_content()->addH5pScript(ILIAS_HTTP_PATH . "/" . $language_script);
+		self::h5p()->show_content()->addH5pScript(ILIAS_HTTP_PATH . "/" . $language_script);
 
 		return $editor;
 	}
@@ -101,7 +97,7 @@ class H5PShowEditor {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		$this->h5p->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PEditor.js");
+		self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PEditor.js");
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
@@ -140,9 +136,9 @@ class H5PShowEditor {
 			$h5p_tpl->setVariable("TUTORIAL", $tutorial);
 		}
 
-		$this->h5p->show_content()->outputH5pStyles($h5p_tpl);
+		self::h5p()->show_content()->outputH5pStyles($h5p_tpl);
 
-		$this->h5p->show_content()->outputH5pScripts($h5p_tpl);
+		self::h5p()->show_content()->outputH5pScripts($h5p_tpl);
 
 		$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
@@ -193,11 +189,11 @@ class H5PShowEditor {
 			"params" => $params
 		];
 
-		$content["id"] = $this->h5p->core()->saveContent($content);
-		//$content["params"] = $this->h5p->core()->filterParameters($content);
+		$content["id"] = self::h5p()->core()->saveContent($content);
+		//$content["params"] = self::h5p()->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
-		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
 
 		$h5p_content = H5PContent::getContentById($content["id"]);
 
@@ -215,7 +211,7 @@ class H5PShowEditor {
 	 * @param bool                  $message
 	 */
 	public function updateContent(H5PContent $h5p_content, H5PEditContentFormGUI $form, $message = true) {
-		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
+		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
 		$title = $form->getInput("xhfp_title");
 		$content["title"] = $title;
@@ -224,11 +220,11 @@ class H5PShowEditor {
 		$params = $form->getInput("xhfp_params");
 		$content["params"] = $params;
 
-		$this->h5p->core()->saveContent($content);
-		//$content["params"] = $this->h5p->core()->filterParameters($content);
+		self::h5p()->core()->saveContent($content);
+		//$content["params"] = self::h5p()->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
-		$this->h5p->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
@@ -241,7 +237,7 @@ class H5PShowEditor {
 	 * @param bool       $message
 	 */
 	public function deleteContent(H5PContent $h5p_content, $message = true) {
-		$this->h5p->storage()->deletePackage([
+		self::h5p()->storage()->deletePackage([
 			"id" => $h5p_content->getContentId(),
 			"slug" => $h5p_content->getSlug()
 		]);

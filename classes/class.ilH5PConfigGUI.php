@@ -2,11 +2,10 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\GUI\H5HubSettingsFormGUI;
 use srag\Plugins\H5P\GUI\H5PHubTableGUI;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilH5PConfigGUI
@@ -17,7 +16,7 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_APPLY_FILTER = "applyFilter";
 	const CMD_CONFIGURE = "configure";
@@ -33,17 +32,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
 	const TAB_HUB = "hub";
 	const TAB_SETTINGS = "settings";
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
 	 * ilH5PConfigGUI constructor
 	 */
 	public function __construct() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -120,9 +115,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function hub() {
 		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
+		$form = self::h5p()->show_hub()->getUploadLibraryForm($this);
 
-		$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
+		$hub = self::h5p()->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
 		self::plugin()->output($hub);
 	}
@@ -132,7 +127,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function refreshHub() {
-		$this->h5p->show_hub()->refreshHub();
+		self::h5p()->show_hub()->refreshHub();
 
 		self::dic()->ctrl()->redirect($this, self::CMD_HUB);
 	}
@@ -144,12 +139,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function uploadLibrary() {
 		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
+		$form = self::h5p()->show_hub()->getUploadLibraryForm($this);
 
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
+			$hub = self::h5p()->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
 
 			self::plugin()->output($hub);
 
@@ -194,7 +189,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function installLibrary() {
 		$name = filter_input(INPUT_GET, "xhfp_library_name");
 
-		$this->h5p->show_hub()->installLibrary($name);
+		self::h5p()->show_hub()->installLibrary($name);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_HUB);
 	}
@@ -210,7 +205,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$key = filter_input(INPUT_GET, "xhfp_library_key");
 
-		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
+		$details = self::h5p()->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
 
 		self::plugin()->output($details);
 	}
@@ -224,8 +219,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$h5p_library = H5PLibrary::getCurrentLibrary();
 
-		$contents_count = $this->h5p->framework()->getNumContent($h5p_library->getLibraryId());
-		$usage = $this->h5p->framework()->getLibraryUsage($h5p_library->getLibraryId());
+		$contents_count = self::h5p()->framework()->getNumContent($h5p_library->getLibraryId());
+		$usage = self::h5p()->framework()->getLibraryUsage($h5p_library->getLibraryId());
 
 		$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
 		if (!$not_in_use) {
@@ -259,7 +254,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function deleteLibrary() {
 		$h5p_library = H5PLibrary::getCurrentLibrary();
 
-		$this->h5p->show_hub()->deleteLibrary($h5p_library);
+		self::h5p()->show_hub()->deleteLibrary($h5p_library);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_HUB);
 	}

@@ -4,11 +4,10 @@ namespace srag\Plugins\H5P\Framework;
 
 use H5PEditorAjaxInterface;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PEditorAjax
@@ -19,21 +18,15 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class H5PEditorAjax implements H5PEditorAjaxInterface {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
 	 * H5PEditorAjax constructor
-	 *
-	 * @param H5P $h5p
 	 */
-	public function __construct(H5P $h5p) {
-		$this->h5p = $h5p;
+	public function __construct() {
+
 	}
 
 

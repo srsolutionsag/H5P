@@ -15,6 +15,7 @@ use srag\ActiveRecordConfig\ActiveRecordConfig;
  */
 class H5POption extends ActiveRecordConfig {
 
+	//use H5PTrait;
 	const TABLE_NAME = "rep_robj_xhfp_opt_n";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

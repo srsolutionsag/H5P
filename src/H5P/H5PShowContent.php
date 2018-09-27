@@ -6,12 +6,12 @@ use H5PCore;
 use ilH5PActionGUI;
 use ilH5PPlugin;
 use ilTemplate;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
 use srag\Plugins\H5P\ActiveRecord\H5PObject;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PShowContent
@@ -22,16 +22,12 @@ use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
  */
 class H5PShowContent {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var array
 	 */
 	protected $core = NULL;
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 	/**
 	 * @var array
 	 */
@@ -54,7 +50,7 @@ class H5PShowContent {
 	 * H5PShowContent constructor
 	 */
 	public function __construct() {
-		$this->h5p = H5P::getInstance();
+
 	}
 
 
@@ -148,7 +144,7 @@ class H5PShowContent {
 			],
 			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
 			"l10n" => [
-				"H5P" => $this->h5p->core()->getLocalization()
+				"H5P" => self::h5p()->core()->getLocalization()
 			],
 			"hubIsEnabled" => false,
 			"core" => [
@@ -242,9 +238,9 @@ class H5PShowContent {
 	protected function getContent(H5PContent $h5p_content) {
 		self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
-		$content = $this->h5p->core()->loadContent($h5p_content->getContentId());
+		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
-		$safe_parameters = $this->h5p->core()->filterParameters($content);
+		$safe_parameters = self::h5p()->core()->filterParameters($content);
 
 		$user_id = self::dic()->user()->getId();
 
@@ -272,9 +268,9 @@ class H5PShowContent {
 			"embedType" => H5PCore::determineEmbedType($h5p_content->getEmbedType(), $content["library"]["embedTypes"])
 		];
 
-		$content_dependencies = $this->h5p->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
+		$content_dependencies = self::h5p()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-		$files = $this->h5p->core()->getDependenciesFiles($content_dependencies, self::plugin()->getPluginObject()->getH5PFolder());
+		$files = self::h5p()->core()->getDependenciesFiles($content_dependencies, self::plugin()->getPluginObject()->getH5PFolder());
 		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);
