@@ -5,7 +5,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\GUI\H5HubSettingsFormGUI;
 use srag\Plugins\H5P\GUI\H5PHubTableGUI;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class ilH5PConfigGUI

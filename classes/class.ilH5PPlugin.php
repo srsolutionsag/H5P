@@ -18,7 +18,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POptionOld;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
 
 /**

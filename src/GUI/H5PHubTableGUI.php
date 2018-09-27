@@ -12,7 +12,7 @@ use ilSelectInputGUI;
 use ilTable2GUI;
 use ilTextInputGUI;
 use srag\Plugins\H5P\H5P\H5PShowHub;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PHubTableGUI

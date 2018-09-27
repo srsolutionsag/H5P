@@ -6,7 +6,7 @@ use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
 use srag\Plugins\H5P\H5P\H5P;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PLibrary

@@ -14,7 +14,7 @@ use srag\Plugins\H5P\ActiveRecord\H5POption;
 use srag\Plugins\H5P\GUI\H5HubDetailsFormGUI;
 use srag\Plugins\H5P\GUI\H5PHubTableGUI;
 use srag\Plugins\H5P\GUI\H5PUploadLibraryFormGUI;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PShowHub

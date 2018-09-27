@@ -9,7 +9,7 @@ use srag\Plugins\H5P\GUI\H5PContentsTableGUI;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
 use srag\Plugins\H5P\GUI\H5PObjSettingsFormGUI;
 use srag\Plugins\H5P\GUI\H5PResultsTableGUI;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class ilObjH5PGUI

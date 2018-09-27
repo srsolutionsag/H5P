@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Utitls;
+namespace srag\Plugins\H5P\Utils;
 
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\H5P\H5P;

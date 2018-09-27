@@ -5,7 +5,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PObject;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class ilObjH5P

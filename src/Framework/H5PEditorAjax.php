@@ -7,7 +7,7 @@ use ilH5PPlugin;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PEditorAjax

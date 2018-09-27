@@ -133,7 +133,7 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
         'srag\\Plugins\\H5P\\H5P\\H5PShowContent' => __DIR__ . '/../..' . '/src/H5P/H5PShowContent.php',
         'srag\\Plugins\\H5P\\H5P\\H5PShowEditor' => __DIR__ . '/../..' . '/src/H5P/H5PShowEditor.php',
         'srag\\Plugins\\H5P\\H5P\\H5PShowHub' => __DIR__ . '/../..' . '/src/H5P/H5PShowHub.php',
-        'srag\\Plugins\\H5P\\Utitls\\H5PTrait' => __DIR__ . '/../..' . '/src/Utitls/H5PTrait.php',
+        'srag\\Plugins\\H5P\\Utils\\H5PTrait' => __DIR__ . '/../..' . '/src/Utils/H5PTrait.php',
         'srag\\RemovePluginDataConfirm\\AbstractPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
         'srag\\RemovePluginDataConfirm\\AbstractRemovePluginDataConfirm' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
         'srag\\RemovePluginDataConfirm\\PluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',

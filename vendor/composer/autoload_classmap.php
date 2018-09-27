@@ -90,7 +90,7 @@ return array(
     'srag\\Plugins\\H5P\\H5P\\H5PShowContent' => $baseDir . '/src/H5P/H5PShowContent.php',
     'srag\\Plugins\\H5P\\H5P\\H5PShowEditor' => $baseDir . '/src/H5P/H5PShowEditor.php',
     'srag\\Plugins\\H5P\\H5P\\H5PShowHub' => $baseDir . '/src/H5P/H5PShowHub.php',
-    'srag\\Plugins\\H5P\\Utitls\\H5PTrait' => $baseDir . '/src/Utitls/H5PTrait.php',
+    'srag\\Plugins\\H5P\\Utils\\H5PTrait' => $baseDir . '/src/Utils/H5PTrait.php',
     'srag\\RemovePluginDataConfirm\\AbstractPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
     'srag\\RemovePluginDataConfirm\\AbstractRemovePluginDataConfirm' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
     'srag\\RemovePluginDataConfirm\\PluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',

@@ -20,7 +20,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
 use srag\Plugins\H5P\ActiveRecord\H5POption;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
 
 /**

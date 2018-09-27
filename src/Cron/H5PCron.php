@@ -7,7 +7,7 @@ use ilCronJobResult;
 use ilH5PPlugin;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\Plugins\H5PPageComponent\Cron\H5PPageComponentCron;
 
 /**

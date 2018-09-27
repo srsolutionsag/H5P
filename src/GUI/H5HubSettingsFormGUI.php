@@ -8,7 +8,7 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilPropertyFormGUI;
 use srag\Plugins\H5P\ActiveRecord\H5POption;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5HubSettingsFormGUI

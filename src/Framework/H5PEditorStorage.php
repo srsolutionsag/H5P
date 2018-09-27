@@ -10,7 +10,7 @@ use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
 use srag\Plugins\H5P\H5P\H5P;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PEditorStorage

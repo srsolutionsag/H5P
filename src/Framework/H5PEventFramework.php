@@ -6,7 +6,7 @@ use H5PEventBase;
 use ilH5PPlugin;
 use srag\Plugins\H5P\ActiveRecord\H5PCounter;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PEventFramework

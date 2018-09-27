@@ -5,7 +5,7 @@ namespace srag\Plugins\H5P\ActiveRecord;
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
-use srag\Plugins\H5P\Utitls\H5PTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5PLibraryCachedAsset
