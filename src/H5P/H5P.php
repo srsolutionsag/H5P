@@ -13,6 +13,7 @@ use ilDatePresentation;
 use ilDateTime;
 use ilH5PActionGUI;
 use ilH5PPlugin;
+use ilWACSignedPath;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
 use srag\Plugins\H5P\Framework\H5PEditorAjax;
 use srag\Plugins\H5P\Framework\H5PEditorStorage;
@@ -110,7 +111,31 @@ class H5P {
 	 * H5P constructor
 	 */
 	protected function __construct() {
-		//self::plugin()->getPluginObject()->fixWAC();
+		//$this->fixWAC();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getH5PFolder() {
+		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getCorePath() {
+		return self::plugin()->directory() . "/vendor/h5p/h5p-core";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getEditorPath() {
+		return self::plugin()->directory() . "/vendor/h5p/h5p-editor";
 	}
 
 
@@ -203,8 +228,8 @@ class H5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), self::plugin()->getPluginObject()->getH5PFolder(), "/" . self::plugin()->getPluginObject()
-					->getH5PFolder(), self::dic()->user()->getLanguage(), false);
+			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), self::dic()->user()
+				->getLanguage(), false);
 		}
 
 		return $this->core;
@@ -328,5 +353,13 @@ class H5P {
 		}
 
 		return $this->validator;
+	}
+
+
+	/**
+	 * TODO: Make work this
+	 */
+	protected function fixWAC() {
+		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
 	}
 }

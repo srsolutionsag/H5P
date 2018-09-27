@@ -316,7 +316,7 @@ class H5PLibraryHubCache extends ActiveRecord {
 
 			case "created_at":
 			case "updated_at":
-				return H5P::getInstance()->timestampToDbDate($field_value);
+				return self::h5p()->timestampToDbDate($field_value);
 				break;
 
 			default:
@@ -350,7 +350,7 @@ class H5PLibraryHubCache extends ActiveRecord {
 
 			case "created_at":
 			case "updated_at":
-				return H5P::getInstance()->dbDateToTimestamp($field_value);
+				return self::h5p()->dbDateToTimestamp($field_value);
 				break;
 
 			default:

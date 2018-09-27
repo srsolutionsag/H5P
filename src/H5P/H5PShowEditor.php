@@ -41,7 +41,7 @@ class H5PShowEditor {
 	public function getEditor() {
 		$editor = self::h5p()->show_content()->getCore();
 
-		$editor_path = ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getEditorPath();
+		$editor_path = ILIAS_HTTP_PATH . "/" . self::h5p()->getEditorPath();
 
 		$assets = [
 			"js" => $editor["core"]["scripts"],
@@ -63,7 +63,7 @@ class H5PShowEditor {
 		}
 
 		$editor["editor"] = [
-			"filesPath" => ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getH5PFolder() . "/editor",
+			"filesPath" => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
 				"width" => 50,
@@ -77,7 +77,7 @@ class H5PShowEditor {
 		];
 
 		$language = self::dic()->user()->getLanguage();
-		$language_path = self::plugin()->getPluginObject()->getEditorPath() . "/language/";
+		$language_path = self::h5p()->getEditorPath() . "/language/";
 		$language_script = $language_path . $language . ".js";
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";

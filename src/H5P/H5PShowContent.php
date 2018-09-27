@@ -130,7 +130,7 @@ class H5PShowContent {
 	public function getCore() {
 		$core = [
 			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getH5PFolder(),
+			"url" => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder(),
 			"postUserStatistics" => true,
 			"ajax" => [
 				"setFinished" => ilH5PActionGUI::getUrl(ilH5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -165,7 +165,7 @@ class H5PShowContent {
 	 * @param array $core
 	 */
 	protected function addCore(&$core) {
-		$core_path = ILIAS_HTTP_PATH . "/" . self::plugin()->getPluginObject()->getCorePath() . "/";
+		$core_path = ILIAS_HTTP_PATH . "/" . self::h5p()->getCorePath() . "/";
 
 		foreach (H5PCore::$styles as $style) {
 			$core["core"]["styles"][] = $core_path . $style;
@@ -270,7 +270,7 @@ class H5PShowContent {
 
 		$content_dependencies = self::h5p()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-		$files = self::h5p()->core()->getDependenciesFiles($content_dependencies, self::plugin()->getPluginObject()->getH5PFolder());
+		$files = self::h5p()->core()->getDependenciesFiles($content_dependencies, self::h5p()->getH5PFolder());
 		$scripts = array_map(function ($file) {
 			return $file->path;
 		}, $files["scripts"]);

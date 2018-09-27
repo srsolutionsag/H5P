@@ -72,43 +72,9 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 * @return string
-	 */
-	public function getH5PFolder() {
-		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getCorePath() {
-		return $this->getDirectory() . "/vendor/h5p/h5p-core";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getEditorPath() {
-		return $this->getDirectory() . "/vendor/h5p/h5p-editor";
-	}
-
-
-	/**
-	 *
-	 */
-	public function fixWAC() {
-		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
-	}
-
-
-	/**
 	 * @inheritdoc
 	 */
 	protected function deleteData()/*: void*/ {
-		$this->removeH5PFolder();
-
 		self::dic()->database()->dropTable(H5PContent::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PContentLibrary::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PContentUserData::TABLE_NAME, false);
@@ -125,6 +91,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		self::dic()->database()->dropTable(H5PResult::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PSolveStatus::TABLE_NAME, false);
 		self::dic()->database()->dropTable(H5PTmpFile::TABLE_NAME, false);
+
+		$this->removeH5PFolder();
 	}
 
 
@@ -132,7 +100,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 *
 	 */
 	protected function removeH5PFolder() {
-		$h5p_folder = $this->getH5PFolder();
+		$h5p_folder = self::h5p()->getH5PFolder();
 
 		H5PCore::deleteFileTree($h5p_folder);
 	}

@@ -156,7 +156,7 @@ class H5PEditorStorage implements H5peditorStorageInterface {
 	 *  if saving succeeded
 	 */
 	public static function saveFileTemporarily($data, $move_file) {
-		$path = H5P::getInstance()->framework()->getUploadedH5pPath();
+		$path = self::h5p()->framework()->getUploadedH5pPath();
 
 		if ($move_file) {
 			rename($data, $path);

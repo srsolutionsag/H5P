@@ -185,7 +185,7 @@ class H5PEvent extends ActiveRecord {
 
 		switch ($field_name) {
 			case "created_at":
-				return H5P::getInstance()->timestampToDbDate($field_value);
+				return self::h5p()->timestampToDbDate($field_value);
 				break;
 
 			default:
@@ -208,7 +208,7 @@ class H5PEvent extends ActiveRecord {
 				break;
 
 			case "created_at":
-				return H5P::getInstance()->dbDateToTimestamp($field_value);
+				return self::h5p()->dbDateToTimestamp($field_value);
 				break;
 
 			case "content_id":

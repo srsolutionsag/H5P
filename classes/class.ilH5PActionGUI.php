@@ -5,7 +5,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
-use srag\Plugins\H5P\H5P\H5P;
 use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
@@ -60,7 +59,7 @@ class ilH5PActionGUI {
 	public static function forward($a_gui_obj) {
 		self::dic()->ctrl()->setReturn($a_gui_obj, "");
 
-		self::dic()->ctrl()->forwardCommand(H5P::getInstance()->action());
+		self::dic()->ctrl()->forwardCommand(self::h5p()->action());
 	}
 
 
@@ -244,7 +243,7 @@ class ilH5PActionGUI {
 
 		if (!empty($name)) {
 			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
-				->getLanguage(), "", self::plugin()->getPluginObject()->getH5PFolder());
+				->getLanguage(), "", self::h5p()->getH5PFolder());
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
 			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
