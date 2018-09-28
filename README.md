@@ -32,6 +32,16 @@ Please use it for further development!
 * Bug reports under https://jira.studer-raimann.ch/projects/PLH5P
 * For external users please send an email to support-custom1@studer-raimann.ch
 
+### Development
+If you want development in this plugin you should install this plugin like follow:
+
+Start at your ILIAS root directory
+```bash
+mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
+cd Customizing/global/plugins/Services/Repository/RepositoryObject
+git clone -b develop git@git.studer-raimann.ch:ILIAS/Plugins/H5P.git H5P
+```
+
 ### Plugin SLA
 Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
 
