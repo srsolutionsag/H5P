@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -11,6 +12,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

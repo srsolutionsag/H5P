@@ -6,6 +6,7 @@ use H5PCore;
 use ilH5PActionGUI;
 use ilH5PPlugin;
 use ilTemplate;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
 use srag\Plugins\H5P\ActiveRecord\H5PObject;
@@ -22,6 +23,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PShowContent {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

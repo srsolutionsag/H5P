@@ -5,6 +5,7 @@ namespace srag\Plugins\H5P\ActiveRecord;
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,6 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5POptionOld extends ActiveRecord {
 
+	use DICTrait;
 	use H5PTrait;
 	/**
 	 * @var string

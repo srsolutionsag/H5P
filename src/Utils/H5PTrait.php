@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Utils;
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\H5P\H5P;
 
 /**
@@ -13,9 +12,6 @@ use srag\Plugins\H5P\H5P\H5P;
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait H5PTrait {
-
-	use DICTrait;
-
 
 	/**
 	 * @return H5P

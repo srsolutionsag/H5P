@@ -9,6 +9,7 @@ use ilH5PPlugin;
 use ilLinkButton;
 use ilToolbarGUI;
 use ilUtil;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
@@ -23,6 +24,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PShowEditor {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

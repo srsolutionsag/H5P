@@ -6,7 +6,7 @@ use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
 use ilObjH5P;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,6 +18,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PContent extends ActiveRecord {
 
+	use DICTrait;
 	use H5PTrait;
 	const TABLE_NAME = "rep_robj_xhfp_cont";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;

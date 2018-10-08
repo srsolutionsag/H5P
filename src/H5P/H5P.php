@@ -15,6 +15,7 @@ use ilH5PActionGUI;
 use ilH5PPlugin;
 use ilWACSignedPath;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Framework\H5PEditorAjax;
 use srag\Plugins\H5P\Framework\H5PEditorStorage;
 use srag\Plugins\H5P\Framework\H5PFramework;
@@ -29,6 +30,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5P {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

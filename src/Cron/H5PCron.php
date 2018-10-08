@@ -5,6 +5,7 @@ namespace srag\Plugins\H5P\Cron;
 use H5PEventBase;
 use ilCronJobResult;
 use ilH5PPlugin;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -19,6 +20,7 @@ use srag\Plugins\H5PPageComponent\Cron\H5PPageComponentCron;
  */
 class H5PCron {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

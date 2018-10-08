@@ -6,10 +6,10 @@ use H5PCore;
 use H5peditorFile;
 use H5peditorStorage as H5peditorStorageInterface;
 use ilH5PPlugin;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage;
 use srag\Plugins\H5P\ActiveRecord\H5PTmpFile;
-use srag\Plugins\H5P\H5P\H5P;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -21,6 +21,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PEditorStorage implements H5peditorStorageInterface {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

@@ -8,6 +8,7 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilLinkButton;
 use ilUtil;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
 use srag\Plugins\H5P\ActiveRecord\H5POption;
@@ -25,6 +26,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PShowHub {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const STATUS_ALL = "all";

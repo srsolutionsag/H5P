@@ -11,6 +11,7 @@ use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilObjUser;
 use ilTable2GUI;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
@@ -25,6 +26,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PResultsTableGUI extends ilTable2GUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

@@ -7,6 +7,7 @@ use ilFileInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilPropertyFormGUI;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,6 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PUploadLibraryFormGUI extends ilPropertyFormGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

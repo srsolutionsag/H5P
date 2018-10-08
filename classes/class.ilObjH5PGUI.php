@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
 use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
@@ -27,6 +28,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class ilObjH5PGUI extends ilObjectPluginGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_ADD_CONTENT = "addContent";

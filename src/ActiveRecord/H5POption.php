@@ -5,6 +5,7 @@ namespace srag\Plugins\H5P\ActiveRecord;
 use H5PRemoveDataConfirm;
 use ilH5PPlugin;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class H5POption
@@ -15,7 +16,7 @@ use srag\ActiveRecordConfig\ActiveRecordConfig;
  */
 class H5POption extends ActiveRecordConfig {
 
-	//use H5PTrait;
+	use H5PTrait;
 	const TABLE_NAME = "rep_robj_xhfp_opt_n";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

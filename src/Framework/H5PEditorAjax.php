@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Framework;
 
 use H5PEditorAjaxInterface;
 use ilH5PPlugin;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PEvent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache;
@@ -18,6 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PEditorAjax implements H5PEditorAjaxInterface {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

@@ -9,6 +9,7 @@ use H5PPermission;
 use ilCurlConnection;
 use ilH5PPlugin;
 use ilUtil;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PContentLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PContentUserData;
@@ -32,6 +33,7 @@ use stdClass;
  */
 class H5PFramework implements H5PFrameworkInterface {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	private $messages = [

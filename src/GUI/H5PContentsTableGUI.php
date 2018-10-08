@@ -10,6 +10,7 @@ use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilTable2GUI;
 use ilUtil;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
 use srag\Plugins\H5P\ActiveRecord\H5PResult;
@@ -24,6 +25,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PContentsTableGUI extends ilTable2GUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

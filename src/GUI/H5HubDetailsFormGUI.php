@@ -9,6 +9,7 @@ use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
 use ilPropertyFormGUI;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\H5P\H5PShowHub;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -21,6 +22,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5HubDetailsFormGUI extends ilPropertyFormGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

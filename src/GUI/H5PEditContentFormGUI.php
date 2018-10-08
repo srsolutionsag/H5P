@@ -8,6 +8,7 @@ use ilH5PPlugin;
 use ilHiddenInputGUI;
 use ilPropertyFormGUI;
 use ilTextInputGUI;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -20,6 +21,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PEditContentFormGUI extends ilPropertyFormGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

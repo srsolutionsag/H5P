@@ -11,6 +11,7 @@ use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTable2GUI;
 use ilTextInputGUI;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\H5P\H5PShowHub;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -23,6 +24,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PHubTableGUI extends ilTable2GUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**

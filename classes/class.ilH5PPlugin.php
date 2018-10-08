@@ -28,11 +28,8 @@ use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
-	use H5PTrait, RepositoryObjectPluginUninstallTrait {
-		H5PTrait::dic insteadof RepositoryObjectPluginUninstallTrait;
-		H5PTrait::plugin insteadof RepositoryObjectPluginUninstallTrait;
-		H5PTrait::checkPluginClassNameConst insteadof RepositoryObjectPluginUninstallTrait;
-	}
+	use RepositoryObjectPluginUninstallTrait;
+	use H5PTrait;
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
 	const PLUGIN_CLASS_NAME = self::class;
