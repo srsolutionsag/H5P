@@ -38,7 +38,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * ilObjH5PAccess constructor
 	 */
 	public function __construct() {
-		if (ILIAS_VERSION_NUMERIC >= "5.3") {
+		if (self::version()->is53()) {
 			parent::__construct();
 		}
 	}

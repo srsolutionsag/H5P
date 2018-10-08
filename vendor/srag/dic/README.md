@@ -3,7 +3,7 @@ Use all ILIAS globals in your class
 ### Usage
 
 #### Composer
-First add the follow to your `composer.json` file:
+First add the following to your `composer.json` file:
 ```json
 "require": {
   "srag/dic": ">=0.1.0"
@@ -50,7 +50,7 @@ For instance you can access the ilCtrl global like:
 self::dic()->ctrl()/*: ilCtrl*/;
 ```
 
-You can now access the plugin interface, in instance and in static places:
+You can access the plugin interface, in instance and in static places:
 ```php
 /**
  * Get plugin interface
@@ -132,9 +132,20 @@ If you really need the ILIAS plugin object use but avoid this:
  * Get ILIAS plugin object instance
  *
  * @return ilPlugin ILIAS plugin object instance
+ *
+ * @deprecated Please avoid to use ILIAS plugin object instance and instead use methods in this class!
  */
 self::plugin()->getPluginObject()/*: ilPlugin*/;
 ```
+
+You can access ILIAS version informations, in instance and in static places:
+```php
+/**
+ * Get version interface
+ * 
+ * @return VersionInterface Version interface
+ */
+self::version()/*: VersionInterface*/;
 
 If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()` or `DICStatic::plugin(ilXPlugin::class)`.
 
@@ -167,5 +178,5 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Libraries
 cd Customizing/global/plugins/Libraries
-git clone git@git.studer-raimann.ch:ILIAS/Plugins/DIC.git DIC
+git clone -b develop git@git.studer-raimann.ch:ILIAS/Plugins/DIC.git DIC
 ```

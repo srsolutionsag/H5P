@@ -5,6 +5,7 @@ namespace srag\DIC;
 use srag\DIC\DIC\DICInterface;
 use srag\DIC\Exception\DICException;
 use srag\DIC\Plugin\PluginInterface;
+use srag\DIC\Version\VersionInterface;
 
 /**
  * Trait DICTrait
@@ -47,6 +48,16 @@ trait DICTrait {
 		self::checkPluginClassNameConst();
 
 		return DICStatic::plugin(static::PLUGIN_CLASS_NAME);
+	}
+
+
+	/**
+	 * Get version interface
+	 *
+	 * @return VersionInterface Version interface
+	 */
+	protected static final function version()/*: VersionInterface*/ {
+		return DICStatic::version();
 	}
 
 

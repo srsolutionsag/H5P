@@ -100,6 +100,8 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
         'srag\\DIC\\Exception\\DICException' => __DIR__ . '/..' . '/srag/dic/src/Exception/DICException.php',
         'srag\\DIC\\Plugin\\Plugin' => __DIR__ . '/..' . '/srag/dic/src/Plugin/Plugin.php',
         'srag\\DIC\\Plugin\\PluginInterface' => __DIR__ . '/..' . '/srag/dic/src/Plugin/PluginInterface.php',
+        'srag\\DIC\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
+        'srag\\DIC\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
         'srag\\Plugins\\H5P\\ActiveRecord\\H5PContent' => __DIR__ . '/../..' . '/src/ActiveRecord/H5PContent.php',
         'srag\\Plugins\\H5P\\ActiveRecord\\H5PContentLibrary' => __DIR__ . '/../..' . '/src/ActiveRecord/H5PContentLibrary.php',
         'srag\\Plugins\\H5P\\ActiveRecord\\H5PContentUserData' => __DIR__ . '/../..' . '/src/ActiveRecord/H5PContentUserData.php',

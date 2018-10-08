@@ -70,7 +70,7 @@ class H5PFramework implements H5PFrameworkInterface {
 	public function getPlatformInfo() {
 		return [
 			"name" => "ILIAS",
-			"version" => ILIAS_VERSION_NUMERIC,
+			"version" => self::version()->getILIASVersion(),
 			"h5pVersion" => self::plugin()->getPluginObject()->getVersion()
 		];
 	}

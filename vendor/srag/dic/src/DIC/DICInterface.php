@@ -26,6 +26,7 @@ use ilLocatorGUI;
 use ilLog;
 use ilLoggerFactory;
 use ilMailMimeSenderFactory;
+use ilMailMimeTransportFactory;
 use ilMainMenuGUI;
 use ilNavigationHistory;
 use ilObjectDataCache;
@@ -242,9 +243,27 @@ interface DICInterface {
 
 
 	/**
+	 * @return ilMailMimeTransportFactory
+	 *
+	 * @throws DICException ilMailMimeTransportFactory not exists in ILIAS 5.2 or below!
+	 *
+	 * @since ILIAS 5.3
+	 */
+	public function mailMimeTransportFactory()/*: ilMailMimeTransportFactory*/
+	;
+
+
+	/**
 	 * @return ilMainMenuGUI
 	 */
 	public function mainMenu()/*: ilMainMenuGUI*/
+	;
+
+
+	/**
+	 * @return ilTemplate Main ilTemplate instance
+	 */
+	public function mainTemplate()/*: ilTemplate*/
 	;
 
 
@@ -315,13 +334,6 @@ interface DICInterface {
 	 * @return ilTabsGUI
 	 */
 	public function tabs()/*: ilTabsGUI*/
-	;
-
-
-	/**
-	 * @return ilTemplate Main-Template
-	 */
-	public function template()/*: ilTemplate*/
 	;
 
 
