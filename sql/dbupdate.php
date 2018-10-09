@@ -21,6 +21,8 @@
 \srag\Plugins\H5P\ActiveRecord\H5POption::updateDB();
 
 if (\srag\DIC\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\ActiveRecord\H5POptionOld::TABLE_NAME)) {
+	\srag\Plugins\H5P\ActiveRecord\H5POptionOld::updateDB();
+
 	foreach (\srag\Plugins\H5P\ActiveRecord\H5POptionOld::get() as $option) {
 		/**
 		 * @var \srag\Plugins\H5P\ActiveRecord\H5POptionOld $option
