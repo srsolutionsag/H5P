@@ -15,6 +15,7 @@ Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5
 Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 
 ### Dependencies
+* PHP 5.6
 * [composer](https://getcomposer.org)
 * [H5PCron](https://github.com/studer-raimann/H5PCron)
 * [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent)
