@@ -1,8 +1,8 @@
 # Changelog
 
 ## [1.1.0]
+- Ask for removing dat
 - Refactoring
-- Ask for removing data
 
 ## [1.0.0]
 - First version

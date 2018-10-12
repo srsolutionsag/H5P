@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../../vendor/autoload.php";
 
 use srag\Plugins\H5P\ActiveRecord\H5POption;
+use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\AbstractRemovePluginDataConfirm;
 
 /**
@@ -14,6 +15,7 @@ use srag\RemovePluginDataConfirm\AbstractRemovePluginDataConfirm;
  */
 class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
