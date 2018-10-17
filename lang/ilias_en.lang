@@ -86,7 +86,7 @@ xhfp_runnable#:#Runnable
 xhfp_save#:#Save
 xhfp_saved_content#:#%s saved
 xhfp_send_usage_statistics#:#Automatically contribute usage statistics
-xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" target="_blank">data is collected on h5p.org</a>.
+xhfp_send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which <a href="%s" rel="noopener" target="_blank">data is collected on h5p.org</a>.
 xhfp_settings#:#Settings
 xhfp_settings_saved#:#Settings saved
 xhfp_show#:#Show
