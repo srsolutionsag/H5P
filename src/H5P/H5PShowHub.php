@@ -208,7 +208,7 @@ class H5PShowHub {
 		 * "contentUserData" => ""
 		 * ];
 		 *
-		 * self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PHub.js");
+		 * self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PHub.min.js");
 		 *
 		 * return $this->getH5PIntegration(self::h5p()->show_editor()
 		 * ->getH5PIntegration($hub), self::plugin()->translate("xhfp_hub_last_refresh", "",[$hub_last_refresh]), $upload_form->getHTML());*/

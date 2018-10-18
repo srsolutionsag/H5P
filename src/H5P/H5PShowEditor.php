@@ -99,7 +99,7 @@ class H5PShowEditor {
 		$editor = $this->getEditor();
 		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
-		self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PEditor.js");
+		self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PEditor.min.js");
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");

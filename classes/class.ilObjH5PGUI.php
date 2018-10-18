@@ -451,7 +451,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			self::dic()->toolbar()->addButtonInstance($delete_content);
 		}*/
 
-		//self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/ilH5PContents.js");
+		//self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PContents.min.js");
 
 		$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
 	}
