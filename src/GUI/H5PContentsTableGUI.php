@@ -130,7 +130,7 @@ class H5PContentsTableGUI extends ilTable2GUI {
 		self::dic()->mainTemplate()->addOnLoadCode('xoctWaiter.init("waiter");');
 
 		self::dic()->mainTemplate()->addJavaScript(self::plugin()->directory() . "/js/H5PContentsTable.min.js");
-		self::dic()->mainTemplate()->addOnLoadCode('ilH5PContentsTable.init("' . self::dic()->ctrl()
+		self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()
 				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}
 

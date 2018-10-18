@@ -1,7 +1,7 @@
 /**
  * @type {Object}
  */
-var h5PContentsTable = {
+var H5PContentsTable = {
 	/**
 	 * @type {string}
 	 */
@@ -11,7 +11,7 @@ var h5PContentsTable = {
 	 * @param {string} base_link
 	 */
 	init: function (base_link) {
-		h5PContentsTable.base_link = base_link;
+		H5PContentsTable.base_link = base_link;
 	},
 
 	/**
@@ -22,7 +22,7 @@ var h5PContentsTable = {
 		event.preventDefault();
 		xoctWaiter.show();
 		var row = $('#xhfp_row_' + cid);
-		var ajax_url = h5PContentsTable.base_link;
+		var ajax_url = H5PContentsTable.base_link;
 		$.ajax({
 			url: ajax_url,
 			type: "GET",
@@ -44,7 +44,7 @@ var h5PContentsTable = {
 		event.preventDefault();
 		xoctWaiter.show();
 		var row = $('#xhfp_row_' + cid);
-		var ajax_url = h5PContentsTable.base_link;
+		var ajax_url = H5PContentsTable.base_link;
 		$.ajax({
 			url: ajax_url,
 			type: "GET",
