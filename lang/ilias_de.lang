@@ -86,7 +86,7 @@ xhfp_runnable#:#Startbar
 xhfp_save#:#Speichern
 xhfp_saved_content#:#%s gespeichert
 xhfp_send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
-xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche <a href="%s" rel="noopener" target="_blank">Daten auf h5p.org</a> gesammelt werden.
+xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche Daten auf %s gesammelt werden.
 xhfp_settings#:#Einstellungen
 xhfp_settings_saved#:#Einstellungen gespeichert
 xhfp_show#:#Anzeigen

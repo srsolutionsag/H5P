@@ -66,8 +66,9 @@ class HubSettingsFormGUI extends ilPropertyFormGUI {
 		$usage_statistics = new ilCustomInputGUI(self::plugin()->translate("xhfp_usage_statistics"));
 
 		$send_usage_statistics = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_send_usage_statistics"), "send_usage_statistics");
-		$send_usage_statistics->setInfo(self::plugin()
-			->translate("xhfp_send_usage_statistics_info", "", [ "https://h5p.org/tracking-the-usage-of-h5p" ]));
+		$send_usage_statistics->setInfo(self::plugin()->translate("xhfp_send_usage_statistics_info", "", [
+				file_get_contents(__DIR__ . "/../../templates/send_usage_statistics_info_link.html")
+			]));
 		$send_usage_statistics->setChecked(Option::getOption("send_usage_statistics", true));
 		$usage_statistics->addSubItem($send_usage_statistics);
 
