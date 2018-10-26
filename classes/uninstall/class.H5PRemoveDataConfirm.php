@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\Plugins\H5P\ActiveRecord\H5POption;
+use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\AbstractRemovePluginDataConfirm;
 
@@ -23,7 +23,7 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	 * @inheritdoc
 	 */
 	public function getUninstallRemovesData()/*: ?bool*/ {
-		return H5POption::getUninstallRemovesData();
+		return Option::getUninstallRemovesData();
 	}
 
 
@@ -32,7 +32,7 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	 */
 	public function setUninstallRemovesData(/*bool*/
 		$uninstall_removes_data)/*: void*/ {
-		H5POption::setUninstallRemovesData($uninstall_removes_data);
+		Option::setUninstallRemovesData($uninstall_removes_data);
 	}
 
 
@@ -40,6 +40,6 @@ class H5PRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
 	 * @inheritdoc
 	 */
 	public function removeUninstallRemovesData()/*: void*/ {
-		H5POption::removeUninstallRemovesData();
+		Option::removeUninstallRemovesData();
 	}
 }

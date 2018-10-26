@@ -3,9 +3,9 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\H5PContent;
-use srag\Plugins\H5P\ActiveRecord\H5PObject;
-use srag\Plugins\H5P\ActiveRecord\H5PSolveStatus;
+use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Object\H5PObject;
+use srag\Plugins\H5P\Results\SolveStatus;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -78,13 +78,13 @@ class ilObjH5P extends ilObjectPlugin {
 			$this->object->delete();
 		}
 
-		$h5p_contents = H5PContent::getContentsByObject($this->id);
+		$h5p_contents = Content::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
 			self::h5p()->show_editor()->deleteContent($h5p_content, false);
 		}
 
-		$h5p_solve_statuses = H5PSolveStatus::getByObject($this->id);
+		$h5p_solve_statuses = SolveStatus::getByObject($this->id);
 		foreach ($h5p_solve_statuses as $h5p_solve_status) {
 			$h5p_solve_status->delete();
 		}
@@ -103,11 +103,11 @@ class ilObjH5P extends ilObjectPlugin {
 
 		$new_obj->object->store();
 
-		$h5p_contents = H5PContent::getContentsByObject($this->id);
+		$h5p_contents = Content::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
 			/**
-			 * @var H5PContent $h5p_content_copy
+			 * @var Content $h5p_content_copy
 			 */
 
 			$h5p_content_copy = $h5p_content->copy();

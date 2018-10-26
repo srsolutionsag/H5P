@@ -3,9 +3,9 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\H5PLibrary;
-use srag\Plugins\H5P\GUI\H5HubSettingsFormGUI;
-use srag\Plugins\H5P\GUI\H5PHubTableGUI;
+use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
+use srag\Plugins\H5P\Hub\HubTableGUI;
+use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -13,7 +13,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author       studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
+ * @ilCtrl_Calls ilH5PConfigGUI: H5PActionGUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI {
 
@@ -74,8 +74,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 						$this->$cmd();
 						break;
 
-					case ilH5PActionGUI::CMD_H5P_ACTION:
-						ilH5PActionGUI::forward($this);
+					case H5PActionGUI::CMD_H5P_ACTION:
+						H5PActionGUI::forward($this);
 						break;
 
 					default:
@@ -102,10 +102,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @param string $cmd
 	 *
-	 * @return H5PHubTableGUI
+	 * @return HubTableGUI
 	 */
 	protected function getHubTable($cmd = self::CMD_HUB) {
-		$table = new H5PHubTableGUI($this, $cmd);
+		$table = new HubTableGUI($this, $cmd);
 
 		return $table;
 	}
@@ -219,7 +219,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function deleteLibraryConfirm() {
 		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$h5p_library = H5PLibrary::getCurrentLibrary();
+		$h5p_library = Library::getCurrentLibrary();
 
 		$contents_count = self::h5p()->framework()->getNumContent($h5p_library->getLibraryId());
 		$usage = self::h5p()->framework()->getLibraryUsage($h5p_library->getLibraryId());
@@ -254,7 +254,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deleteLibrary() {
-		$h5p_library = H5PLibrary::getCurrentLibrary();
+		$h5p_library = Library::getCurrentLibrary();
 
 		self::h5p()->show_hub()->deleteLibrary($h5p_library);
 
@@ -263,10 +263,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 * @return H5HubSettingsFormGUI
+	 * @return HubSettingsFormGUI
 	 */
 	protected function getSettingsForm() {
-		$form = new H5HubSettingsFormGUI($this);
+		$form = new HubSettingsFormGUI($this);
 
 		return $form;
 	}

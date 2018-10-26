@@ -1,35 +1,35 @@
 <#1>
 <?php
-\srag\Plugins\H5P\ActiveRecord\H5PContent::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PContentLibrary::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PContentUserData::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PCounter::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PEvent::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PLibrary::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PLibraryCachedAsset::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PLibraryHubCache::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PLibraryLanguage::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PLibraryDependencies::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PObject::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5POption::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PResult::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PSolveStatus::updateDB();
-\srag\Plugins\H5P\ActiveRecord\H5PTmpFile::updateDB();
+\srag\Plugins\H5P\Content\Content::updateDB();
+\srag\Plugins\H5P\Content\ContentLibrary::updateDB();
+\srag\Plugins\H5P\Content\ContentUserData::updateDB();
+\srag\Plugins\H5P\Library\Counter::updateDB();
+\srag\Plugins\H5P\Event\Event::updateDB();
+\srag\Plugins\H5P\Library\Library::updateDB();
+\srag\Plugins\H5P\Library\LibraryCachedAsset::updateDB();
+\srag\Plugins\H5P\Library\LibraryHubCache::updateDB();
+\srag\Plugins\H5P\Library\LibraryLanguage::updateDB();
+\srag\Plugins\H5P\Library\LibraryDependencies::updateDB();
+\srag\Plugins\H5P\Object\H5PObject::updateDB();
+\srag\Plugins\H5P\Option\Option::updateDB();
+\srag\Plugins\H5P\Results\Result::updateDB();
+\srag\Plugins\H5P\Results\SolveStatus::updateDB();
+\srag\Plugins\H5P\Content\Editor\TmpFile::updateDB();
 ?>
 <#2>
 <?php
-\srag\Plugins\H5P\ActiveRecord\H5POption::updateDB();
+\srag\Plugins\H5P\Option\Option::updateDB();
 
-if (\srag\DIC\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\ActiveRecord\H5POptionOld::TABLE_NAME)) {
-	\srag\Plugins\H5P\ActiveRecord\H5POptionOld::updateDB();
+if (\srag\DIC\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME)) {
+	\srag\Plugins\H5P\Option\OptionOld::updateDB();
 
-	foreach (\srag\Plugins\H5P\ActiveRecord\H5POptionOld::get() as $option) {
+	foreach (\srag\Plugins\H5P\Option\OptionOld::get() as $option) {
 		/**
-		 * @var \srag\Plugins\H5P\ActiveRecord\H5POptionOld $option
+		 * @var \srag\Plugins\H5P\Option\OptionOld $option
 		 */
-		\srag\Plugins\H5P\ActiveRecord\H5POption::setOption($option->getName(), $option->getValue());
+		\srag\Plugins\H5P\Option\Option::setOption($option->getName(), $option->getValue());
 	}
 
-	\srag\DIC\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\ActiveRecord\H5POptionOld::TABLE_NAME);
+	\srag\DIC\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
 }
 ?>

@@ -2,8 +2,6 @@
 
 namespace srag\Plugins\H5P\Utils;
 
-use srag\Plugins\H5P\H5P\H5P;
-
 /**
  * Trait H5PTrait
  *
