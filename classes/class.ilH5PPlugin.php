@@ -69,6 +69,14 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
+	 * @return bool
+	 */
+	public function allowCopy() {
+		return true;
+	}
+
+
+	/**
 	 * @inheritdoc
 	 */
 	protected function deleteData()/*: void*/ {

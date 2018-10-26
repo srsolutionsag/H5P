@@ -68,7 +68,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 			[
 				"permission" => "read",
 				"cmd" => ilObjH5PGUI::getStartCmd(),
-				"default" => true,
+				"default" => true
 			]
 		];
 
