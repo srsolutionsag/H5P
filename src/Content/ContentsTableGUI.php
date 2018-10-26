@@ -56,7 +56,7 @@ class ContentsTableGUI extends ilTable2GUI {
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_contents"));
+		$this->setTitle(self::plugin()->translate("contents"));
 
 		$this->initFilter();
 
@@ -105,10 +105,10 @@ class ContentsTableGUI extends ilTable2GUI {
 	 */
 	protected function initColumns() {
 		$this->addColumn("");
-		$this->addColumn(self::plugin()->translate("xhfp_title"));
-		$this->addColumn(self::plugin()->translate("xhfp_library"));
-		$this->addColumn(self::plugin()->translate("xhfp_results"));
-		$this->addColumn(self::plugin()->translate("xhfp_actions"));
+		$this->addColumn(self::plugin()->translate("title"));
+		$this->addColumn(self::plugin()->translate("library"));
+		$this->addColumn(self::plugin()->translate("results"));
+		$this->addColumn(self::plugin()->translate("actions"));
 	}
 
 
@@ -160,12 +160,12 @@ class ContentsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable("RESULTS", count($h5p_results));
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::plugin()->translate("xhfp_actions"));
+		$actions->setListTitle(self::plugin()->translate("actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$actions->addItem(self::plugin()->translate("xhfp_edit"), "", self::dic()->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+			$actions->addItem(self::plugin()->translate("edit"), "", self::dic()->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-			$actions->addItem(self::plugin()->translate("xhfp_delete"), "", self::dic()->ctrl()
+			$actions->addItem(self::plugin()->translate("delete"), "", self::dic()->ctrl()
 				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 		}
 

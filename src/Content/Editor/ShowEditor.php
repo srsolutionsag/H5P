@@ -105,13 +105,13 @@ class ShowEditor {
 		$tutorial_toolbar->setHidden(true);
 
 		$tutorial = ilLinkButton::getInstance();
-		$tutorial->setCaption(self::plugin()->translate("xhfp_tutorial"), false);
+		$tutorial->setCaption(self::plugin()->translate("tutorial"), false);
 		$tutorial->setTarget("_blank");
 		$tutorial->setId("xhfp_edit_toolbar_tutorial");
 		$tutorial_toolbar->addButtonInstance($tutorial);
 
 		$example = ilLinkButton::getInstance();
-		$example->setCaption(self::plugin()->translate("xhfp_example"), false);
+		$example->setCaption(self::plugin()->translate("example"), false);
 		$example->setTarget("_blank");
 		$example->setId("xhfp_edit_toolbar_example");
 		$tutorial_toolbar->addButtonInstance($example);
@@ -143,7 +143,7 @@ class ShowEditor {
 
 		$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-		$h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("xhfp_incomplete_content"));
+		$h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("incomplete_content"));
 
 		return $h5p_tpl->get();
 	}
@@ -199,7 +199,7 @@ class ShowEditor {
 		$h5p_content = Content::getContentById($content["id"]);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::plugin()->translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 
 		return $h5p_content;
@@ -228,7 +228,7 @@ class ShowEditor {
 		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::plugin()->translate("xhfp_saved_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 	}
 
@@ -244,7 +244,7 @@ class ShowEditor {
 		]);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::plugin()->translate("xhfp_deleted_content", "", [ $h5p_content->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("deleted_content", "", [ $h5p_content->getTitle() ]), true);
 		}
 	}
 }

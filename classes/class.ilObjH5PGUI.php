@@ -162,8 +162,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				self::dic()->mainTemplate()->setAlertProperties([
 					[
 						"alert" => true,
-						"property" => self::plugin()->translate("xhfp_status"),
-						"value" => self::plugin()->translate("xhfp_offline")
+						"property" => self::plugin()->translate("status"),
+						"value" => self::plugin()->translate("offline")
 					]
 				]);
 			}
@@ -225,7 +225,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
 			$add_content = ilLinkButton::getInstance();
-			$add_content->setCaption(self::plugin()->translate("xhfp_add_content"), false);
+			$add_content->setCaption(self::plugin()->translate("add_content"), false);
 			$add_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_ADD_CONTENT));
 			self::dic()->toolbar()->addButtonInstance($add_content);
 		}
@@ -357,12 +357,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$confirmation->setFormAction(self::dic()->ctrl()->getFormAction($this));
 
-		$confirmation->setHeaderText(self::plugin()->translate("xhfp_delete_content_confirm", "", [ $h5p_content->getTitle() ]));
+		$confirmation->setHeaderText(self::plugin()->translate("delete_content_confirm", "", [ $h5p_content->getTitle() ]));
 
 		$confirmation->addItem("xhfp_content", $h5p_content->getContentId(), $h5p_content->getTitle());
 
-		$confirmation->setConfirm(self::plugin()->translate("xhfp_delete"), self::CMD_DELETE_CONTENT);
-		$confirmation->setCancel(self::plugin()->translate("xhfp_cancel"), self::CMD_MANAGE_CONTENTS);
+		$confirmation->setConfirm(self::plugin()->translate("delete"), self::CMD_DELETE_CONTENT);
+		$confirmation->setCancel(self::plugin()->translate("cancel"), self::CMD_MANAGE_CONTENTS);
 
 		$this->show($confirmation);
 	}
@@ -391,7 +391,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$count = count($h5p_contents);
 
 		if (SolveStatus::isUserFinished($this->obj_id, self::dic()->user()->getId()) || $count === 0) {
-			$this->show(self::plugin()->translate("xhfp_solved_all_contents"));
+			$this->show(self::plugin()->translate("solved_all_contents"));
 
 			return;
 		}
@@ -406,14 +406,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		if ($index > 0) {
 			$previous_content = ilLinkButton::getInstance();
-			$previous_content->setCaption(self::plugin()->translate("xhfp_previous_content"), false);
+			$previous_content->setCaption(self::plugin()->translate("previous_content"), false);
 			$previous_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_PREVIOUS_CONTENT));
 			self::dic()->toolbar()->addButtonInstance($previous_content);
 		}
 
 		if ($index < ($count - 1)) {
 			$next_content = ilLinkButton::getInstance();
-			$next_content->setCaption(self::plugin()->translate("xhfp_next_content"), false);
+			$next_content->setCaption(self::plugin()->translate("next_content"), false);
 			$next_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_NEXT_CONTENT));
 			self::dic()->toolbar()->addButtonInstance($next_content);
 		}
@@ -421,7 +421,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		if ($this->object->isSolveOnlyOnce()) {
 			if ($index === ($count - 1)) {
 				$finish_contents = ilLinkButton::getInstance();
-				$finish_contents->setCaption(self::plugin()->translate("xhfp_finish"), false);
+				$finish_contents->setCaption(self::plugin()->translate("finish"), false);
 				$finish_contents->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_FINISH_CONTENTS));
 				self::dic()->toolbar()->addButtonInstance($finish_contents);
 			}
@@ -429,7 +429,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$h5p_result = Result::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
 			if ($h5p_result !== NULL) {
 				$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, self::plugin()
-					->translate("xhfp_solved_content")));
+					->translate("solved_content")));
 
 				return;
 			}
@@ -441,12 +441,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			self::dic()->toolbar()->addSeparator();
 
 			$edit_content = ilLinkButton::getInstance();
-			$edit_content->setCaption(self::plugin()->translate("xhfp_edit_content"), false);
+			$edit_content->setCaption(self::plugin()->translate("edit_content"), false);
 			$edit_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_CONTENT));
 			self::dic()->toolbar()->addButtonInstance($edit_content);
 
 			$delete_content = ilLinkButton::getInstance();
-			$delete_content->setCaption(self::plugin()->translate("xhfp_delete_content"), false);
+			$delete_content->setCaption(self::plugin()->translate("delete_content"), false);
 			$delete_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
 			self::dic()->toolbar()->addButtonInstance($delete_content);
 		}*/
@@ -577,14 +577,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			// User not exists anymore
 			$user = NULL;
 		}
-		$confirmation->setHeaderText(self::plugin()->translate("xhfp_delete_results_confirm", "", [ $user !== NULL ? $user->getFullname() : "" ]));
+		$confirmation->setHeaderText(self::plugin()->translate("delete_results_confirm", "", [ $user !== NULL ? $user->getFullname() : "" ]));
 
 		if ($user !== NULL) {
 			$confirmation->addItem("xhfp_user", $user->getId(), $user->getFullname());
 		}
 
-		$confirmation->setConfirm(self::plugin()->translate("xhfp_delete"), self::CMD_DELETE_RESULTS);
-		$confirmation->setCancel(self::plugin()->translate("xhfp_cancel"), self::CMD_RESULTS);
+		$confirmation->setConfirm(self::plugin()->translate("delete"), self::CMD_DELETE_RESULTS);
+		$confirmation->setCancel(self::plugin()->translate("cancel"), self::CMD_RESULTS);
 
 		$this->show($confirmation);
 	}
@@ -612,7 +612,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			// User not exists anymore
 			$user = NULL;
 		}
-		ilUtil::sendSuccess(self::plugin()->translate("xhfp_deleted_results", "", [ $user !== NULL ? $user->getFullname() : "" ]), true);
+		ilUtil::sendSuccess(self::plugin()->translate("deleted_results", "", [ $user !== NULL ? $user->getFullname() : "" ]), true);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_RESULTS);
 	}
@@ -658,7 +658,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form->updateSettings();
 
-		ilUtil::sendSuccess(self::plugin()->translate("xhfp_settings_saved"), true);
+		ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
 
 		$this->show($form);
 	}
@@ -668,17 +668,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 *
 	 */
 	protected function setTabs() {
-		self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("xhfp_show_contents"), self::dic()->ctrl()
+		self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("show_contents"), self::dic()->ctrl()
 			->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
-			self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("xhfp_contents"), self::dic()->ctrl()
+			self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("contents"), self::dic()->ctrl()
 				->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
 
-			self::dic()->tabs()->addTab(self::TAB_RESULTS, self::plugin()->translate("xhfp_results"), self::dic()->ctrl()
+			self::dic()->tabs()->addTab(self::TAB_RESULTS, self::plugin()->translate("results"), self::dic()->ctrl()
 				->getLinkTarget($this, self::CMD_RESULTS));
 
-			self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("xhfp_settings"), self::dic()->ctrl()
+			self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("settings"), self::dic()->ctrl()
 				->getLinkTarget($this, self::CMD_SETTINGS));
 		}
 

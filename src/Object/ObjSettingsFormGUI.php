@@ -49,26 +49,26 @@ class ObjSettingsFormGUI extends ilPropertyFormGUI {
 	protected function initForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_settings"));
+		$this->setTitle(self::plugin()->translate("settings"));
 
-		$this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("xhfp_save"));
-		$this->addCommandButton(ilObjH5PGUI::CMD_MANAGE_CONTENTS, self::plugin()->translate("xhfp_cancel"));
+		$this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
+		$this->addCommandButton(ilObjH5PGUI::CMD_MANAGE_CONTENTS, self::plugin()->translate("cancel"));
 
-		$title = new ilTextInputGUI(self::plugin()->translate("xhfp_title"), "xhfp_title");
+		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($this->parent->object->getTitle());
 		$this->addItem($title);
 
-		$description = new ilTextAreaInputGUI(self::plugin()->translate("xhfp_description"), "xhfp_description");
+		$description = new ilTextAreaInputGUI(self::plugin()->translate("description"), "xhfp_description");
 		$description->setValue($this->parent->object->getLongDescription());
 		$this->addItem($description);
 
-		$online = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_online"), "xhfp_online");
+		$online = new ilCheckboxInputGUI(self::plugin()->translate("online"), "xhfp_online");
 		$online->setChecked($this->parent->object->isOnline());
 		$this->addItem($online);
 
-		$solve_only_once = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_solve_contents_only_once"), "xhfp_solve_only_once");
-		$solve_only_once->setInfo(self::plugin()->translate("xhfp_solve_contents_only_once_note"));
+		$solve_only_once = new ilCheckboxInputGUI(self::plugin()->translate("solve_contents_only_once"), "xhfp_solve_only_once");
+		$solve_only_once->setInfo(self::plugin()->translate("solve_contents_only_once_note"));
 		$solve_only_once->setChecked($this->parent->object->isSolveOnlyOnce());
 		$solve_only_once->setDisabled($this->parent->hasResults());
 		$this->addItem($solve_only_once);

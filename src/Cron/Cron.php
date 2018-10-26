@@ -23,7 +23,7 @@ class Cron {
 	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	const CRON_LANG_MODULE = "cron";
+	const LANG_MODULE_CRON = "cron";
 
 
 	/**
@@ -115,7 +115,7 @@ class Cron {
 		$result = new ilCronJobResult();
 
 		$result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
-		$result->setMessage(self::plugin()->translate("cron_page_component_description_deprecated", self::CRON_LANG_MODULE));
+		$result->setMessage(self::plugin()->translate("cron_page_component_description_deprecated", self::LANG_MODULE_CRON));
 
 		return $result;
 	}

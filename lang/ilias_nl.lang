@@ -4,125 +4,127 @@ objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#MISSING objs_xhfp_duplicate
 rbac_create_xhfp#:#MISSING rbac_create_xhfp
 xhfp_new#:#MISSING xhfp_new
-xhfp_actions#:#MISSING xhfp_actions
 xhfp_add#:#MISSING xhfp_add
-xhfp_add_content#:#MISSING xhfp_add_content
-xhfp_added_library#:#MISSING xhfp_added_library
-xhfp_added_libraries#:#MISSING xhfp_added_libraries
-xhfp_added_library_updated_library#:#MISSING xhfp_added_library_updated_library
-xhfp_added_library_updated_libraries#:#MISSING xhfp_added_library_updated_libraries
-xhfp_added_libraries_updated_library#:#MISSING xhfp_added_libraries_updated_library
-xhfp_added_libraries_updated_libraries#:#MISSING xhfp_added_libraries_updated_libraries
-xhfp_all#:#MISSING xhfp_all
-xhfp_author#:#MISSING xhfp_author
-xhfp_by#:#MISSING xhfp_by
-xhfp_cancel#:#MISSING xhfp_cancel
-xhfp_categories#:#MISSING xhfp_categories
-xhfp_close#:#MISSING xhfp_close
-xhfp_confirm#:#MISSING xhfp_confirm
-xhfp_confirm_action#:#MISSING xhfp_confirm_action
-xhfp_confirm_action_text#:#MISSING xhfp_confirm_action_text
-xhfp_content_changed#:#MISSING xhfp_content_changed
-xhfp_content_count#:#MISSING xhfp_content_count
-xhfp_content_types#:#MISSING xhfp_content_types
-xhfp_contents#:#MISSING xhfp_contents
-xhfp_delete#:#MISSING xhfp_delete
-xhfp_delete_content#:#MISSING xhfp_delete_content
-xhfp_delete_content_confirm#:#MISSING xhfp_delete_content_confirm
-xhfp_deleted_content#:#MISSING xhfp_deleted_content
-xhfp_delete_library_confirm#:#MISSING xhfp_delete_library_confirm
-xhfp_delete_library_in_use#:#MISSING xhfp_delete_library_in_use
-xhfp_deleted_library#:#MISSING xhfp_deleted_library
-xhfp_delete_results_confirm#:#MISSING xhfp_delete_results_confirm
-xhfp_deleted_results#:#MISSING xhfp_deleted_results
-xhfp_description#:#MISSING xhfp_description
-xhfp_details#:#MISSING xhfp_details
-xhfp_disable_fullscreen#:#MISSING xhfp_disable_fullscreen
-xhfp_download#:#MISSING xhfp_download
-xhfp_download_content#:#MISSING xhfp_download_content
-xhfp_edit#:#MISSING xhfp_edit
-xhfp_edit_content#:#MISSING xhfp_edit_content
-xhfp_edit_permission#:#MISSING xhfp_edit_permission
-xhfp_embed#:#MISSING xhfp_embed
-xhfp_embed_include_script#:#MISSING xhfp_embed_include_script
-xhfp_enable_lrs_content_types#:#MISSING xhfp_enable_lrs_content_types
-xhfp_enable_lrs_content_types_info#:#MISSING xhfp_enable_lrs_content_types_info
-xhfp_example#:#MISSING xhfp_example
-xhfp_finish#:#MISSING xhfp_finish
-xhfp_finished#:#MISSING xhfp_finished
-xhfp_fullscreen#:#MISSING xhfp_fullscreen
-xhfp_hide_advanced#:#MISSING xhfp_hide_advanced
-xhfp_hub#:#MISSING xhfp_hub
-xhfp_hub_last_refresh#:#MISSING xhfp_hub_last_refresh
-xhfp_hub_refresh#:#MISSING xhfp_hub_refresh
-xhfp_hub_refreshed#:#MISSING xhfp_hub_refreshed
-xhfp_incomplete_content#:#MISSING xhfp_incomplete_content
-xhfp_install#:#MISSING xhfp_install
-xhfp_installed#:#MISSING xhfp_installed
-xhfp_installed_libraries#:#MISSING xhfp_installed_libraries
-xhfp_installed_version#:#MISSING xhfp_installed_version
-xhfp_keywords#:#MISSING xhfp_keywords
-xhfp_latest_version#:#MISSING xhfp_latest_version
-xhfp_library#:#MISSING xhfp_library
-xhfp_libraries#:#MISSING xhfp_libraries
-xhfp_license#:#MISSING xhfp_license
-xhfp_msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn.
-xhfp_next_content#:#MISSING xhfp_next_content
-xhfp_no#:#MISSING xhfp_no
-xhfp_not_available#:#MISSING xhfp_not_available
-xhfp_no_content_copyright#:#MISSING xhfp_no_content_copyright
-xhfp_no_result#:#MISSING xhfp_no_result
-xhfp_not_installed#:#MISSING xhfp_not_installed
-xhfp_offline#:#MISSING xhfp_offline
-xhfp_online#:#MISSING xhfp_online
-xhfp_only_not_used#:#MISSING xhfp_only_not_used
-xhfp_only_runnable#:#MISSING xhfp_only_runnable
-xhfp_permission_denied#:#MISSING xhfp_permission_denied
-xhfp_previous_content#:#MISSING xhfp_previous_content
-xhfp_read#:#MISSING xhfp_read
-xhfp_results#:#MISSING xhfp_results
-xhfp_rights_of_use#:#MISSING xhfp_rights_of_use
-xhfp_runnable#:#MISSING xhfp_runnable
-xhfp_save#:#MISSING xhfp_save
-xhfp_saved_content#:#MISSING xhfp_saved_content
-xhfp_send_usage_statistics#:#MISSING xhfp_send_usage_statistics
-xhfp_send_usage_statistics_info#:#MISSING xhfp_send_usage_statistics_info
-xhfp_settings#:#MISSING xhfp_settings
-xhfp_settings_saved#:#MISSING xhfp_settings_saved
-xhfp_show#:#MISSING xhfp_show
-xhfp_show_advanced#:#MISSING xhfp_show_advanced
-xhfp_show_contents#:#MISSING xhfp_show_contents
-xhfp_show_less#:#MISSING xhfp_show_less
-xhfp_show_more#:#MISSING xhfp_show_more
-xhfp_size#:#MISSING xhfp_size
-xhfp_solve_contents_only_once#:#MISSING xhfp_solve_contents_only_once
-xhfp_solve_contents_only_once_note#:#MISSING xhfp_solve_contents_only_once_note
-xhfp_solved_content#:#MISSING xhfp_solved_content
-xhfp_source#:#MISSING xhfp_source
-xhfp_start_over#:#MISSING xhfp_start_over
-xhfp_status#:#MISSING xhfp_status
-xhfp_sublevel#:#MISSING xhfp_sublevel
-xhfp_summary#:#Samenvatting
-xhfp_thumbnail#:#Miniatuur
-xhfp_title#:#Titel
-xhfp_tutorial#:#Zelfstudie
-xhfp_updated_library#:#Bijgewerkt %%old H5P bibliotheek.
-xhfp_updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
-xhfp_upgrade#:#Bijwerken
-xhfp_upgrade_available#:#Opwaardering beschikbaar
-xhfp_upload#:#Uploaden
-xhfp_usage_contents#:#Inhouden die dit gebruiken
-xhfp_usage_libraries#:#Bibliotheken die dit gebruiken
-xhfp_upload_library#:#Bibliotheken uploaden
-xhfp_usage_statistics#:#Gebruiks Statistieken
-xhfp_user#:#Gebruiker
-xhfp_version#:#Versie
-xhfp_view_content_copyright#:#Bekijk copyright informatie voor deze content.
-xhfp_view_embed_code#:#Bekijk de inbed code voor deze inhoud.
-xhfp_visible#:#Zichtbaar
-xhfp_write#:#Schrijven
-xhfp_year#:#Jaar
-xhfp_yes#:#Ja
+actions#:#MISSING actions
+add#:#MISSING add
+add_content#:#MISSING add_content
+added_library#:#MISSING added_library
+added_libraries#:#MISSING added_libraries
+added_library_updated_library#:#MISSING added_library_updated_library
+added_library_updated_libraries#:#MISSING added_library_updated_libraries
+added_libraries_updated_library#:#MISSING added_libraries_updated_library
+added_libraries_updated_libraries#:#MISSING added_libraries_updated_libraries
+all#:#MISSING all
+author#:#MISSING author
+by#:#MISSING by
+cancel#:#MISSING cancel
+categories#:#MISSING categories
+close#:#MISSING close
+confirm#:#MISSING confirm
+confirm_action#:#MISSING confirm_action
+confirm_action_text#:#MISSING confirm_action_text
+content_changed#:#MISSING content_changed
+content_count#:#MISSING content_count
+content_types#:#MISSING content_types
+contents#:#MISSING contents
+delete#:#MISSING delete
+delete_content#:#MISSING delete_content
+delete_content_confirm#:#MISSING delete_content_confirm
+deleted_content#:#MISSING deleted_content
+delete_library_confirm#:#MISSING delete_library_confirm
+delete_library_in_use#:#MISSING delete_library_in_use
+deleted_library#:#MISSING deleted_library
+delete_results_confirm#:#MISSING delete_results_confirm
+deleted_results#:#MISSING deleted_results
+description#:#MISSING description
+details#:#MISSING details
+disable_fullscreen#:#MISSING disable_fullscreen
+download#:#MISSING download
+download_content#:#MISSING download_content
+edit#:#MISSING edit
+edit_content#:#MISSING edit_content
+edit_permission#:#MISSING edit_permission
+embed#:#MISSING embed
+embed_include_script#:#MISSING embed_include_script
+enable_lrs_content_types#:#MISSING enable_lrs_content_types
+enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
+example#:#MISSING example
+finish#:#MISSING finish
+finished#:#MISSING finished
+fullscreen#:#MISSING fullscreen
+hide_advanced#:#MISSING hide_advanced
+hub#:#MISSING hub
+hub_last_refresh#:#MISSING hub_last_refresh
+hub_refresh#:#MISSING hub_refresh
+hub_refreshed#:#MISSING hub_refreshed
+incomplete_content#:#MISSING incomplete_content
+install#:#MISSING install
+installed#:#MISSING installed
+installed_libraries#:#MISSING installed_libraries
+installed_version#:#MISSING installed_version
+keywords#:#MISSING keywords
+latest_version#:#MISSING latest_version
+library#:#MISSING library
+libraries#:#MISSING libraries
+license#:#MISSING license
+msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn.
+next_content#:#MISSING next_content
+no#:#MISSING no
+not_available#:#MISSING not_available
+no_content_copyright#:#MISSING no_content_copyright
+no_result#:#MISSING no_result
+not_installed#:#MISSING not_installed
+offline#:#MISSING offline
+online#:#MISSING online
+only_not_used#:#MISSING only_not_used
+only_runnable#:#MISSING only_runnable
+permission_denied#:#MISSING permission_denied
+previous_content#:#MISSING previous_content
+read#:#MISSING read
+results#:#MISSING results
+rights_of_use#:#MISSING rights_of_use
+runnable#:#MISSING runnable
+save#:#MISSING save
+saved_content#:#MISSING saved_content
+send_usage_statistics#:#MISSING send_usage_statistics
+send_usage_statistics_info#:#MISSING send_usage_statistics_info
+settings#:#MISSING settings
+settings_saved#:#MISSING settings_saved
+show#:#MISSING show
+show_advanced#:#MISSING show_advanced
+show_contents#:#MISSING show_contents
+show_less#:#MISSING show_less
+show_more#:#MISSING show_more
+size#:#MISSING size
+solve_contents_only_once#:#MISSING solve_contents_only_once
+solve_contents_only_once_note#:#MISSING solve_contents_only_once_note
+solved_all_contents#:#MISSING solved_all_contents
+solved_content#:#MISSING solved_content
+source#:#MISSING source
+start_over#:#MISSING start_over
+status#:#MISSING status
+sublevel#:#MISSING sublevel
+summary#:#Samenvatting
+thumbnail#:#Miniatuur
+title#:#Titel
+tutorial#:#Zelfstudie
+updated_library#:#Bijgewerkt %%old H5P bibliotheek.
+updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
+upgrade#:#Bijwerken
+upgrade_available#:#Opwaardering beschikbaar
+upload#:#Uploaden
+usage_contents#:#Inhouden die dit gebruiken
+usage_libraries#:#Bibliotheken die dit gebruiken
+upload_library#:#Bibliotheken uploaden
+usage_statistics#:#Gebruiks Statistieken
+user#:#Gebruiker
+version#:#Versie
+view_content_copyright#:#Bekijk copyright informatie voor deze content.
+view_embed_code#:#Bekijk de inbed code voor deze inhoud.
+visible#:#Zichtbaar
+write#:#Schrijven
+year#:#Jaar
+yes#:#Ja
 cron_delete_old_events#:#MISSING cron_delete_old_events
 cron_delete_old_events_description#:#MISSING cron_delete_old_events_description
 cron_delete_old_tmp_files#:#MISSING cron_delete_old_tmp_files

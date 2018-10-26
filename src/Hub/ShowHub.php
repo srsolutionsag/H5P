@@ -188,7 +188,7 @@ class ShowHub {
 	 */
 	public function getH5PHubIntegration(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, HubTableGUI $table) {
 		$hub_refresh = ilLinkButton::getInstance();
-		$hub_refresh->setCaption(self::plugin()->translate("xhfp_hub_refresh"), false);
+		$hub_refresh->setCaption(self::plugin()->translate("hub_refresh"), false);
 		$hub_refresh->setUrl(self::dic()->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
 		self::dic()->toolbar()->addButtonInstance($hub_refresh);
 
@@ -196,7 +196,7 @@ class ShowHub {
 		$hub_last_refresh = self::h5p()->formatTime($hub_last_refresh);
 
 		return $this->getH5PIntegration($table->getHTML(), self::plugin()
-			->translate("xhfp_hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
+			->translate("hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
 		/* @deprecated H5P Hub is not suitable for this ILIAS plugin
 		 * $hub = self::h5p()->show_editor()->getEditor();
 		 * $hub["hubIsEnabled"] = true;
@@ -208,7 +208,7 @@ class ShowHub {
 		 * self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PHub.min.js");
 		 *
 		 * return $this->getH5PIntegration(self::h5p()->show_editor()
-		 * ->getH5PIntegration($hub), self::plugin()->translate("xhfp_hub_last_refresh", "",[$hub_last_refresh]), $upload_form->getHTML());*/
+		 * ->getH5PIntegration($hub), self::plugin()->translate("hub_last_refresh", "",[$hub_last_refresh]), $upload_form->getHTML());*/
 	}
 
 
@@ -283,7 +283,7 @@ class ShowHub {
 		]);
 
 		if ($message) {
-			ilUtil::sendSuccess(self::plugin()->translate("xhfp_deleted_library", "", [ $h5p_library->getTitle() ]), true);
+			ilUtil::sendSuccess(self::plugin()->translate("deleted_library", "", [ $h5p_library->getTitle() ]), true);
 		}
 	}
 

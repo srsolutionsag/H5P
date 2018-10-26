@@ -69,7 +69,7 @@ class HubTableGUI extends ilTable2GUI {
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_installed_libraries"));
+		$this->setTitle(self::plugin()->translate("installed_libraries"));
 
 		$this->initFilter();
 
@@ -87,21 +87,21 @@ class HubTableGUI extends ilTable2GUI {
 	 *
 	 */
 	public function initFilter() {
-		$this->filter_title = new ilTextInputGUI(self::plugin()->translate("xhfp_library"), "xhfp_hub_title");
+		$this->filter_title = new ilTextInputGUI(self::plugin()->translate("library"), "xhfp_hub_title");
 		$this->addFilterItem($this->filter_title);
 		$this->filter_title->readFromSession();
 
-		$this->filter_status = new ilSelectInputGUI(self::plugin()->translate("xhfp_status"), "xhfp_hub_installed");
+		$this->filter_status = new ilSelectInputGUI(self::plugin()->translate("status"), "xhfp_hub_installed");
 		$this->filter_status->setOptions([
-			ShowHub::STATUS_ALL => self::plugin()->translate("xhfp_all"),
-			ShowHub::STATUS_INSTALLED => self::plugin()->translate("xhfp_installed"),
-			ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("xhfp_upgrade_available"),
-			ShowHub::STATUS_NOT_INSTALLED => self::plugin()->translate("xhfp_not_installed")
+			ShowHub::STATUS_ALL => self::plugin()->translate("all"),
+			ShowHub::STATUS_INSTALLED => self::plugin()->translate("installed"),
+			ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("upgrade_available"),
+			ShowHub::STATUS_NOT_INSTALLED => self::plugin()->translate("not_installed")
 		]);
 		$this->addFilterItem($this->filter_status);
 		$this->filter_status->readFromSession();
 
-		$this->filter_runnable = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_only_runnable"), "xhfp_runnable");
+		$this->filter_runnable = new ilCheckboxInputGUI(self::plugin()->translate("only_runnable"), "xhfp_runnable");
 		if (!$this->hasSessionValue($this->filter_runnable->getFieldId())) {
 			// Default checked runnable
 			$this->filter_runnable->setChecked(true);
@@ -109,7 +109,7 @@ class HubTableGUI extends ilTable2GUI {
 		$this->addFilterItem($this->filter_runnable);
 		$this->filter_runnable->readFromSession();
 
-		$this->filter_not_used = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_only_not_used"), "xhfp_not_used");
+		$this->filter_not_used = new ilCheckboxInputGUI(self::plugin()->translate("only_not_used"), "xhfp_not_used");
 		$this->addFilterItem($this->filter_not_used);
 		$this->filter_not_used->readFromSession();
 
@@ -145,15 +145,15 @@ class HubTableGUI extends ilTable2GUI {
 	 */
 	protected function initColumns() {
 		$this->addColumn("");
-		$this->addColumn(self::plugin()->translate("xhfp_library"), "title");
-		$this->addColumn(self::plugin()->translate("xhfp_status"), "status");
-		$this->addColumn(self::plugin()->translate("xhfp_installed_version"));
-		$this->addColumn(self::plugin()->translate("xhfp_latest_version"));
-		$this->addColumn(self::plugin()->translate("xhfp_runnable"), "runnable");
-		$this->addColumn(self::plugin()->translate("xhfp_contents"));
-		$this->addColumn(self::plugin()->translate("xhfp_usage_contents"));
-		$this->addColumn(self::plugin()->translate("xhfp_usage_libraries"));
-		$this->addColumn(self::plugin()->translate("xhfp_actions"));
+		$this->addColumn(self::plugin()->translate("library"), "title");
+		$this->addColumn(self::plugin()->translate("status"), "status");
+		$this->addColumn(self::plugin()->translate("installed_version"));
+		$this->addColumn(self::plugin()->translate("latest_version"));
+		$this->addColumn(self::plugin()->translate("runnable"), "runnable");
+		$this->addColumn(self::plugin()->translate("contents"));
+		$this->addColumn(self::plugin()->translate("usage_contents"));
+		$this->addColumn(self::plugin()->translate("usage_libraries"));
+		$this->addColumn(self::plugin()->translate("actions"));
 
 		$this->setDefaultOrderField("title");
 	}
@@ -209,51 +209,51 @@ class HubTableGUI extends ilTable2GUI {
 			$this->tpl->setVariable("LATEST_VERSION", $library["latest_version"]);
 		} else {
 			// Library is not available on the hub
-			$this->tpl->setVariable("LATEST_VERSION", self::plugin()->translate("xhfp_not_available"));
+			$this->tpl->setVariable("LATEST_VERSION", self::plugin()->translate("not_available"));
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::plugin()->translate("xhfp_actions"));
+		$actions->setListTitle(self::plugin()->translate("actions"));
 
 		switch ($library["status"]) {
 			case ShowHub::STATUS_INSTALLED:
-				$this->tpl->setVariable("STATUS", self::plugin()->translate("xhfp_installed"));
+				$this->tpl->setVariable("STATUS", self::plugin()->translate("installed"));
 
 				$this->tpl->setVariable("INSTALLED_VERSION", $library["installed_version"]);
 
-				$actions->addItem(self::plugin()->translate("xhfp_delete"), "", $delete_link);
+				$actions->addItem(self::plugin()->translate("delete"), "", $delete_link);
 				break;
 
 			case ShowHub::STATUS_UPGRADE_AVAILABLE:
-				$this->tpl->setVariable("STATUS", self::plugin()->translate("xhfp_upgrade_available"));
+				$this->tpl->setVariable("STATUS", self::plugin()->translate("upgrade_available"));
 
 				$this->tpl->setVariable("INSTALLED_VERSION", $library["installed_version"]);
 
-				$actions->addItem(self::plugin()->translate("xhfp_upgrade"), "", $install_link);
+				$actions->addItem(self::plugin()->translate("upgrade"), "", $install_link);
 
-				$actions->addItem(self::plugin()->translate("xhfp_delete"), "", $delete_link);
+				$actions->addItem(self::plugin()->translate("delete"), "", $delete_link);
 				break;
 
 			case ShowHub::STATUS_NOT_INSTALLED:
-				$this->tpl->setVariable("STATUS", self::plugin()->translate("xhfp_not_installed"));
+				$this->tpl->setVariable("STATUS", self::plugin()->translate("not_installed"));
 
 				$this->tpl->setVariable("INSTALLED_VERSION", "-");
 
-				$actions->addItem(self::plugin()->translate("xhfp_install"), "", $install_link);
+				$actions->addItem(self::plugin()->translate("install"), "", $install_link);
 				break;
 
 			default:
 				break;
 		}
 
-		$this->tpl->setVariable("RUNNABLE", self::plugin()->translate($library["runnable"] ? "xhfp_yes" : "xhfp_no"));
+		$this->tpl->setVariable("RUNNABLE", self::plugin()->translate($library["runnable"] ? "yes" : "no"));
 
 		$this->tpl->setVariable("CONTENTS", ($library["contents_count"] != 0 ? $library["contents_count"] : ""));
 		$this->tpl->setVariable("USAGE_CONTENTS", ($library["usage_contents"] != 0 ? $library["usage_contents"] : ""));
 		$this->tpl->setVariable("USAGE_LIBRARIES", ($library["usage_libraries"] != 0 ? $library["usage_libraries"] : ""));
 
 		$this->tpl->setVariable("DETAILS_LINK", $details_link);
-		$actions->addItem(self::plugin()->translate("xhfp_details"), "", $details_link);
+		$actions->addItem(self::plugin()->translate("details"), "", $details_link);
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

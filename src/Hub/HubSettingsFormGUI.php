@@ -49,24 +49,24 @@ class HubSettingsFormGUI extends ilPropertyFormGUI {
 	protected function initForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_settings"));
+		$this->setTitle(self::plugin()->translate("settings"));
 
-		$this->addCommandButton(ilH5PConfigGUI::CMD_SETTINGS_STORE, self::plugin()->translate("xhfp_save"));
-		$this->addCommandButton(ilH5PConfigGUI::CMD_HUB, self::plugin()->translate("xhfp_cancel"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_HUB, self::plugin()->translate("cancel"));
 
-		$content_types = new ilCustomInputGUI(self::plugin()->translate("xhfp_content_types"));
+		$content_types = new ilCustomInputGUI(self::plugin()->translate("content_types"));
 
-		$enable_lrs_content_types = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_enable_lrs_content_types"), "enable_lrs_content_types");
-		$enable_lrs_content_types->setInfo(self::plugin()->translate("xhfp_enable_lrs_content_types_info"));
+		$enable_lrs_content_types = new ilCheckboxInputGUI(self::plugin()->translate("enable_lrs_content_types"), "enable_lrs_content_types");
+		$enable_lrs_content_types->setInfo(self::plugin()->translate("enable_lrs_content_types_info"));
 		$enable_lrs_content_types->setChecked(Option::getOption("enable_lrs_content_types", false));
 		$content_types->addSubItem($enable_lrs_content_types);
 
 		$this->addItem($content_types);
 
-		$usage_statistics = new ilCustomInputGUI(self::plugin()->translate("xhfp_usage_statistics"));
+		$usage_statistics = new ilCustomInputGUI(self::plugin()->translate("usage_statistics"));
 
-		$send_usage_statistics = new ilCheckboxInputGUI(self::plugin()->translate("xhfp_send_usage_statistics"), "send_usage_statistics");
-		$send_usage_statistics->setInfo(self::plugin()->translate("xhfp_send_usage_statistics_info", "", [
+		$send_usage_statistics = new ilCheckboxInputGUI(self::plugin()->translate("send_usage_statistics"), "send_usage_statistics");
+		$send_usage_statistics->setInfo(self::plugin()->translate("send_usage_statistics_info", "", [
 				file_get_contents(__DIR__ . "/../../templates/send_usage_statistics_info_link.html")
 			]));
 		$send_usage_statistics->setChecked(Option::getOption("send_usage_statistics", true));

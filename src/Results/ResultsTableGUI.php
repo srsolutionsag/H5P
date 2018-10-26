@@ -64,7 +64,7 @@ class ResultsTableGUI extends ilTable2GUI {
 
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_results"));
+		$this->setTitle(self::plugin()->translate("results"));
 
 		$this->initFilter();
 
@@ -127,14 +127,14 @@ class ResultsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function initColumns() {
-		$this->addColumn(self::plugin()->translate("xhfp_user"));
+		$this->addColumn(self::plugin()->translate("user"));
 
 		foreach ($this->contents as $h5p_content) {
 			$this->addColumn($h5p_content->getTitle());
 		}
 
-		$this->addColumn(self::plugin()->translate("xhfp_finished"));
-		$this->addColumn(self::plugin()->translate("xhfp_actions"));
+		$this->addColumn(self::plugin()->translate("finished"));
+		$this->addColumn(self::plugin()->translate("actions"));
 	}
 
 
@@ -169,20 +169,20 @@ class ResultsTableGUI extends ilTable2GUI {
 			if ($result[$content_key] !== NULL) {
 				$this->tpl->setVariable("POINTS", $result[$content_key]);
 			} else {
-				$this->tpl->setVariable("POINTS", self::plugin()->translate("xhfp_no_result"));
+				$this->tpl->setVariable("POINTS", self::plugin()->translate("no_result"));
 			}
 			$this->tpl->parseCurrentBlock();
 		}
 
 		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::plugin()->translate("xhfp_actions"));
+		$actions->setListTitle(self::plugin()->translate("actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
-			$actions->addItem(self::plugin()->translate("xhfp_delete"), "", self::dic()->ctrl()
+			$actions->addItem(self::plugin()->translate("delete"), "", self::dic()->ctrl()
 				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
 
-		$this->tpl->setVariable("FINISHED", self::plugin()->translate($result["finished"] ? "xhfp_yes" : "xhfp_no"));
+		$this->tpl->setVariable("FINISHED", self::plugin()->translate($result["finished"] ? "yes" : "no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

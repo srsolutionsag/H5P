@@ -48,11 +48,11 @@ class UploadLibraryFormGUI extends ilPropertyFormGUI {
 	protected function initForm() {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
-		$this->setTitle(self::plugin()->translate("xhfp_upload_library"));
+		$this->setTitle(self::plugin()->translate("upload_library"));
 
-		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("xhfp_upload"));
+		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
 
-		$upload_library = new ilFileInputGUI(self::plugin()->translate("xhfp_library"), "xhfp_library");
+		$upload_library = new ilFileInputGUI(self::plugin()->translate("library"), "xhfp_library");
 		$upload_library->setRequired(true);
 		$upload_library->setSuffixes([ "h5p" ]);
 		$this->addItem($upload_library);

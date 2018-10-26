@@ -70,15 +70,15 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 
 		$this->setId("xhfp_edit_form");
 
-		$this->setTitle(self::plugin()->translate($h5p_content !== NULL ? "xhfp_edit_content" : "xhfp_add_content"));
+		$this->setTitle(self::plugin()->translate($h5p_content !== NULL ? "edit_content" : "add_content"));
 
 		$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
 		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, self::plugin()->translate($h5p_content
-		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
-		$this->addCommandButton($cmd_cancel, self::plugin()->translate("xhfp_cancel"));
+		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
+		$this->addCommandButton($cmd_cancel, self::plugin()->translate("cancel"));
 
-		$title = new ilTextInputGUI(self::plugin()->translate("xhfp_title"), "xhfp_title");
+		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($h5p_content !== NULL ? $h5p_content->getTitle() : "");
 		$this->addItem($title);
@@ -90,7 +90,7 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 		}
 		$this->addItem($h5p_library);
 
-		$h5p = new ilCustomInputGUI(self::plugin()->translate("xhfp_library"), "xhfp_library");
+		$h5p = new ilCustomInputGUI(self::plugin()->translate("library"), "xhfp_library");
 		$h5p->setRequired(true);
 		$h5p->setHtml(self::h5p()->show_editor()->getH5PEditorIntegration($h5p_content));
 		$this->addItem($h5p);

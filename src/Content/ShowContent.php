@@ -196,7 +196,7 @@ class ShowContent {
 			$h5p_tpl->setVariable("H5P_CONTENT", $text);
 		}
 
-		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("xhfp_content_count", "", [ ($index + 1), $count ]) . " - "
+		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [ ($index + 1), $count ]) . " - "
 			. $h5p_content->getTitle());
 
 		$this->outputH5pStyles($h5p_tpl);
