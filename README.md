@@ -9,7 +9,7 @@ git clone https://github.com/studer-raimann/H5P.git H5P
 ```
 Update and activate the plugin in the ILIAS Plugin Administration
 
-Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent)
+Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent).
 
 ### Documentation
 Click [here](./doc/Documentation.pdf) for a more detailed documentation.
