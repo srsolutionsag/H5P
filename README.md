@@ -23,6 +23,7 @@ Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 * [h5p/h5p-core](https://packagist.org/packages/h5p/h5p-core)
 * [h5p/h5p-editor](https://packagist.org/packages/h5p/h5p-editor)
 * [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
+* [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
 * [srag/dic](https://packagist.org/packages/srag/dic)
 * [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
 

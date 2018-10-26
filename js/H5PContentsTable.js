@@ -20,7 +20,7 @@ var H5PContentsTable = {
 	 */
 	up: function (event, cid) {
 		event.preventDefault();
-		xoctWaiter.show();
+		il.waiter.show();
 		var row = $('#xhfp_row_' + cid);
 		var ajax_url = H5PContentsTable.base_link;
 		$.ajax({
@@ -32,7 +32,7 @@ var H5PContentsTable = {
 			}
 		}).always(function (data, textStatus, jqXHR) {
 			row.insertBefore(row.prev());
-			xoctWaiter.hide();
+			il.waiter.hide();
 		});
 	},
 
@@ -42,7 +42,7 @@ var H5PContentsTable = {
 	 */
 	down: function (event, cid) {
 		event.preventDefault();
-		xoctWaiter.show();
+		il.waiter.show();
 		var row = $('#xhfp_row_' + cid);
 		var ajax_url = H5PContentsTable.base_link;
 		$.ajax({
@@ -54,7 +54,7 @@ var H5PContentsTable = {
 			}
 		}).always(function (data, textStatus, jqXHR) {
 			row.insertAfter(row.next());
-			xoctWaiter.hide();
+			il.waiter.hide();
 		});
 	}
 };

@@ -10,6 +10,7 @@ use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilTable2GUI;
 use ilUtil;
+use srag\CustomInputGUIs\Waiter\Waiter;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Results\Result;
@@ -124,9 +125,7 @@ class ContentsTableGUI extends ilTable2GUI {
 	 *
 	 */
 	protected function initUpDown() {
-		self::dic()->mainTemplate()->addJavaScript(self::plugin()->directory() . "/lib/waiter/js/waiter.min.js");
-		self::dic()->mainTemplate()->addCss(self::plugin()->directory() . "/lib/waiter/css/waiter.css");
-		self::dic()->mainTemplate()->addOnLoadCode('xoctWaiter.init("waiter");');
+		Waiter::init(Waiter::TYPE_WAITER);
 
 		self::dic()->mainTemplate()->addJavaScript(self::plugin()->directory() . "/js/H5PContentsTable.min.js");
 		self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()
