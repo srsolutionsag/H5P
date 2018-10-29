@@ -26,6 +26,7 @@ Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 * [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
 * [srag/dic](https://packagist.org/packages/srag/dic)
 * [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
+* [babel-minfiy -g](https://www.npmjs.com/package/babel-minify)
 
 Please use it for further development!
 
