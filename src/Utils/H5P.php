@@ -3,6 +3,7 @@
 namespace srag\Plugins\H5P\Utils;
 
 use DateTime;
+use H5PActionGUI;
 use H5PContentValidator;
 use H5PCore;
 use H5peditor;
@@ -11,7 +12,6 @@ use H5PStorage;
 use H5PValidator;
 use ilDatePresentation;
 use ilDateTime;
-use H5PActionGUI;
 use ilH5PPlugin;
 use ilWACSignedPath;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
@@ -35,6 +35,7 @@ class H5P {
 	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const LANG_MODULE_CRON = "cron";
 	/**
 	 * @var self
 	 */

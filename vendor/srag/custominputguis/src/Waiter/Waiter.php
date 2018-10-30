@@ -14,7 +14,13 @@ use srag\DIC\DICTrait;
 final class Waiter {
 
 	use DICTrait;
+	/**
+	 * @var string
+	 */
 	const TYPE_WAITER = "waiter";
+	/**
+	 * @var string
+	 */
 	const TYPE_PERCENTAGE = "percentage";
 
 

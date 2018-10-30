@@ -27,14 +27,14 @@ il.waiter = {
 	init: function (type) {
 		this.type = type ? type : this.type;
 		if (this.type == 'waiter') {
-			console.log('il.waiter: added srag_waiter to body');
-			$('body').append('<div id="srag_waiter" class="srag_waiter"></div>')
+			$('body').append('<div id="srag_waiter" class="srag_waiter"></div>');
+			//console.log('il.waiter: added srag_waiter to body');
 		} else {
-			console.log('il.waiter: added srag_waiter_percentage to body');
 			$('body').append('<div id="srag_waiter" class="srag_waiter_percentage">' +
 				'<div class="progress" >' +
 				'<div id="srag_waiter_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">' +
-				'</div></div></div>')
+				'</div></div></div>');
+			//console.log('il.waiter: added srag_waiter_percentage to body');
 		}
 	},
 
@@ -100,11 +100,10 @@ il.waiter = {
 	 */
 	addLinkOverlay: function (dom_selector_string) {
 		var self = this;
-		console.log('il.waiter: registred LinkOverlay: ' + dom_selector_string);
 		$(document).ready(function () {
 			$(dom_selector_string).on("click", function (e) {
 				e.preventDefault();
-				console.log('il.waiter: clicked on registred link');
+				//console.log('il.waiter: clicked on registred link');
 				self.show();
 				var href = $(this).attr('href');
 				setTimeout(function () {
@@ -112,5 +111,6 @@ il.waiter = {
 				}, 1000);
 			});
 		});
+		//console.log('il.waiter: registred LinkOverlay: ' + dom_selector_string);
 	}
 };

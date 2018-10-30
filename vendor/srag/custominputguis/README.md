@@ -24,6 +24,7 @@ Hint: Because of multiple autoloaders of plugins, it could be, that different ve
 * [MultiSelectSearchInput2GUI](./src/MultiSelectSearchInputGUI/doc/MultiSelectSearchInput2GUI.md)
 * [NumberInputGUI](./src/NumberInputGUI/doc/NumberInputGUI.md)
 * [ScreenshotsInputGUI](./src/ScreenshotsInputGUI/doc/ScreenshotsInputGUI.md)
+* [StaticHTMLPresentationInputGUI](./src/StaticHTMLPresentationInputGUI/doc/StaticHTMLPresentationInputGUI.md)
 * [TextAreaInputGUI](./src/TextAreaInputGUI/doc/TextAreaInputGUI.md)
 * [TextInputGUI](./src/TextInputGUI/doc/TextInputGUI.md)
 * [Waiter](./src/Waiter/doc/Waiter.md)
@@ -38,6 +39,9 @@ Hint: Because of multiple autoloaders of plugins, it could be, that different ve
 * [html2canvas](https://www.npmjs.com/package/html2canvas)
 * [select2](https://www.npmjs.com/package/select2)
 * [srag/dic](https://packagist.org/packages/srag/dic)
+* [babel-minify -g](https://www.npmjs.com/package/babel-minify)
+* [clean-css-cli](https://www.npmjs.com/package/clean-css-cli)
+* [less -g](https://www.npmjs.com/package/less)
 
 Please use it for further development!
 
