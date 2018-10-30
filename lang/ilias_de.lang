@@ -25,6 +25,7 @@ confirm_action#:#Aktion bestätigen
 confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
 content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
 content_count#:#Inhalt %1$d von %2$d
+content_not_exists#:#Der H5P-Inhalt existiert nicht mehr!
 content_types#:#Inhaltstypen
 contents#:#Inhalte
 delete#:#Löschen
@@ -125,15 +126,15 @@ visible#:#Sichtbar
 write#:#Schreiben
 year#:#Jahr
 yes#:#Ja
-cron_delete_old_events#:#Alte Event-Logs löschen
-cron_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
-cron_delete_old_tmp_files#:#Alte Temp-Dateien löschen
-cron_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien löschen, die H5P generiert hat
-cron_page_component#:#PageComponents aufräumen
-cron_page_component_description#:#Löscht H5P-Contents von gelöschten H5P-PageComponents
-cron_page_component_description_deprecated#:#H5P-PageComponent-Cron-Job wird nur noch für ILIAS 5.2 benötigt, da neuere Versionen es nativ unterstützten :)
-cron_refresh_hub#:#Hub-Liste aktualisieren
-cron_refresh_hub_description#:#Lädt die Hub-Liste neu
+cron_xhfp_delete_old_events#:#Alte Event-Logs löschen
+cron_xhfp_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
+cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen
+cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien löschen, die H5P generiert hat
+cron_xhfp_page_component#:#PageComponents aufräumen
+cron_xhfp_page_component_description#:#Löscht H5P-Contents von gelöschten H5P-PageComponents
+cron_xhfp_page_component_description_deprecated#:#H5P-PageComponent-Cron-Job wird nur noch für ILIAS 5.2 benötigt, da neuere Versionen es nativ unterstützten :)
+cron_xhfp_refresh_hub#:#Hub-Liste aktualisieren
+cron_xhfp_refresh_hub_description#:#Lädt die Hub-Liste neu
 removeplugindataconfirm_cancel#:#Abbrechen
 removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch entfernen? Allenfalls möchten Sie das %1$s-Plugin nur deaktivieren?
 removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren

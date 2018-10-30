@@ -25,6 +25,7 @@ confirm_action#:#MISSING confirm_action
 confirm_action_text#:#MISSING confirm_action_text
 content_changed#:#MISSING content_changed
 content_count#:#MISSING content_count
+content_not_exists#:#MISSING content_not_exists
 content_types#:#MISSING content_types
 contents#:#MISSING contents
 delete#:#MISSING delete
@@ -125,15 +126,15 @@ visible#:#Zichtbaar
 write#:#Schrijven
 year#:#Jaar
 yes#:#Ja
-cron_delete_old_events#:#MISSING cron_delete_old_events
-cron_delete_old_events_description#:#MISSING cron_delete_old_events_description
-cron_delete_old_tmp_files#:#MISSING cron_delete_old_tmp_files
-cron_delete_old_tmp_files_description#:#MISSING cron_delete_old_tmp_files_description
-cron_page_component#:#MISSING cron_page_component
-cron_page_component_description#:#MISSING cron_page_component_description
-cron_page_component_description_deprecated#:#MISSING cron_page_component_description_deprecated
-cron_refresh_hub#:#MISSING cron_refresh_hub
-cron_refresh_hub_description#:#MISSING cron_refresh_hub_description
+cron_xhfp_delete_old_events#:#MISSING cron_xhfp_delete_old_events
+cron_xhfp_delete_old_events_description#:#MISSING cron_xhfp_delete_old_events_description
+cron_xhfp_delete_old_tmp_files#:#MISSING cron_xhfp_delete_old_tmp_files
+cron_xhfp_delete_old_tmp_files_description#:#MISSING cron_xhfp_delete_old_tmp_files_description
+cron_xhfp_page_component#:#MISSING cron_xhfp_page_component
+cron_xhfp_page_component_description#:#MISSING cron_xhfp_page_component_description
+cron_xhfp_page_component_description_deprecated#:#MISSING cron_xhfp_page_component_description_deprecated
+cron_xhfp_refresh_hub#:#MISSING cron_xhfp_refresh_hub
+cron_xhfp_refresh_hub_description#:#MISSING cron_xhfp_refresh_hub_description
 removeplugindataconfirm_cancel#:# MISSING removeplugindataconfirm_cancel
 removeplugindataconfirm_confirm_remove_data#:#MISSING removeplugindataconfirm_confirm_remove_data
 removeplugindataconfirm_deactivate#:#MISSING removeplugindataconfirm_deactivate

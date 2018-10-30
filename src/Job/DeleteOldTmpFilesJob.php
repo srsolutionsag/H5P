@@ -7,7 +7,6 @@ use ilCronJobResult;
 use ilH5PPlugin;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Content\Editor\TmpFile;
-use srag\Plugins\H5P\Utils\H5P;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -47,7 +46,7 @@ class DeleteOldTmpFilesJob extends ilCronJob {
 	 * @return string
 	 */
 	public function getTitle() {
-		return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("delete_old_tmp_files", H5P::LANG_MODULE_CRON);
+		return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate(self::CRON_JOB_ID, ilH5PPlugin::LANG_MODULE_CRON);
 	}
 
 
@@ -55,7 +54,7 @@ class DeleteOldTmpFilesJob extends ilCronJob {
 	 * @return string
 	 */
 	public function getDescription() {
-		return self::plugin()->translate("delete_old_tmp_files_description", H5P::LANG_MODULE_CRON);
+		return self::plugin()->translate(self::CRON_JOB_ID . "_description", ilH5PPlugin::LANG_MODULE_CRON);
 	}
 
 

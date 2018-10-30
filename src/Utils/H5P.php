@@ -35,7 +35,6 @@ class H5P {
 	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	const LANG_MODULE_CRON = "cron";
 	/**
 	 * @var self
 	 */
