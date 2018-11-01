@@ -13,7 +13,6 @@ use H5PValidator;
 use ilDatePresentation;
 use ilDateTime;
 use ilH5PPlugin;
-use ilWACSignedPath;
 use srag\ActiveRecordConfig\ActiveRecordConfig;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Content\Editor\EditorAjax;
@@ -115,7 +114,7 @@ class H5P {
 	 * H5P constructor
 	 */
 	protected function __construct() {
-		//$this->fixWAC();
+		//self::access()->registerWAC();
 	}
 
 
@@ -357,13 +356,5 @@ class H5P {
 		}
 
 		return $this->validator;
-	}
-
-
-	/**
-	 * TODO: Make work this
-	 */
-	protected function fixWAC() {
-		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
 	}
 }

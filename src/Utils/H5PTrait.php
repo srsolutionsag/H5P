@@ -2,6 +2,8 @@
 
 namespace srag\Plugins\H5P\Utils;
 
+use srag\Plugins\H5P\Access\Access;
+
 /**
  * Trait H5PTrait
  *
@@ -10,6 +12,14 @@ namespace srag\Plugins\H5P\Utils;
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait H5PTrait {
+
+	/**
+	 * @return Access
+	 */
+	protected static function access() {
+		return Access::getInstance();
+	}
+
 
 	/**
 	 * @return H5P
