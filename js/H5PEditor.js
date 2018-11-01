@@ -107,14 +107,22 @@
 			};
 		});
 
+		//https://stackoverflow.com/questions/5721724/jquery-how-to-get-which-button-was-clicked-upon-form-submission
+		$("#xhfp_edit_form_submit, #xhfp_edit_form_submit_top").click(function () {
+			this.dataset.clicked = true;
+		});
+
 		$form.submit(function () {
 			$editor_error.addClass("ilNoDisplay");
 
-			//https://stackoverflow.com/questions/5721724/jquery-how-to-get-which-button-was-clicked-upon-form-submission
-			var $button = $(document.activeElement);
+			var $button = $form.find('#xhfp_edit_form_submit[data-clicked="true"], #xhfp_edit_form_submit_top[data-clicked="true"]');
+
+			Array.prototype.forEach.call($("#xhfp_edit_form_submit, #xhfp_edit_form_submit_top"), function (el) {
+				delete el.dataset.clicked;
+			});
 
 			// Only submit button, no cancel button
-			if ($button.attr("id") === "xhfp_edit_form_submit" || $button.attr("id") === "xhfp_edit_form_submit_top") {
+			if ($button.length > 0) {
 				var library = h5peditor.getLibrary();
 				var params = h5peditor.getParams();
 
