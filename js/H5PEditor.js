@@ -110,7 +110,8 @@
 		$form.submit(function () {
 			$editor_error.addClass("ilNoDisplay");
 
-			var $button = $form.find('input[type="submit"]:focus, input[type="SUBMIT"]:focus');
+			//https://stackoverflow.com/questions/5721724/jquery-how-to-get-which-button-was-clicked-upon-form-submission
+			var $button = $(document.activeElement);
 
 			// Only submit button, no cancel button
 			if ($button.attr("id") === "xhfp_edit_form_submit" || $button.attr("id") === "xhfp_edit_form_submit_top") {
