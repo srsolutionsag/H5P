@@ -1,7 +1,7 @@
 # Changelog
 
 ## [2.0.0]
-- Ask for removing dat
+- Ask for removing data
 - Refactoring
 - Fix copy from list
 - Fix editor in Safari
