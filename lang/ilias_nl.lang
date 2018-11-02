@@ -1,109 +1,108 @@
 obj_xhfp#:#H5P
-obj_xhfp_duplicate#:#MISSING obj_xhfp_duplicate
+obj_xhfp_duplicate#:#Copy H5P
 objs_xhfp#:#H5P's
-objs_xhfp_duplicate#:#MISSING objs_xhfp_duplicate
-rbac_create_xhfp#:#MISSING rbac_create_xhfp
-xhfp_new#:#MISSING xhfp_new
-xhfp_add#:#MISSING xhfp_add
-actions#:#MISSING actions
-add#:#MISSING add
-add_content#:#MISSING add_content
-added_library#:#MISSING added_library
-added_libraries#:#MISSING added_libraries
-added_library_updated_library#:#MISSING added_library_updated_library
-added_library_updated_libraries#:#MISSING added_library_updated_libraries
-added_libraries_updated_library#:#MISSING added_libraries_updated_library
-added_libraries_updated_libraries#:#MISSING added_libraries_updated_libraries
-all#:#MISSING all
-author#:#MISSING author
-by#:#MISSING by
-cancel#:#MISSING cancel
-categories#:#MISSING categories
-close#:#MISSING close
-confirm#:#MISSING confirm
-confirm_action#:#MISSING confirm_action
-confirm_action_text#:#MISSING confirm_action_text
-content_changed#:#MISSING content_changed
-content_count#:#MISSING content_count
-content_not_exists#:#MISSING content_not_exists
-content_types#:#MISSING content_types
-contents#:#MISSING contents
-delete#:#MISSING delete
-delete_content#:#MISSING delete_content
-delete_content_confirm#:#MISSING delete_content_confirm
-deleted_content#:#MISSING deleted_content
-delete_library_confirm#:#MISSING delete_library_confirm
-delete_library_in_use#:#MISSING delete_library_in_use
-deleted_library#:#MISSING deleted_library
-delete_results_confirm#:#MISSING delete_results_confirm
-deleted_results#:#MISSING deleted_results
-description#:#MISSING description
-details#:#MISSING details
-disable_fullscreen#:#MISSING disable_fullscreen
-download#:#MISSING download
-download_content#:#MISSING download_content
-edit#:#MISSING edit
-edit_content#:#MISSING edit_content
-edit_permission#:#MISSING edit_permission
-embed#:#MISSING embed
-embed_include_script#:#MISSING embed_include_script
-enable_lrs_content_types#:#MISSING enable_lrs_content_types
-enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
-example#:#MISSING example
-finish#:#MISSING finish
-finished#:#MISSING finished
-fullscreen#:#MISSING fullscreen
-hide_advanced#:#MISSING hide_advanced
-hub_last_refresh#:#MISSING hub_last_refresh
-hub_refresh#:#MISSING hub_refresh
-hub_refreshed#:#MISSING hub_refreshed
-incomplete_content#:#MISSING incomplete_content
-install#:#MISSING install
-installed#:#MISSING installed
-installed_libraries#:#MISSING installed_libraries
-installed_version#:#MISSING installed_version
-keywords#:#MISSING keywords
-latest_version#:#MISSING latest_version
-library#:#MISSING library
-libraries#:#MISSING libraries
-license#:#MISSING license
-msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn.
-next_content#:#MISSING next_content
-no#:#MISSING no
-not_available#:#MISSING not_available
-no_content_copyright#:#MISSING no_content_copyright
-no_result#:#MISSING no_result
-not_installed#:#MISSING not_installed
-offline#:#MISSING offline
-online#:#MISSING online
-only_not_used#:#MISSING only_not_used
-only_runnable#:#MISSING only_runnable
-permission_denied#:#MISSING permission_denied
-previous_content#:#MISSING previous_content
-read#:#MISSING read
-results#:#MISSING results
-rights_of_use#:#MISSING rights_of_use
-runnable#:#MISSING runnable
-save#:#MISSING save
-saved_content#:#MISSING saved_content
-send_usage_statistics#:#MISSING send_usage_statistics
-send_usage_statistics_info#:#MISSING send_usage_statistics_info
-settings#:#MISSING settings
-settings_saved#:#MISSING settings_saved
-show#:#MISSING show
-show_advanced#:#MISSING show_advanced
-show_contents#:#MISSING show_contents
-show_less#:#MISSING show_less
-show_more#:#MISSING show_more
-size#:#MISSING size
-solve_contents_only_once#:#MISSING solve_contents_only_once
-solve_contents_only_once_note#:#MISSING solve_contents_only_once_note
-solved_all_contents#:#MISSING solved_all_contents
-solved_content#:#MISSING solved_content
-source#:#MISSING source
-start_over#:#MISSING start_over
-status#:#MISSING status
-sublevel#:#MISSING sublevel
+objs_xhfp_duplicate#:#Copy H5P's
+rbac_create_xhfp#:#Create H5P
+xhfp_new#:#Create H5P
+xhfp_add#:#Add
+actions#:#Actions
+add#:#Add
+add_content#:#Add content
+added_library#:#Added %%new new H5P library.
+added_libraries#:#Added %%new new H5P libraries.
+added_library_updated_library#:#Added %%new new H5P library and updated %%old old one.
+added_library_updated_libraries#:#Added %%new new H5P library and updated %%old old ones.
+added_libraries_updated_library#:#Added %%new new H5P libraries and updated %%old old one.
+added_libraries_updated_libraries#:#Added %%new new H5P libraries and updated %%old old ones.
+all#:#All
+author#:#Author
+by#:#by
+cancel#:#Cancel
+categories#:#Categories
+close#:#Close
+confirm#:#Confirm
+confirm_action#:#Confirm action
+confirm_action_text#:#Please confirm that you wish to proceed. This action is not reversible.
+content_changed#:#This content has changed since you last used it.
+content_count#:#Content %1$d of %2$d
+content_not_exists#:#The H5P content does not exist anymore!
+content_types#:#Content Types
+contents#:#Contents
+delete#:#Delete
+delete_content#:#Delete content
+delete_content_confirm#:#Are you really want to delete the content: %s ?
+deleted_content#:#Content %s deleted
+delete_library_confirm#:#Are you really want to delete the library: %s ?
+delete_library_in_use#:#The library is still in use!
+deleted_library#:#Library %s deleted
+delete_results_confirm#:#Are you really want to delete the results of %s?
+deleted_results#:#Results of %s deleted
+description#:#Description
+details#:#Details
+disable_fullscreen#:#Disable fullscreen
+download#:#Download
+download_content#:#Download this content as a H5P file.
+edit#:#Edit
+edit_content#:#Edit content
+edit_permission#:#Edit permission
+embed#:#Embed
+embed_include_script#:#Include this script on your website if you want dynamic sizing of the embedded content:
+enable_lrs_content_types#:#Enable LRS dependent content types.
+enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
+example#:#Example
+finish#:#Finish
+finished#:#Finished
+fullscreen#:#Fullscreen
+hide_advanced#:#Hide advanced
+hub_last_refresh#:#HUB last refreshed: %s
+hub_refresh#:#Resresh HUB
+hub_refreshed#:#HUB was successfully refreshed
+incomplete_content#:#The H5P content is incomplete! Please check all inputs and required fields!
+install#:#Install
+installed#:#Installed
+installed_libraries#:#Libraries
+installed_version#:#Installed version
+keywords#:#Keywords
+latest_version#:#Latest version
+library#:#Library
+libraries#:#Libraries
+license#:#License
+msg_content_not_editable#:#The contents can not be edited, since there are already results.
+next_content#:#Next content
+no#:#No
+not_available#:#Not available
+no_content_copyright#:#No copyright information available for this content.
+no_result#:#No result
+not_installed#:#Not installed
+offline#:#Offline
+online#:#Online
+only_not_used#:#Only not used
+only_runnable#:#Only runnable
+permission_denied#:#Permission denied!
+previous_content#:#Previous content
+read#:#Read
+results#:#Results
+rights_of_use#:#Rights of use
+runnable#:#Runnable
+save#:#Save
+saved_content#:#%s saved
+send_usage_statistics#:#Automatically contribute usage statistics
+send_usage_statistics_info#:#Usage statistics numbers will automatically be reported to help the developers better understand how H5P is used and to determine potential areas of improvement. Read more about which data is collected on %s.
+settings#:#Settings
+settings_saved#:#Settings saved
+show#:#Show
+show_advanced#:#Show advanced
+show_contents#:#Show contents
+show_less#:#Show less
+show_more#:#Show more
+size#:#Size
+solve_contents_only_once#:#Solve contents only once
+solve_contents_only_once_note#:#Note: For some contents may it is necessary the turn off the solution / retry button!
+solved_all_contents#:#You have already solved all contents.
+solved_content#:#You have already solved this content.
+source#:#Source
+start_over#:#You'll be starting over.
+status#:#Status
 summary#:#Samenvatting
 thumbnail#:#Miniatuur
 title#:#Titel
@@ -125,24 +124,24 @@ visible#:#Zichtbaar
 write#:#Schrijven
 year#:#Jaar
 yes#:#Ja
-config_hub#:#MISSING config_hub
-config_save#:#MISSING config_save
-config_settings#:#MISSING config_settings
-config_settings_saved#:#MISSING config_settings_saved
-cron_xhfp_delete_old_events#:#MISSING cron_xhfp_delete_old_events
-cron_xhfp_delete_old_events_description#:#MISSING cron_xhfp_delete_old_events_description
-cron_xhfp_delete_old_tmp_files#:#MISSING cron_xhfp_delete_old_tmp_files
-cron_xhfp_delete_old_tmp_files_description#:#MISSING cron_xhfp_delete_old_tmp_files_description
-cron_xhfp_page_component#:#MISSING cron_xhfp_page_component
-cron_xhfp_page_component_description#:#MISSING cron_xhfp_page_component_description
-cron_xhfp_page_component_description_deprecated#:#MISSING cron_xhfp_page_component_description_deprecated
-cron_xhfp_refresh_hub#:#MISSING cron_xhfp_refresh_hub
-cron_xhfp_refresh_hub_description#:#MISSING cron_xhfp_refresh_hub_description
-removeplugindataconfirm_cancel#:# MISSING removeplugindataconfirm_cancel
-removeplugindataconfirm_confirm_remove_data#:#MISSING removeplugindataconfirm_confirm_remove_data
-removeplugindataconfirm_deactivate#:#MISSING removeplugindataconfirm_deactivate
-removeplugindataconfirm_data#:#MISSING removeplugindataconfirm_data
-removeplugindataconfirm_keep_data#:#MISSING removeplugindataconfirm_keep_data
-removeplugindataconfirm_msg_kept_data#:#MISSING removeplugindataconfirm_msg_kept_data
-removeplugindataconfirm_msg_removed_data#:#MISSING removeplugindataconfirm_msg_removed_data
-removeplugindataconfirm_remove_data#:#MISSING removeplugindataconfirm_remove_data
+config_hub#:#HUB
+config_save#:#Save
+config_settings#:#Settings
+config_settings_saved#:#Settings saved
+cron_xhfp_delete_old_events#:#Delete old event logs
+cron_xhfp_delete_old_events_description#:#Deletes old event logs generated by H5P
+cron_xhfp_delete_old_tmp_files#:#Delete old temp files
+cron_xhfp_delete_old_tmp_files_description#:#Deletes old temp files generated by H5P
+cron_xhfp_page_component#:#Clean page components
+cron_xhfp_page_component_description#:#Deletes H5P contents of deleted H5P page components
+cron_xhfp_page_component_description_deprecated#:#H5P page component cron job only needed for ILIAS 5.2 because newer versions supports it native :)
+cron_xhfp_refresh_hub#:#Refresh hub list
+cron_xhfp_refresh_hub_description#:#Reloads the hub list
+removeplugindataconfirm_cancel#:#Cancel
+removeplugindataconfirm_confirm_remove_data#:#Do you want to remove the %1$s data as well? At most, you just want to disable the %1$s plugin?
+removeplugindataconfirm_deactivate#:#Just deactivate %1$s plugin
+removeplugindataconfirm_data#:#%1$s data
+removeplugindataconfirm_keep_data#:#Keep %1$s data
+removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept!
+removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed!
+removeplugindataconfirm_remove_data#:#Remove %1$s data
