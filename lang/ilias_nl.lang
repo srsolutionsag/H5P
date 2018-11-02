@@ -54,7 +54,6 @@ finish#:#MISSING finish
 finished#:#MISSING finished
 fullscreen#:#MISSING fullscreen
 hide_advanced#:#MISSING hide_advanced
-hub#:#MISSING hub
 hub_last_refresh#:#MISSING hub_last_refresh
 hub_refresh#:#MISSING hub_refresh
 hub_refreshed#:#MISSING hub_refreshed
@@ -126,6 +125,10 @@ visible#:#Zichtbaar
 write#:#Schrijven
 year#:#Jaar
 yes#:#Ja
+config_hub#:#MISSING config_hub
+config_save#:#MISSING config_save
+config_settings#:#MISSING config_settings
+config_settings_saved#:#MISSING config_settings_saved
 cron_xhfp_delete_old_events#:#MISSING cron_xhfp_delete_old_events
 cron_xhfp_delete_old_events_description#:#MISSING cron_xhfp_delete_old_events_description
 cron_xhfp_delete_old_tmp_files#:#MISSING cron_xhfp_delete_old_tmp_files

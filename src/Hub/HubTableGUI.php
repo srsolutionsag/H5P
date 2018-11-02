@@ -4,14 +4,11 @@ namespace srag\Plugins\H5P\Hub;
 
 use ilAdvancedSelectionListGUI;
 use ilCheckboxInputGUI;
-use ilCSVWriter;
-use ilExcel;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilSelectInputGUI;
-use ilTable2GUI;
 use ilTextInputGUI;
-use srag\DIC\DICTrait;
+use srag\ActiveRecordConfig\ActiveRecordConfigTableGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -21,9 +18,8 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubTableGUI extends ilTable2GUI {
+class HubTableGUI extends ActiveRecordConfigTableGUI {
 
-	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
@@ -45,39 +41,12 @@ class HubTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * HubTableGUI constructor
-	 *
-	 * @param ilH5PConfigGUI $parent
-	 * @param string         $parent_cmd
-	 */
-	public function __construct(ilH5PConfigGUI $parent, $parent_cmd) {
-		parent::__construct($parent, $parent_cmd);
-
-		if (!($parent_cmd === ilH5PConfigGUI::CMD_APPLY_FILTER || $parent_cmd === ilH5PConfigGUI::CMD_RESET_FILTER)) {
-			$this->initTable();
-		} else {
-			$this->initFilter();
-		}
-	}
-
-
-	/**
 	 *
 	 */
 	protected function initTable() {
-		$parent = $this->getParentObject();
-
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
+		parent::initTable();
 
 		$this->setTitle(self::plugin()->translate("installed_libraries"));
-
-		$this->initFilter();
-
-		$this->initData();
-
-		$this->initColumns();
-
-		$this->initExport();
 
 		$this->setRowTemplate("hub_table_row.html", self::plugin()->directory());
 	}
@@ -87,6 +56,8 @@ class HubTableGUI extends ilTable2GUI {
 	 *
 	 */
 	public function initFilter() {
+		parent::initFilter();
+
 		$this->filter_title = new ilTextInputGUI(self::plugin()->translate("library"), "xhfp_hub_title");
 		$this->addFilterItem($this->filter_title);
 		$this->filter_title->readFromSession();
@@ -156,14 +127,6 @@ class HubTableGUI extends ilTable2GUI {
 		$this->addColumn(self::plugin()->translate("actions"));
 
 		$this->setDefaultOrderField("title");
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initExport() {
-
 	}
 
 
@@ -262,37 +225,15 @@ class HubTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param ilCSVWriter $csv
+	 * @return string
 	 */
-	protected function fillHeaderCSV($csv) {
-		parent::fillHeaderCSV($csv);
-	}
+	public function getHTML() {
+		$parent = $this->getParentObject();
 
+		$form = self::h5p()->show_hub()->getUploadLibraryForm($parent);
 
-	/**
-	 * @param ilCSVWriter $csv
-	 * @param array       $library
-	 */
-	protected function fillRowCSV($csv, $library) {
-		parent::fillRowCSV($csv, $library);
-	}
+		$hub = self::h5p()->show_hub()->getHub($form, $parent, parent::getHTML());
 
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 */
-	protected function fillHeaderExcel(ilExcel $excel, &$row) {
-		parent::fillHeaderExcel($excel, $row);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 * @param array   $library
-	 */
-	protected function fillRowExcel(ilExcel $excel, &$row, $library) {
-		parent::fillRowExcel($excel, $row, $library);
+		return $hub;
 	}
 }

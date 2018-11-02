@@ -181,11 +181,11 @@ class ShowHub {
 	 *
 	 * @param UploadLibraryFormGUI $upload_form
 	 * @param ilH5PConfigGUI       $gui
-	 * @param HubTableGUI          $table
+	 * @param string               $table
 	 *
 	 * @return string
 	 */
-	public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, HubTableGUI $table) {
+	public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, $table) {
 		$hub_refresh = ilLinkButton::getInstance();
 		$hub_refresh->setCaption(self::plugin()->translate("hub_refresh"), false);
 		$hub_refresh->setUrl(self::dic()->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
@@ -196,7 +196,7 @@ class ShowHub {
 
 		$h5p_tpl = self::plugin()->template("H5PHub.html");
 
-		$h5p_tpl->setVariable("H5P_HUB", $table->getHTML());
+		$h5p_tpl->setVariable("H5P_HUB", $table);
 
 		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [ $hub_last_refresh ]));
 
