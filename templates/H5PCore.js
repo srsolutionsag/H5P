@@ -1,0 +1,1 @@
+var H5PIntegration = {H5P_CORE};

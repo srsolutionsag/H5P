@@ -2,10 +2,9 @@
 
 namespace srag\Plugins\H5P\Content;
 
-use H5PCore;
 use H5PActionGUI;
+use H5PCore;
 use ilH5PPlugin;
-use ilTemplate;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Results\Result;
@@ -25,25 +24,25 @@ class ShowContent {
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var array
+	 * @var array|null
 	 */
-	protected $core = NULL;
+	public $core = NULL;
+	/**
+	 * @var bool
+	 */
+	protected $core_output = false;
 	/**
 	 * @var array
 	 */
-	protected $h5p_scripts = [];
+	public $js_files = [];
 	/**
 	 * @var array
 	 */
-	protected $h5p_scripts_output = [];
+	public $css_files = [];
 	/**
 	 * @var array
 	 */
-	protected $h5p_styles = [];
-	/**
-	 * @var array
-	 */
-	protected $h5p_styles_output = [];
+	protected $js_files_output = [];
 
 
 	/**
@@ -55,126 +54,72 @@ class ShowContent {
 
 
 	/**
-	 * @param string $style
+	 *
 	 */
-	public function addH5pStyle($style) {
-		if (!isset($this->h5p_styles[$style])) {
-			// Output style only once
-			$this->h5p_styles[$style] = true;
+	public function initCore() {
+		if ($this->core === NULL) {
+			$this->core = [
+				"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+				"url" => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder(),
+				"postUserStatistics" => true,
+				"ajax" => [
+					H5PActionGUI::H5P_ACTION_SET_FINISHED => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_SET_FINISHED),
+					H5PActionGUI::H5P_ACTION_CONTENT_USER_DATA => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
+						. "&content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+				],
+				"saveFreq" => false,
+				"user" => [
+					"name" => self::dic()->user()->getFullname(),
+					"mail" => self::dic()->user()->getEmail()
+				],
+				"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
+				"l10n" => [
+					"H5P" => self::h5p()->core()->getLocalization()
+				],
+				"hubIsEnabled" => false,
+				"core" => [
+					"styles" => [],
+					"scripts" => []
+				],
+				"loadedCss" => [],
+				"loadedJs" => []
+			];
 
-			$this->h5p_styles_output[] = $style;
+			$core_path = self::h5p()->getCorePath() . "/";
+
+			foreach (H5PCore::$styles as $style) {
+				$this->core["core"]["styles"][] = $this->css_files[] = $core_path . $style;
+			}
+
+			foreach (H5PCore::$scripts as $script) {
+				$this->core["core"]["scripts"][] = $this->js_files[] = $core_path . $script;
+			}
 		}
 	}
 
 
 	/**
-	 * @param ilTemplate $h5p_tpl
+	 *
 	 */
-	public function outputH5pStyles(ilTemplate $h5p_tpl) {
-		foreach ($this->h5p_styles_output as $style) {
-			$h5p_tpl->setCurrentBlock("stylesBlock");
+	protected function initCoreForContents() {
+		if ($this->core === NULL) {
+			$this->initCore();
 
-			$h5p_tpl->setVariable("STYLE", $style);
-
-			$h5p_tpl->parseCurrentBlock();
-		}
-
-		$this->h5p_styles_output = [];
-	}
-
-
-	/**
-	 * @param string $script
-	 */
-	public function addH5pScript($script) {
-		if (!isset($this->h5p_scripts[$script])) {
-			// Output script only once
-			$this->h5p_scripts[$script] = true;
-
-			$this->h5p_scripts_output[] = $script;
+			$this->core["contents"] = [];
 		}
 	}
 
 
 	/**
-	 * @param ilTemplate $h5p_tpl
+	 *
 	 */
-	public function outputH5pScripts(ilTemplate $h5p_tpl) {
-		foreach ($this->h5p_scripts_output as $script) {
-			$h5p_tpl->setCurrentBlock("scriptsBlock");
+	public function initCoreToOutput() {
+		if (!$this->core_output) {
+			$this->core_output = true;
 
-			$h5p_tpl->setVariable("SCRIPT", $script);
-
-			$h5p_tpl->parseCurrentBlock();
-		}
-
-		$this->h5p_scripts_output = [];
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getH5pScripts() {
-		$scripts = $this->h5p_scripts_output;
-
-		$this->h5p_scripts_output = [];
-
-		return $scripts;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getCore() {
-		$core = [
-			"baseUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"url" => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder(),
-			"postUserStatistics" => true,
-			"ajax" => [
-				"setFinished" => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_SET_FINISHED),
-				"contentUserData" => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
-					. "&content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId",
-			],
-			"saveFreq" => false,
-			"user" => [
-				"name" => self::dic()->user()->getFullname(),
-				"mail" => self::dic()->user()->getEmail()
-			],
-			"siteUrl" => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-			"l10n" => [
-				"H5P" => self::h5p()->core()->getLocalization()
-			],
-			"hubIsEnabled" => false,
-			"core" => [
-				"styles" => [],
-				"scripts" => []
-			],
-			"loadedCss" => [],
-			"loadedJs" => []
-		];
-
-		$this->addCore($core);
-
-		return $core;
-	}
-
-
-	/**
-	 * @param array $core
-	 */
-	protected function addCore(&$core) {
-		$core_path = ILIAS_HTTP_PATH . "/" . self::h5p()->getCorePath() . "/";
-
-		foreach (H5PCore::$styles as $style) {
-			$core["core"]["styles"][] = $core_path . $style;
-			$this->addH5pStyle($core_path . $style);
-		}
-
-		foreach (H5PCore::$scripts as $script) {
-			$core["core"]["scripts"][] = $core_path . $script;
-			$this->addH5pScript($core_path . $script);
+			$core_tpl = self::plugin()->template("H5PCore.min.js");
+			$core_tpl->setVariable("H5P_CORE", json_encode($this->core));
+			$this->js_files[] = "data:application/javascript;base64," . base64_encode($core_tpl->get());
 		}
 	}
 
@@ -187,21 +132,17 @@ class ShowContent {
 	 *
 	 * @return string
 	 */
-	public function getH5PContentsIntegration(Content $h5p_content, $index, $count, $text = NULL) {
-		$h5p_tpl = self::plugin()->template("H5PContents.html");
+	public function getH5PContentStep(Content $h5p_content, $index, $count, $text = NULL) {
+		$h5p_tpl = self::plugin()->template("H5PContentStep.html");
 
 		if ($text === NULL) {
-			$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContentIntegration($h5p_content, false));
+			$h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContent($h5p_content, false));
 		} else {
 			$h5p_tpl->setVariable("H5P_CONTENT", $text);
 		}
 
 		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [ ($index + 1), $count ]) . " - "
 			. $h5p_content->getTitle());
-
-		$this->outputH5pStyles($h5p_tpl);
-
-		$this->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get() . self::dic()->toolbar()->getHTML();
 	}
@@ -213,10 +154,12 @@ class ShowContent {
 	 *
 	 * @return string
 	 */
-	public function getH5PContentIntegration(Content $h5p_content, $title = true) {
-		$output = $this->getCoreIntegration();
+	public function getH5PContent(Content $h5p_content, $title = true) {
+		$this->initCoreForContents();
 
-		$content_integration = $this->getContent($h5p_content);
+		$content_integration = $this->initContent($h5p_content);
+
+		$this->initCoreToOutput();
 
 		if ($title) {
 			$title = $h5p_content->getTitle();
@@ -224,9 +167,35 @@ class ShowContent {
 			$title = NULL;
 		}
 
-		$output .= $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
+		$output = $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
+
+		$this->outputHeader();
 
 		return $output;
+	}
+
+
+	/**
+	 *
+	 */
+	public function outputHeader() {
+		foreach ($this->css_files as $css_file) {
+			self::dic()->mainTemplate()->addCss($css_file);
+		}
+
+		foreach ($this->js_files as $js_file) {
+			if (strpos($js_file, "data:application/javascript;base64,") === 0) {
+				if (!isset($this->js_files_output[$js_file])) {
+					$this->js_files_output[$js_file] = true;
+
+					self::dic()->mainTemplate()->setCurrentBlock("js_file");
+					self::dic()->mainTemplate()->setVariable("JS_FILE", $js_file);
+					self::dic()->mainTemplate()->parseCurrentBlock();
+				}
+			} else {
+				self::dic()->mainTemplate()->addJavaScript($js_file);
+			}
+		}
 	}
 
 
@@ -235,7 +204,7 @@ class ShowContent {
 	 *
 	 * @return array
 	 */
-	protected function getContent(Content $h5p_content) {
+	protected function initContent(Content $h5p_content) {
 		self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
 		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
@@ -281,13 +250,11 @@ class ShowContent {
 		switch ($content_integration["embedType"]) {
 			case "div":
 				foreach ($scripts as $script) {
-					$this->addH5pScript($script);
-					$this->core["loadedJs"][] = $script;
+					$this->core["loadedJs"][] = $this->js_files[] = $script;
 				}
 
 				foreach ($styles as $style) {
-					$this->addH5pStyle($style);
-					$this->core["loadedCss"][] = $style;
+					$this->core["loadedCss"][] = $this->css_files[] = $style;
 				}
 				break;
 
@@ -307,31 +274,6 @@ class ShowContent {
 
 
 	/**
-	 * @return string
-	 */
-	protected function getCoreIntegration() {
-		if ($this->core === NULL) {
-			// Output core only once
-			$this->core = $this->getCore();
-
-			$this->core["contents"] = [];
-
-			$h5p_tpl = self::plugin()->template("H5PCore.html");
-
-			$h5p_tpl->setVariable("H5P_CORE", json_encode($this->core));
-
-			$this->outputH5pStyles($h5p_tpl);
-
-			$this->outputH5pScripts($h5p_tpl);
-
-			return $h5p_tpl->get();
-		} else {
-			return "";
-		}
-	}
-
-
-	/**
 	 * @param array       $content
 	 * @param int         $content_id
 	 * @param string|null $title
@@ -340,9 +282,12 @@ class ShowContent {
 	 * @return string
 	 */
 	protected function getH5PIntegration(array $content, $content_id, $title, $embed_type) {
-		$h5p_tpl = self::plugin()->template("H5PContent.html");
+		$content_tpl = self::plugin()->template("H5PContent.min.js");
+		$content_tpl->setVariable("H5P_CONTENT", json_encode($content));
+		$content_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+		$this->js_files[] = "data:application/javascript;base64," . base64_encode($content_tpl->get());
 
-		$h5p_tpl->setVariable("H5P_CONTENT", json_encode($content));
+		$h5p_tpl = self::plugin()->template("H5PContent.html");
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
@@ -355,12 +300,10 @@ class ShowContent {
 		switch ($embed_type) {
 			case "div":
 				$h5p_tpl->setCurrentBlock("contentDivBlock");
-				$h5p_tpl->parseCurrentBlock();
 				break;
 
 			case "iframe":
 				$h5p_tpl->setCurrentBlock("contentFrameBlock");
-				$h5p_tpl->parseCurrentBlock();
 				break;
 
 			default:
@@ -368,10 +311,6 @@ class ShowContent {
 		}
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
-
-		$this->outputH5pStyles($h5p_tpl);
-
-		$this->outputH5pScripts($h5p_tpl);
 
 		return $h5p_tpl->get();
 	}

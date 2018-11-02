@@ -220,7 +220,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
 		if ($this->hasResults()) {
-			ilUtil::sendInfo(self::plugin()->translate('xhfp_msg_content_not_editable'));
+			ilUtil::sendInfo(self::plugin()->translate("msg_content_not_editable"));
 		}
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
@@ -428,7 +428,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 			$h5p_result = Result::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
 			if ($h5p_result !== NULL) {
-				$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count, self::plugin()
+				$this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count, self::plugin()
 					->translate("solved_content")));
 
 				return;
@@ -451,9 +451,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			self::dic()->toolbar()->addButtonInstance($delete_content);
 		}*/
 
-		//self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PContents.min.js");
+		//self::h5p()->show_content()->addH5pScript(substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js");
 
-		$this->show(self::h5p()->show_content()->getH5PContentsIntegration($h5p_content, $index, $count));
+		$this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count));
 	}
 
 

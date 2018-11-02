@@ -2,9 +2,9 @@
 
 namespace srag\Plugins\H5P\Content\Editor;
 
+use H5PActionGUI;
 use H5PCore;
 use H5peditor;
-use H5PActionGUI;
 use ilH5PPlugin;
 use ilLinkButton;
 use ilToolbarGUI;
@@ -37,16 +37,16 @@ class ShowEditor {
 
 
 	/**
-	 * @return array
+	 *
 	 */
-	public function getEditor() {
-		$editor = self::h5p()->show_content()->getCore();
+	protected function initEditor() {
+		self::h5p()->show_content()->initCore();
 
-		$editor_path = ILIAS_HTTP_PATH . "/" . self::h5p()->getEditorPath();
+		$editor_path = self::h5p()->getEditorPath();
 
 		$assets = [
-			"js" => $editor["core"]["scripts"],
-			"css" => $editor["core"]["styles"]
+			"js" => self::h5p()->show_content()->core["core"]["scripts"],
+			"css" => self::h5p()->show_content()->core["core"]["styles"]
 		];
 
 		foreach (H5peditor::$scripts as $script) {
@@ -54,7 +54,7 @@ class ShowEditor {
 				/*$this->h5p_scripts[] = */
 				$assets["js"][] = $editor_path . "/" . $script;
 			} else {
-				self::h5p()->show_content()->addH5pScript($editor_path . "/" . $script);
+				self::h5p()->show_content()->js_files[] = $editor_path . "/" . $script;
 			}
 		}
 
@@ -63,7 +63,7 @@ class ShowEditor {
 			$assets["css"][] = $editor_path . "/" . $style;
 		}
 
-		$editor["editor"] = [
+		self::h5p()->show_content()->core["editor"] = [
 			"filesPath" => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder() . "/editor",
 			"fileIcon" => [
 				"path" => $editor_path . "/images/binary-file.png",
@@ -71,7 +71,7 @@ class ShowEditor {
 				"height" => 50
 			],
 			"ajaxPath" => H5PActionGUI::getUrl("") . "&" . H5PActionGUI::CMD_H5P_ACTION . "=",
-			"libraryUrl" => $editor_path . "/",
+			"libraryUrl" => ILIAS_HTTP_PATH . "/" . $editor_path . "/",
 			"copyrightSemantics" => self::h5p()->content_validator()->getCopyrightSemantics(),
 			"assets" => $assets,
 			"apiVersion" => H5PCore::$coreApi
@@ -83,9 +83,13 @@ class ShowEditor {
 		if (!file_exists($language_script)) {
 			$language_script = $language_path . "en.js";
 		}
-		self::h5p()->show_content()->addH5pScript(ILIAS_HTTP_PATH . "/" . $language_script);
+		self::h5p()->show_content()->js_files[] = $language_script;
 
-		return $editor;
+		self::h5p()->show_content()->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PEditor.min.js";
+
+		self::h5p()->show_content()->initCoreToOutput();
+
+		self::h5p()->show_content()->outputHeader();
 	}
 
 
@@ -94,11 +98,10 @@ class ShowEditor {
 	 *
 	 * @return string
 	 */
-	public function getH5PEditorIntegration(Content $h5p_content = NULL) {
-		$editor = $this->getEditor();
-		$editor["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+	public function getEditor(Content $h5p_content = NULL) {
+		$this->initEditor();
 
-		self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PEditor.min.js");
+		self::h5p()->show_content()->core["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
@@ -116,30 +119,10 @@ class ShowEditor {
 		$example->setId("xhfp_edit_toolbar_example");
 		$tutorial_toolbar->addButtonInstance($example);
 
-		return $this->getH5PIntegration($editor, $tutorial_toolbar->getHTML());
-	}
-
-
-	/**
-	 * @param array       $editor
-	 * @param string|null $tutorial
-	 *
-	 * @return string
-	 */
-	public function getH5PIntegration(array $editor, $tutorial = NULL) {
 		$h5p_tpl = self::plugin()->template("H5PEditor.html");
 
-		$h5p_tpl->setVariable("H5P_EDITOR", json_encode($editor));
-
-		if ($tutorial !== NULL) {
-			$h5p_tpl->setCurrentBlock("tutorialBlock");
-
-			$h5p_tpl->setVariable("TUTORIAL", $tutorial);
-		}
-
-		self::h5p()->show_content()->outputH5pStyles($h5p_tpl);
-
-		self::h5p()->show_content()->outputH5pScripts($h5p_tpl);
+		$h5p_tpl->setCurrentBlock("tutorialBlock");
+		$h5p_tpl->setVariable("TUTORIAL", $tutorial_toolbar->getHTML());
 
 		$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));

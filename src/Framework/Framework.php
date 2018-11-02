@@ -1484,4 +1484,26 @@ class Framework implements H5PFrameworkInterface {
 			$library_hub_cache->store();
 		}
 	}
+
+
+	/**
+	 * Load addon libraries
+	 *
+	 * @return array
+	 */
+	public function loadAddons() {
+		return [];
+	}
+
+
+	/**
+	 * Load config for libraries
+	 *
+	 * @param array $libraries
+	 *
+	 * @return array
+	 */
+	public function getLibraryConfig($libraries = NULL) {
+		return [];
+	}
 }

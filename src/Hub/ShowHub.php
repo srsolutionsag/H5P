@@ -108,9 +108,8 @@ class ShowHub {
 				"majorVersion" => $installed_library->getMajorVersion(),
 				"minorVersion" => $installed_library->getMinorVersion(),
 			], true), "icon.svg");
-			if (file_exists(substr($icon, 1))) {
-				$icon = ILIAS_HTTP_PATH . $icon;
-			} else {
+			$icon = substr($icon, 1);
+			if (!file_exists($icon)) {
 				$icon = "";
 			}
 
@@ -186,7 +185,7 @@ class ShowHub {
 	 *
 	 * @return string
 	 */
-	public function getH5PHubIntegration(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, HubTableGUI $table) {
+	public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, HubTableGUI $table) {
 		$hub_refresh = ilLinkButton::getInstance();
 		$hub_refresh->setCaption(self::plugin()->translate("hub_refresh"), false);
 		$hub_refresh->setUrl(self::dic()->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
@@ -195,42 +194,13 @@ class ShowHub {
 		$hub_last_refresh = Option::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = self::h5p()->formatTime($hub_last_refresh);
 
-		return $this->getH5PIntegration($table->getHTML(), self::plugin()
-			->translate("hub_last_refresh", "", [ $hub_last_refresh ]), $upload_form->getHTML());
-		/* @deprecated H5P Hub is not suitable for this ILIAS plugin
-		 * $hub = self::h5p()->show_editor()->getEditor();
-		 * $hub["hubIsEnabled"] = true;
-		 * $hub["ajax"] = [
-		 * "setFinished" => "",
-		 * "contentUserData" => ""
-		 * ];
-		 *
-		 * self::h5p()->show_content()->addH5pScript(self::plugin()->directory() . "/js/H5PHub.min.js");
-		 *
-		 * return $this->getH5PIntegration(self::h5p()->show_editor()
-		 * ->getH5PIntegration($hub), self::plugin()->translate("hub_last_refresh", "",[$hub_last_refresh]), $upload_form->getHTML());*/
-	}
-
-
-	/**
-	 * @param string $hub
-	 * @param string $hub_last_refresh
-	 * @param string $upload_library
-	 *
-	 * @return string
-	 */
-	protected function getH5PIntegration($hub, $hub_last_refresh, $upload_library) {
 		$h5p_tpl = self::plugin()->template("H5PHub.html");
 
-		$h5p_tpl->setVariable("H5P_HUB", $hub);
+		$h5p_tpl->setVariable("H5P_HUB", $table->getHTML());
 
-		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", $hub_last_refresh);
+		$h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [ $hub_last_refresh ]));
 
-		$h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_library);
-
-		self::h5p()->show_content()->outputH5pStyles($h5p_tpl);
-
-		self::h5p()->show_content()->outputH5pScripts($h5p_tpl);
+		$h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
 
 		return $h5p_tpl->get();
 	}
@@ -294,7 +264,7 @@ class ShowHub {
 	 *
 	 * @return HubDetailsFormGUI
 	 */
-	public function getH5PLibraryDetailsIntegration(ilH5PConfigGUI $parent, $key) {
+	public function getDetailsForm(ilH5PConfigGUI $parent, $key) {
 		$details_form = new HubDetailsFormGUI($parent, $key);
 
 		return $details_form;

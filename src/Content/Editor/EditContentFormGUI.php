@@ -92,7 +92,7 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 
 		$h5p = new ilCustomInputGUI(self::plugin()->translate("library"), "xhfp_library");
 		$h5p->setRequired(true);
-		$h5p->setHtml(self::h5p()->show_editor()->getH5PEditorIntegration($h5p_content));
+		$h5p->setHtml(self::h5p()->show_editor()->getEditor($h5p_content));
 		$this->addItem($h5p);
 
 		$h5p_params = new ilHiddenInputGUI("xhfp_params");

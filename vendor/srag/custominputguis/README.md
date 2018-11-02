@@ -25,6 +25,7 @@ Hint: Because of multiple autoloaders of plugins, it could be, that different ve
 * [NumberInputGUI](./src/NumberInputGUI/doc/NumberInputGUI.md)
 * [ScreenshotsInputGUI](./src/ScreenshotsInputGUI/doc/ScreenshotsInputGUI.md)
 * [StaticHTMLPresentationInputGUI](./src/StaticHTMLPresentationInputGUI/doc/StaticHTMLPresentationInputGUI.md)
+* [Template](./src/Template/doc/Template.md)
 * [TextAreaInputGUI](./src/TextAreaInputGUI/doc/TextAreaInputGUI.md)
 * [TextInputGUI](./src/TextInputGUI/doc/TextInputGUI.md)
 * [Waiter](./src/Waiter/doc/Waiter.md)

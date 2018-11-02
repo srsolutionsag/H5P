@@ -127,7 +127,7 @@ class ContentsTableGUI extends ilTable2GUI {
 	protected function initUpDown() {
 		Waiter::init(Waiter::TYPE_WAITER);
 
-		self::dic()->mainTemplate()->addJavaScript(self::plugin()->directory() . "/js/H5PContentsTable.min.js");
+		self::dic()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
 		self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()
 				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
 	}

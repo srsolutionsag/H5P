@@ -130,7 +130,7 @@ class H5P {
 	 * @return string
 	 */
 	public function getCorePath() {
-		return self::plugin()->directory() . "/vendor/h5p/h5p-core";
+		return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-core";
 	}
 
 
@@ -138,12 +138,12 @@ class H5P {
 	 * @return string
 	 */
 	public function getEditorPath() {
-		return self::plugin()->directory() . "/vendor/h5p/h5p-editor";
+		return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-editor";
 	}
 
 
 	/**
-	 * @param string $csv
+	 * @param string $csvp
 	 *
 	 * @return string[]
 	 */

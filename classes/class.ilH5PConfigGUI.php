@@ -119,7 +119,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$form = self::h5p()->show_hub()->getUploadLibraryForm($this);
 
-		$hub = self::h5p()->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
+		$hub = self::h5p()->show_hub()->getHub($form, $this, $this->getHubTable());
 
 		self::plugin()->output($hub);
 	}
@@ -146,7 +146,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$hub = self::h5p()->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
+			$hub = self::h5p()->show_hub()->getHub($form, $this, $this->getHubTable());
 
 			self::plugin()->output($hub);
 
@@ -207,7 +207,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 
 		$key = filter_input(INPUT_GET, "xhfp_library_key");
 
-		$details = self::h5p()->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
+		$details = self::h5p()->show_hub()->getDetailsForm($this, $key);
 
 		self::plugin()->output($details);
 	}
