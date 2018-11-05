@@ -122,6 +122,7 @@ class ComposerStaticInit53c49459733c67ee06415d635bba0815
         'srag\\DIC\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
         'srag\\DIC\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
         'srag\\Plugins\\H5P\\Access\\Access' => __DIR__ . '/../..' . '/src/Access/Access.php',
+        'srag\\Plugins\\H5P\\Access\\Permission' => __DIR__ . '/../..' . '/src/Access/Permission.php',
         'srag\\Plugins\\H5P\\Content\\Content' => __DIR__ . '/../..' . '/src/Content/Content.php',
         'srag\\Plugins\\H5P\\Content\\ContentLibrary' => __DIR__ . '/../..' . '/src/Content/ContentLibrary.php',
         'srag\\Plugins\\H5P\\Content\\ContentUserData' => __DIR__ . '/../..' . '/src/Content/ContentUserData.php',
