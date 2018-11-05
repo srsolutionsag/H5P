@@ -30,7 +30,7 @@ final class Access/* implements ilWACCheckingClass*/
 	/**
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance()/*: self*/ {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
