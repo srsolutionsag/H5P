@@ -74,7 +74,7 @@ return array(
     'srag\\DIC\\Version\\Version' => $vendorDir . '/srag/dic/src/Version/Version.php',
     'srag\\DIC\\Version\\VersionInterface' => $vendorDir . '/srag/dic/src/Version/VersionInterface.php',
     'srag\\Plugins\\H5P\\Access\\Access' => $baseDir . '/src/Access/Access.php',
-    'srag\\Plugins\\H5P\\Access\\Permission' => $baseDir . '/src/Access/Permission.php',
+    'srag\\Plugins\\H5P\\Access\\Ilias' => $baseDir . '/src/Access/Ilias.php',
     'srag\\Plugins\\H5P\\Content\\Content' => $baseDir . '/src/Content/Content.php',
     'srag\\Plugins\\H5P\\Content\\ContentLibrary' => $baseDir . '/src/Content/ContentLibrary.php',
     'srag\\Plugins\\H5P\\Content\\ContentUserData' => $baseDir . '/src/Content/ContentUserData.php',

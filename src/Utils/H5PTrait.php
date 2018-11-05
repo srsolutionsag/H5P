@@ -3,7 +3,7 @@
 namespace srag\Plugins\H5P\Utils;
 
 use srag\Plugins\H5P\Access\Access;
-use srag\Plugins\H5P\Access\Permission;
+use srag\Plugins\H5P\Access\Ilias;
 
 /**
  * Trait H5PTrait
@@ -31,9 +31,9 @@ trait H5PTrait {
 
 
 	/**
-	 * @return Permission
+	 * @return Ilias
 	 */
-	protected static function permission()/*: Permission*/ {
-		return Permission::getInstance();
+	protected static function ilias()/*: Ilias*/ {
+		return Ilias::getInstance();
 	}
 }

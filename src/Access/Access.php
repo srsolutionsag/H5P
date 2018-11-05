@@ -3,8 +3,6 @@
 namespace srag\Plugins\H5P\Access;
 
 use ilH5PPlugin;
-use ilWACPath;
-use ilWACSecurePath;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -15,8 +13,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Access/* implements ilWACCheckingClass*/
-{
+final class Access {
 
 	use DICTrait;
 	use H5PTrait;
@@ -42,36 +39,7 @@ final class Access/* implements ilWACCheckingClass*/
 	/**
 	 * Access constructor
 	 */
-	public function __construct() {
+	private function __construct() {
 
 	}
-	/**
-	 *
-	 * /
-	 * public function registerWAC() {
-	 * //ilWACSignedPath::signFolderOfStartFile(self::h5p()->getH5PFolder() . "/dummy.js");
-	 *
-	 * /**
-	 * @var ilWACSecurePath $path
-	 * /
-	 * $path = ilWACSecurePath::findOrGetInstance("h5p");
-	 * $path->setPath("h5p");
-	 *
-	 * $path->setCheckingClass(self::class);
-	 * $path->setInSecFolder(false);
-	 * $path->setComponentDirectory(__DIR__ . "/../../");
-	 *
-	 * $path->store();
-	 * }
-	 *
-	 *
-	 * /**
-	 *
-	 * @param ilWACPath     $ilWACPath
-	 *
-	 * @return bool
-	 * /
-	 * public function canBeDelivered(ilWACPath $ilWACPath) {
-	 * return true;
-	 * }*/
 }
