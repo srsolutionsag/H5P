@@ -11,6 +11,7 @@
 		H5PEditor.filesPath = H5PIntegration.editor.filesPath;
 
 		H5PEditor.copyrightSemantics = H5PIntegration.editor.copyrightSemantics;
+		H5PEditor.metadataSemantics = H5PIntegration.editor.metadataSemantics;
 
 		H5PEditor.assets = H5PIntegration.editor.assets;
 

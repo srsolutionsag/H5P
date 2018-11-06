@@ -1,23 +1,23 @@
 [
     {
         "name": "h5p/h5p-core",
-        "version": "1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "1.19.0",
+        "version_normalized": "1.19.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/h5p/h5p-php-library.git",
-            "reference": "942a083afa46e37f872a35b06890de3414237dcd"
+            "reference": "85b278bd52bba4d6cc9d5a1a7dd8ba061742a5f2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/942a083afa46e37f872a35b06890de3414237dcd",
-            "reference": "942a083afa46e37f872a35b06890de3414237dcd",
+            "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/85b278bd52bba4d6cc9d5a1a7dd8ba061742a5f2",
+            "reference": "85b278bd52bba4d6cc9d5a1a7dd8ba061742a5f2",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2018-05-16T13:16:34+00:00",
+        "time": "2018-11-02T09:25:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -26,7 +26,8 @@
                 "h5p-development.class.php",
                 "h5p-file-storage.interface.php",
                 "h5p-default-storage.class.php",
-                "h5p-event-base.class.php"
+                "h5p-event-base.class.php",
+                "h5p-metadata.class.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -59,23 +60,23 @@
     },
     {
         "name": "h5p/h5p-editor",
-        "version": "1.17.1",
-        "version_normalized": "1.17.1.0",
+        "version": "1.18.0",
+        "version_normalized": "1.18.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/h5p/h5p-editor-php-library.git",
-            "reference": "06e52c65be4323a721172ee7eb8b80908c4ce6be"
+            "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/06e52c65be4323a721172ee7eb8b80908c4ce6be",
-            "reference": "06e52c65be4323a721172ee7eb8b80908c4ce6be",
+            "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
+            "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2018-01-22T12:39:38+00:00",
+        "time": "2018-11-02T08:51:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

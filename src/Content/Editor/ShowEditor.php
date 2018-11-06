@@ -73,6 +73,7 @@ class ShowEditor {
 			"ajaxPath" => H5PActionGUI::getUrl("") . "&" . H5PActionGUI::CMD_H5P_ACTION . "=",
 			"libraryUrl" => ILIAS_HTTP_PATH . "/" . $editor_path . "/",
 			"copyrightSemantics" => self::h5p()->content_validator()->getCopyrightSemantics(),
+			"metadataSemantics" => self::h5p()->content_validator()->getMetadataSemantics(),
 			"assets" => $assets,
 			"apiVersion" => H5PCore::$coreApi
 		];
