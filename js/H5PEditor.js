@@ -24,7 +24,7 @@
 		var $toolbar = $("#xhfp_edit_toolbar");
 		var $toolbar_tutorial = $("#xhfp_edit_toolbar_tutorial");
 		var $toolbar_example = $("#xhfp_edit_toolbar_example");
-		var $editor_error = $("#xhfp_editor_error");
+		//var $editor_error = $("#xhfp_editor_error");
 
 		var library = $library.val();
 		var params = $params.val();
@@ -65,7 +65,7 @@
 				loadSemantics.apply(this, arguments);
 
 				// Hide error message
-				$editor_error.addClass("ilNoDisplay");
+				//$editor_error.addClass("ilNoDisplay");
 
 				// Tutorial and example button
 				$toolbar.addClass("ilNoDisplay");
@@ -114,7 +114,7 @@
 		});
 
 		$form.submit(function () {
-			$editor_error.addClass("ilNoDisplay");
+			//$editor_error.addClass("ilNoDisplay");
 
 			var $button = $form.find('#xhfp_edit_form_submit[data-clicked="true"], #xhfp_edit_form_submit_top[data-clicked="true"]');
 
@@ -128,7 +128,7 @@
 				var params = h5peditor.getParams();
 
 				// Prevent submit when errors
-				var errors = $(".h5p-errors", frame.contentDocument).filter(function (i, el) {
+				/*var errors = $(".h5p-errors", frame.contentDocument).filter(function (i, el) {
 					return ($(el).html() !== "");
 				});
 				if (errors.length > 0) {
@@ -139,7 +139,7 @@
 					$("html").scrollTop($(errors[0]).offset().top);
 
 					return false;
-				}
+				}*/
 
 				if (typeof library === "string" && library !== "" && library !== "-" && typeof params === "object") {
 					$library.val(library);

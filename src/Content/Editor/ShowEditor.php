@@ -125,9 +125,9 @@ class ShowEditor {
 		$h5p_tpl->setCurrentBlock("tutorialBlock");
 		$h5p_tpl->setVariable("TUTORIAL", $tutorial_toolbar->getHTML());
 
-		$h5p_tpl->setCurrentBlock("errorBlock");
+		/*$h5p_tpl->setCurrentBlock("errorBlock");
 		$h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-		$h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("incomplete_content"));
+		$h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
 
 		return $h5p_tpl->get();
 	}

@@ -6,7 +6,8 @@
 - Fix copy from list
 - Fix editor in Safari
 - Working in ILIAS tests
-- Supports latest H5P library
+- Supports partially latest H5P library
+- Disable client H5P error checking (Invalid H5P contents could now be saved)
 
 ## [1.0.0]
 - First version
