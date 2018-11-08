@@ -57,7 +57,8 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 	protected function initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel) {
 		if ($h5p_content !== NULL) {
 			$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
-			$params = self::h5p()->core()->filterParameters($content);
+			//$params = self::h5p()->core()->filterParameters($content);
+			$params = $content["params"];
 		} else {
 			$content = [];
 			$params = "";
