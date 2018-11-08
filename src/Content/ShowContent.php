@@ -210,13 +210,13 @@ class ShowContent {
 		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
 		//$safe_parameters = self::h5p()->core()->filterParameters($content);
+		$safe_parameters = json_encode(json_decode($content["params"])->params);
 
 		$user_id = self::dic()->user()->getId();
 
 		$content_integration = [
 			"library" => H5PCore::libraryToString($content["library"]),
-			//"jsonContent" => $safe_parameters,
-			"jsonContent" => $content["params"],
+			"jsonContent" => $safe_parameters,
 			"fullScreen" => $content["library"]["fullscreen"],
 			"exportUrl" => "",
 			"embedCode" => "",
