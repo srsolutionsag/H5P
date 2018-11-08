@@ -87,10 +87,6 @@ class ShowEditor {
 		self::h5p()->show_content()->js_files[] = $language_script;
 
 		self::h5p()->show_content()->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PEditor.min.js";
-
-		self::h5p()->show_content()->initCoreToOutput();
-
-		self::h5p()->show_content()->outputHeader();
 	}
 
 
@@ -103,6 +99,10 @@ class ShowEditor {
 		$this->initEditor();
 
 		self::h5p()->show_content()->core["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+
+		self::h5p()->show_content()->initCoreToOutput();
+
+		self::h5p()->show_content()->outputHeader();
 
 		$tutorial_toolbar = new ilToolbarGUI();
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
