@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Utils;
 
-use DateTime;
 use H5PActionGUI;
 use H5PContentValidator;
 use H5PCore;
@@ -13,7 +12,6 @@ use H5PValidator;
 use ilDatePresentation;
 use ilDateTime;
 use ilH5PPlugin;
-use srag\ActiveRecordConfig\ActiveRecordConfig;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Content\Editor\EditorAjax;
 use srag\Plugins\H5P\Content\Editor\EditorStorage;
@@ -168,9 +166,9 @@ class H5P {
 	 * @return string
 	 */
 	public function timestampToDbDate($timestamp) {
-		$date_time = new DateTime("@" . $timestamp);
+		$date_time = new ilDateTime($timestamp, IL_CAL_UNIX);
 
-		$formated = $date_time->format(ActiveRecordConfig::SQL_DATE_FORMAT);
+		$formated = $date_time->get(IL_CAL_DATETIME);
 
 		return $formated;
 	}
@@ -182,9 +180,9 @@ class H5P {
 	 * @return int
 	 */
 	public function dbDateToTimestamp($formated) {
-		$date_time = new DateTime($formated);
+		$date_time = new ilDateTime($formated, IL_CAL_DATETIME);
 
-		$timestamp = $date_time->getTimestamp();
+		$timestamp = $date_time->getUnixTime();
 
 		return $timestamp;
 	}
