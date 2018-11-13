@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\CustomInputGUIs\ScreenshotsInputGUI;
+namespace srag\CustomInputGUIs\H5P\ScreenshotsInputGUI;
 
 use GuzzleHttp\Psr7\UploadedFile;
 use ilFormException;
@@ -8,15 +8,15 @@ use ilFormPropertyGUI;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ILIAS\FileUpload\DTO\UploadResult;
 use ilTemplate;
-use srag\DIC\DICTrait;
-use srag\DIC\Plugin\Plugin;
-use srag\DIC\Plugin\Pluginable;
-use srag\DIC\Plugin\PluginInterface;
+use srag\DIC\H5P\DICTrait;
+use srag\DIC\H5P\Plugin\Plugin;
+use srag\DIC\H5P\Plugin\Pluginable;
+use srag\DIC\H5P\Plugin\PluginInterface;
 
 /**
  * Class ScreenshotsInputGUI
  *
- * @package srag\CustomInputGUIs\ScreenshotsInputGUI
+ * @package srag\CustomInputGUIs\H5P\ScreenshotsInputGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *

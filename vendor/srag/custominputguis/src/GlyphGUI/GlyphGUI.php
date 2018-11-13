@@ -1,14 +1,14 @@
 <?php
 
-namespace srag\CustomInputGUIs\GlyphGUI;
+namespace srag\CustomInputGUIs\H5P\GlyphGUI;
 
 use ilGlyphGUI;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class GlyphGUI
  *
- * @package srag\CustomInputGUIs\GlyphGUI
+ * @package srag\CustomInputGUIs\H5P\GlyphGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Fabian Schmid <fs@studer-raimann.ch>

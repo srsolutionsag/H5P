@@ -20,7 +20,7 @@
 <?php
 \srag\Plugins\H5P\Option\Option::updateDB();
 
-if (\srag\DIC\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME)) {
+if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME)) {
 	\srag\Plugins\H5P\Option\OptionOld::updateDB();
 
 	foreach (\srag\Plugins\H5P\Option\OptionOld::get() as $option) {
@@ -30,6 +30,6 @@ if (\srag\DIC\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Option
 		\srag\Plugins\H5P\Option\Option::setOption($option->getName(), $option->getValue());
 	}
 
-	\srag\DIC\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
+	\srag\DIC\H5P\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
 }
 ?>

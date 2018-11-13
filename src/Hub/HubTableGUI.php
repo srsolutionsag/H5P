@@ -8,7 +8,7 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTextInputGUI;
-use srag\ActiveRecordConfig\ActiveRecordConfigTableGUI;
+use srag\ActiveRecordConfig\H5P\ActiveRecordConfigTableGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

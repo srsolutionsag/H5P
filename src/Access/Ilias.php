@@ -5,7 +5,7 @@ namespace srag\Plugins\H5P\Access;
 use ilH5PPlugin;
 use ilWACPath;
 use ilWACSecurePath;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

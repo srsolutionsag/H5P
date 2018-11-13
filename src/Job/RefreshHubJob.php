@@ -5,7 +5,7 @@ namespace srag\Plugins\H5P\Job;
 use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

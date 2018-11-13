@@ -8,7 +8,7 @@ use ilH5PPlugin;
 use ilHiddenInputGUI;
 use ilPropertyFormGUI;
 use ilTextInputGUI;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 

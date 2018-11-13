@@ -6,7 +6,7 @@ use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
 use ilObjH5P;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

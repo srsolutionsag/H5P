@@ -9,7 +9,7 @@ use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
 use ilPropertyFormGUI;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

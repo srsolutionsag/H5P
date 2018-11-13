@@ -12,7 +12,7 @@ use H5PValidator;
 use ilDatePresentation;
 use ilDateTime;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Editor\EditorAjax;
 use srag\Plugins\H5P\Content\Editor\EditorStorage;
 use srag\Plugins\H5P\Content\Editor\ShowEditor;

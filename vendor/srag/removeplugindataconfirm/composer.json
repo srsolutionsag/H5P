@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "srag\\RemovePluginDataConfirm\\": "src/"
+      "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
     }
   },
   "config": {

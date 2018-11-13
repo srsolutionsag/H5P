@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../vendor/autoload.php";
 
 use srag\Plugins\H5P\Utils\H5PTrait;
-use srag\RemovePluginDataConfirm\AbstractRemovePluginDataConfirm;
+use srag\RemovePluginDataConfirm\H5P\AbstractRemovePluginDataConfirm;
 
 /**
  * Class H5PRemoveDataConfirm

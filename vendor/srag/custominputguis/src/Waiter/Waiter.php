@@ -1,13 +1,13 @@
 <?php
 
-namespace srag\CustomInputGUIs\Waiter;
+namespace srag\CustomInputGUIs\H5P\Waiter;
 
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class Waiter
  *
- * @package srag\CustomInputGUIs\Waiter
+ * @package srag\CustomInputGUIs\H5P\Waiter
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

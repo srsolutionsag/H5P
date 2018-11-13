@@ -6,7 +6,7 @@ use ilCheckboxInputGUI;
 use ilCustomInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
-use srag\ActiveRecordConfig\ActiveRecordConfigFormGUI;
+use srag\ActiveRecordConfig\H5P\ActiveRecordConfigFormGUI;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 

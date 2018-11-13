@@ -8,7 +8,7 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilLinkButton;
 use ilUtil;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Library\LibraryHubCache;
 use srag\Plugins\H5P\Option\Option;

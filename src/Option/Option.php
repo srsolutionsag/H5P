@@ -3,7 +3,7 @@
 namespace srag\Plugins\H5P\Option;
 
 use ilH5PPlugin;
-use srag\ActiveRecordConfig\ActiveRecordConfig;
+use srag\ActiveRecordConfig\H5P\ActiveRecordConfig;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**

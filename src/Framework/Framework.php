@@ -9,7 +9,7 @@ use H5PPermission;
 use ilCurlConnection;
 use ilH5PPlugin;
 use ilUtil;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Content\ContentUserData;

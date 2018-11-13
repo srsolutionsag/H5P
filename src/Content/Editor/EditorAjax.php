@@ -4,7 +4,7 @@ namespace srag\Plugins\H5P\Content\Editor;
 
 use H5PEditorAjaxInterface;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Library\LibraryHubCache;

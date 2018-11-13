@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\ActiveRecordConfig\ActiveRecordConfigGUI;
+use srag\ActiveRecordConfig\H5P\ActiveRecordConfigGUI;
 use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
 use srag\Plugins\H5P\Hub\HubTableGUI;
 use srag\Plugins\H5P\Library\Library;

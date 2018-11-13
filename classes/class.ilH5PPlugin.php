@@ -19,7 +19,7 @@ use srag\Plugins\H5P\Option\OptionOld;
 use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Results\SolveStatus;
 use srag\Plugins\H5P\Utils\H5PTrait;
-use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
+use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 
 /**
  * Class ilH5PPlugin

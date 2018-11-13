@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\ActiveRecordConfig;
+namespace srag\ActiveRecordConfig\H5P;
 
 use ilCSVWriter;
 use ilExcel;
 use ilTable2GUI;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class ActiveRecordConfigTableGUI
  *
- * @package srag\ActiveRecordConfig
+ * @package srag\ActiveRecordConfig\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

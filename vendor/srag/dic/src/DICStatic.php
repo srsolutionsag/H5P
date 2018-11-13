@@ -1,22 +1,22 @@
 <?php
 
-namespace srag\DIC;
+namespace srag\DIC\H5P;
 
 use ilLogLevel;
 use ilPlugin;
 use League\Flysystem\PluginInterface;
-use srag\DIC\DIC\DICInterface;
-use srag\DIC\DIC\LegacyDIC;
-use srag\DIC\DIC\NewDIC;
-use srag\DIC\Exception\DICException;
-use srag\DIC\Plugin\Plugin;
-use srag\DIC\Version\Version;
-use srag\DIC\Version\VersionInterface;
+use srag\DIC\H5P\DIC\DICInterface;
+use srag\DIC\H5P\DIC\LegacyDIC;
+use srag\DIC\H5P\DIC\NewDIC;
+use srag\DIC\H5P\Exception\DICException;
+use srag\DIC\H5P\Plugin\Plugin;
+use srag\DIC\H5P\Version\Version;
+use srag\DIC\H5P\Version\VersionInterface;
 
 /**
  * Class DICStatic
  *
- * @package srag\DIC
+ * @package srag\DIC\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

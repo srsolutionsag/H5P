@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\ActiveRecordConfig;
+namespace srag\ActiveRecordConfig\H5P;
 
 use ilPluginConfigGUI;
 use ilUtil;
-use srag\ActiveRecordConfig\Exception\ActiveRecordConfigException;
-use srag\DIC\DICTrait;
+use srag\ActiveRecordConfig\H5P\Exception\ActiveRecordConfigException;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class ActiveRecordConfigGUI
  *
- * @package srag\ActiveRecordConfig
+ * @package srag\ActiveRecordConfig\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

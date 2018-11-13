@@ -1,13 +1,13 @@
 <?php
 
-namespace srag\DIC\Exception;
+namespace srag\DIC\H5P\Exception;
 
 use ilException;
 
 /**
  * Class DICException
  *
- * @package srag\DIC\Exception
+ * @package srag\DIC\H5P\Exception
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

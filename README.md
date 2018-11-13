@@ -28,6 +28,7 @@ Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 * [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
 * [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
 * [srag/dic](https://packagist.org/packages/srag/dic)
+* [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger)
 * [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
 * [babel-minify -g](https://www.npmjs.com/package/babel-minify)
 

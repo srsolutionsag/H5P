@@ -6,7 +6,7 @@ use H5PEventBase;
 use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Utils\H5PTrait;
 

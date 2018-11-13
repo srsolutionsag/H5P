@@ -1,19 +1,19 @@
 <?php
 
-namespace srag\ActiveRecordConfig;
+namespace srag\ActiveRecordConfig\H5P;
 
 use ActiveRecord;
 use arConnector;
 use arException;
 use ilDateTime;
 use ilDateTimeException;
-use srag\ActiveRecordConfig\Exception\ActiveRecordConfigException;
-use srag\DIC\DICTrait;
+use srag\ActiveRecordConfig\H5P\Exception\ActiveRecordConfigException;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class ActiveRecordConfig
  *
- * @package srag\ActiveRecordConfig
+ * @package srag\ActiveRecordConfig\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Library\LibraryHubCache;

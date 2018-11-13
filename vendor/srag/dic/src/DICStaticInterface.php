@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\DIC;
+namespace srag\DIC\H5P;
 
-use srag\DIC\DIC\DICInterface;
-use srag\DIC\Exception\DICException;
-use srag\DIC\Plugin\PluginInterface;
-use srag\DIC\Version\VersionInterface;
+use srag\DIC\H5P\DIC\DICInterface;
+use srag\DIC\H5P\Exception\DICException;
+use srag\DIC\H5P\Plugin\PluginInterface;
+use srag\DIC\H5P\Version\VersionInterface;
 
 /**
  * Interface DICStaticInterface
  *
- * @package srag\DIC
+ * @package srag\DIC\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

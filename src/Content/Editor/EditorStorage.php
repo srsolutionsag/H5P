@@ -6,7 +6,7 @@ use H5PCore;
 use H5peditorFile;
 use H5peditorStorage as H5peditorStorageInterface;
 use ilH5PPlugin;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Library\LibraryLanguage;
 use srag\Plugins\H5P\Utils\H5PTrait;

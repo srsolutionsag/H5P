@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\CustomInputGUIs\MultiSelectSearchInputGUI;
+namespace srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI;
 
 use ilMultiSelectInputGUI;
 use ilTemplate;
 use ilUtil;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class MultiSelectSearchInputGUI
  *
- * @package srag\CustomInputGUIs\MultiSelectSearchInputGUI
+ * @package srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Oskar Truffer <ot@studer-raimann.ch>

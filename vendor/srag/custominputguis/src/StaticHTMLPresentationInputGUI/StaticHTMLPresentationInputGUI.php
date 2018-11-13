@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\CustomInputGUIs\StaticHTMLPresentationInputGUI;
+namespace srag\CustomInputGUIs\H5P\StaticHTMLPresentationInputGUI;
 
 use ilFormException;
 use ilFormPropertyGUI;
 use ilTemplate;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 
 /**
  * Class StaticHTMLPresentationInputGUI
  *
- * @package srag\CustomInputGUIs\StaticHTMLPresentationInputGUI
+ * @package srag\CustomInputGUIs\H5P\StaticHTMLPresentationInputGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
