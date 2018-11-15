@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.2]
+- Fix
+
+## [0.11.1]
+- Fix PropertyFormGUI
+
+## [0.11.0]
+- new PropertyFormGUI
+
 ## [0.10.2]
 - MultiLineInputGUI: Apply some fixes
 
