@@ -21,6 +21,7 @@ class HubSettingsFormGUI extends ActiveRecordConfigFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const CONFIG_CLASS_NAME = Option::class;
 	/**
 	 * @var ilH5PConfigGUI
 	 */
