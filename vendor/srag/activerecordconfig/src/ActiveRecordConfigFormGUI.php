@@ -25,6 +25,10 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	/**
 	 * @var string
 	 */
+	const LANG_MODULE = ActiveRecordConfigGUI::LANG_MODULE_CONFIG;
+	/**
+	 * @var string
+	 */
 	protected $tab_id;
 
 
@@ -73,20 +77,6 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	protected function setValue(/*string*/
 		$key, $value)/*: void*/ {
 		return (static::CONFIG_CLASS_NAME)::setField($key, $value);
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected final function txt(/*string*/
-		$key,/*?string*/
-		$default = NULL)/*: string*/ {
-		if ($default !== NULL) {
-			return self::plugin()->translate($key, ActiveRecordConfigGUI::LANG_MODULE_CONFIG, [], true, "", $default);
-		} else {
-			return self::plugin()->translate($key, ActiveRecordConfigGUI::LANG_MODULE_CONFIG);
-		}
 	}
 
 

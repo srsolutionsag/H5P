@@ -45,6 +45,10 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 */
 	const PROPERTY_SUBITEMS = "subitems";
 	/**
+	 * @var string
+	 */
+	const LANG_MODULE = "";
+	/**
 	 * @var array
 	 */
 	protected $fields = [];
@@ -275,13 +279,13 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 *
 	 * @return string
 	 */
-	protected function txt(/*string*/
+	protected final function txt(/*string*/
 		$key,/*?string*/
 		$default = NULL)/*: string*/ {
 		if ($default !== NULL) {
-			return self::plugin()->translate($key, "", [], true, "", $default);
+			return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
 		} else {
-			return self::plugin()->translate($key);
+			return self::plugin()->translate($key, static::LANG_MODULE);
 		}
 	}
 

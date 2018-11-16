@@ -28,16 +28,14 @@ class HubSettingsFormGUI extends ActiveRecordConfigFormGUI {
 	 */
 	protected function initFields()/*: void*/ {
 		$this->fields = [
-			"content_types" => [
+			Option::KEY_CONTENT_TYPES => [
 				self::PROPERTY_CLASS => ilCustomInputGUI::class,
 				self::PROPERTY_SUBITEMS => [
-					"enable_lrs_content_types" => [
-						self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
-						self::PROPERTY_REQUIRED => true
+					Option::KEY_ENABLE_LRS_CONTENT_TYPES => [
+						self::PROPERTY_CLASS => ilCheckboxInputGUI::class
 					],
-					"send_usage_statistics" => [
-						self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
-						self::PROPERTY_REQUIRED => true
+					Option::KEY_SEND_USAGE_STATISTICS => [
+						self::PROPERTY_CLASS => ilCheckboxInputGUI::class
 					]
 				]
 			]
