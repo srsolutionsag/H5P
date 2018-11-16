@@ -42,6 +42,31 @@ abstract class BaseTableGUI extends ilTable2GUI {
 
 
 	/**
+	 * @param string $column
+	 * @param array  $row
+	 * @param bool   $raw_export
+	 *
+	 * @return string
+	 */
+	protected abstract function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/
+	;
+
+
+	/**
+	 * @return array
+	 */
+	public /*abstract*/
+	function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
+	}
+
+
+	/**
 	 *
 	 */
 	protected function initAction()/*: void*/ {
@@ -134,7 +159,7 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	public function fillHeader() {
+	public function fillHeader()/*: void*/ {
 		parent::fillHeader();
 	}
 
@@ -144,7 +169,7 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	 */
 	protected /*abstract*/
 	function fillRow(/*array*/
-		$row) {
+		$row)/*: void*/ {
 
 	}
 
@@ -152,7 +177,7 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	public function fillFooter() {
+	public function fillFooter()/*: void*/ {
 		parent::fillFooter();
 	}
 
@@ -161,19 +186,19 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	 * @param ilCSVWriter $csv
 	 */
 	protected function fillHeaderCSV( /*ilCSVWriter*/
-		$csv) {
+		$csv)/*: void*/ {
 		parent::fillHeaderCSV($csv);
 	}
 
 
 	/**
 	 * @param ilCSVWriter $csv
-	 * @param array       $result
+	 * @param array       $row
 	 */
 	protected function fillRowCSV(/*ilCSVWriter*/
 		$csv, /*array*/
-		$result) {
-		parent::fillRowCSV($csv, $result);
+		$row)/*: void*/ {
+		parent::fillRowCSV($csv, $row);
 	}
 
 
@@ -182,7 +207,7 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	 * @param int     $row
 	 */
 	protected function fillHeaderExcel(ilExcel $excel, /*int*/
-		&$row) {
+		&$row)/*: void*/ {
 		parent::fillHeaderExcel($excel, $row);
 	}
 
@@ -194,7 +219,7 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	 */
 	protected function fillRowExcel(ilExcel $excel, /*int*/
 		&$row, /*array*/
-		$result) {
+		$result)/*: void*/ {
 		parent::fillRowExcel($excel, $row, $result);
 	}
 }

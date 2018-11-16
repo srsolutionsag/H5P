@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.12.2",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "926b69d5a1ba61ef2e0b43c15adbe8935752f2d9"
+                "reference": "99651689346fd2333254725c4faa8852a60a4a8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/926b69d5a1ba61ef2e0b43c15adbe8935752f2d9",
-                "reference": "926b69d5a1ba61ef2e0b43c15adbe8935752f2d9",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/99651689346fd2333254725c4faa8852a60a4a8a",
+                "reference": "99651689346fd2333254725c4faa8852a60a4a8a",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\": "src/"
+                    "srag\\ActiveRecordConfig\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -164,20 +164,20 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2018-11-16T10:35:49+00:00"
+            "time": "2018-11-16T13:52:24+00:00"
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.12.2",
+            "version": "v0.13.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "47ed3a0d3d5fd27037a4065ba11a6591200571c1"
+                "reference": "6b088d27677f9b5e453e901772b75b17f823b50c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/47ed3a0d3d5fd27037a4065ba11a6591200571c1",
-                "reference": "47ed3a0d3d5fd27037a4065ba11a6591200571c1",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/6b088d27677f9b5e453e901772b75b17f823b50c",
+                "reference": "6b088d27677f9b5e453e901772b75b17f823b50c",
                 "shasum": ""
             },
             "require": {
@@ -210,7 +210,7 @@
                 "gui",
                 "input"
             ],
-            "time": "2018-11-16T10:36:11+00:00"
+            "time": "2018-11-16T14:26:14+00:00"
         },
         {
             "name": "srag/dic",

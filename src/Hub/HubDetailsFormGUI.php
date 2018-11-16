@@ -8,7 +8,7 @@ use ilH5PPlugin;
 use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
-use ilPropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -19,7 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubDetailsFormGUI extends ilPropertyFormGUI {
+class HubDetailsFormGUI extends BasePropertyFormGUI {
 
 	use DICTrait;
 	use H5PTrait;
@@ -28,10 +28,6 @@ class HubDetailsFormGUI extends ilPropertyFormGUI {
 	 * @var string
 	 */
 	protected $key;
-	/**
-	 * @var ilH5PConfigGUI
-	 */
-	protected $parent;
 
 
 	/**
@@ -41,10 +37,49 @@ class HubDetailsFormGUI extends ilPropertyFormGUI {
 	 * @param string         $key
 	 */
 	public function __construct(ilH5PConfigGUI $parent, $key) {
-		parent::__construct();
-
 		$this->key = $key;
-		$this->parent = $parent;
+
+		parent::__construct($parent);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initCommands()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initId()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initItems()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initTitle()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForm()/*: void*/ {
+
 	}
 
 

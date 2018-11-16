@@ -6,7 +6,7 @@ use H5PEditorEndpoints;
 use ilFileInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
-use ilPropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -17,41 +17,33 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UploadLibraryFormGUI extends ilPropertyFormGUI {
+class UploadLibraryFormGUI extends BasePropertyFormGUI {
 
 	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var ilH5PConfigGUI
-	 */
-	protected $parent;
 
 
 	/**
-	 * UploadLibraryFormGUI constructor
-	 *
-	 * @param ilH5PConfigGUI $parent
+	 * @inheritdoc
 	 */
-	public function __construct(ilH5PConfigGUI $parent) {
-		parent::__construct();
-
-		$this->parent = $parent;
-
-		$this->initForm();
+	protected function initCommands()/*: void*/ {
+		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initForm() {
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
+	protected function initId()/*: void*/ {
 
-		$this->setTitle(self::plugin()->translate("upload_library"));
+	}
 
-		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
 
+	/**
+	 * @inheritdoc
+	 */
+	protected function initItems()/*: void*/ {
 		$upload_library = new ilFileInputGUI(self::plugin()->translate("library"), "xhfp_library");
 		$upload_library->setRequired(true);
 		$upload_library->setSuffixes([ "h5p" ]);
@@ -60,9 +52,17 @@ class UploadLibraryFormGUI extends ilPropertyFormGUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	public function uploadLibrary() {
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("upload_library"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForm()/*: void*/ {
 		$file_path = $this->getInput("xhfp_library")["tmp_name"];
 
 		ob_start(); // prevent output from editor

@@ -14,14 +14,12 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
  */
 abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 
-	/* *
+	/**
 	 * @var string
 	 *
 	 * @abstract
-	 *
-	 * TODO: Implement Constants in Traits in PHP Core
-	 * /
-	const CONFIG_CLASS_NAME = "";*/
+	 */
+	const CONFIG_CLASS_NAME = "";
 	/**
 	 * @var string
 	 */

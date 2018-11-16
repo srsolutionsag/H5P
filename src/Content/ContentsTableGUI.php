@@ -7,7 +7,7 @@ use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilUtil;
-use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
+use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\CustomInputGUIs\H5P\Waiter\Waiter;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Results\Result;
@@ -20,10 +20,11 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ContentsTableGUI extends BaseTableGUI {
+class ContentsTableGUI extends TableGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const ROW_TEMPLATE = "contents_table_row.html";
 	/**
 	 * @var int
 	 */
@@ -50,6 +51,37 @@ class ContentsTableGUI extends BaseTableGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/ {
+		switch ($column) {
+			default:
+				$column = $row[$column];
+				break;
+		}
+
+		if (!empty($column)) {
+			return $column;
+		} else {
+			return "";
+		}
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initColumns()/*: void*/ {
 		$this->addColumn("");
 		$this->addColumn(self::plugin()->translate("title"));
@@ -70,7 +102,7 @@ class ContentsTableGUI extends BaseTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilter()/*: void*/ {
+	public function initFilterFields()/*: void*/ {
 
 	}
 
@@ -80,14 +112,6 @@ class ContentsTableGUI extends BaseTableGUI {
 	 */
 	protected function initId()/*: void*/ {
 
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function initRowTemplate()/*: void*/ {
-		$this->setRowTemplate("contents_table_row.html", self::plugin()->directory());
 	}
 
 
@@ -120,13 +144,14 @@ class ContentsTableGUI extends BaseTableGUI {
 
 
 	/**
-	 * @param array $content
+	 * @param array $row
 	 */
-	protected function fillRow($content)/*: void*/ {
-		$h5p_library = Library::getLibraryById($content["library_id"]);
-		$h5p_results = Result::getResultsByContent($content["content_id"]);
+	protected function fillRow(/*array*/
+		$row)/*: void*/ {
+		$h5p_library = Library::getLibraryById($row["library_id"]);
+		$h5p_results = Result::getResultsByContent($row["content_id"]);
 
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $content["content_id"]);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
 
 		if (!$this->hasResults()) {
 			$this->tpl->setCurrentBlock("upDownBlock");
@@ -134,9 +159,9 @@ class ContentsTableGUI extends BaseTableGUI {
 			$this->tpl->setVariable("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
 		}
 
-		$this->tpl->setVariable("ID", $content["content_id"]);
+		$this->tpl->setVariable("ID", $row["content_id"]);
 
-		$this->tpl->setVariable("TITLE", $content["title"]);
+		$this->tpl->setVariable("TITLE", $row["title"]);
 
 		$this->tpl->setVariable("LIBRARY", ($h5p_library !== NULL ? $h5p_library->getTitle() : ""));
 

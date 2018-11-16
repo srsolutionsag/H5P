@@ -8,7 +8,7 @@ use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilObjUser;
-use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
+use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -19,10 +19,11 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ResultsTableGUI extends BaseTableGUI {
+class ResultsTableGUI extends TableGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const ROW_TEMPLATE = "results_table_row.html";
 	/**
 	 * @var Content[]
 	 */
@@ -41,6 +42,37 @@ class ResultsTableGUI extends BaseTableGUI {
 	 */
 	public function __construct(ilObjH5PGUI $parent, $parent_cmd) {
 		parent::__construct($parent, $parent_cmd);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/ {
+		switch ($column) {
+			default:
+				$column = $row[$column];
+				break;
+		}
+
+		if (!empty($column)) {
+			return $column;
+		} else {
+			return "";
+		}
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
 	}
 
 
@@ -99,7 +131,7 @@ class ResultsTableGUI extends BaseTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilter()/*: void*/ {
+	public function initFilterFields()/*: void*/ {
 
 	}
 
@@ -115,27 +147,20 @@ class ResultsTableGUI extends BaseTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initRowTemplate()/*: void*/ {
-		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
 	protected function initTitle()/*: void*/ {
 		$this->setTitle(self::plugin()->translate("results"));
 	}
 
 
 	/**
-	 * @param array $result
+	 * @param array $row
 	 */
-	protected function fillRow($result)/*: void*/ {
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $result["user_id"]);
+	protected function fillRow(/*array*/
+		$row)/*: void*/ {
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
 
 		try {
-			$user = new ilObjUser($result["user_id"]);
+			$user = new ilObjUser($row["user_id"]);
 		} catch (Exception $ex) {
 			// User not exists anymore
 			$user = NULL;
@@ -146,8 +171,8 @@ class ResultsTableGUI extends BaseTableGUI {
 		foreach ($this->contents as $h5p_content) {
 			$content_key = "content_" . $h5p_content->getContentId();
 
-			if ($result[$content_key] !== NULL) {
-				$this->tpl->setVariable("POINTS", $result[$content_key]);
+			if ($row[$content_key] !== NULL) {
+				$this->tpl->setVariable("POINTS", $row[$content_key]);
 			} else {
 				$this->tpl->setVariable("POINTS", self::plugin()->translate("no_result"));
 			}
@@ -162,7 +187,7 @@ class ResultsTableGUI extends BaseTableGUI {
 				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
 
-		$this->tpl->setVariable("FINISHED", self::plugin()->translate($result["finished"] ? "yes" : "no"));
+		$this->tpl->setVariable("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 

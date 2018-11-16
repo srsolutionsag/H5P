@@ -6,8 +6,8 @@ use H5PCore;
 use ilCustomInputGUI;
 use ilH5PPlugin;
 use ilHiddenInputGUI;
-use ilPropertyFormGUI;
 use ilTextInputGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -19,7 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class EditContentFormGUI extends ilPropertyFormGUI {
+class EditContentFormGUI extends BasePropertyFormGUI {
 
 	use DICTrait;
 	use H5PTrait;
@@ -49,12 +49,29 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 
 
 	/**
-	 * @param Content|null $h5p_content
-	 * @param string       $cmd_create
-	 * @param string       $cmd_update
-	 * @param string       $cmd_cancel
+	 * @inheritdoc
 	 */
-	protected function initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel) {
+	protected function initCommands()/*: void*/ {
+		$this->setPreventDoubleSubmission(false); // Handle in JavaScript
+
+		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, self::plugin()->translate($h5p_content
+		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
+		$this->addCommandButton($cmd_cancel, self::plugin()->translate("cancel"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initId()/*: void*/ {
+		$this->setId("xhfp_edit_form");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initItems()/*: void*/ {
 		if ($h5p_content !== NULL) {
 			$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 			//$params = self::h5p()->core()->filterParameters($content);
@@ -68,16 +85,6 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 			self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $h5p_content->getContentId());
 		}
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
-
-		$this->setId("xhfp_edit_form");
-
-		$this->setTitle(self::plugin()->translate($h5p_content !== NULL ? "edit_content" : "add_content"));
-
-		$this->setPreventDoubleSubmission(false); // Handle in JavaScript
-
-		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, self::plugin()->translate($h5p_content
-		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
-		$this->addCommandButton($cmd_cancel, self::plugin()->translate("cancel"));
 
 		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
 		$title->setRequired(true);
@@ -100,5 +107,21 @@ class EditContentFormGUI extends ilPropertyFormGUI {
 		$h5p_params->setRequired(true);
 		$h5p_params->setValue($params);
 		$this->addItem($h5p_params);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate($h5p_content !== NULL ? "edit_content" : "add_content"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForm()/*: void*/ {
+
 	}
 }

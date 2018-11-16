@@ -2,7 +2,7 @@
 
 namespace srag\ActiveRecordConfig\H5P;
 
-use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
+use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 
 /**
  * Class ActiveRecordConfigTableGUI
@@ -11,8 +11,12 @@ use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class ActiveRecordConfigTableGUI extends BaseTableGUI {
+abstract class ActiveRecordConfigTableGUI extends TableGUI {
 
+	/**
+	 * @var string
+	 */
+	const LANG_MODULE = ActiveRecordConfigGUI::LANG_MODULE_CONFIG;
 	/**
 	 * @var ActiveRecordConfigGUI
 	 */
@@ -42,7 +46,7 @@ abstract class ActiveRecordConfigTableGUI extends BaseTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilter()/*: void*/ {
+	public function initFilterFields()/*: void*/ {
 		$this->setFilterCommand(ActiveRecordConfigGUI::CMD_APPLY_FILTER . "_" . $this->tab_id);
 		$this->setResetCommand(ActiveRecordConfigGUI::CMD_RESET_FILTER . "_" . $this->tab_id);
 	}
@@ -61,16 +65,5 @@ abstract class ActiveRecordConfigTableGUI extends BaseTableGUI {
 	 */
 	protected function initTitle()/*: void*/ {
 		$this->setTitle($this->txt($this->tab_id));
-	}
-
-
-	/**
-	 * @param string $key
-	 *
-	 * @return string
-	 */
-	protected final function txt(/*string*/
-		$key)/*: string*/ {
-		return self::plugin()->translate($key, ActiveRecordConfigGUI::LANG_MODULE_CONFIG);
 	}
 }

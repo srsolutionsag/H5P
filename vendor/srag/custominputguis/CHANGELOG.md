@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.13.4]
+- Fix ilCustomInputGUI
+
+## [0.13.3]
+- CheckboxInputGUI
+
+## [0.13.2]
+- TableGUI
+
+## [0.13.1]
+- TableGUI
+
+## [0.13.0]
+- TableGUI
+
 ## [0.12.2]
 - BaseTableGUI
 

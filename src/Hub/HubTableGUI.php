@@ -9,6 +9,7 @@ use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTextInputGUI;
 use srag\ActiveRecordConfig\H5P\ActiveRecordConfigTableGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -22,22 +23,39 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const ROW_TEMPLATE = "hub_table_row.html";
+	const LANG_MODULE = "";
+
+
 	/**
-	 * @var ilCheckboxInputGUI
+	 * @inheritdoc
 	 */
-	protected $filter_not_used;
+	protected function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/ {
+		switch ($column) {
+			default:
+				$column = $row[$column];
+				break;
+		}
+
+		if (!empty($column)) {
+			return $column;
+		} else {
+			return "";
+		}
+	}
+
+
 	/**
-	 * @var ilCheckboxInputGUI
+	 * @inheritdoc
 	 */
-	protected $filter_runnable;
-	/**
-	 * @var ilSelectInputGUI
-	 */
-	protected $filter_status;
-	/**
-	 * @var ilTextInputGUI
-	 */
-	protected $filter_title;
+	public function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
+	}
 
 
 	/**
@@ -63,19 +81,19 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	 * @inheritdoc
 	 */
 	protected function initData()/*: void*/ {
-		// Filter
-		$title = $this->filter_title->getValue();
+		$filter = $this->getFilterValues();
+
+		$title = $filter["title"];
 		if ($title === false) {
 			$title = "";
 		}
-		$status = $this->filter_status->getValue();
+		$status = $filter["status"];
 		if ($status === false) {
 			$status = ShowHub::STATUS_ALL;
 		}
-		$runnable = ($this->filter_runnable->getChecked() ? true : NULL);
-		$not_used = ($this->filter_not_used->getChecked() ? true : NULL);
+		$runnable = ($filter["runnable"] ? true : NULL);
+		$not_used = ($filter["only_not_used"] ? true : NULL);
 
-		// Get libraries
 		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
 
 		$this->setData($libraries);
@@ -85,44 +103,33 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilter()/*: void*/ {
-		parent::initFilter();
+	public function initFilterFields()/*: void*/ {
+		parent::initFilterFields();
 
-		$this->filter_title = new ilTextInputGUI(self::plugin()->translate("library"), "xhfp_hub_title");
-		$this->addFilterItem($this->filter_title);
-		$this->filter_title->readFromSession();
+		$this->filter_fields = [
+			"title" => [
+				PropertyFormGUI::PROPERTY_CLASS => ilTextInputGUI::class
+			],
+			"status" => [
+				PropertyFormGUI::PROPERTY_CLASS => ilSelectInputGUI::class,
+				PropertyFormGUI::PROPERTY_OPTIONS => [
+					ShowHub::STATUS_ALL => self::plugin()->translate("all"),
+					ShowHub::STATUS_INSTALLED => self::plugin()->translate("installed"),
+					ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("upgrade_available"),
+					ShowHub::STATUS_NOT_INSTALLED => self::plugin()->translate("not_installed")
+				]
+			],
+			"only_runnable" => [
+				PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
+			],
+			"only_not_used" => [
+				PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
+			]
+		];
 
-		$this->filter_status = new ilSelectInputGUI(self::plugin()->translate("status"), "xhfp_hub_installed");
-		$this->filter_status->setOptions([
-			ShowHub::STATUS_ALL => self::plugin()->translate("all"),
-			ShowHub::STATUS_INSTALLED => self::plugin()->translate("installed"),
-			ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("upgrade_available"),
-			ShowHub::STATUS_NOT_INSTALLED => self::plugin()->translate("not_installed")
-		]);
-		$this->addFilterItem($this->filter_status);
-		$this->filter_status->readFromSession();
-
-		$this->filter_runnable = new ilCheckboxInputGUI(self::plugin()->translate("only_runnable"), "xhfp_runnable");
-		if (!$this->hasSessionValue($this->filter_runnable->getFieldId())) {
-			// Default checked runnable
-			$this->filter_runnable->setChecked(true);
+		if (!$this->hasSessionValue("only_runnable")) {
+			$this->filter_fields["only_runnable"]["setChecked"] = true;
 		}
-		$this->addFilterItem($this->filter_runnable);
-		$this->filter_runnable->readFromSession();
-
-		$this->filter_not_used = new ilCheckboxInputGUI(self::plugin()->translate("only_not_used"), "xhfp_not_used");
-		$this->addFilterItem($this->filter_not_used);
-		$this->filter_not_used->readFromSession();
-
-		$this->setDisableFilterHiding(true);
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function initRowTemplate()/*: void*/ {
-		$this->setRowTemplate("hub_table_row.html", self::plugin()->directory());
 	}
 
 
@@ -146,32 +153,33 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 
 	/**
-	 * @param array $library
+	 * @param array $row
 	 */
-	protected function fillRow($library)/*: void*/ {
+	protected function fillRow(/*array*/
+		$row)/*: void*/ {
 		// Links
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $library["name"]);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);
 		$install_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", NULL);
 
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", $library["key"]);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", $row["key"]);
 		$details_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_LIBRARY_DETAILS);
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", NULL);
 
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", $library["installed_id"]);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", $row["installed_id"]);
 		$delete_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
 
-		if ($library["icon"] !== "") {
-			$this->tpl->setVariable("ICON", $library["icon"]);
+		if ($row["icon"] !== "") {
+			$this->tpl->setVariable("ICON", $row["icon"]);
 		} else {
 			$this->tpl->setVariable("ICON", self::plugin()->directory() . "/templates/images/h5p_placeholder.svg");
 		}
 
-		$this->tpl->setVariable("LIBRARY", $library["title"]);
+		$this->tpl->setVariable("LIBRARY", $row["title"]);
 
-		if (isset($library["latest_version"])) {
-			$this->tpl->setVariable("LATEST_VERSION", $library["latest_version"]);
+		if (isset($row["latest_version"])) {
+			$this->tpl->setVariable("LATEST_VERSION", $row["latest_version"]);
 		} else {
 			// Library is not available on the hub
 			$this->tpl->setVariable("LATEST_VERSION", self::plugin()->translate("not_available"));
@@ -180,11 +188,11 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		$actions = new ilAdvancedSelectionListGUI();
 		$actions->setListTitle(self::plugin()->translate("actions"));
 
-		switch ($library["status"]) {
+		switch ($row["status"]) {
 			case ShowHub::STATUS_INSTALLED:
 				$this->tpl->setVariable("STATUS", self::plugin()->translate("installed"));
 
-				$this->tpl->setVariable("INSTALLED_VERSION", $library["installed_version"]);
+				$this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
 				$actions->addItem(self::plugin()->translate("delete"), "", $delete_link);
 				break;
@@ -192,7 +200,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 			case ShowHub::STATUS_UPGRADE_AVAILABLE:
 				$this->tpl->setVariable("STATUS", self::plugin()->translate("upgrade_available"));
 
-				$this->tpl->setVariable("INSTALLED_VERSION", $library["installed_version"]);
+				$this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
 				$actions->addItem(self::plugin()->translate("upgrade"), "", $install_link);
 
@@ -211,11 +219,11 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 				break;
 		}
 
-		$this->tpl->setVariable("RUNNABLE", self::plugin()->translate($library["runnable"] ? "yes" : "no"));
+		$this->tpl->setVariable("RUNNABLE", self::plugin()->translate($row["runnable"] ? "yes" : "no"));
 
-		$this->tpl->setVariable("CONTENTS", ($library["contents_count"] != 0 ? $library["contents_count"] : ""));
-		$this->tpl->setVariable("USAGE_CONTENTS", ($library["usage_contents"] != 0 ? $library["usage_contents"] : ""));
-		$this->tpl->setVariable("USAGE_LIBRARIES", ($library["usage_libraries"] != 0 ? $library["usage_libraries"] : ""));
+		$this->tpl->setVariable("CONTENTS", ($row["contents_count"] != 0 ? $row["contents_count"] : ""));
+		$this->tpl->setVariable("USAGE_CONTENTS", ($row["usage_contents"] != 0 ? $row["usage_contents"] : ""));
+		$this->tpl->setVariable("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
 
 		$this->tpl->setVariable("DETAILS_LINK", $details_link);
 		$actions->addItem(self::plugin()->translate("details"), "", $details_link);

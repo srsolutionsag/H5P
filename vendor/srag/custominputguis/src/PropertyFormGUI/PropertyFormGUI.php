@@ -2,14 +2,13 @@
 
 namespace srag\CustomInputGUIs\H5P\PropertyFormGUI;
 
-use ilCheckboxInputGUI;
-use ilDateTimeInputGUI;
 use ilFormPropertyGUI;
 use ilFormSectionHeaderGUI;
 use ilPropertyFormGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\DIC\H5P\Exception\DICException;
 
 /**
@@ -75,7 +74,7 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 *
 	 * @throws PropertyFormGUIException $fields needs to be an array!
 	 * @throws PropertyFormGUIException Class $class not exists!
-	 * @throws PropertyFormGUIException $item muss be an instance of ilFormPropertyGUI, ilFormSectionHeaderGUI or ilRadioOption!
+	 * @throws PropertyFormGUIException $item must be an instance of ilFormPropertyGUI, ilFormSectionHeaderGUI or ilRadioOption!
 	 * @throws PropertyFormGUIException $options needs to be an array!
 	 */
 	private final function getFields(array $fields, $parent_item)/*: void*/ {
@@ -87,14 +86,19 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 			if (!is_array($field)) {
 				throw new PropertyFormGUIException("\$fields needs to be an array!");
 			}
-			if (!class_exists($field[self::PROPERTY_CLASS])) {
-				throw new PropertyFormGUIException("Class " . $field[self::PROPERTY_CLASS] . " not exists!");
-			}
 
-			$item = $this->getItem($key, $field, $parent_item);
+			$item = Items::getItem($key, $field, $parent_item, $this);
 
 			if (!($item instanceof ilFormPropertyGUI || $item instanceof ilFormSectionHeaderGUI || $item instanceof ilRadioOption)) {
-				throw new PropertyFormGUIException("\$item muss be an instance of ilFormPropertyGUI, ilFormSectionHeaderGUI or ilRadioOption!");
+				throw new PropertyFormGUIException("\$item must be an instance of ilFormPropertyGUI, ilFormSectionHeaderGUI or ilRadioOption!");
+			}
+
+			$this->items_cache[$key] = $item;
+
+			if ($item instanceof ilFormPropertyGUI) {
+				$value = $this->getValue($key);
+
+				Items::setValueToItem($item, $value);
 			}
 
 			if (is_array($field[self::PROPERTY_SUBITEMS])) {
@@ -115,49 +119,6 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 
 
 	/**
-	 * @param string                              $key
-	 * @param array                               $field
-	 * @param ilPropertyFormGUI|ilFormPropertyGUI $parent_item
-	 *
-	 * @return ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption
-	 */
-	private final function getItem($key, array $field, $parent_item) {
-		/**
-		 * @var ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
-		 */
-		$item = new $field[self::PROPERTY_CLASS]();
-
-		if ($item instanceof ilFormSectionHeaderGUI) {
-			$item->setTitle($this->txt($key));
-		} else {
-			if ($item instanceof ilRadioOption) {
-				$item->setTitle($this->txt($parent_item->getPostVar() . "_" . $key));
-
-				$item->setValue($key);
-			} else {
-				$item->setTitle($this->txt($key));
-
-				$item->setPostVar($key);
-			}
-		}
-
-		$item->setInfo($this->txt($key . "_info", ""));
-
-		$this->setPropertiesToItem($item, $field);
-
-		if ($item instanceof ilFormPropertyGUI) {
-			$value = $this->getValue($key);
-
-			$this->setValueToItem($item, $value);
-		}
-
-		$this->items_cache[$key] = $item;
-
-		return $item;
-	}
-
-
-	/**
 	 * @param array $fields
 	 */
 	private final function getValueFromItems(array $fields)/*: void*/ {
@@ -165,35 +126,13 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 			$item = $this->items_cache[$key];
 
 			if ($item instanceof ilFormPropertyGUI) {
-				$value = $this->getValueFromItem($item);
+				$value = Items::getValueFromItem($item);
 
 				$this->setValue($key, $value);
 			}
 
 			if (is_array($field[self::PROPERTY_SUBITEMS])) {
 				$this->getValueFromItems($field[self::PROPERTY_SUBITEMS]);
-			}
-		}
-	}
-
-
-	/**
-	 * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
-	 *
-	 * @return mixed
-	 */
-	private final function getValueFromItem($item) {
-		if ($item instanceof ilCheckboxInputGUI) {
-			return boolval($item->getChecked());
-		} else {
-			if ($item instanceof ilDateTimeInputGUI) {
-				return $item->getDate();
-			} else {
-				if ($item->getMulti()) {
-					return $item->getMultiValues();
-				} else {
-					return $item->getValue();
-				}
 			}
 		}
 	}
@@ -210,77 +149,12 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 
 
 	/**
-	 * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
-	 * @param array                                                  $properties
-	 */
-	private final function setPropertiesToItem($item, array $properties)/*: void*/ {
-		foreach ($properties as $property_key => $property_value) {
-			$property = "";
-
-			switch ($property_key) {
-				case self::PROPERTY_DISABLED:
-					$property = "setDisabled";
-					break;
-
-				case self::PROPERTY_MULTI:
-					$property = "setMulti";
-					break;
-
-				case self::PROPERTY_OPTIONS:
-					$property = "setOptions";
-					$property_value = [ $property_value ];
-					break;
-
-				case self::PROPERTY_REQUIRED:
-					$property = "setRequired";
-					break;
-
-				case self::PROPERTY_CLASS:
-				case self::PROPERTY_SUBITEMS:
-					break;
-
-				default:
-					$property = $property_key;
-					break;
-			}
-
-			if (!empty($property)) {
-				if (!is_array($property_value)) {
-					$property_value = [ $property_value ];
-				}
-
-				call_user_func_array([ $item, $property ], $property_value);
-			}
-		}
-	}
-
-
-	/**
-	 * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
-	 * @param mixed                                                  $value
-	 */
-	private final function setValueToItem($item, $value)/*: void*/ {
-		if ($item instanceof ilCheckboxInputGUI) {
-			$item->setChecked($value);
-		} else {
-			if ($item instanceof ilDateTimeInputGUI) {
-				$item->setDate($value);
-			} else {
-				if (!$item instanceof ilRadioOption) {
-					$item->setValue($value);
-				}
-			}
-		}
-	}
-
-
-	/**
 	 * @param string      $key
 	 * @param string|null $default
 	 *
 	 * @return string
 	 */
-	protected final function txt(/*string*/
+	public final function txt(/*string*/
 		$key,/*?string*/
 		$default = NULL)/*: string*/ {
 		if ($default !== NULL) {
