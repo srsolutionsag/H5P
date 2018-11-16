@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.12.2]
+- BaseTableGUI
+
+## [0.12.1]
+- BaseTableGUI
+
+## [0.12.0]
+- BaseTableGUI
+
+## [0.11.7]
+- Fix MultiLineInputGUI
+
+## [0.11.6]
+- Fix
+
+## [0.11.5]
+- Fix
+
+## [0.11.4]
+- Fix
+
 ## [0.11.3]
 - Fix
 

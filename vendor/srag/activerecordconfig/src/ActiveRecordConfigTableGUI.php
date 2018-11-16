@@ -2,10 +2,7 @@
 
 namespace srag\ActiveRecordConfig\H5P;
 
-use ilCSVWriter;
-use ilExcel;
-use ilTable2GUI;
-use srag\DIC\H5P\DICTrait;
+use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
 
 /**
  * Class ActiveRecordConfigTableGUI
@@ -14,9 +11,12 @@ use srag\DIC\H5P\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class ActiveRecordConfigTableGUI extends ilTable2GUI {
+abstract class ActiveRecordConfigTableGUI extends BaseTableGUI {
 
-	use DICTrait;
+	/**
+	 * @var ActiveRecordConfigGUI
+	 */
+	protected $parent_obj;
 	/**
 	 * @var string
 	 */
@@ -33,42 +33,14 @@ abstract class ActiveRecordConfigTableGUI extends ilTable2GUI {
 	public function __construct(ActiveRecordConfigGUI $parent, /*string*/
 		$parent_cmd, /*string*/
 		$tab_id) {
-		parent::__construct($parent, $parent_cmd);
-
 		$this->tab_id = $tab_id;
 
-		if (!(strpos($parent_cmd, ActiveRecordConfigGUI::CMD_APPLY_FILTER) === 0
-			|| strpos($parent_cmd, ActiveRecordConfigGUI::CMD_RESET_FILTER) === 0)) {
-			$this->initTable();
-		} else {
-			$this->initFilter();
-		}
+		parent::__construct($parent, $parent_cmd);
 	}
 
 
 	/**
-	 *
-	 */
-	protected function initTable()/*: void*/ {
-		$parent = $this->getParentObject();
-
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
-
-		$this->setTitle($this->txt($this->tab_id));
-
-		$this->initFilter();
-
-		$this->initData();
-
-		$this->initColumns();
-
-		$this->initExport();
-		//$this->setRowTemplate("template.html", self::plugin()->directory());
-	}
-
-
-	/**
-	 *
+	 * @inheritdoc
 	 */
 	public function initFilter()/*: void*/ {
 		$this->setFilterCommand(ActiveRecordConfigGUI::CMD_APPLY_FILTER . "_" . $this->tab_id);
@@ -77,76 +49,18 @@ abstract class ActiveRecordConfigTableGUI extends ilTable2GUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected abstract function initData()/*: void*/
-	;
-
-
-	/**
-	 *
-	 */
-	protected abstract function initColumns()/*: void*/
-	;
-
-
-	/**
-	 *
-	 */
-	protected function initExport()/*: void*/ {
+	protected function initId()/*: void*/ {
 
 	}
 
 
 	/**
-	 * @param array $row
+	 * @inheritdoc
 	 */
-	protected /*abstract*/
-	function fillRow(/*array*/
-		$row) {
-
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 */
-	protected function fillHeaderCSV( /*ilCSVWriter*/
-		$csv) {
-		parent::fillHeaderCSV($csv);
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 * @param array       $result
-	 */
-	protected function fillRowCSV(/*ilCSVWriter*/
-		$csv, /*array*/
-		$result) {
-		parent::fillRowCSV($csv, $result);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 */
-	protected function fillHeaderExcel(ilExcel $excel, /*int*/
-		&$row) {
-		parent::fillHeaderExcel($excel, $row);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 * @param array   $result
-	 */
-	protected function fillRowExcel(ilExcel $excel, /*int*/
-		&$row, /*array*/
-		$result) {
-		parent::fillRowExcel($excel, $row, $result);
+	protected function initTitle()/*: void*/ {
+		$this->setTitle($this->txt($this->tab_id));
 	}
 
 

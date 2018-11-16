@@ -27,6 +27,8 @@ abstract class BasePropertyFormGUI extends ilPropertyFormGUI {
 	 * @param object $parent
 	 */
 	public function __construct($parent) {
+		$this->initId();
+
 		parent::__construct();
 
 		$this->parent = $parent;
@@ -61,6 +63,13 @@ abstract class BasePropertyFormGUI extends ilPropertyFormGUI {
 	 *
 	 */
 	protected abstract function initCommands()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initId()/*: void*/
 	;
 
 

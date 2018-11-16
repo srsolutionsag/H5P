@@ -41,21 +41,51 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initTable() {
-		parent::initTable();
+	protected function initColumns()/*: void*/ {
+		$this->addColumn("");
+		$this->addColumn(self::plugin()->translate("library"), "title");
+		$this->addColumn(self::plugin()->translate("status"), "status");
+		$this->addColumn(self::plugin()->translate("installed_version"));
+		$this->addColumn(self::plugin()->translate("latest_version"));
+		$this->addColumn(self::plugin()->translate("runnable"), "runnable");
+		$this->addColumn(self::plugin()->translate("contents"));
+		$this->addColumn(self::plugin()->translate("usage_contents"));
+		$this->addColumn(self::plugin()->translate("usage_libraries"));
+		$this->addColumn(self::plugin()->translate("actions"));
 
-		$this->setTitle(self::plugin()->translate("installed_libraries"));
-
-		$this->setRowTemplate("hub_table_row.html", self::plugin()->directory());
+		$this->setDefaultOrderField("title");
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	public function initFilter() {
+	protected function initData()/*: void*/ {
+		// Filter
+		$title = $this->filter_title->getValue();
+		if ($title === false) {
+			$title = "";
+		}
+		$status = $this->filter_status->getValue();
+		if ($status === false) {
+			$status = ShowHub::STATUS_ALL;
+		}
+		$runnable = ($this->filter_runnable->getChecked() ? true : NULL);
+		$not_used = ($this->filter_not_used->getChecked() ? true : NULL);
+
+		// Get libraries
+		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
+
+		$this->setData($libraries);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function initFilter()/*: void*/ {
 		parent::initFilter();
 
 		$this->filter_title = new ilTextInputGUI(self::plugin()->translate("library"), "xhfp_hub_title");
@@ -89,44 +119,18 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initData() {
-		// Filter
-		$title = $this->filter_title->getValue();
-		if ($title === false) {
-			$title = "";
-		}
-		$status = $this->filter_status->getValue();
-		if ($status === false) {
-			$status = ShowHub::STATUS_ALL;
-		}
-		$runnable = ($this->filter_runnable->getChecked() ? true : NULL);
-		$not_used = ($this->filter_not_used->getChecked() ? true : NULL);
-
-		// Get libraries
-		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
-
-		$this->setData($libraries);
+	protected function initRowTemplate()/*: void*/ {
+		$this->setRowTemplate("hub_table_row.html", self::plugin()->directory());
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initColumns() {
-		$this->addColumn("");
-		$this->addColumn(self::plugin()->translate("library"), "title");
-		$this->addColumn(self::plugin()->translate("status"), "status");
-		$this->addColumn(self::plugin()->translate("installed_version"));
-		$this->addColumn(self::plugin()->translate("latest_version"));
-		$this->addColumn(self::plugin()->translate("runnable"), "runnable");
-		$this->addColumn(self::plugin()->translate("contents"));
-		$this->addColumn(self::plugin()->translate("usage_contents"));
-		$this->addColumn(self::plugin()->translate("usage_libraries"));
-		$this->addColumn(self::plugin()->translate("actions"));
-
-		$this->setDefaultOrderField("title");
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("installed_libraries"));
 	}
 
 
@@ -144,21 +148,19 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	/**
 	 * @param array $library
 	 */
-	protected function fillRow($library) {
-		$parent = $this->getParentObject();
-
+	protected function fillRow($library)/*: void*/ {
 		// Links
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library_name", $library["name"]);
-		$install_link = self::dic()->ctrl()->getLinkTarget($parent, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library_name", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $library["name"]);
+		$install_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", NULL);
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library_key", $library["key"]);
-		$details_link = self::dic()->ctrl()->getLinkTarget($parent, ilH5PConfigGUI::CMD_LIBRARY_DETAILS);
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library_key", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", $library["key"]);
+		$details_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_LIBRARY_DETAILS);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", NULL);
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library", $library["installed_id"]);
-		$delete_link = self::dic()->ctrl()->getLinkTarget($parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", $library["installed_id"]);
+		$delete_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
 
 		if ($library["icon"] !== "") {
 			$this->tpl->setVariable("ICON", $library["icon"]);
@@ -220,7 +222,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_library", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
 	}
 
 
@@ -228,11 +230,9 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	 * @return string
 	 */
 	public function getHTML() {
-		$parent = $this->getParentObject();
+		$form = self::h5p()->show_hub()->getUploadLibraryForm($this->parent_obj);
 
-		$form = self::h5p()->show_hub()->getUploadLibraryForm($parent);
-
-		$hub = self::h5p()->show_hub()->getHub($form, $parent, parent::getHTML());
+		$hub = self::h5p()->show_hub()->getHub($form, $this->parent_obj, parent::getHTML());
 
 		return $hub;
 	}

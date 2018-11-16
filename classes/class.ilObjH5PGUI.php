@@ -656,7 +656,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		$form->updateSettings();
+		$form->updateForm();
 
 		ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
 

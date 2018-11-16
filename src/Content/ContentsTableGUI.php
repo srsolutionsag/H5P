@@ -3,15 +3,12 @@
 namespace srag\Plugins\H5P\Content;
 
 use ilAdvancedSelectionListGUI;
-use ilCSVWriter;
-use ilExcel;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
-use ilTable2GUI;
 use ilUtil;
+use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
 use srag\CustomInputGUIs\H5P\Waiter\Waiter;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -23,9 +20,8 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ContentsTableGUI extends ilTable2GUI {
+class ContentsTableGUI extends BaseTableGUI {
 
-	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
@@ -41,37 +37,77 @@ class ContentsTableGUI extends ilTable2GUI {
 	 * @param string      $parent_cmd
 	 */
 	public function __construct(ilObjH5PGUI $parent, $parent_cmd) {
-		parent::__construct($parent, $parent_cmd);
-
 		$this->obj_id = $parent->obj_id;
 
-		$this->initTable();
+		parent::__construct($parent, $parent_cmd);
+
+		if (!$this->hasResults()) {
+			$this->initUpDown();
+		}
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initColumns()/*: void*/ {
+		$this->addColumn("");
+		$this->addColumn(self::plugin()->translate("title"));
+		$this->addColumn(self::plugin()->translate("library"));
+		$this->addColumn(self::plugin()->translate("results"));
+		$this->addColumn(self::plugin()->translate("actions"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initData()/*: void*/ {
+		$this->setData(Content::getContentsByObjectArray($this->parent_obj->object->getId()));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function initFilter()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initId()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initRowTemplate()/*: void*/ {
+		$this->setRowTemplate("contents_table_row.html", self::plugin()->directory());
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("contents"));
 	}
 
 
 	/**
 	 *
 	 */
-	protected function initTable() {
-		$parent = $this->getParentObject();
+	protected function initUpDown()/*: void*/ {
+		Waiter::init(Waiter::TYPE_WAITER);
 
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
-
-		$this->setTitle(self::plugin()->translate("contents"));
-
-		$this->initFilter();
-
-		$this->initData();
-
-		$this->initColumns();
-
-		$this->initExport();
-
-		$this->setRowTemplate("contents_table_row.html", self::plugin()->directory());
-
-		if (!$this->hasResults()) {
-			$this->initUpDown();
-		}
+		self::dic()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
+		self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
+			. '");');
 	}
 
 
@@ -84,65 +120,13 @@ class ContentsTableGUI extends ilTable2GUI {
 
 
 	/**
-	 *
-	 */
-	public function initFilter() {
-
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initData() {
-		$parent = $this->getParentObject();
-
-		$this->setData(Content::getContentsByObjectArray($parent->object->getId()));
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initColumns() {
-		$this->addColumn("");
-		$this->addColumn(self::plugin()->translate("title"));
-		$this->addColumn(self::plugin()->translate("library"));
-		$this->addColumn(self::plugin()->translate("results"));
-		$this->addColumn(self::plugin()->translate("actions"));
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initExport() {
-
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initUpDown() {
-		Waiter::init(Waiter::TYPE_WAITER);
-
-		self::dic()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
-		self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()
-				->getLinkTarget($this->getParentObject(), "", "", true) . '");');
-	}
-
-
-	/**
 	 * @param array $content
 	 */
-	protected function fillRow($content) {
-		$parent = $this->getParentObject();
-
+	protected function fillRow($content)/*: void*/ {
 		$h5p_library = Library::getLibraryById($content["library_id"]);
 		$h5p_results = Result::getResultsByContent($content["content_id"]);
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_content", $content["content_id"]);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $content["content_id"]);
 
 		if (!$this->hasResults()) {
 			$this->tpl->setCurrentBlock("upDownBlock");
@@ -162,50 +146,15 @@ class ContentsTableGUI extends ilTable2GUI {
 		$actions->setListTitle(self::plugin()->translate("actions"));
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$actions->addItem(self::plugin()->translate("edit"), "", self::dic()->ctrl()->getLinkTarget($parent, ilObjH5PGUI::CMD_EDIT_CONTENT));
+			$actions->addItem(self::plugin()->translate("edit"), "", self::dic()->ctrl()
+				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
 			$actions->addItem(self::plugin()->translate("delete"), "", self::dic()->ctrl()
-				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 		}
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_content", NULL);
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 */
-	protected function fillHeaderCSV($csv) {
-		parent::fillHeaderCSV($csv);
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 * @param array       $content
-	 */
-	protected function fillRowCSV($csv, $content) {
-		parent::fillRowCSV($csv, $content);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 */
-	protected function fillHeaderExcel(ilExcel $excel, &$row) {
-		parent::fillHeaderExcel($excel, $row);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 * @param array   $content
-	 */
-	protected function fillRowExcel(ilExcel $excel, &$row, $content) {
-		parent::fillRowExcel($excel, $row, $content);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", NULL);
 	}
 }

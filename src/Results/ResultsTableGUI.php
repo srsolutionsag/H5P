@@ -4,14 +4,11 @@ namespace srag\Plugins\H5P\Results;
 
 use Exception;
 use ilAdvancedSelectionListGUI;
-use ilCSVWriter;
-use ilExcel;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilObjUser;
-use ilTable2GUI;
-use srag\DIC\H5P\DICTrait;
+use srag\CustomInputGUIs\H5P\TableGUI\BaseTableGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -22,19 +19,14 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ResultsTableGUI extends ilTable2GUI {
+class ResultsTableGUI extends BaseTableGUI {
 
-	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
 	 * @var Content[]
 	 */
 	protected $contents;
-	/**
-	 * @var int
-	 */
-	protected $obj_id;
 	/**
 	 * @var array
 	 */
@@ -49,52 +41,33 @@ class ResultsTableGUI extends ilTable2GUI {
 	 */
 	public function __construct(ilObjH5PGUI $parent, $parent_cmd) {
 		parent::__construct($parent, $parent_cmd);
-
-		$this->obj_id = $this->getParentObject()->object->getId();
-
-		$this->initTable();
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initTable() {
-		$parent = $this->getParentObject();
+	protected function initColumns()/*: void*/ {
+		$this->addColumn(self::plugin()->translate("user"));
 
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($parent));
+		foreach ($this->contents as $h5p_content) {
+			$this->addColumn($h5p_content->getTitle());
+		}
 
-		$this->setTitle(self::plugin()->translate("results"));
-
-		$this->initFilter();
-
-		$this->initData();
-
-		$this->initColumns();
-
-		$this->initExport();
-
-		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
+		$this->addColumn(self::plugin()->translate("finished"));
+		$this->addColumn(self::plugin()->translate("actions"));
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	public function initFilter() {
-
-	}
-
-
-	/**
-	 *
-	 */
-	protected function initData() {
-		$this->contents = Content::getContentsByObject($this->obj_id);
+	protected function initData()/*: void*/ {
+		$this->contents = Content::getContentsByObject($this->parent_obj->object->getId());
 
 		$this->results = [];
 
-		$h5p_solve_statuses = SolveStatus::getByObject($this->obj_id);
+		$h5p_solve_statuses = SolveStatus::getByObject($this->parent_obj->object->getId());
 
 		foreach ($h5p_solve_statuses as $h5p_solve_status) {
 			$user_id = $h5p_solve_status->getUserId();
@@ -124,35 +97,42 @@ class ResultsTableGUI extends ilTable2GUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initColumns() {
-		$this->addColumn(self::plugin()->translate("user"));
+	public function initFilter()/*: void*/ {
 
-		foreach ($this->contents as $h5p_content) {
-			$this->addColumn($h5p_content->getTitle());
-		}
-
-		$this->addColumn(self::plugin()->translate("finished"));
-		$this->addColumn(self::plugin()->translate("actions"));
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initExport() {
+	protected function initId()/*: void*/ {
 
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initRowTemplate()/*: void*/ {
+		$this->setRowTemplate("results_table_row.html", self::plugin()->directory());
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("results"));
 	}
 
 
 	/**
 	 * @param array $result
 	 */
-	protected function fillRow($result) {
-		$parent = $this->getParentObject();
-
-		self::dic()->ctrl()->setParameter($parent, "xhfp_user", $result["user_id"]);
+	protected function fillRow($result)/*: void*/ {
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $result["user_id"]);
 
 		try {
 			$user = new ilObjUser($result["user_id"]);
@@ -179,49 +159,13 @@ class ResultsTableGUI extends ilTable2GUI {
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
 			$actions->addItem(self::plugin()->translate("delete"), "", self::dic()->ctrl()
-				->getLinkTarget($parent, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
 		}
 
 		$this->tpl->setVariable("FINISHED", self::plugin()->translate($result["finished"] ? "yes" : "no"));
 
 		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
 
-		self::dic()->ctrl()->setParameter($parent, "xhfp_user", NULL);
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 */
-	protected function fillHeaderCSV($csv) {
-		parent::fillHeaderCSV($csv);
-	}
-
-
-	/**
-	 * @param ilCSVWriter $csv
-	 * @param array       $result
-	 */
-	protected function fillRowCSV($csv, $result) {
-		parent::fillRowCSV($csv, $result);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 */
-	protected function fillHeaderExcel(ilExcel $excel, &$row) {
-		parent::fillHeaderExcel($excel, $row);
-	}
-
-
-	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 * @param array   $result
-	 */
-	protected function fillRowExcel(ilExcel $excel, &$row, $result) {
-		parent::fillRowExcel($excel, $row, $result);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", NULL);
 	}
 }

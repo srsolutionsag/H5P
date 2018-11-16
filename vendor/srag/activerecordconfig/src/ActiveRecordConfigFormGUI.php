@@ -40,6 +40,8 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	 */
 	public function __construct(ActiveRecordConfigGUI $parent, /*string*/
 		$tab_id) {
+		$this->checkConfigClassNameConst();
+
 		$this->tab_id = $tab_id;
 
 		parent::__construct($parent);
@@ -60,6 +62,14 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	 */
 	protected function initCommands()/*: void*/ {
 		$this->addCommandButton(ActiveRecordConfigGUI::CMD_UPDATE_CONFIGURE . "_" . $this->tab_id, $this->txt("save"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initId()/*: void*/ {
+
 	}
 
 

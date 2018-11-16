@@ -5,10 +5,9 @@ namespace srag\Plugins\H5P\Object;
 use ilCheckboxInputGUI;
 use ilH5PPlugin;
 use ilObjH5PGUI;
-use ilPropertyFormGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\DIC\H5P\DICTrait;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,42 +17,33 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ObjSettingsFormGUI extends ilPropertyFormGUI {
+class ObjSettingsFormGUI extends BasePropertyFormGUI {
 
-	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	/**
-	 * @var ilObjH5PGUI
-	 */
-	protected $parent;
 
 
 	/**
-	 * ObjSettingsFormGUI constructor
-	 *
-	 * @param ilObjH5PGUI $parent
+	 * @inheritdoc
 	 */
-	public function __construct(ilObjH5PGUI $parent) {
-		parent::__construct();
-
-		$this->parent = $parent;
-
-		$this->initForm();
+	protected function initCommands()/*: void*/ {
+		$this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
+		$this->addCommandButton(ilObjH5PGUI::CMD_MANAGE_CONTENTS, self::plugin()->translate("cancel"));
 	}
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	protected function initForm() {
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
+	protected function initId()/*: void*/ {
 
-		$this->setTitle(self::plugin()->translate("settings"));
+	}
 
-		$this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
-		$this->addCommandButton(ilObjH5PGUI::CMD_MANAGE_CONTENTS, self::plugin()->translate("cancel"));
 
+	/**
+	 * @inheritdoc
+	 */
+	protected function initItems()/*: void*/ {
 		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
 		$title->setRequired(true);
 		$title->setValue($this->parent->object->getTitle());
@@ -76,9 +66,17 @@ class ObjSettingsFormGUI extends ilPropertyFormGUI {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
-	public function updateSettings() {
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("settings"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForm()/*: void*/ {
 		$title = $this->getInput("xhfp_title");
 		$this->parent->object->setTitle($title);
 
