@@ -97,7 +97,7 @@ show_less#:#Show less
 show_more#:#Show more
 size#:#Size
 solve_contents_only_once#:#Solve contents only once
-solve_contents_only_once_note#:#Note: For some contents may it is necessary the turn off the solution / retry button!
+solve_contents_only_once_info#:#Note: For some contents may it is necessary the turn off the solution / retry button!
 solved_all_contents#:#You have already solved all contents.
 solved_content#:#You have already solved this content.
 source#:#Source

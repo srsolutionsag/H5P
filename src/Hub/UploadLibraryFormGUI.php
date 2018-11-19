@@ -6,7 +6,7 @@ use H5PEditorEndpoints;
 use ilFileInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -16,7 +16,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UploadLibraryFormGUI extends BasePropertyFormGUI {
+class UploadLibraryFormGUI extends PropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
@@ -25,8 +25,28 @@ class UploadLibraryFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function getValue(/*string*/
+		$key)/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initCommands()/*: void*/ {
 		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initFields()/*: void*/ {
+		$upload_library = new ilFileInputGUI(self::plugin()->translate("library"), "xhfp_library");
+		$upload_library->setRequired(true);
+		$upload_library->setSuffixes([ "h5p" ]);
+		$this->addItem($upload_library);
 	}
 
 
@@ -41,19 +61,17 @@ class UploadLibraryFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initItems()/*: void*/ {
-		$upload_library = new ilFileInputGUI(self::plugin()->translate("library"), "xhfp_library");
-		$upload_library->setRequired(true);
-		$upload_library->setSuffixes([ "h5p" ]);
-		$this->addItem($upload_library);
+	protected function initTitle()/*: void*/ {
+		$this->setTitle(self::plugin()->translate("upload_library"));
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	protected function initTitle()/*: void*/ {
-		$this->setTitle(self::plugin()->translate("upload_library"));
+	protected function setValue(/*string*/
+		$key, $value)/*: void*/ {
+
 	}
 
 

@@ -8,7 +8,7 @@ use ilH5PPlugin;
 use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,7 +18,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubDetailsFormGUI extends BasePropertyFormGUI {
+class HubDetailsFormGUI extends PropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
@@ -44,7 +44,24 @@ class HubDetailsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function getValue(/*string*/
+		$key)/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initCommands()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initFields()/*: void*/ {
 
 	}
 
@@ -60,7 +77,7 @@ class HubDetailsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initItems()/*: void*/ {
+	protected function initTitle()/*: void*/ {
 
 	}
 
@@ -68,7 +85,8 @@ class HubDetailsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initTitle()/*: void*/ {
+	protected function setValue(/*string*/
+		$key, $value)/*: void*/ {
 
 	}
 

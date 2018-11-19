@@ -7,7 +7,7 @@ use ilH5PPlugin;
 use ilObjH5PGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -17,7 +17,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ObjSettingsFormGUI extends BasePropertyFormGUI {
+class ObjSettingsFormGUI extends PropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
@@ -26,9 +26,60 @@ class ObjSettingsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function getValue(/*string*/
+		$key)/*: void*/ {
+		switch ($key) {
+			case "title":
+				return $this->parent->object->getTitle();
+
+			case "description":
+				return $this->parent->object->getLongDescription();
+
+			case "online":
+				return $this->parent->object->isOnline();
+
+			case "solve_only_once":
+				return $this->parent->object->isSolveOnlyOnce();
+
+			default:
+				break;
+		}
+
+		return NULL;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initCommands()/*: void*/ {
 		$this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
+
 		$this->addCommandButton(ilObjH5PGUI::CMD_MANAGE_CONTENTS, self::plugin()->translate("cancel"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function initFields()/*: void*/ {
+		$this->fields = [
+			"title" => [
+				self::PROPERTY_CLASS => ilTextInputGUI::class,
+				self::PROPERTY_REQUIRED => true
+			],
+			"description" => [
+				self::PROPERTY_CLASS => ilTextAreaInputGUI::class,
+				self::PROPERTY_REQUIRED => true
+			],
+			"online" => [
+				self::PROPERTY_CLASS => ilCheckboxInputGUI::class
+			],
+			"solve_only_once" => [
+				self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
+				self::PROPERTY_DISABLED => $this->parent->hasResults()
+			]
+		];
 	}
 
 
@@ -43,31 +94,6 @@ class ObjSettingsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initItems()/*: void*/ {
-		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
-		$title->setRequired(true);
-		$title->setValue($this->parent->object->getTitle());
-		$this->addItem($title);
-
-		$description = new ilTextAreaInputGUI(self::plugin()->translate("description"), "xhfp_description");
-		$description->setValue($this->parent->object->getLongDescription());
-		$this->addItem($description);
-
-		$online = new ilCheckboxInputGUI(self::plugin()->translate("online"), "xhfp_online");
-		$online->setChecked($this->parent->object->isOnline());
-		$this->addItem($online);
-
-		$solve_only_once = new ilCheckboxInputGUI(self::plugin()->translate("solve_contents_only_once"), "xhfp_solve_only_once");
-		$solve_only_once->setInfo(self::plugin()->translate("solve_contents_only_once_note"));
-		$solve_only_once->setChecked($this->parent->object->isSolveOnlyOnce());
-		$solve_only_once->setDisabled($this->parent->hasResults());
-		$this->addItem($solve_only_once);
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
 	protected function initTitle()/*: void*/ {
 		$this->setTitle(self::plugin()->translate("settings"));
 	}
@@ -76,20 +102,38 @@ class ObjSettingsFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function updateForm()/*: void*/ {
-		$title = $this->getInput("xhfp_title");
-		$this->parent->object->setTitle($title);
+	protected function setValue(/*string*/
+		$key, $value)/*: void*/ {
+		switch ($key) {
+			case "title":
+				$this->parent->object->setTitle($value);
+				break;
 
-		$description = $this->getInput("xhfp_description");
-		$this->parent->object->setDescription($description);
+			case "description":
+				$this->parent->object->setDescription($value);
+				break;
 
-		$online = boolval($this->getInput("xhfp_online"));
-		$this->parent->object->setOnline($online);
+			case "online":
+				$this->parent->object->setOnline($value);
+				break;
 
-		if (!$this->parent->hasResults()) {
-			$solve_only_once = boolval($this->getInput("xhfp_solve_only_once"));
-			$this->parent->object->setSolveOnlyOnce($solve_only_once);
+			case "solve_only_once":
+				if (!$this->parent->hasResults()) {
+					$this->parent->object->setSolveOnlyOnce($value);
+				}
+				break;
+
+			default:
+				break;
 		}
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForm()/*: void*/ {
+		parent::updateForm();
 
 		$this->parent->object->update();
 	}

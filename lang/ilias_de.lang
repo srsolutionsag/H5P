@@ -97,7 +97,7 @@ show_less#:#Weniger anzeigen
 show_more#:#Mehr anzeigen
 size#:#Grösse
 solve_contents_only_once#:#Inhalte nur einmal lösen
-solve_contents_only_once_note#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden!
+solve_contents_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden!
 solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
 solved_content#:#Sie haben diesen Inhalt bereits gelöst.
 source#:#Quelle

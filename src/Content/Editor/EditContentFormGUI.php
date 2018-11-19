@@ -7,7 +7,7 @@ use ilCustomInputGUI;
 use ilH5PPlugin;
 use ilHiddenInputGUI;
 use ilTextInputGUI;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -18,7 +18,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class EditContentFormGUI extends BasePropertyFormGUI {
+class EditContentFormGUI extends PropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
@@ -62,6 +62,15 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function getValue(/*string*/
+		$key)/*: void*/ {
+
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initCommands()/*: void*/ {
 		//$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
@@ -74,15 +83,7 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function initId()/*: void*/ {
-		$this->setId("xhfp_edit_form");
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function initItems()/*: void*/ {
+	protected function initFields()/*: void*/ {
 		if ($this->h5p_content !== NULL) {
 			$content = self::h5p()->core()->loadContent($this->h5p_content->getContentId());
 			//$params = self::h5p()->core()->filterParameters($content);
@@ -124,8 +125,25 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
+	protected function initId()/*: void*/ {
+		$this->setId("xhfp_edit_form");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function initTitle()/*: void*/ {
 		$this->setTitle(self::plugin()->translate($this->h5p_content !== NULL ? "edit_content" : "add_content"));
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function setValue(/*string*/
+		$key, $value)/*: void*/ {
+
 	}
 
 
