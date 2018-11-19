@@ -8,7 +8,6 @@ use ilH5PPlugin;
 use ilHiddenInputGUI;
 use ilTextInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\BasePropertyFormGUI;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -21,13 +20,24 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class EditContentFormGUI extends BasePropertyFormGUI {
 
-	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var object
+	 * @var Content|null
 	 */
-	protected $parent;
+	protected $h5p_content;
+	/**
+	 * @var string
+	 */
+	protected $cmd_create;
+	/**
+	 * @var string
+	 */
+	protected $cmd_update;
+	/**
+	 * @var string
+	 */
+	protected $cmd_cancel;
 
 
 	/**
@@ -40,11 +50,12 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	 * @param string       $cmd_cancel
 	 */
 	public function __construct($parent, Content $h5p_content = NULL, $cmd_create, $cmd_update, $cmd_cancel) {
-		parent::__construct();
+		$this->h5p_content = $h5p_content;
+		$this->cmd_create = $cmd_create;
+		$this->cmd_update = $cmd_update;
+		$this->cmd_cancel = $cmd_cancel;
 
-		$this->parent = $parent;
-
-		$this->initForm($h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
+		parent::__construct($parent);
 	}
 
 
@@ -52,11 +63,11 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initCommands()/*: void*/ {
-		$this->setPreventDoubleSubmission(false); // Handle in JavaScript
+		//$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
-		$this->addCommandButton($h5p_content !== NULL ? $cmd_update : $cmd_create, self::plugin()->translate($h5p_content
+		$this->addCommandButton($this->h5p_content !== NULL ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
 		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
-		$this->addCommandButton($cmd_cancel, self::plugin()->translate("cancel"));
+		$this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
 	}
 
 
@@ -72,8 +83,8 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initItems()/*: void*/ {
-		if ($h5p_content !== NULL) {
-			$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+		if ($this->h5p_content !== NULL) {
+			$content = self::h5p()->core()->loadContent($this->h5p_content->getContentId());
 			//$params = self::h5p()->core()->filterParameters($content);
 			$params = $content["params"];
 		} else {
@@ -81,26 +92,26 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 			$params = "";
 		}
 
-		if ($h5p_content !== NULL) {
-			self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $h5p_content->getContentId());
+		if ($this->h5p_content !== NULL) {
+			self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
 		}
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
 
 		$title = new ilTextInputGUI(self::plugin()->translate("title"), "xhfp_title");
 		$title->setRequired(true);
-		$title->setValue($h5p_content !== NULL ? $h5p_content->getTitle() : "");
+		$title->setValue($this->h5p_content !== NULL ? $this->h5p_content->getTitle() : "");
 		$this->addItem($title);
 
 		$h5p_library = new ilHiddenInputGUI("xhfp_library");
 		$h5p_library->setRequired(true);
-		if ($h5p_content !== NULL) {
+		if ($this->h5p_content !== NULL) {
 			$h5p_library->setValue(H5PCore::libraryToString($content["library"]));
 		}
 		$this->addItem($h5p_library);
 
 		$h5p = new ilCustomInputGUI(self::plugin()->translate("library"), "xhfp_library");
 		$h5p->setRequired(true);
-		$h5p->setHtml(self::h5p()->show_editor()->getEditor($h5p_content));
+		$h5p->setHtml(self::h5p()->show_editor()->getEditor($this->h5p_content));
 		$this->addItem($h5p);
 
 		$h5p_params = new ilHiddenInputGUI("xhfp_params");
@@ -114,7 +125,7 @@ class EditContentFormGUI extends BasePropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initTitle()/*: void*/ {
-		$this->setTitle(self::plugin()->translate($h5p_content !== NULL ? "edit_content" : "add_content"));
+		$this->setTitle(self::plugin()->translate($this->h5p_content !== NULL ? "edit_content" : "add_content"));
 	}
 
 
