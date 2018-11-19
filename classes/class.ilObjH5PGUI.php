@@ -660,7 +660,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
 
-		$this->show($form);
+		self::dic()->ctrl()->redirect($this, self::CMD_SETTINGS);
 	}
 
 

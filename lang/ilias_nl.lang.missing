@@ -96,8 +96,8 @@ show_contents#:#MISSING show_contents
 show_less#:#MISSING show_less
 show_more#:#MISSING show_more
 size#:#MISSING size
-solve_contents_only_once#:#MISSING solve_contents_only_once
-solve_contents_only_once_info#:#MISSING solve_contents_only_once_info
+solve_only_once#:#MISSING solve_only_once
+solve_only_once_info#:#MISSING solve_only_once_info
 solved_all_contents#:#MISSING solved_all_contents
 solved_content#:#MISSING solved_content
 source#:#MISSING source
