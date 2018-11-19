@@ -84,13 +84,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		$filter = $this->getFilterValues();
 
 		$title = $filter["title"];
-		if ($title === false) {
-			$title = "";
-		}
 		$status = $filter["status"];
-		if ($status === false) {
-			$status = ShowHub::STATUS_ALL;
-		}
 		$runnable = ($filter["runnable"] ? true : NULL);
 		$not_used = ($filter["only_not_used"] ? true : NULL);
 
