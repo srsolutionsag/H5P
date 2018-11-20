@@ -42,43 +42,11 @@ abstract class BaseTableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param string $column
-	 * @param array  $row
-	 * @param bool   $raw_export
-	 *
-	 * @return string
-	 */
-	protected abstract function getColumnValue(/*string*/
-		$column, /*array*/
-		$row, /*bool*/
-		$raw_export = false)/*: string*/
-	;
-
-
-	/**
-	 * @return array
-	 */
-	public /*abstract*/
-	function getSelectableColumns()/*: array*/ {
-		$columns = [];
-
-		return $columns;
-	}
-
-
-	/**
 	 *
 	 */
 	protected function initAction()/*: void*/ {
 		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent_obj));
 	}
-
-
-	/**
-	 *
-	 */
-	protected abstract function initColumns()/*: void*/
-	;
 
 
 	/**
@@ -92,39 +60,9 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	protected abstract function initData()/*: void*/
-	;
-
-
-	/**
-	 *
-	 */
 	protected function initExport()/*: void*/ {
 
 	}
-
-
-	/**
-	 *
-	 */
-	public /*abstract*/
-	function initFilter()/*: void*/ {
-
-	}
-
-
-	/**
-	 *
-	 */
-	protected abstract function initId()/*: void*/
-	;
-
-
-	/**
-	 *
-	 */
-	protected abstract function initRowTemplate()/*: void*/
-	;
 
 
 	/**
@@ -150,10 +88,14 @@ abstract class BaseTableGUI extends ilTable2GUI {
 
 
 	/**
+	 * @param string $col
 	 *
+	 * @return bool
 	 */
-	protected abstract function initTitle()/*: void*/
-	;
+	public function isColumnSelected(/*string*/
+		$col)/*: bool*/ {
+		return parent::isColumnSelected($col);
+	}
 
 
 	/**
@@ -161,16 +103,6 @@ abstract class BaseTableGUI extends ilTable2GUI {
 	 */
 	public function fillHeader()/*: void*/ {
 		parent::fillHeader();
-	}
-
-
-	/**
-	 * @param array $row
-	 */
-	protected /*abstract*/
-	function fillRow(/*array*/
-		$row)/*: void*/ {
-
 	}
 
 
@@ -222,4 +154,83 @@ abstract class BaseTableGUI extends ilTable2GUI {
 		$result)/*: void*/ {
 		parent::fillRowExcel($excel, $row, $result);
 	}
+
+
+	/**
+	 * @param array $row
+	 */
+	protected /*abstract*/
+	function fillRow(/*array*/
+		$row)/*: void*/ {
+
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param array  $row
+	 * @param bool   $raw_export
+	 *
+	 * @return string
+	 */
+	protected abstract function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/
+	;
+
+
+	/**
+	 * @return array
+	 */
+	public /*abstract*/
+	function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
+	}
+
+
+	/**
+	 *
+	 */
+	protected abstract function initColumns()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initData()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	public /*abstract*/
+	function initFilter()/*: void*/ {
+
+	}
+
+
+	/**
+	 *
+	 */
+	protected abstract function initId()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initRowTemplate()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initTitle()/*: void*/
+	;
 }

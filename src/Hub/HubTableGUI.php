@@ -136,17 +136,6 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 
 	/**
-	 * @param string $field_id
-	 *
-	 * @return bool
-	 */
-	protected function hasSessionValue($field_id) {
-		// Not set on first visit, false on reset filter, string if is set
-		return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
-	}
-
-
-	/**
 	 * @param array $row
 	 */
 	protected function fillRow(/*array*/

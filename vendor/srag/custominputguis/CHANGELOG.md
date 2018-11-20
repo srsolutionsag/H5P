@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.13.10]
+- hasSessionValue
+
+## [0.13.9]
+- Fix getValue, setValue
+
+## [0.13.8]
+- Fix getValue, setValue
+
+## [0.13.7]
+- Improve TableGUI
+
+## [0.13.6]
+- Improve TableGUI
+
+## [0.13.5]
+- Improve TableGUI
+
 ## [0.13.4]
 - Fix ilCustomInputGUI
 

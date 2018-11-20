@@ -19,7 +19,7 @@ final class PropertyFormGUIException extends ilFormException {
 	 * @param string $message
 	 * @param int    $code
 	 *
-	 * @access namespace
+	 * @internal
 	 */
 	public function __construct(/*string*/
 		$message, /*int*/
