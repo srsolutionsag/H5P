@@ -164,7 +164,7 @@ class ShowHub {
 		// Filter
 		foreach ($libraries as $key => &$library) {
 			if (($title !== "" && stripos($library["title"], $title) === false)
-				|| ($status !== self::STATUS_ALL && $library["status"] !== $status)
+				|| (!empty($status) && $status !== self::STATUS_ALL && $library["status"] !== $status)
 				|| ($runnable !== NULL && $library["runnable"] !== $runnable)
 				|| ($not_used !== NULL
 					&& ($library["contents_count"] == 0 && $library["usage_contents"] == 0 && $library["usage_libraries"] == 0) !== $not_used)) {

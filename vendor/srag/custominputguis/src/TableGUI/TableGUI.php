@@ -66,7 +66,7 @@ abstract class TableGUI extends BaseTableGUI {
 	 */
 	protected final function hasSessionValue(/*string*/
 		$field_id)/*: bool*/ {
-		// Note: Set on first visit, false on reset filter, string if is set
+		// Not set (null) on first visit, false on reset filter, string if is set
 		return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
 	}
 
@@ -113,7 +113,9 @@ abstract class TableGUI extends BaseTableGUI {
 
 			$this->addFilterItem($item);
 
-			$item->readFromSession();
+			if ($this->hasSessionValue($item->getFieldId())) { // Supports filter default values
+				$item->readFromSession();
+			}
 		}
 	}
 

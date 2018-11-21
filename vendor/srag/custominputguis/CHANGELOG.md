@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.13.11]
+- Call hasSessionValue
+
 ## [0.13.10]
 - hasSessionValue
 

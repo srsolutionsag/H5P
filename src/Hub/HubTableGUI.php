@@ -121,7 +121,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 			]
 		];
 
-		if (!$this->hasSessionValue("only_runnable")) {
+		if (!$this->hasSessionValue("only_runnable")) { // Stupid checkbox
 			$this->filter_fields["only_runnable"]["setChecked"] = true;
 		}
 	}
