@@ -25,15 +25,14 @@ confirm_action#:#Confirm action
 confirm_action_text#:#Please confirm that you wish to proceed. This action is not reversible.
 content_changed#:#This content has changed since you last used it.
 content_count#:#Content %1$d of %2$d
-content_not_exists#:#The H5P content does not exist anymore!
+content_not_exists#:#The H5P content does not exist anymore
 content_types#:#Content Types
-contents#:#Contents
 delete#:#Delete
 delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
 deleted_content#:#Content %s deleted
 delete_library_confirm#:#Are you really want to delete the library: %s ?
-delete_library_in_use#:#The library is still in use!
+delete_library_in_use#:#The library is still in use
 deleted_library#:#Library %s deleted
 delete_results_confirm#:#Are you really want to delete the results of %s?
 deleted_results#:#Results of %s deleted
@@ -57,7 +56,7 @@ hide_advanced#:#Hide advanced
 hub_last_refresh#:#HUB last refreshed: %s
 hub_refresh#:#Resresh HUB
 hub_refreshed#:#HUB was successfully refreshed
-incomplete_content#:#The H5P content is incomplete! Please check all inputs and required fields!
+incomplete_content#:#The H5P content is incomplete. Please check all inputs and required fields
 install#:#Install
 installed#:#Installed
 installed_libraries#:#Libraries
@@ -67,6 +66,7 @@ latest_version#:#Latest version
 library#:#Library
 libraries#:#Libraries
 license#:#License
+manage_contents#:#Edit
 msg_content_not_editable#:#The contents can not be edited, since there are already results.
 next_content#:#Next content
 no#:#No
@@ -78,7 +78,7 @@ offline#:#Offline
 online#:#Online
 only_not_used#:#Only not used
 only_runnable#:#Only runnable
-permission_denied#:#Permission denied!
+permission_denied#:#Permission denied
 previous_content#:#Previous content
 read#:#Read
 results#:#Results
@@ -92,12 +92,12 @@ settings#:#Settings
 settings_saved#:#Settings saved
 show#:#Show
 show_advanced#:#Show advanced
-show_contents#:#Show contents
+show_contents#:#Contents
 show_less#:#Show less
 show_more#:#Show more
 size#:#Size
 solve_only_once#:#Solve contents only once
-solve_only_once_info#:#Note: For some contents may it is necessary the turn off the solution / retry button!
+solve_only_once_info#:#Note: For some contents may it is necessary the turn off the solution / retry button
 solved_all_contents#:#You have already solved all contents.
 solved_content#:#You have already solved this content.
 source#:#Source
@@ -143,6 +143,6 @@ removeplugindataconfirm_confirm_remove_data#:#Do you want to remove the %1$s dat
 removeplugindataconfirm_deactivate#:#Just deactivate %1$s plugin
 removeplugindataconfirm_data#:#%1$s data
 removeplugindataconfirm_keep_data#:#Keep %1$s data
-removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept!
-removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed!
+removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept
+removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed
 removeplugindataconfirm_remove_data#:#Remove %1$s data

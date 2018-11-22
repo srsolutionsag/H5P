@@ -67,6 +67,7 @@ latest_version#:#MISSING latest_version
 library#:#MISSING library
 libraries#:#MISSING libraries
 license#:#MISSING license
+manage_contents#:#MISSING manage_contents
 msg_content_not_editable#:#De inhoud kan niet worden bewerkt omdat er al resultaten zijn.
 next_content#:#MISSING next_content
 no#:#MISSING no

@@ -672,7 +672,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
 		if (ilObjH5PAccess::hasWriteAccess()) {
-			self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("contents"), self::dic()->ctrl()
+			self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("manage_contents"), self::dic()->ctrl()
 				->getLinkTarget($this, self::CMD_MANAGE_CONTENTS));
 
 			self::dic()->tabs()->addTab(self::TAB_RESULTS, self::plugin()->translate("results"), self::dic()->ctrl()

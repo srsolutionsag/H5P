@@ -25,7 +25,7 @@ confirm_action#:#Aktion bestätigen
 confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
 content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
 content_count#:#Inhalt %1$d von %2$d
-content_not_exists#:#Der H5P-Inhalt existiert nicht mehr!
+content_not_exists#:#Der H5P-Inhalt existiert nicht mehr
 content_types#:#Inhaltstypen
 contents#:#Inhalte
 delete#:#Löschen
@@ -33,7 +33,7 @@ delete_content#:#Inhalt löschen
 delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 deleted_content#:#Inhalt %s gelöscht
 delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
-delete_library_in_use#:#Die Bibliothek wird noch benutzt!
+delete_library_in_use#:#Die Bibliothek wird noch benutzt
 deleted_library#:#Bibliothek %s gelöscht
 delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
 deleted_results#:#Resultate von %s gelöscht
@@ -57,7 +57,7 @@ hide_advanced#:#Details ausblenden
 hub_last_refresh#:#HUB zuletzt aktualisiert: %s
 hub_refresh#:#HUB neu laden
 hub_refreshed#:#HUB wurde erfolgreich neu geladen
-incomplete_content#:#Der H5P-Inhalt ist unvollständig! Bitte prüfen Sie alle Eingaben und Pflichtsfelder!
+incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder
 install#:#Installieren
 installed#:#Installiert
 installed_libraries#:#Bibliotheken
@@ -67,6 +67,7 @@ latest_version#:#Neuste Version
 library#:#Bibliothek
 libraries#:#Bibliotheken
 license#:#Lizenz
+manage_contents#:#Bearbeiten
 msg_content_not_editable#:#Die Inhalte können nicht mehr bearbeitet werden, da bereits Resultate vorliegen.
 next_content#:#Nächster Inhalt
 no#:#Nein
@@ -78,7 +79,7 @@ offline#:#Offline
 online#:#Online
 only_not_used#:#Nur nicht benutzte
 only_runnable#:#Nur startbare
-permission_denied#:#Zugriff verweigert!
+permission_denied#:#Zugriff verweigert
 previous_content#:#Vorheriger Inhalt
 read#:#Lesen
 results#:#Resultate
@@ -92,12 +93,12 @@ settings#:#Einstellungen
 settings_saved#:#Einstellungen gespeichert
 show#:#Anzeigen
 show_advanced#:#Weitere Details
-show_contents#:#Inhalte anzeigen
+show_contents#:#Inhalte
 show_less#:#Weniger anzeigen
 show_more#:#Mehr anzeigen
 size#:#Grösse
 solve_only_once#:#Inhalte nur einmal lösen
-solve_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden!
+solve_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden
 solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
 solved_content#:#Sie haben diesen Inhalt bereits gelöst.
 source#:#Quelle
@@ -143,6 +144,6 @@ removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch e
 removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren
 removeplugindataconfirm_data#:#%1$s-Daten
 removeplugindataconfirm_keep_data#:#%1$s-Daten behalten
-removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten!
-removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt!
+removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten
+removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt
 removeplugindataconfirm_remove_data#:#Entferne %1$s-Daten
