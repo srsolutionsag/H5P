@@ -202,7 +202,7 @@ class ShowHub {
 
 		$h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
 
-		return $h5p_tpl->get();
+		return self::output()->getHTML($h5p_tpl);
 	}
 
 

@@ -4,6 +4,7 @@ namespace srag\DIC\H5P;
 
 use srag\DIC\H5P\DIC\DICInterface;
 use srag\DIC\H5P\Exception\DICException;
+use srag\DIC\H5P\Output\OutputInterface;
 use srag\DIC\H5P\Plugin\PluginInterface;
 use srag\DIC\H5P\Version\VersionInterface;
 
@@ -22,6 +23,15 @@ interface DICStaticInterface {
 	 * @return DICInterface DIC interface
 	 */
 	public static function dic()/*: DICInterface*/
+	;
+
+
+	/**
+	 * Get output interface
+	 *
+	 * @return OutputInterface Output interface
+	 */
+	public static function output()/*: OutputInterface*/
 	;
 
 

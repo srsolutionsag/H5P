@@ -119,7 +119,7 @@ class ShowContent {
 
 			$core_tpl = self::plugin()->template("H5PCore.min.js");
 			$core_tpl->setVariable("H5P_CORE", json_encode($this->core));
-			$this->js_files[] = "data:application/javascript;base64," . base64_encode($core_tpl->get());
+			$this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($core_tpl));
 		}
 	}
 
@@ -144,7 +144,7 @@ class ShowContent {
 		$h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [ ($index + 1), $count ]) . " - "
 			. $h5p_content->getTitle());
 
-		return $h5p_tpl->get() . self::dic()->toolbar()->getHTML();
+		return self::output()->getHTML([ $h5p_tpl, self::dic()->toolbar() ]);
 	}
 
 
@@ -286,7 +286,7 @@ class ShowContent {
 		$content_tpl = self::plugin()->template("H5PContent.min.js");
 		$content_tpl->setVariable("H5P_CONTENT", json_encode($content));
 		$content_tpl->setVariable("H5P_CONTENT_ID", $content_id);
-		$this->js_files[] = "data:application/javascript;base64," . base64_encode($content_tpl->get());
+		$this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
 
 		$h5p_tpl = self::plugin()->template("H5PContent.html");
 
@@ -313,7 +313,7 @@ class ShowContent {
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
-		return $h5p_tpl->get();
+		return self::output()->getHTML($h5p_tpl);
 	}
 
 

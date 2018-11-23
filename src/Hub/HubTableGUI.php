@@ -118,7 +118,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		];
 
 		if (!$this->hasSessionValue("only_runnable")) { // Stupid checkbox
-			$this->filter_fields["only_runnable"]["setChecked"] = true;
+			$this->filter_fields["only_runnable"][self::PROPERTY_VALUE] = true;
 		}
 	}
 
@@ -207,7 +207,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		$this->tpl->setVariable("DETAILS_LINK", $details_link);
 		$actions->addItem(self::plugin()->translate("details"), "", $details_link);
 
-		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
+		$this->tpl->setVariable("ACTIONS", self::output()->getHTML($actions));
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
 	}

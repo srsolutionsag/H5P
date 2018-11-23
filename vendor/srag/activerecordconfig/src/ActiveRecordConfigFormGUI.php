@@ -82,7 +82,7 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function setValue(/*string*/
+	protected function storeValue(/*string*/
 		$key, $value)/*: void*/ {
 		return (static::CONFIG_CLASS_NAME)::setField($key, $value);
 	}

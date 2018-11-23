@@ -71,15 +71,11 @@ class ilH5PConfigGUI extends ActiveRecordConfigGUI {
 
 		$form = self::h5p()->show_hub()->getUploadLibraryForm($this);
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
-			self::plugin()->output(new HubTableGUI($this, $this->getCmdForTab(self::TAB_HUB), self::TAB_HUB));
+		if (!$form->storeForm()) {
+			self::output()->output(new HubTableGUI($this, $this->getCmdForTab(self::TAB_HUB), self::TAB_HUB));
 
 			return;
 		}
-
-		$form->updateForm();
 
 		$this->redirectToTab(self::TAB_HUB);
 	}
@@ -110,7 +106,7 @@ class ilH5PConfigGUI extends ActiveRecordConfigGUI {
 
 		$details = self::h5p()->show_hub()->getDetailsForm($this, $key);
 
-		self::plugin()->output($details);
+		self::output()->output($details);
 	}
 
 
@@ -147,7 +143,7 @@ class ilH5PConfigGUI extends ActiveRecordConfigGUI {
 		$confirmation->setConfirm(self::plugin()->translate("delete"), self::CMD_DELETE_LIBRARY);
 		$confirmation->setCancel(self::plugin()->translate("cancel"), $this->getCmdForTab(self::TAB_HUB));
 
-		self::plugin()->output($confirmation);
+		self::output()->output($confirmation);
 	}
 
 

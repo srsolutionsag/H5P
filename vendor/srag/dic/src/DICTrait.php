@@ -4,6 +4,7 @@ namespace srag\DIC\H5P;
 
 use srag\DIC\H5P\DIC\DICInterface;
 use srag\DIC\H5P\Exception\DICException;
+use srag\DIC\H5P\Output\OutputInterface;
 use srag\DIC\H5P\Plugin\PluginInterface;
 use srag\DIC\H5P\Version\VersionInterface;
 
@@ -32,6 +33,16 @@ trait DICTrait {
 	 */
 	protected static final function dic()/*: DICInterface*/ {
 		return DICStatic::dic();
+	}
+
+
+	/**
+	 * Get output interface
+	 *
+	 * @return OutputInterface Output interface
+	 */
+	protected static final function output()/*: OutputInterface*/ {
+		return DICStatic::output();
 	}
 
 

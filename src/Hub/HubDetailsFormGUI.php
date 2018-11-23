@@ -85,16 +85,16 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function setValue(/*string*/
-		$key, $value)/*: void*/ {
-
+	public function storeForm()/*: bool*/ {
+		return false;
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function updateForm()/*: void*/ {
+	protected function storeValue(/*string*/
+		$key, $value)/*: void*/ {
 
 	}
 
@@ -278,6 +278,6 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 			$h5p_tpl->parseCurrentBlock();
 		}
 
-		return $h5p_tpl->get();
+		return self::output()->getHTML($h5p_tpl);
 	}
 }

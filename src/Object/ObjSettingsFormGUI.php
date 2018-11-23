@@ -102,7 +102,21 @@ class ObjSettingsFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function setValue(/*string*/
+	public function storeForm()/*: bool*/ {
+		if (!parent::storeForm()) {
+			return false;
+		}
+
+		$this->parent->object->update();
+
+		return true;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function storeValue(/*string*/
 		$key, $value)/*: void*/ {
 		switch ($key) {
 			case "title":
@@ -126,15 +140,5 @@ class ObjSettingsFormGUI extends PropertyFormGUI {
 			default:
 				break;
 		}
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function updateForm()/*: void*/ {
-		parent::updateForm();
-
-		$this->parent->object->update();
 	}
 }

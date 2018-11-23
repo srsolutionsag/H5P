@@ -9,17 +9,19 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
+use srag\DIC\H5P\DICTrait;
 use srag\DIC\H5P\Exception\DICException;
 
 /**
- * Class BasePropertyFormGUI
+ * Class PropertyFormGUI
  *
  * @package srag\CustomInputGUIs\H5P\PropertyFormGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class PropertyFormGUI extends BasePropertyFormGUI {
+abstract class PropertyFormGUI extends ilPropertyFormGUI {
 
+	use DICTrait;
 	/**
 	 * @var string
 	 */
@@ -47,6 +49,10 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	/**
 	 * @var string
 	 */
+	const PROPERTY_VALUE = "value";
+	/**
+	 * @var string
+	 */
 	const LANG_MODULE = "";
 	/**
 	 * @var array
@@ -56,6 +62,10 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 * @var ilFormPropertyGUI[]|ilFormSectionHeaderGUI[]
 	 */
 	private $items_cache = [];
+	/**
+	 * @var object
+	 */
+	protected $parent;
 
 
 	/**
@@ -64,7 +74,13 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 * @param object $parent
 	 */
 	public function __construct($parent) {
-		parent::__construct($parent);
+		$this->initId();
+
+		parent::__construct();
+
+		$this->parent = $parent;
+
+		$this->initForm();
 	}
 
 
@@ -96,9 +112,11 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 			$this->items_cache[$key] = $item;
 
 			if ($item instanceof ilFormPropertyGUI) {
-				$value = $this->getValue($key);
+				if (!isset($field[self::PROPERTY_VALUE])) {
+					$value = $this->getValue($key);
 
-				Items::setValueToItem($item, $value);
+					Items::setValueToItem($item, $value);
+				}
 			}
 
 			if (is_array($field[self::PROPERTY_SUBITEMS])) {
@@ -119,32 +137,60 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 
 
 	/**
+	 *
+	 */
+	private final function initForm()/*: void*/ {
+		$this->initAction();
+
+		$this->initCommands();
+
+		$this->initTitle();
+
+		$this->initItems();
+	}
+
+
+	/**
+	 *
+	 */
+	private final function initItems()/*: void*/ {
+		$this->initFields();
+
+		$this->getFields($this->fields, $this);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	protected final function storeFormCheck()/*: bool*/ {
+		$this->setValuesByPost();
+
+		if (!$this->checkInput()) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**
 	 * @param array $fields
 	 */
-	private final function getValueFromItems(array $fields)/*: void*/ {
+	private final function storeFormItems(array $fields)/*: void*/ {
 		foreach ($fields as $key => $field) {
 			$item = $this->items_cache[$key];
 
 			if ($item instanceof ilFormPropertyGUI) {
 				$value = Items::getValueFromItem($item);
 
-				$this->setValue($key, $value);
+				$this->storeValue($key, $value);
 			}
 
 			if (is_array($field[self::PROPERTY_SUBITEMS])) {
-				$this->getValueFromItems($field[self::PROPERTY_SUBITEMS]);
+				$this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
 			}
 		}
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected final function initItems()/*: void*/ {
-		$this->initFields();
-
-		$this->getFields($this->fields, $this);
 	}
 
 
@@ -174,10 +220,32 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 
 
 	/**
-	 * @inheritdoc
+	 * @return bool
 	 */
-	public function updateForm()/*: void*/ {
-		$this->getValueFromItems($this->fields);
+	public function checkInput()/*: bool*/ {
+		return parent::checkInput();
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initAction()/*: void*/ {
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function storeForm()/*: bool*/ {
+		if (!$this->storeFormCheck()) {
+			return false;
+		}
+
+		$this->storeFormItems($this->fields);
+
+		return true;
 	}
 
 
@@ -193,7 +261,28 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	/**
 	 *
 	 */
+	protected abstract function initCommands()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
 	protected abstract function initFields()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initId()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initTitle()/*: void*/
 	;
 
 
@@ -201,7 +290,7 @@ abstract class PropertyFormGUI extends BasePropertyFormGUI {
 	 * @param string $key
 	 * @param mixed  $value
 	 */
-	protected abstract function setValue(/*string*/
+	protected abstract function storeValue(/*string*/
 		$key, $value)/*: void*/
 	;
 }

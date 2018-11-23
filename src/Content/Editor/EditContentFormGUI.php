@@ -141,16 +141,16 @@ class EditContentFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function setValue(/*string*/
-		$key, $value)/*: void*/ {
-
+	public function storeForm()/*: bool*/ {
+		return false;
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function updateForm()/*: void*/ {
+	protected function storeValue(/*string*/
+		$key, $value)/*: void*/ {
 
 	}
 }

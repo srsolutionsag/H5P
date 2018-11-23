@@ -185,7 +185,7 @@ class ResultsTableGUI extends TableGUI {
 
 		$this->tpl->setVariable("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
 
-		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
+		$this->tpl->setVariable("ACTIONS", self::output()->getHTML($actions));
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", NULL);
 	}

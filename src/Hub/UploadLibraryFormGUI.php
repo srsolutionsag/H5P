@@ -69,16 +69,11 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function setValue(/*string*/
-		$key, $value)/*: void*/ {
+	public function storeForm()/*: bool*/ {
+		if (!$this->storeFormCheck()) {
+			return false;
+		}
 
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function updateForm()/*: void*/ {
 		$file_path = $this->getInput("xhfp_library")["tmp_name"];
 
 		ob_start(); // prevent output from editor
@@ -86,5 +81,16 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, NULL);
 
 		ob_end_clean();
+
+		return true;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function storeValue(/*string*/
+		$key, $value)/*: void*/ {
+
 	}
 }

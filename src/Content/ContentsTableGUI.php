@@ -174,7 +174,7 @@ class ContentsTableGUI extends TableGUI {
 				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 		}
 
-		$this->tpl->setVariable("ACTIONS", $actions->getHTML());
+		$this->tpl->setVariable("ACTIONS", self::output()->getHTML($actions));
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", NULL);
 	}

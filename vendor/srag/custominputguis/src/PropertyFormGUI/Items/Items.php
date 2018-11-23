@@ -12,7 +12,7 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 
 /**
- * Class BasePropertyFormGUI
+ * Class Items
  *
  * @package srag\CustomInputGUIs\H5P\PropertyFormGUI\Items
  *
@@ -57,6 +57,14 @@ final class Items {
 		$item->setInfo($parent->txt($key . "_info", ""));
 
 		self::setPropertiesToItem($item, $field);
+
+		if ($item instanceof ilFormPropertyGUI) {
+			if (isset($field[PropertyFormGUI::PROPERTY_VALUE])) {
+				$value = $field[PropertyFormGUI::PROPERTY_VALUE];
+
+				Items::setValueToItem($item, $value);
+			}
+		}
 
 		return $item;
 	}
@@ -126,6 +134,7 @@ final class Items {
 
 				case PropertyFormGUI::PROPERTY_CLASS:
 				case PropertyFormGUI::PROPERTY_SUBITEMS:
+				case PropertyFormGUI::PROPERTY_VALUE:
 					break;
 
 				default:

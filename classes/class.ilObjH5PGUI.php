@@ -169,7 +169,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			}
 		}
 
-		self::plugin()->output($html);
+		self::output()->output($html);
 	}
 
 
@@ -648,15 +648,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getSettingsForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			$this->show($form);
 
 			return;
 		}
-
-		$form->updateForm();
 
 		ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
 

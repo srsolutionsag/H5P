@@ -1,19 +1,18 @@
 <?php
 
-namespace srag\DIC\H5P\DIC;
+namespace srag\DIC\H5P\DIC\Implementation;
 
 use ILIAS\DI\Container;
-use srag\DIC\H5P\DICStatic;
-use srag\DIC\H5P\Exception\DICException;
+use srag\DIC\H5P\DIC\AbstractDIC;
 
 /**
- * Class NewDIC
+ * Class ILIAS54DIC
  *
- * @package srag\DIC\H5P\DIC
+ * @package srag\DIC\H5P\DIC\Implementation
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class NewDIC extends AbstractDIC {
+final class ILIAS54DIC extends AbstractDIC {
 
 	/**
 	 * @var Container
@@ -22,11 +21,11 @@ final class NewDIC extends AbstractDIC {
 
 
 	/**
-	 * NewDIC constructor
+	 * ILIAS54DIC constructor
 	 *
 	 * @param Container $dic
 	 *
-	 * @access namespace
+	 * @internal
 	 */
 	public function __construct(Container $dic) {
 		parent::__construct();
@@ -63,11 +62,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function backgroundTasks()/*: BackgroundTaskServices*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic->backgroundTasks();
-		} else {
-			throw new DICException("BackgroundTaskServices not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic->backgroundTasks();
 	}
 
 
@@ -91,11 +86,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function clientIni()/*: ilIniFile*/ {
-		if (DICStatic::version()->is54()) {
-			return $this->dic->clientIni();
-		} else {
-			return $this->dic["ilClientIniFile"];
-		}
+		return $this->dic->clientIni();
 	}
 
 
@@ -104,6 +95,14 @@ final class NewDIC extends AbstractDIC {
 	 */
 	public function collator()/*: Collator*/ {
 		return $this->dic["ilCollator"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function conditions()/*: ilConditionService*/ {
+		return $this->dic->conditions();
 	}
 
 
@@ -143,11 +142,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function filesystem()/*: Filesystems*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic->filesystem();
-		} else {
-			throw new DICException("Filesystems not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic->filesystem();
 	}
 
 
@@ -155,11 +150,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function help()/*: ilHelpGUI*/ {
-		if (DICStatic::version()->is54()) {
-			return $this->dic->help();
-		} else {
-			return $this->dic["ilHelp"];
-		}
+		return $this->dic->help();
 	}
 
 
@@ -175,11 +166,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function http()/*: HTTPServices*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic->http();
-		} else {
-			throw new DICException("HTTPServices not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic->http();
 	}
 
 
@@ -195,11 +182,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function iliasIni()/*: ilIniFile*/ {
-		if (DICStatic::version()->is54()) {
-			return $this->dic->iliasIni();
-		} else {
-			return $this->dic["ilIliasIniFile"];
-		}
+		return $this->dic->iliasIni();
 	}
 
 
@@ -208,6 +191,14 @@ final class NewDIC extends AbstractDIC {
 	 */
 	public function language()/*: ilLanguage*/ {
 		return $this->dic->language();
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function learningHistory()/*: ilLearningHistoryService*/ {
+		return $this->dic->learningHistory();
 	}
 
 
@@ -247,11 +238,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function mailMimeSenderFactory()/*: ilMailMimeSenderFactory*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic["mail.mime.sender.factory"];
-		} else {
-			throw new DICException("ilMailMimeSenderFactory not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic["mail.mime.sender.factory"];
 	}
 
 
@@ -259,11 +246,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function mailMimeTransportFactory()/*: ilMailMimeTransportFactory*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic["mail.mime.transport.factory"];
-		} else {
-			throw new DICException("ilMailMimeTransportFactory not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic["mail.mime.transport.factory"];
 	}
 
 
@@ -286,6 +269,14 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
+	public function news()/*: ilNewsService*/ {
+		return $this->dic->news();
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	public function objDataCache()/*: ilObjectDataCache*/ {
 		return $this->dic["ilObjDataCache"];
 	}
@@ -296,6 +287,14 @@ final class NewDIC extends AbstractDIC {
 	 */
 	public function objDefinition()/*: ilObjectDefinition*/ {
 		return $this->dic["objDefinition"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function object()/*: ilObjectService*/ {
+		return $this->dic->object();
 	}
 
 
@@ -351,11 +350,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function systemStyle()/*: ilStyleDefinition*/ {
-		if (DICStatic::version()->is54()) {
-			return $this->dic->systemStyle();
-		} else {
-			return $this->dic["styleDefinition"];
-		}
+		return $this->dic->systemStyle();
 	}
 
 
@@ -395,11 +390,7 @@ final class NewDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function upload()/*: FileUpload*/ {
-		if (DICStatic::version()->is53()) {
-			return $this->dic->upload();
-		} else {
-			throw new DICException("FileUpload not exists in ILIAS 5.2 or below!");
-		}
+		return $this->dic->upload();
 	}
 
 

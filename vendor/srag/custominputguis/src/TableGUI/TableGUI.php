@@ -2,10 +2,13 @@
 
 namespace srag\CustomInputGUIs\H5P\TableGUI;
 
+use ilCSVWriter;
 use ilExcel;
 use ilFormPropertyGUI;
+use ilTable2GUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\TableGUI\Exception\TableGUIException;
+use srag\DIC\H5P\DICTrait;
 use srag\DIC\H5P\Exception\DICException;
 
 /**
@@ -15,8 +18,9 @@ use srag\DIC\H5P\Exception\DICException;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class TableGUI extends BaseTableGUI {
+abstract class TableGUI extends ilTable2GUI {
 
+	use DICTrait;
 	/**
 	 * @var string
 	 *
@@ -45,7 +49,17 @@ abstract class TableGUI extends BaseTableGUI {
 	 */
 	public function __construct($parent, /*string*/
 		$parent_cmd) {
+		$this->initId();
+
 		parent::__construct($parent, $parent_cmd);
+
+		if (!(strpos($parent_cmd, "applyFilter") === 0
+			|| strpos($parent_cmd, "resetFilter") === 0)) {
+			$this->initTable();
+		} else {
+			// Speed up
+			$this->initFilter();
+		}
 	}
 
 
@@ -72,19 +86,7 @@ abstract class TableGUI extends BaseTableGUI {
 
 
 	/**
-	 * @inheritdoc
-	 */
-	protected function initColumns()/*: void*/ {
-		foreach ($this->getSelectableColumns() as $column) {
-			if ($this->isColumnSelected($column["id"])) {
-				$this->addColumn($column["txt"], ($column["sort"] ? $column["id"] : NULL));
-			}
-		}
-	}
-
-
-	/**
-	 * @inheritdoc
+	 *
 	 *
 	 * @throws TableGUIException $filters needs to be an array!
 	 * @throws TableGUIException $field needs to be an array!
@@ -121,9 +123,9 @@ abstract class TableGUI extends BaseTableGUI {
 
 
 	/**
-	 * @inheritdoc
+	 *
 	 */
-	protected final function initRowTemplate()/*: void*/ {
+	private final function initRowTemplate()/*: void*/ {
 		if ($this->checkRowTemplateConst()) {
 			$this->setRowTemplate(static::ROW_TEMPLATE, self::plugin()->directory());
 		} else {
@@ -135,86 +137,24 @@ abstract class TableGUI extends BaseTableGUI {
 
 
 	/**
-	 * @param array $row
+	 *
 	 */
-	protected function fillRow(/*array*/
-		$row)/*: void*/ {
-		$this->tpl->setCurrentBlock("column");
+	private final function initTable()/*: void*/ {
+		$this->initAction();
 
-		foreach ($this->getSelectableColumns() as $column) {
-			if ($this->isColumnSelected($column["id"])) {
-				$column = $this->getColumnValue($column["id"], $row);
+		$this->initTitle();
 
-				if (!empty($column)) {
-					$this->tpl->setVariable("COLUMN", $column);
-				} else {
-					$this->tpl->setVariable("COLUMN", " ");
-				}
+		$this->initFilter();
 
-				$this->tpl->parseCurrentBlock();
-			}
-		}
-	}
+		$this->initData();
 
+		$this->initColumns();
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function fillHeaderCSV(/*ilCSVWriter*/
-		$csv)/*: void*/ {
-		foreach ($this->getSelectableColumns() as $column) {
-			$csv->addColumn($column["txt"]);
-		}
+		$this->initExport();
 
-		$csv->addRow();
-	}
+		$this->initRowTemplate();
 
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function fillRowCSV(/*ilCSVWriter*/
-		$csv, /*array*/
-		$row)/*: void*/ {
-		foreach ($this->getSelectableColumns() as $column) {
-			if ($this->isColumnSelected($column["id"])) {
-				$csv->addColumn($this->getColumnValue($column["id"], $row, true));
-			}
-		}
-
-		$csv->addRow();
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function fillHeaderExcel(ilExcel $excel, /*int*/
-		&$row)/*: void*/ {
-		$col = 0;
-
-		foreach ($this->getSelectableColumns() as $column) {
-			$excel->setCell($row, $col, $column["txt"]);
-			$col ++;
-		}
-
-		$excel->setBold("A" . $row . ":" . $excel->getColumnCoord($col - 1) . $row);
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function fillRowExcel(ilExcel $excel, /*int*/
-		&$row, /*array*/
-		$result)/*: void*/ {
-		$col = 0;
-		foreach ($this->getSelectableColumns() as $column) {
-			if ($this->isColumnSelected($column["id"])) {
-				$excel->setCell($row, $col, $this->getColumnValue($column["id"], $result));
-				$col ++;
-			}
-		}
+		$this->initCommands();
 	}
 
 
@@ -254,6 +194,207 @@ abstract class TableGUI extends BaseTableGUI {
 	/**
 	 *
 	 */
+	public function fillHeader()/*: void*/ {
+		parent::fillHeader();
+	}
+
+
+	/**
+	 * @param array $row
+	 */
+	protected function fillRow(/*array*/
+		$row)/*: void*/ {
+		$this->tpl->setCurrentBlock("column");
+
+		foreach ($this->getSelectableColumns() as $column) {
+			if ($this->isColumnSelected($column["id"])) {
+				$column = $this->getColumnValue($column["id"], $row);
+
+				if (!empty($column)) {
+					$this->tpl->setVariable("COLUMN", $column);
+				} else {
+					$this->tpl->setVariable("COLUMN", " ");
+				}
+
+				$this->tpl->parseCurrentBlock();
+			}
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function fillFooter()/*: void*/ {
+		parent::fillFooter();
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 */
+	protected function fillHeaderCSV(/*ilCSVWriter*/
+		$csv)/*: void*/ {
+		foreach ($this->getSelectableColumns() as $column) {
+			$csv->addColumn($column["txt"]);
+		}
+
+		$csv->addRow();
+	}
+
+
+	/**
+	 * @param ilCSVWriter $csv
+	 * @param array       $row
+	 */
+	protected function fillRowCSV(/*ilCSVWriter*/
+		$csv, /*array*/
+		$row)/*: void*/ {
+		foreach ($this->getSelectableColumns() as $column) {
+			if ($this->isColumnSelected($column["id"])) {
+				$csv->addColumn($this->getColumnValue($column["id"], $row, true));
+			}
+		}
+
+		$csv->addRow();
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 */
+	protected function fillHeaderExcel(ilExcel $excel, /*int*/
+		&$row)/*: void*/ {
+		$col = 0;
+
+		foreach ($this->getSelectableColumns() as $column) {
+			$excel->setCell($row, $col, $column["txt"]);
+			$col ++;
+		}
+
+		$excel->setBold("A" . $row . ":" . $excel->getColumnCoord($col - 1) . $row);
+	}
+
+
+	/**
+	 * @param ilExcel $excel
+	 * @param int     $row
+	 * @param array   $result
+	 */
+	protected function fillRowExcel(ilExcel $excel, /*int*/
+		&$row, /*array*/
+		$result)/*: void*/ {
+		$col = 0;
+		foreach ($this->getSelectableColumns() as $column) {
+			if ($this->isColumnSelected($column["id"])) {
+				$excel->setCell($row, $col, $this->getColumnValue($column["id"], $result));
+				$col ++;
+			}
+		}
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param array  $row
+	 * @param bool   $raw_export
+	 *
+	 * @return string
+	 */
+	protected abstract function getColumnValue(/*string*/
+		$column, /*array*/
+		$row, /*bool*/
+		$raw_export = false)/*: string*/
+	;
+
+
+	/**
+	 * @return array
+	 */
+	public /*abstract*/
+	function getSelectableColumns()/*: array*/ {
+		$columns = [];
+
+		return $columns;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initAction()/*: void*/ {
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent_obj));
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initColumns()/*: void*/ {
+		foreach ($this->getSelectableColumns() as &$column) {
+			if (!isset($column["txt"])) {
+				$column["txt"] = $this->txt($column["id"]);
+			}
+
+			if ($this->isColumnSelected($column["id"])) {
+				$this->addColumn($column["txt"], ($column["sort"] ? $column["id"] : NULL));
+			}
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initCommands()/*: void*/ {
+
+	}
+
+
+	/**
+	 *
+	 */
+	protected function initExport()/*: void*/ {
+
+	}
+
+
+	/**
+	 * @param string $col
+	 *
+	 * @return bool
+	 */
+	public function isColumnSelected(/*string*/
+		$col)/*: bool*/ {
+		return parent::isColumnSelected($col);
+	}
+
+
+	/**
+	 *
+	 */
+	protected abstract function initData()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
 	protected abstract function initFilterFields()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initId()/*: void*/
+	;
+
+
+	/**
+	 *
+	 */
+	protected abstract function initTitle()/*: void*/
 	;
 }
