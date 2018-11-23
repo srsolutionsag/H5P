@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.13.18]
+- New getHTML
+
 ## [0.13.17]
 - Some improvments in PropertyFormGUI
 
