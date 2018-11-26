@@ -209,8 +209,7 @@ class ShowContent {
 
 		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
-		//$safe_parameters = self::h5p()->core()->filterParameters($content);
-		$safe_parameters = json_encode(json_decode($content["params"])->params);
+		$safe_parameters = self::h5p()->core()->filterParameters($content);
 
 		$user_id = self::dic()->user()->getId();
 
