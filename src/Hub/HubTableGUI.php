@@ -47,7 +47,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function getSelectableColumns()/*: array*/ {
+	public function getSelectableColumns2()/*: array*/ {
 		$columns = [];
 
 		return $columns;
