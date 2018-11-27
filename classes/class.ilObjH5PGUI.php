@@ -54,7 +54,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const TAB_PERMISSIONS = "perm_settings";
 	const TAB_RESULTS = "results";
 	const TAB_SETTINGS = "settings";
-	const TAB_SHOW_CONTENTS = "showContent";
+	const TAB_SHOW_CONTENTS = "show_contents";
 	/**
 	 * Fix autocomplete (Defined in parent)
 	 *
@@ -83,6 +83,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @param string $cmd
 	 */
 	public function performCommand($cmd) {
+		self::dic()->help()->setScreenIdComponent(ilH5PPlugin::PLUGIN_ID);
+
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
 		switch (strtolower($next_class)) {
