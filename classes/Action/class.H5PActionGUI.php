@@ -320,7 +320,7 @@ class H5PActionGUI {
 
 		self::dic()->ctrl()->setParameter($this, "restrict", (!$restricted));
 
-		self::output()->output([
+		self::output()->outputJSON([
 			"url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
 		]);
 	}
