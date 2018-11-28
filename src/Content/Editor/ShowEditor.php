@@ -170,15 +170,16 @@ class ShowEditor {
 				"name" => $h5p_library->getName(),
 				"majorVersion" => $h5p_library->getMajorVersion(),
 				"minorVersion" => $h5p_library->getMinorVersion()
-			],
-			"params" => $params
+			]
 		];
+		$params = json_decode($params);
+		$content["params"] = json_encode($params->params);
 
 		$content["id"] = self::h5p()->core()->saveContent($content);
 		$content["params"] = self::h5p()->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
-		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params, NULL, NULL);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, NULL);
 
 		$h5p_content = Content::getContentById($content["id"]);
 
@@ -205,7 +206,6 @@ class ShowEditor {
 		$params = $form->getInput("xhfp_params");
 		$params = json_decode($params);
 		$content["params"] = json_encode($params->params);
-		$content["metadata"] = $params->metadata;
 
 		self::h5p()->core()->saveContent($content);
 		$content["params"] = self::h5p()->core()->filterParameters($content);
