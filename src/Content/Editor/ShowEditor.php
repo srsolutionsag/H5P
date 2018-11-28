@@ -203,13 +203,15 @@ class ShowEditor {
 
 		$oldParams = json_decode($content["params"]);
 		$params = $form->getInput("xhfp_params");
-		$content["params"] = $params;
+		$params = json_decode($params);
+		$content["params"] = json_encode($params->params);
+		$content["metadata"] = $params->metadata;
 
 		self::h5p()->core()->saveContent($content);
 		$content["params"] = self::h5p()->core()->filterParameters($content);
 
 		$params = json_decode($content["params"]);
-		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params, NULL, $oldParams);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, $oldParams);
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);

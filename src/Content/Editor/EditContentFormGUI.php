@@ -86,8 +86,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 	protected function initFields()/*: void*/ {
 		if ($this->h5p_content !== NULL) {
 			$content = self::h5p()->core()->loadContent($this->h5p_content->getContentId());
-			//$params = self::h5p()->core()->filterParameters($content);
-			$params = $content["params"];
+			$params = self::h5p()->core()->filterParameters($content);
 		} else {
 			$content = [];
 			$params = "";
