@@ -1,28 +1,36 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Object\H5PObject;
+use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\Utils\H5PTrait;
+
 /**
- * H5P Object
+ * Class ilObjH5P
+ *
+ * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class ilObjH5P extends ilObjectPlugin {
 
+	use DICTrait;
+	use H5PTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var ilH5P
+	 * @var H5PObject
 	 */
-	protected $h5p;
-	/**
-	 * @var ilH5PObject
-	 */
-	protected $h5p_object;
+	protected $object;
 
 
 	/**
+	 * ilObjH5P constructor
+	 *
 	 * @param int $a_ref_id
 	 */
 	public function __construct($a_ref_id = 0) {
 		parent::__construct($a_ref_id);
-
-		$this->h5p = ilH5P::getInstance();
 	}
 
 
@@ -38,11 +46,11 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doCreate() {
-		$this->h5p_object = new ilH5PObject();
+		$this->object = new H5PObject();
 
-		$this->h5p_object->setObjId($this->id);
+		$this->object->setObjId($this->id);
 
-		$this->h5p_object->store();
+		$this->object->store();
 	}
 
 
@@ -50,7 +58,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doRead() {
-		$this->h5p_object = ilH5PObject::getObjectById($this->id);
+		$this->object = H5PObject::getObjectById(intval($this->id));
 	}
 
 
@@ -58,7 +66,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doUpdate() {
-		$this->h5p_object->store();
+		$this->object->store();
 	}
 
 
@@ -66,17 +74,17 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doDelete() {
-		if ($this->h5p_object !== NULL) {
-			$this->h5p_object->delete();
+		if ($this->object !== NULL) {
+			$this->object->delete();
 		}
 
-		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
+		$h5p_contents = Content::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
-			$this->h5p->show_editor()->deleteContent($h5p_content, false);
+			self::h5p()->show_editor()->deleteContent($h5p_content, false);
 		}
 
-		$h5p_solve_statuses = ilH5PSolveStatus::getByObject($this->id);
+		$h5p_solve_statuses = SolveStatus::getByObject($this->id);
 		foreach ($h5p_solve_statuses as $h5p_solve_status) {
 			$h5p_solve_status->delete();
 		}
@@ -89,17 +97,17 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_copy_id
 	 */
 	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
-		$new_obj->h5p_object = $this->h5p_object->copy();
+		$new_obj->object = $this->object->copy();
 
-		$new_obj->h5p_object->setObjId($new_obj->id);
+		$new_obj->object->setObjId($new_obj->id);
 
-		$new_obj->h5p_object->store();
+		$new_obj->object->store();
 
-		$h5p_contents = ilH5PContent::getContentsByObject($this->id);
+		$h5p_contents = Content::getContentsByObject($this->id);
 
 		foreach ($h5p_contents as $h5p_content) {
 			/**
-			 * @var ilH5PContent $h5p_content_copy
+			 * @var Content $h5p_content_copy
 			 */
 
 			$h5p_content_copy = $h5p_content->copy();
@@ -108,7 +116,7 @@ class ilObjH5P extends ilObjectPlugin {
 
 			$h5p_content_copy->store();
 
-			$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+			self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 		}
 	}
 
@@ -117,7 +125,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @return bool
 	 */
 	public function isOnline() {
-		return $this->h5p_object->isOnline();
+		return $this->object->isOnline();
 	}
 
 
@@ -125,7 +133,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param bool $is_online
 	 */
 	public function setOnline($is_online = true) {
-		$this->h5p_object->setOnline($is_online);
+		$this->object->setOnline($is_online);
 	}
 
 
@@ -133,7 +141,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @return bool
 	 */
 	public function isSolveOnlyOnce() {
-		return $this->h5p_object->isSolveOnlyOnce();
+		return $this->object->isSolveOnlyOnce();
 	}
 
 
@@ -141,6 +149,6 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param bool $solve_only_once
 	 */
 	public function setSolveOnlyOnce($solve_only_once) {
-		$this->h5p_object->setSolveOnlyOnce($solve_only_once);
+		$this->object->setSolveOnlyOnce($solve_only_once);
 	}
 }

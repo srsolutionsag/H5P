@@ -1,21 +1,48 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Content\ContentLibrary;
+use srag\Plugins\H5P\Content\ContentUserData;
+use srag\Plugins\H5P\Content\Editor\TmpFile;
+use srag\Plugins\H5P\Event\Event;
+use srag\Plugins\H5P\Library\Counter;
+use srag\Plugins\H5P\Library\Library;
+use srag\Plugins\H5P\Library\LibraryCachedAsset;
+use srag\Plugins\H5P\Library\LibraryDependencies;
+use srag\Plugins\H5P\Library\LibraryHubCache;
+use srag\Plugins\H5P\Library\LibraryLanguage;
+use srag\Plugins\H5P\Object\H5PObject;
+use srag\Plugins\H5P\Option\Option;
+use srag\Plugins\H5P\Option\OptionOld;
+use srag\Plugins\H5P\Results\Result;
+use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
+
 /**
- * H5P Plugin
+ * Class ilH5PPlugin
+ *
+ * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
+	use RepositoryObjectPluginUninstallTrait;
+	use H5PTrait;
 	const PLUGIN_ID = "xhfp";
 	const PLUGIN_NAME = "H5P";
+	const PLUGIN_CLASS_NAME = self::class;
+	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = H5PRemoveDataConfirm::class;
+	const LANG_MODULE_CRON = "cron";
 	/**
-	 * @var ilH5PPlugin
+	 * @var self|null
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return ilH5PPlugin
+	 * @return self
 	 */
 	public static function getInstance() {
 		if (self::$instance === NULL) {
@@ -27,20 +54,10 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 * @var ilDB
-	 */
-	protected $db;
-
-
-	/**
-	 *
+	 * ilH5PPlugin constructor
 	 */
 	public function __construct() {
 		parent::__construct();
-
-		global $DIC;
-
-		$this->db = $DIC->database();
 	}
 
 
@@ -53,60 +70,35 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 
 
 	/**
-	 * @return string
-	 */
-	public function getH5PFolder() {
-		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getCorePath() {
-		return $this->getDirectory() . "/vendor/h5p/h5p-core";
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getEditorPath() {
-		return $this->getDirectory() . "/vendor/h5p/h5p-editor";
-	}
-
-
-	/**
-	 *
-	 */
-	public function fixWAC() {
-		ilWACSignedPath::signFolderOfStartFile($this->getH5PFolder() . "/dummy.js");
-	}
-
-
-	/**
 	 * @return bool
 	 */
-	protected function uninstallCustom() {
-		$this->removeH5PFolder();
-
-		$this->db->dropTable(ilH5PContent::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PContentLibrary::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PContentUserData::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PCounter::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PEvent::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibrary::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryCachedAsset::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryHubCache::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryLanguage::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PLibraryDependencies::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PObject::TABLE_NAME, false);
-		$this->db->dropTable(ilH5POption::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PResult::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PSolveStatus::TABLE_NAME, false);
-		$this->db->dropTable(ilH5PTmpFile::TABLE_NAME, false);
-
+	public function allowCopy() {
 		return true;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function deleteData()/*: void*/ {
+		self::dic()->database()->dropTable(Content::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ContentLibrary::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ContentUserData::TABLE_NAME, false);
+		self::dic()->database()->dropTable(Counter::TABLE_NAME, false);
+		self::dic()->database()->dropTable(Event::TABLE_NAME, false);
+		self::dic()->database()->dropTable(Library::TABLE_NAME, false);
+		self::dic()->database()->dropTable(LibraryCachedAsset::TABLE_NAME, false);
+		self::dic()->database()->dropTable(LibraryHubCache::TABLE_NAME, false);
+		self::dic()->database()->dropTable(LibraryLanguage::TABLE_NAME, false);
+		self::dic()->database()->dropTable(LibraryDependencies::TABLE_NAME, false);
+		self::dic()->database()->dropTable(H5PObject::TABLE_NAME, false);
+		self::dic()->database()->dropTable(Option::TABLE_NAME, false);
+		self::dic()->database()->dropTable(OptionOld::TABLE_NAME, false);
+		self::dic()->database()->dropTable(Result::TABLE_NAME, false);
+		self::dic()->database()->dropTable(SolveStatus::TABLE_NAME, false);
+		self::dic()->database()->dropTable(TmpFile::TABLE_NAME, false);
+
+		$this->removeH5PFolder();
 	}
 
 
@@ -114,7 +106,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 *
 	 */
 	protected function removeH5PFolder() {
-		$h5p_folder = $this->getH5PFolder();
+		$h5p_folder = self::h5p()->getH5PFolder();
 
 		H5PCore::deleteFileTree($h5p_folder);
 	}

@@ -1,34 +1,35 @@
 <#1>
 <?php
-	require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
+\srag\Plugins\H5P\Content\Content::updateDB();
+\srag\Plugins\H5P\Content\ContentLibrary::updateDB();
+\srag\Plugins\H5P\Content\ContentUserData::updateDB();
+\srag\Plugins\H5P\Library\Counter::updateDB();
+\srag\Plugins\H5P\Event\Event::updateDB();
+\srag\Plugins\H5P\Library\Library::updateDB();
+\srag\Plugins\H5P\Library\LibraryCachedAsset::updateDB();
+\srag\Plugins\H5P\Library\LibraryHubCache::updateDB();
+\srag\Plugins\H5P\Library\LibraryLanguage::updateDB();
+\srag\Plugins\H5P\Library\LibraryDependencies::updateDB();
+\srag\Plugins\H5P\Object\H5PObject::updateDB();
+\srag\Plugins\H5P\Option\Option::updateDB();
+\srag\Plugins\H5P\Results\Result::updateDB();
+\srag\Plugins\H5P\Results\SolveStatus::updateDB();
+\srag\Plugins\H5P\Content\Editor\TmpFile::updateDB();
+?>
+<#2>
+<?php
+\srag\Plugins\H5P\Option\Option::updateDB();
 
-	ilH5PContent::updateDB();
+if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME)) {
+	\srag\Plugins\H5P\Option\OptionOld::updateDB();
 
-	ilH5PContentLibrary::updateDB();
+	foreach (\srag\Plugins\H5P\Option\OptionOld::get() as $option) {
+		/**
+		 * @var \srag\Plugins\H5P\Option\OptionOld $option
+		 */
+		\srag\Plugins\H5P\Option\Option::setOption($option->getName(), $option->getValue());
+	}
 
-	ilH5PContentUserData::updateDB();
-
-	ilH5PCounter::updateDB();
-
-	ilH5PEvent::updateDB();
-
-	ilH5PLibrary::updateDB();
-
-	ilH5PLibraryCachedAsset::updateDB();
-
-	ilH5PLibraryHubCache::updateDB();
-
-	ilH5PLibraryLanguage::updateDB();
-
-	ilH5PLibraryDependencies::updateDB();
-
-	ilH5PObject::updateDB();
-
-	ilH5POption::updateDB();
-
-	ilH5PResult::updateDB();
-
-	ilH5PSolveStatus::updateDB();
-
-	ilH5PTmpFile::updateDB();
+	\srag\DIC\H5P\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
+}
 ?>

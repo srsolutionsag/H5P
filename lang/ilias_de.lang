@@ -4,122 +4,146 @@ objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#H5P's kopieren
 rbac_create_xhfp#:#H5P anlegen
 xhfp_new#:#H5P anlegen
-xhfp_actions#:#Aktionen
 xhfp_add#:#Hinzufügen
-xhfp_add_content#:#Inhalt hinzufügen
-xhfp_added_library#:#%new neue H5P Bibliothek hinzugefügt.
-xhfp_added_libraries#:#%new neue H5P Bibliotheken hinzugefügt.
-xhfp_added_library_updated_library#:#%new neue H5P Bibliothek hinzugefügt %old alte aktualisiert.
-xhfp_added_library_updated_libraries#:#%new neue H5P Bibliothek hinzugefügt %old alte aktualisiert.
-xhfp_added_libraries_updated_library#:#%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
-xhfp_added_libraries_updated_libraries#:%new neue H5P Bibliotheken hinzugefügt %old alte aktualisiert.
-xhfp_all#:#Alle
-xhfp_author#:#Autor
-xhfp_by#:#von
-xhfp_cancel#:#Abbrechen
-xhfp_categories#:#Kategorien
-xhfp_close#:#Schliessen
-xhfp_confirm#:#Bestätigen
-xhfp_confirm_action#:#Aktion bestätigen
-xhfp_confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
-xhfp_content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
-xhfp_content_count#:#Inhalt %1$d von %2$d
-xhfp_content_types#:#Inhaltstypen
-xhfp_contents#:#Inhalte
-xhfp_delete#:#Löschen
-xhfp_delete_content#:#Inhalt löschen
-xhfp_delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
-xhfp_deleted_content#:#Inhalt %s gelöscht
-xhfp_delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
-xhfp_delete_library_in_use#:#Die Bibliothek wird noch benutzt!
-xhfp_deleted_library#:#Bibliothek %s gelöscht
-xhfp_delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
-xhfp_deleted_results#:#Resultate von %s gelöscht
-xhfp_description#:#Beschreibung
-xhfp_details#:#Details
-xhfp_disable_fullscreen#:#Vollbild aus
-xhfp_download#:#Download
-xhfp_download_content#:#Inhalt als H5P Datei herunterladen.
-xhfp_edit#:#Bearbeiten
-xhfp_edit_content#:#Inhalt bearbeiten
-xhfp_edit_permission#:#Rechte bearbeiten
-xhfp_embed#:#Einbetten
-xhfp_embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des eingebetteten Inhalts dynamisch verändert werden soll:
-xhfp_enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
-xhfp_enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
-xhfp_example#:#Beispiel
-xhfp_finish#:#Beenden
-xhfp_finished#:#Beendet
-xhfp_fullscreen#:#Vollbild
-xhfp_hide_advanced#:#Details ausblenden
-xhfp_hub#:#HUB
-xhfp_hub_last_refresh#:#HUB zuletzt aktualisiert: %s
-xhfp_hub_refresh#:#HUB neu laden
-xhfp_hub_refreshed#:#HUB wurde erfolgreich neu geladen
-xhfp_incomplete_content#:#Der H5P-Inhalt ist unvollständig! Bitte prüfen Sie alle Eingaben und Pflichtsfelder!
-xhfp_install#:#Installieren
-xhfp_installed#:#Installiert
-xhfp_installed_libraries#:#Bibliotheken
-xhfp_installed_version#:#Installierte Version
-xhfp_keywords#:#Keywords
-xhfp_latest_version#:#Neuste Version
-xhfp_library#:#Bibliothek
-xhfp_libraries#:#Bibliotheken
-xhfp_license#:#Lizenz
-xhfp_msg_content_not_editable#:#Die Inhalte können nicht mehr bearbeitet werden, da bereits Resultate vorliegen.
-xhfp_next_content#:#Nächster Inhalt
-xhfp_no#:#Nein
-xhfp_not_available#:#Nicht verfügbar
-xhfp_no_content_copyright#:#Keine Copyright Informationen für diesen Inhalt hinterlegt.
-xhfp_no_result#:#Kein Resultat
-xhfp_not_installed#:#Nicht installiert
-xhfp_offline#:#Offline
-xhfp_online#:#Online
-xhfp_only_not_used#:#Nur nicht benutzte
-xhfp_only_runnable#:#Nur startbare
-xhfp_previous_content#:#Vorheriger Inhalt
-xhfp_read#:#Lesen
-xhfp_results#:#Resultate
-xhfp_rights_of_use#:#Nutzungsrechte
-xhfp_runnable#:#Startbar
-xhfp_save#:#Speichern
-xhfp_saved_content#:#%s gespeichert
-xhfp_send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
-xhfp_send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche <a href="%s" target="_blank">Daten auf h5p. org</a> gesammelt werden.
-xhfp_settings#:#Einstellungen
-xhfp_settings_saved#:#Einstellungen gespeichert
-xhfp_show#:#Anzeigen
-xhfp_show_advanced#:#Weitere Details
-xhfp_show_contents#:#Inhalte anzeigen
-xhfp_show_less#:#Weniger anzeigen
-xhfp_show_more#:#Mehr anzeigen
-xhfp_size#:#Grösse
-xhfp_solve_contents_only_once#:#Inhalte nur einmal lösen
-xhfp_solve_contents_only_once_note#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden!
-xhfp_solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
-xhfp_solved_content#:#Sie haben diesen Inhalt bereits gelöst.
-xhfp_source#:#Quelle
-xhfp_start_over#:#Sie fangen von vorne an.
-xhfp_status#:#Status
-xhfp_sublevel#:#Unterebene
-xhfp_summary#:#Zusammenfassung
-xhfp_thumbnail#:#Vorschaubild
-xhfp_title#:#Titel
-xhfp_tutorial#:#Tutorial
-xhfp_updated_library#:#%old H5P Bibliothek aktualisiert.
-xhfp_updated_libraries#:#%old H5P Bibliotheken aktualisiert.
-xhfp_upgrade#:#Upgrade
-xhfp_upgrade_available#:#Upgrade verfügbar
-xhfp_upload#:#Hochladen
-xhfp_upload_library#:#Bibliothek hochladen
-xhfp_usage_contents#:#Inhalte, die es verwenden
-xhfp_usage_libraries#:#Bibliotheken, die es verwenden
-xhfp_usage_statistics#:#Nutzungsstatistik
-xhfp_user#:#Benutzer
-xhfp_version#:#Version
-xhfp_view_content_copyright#:#Copyright-Informationen für diesen Inhalt zeigen.
-xhfp_view_embed_code#:#Einbetten-Code für diesen Inhalt anzeigen.
-xhfp_visible#:#Sichtbar
-xhfp_write#:#Schreiben
-xhfp_year#:#Jahr
-xhfp_yes#:#Ja
+actions#:#Aktionen
+add#:#Hinzufügen
+add_content#:#Inhalt hinzufügen
+added_library#:#%%new neue H5P Bibliothek hinzugefügt.
+added_libraries#:#%%new neue H5P Bibliotheken hinzugefügt.
+added_library_updated_library#:#%%new neue H5P Bibliothek hinzugefügt %%old alte aktualisiert.
+added_library_updated_libraries#:#%%new neue H5P Bibliothek hinzugefügt %%old alte aktualisiert.
+added_libraries_updated_library#:#%%new neue H5P Bibliotheken hinzugefügt %%old alte aktualisiert.
+added_libraries_updated_libraries#:%%new neue H5P Bibliotheken hinzugefügt %%old alte aktualisiert.
+all#:#Alle
+author#:#Autor
+by#:#von
+cancel#:#Abbrechen
+categories#:#Kategorien
+close#:#Schliessen
+confirm#:#Bestätigen
+confirm_action#:#Aktion bestätigen
+confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
+content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
+content_count#:#Inhalt %1$d von %2$d
+content_not_exists#:#Der H5P-Inhalt existiert nicht mehr
+content_types#:#Inhaltstypen
+contents#:#Inhalte
+delete#:#Löschen
+delete_content#:#Inhalt löschen
+delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
+deleted_content#:#Inhalt %s gelöscht
+delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
+delete_library_in_use#:#Die Bibliothek wird noch benutzt
+deleted_library#:#Bibliothek %s gelöscht
+delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
+deleted_results#:#Resultate von %s gelöscht
+description#:#Beschreibung
+details#:#Details
+disable_fullscreen#:#Vollbild aus
+download#:#Download
+download_content#:#Inhalt als H5P Datei herunterladen.
+edit#:#Bearbeiten
+edit_content#:#Inhalt bearbeiten
+edit_permission#:#Rechte bearbeiten
+embed#:#Einbetten
+embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des eingebetteten Inhalts dynamisch verändert werden soll:
+enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
+enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
+example#:#Beispiel
+finish#:#Beenden
+finished#:#Beendet
+fullscreen#:#Vollbild
+hide_advanced#:#Details ausblenden
+hub_last_refresh#:#HUB zuletzt aktualisiert: %s
+hub_refresh#:#HUB neu laden
+hub_refreshed#:#HUB wurde erfolgreich neu geladen
+incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder
+install#:#Installieren
+installed#:#Installiert
+installed_libraries#:#Bibliotheken
+installed_version#:#Installierte Version
+keywords#:#Keywords
+latest_version#:#Neuste Version
+library#:#Bibliothek
+libraries#:#Bibliotheken
+license#:#Lizenz
+manage_contents#:#Bearbeiten
+msg_content_not_editable#:#Die Inhalte können nicht mehr bearbeitet werden, da bereits Resultate vorliegen.
+next_content#:#Nächster Inhalt
+no#:#Nein
+not_available#:#Nicht verfügbar
+no_content_copyright#:#Keine Copyright Informationen für diesen Inhalt hinterlegt.
+no_result#:#Kein Resultat
+not_installed#:#Nicht installiert
+offline#:#Offline
+online#:#Online
+only_not_used#:#Nur nicht benutzte
+only_runnable#:#Nur startbare
+permission_denied#:#Zugriff verweigert
+previous_content#:#Vorheriger Inhalt
+read#:#Lesen
+results#:#Resultate
+rights_of_use#:#Nutzungsrechte
+runnable#:#Startbar
+save#:#Speichern
+saved_content#:#%s gespeichert
+send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
+send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche Daten auf %s gesammelt werden.
+settings#:#Einstellungen
+settings_saved#:#Einstellungen gespeichert
+show#:#Anzeigen
+show_advanced#:#Weitere Details
+show_contents#:#Inhalte
+show_less#:#Weniger anzeigen
+show_more#:#Mehr anzeigen
+size#:#Grösse
+solve_only_once#:#Inhalte nur einmal lösen
+solve_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden
+solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
+solved_content#:#Sie haben diesen Inhalt bereits gelöst.
+source#:#Quelle
+start_over#:#Sie fangen von vorne an.
+status#:#Status
+sublevel#:#Unterebene
+summary#:#Zusammenfassung
+thumbnail#:#Vorschaubild
+title#:#Titel
+tutorial#:#Tutorial
+updated_library#:#%%old H5P Bibliothek aktualisiert.
+updated_libraries#:#%%old H5P Bibliotheken aktualisiert.
+upgrade#:#Upgrade
+upgrade_available#:#Upgrade verfügbar
+upload#:#Hochladen
+upload_library#:#Bibliothek hochladen
+usage_contents#:#Inhalte, die es verwenden
+usage_libraries#:#Bibliotheken, die es verwenden
+usage_statistics#:#Nutzungsstatistik
+user#:#Benutzer
+version#:#Version
+view_content_copyright#:#Copyright-Informationen für diesen Inhalt zeigen.
+view_embed_code#:#Einbetten-Code für diesen Inhalt anzeigen.
+visible#:#Sichtbar
+write#:#Schreiben
+year#:#Jahr
+yes#:#Ja
+config_hub#:#HUB
+config_save#:#Speichern
+config_settings#:#Einstellungen
+config_settings_saved#:#Einstellungen gespeichert
+cron_xhfp_delete_old_events#:#Alte Event-Logs löschen
+cron_xhfp_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
+cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen
+cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien löschen, die H5P generiert hat
+cron_xhfp_page_component#:#PageComponents aufräumen
+cron_xhfp_page_component_description#:#Löscht H5P-Contents von gelöschten H5P-PageComponents
+cron_xhfp_page_component_description_deprecated#:#H5P-PageComponent-Cron-Job wird nur noch für ILIAS 5.2 benötigt, da neuere Versionen es nativ unterstützten :)
+cron_xhfp_refresh_hub#:#Hub-Liste aktualisieren
+cron_xhfp_refresh_hub_description#:#Lädt die Hub-Liste neu
+removeplugindataconfirm_cancel#:#Abbrechen
+removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch entfernen? Allenfalls möchten Sie das %1$s-Plugin nur deaktivieren?
+removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren
+removeplugindataconfirm_data#:#%1$s-Daten
+removeplugindataconfirm_keep_data#:#%1$s-Daten behalten
+removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten
+removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt
+removeplugindataconfirm_remove_data#:#Entferne %1$s-Daten

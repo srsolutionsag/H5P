@@ -1,153 +1,55 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
-/**
- * H5P config GUI
- *
- * @ilCtrl_Calls ilH5PConfigGUI: ilH5PActionGUI
- */
-class ilH5PConfigGUI extends ilPluginConfigGUI {
+use srag\ActiveRecordConfig\H5P\ActiveRecordConfigGUI;
+use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
+use srag\Plugins\H5P\Hub\HubTableGUI;
+use srag\Plugins\H5P\Library\Library;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
-	const CMD_APPLY_FILTER = "applyFilter";
-	const CMD_CONFIGURE = "configure";
+/**
+ * Class ilH5PConfigGUI
+ *
+ * @author       studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ *
+ * @ilCtrl_Calls ilH5PConfigGUI: H5PActionGUI
+ */
+class ilH5PConfigGUI extends ActiveRecordConfigGUI {
+
+	use H5PTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_DELETE_LIBRARY_CONFIRM = "deleteLibraryConfirm";
 	const CMD_DELETE_LIBRARY = "deleteLibrary";
 	const CMD_INSTALL_LIBRARY = "installLibrary";
-	const CMD_HUB = "hub";
 	const CMD_LIBRARY_DETAILS = "libraryDetails";
 	const CMD_REFRESH_HUB = "refreshHub";
-	const CMD_RESET_FILTER = "resetFilter";
-	const CMD_SETTINGS = "settings";
-	const CMD_SETTINGS_STORE = "settingsStore";
 	const CMD_UPLOAD_LIBRARY = "uploadLibrary";
 	const TAB_HUB = "hub";
 	const TAB_SETTINGS = "settings";
 	/**
-	 * @var ilCtrl
+	 * @var array
 	 */
-	protected $ctrl;
+	protected static $tabs = [ self::TAB_HUB => HubTableGUI::class, self::TAB_SETTINGS => HubSettingsFormGUI::class ];
 	/**
-	 * @var ilH5P
+	 * @var array
 	 */
-	protected $h5p;
-	/**
-	 * @var ilH5PPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilTabsGUI
-	 */
-	protected $tabs;
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl;
+	protected static $custom_commands = [
+		H5PActionGUI::CMD_H5P_ACTION,
+		self::CMD_DELETE_LIBRARY_CONFIRM,
+		self::CMD_DELETE_LIBRARY,
+		self::CMD_INSTALL_LIBRARY,
+		self::CMD_LIBRARY_DETAILS,
+		self::CMD_REFRESH_HUB,
+		self::CMD_UPLOAD_LIBRARY
+	];
 
 
 	/**
 	 *
 	 */
-	public function __construct() {
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
-		$this->h5p = ilH5P::getInstance();
-		$this->pl = ilH5PPlugin::getInstance();
-		$this->tabs = $DIC->tabs();
-		$this->tpl = $DIC->ui()->mainTemplate();
-	}
-
-
-	/**
-	 *
-	 * @param string $cmd
-	 */
-	public function performCommand($cmd) {
-		$next_class = $this->ctrl->getNextClass($this);
-
-		switch ($next_class) {
-			default:
-				$this->setTabs();
-
-				if ($cmd === self::CMD_CONFIGURE) {
-					$cmd = self::CMD_HUB;
-				}
-
-				switch ($cmd) {
-					case self::CMD_DELETE_LIBRARY_CONFIRM:
-					case self::CMD_DELETE_LIBRARY:
-					case self::CMD_INSTALL_LIBRARY:
-					case self::CMD_HUB:
-					case self::CMD_LIBRARY_DETAILS:
-					case self::CMD_REFRESH_HUB:
-					case self::CMD_SETTINGS:
-					case self::CMD_SETTINGS_STORE:
-					case self::CMD_UPLOAD_LIBRARY:
-					case self::CMD_APPLY_FILTER:
-					case self::CMD_RESET_FILTER:
-						$this->$cmd();
-						break;
-
-					case ilH5PActionGUI::CMD_H5P_ACTION:
-						ilH5PActionGUI::forward($this);
-						break;
-
-					default:
-						break;
-				}
-				break;
-		}
-	}
-
-
-	/**
-	 *
-	 */
-	protected function setTabs() {
-		$this->tabs->addTab(self::TAB_HUB, $this->txt("xhfp_hub"), $this->ctrl->getLinkTarget($this, self::CMD_HUB));
-
-		$this->tabs->addTab(self::TAB_SETTINGS, $this->txt("xhfp_settings"), $this->ctrl->getLinkTarget($this, self::CMD_SETTINGS));
-
-		$this->tabs->manual_activation = true; // Show all tabs as links when no activation
-	}
-
-
-	/**
-	 *
-	 * @param string $html
-	 */
-	protected function show($html) {
-		if ($this->ctrl->isAsynch()) {
-			echo $html;
-
-			exit();
-		} else {
-			$this->tpl->setContent($html);
-		}
-	}
-
-
-	/**
-	 * @return ilH5PHubTableGUI
-	 */
-	protected function getHubTable() {
-		$table = new ilH5PHubTableGUI($this, self::CMD_HUB);
-
-		return $table;
-	}
-
-
-	/**
-	 *
-	 */
-	protected function hub() {
-		$this->tabs->activateTab(self::TAB_HUB);
-
-		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
-
-		$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
-
-		$this->show($hub);
+	protected function h5pAction() {
+		H5PActionGUI::forward($this);
 	}
 
 
@@ -155,9 +57,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function refreshHub() {
-		$this->h5p->show_hub()->refreshHub();
+		self::h5p()->show_hub()->refreshHub();
 
-		$this->ctrl->redirect($this, self::CMD_HUB);
+		$this->redirectToTab(self::TAB_HUB);
 	}
 
 
@@ -165,49 +67,17 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function uploadLibrary() {
-		$this->tabs->activateTab(self::TAB_HUB);
+		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$form = $this->h5p->show_hub()->getUploadLibraryForm($this);
+		$form = self::h5p()->show_hub()->getUploadLibraryForm($this);
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
-			$hub = $this->h5p->show_hub()->getH5PHubIntegration($form, $this, $this->getHubTable());
-
-			$this->show($hub);
+		if (!$form->storeForm()) {
+			self::output()->output(new HubTableGUI($this, $this->getCmdForTab(self::TAB_HUB), self::TAB_HUB));
 
 			return;
 		}
 
-		$form->uploadLibrary();
-
-		$this->ctrl->redirect($this, self::CMD_HUB);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function applyFilter() {
-		$table = $this->getHubTable();
-
-		$table->writeFilterToSession();
-
-		$this->ctrl->redirect($this, self::CMD_HUB);
-	}
-
-
-	/**
-	 *
-	 */
-	protected function resetFilter() {
-		$table = $this->getHubTable();
-
-		$table->resetFilter();
-
-		$table->resetOffset();
-
-		$this->ctrl->redirect($this, self::CMD_HUB);
+		$this->redirectToTab(self::TAB_HUB);
 	}
 
 
@@ -217,9 +87,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	protected function installLibrary() {
 		$name = filter_input(INPUT_GET, "xhfp_library_name");
 
-		$this->h5p->show_hub()->installLibrary($name);
+		self::h5p()->show_hub()->installLibrary($name);
 
-		$this->ctrl->redirect($this, self::CMD_HUB);
+		$this->redirectToTab(self::TAB_HUB);
 	}
 
 
@@ -227,15 +97,16 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function libraryDetails() {
-		$this->tabs->clearTargets();
+		self::dic()->tabs()->clearTargets();
 
-		$this->tabs->setBackTarget($this->txt("xhfp_hub"), $this->ctrl->getLinkTarget($this, self::CMD_HUB));
+		self::dic()->tabs()->setBackTarget(self::plugin()->translate(self::TAB_HUB, self::LANG_MODULE_CONFIG), self::dic()->ctrl()
+			->getLinkTarget($this, $this->getCmdForTab(self::TAB_HUB)));
 
 		$key = filter_input(INPUT_GET, "xhfp_library_key");
 
-		$details = $this->h5p->show_hub()->getH5PLibraryDetailsIntegration($this, $key);
+		$details = self::h5p()->show_hub()->getDetailsForm($this, $key);
 
-		$this->show($details);
+		self::output()->output($details);
 	}
 
 
@@ -243,36 +114,36 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deleteLibraryConfirm() {
-		$this->tabs->activateTab(self::TAB_HUB);
+		self::dic()->tabs()->activateTab(self::TAB_HUB);
 
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
+		$h5p_library = Library::getCurrentLibrary();
 
-		$contents_count = $this->h5p->framework()->getNumContent($h5p_library->getLibraryId());
-		$usage = $this->h5p->framework()->getLibraryUsage($h5p_library->getLibraryId());
+		$contents_count = self::h5p()->framework()->getNumContent($h5p_library->getLibraryId());
+		$usage = self::h5p()->framework()->getLibraryUsage($h5p_library->getLibraryId());
 
 		$not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
 		if (!$not_in_use) {
-			ilUtil::sendFailure($this->txt("xhfp_delete_library_in_use") . "<br><br>" . implode("<br>", [
-					$this->txt("xhfp_contents") . " : " . $contents_count,
-					$this->txt("xhfp_usage_contents") . " : " . $usage["content"],
-					$this->txt("xhfp_usage_libraries") . " : " . $usage["libraries"]
+			ilUtil::sendFailure(self::plugin()->translate("delete_library_in_use") . "<br><br>" . implode("<br>", [
+					self::plugin()->translate("contents") . " : " . $contents_count,
+					self::plugin()->translate("usage_contents") . " : " . $usage["content"],
+					self::plugin()->translate("usage_libraries") . " : " . $usage["libraries"]
 				]));
 		}
 
-		$this->ctrl->saveParameter($this, "xhfp_library");
+		self::dic()->ctrl()->saveParameter($this, "xhfp_library");
 
 		$confirmation = new ilConfirmationGUI();
 
-		$confirmation->setFormAction($this->ctrl->getFormAction($this));
+		$confirmation->setFormAction(self::dic()->ctrl()->getFormAction($this));
 
-		$confirmation->setHeaderText(sprintf($this->txt("xhfp_delete_library_confirm"), $h5p_library->getTitle()));
+		$confirmation->setHeaderText(self::plugin()->translate("delete_library_confirm", "", [ $h5p_library->getTitle() ]));
 
 		$confirmation->addItem("xhfp_library", $h5p_library->getLibraryId(), $h5p_library->getTitle());
 
-		$confirmation->setConfirm($this->txt("xhfp_delete"), self::CMD_DELETE_LIBRARY);
-		$confirmation->setCancel($this->txt("xhfp_cancel"), self::CMD_HUB);
+		$confirmation->setConfirm(self::plugin()->translate("delete"), self::CMD_DELETE_LIBRARY);
+		$confirmation->setCancel(self::plugin()->translate("cancel"), $this->getCmdForTab(self::TAB_HUB));
 
-		$this->show($confirmation->getHTML());
+		self::output()->output($confirmation);
 	}
 
 
@@ -280,66 +151,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI {
 	 *
 	 */
 	protected function deleteLibrary() {
-		$h5p_library = ilH5PLibrary::getCurrentLibrary();
+		$h5p_library = Library::getCurrentLibrary();
 
-		$this->h5p->show_hub()->deleteLibrary($h5p_library);
+		self::h5p()->show_hub()->deleteLibrary($h5p_library);
 
-		$this->ctrl->redirect($this, self::CMD_HUB);
-	}
-
-
-	/**
-	 * @return ilH5HubSettingsFormGUI
-	 */
-	protected function getSettingsForm() {
-		$form = new ilH5HubSettingsFormGUI($this);
-
-		return $form;
-	}
-
-
-	/**
-	 *
-	 */
-	protected function settings() {
-		$this->tabs->activateTab(self::TAB_SETTINGS);
-
-		$form = $this->getSettingsForm();
-
-		$this->show($form->getHTML());
-	}
-
-
-	/**
-	 *
-	 */
-	protected function settingsStore() {
-		$this->tabs->activateTab(self::TAB_SETTINGS);
-
-		$form = $this->getSettingsForm();
-
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
-
-			return;
-		}
-
-		$form->updateSettings();
-
-		ilUtil::sendSuccess($this->txt("xhfp_settings_saved"), true);
-
-		$this->show($form->getHTML());
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return $this->pl->txt($a_var);
+		$this->redirectToTab(self::TAB_HUB);
 	}
 }

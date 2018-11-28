@@ -1,19 +1,29 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Object\H5PObject;
+use srag\Plugins\H5P\Utils\H5PTrait;
+
 /**
- * H5P Access
+ * Class ilObjH5PAccess
+ *
+ * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class ilObjH5PAccess extends ilObjectPluginAccess {
 
+	use DICTrait;
+	use H5PTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	/**
-	 * @var ilObjH5PAccess
+	 * @var self
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return ilObjH5PAccess
+	 * @return self
 	 */
 	public static function getInstance() {
 		if (self::$instance === NULL) {
@@ -25,23 +35,12 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 
 
 	/**
-	 * @var ilAccessHandler
-	 */
-	protected $access;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-
-
-	/**
-	 *
+	 * ilObjH5PAccess constructor
 	 */
 	public function __construct() {
-		global $DIC;
-
-		$this->access = $DIC->access();
-		$this->usr = $DIC->user();
+		if (self::version()->is53()) {
+			parent::__construct();
+		}
 	}
 
 
@@ -64,23 +63,23 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 		}
 
 		if ($a_user_id == NULL) {
-			$a_user_id = $this->usr->getId();
+			$a_user_id = self::dic()->user()->getId();
 		}
 
 		switch ($a_permission) {
 			case "visible":
 			case "read":
-				return (($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
-					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+				return boolval((self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
+					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "delete":
-				return ($this->access->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
-					|| $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+				return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
+					|| self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
 			case "write":
 			case "edit_permission":
 			default:
-				return $this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id);
+				return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id));
 		}
 	}
 
@@ -100,22 +99,18 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 
 
 	/**
-	 * @param class|string $class
-	 * @param string       $cmd
+	 * @param object|string $class
+	 * @param string        $cmd
 	 */
 	public static function redirectNonAccess($class, $cmd = "") {
-		global $DIC;
-
-		$ctrl = $DIC->ctrl();
-
-		ilUtil::sendFailure($DIC->language()->txt("permission_denied"), true);
+		ilUtil::sendFailure(self::plugin()->translate("permission_denied"), true);
 
 		if (is_object($class)) {
-			$ctrl->clearParameters($class);
-			$ctrl->redirect($class, $cmd);
+			self::dic()->ctrl()->clearParameters($class);
+			self::dic()->ctrl()->redirect($class, $cmd);
 		} else {
-			$ctrl->clearParametersByClass($class);
-			$ctrl->redirectByClass($class, $cmd);
+			self::dic()->ctrl()->clearParametersByClass($class);
+			self::dic()->ctrl()->redirectByClass($class, $cmd);
 		}
 	}
 
@@ -126,10 +121,10 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 * @return bool
 	 */
 	public static function _isOffline($a_obj_id) {
-		$h5p_object = ilH5PObject::getObjectById($a_obj_id);
+		$object = H5PObject::getObjectById(intval($a_obj_id));
 
-		if ($h5p_object !== NULL) {
-			return (!$h5p_object->isOnline());
+		if ($object !== NULL) {
+			return (!$object->isOnline());
 		} else {
 			return true;
 		}
