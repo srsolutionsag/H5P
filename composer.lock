@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -215,16 +215,16 @@
         },
         {
             "name": "srag/dic",
-            "version": "v0.13.4",
+            "version": "v0.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "a0e02850cb52e817fcfcdb9f396670d34f9f1818"
+                "reference": "d6b690529b47e1575e4f2f379fa90804e7a9b621"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/a0e02850cb52e817fcfcdb9f396670d34f9f1818",
-                "reference": "a0e02850cb52e817fcfcdb9f396670d34f9f1818",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/d6b690529b47e1575e4f2f379fa90804e7a9b621",
+                "reference": "d6b690529b47e1575e4f2f379fa90804e7a9b621",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-11-23T11:55:20+00:00"
+            "time": "2018-11-27T10:32:43+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
@@ -303,16 +303,16 @@
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "v0.3.2",
+            "version": "v0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "d187bba94d9b7dc6e495587ef1487122f6856d4a"
+                "reference": "0a4c2efb645c77ed609885366d3ac8f17c1dedbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/d187bba94d9b7dc6e495587ef1487122f6856d4a",
-                "reference": "d187bba94d9b7dc6e495587ef1487122f6856d4a",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/0a4c2efb645c77ed609885366d3ac8f17c1dedbc",
+                "reference": "0a4c2efb645c77ed609885366d3ac8f17c1dedbc",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -346,7 +346,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2018-11-22T14:33:22+00:00"
+            "time": "2018-11-28T08:24:16+00:00"
         }
     ],
     "packages-dev": [],
