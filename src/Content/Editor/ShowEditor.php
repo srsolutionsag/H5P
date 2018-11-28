@@ -176,9 +176,7 @@ class ShowEditor {
 		$content["params"] = json_encode($params->params);
 
 		$content["id"] = self::h5p()->core()->saveContent($content);
-		$content["params"] = self::h5p()->core()->filterParameters($content);
 
-		$params = json_decode($content["params"]);
 		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, NULL);
 
 		$h5p_content = Content::getContentById($content["id"]);
@@ -208,9 +206,7 @@ class ShowEditor {
 		$content["params"] = json_encode($params->params);
 
 		self::h5p()->core()->saveContent($content);
-		$content["params"] = self::h5p()->core()->filterParameters($content);
 
-		$params = json_decode($content["params"]);
 		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, $oldParams);
 
 		if ($message) {
