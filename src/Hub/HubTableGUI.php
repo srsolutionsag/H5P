@@ -81,7 +81,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 		$title = $filter["title"];
 		$status = $filter["status"];
-		$runnable = ($filter["runnable"] ? true : NULL);
+		$runnable = ($filter["only_runnable"] ? true : NULL);
 		$not_used = ($filter["only_not_used"] ? true : NULL);
 
 		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
