@@ -231,7 +231,7 @@ class H5PActionGUI {
 			}
 		}
 
-		self::output()->output($output);
+		self::output()->outputJSON($output);
 	}
 
 
