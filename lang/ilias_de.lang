@@ -133,8 +133,8 @@ config_settings_saved#:#Einstellungen gespeichert
 cron_xhfp_delete_old_events#:#Alte Event-Logs löschen
 cron_xhfp_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
 cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen
-cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien löschen, die H5P generiert hat
-cron_xhfp_page_component#:#PageComponents aufräumen
+cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
+cron_xhfp_page_component#:#H5P-PageComponents aufräumen
 cron_xhfp_page_component_description#:#Löscht H5P-Contents von gelöschten H5P-PageComponents
 cron_xhfp_page_component_description_deprecated#:#H5P-PageComponent-Cron-Job wird nur noch für ILIAS 5.2 benötigt, da neuere Versionen es nativ unterstützten :)
 cron_xhfp_refresh_hub#:#Hub-Liste aktualisieren
