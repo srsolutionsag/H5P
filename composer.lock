@@ -215,16 +215,16 @@
         },
         {
             "name": "srag/dic",
-            "version": "v0.13.5",
+            "version": "v0.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "d6b690529b47e1575e4f2f379fa90804e7a9b621"
+                "reference": "cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/d6b690529b47e1575e4f2f379fa90804e7a9b621",
-                "reference": "d6b690529b47e1575e4f2f379fa90804e7a9b621",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9",
+                "reference": "cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\H5P\\": "src/"
+                    "srag\\DIC\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -256,7 +256,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-11-27T10:32:43+00:00"
+            "time": "2018-11-30T09:06:55+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

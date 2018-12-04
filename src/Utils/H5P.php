@@ -229,7 +229,7 @@ class H5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), "/" . $this->getH5PFolder(), self::dic()->user()
+			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), ILIAS_HTTP_PATH."/" . $this->getH5PFolder(), self::dic()->user()
 				->getLanguage(), false);
 		}
 

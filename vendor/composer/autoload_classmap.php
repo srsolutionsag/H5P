@@ -78,6 +78,7 @@ return array(
     'srag\\DIC\\H5P\\Exception\\DICException' => $vendorDir . '/srag/dic/src/Exception/DICException.php',
     'srag\\DIC\\H5P\\Output\\Output' => $vendorDir . '/srag/dic/src/Output/Output.php',
     'srag\\DIC\\H5P\\Output\\OutputInterface' => $vendorDir . '/srag/dic/src/Output/OutputInterface.php',
+    'srag\\DIC\\H5P\\PHPVersionChecker' => $vendorDir . '/srag/dic/src/PHPVersionChecker.php',
     'srag\\DIC\\H5P\\Plugin\\Plugin' => $vendorDir . '/srag/dic/src/Plugin/Plugin.php',
     'srag\\DIC\\H5P\\Plugin\\PluginInterface' => $vendorDir . '/srag/dic/src/Plugin/PluginInterface.php',
     'srag\\DIC\\H5P\\Plugin\\Pluginable' => $vendorDir . '/srag/dic/src/Plugin/Pluginable.php',

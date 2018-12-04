@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.1]
+- PHPVersionChecker
+- Fix sub folder installations again
+
 ## [2.0.0]
 - Ask for removing data
 - Refactoring
