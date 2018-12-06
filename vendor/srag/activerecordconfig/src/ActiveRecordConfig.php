@@ -151,12 +151,12 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 					return self::getJsonValue($name, $assoc, $default_value);
 
 				default:
-					throw new ActiveRecordConfigException("Invalid type $type!");
+					throw new ActiveRecordConfigException("Invalid type $type!", ActiveRecordConfigException::CODE_INVALID_FIELD);
 					break;
 			}
 		}
 
-		throw new ActiveRecordConfigException("Invalid field $name!");
+		throw new ActiveRecordConfigException("Invalid field $name!", ActiveRecordConfigException::CODE_INVALID_FIELD);
 	}
 
 
@@ -219,7 +219,7 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 			}
 		}
 
-		throw new ActiveRecordConfigException("Invalid field $name!");
+		throw new ActiveRecordConfigException("Invalid field $name!", ActiveRecordConfigException::CODE_INVALID_FIELD, ActiveRecordConfigException::CODE_INVALID_FIELD);
 	}
 
 

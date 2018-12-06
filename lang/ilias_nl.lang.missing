@@ -114,9 +114,13 @@ updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
 upgrade#:#Bijwerken
 upgrade_available#:#Opwaardering beschikbaar
 upload#:#Uploaden
+upload_file#:#MISSING upload_file
+upload_file_info2#:#MISSING upload_file_info2
+upload_library#:#Bibliotheken uploaden
+uploaded_file#:#MISSING uploaded_file
+uploaded_file_zip#:#MISSING uploaded_file_zip
 usage_contents#:#Inhouden die dit gebruiken
 usage_libraries#:#Bibliotheken die dit gebruiken
-upload_library#:#Bibliotheken uploaden
 usage_statistics#:#Gebruiks Statistieken
 user#:#Gebruiker
 version#:#Versie

@@ -114,7 +114,11 @@ updated_libraries#:#%%old H5P Bibliotheken aktualisiert.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
+upload_file#:#Datei hochladen
+upload_file_info2#:#Lädt eine Datei nach %s hoch. Zip-Datein werden automatisch entpackt
 upload_library#:#Bibliothek hochladen
+uploaded_file#:#Die Datei %s wurde nach %s hochgeladen
+uploaded_file_zip#:#Die Datei %s wurde nach %s entpackt
 usage_contents#:#Inhalte, die es verwenden
 usage_libraries#:#Bibliotheken, die es verwenden
 usage_statistics#:#Nutzungsstatistik

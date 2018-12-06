@@ -51,6 +51,7 @@ return array(
     'srag\\CustomInputGUIs\\H5P\\CheckboxInputGUI\\CheckboxInputGUI' => $vendorDir . '/srag/custominputguis/src/CheckboxInputGUI/CheckboxInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\DateDurationInputGUI\\DateDurationInputGUI' => $vendorDir . '/srag/custominputguis/src/DateDurationInputGUI/DateDurationInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\GlyphGUI\\GlyphGUI' => $vendorDir . '/srag/custominputguis/src/GlyphGUI/GlyphGUI.php',
+    'srag\\CustomInputGUIs\\H5P\\HiddenInputGUI\\HiddenInputGUI' => $vendorDir . '/srag/custominputguis/src/HiddenInputGUI/HiddenInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiLineInputGUI\\MultiLineInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiLineInputGUI/MultiLineInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiSelectSearchInputGUI\\MultiSelectSearchInput2GUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInput2GUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiSelectSearchInputGUI\\MultiSelectSearchInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInputGUI.php',
@@ -125,7 +126,7 @@ return array(
     'srag\\Plugins\\H5P\\Utils\\H5PTrait' => $baseDir . '/src/Utils/H5PTrait.php',
     'srag\\RemovePluginDataConfirm\\H5P\\AbstractPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
     'srag\\RemovePluginDataConfirm\\H5P\\AbstractRemovePluginDataConfirm' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
+    'srag\\RemovePluginDataConfirm\\H5P\\Exception\\RemovePluginDataConfirmException' => $vendorDir . '/srag/removeplugindataconfirm/src/Exception/RemovePluginDataConfirmException.php',
     'srag\\RemovePluginDataConfirm\\H5P\\PluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
-    'srag\\RemovePluginDataConfirm\\H5P\\RemovePluginDataConfirmException' => $vendorDir . '/srag/removeplugindataconfirm/src/RemovePluginDataConfirmException.php',
     'srag\\RemovePluginDataConfirm\\H5P\\RepositoryObjectPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
 );

@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.13.3]
+- ActiveRecordConfigException::CODE_X
+
 ## [0.13.2]
 - Some improvments in PropertyFormGUI
 

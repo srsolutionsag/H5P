@@ -17,8 +17,8 @@
 
 		H5PEditor.contentId = H5PIntegration.editor.contentId;
 
-		var $library = $('input[name="xhfp_library"]');
-		var $params = $('input[name="xhfp_params"]');
+		var $library = $('input[name="library"]');
+		var $params = $('input[name="params"]');
 		var $editor = $("#xhfp_editor");
 		var $form = $("#form_xhfp_edit_form");
 		var $toolbar = $("#xhfp_edit_toolbar");

@@ -35,12 +35,13 @@ interface OutputInterface {
 	 *
 	 * @param string|object|array $value html or GUI instance
 	 * @param bool                $main  Display main skin?
+	 * @param bool                $exit_after
 	 *
 	 * @throws DICException Class {get_class($value)} is not supported for output!
 	 * @throws ilTemplateException
 	 */
 	public function output($value, /*bool*/
-		$main = true)/*: void*/
+		$main = true, $exit_after = true)/*: void*/
 	;
 
 
@@ -48,9 +49,10 @@ interface OutputInterface {
 	 * Output JSON
 	 *
 	 * @param string|int|double|bool|array|stdClass|null|JsonSerializable $value JSON value
+	 * @param bool                                                        $exit_after
 	 *
 	 * @throws DICException {get_class($value)} is not a valid JSON value!
 	 */
-	public function outputJSON($value)/*: void*/
+	public function outputJSON($value, $exit_after = true)/*: void*/
 	;
 }

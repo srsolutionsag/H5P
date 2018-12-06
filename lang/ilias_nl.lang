@@ -104,6 +104,7 @@ solved_content#:#You have already solved this content.
 source#:#Source
 start_over#:#You'll be starting over.
 status#:#Status
+sublevel#:#Sublevel
 summary#:#Samenvatting
 thumbnail#:#Miniatuur
 title#:#Titel
@@ -112,10 +113,14 @@ updated_library#:#Bijgewerkt %%old H5P bibliotheek.
 updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
 upgrade#:#Bijwerken
 upgrade_available#:#Opwaardering beschikbaar
-upload#:#Uploaden
 usage_contents#:#Inhouden die dit gebruiken
 usage_libraries#:#Bibliotheken die dit gebruiken
+upload#:#Uploaden
+upload_file#:#Upload file
+upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
 upload_library#:#Bibliotheken uploaden
+uploaded_file#:#The file %s was uploaded to %s
+uploaded_file_zip#:#The file %s was extracted to %s
 usage_statistics#:#Gebruiks Statistieken
 user#:#Gebruiker
 version#:#Versie

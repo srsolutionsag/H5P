@@ -156,9 +156,9 @@ class ShowEditor {
 	 * @return Content
 	 */
 	public function createContent(EditContentFormGUI $form, $message = true) {
-		$title = $form->getInput("xhfp_title");
-		$library = $form->getInput("xhfp_library");
-		$params = $form->getInput("xhfp_params");
+		$title = $form->getH5PTitle();
+		$library = $form->getLibrary();
+		$params = $form->getParams();
 
 		$library_id = H5PCore::libraryFromString($library);
 		$h5p_library = Library::getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
@@ -181,6 +181,8 @@ class ShowEditor {
 
 		$h5p_content = Content::getContentById($content["id"]);
 
+		$form->handleFileUpload($h5p_content);
+
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);
 		}
@@ -197,17 +199,19 @@ class ShowEditor {
 	public function updateContent(Content $h5p_content, EditContentFormGUI $form, $message = true) {
 		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
-		$title = $form->getInput("xhfp_title");
+		$title = $form->getH5PTitle();
 		$content["title"] = $title;
 
 		$oldParams = json_decode($content["params"]);
-		$params = $form->getInput("xhfp_params");
+		$params = $form->getParams();
 		$params = json_decode($params);
 		$content["params"] = json_encode($params->params);
 
 		self::h5p()->core()->saveContent($content);
 
 		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, $oldParams);
+
+		$form->handleFileUpload($h5p_content);
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);

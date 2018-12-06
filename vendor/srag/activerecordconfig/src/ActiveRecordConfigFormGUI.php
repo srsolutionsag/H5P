@@ -93,7 +93,7 @@ abstract class ActiveRecordConfigFormGUI extends PropertyFormGUI {
 	 */
 	private final function checkConfigClassNameConst()/*: void*/ {
 		if (!defined("static::CONFIG_CLASS_NAME") || empty(static::CONFIG_CLASS_NAME) || !class_exists(static::CONFIG_CLASS_NAME)) {
-			throw new ActiveRecordConfigException("Your class needs to implement the CONFIG_CLASS_NAME constant!");
+			throw new ActiveRecordConfigException("Your class needs to implement the CONFIG_CLASS_NAME constant!", ActiveRecordConfigException::CODE_MISSING_CONST_CONFIG_CLASS_NAME);
 		}
 	}
 }

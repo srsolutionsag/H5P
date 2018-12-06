@@ -312,6 +312,8 @@ class ShowContent {
 
 		$h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
 
+		$h5p_tpl->parseCurrentBlock();
+
 		return self::output()->getHTML($h5p_tpl);
 	}
 

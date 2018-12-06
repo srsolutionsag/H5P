@@ -108,14 +108,14 @@ final class Plugin implements PluginInterface {
 			try {
 				$txt = vsprintf($txt, $placeholders);
 			} catch (Exception $ex) {
-				throw new DICException("Please use the placeholders feature and not direct `sprintf` or `vsprintf` in your code!");
+				throw new DICException("Please use the placeholders feature and not direct `sprintf` or `vsprintf` in your code!", DICException::CODE_MISUSE_TRANSLATE_WITH_SPRINTF);
 			}
 		} else {
 			if ($default !== NULL) {
 				try {
 					$txt = sprintf($default, $key);
 				} catch (Exception $ex) {
-					throw new DICException("Please use only one placeholder in the default text for the key!");
+					throw new DICException("Please use only one placeholder in the default text for the key!", DICException::CODE_MISUSE_TRANSLATE_WITH_SPRINTF);
 				}
 			}
 		}

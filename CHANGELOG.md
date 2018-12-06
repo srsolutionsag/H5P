@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.0]
+- Supports upload html and zip files to the content folder. Used for example in the library "Iframe Embedder"
+- Fix div embed type
+
 ## [2.0.1]
 - PHPVersionChecker
 - Fix sub folder installations again

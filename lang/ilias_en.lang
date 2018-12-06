@@ -27,6 +27,7 @@ content_changed#:#This content has changed since you last used it.
 content_count#:#Content %1$d of %2$d
 content_not_exists#:#The H5P content does not exist anymore
 content_types#:#Content Types
+contents#:#Contents
 delete#:#Delete
 delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
@@ -113,9 +114,13 @@ updated_libraries#:#Updated %%old H5P libraries.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade available
 upload#:#Upload
+upload_file#:#Upload file
+upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
+upload_library#:#Upload library
+uploaded_file#:#The file %s was uploaded to %s
+uploaded_file_zip#:#The file %s was extracted to %s
 usage_contents#:#Contents using it
 usage_libraries#:#Libraries using it
-upload_library#:#Upload library
 usage_statistics#:#Usage statistics
 user#:#User
 version#:#Version

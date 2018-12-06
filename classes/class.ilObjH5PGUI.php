@@ -295,9 +295,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			$this->show($form);
 
 			return;
@@ -329,9 +327,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			$this->show($form);
 
 			return;

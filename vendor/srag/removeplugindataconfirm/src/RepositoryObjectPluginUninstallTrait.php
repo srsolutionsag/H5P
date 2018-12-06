@@ -2,6 +2,8 @@
 
 namespace srag\RemovePluginDataConfirm\H5P;
 
+use srag\RemovePluginDataConfirm\H5P\Exception\RemovePluginDataConfirmException;
+
 /**
  * Trait RepositoryObjectPluginUninstallTrait
  *
