@@ -70,8 +70,8 @@ final class Output implements OutputInterface {
 	 * @inheritdoc
 	 */
 	public function output($value, /*bool*/
-		$main_template = true, /*bool*/
-		$show = false)/*: void*/ {
+		$show = false, /*bool*/
+		$main_template = true)/*: void*/ {
 		$html = $this->getHTML($value);
 
 		if (self::dic()->ctrl()->isAsynch()) {

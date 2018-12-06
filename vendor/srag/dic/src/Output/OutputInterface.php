@@ -41,8 +41,8 @@ interface OutputInterface {
 	 * @throws ilTemplateException
 	 */
 	public function output($value, /*bool*/
-		$main_template = true,/*bool*/
-		$show = false)/*: void*/
+		$show = false, /*bool*/
+		$main_template = true)/*: void*/
 	;
 
 

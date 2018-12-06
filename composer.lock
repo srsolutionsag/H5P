@@ -215,16 +215,16 @@
         },
         {
             "name": "srag/dic",
-            "version": "v0.14.6",
+            "version": "v0.14.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900"
+                "reference": "064f3a20a7ed1090a6853041f174d47d3231935f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900",
-                "reference": "ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/064f3a20a7ed1090a6853041f174d47d3231935f",
+                "reference": "064f3a20a7ed1090a6853041f174d47d3231935f",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-12-06T11:07:18+00:00"
+            "time": "2018-12-06T15:01:56+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
@@ -303,16 +303,16 @@
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "v0.3.4",
+            "version": "v0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "352eb383cc9061255bd3c92e75b0331710f13f98"
+                "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/352eb383cc9061255bd3c92e75b0331710f13f98",
-                "reference": "352eb383cc9061255bd3c92e75b0331710f13f98",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
+                "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -346,7 +346,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2018-12-06T08:08:25+00:00"
+            "time": "2018-12-06T15:01:06+00:00"
         }
     ],
     "packages-dev": [],
