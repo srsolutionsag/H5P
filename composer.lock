@@ -215,16 +215,16 @@
         },
         {
             "name": "srag/dic",
-            "version": "v0.14.5",
+            "version": "v0.14.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "ce21e56fa21da28e352e16cb5caa08209e1aa518"
+                "reference": "ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/ce21e56fa21da28e352e16cb5caa08209e1aa518",
-                "reference": "ce21e56fa21da28e352e16cb5caa08209e1aa518",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900",
+                "reference": "ab6d25b8d9ddff7a057701ec66a51e1eb2d4d900",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-12-06T09:03:21+00:00"
+            "time": "2018-12-06T11:07:18+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",

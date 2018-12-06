@@ -70,21 +70,24 @@ final class Output implements OutputInterface {
 	 * @inheritdoc
 	 */
 	public function output($value, /*bool*/
-		$main = true, $exit_after = true)/*: void*/ {
+		$main_template = true, /*bool*/
+		$show = false)/*: void*/ {
 		$html = $this->getHTML($value);
 
 		if (self::dic()->ctrl()->isAsynch()) {
 			echo $html;
+
+			exit;
 		} else {
-			if ($main) {
+			if ($main_template) {
 				self::dic()->mainTemplate()->getStandardTemplate();
 			}
-			self::dic()->mainTemplate()->setContent($html);
-			self::dic()->mainTemplate()->show();
-		}
 
-		if ($exit_after) {
-			exit;
+			self::dic()->mainTemplate()->setContent($html);
+
+			if ($show) {
+				self::dic()->mainTemplate()->show();
+			}
 		}
 	}
 
@@ -92,7 +95,7 @@ final class Output implements OutputInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function outputJSON($value, $exit_after = true)/*: void*/ {
+	public function outputJSON($value)/*: void*/ {
 		switch (true) {
 			case (is_string($value)):
 			case (is_int($value)):
@@ -108,15 +111,13 @@ final class Output implements OutputInterface {
 
 				echo $value;
 
+				exit;
+
 				break;
 
 			default:
 				throw new DICException(get_class($value) . " is not a valid JSON value!", DICException::CODE_OUTPUT_INVALID_VALUE);
 				break;
-		}
-
-		if ($exit_after) {
-			exit;
 		}
 	}
 }
