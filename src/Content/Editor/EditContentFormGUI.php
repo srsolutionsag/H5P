@@ -104,9 +104,11 @@ class EditContentFormGUI extends PropertyFormGUI {
 					return $params;
 
 				case "upload_file":
-					return $this->txt("files") . '<ul>' . implode("", array_map(function ($uploaded_file) {
-							return "<li>$uploaded_file</li>";
-						}, $this->h5p_content->getUploadedFiles()));
+					if (count($this->h5p_content->getUploadedFiles()) > 0) {
+						return $this->txt("files") . '<ul>' . implode("", array_map(function ($uploaded_file) {
+								return "<li>$uploaded_file</li>";
+							}, $this->h5p_content->getUploadedFiles()));
+					}
 					break;
 
 				default:
