@@ -109,11 +109,11 @@ class H5PActionGUI {
 
 						$this->{$cmd}();
 
-						return;
+						break;
 
 					default:
 						// Unknown commands
-						return;
+						break;
 				}
 				break;
 		}
@@ -156,6 +156,9 @@ class H5PActionGUI {
 				}
 
 				$this->{$action}();
+
+				exit;
+
 				break;
 
 			default:
