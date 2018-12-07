@@ -23,17 +23,17 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\' => 29,
+            'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
+            'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\H5P\\' => 25,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\' => 
+        'srag\\RemovePluginDataConfirm\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -45,7 +45,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
@@ -96,7 +96,9 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'ilToolbarGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/Toolbar/classes/class.ilToolbarGUI.php',
         'ilUIPluginRouterGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/classes/class.ilUIPluginRouterGUI.php',
         'ilUtil' => __DIR__ . '/../..' . '/../../../../../../../Services/Utilities/classes/class.ilUtil.php',
-        'ilWACSignedPath' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php',
+        'ilWACCheckingClass' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/interfaces/interface.ilWACCheckingClass.php',
+        'ilWACPath' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACPath.php',
+        'ilWACSecurePath' => __DIR__ . '/../..' . '/../../../../../../../Services/WebAccessChecker/classes/class.ilWACSecurePath.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfig' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigFormGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',

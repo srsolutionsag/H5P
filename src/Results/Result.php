@@ -86,7 +86,7 @@ class Result extends ActiveRecord {
 	 *
 	 * @return Result[]
 	 */
-	public static function getResultsByObject($obj_id, $parent_type = "object") {
+	public static function getResultsByObject($obj_id, $parent_type = Content::PARENT_TYPE_OBJECT) {
 		/**
 		 * @var Result[] $h5p_results
 		 */
@@ -108,7 +108,7 @@ class Result extends ActiveRecord {
 	 *
 	 * @return Result[]
 	 */
-	public static function getResultsByUserObject($user_id, $obj_id, $parent_type = "object") {
+	public static function getResultsByUserObject($user_id, $obj_id, $parent_type = Content::PARENT_TYPE_OBJECT) {
 		/**
 		 * @var Result[] $h5p_results
 		 */

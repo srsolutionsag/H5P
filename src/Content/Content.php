@@ -22,6 +22,8 @@ class Content extends ActiveRecord {
 	use H5PTrait;
 	const TABLE_NAME = "rep_robj_xhfp_cont";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	const PARENT_TYPE_OBJECT = "object";
+	const PARENT_TYPE_PAGE = "page";
 
 
 	/**
@@ -131,7 +133,7 @@ class Content extends ActiveRecord {
 	 *
 	 * @return Content[]
 	 */
-	public static function getContentsByObject($obj_id, $parent_type = "object") {
+	public static function getContentsByObject($obj_id, $parent_type = self::PARENT_TYPE_OBJECT) {
 		/**
 		 * @var Content[] $h5p_contents
 		 */
@@ -156,7 +158,7 @@ class Content extends ActiveRecord {
 	 *
 	 * @return array
 	 */
-	public static function getContentsByObjectArray($obj_id, $parent_type = "object") {
+	public static function getContentsByObjectArray($obj_id, $parent_type = self::PARENT_TYPE_OBJECT) {
 		$h5p_contents = self::where([
 			"obj_id" => $obj_id,
 			"parent_type" => $parent_type
@@ -389,7 +391,7 @@ class Content extends ActiveRecord {
 	 * @con_fieldtype    text
 	 * @con_is_notnull   true
 	 */
-	protected $parent_type = "object";
+	protected $parent_type = self::PARENT_TYPE_OBJECT;
 	/**
 	 * @var int
 	 *

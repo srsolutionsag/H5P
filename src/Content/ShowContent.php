@@ -328,7 +328,7 @@ class ShowContent {
 	 */
 	public function setFinished($content_id, $score, $max_score, $opened, $finished, $time = NULL) {
 		$h5p_content = Content::getContentById($content_id);
-		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
+		if ($h5p_content !== NULL && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
 			$object = H5PObject::getObjectById($h5p_content->getObjId());
 		} else {
 			$object = NULL;
@@ -389,7 +389,7 @@ class ShowContent {
 	 */
 	public function contentsUserData($content_id, $data_id, $sub_content_id, $data = NULL, $preload = false, $invalidate = false) {
 		$h5p_content = Content::getContentById($content_id);
-		if ($h5p_content !== NULL && $h5p_content->getParentType() === "object") {
+		if ($h5p_content !== NULL && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
 			$object = H5PObject::getObjectById($h5p_content->getObjId());
 		} else {
 			$object = NULL;

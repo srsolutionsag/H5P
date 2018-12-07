@@ -50,10 +50,8 @@ class H5P {
 	}
 
 
-	/**
-	 * CSV seperator
-	 */
 	const CSV_SEPARATOR = ", ";
+	const DATA_FOLDER = "h5p";
 	/**
 	 * @var H5PActionGUI
 	 */
@@ -112,7 +110,7 @@ class H5P {
 	 * H5P constructor
 	 */
 	protected function __construct() {
-		//self::access()->registerWAC();
+
 	}
 
 
@@ -120,7 +118,7 @@ class H5P {
 	 * @return string
 	 */
 	public function getH5PFolder() {
-		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
+		return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/" . self::DATA_FOLDER;
 	}
 
 
@@ -229,7 +227,7 @@ class H5P {
 	 */
 	public function core() {
 		if ($this->core === NULL) {
-			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), ILIAS_HTTP_PATH."/" . $this->getH5PFolder(), self::dic()->user()
+			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), ILIAS_HTTP_PATH . "/" . $this->getH5PFolder(), self::dic()->user()
 				->getLanguage(), false);
 		}
 
