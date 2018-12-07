@@ -358,8 +358,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 					}
 				}
 			} else {
-				ilUtil::moveUploadedFile($this->upload_file["tmp_name"], $this->upload_file["name"], $content_folder . "/"
-					. $this->upload_file["name"], false);
+				rename($this->upload_file["tmp_name"], $content_folder . "/" . $this->upload_file["name"]);
 
 				$uploaded_files[] = $this->upload_file["name"];
 			}
