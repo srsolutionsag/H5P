@@ -209,6 +209,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 							break;
 					}
 				}
+				break;
 
 			default:
 				break;
