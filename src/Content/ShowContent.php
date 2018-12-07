@@ -348,7 +348,7 @@ class ShowContent {
 		} else {
 			// Prevent update result on a repository object with "Solve only once"
 			if ($object !== NULL && $object->isSolveOnlyOnce()) {
-				die();
+				return;
 			}
 		}
 
@@ -419,7 +419,7 @@ class ShowContent {
 				} else {
 					// Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
 					if ($object !== NULL && $object->isSolveOnlyOnce() && Result::hasContentResults($h5p_content->getContentId())) {
-						die();
+						return NULL;
 					}
 				}
 
