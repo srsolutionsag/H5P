@@ -68,7 +68,11 @@ class EditContentFormGUI extends PropertyFormGUI {
 	 * @param string       $cmd_update
 	 * @param string       $cmd_cancel
 	 */
-	public function __construct($parent, Content $h5p_content = NULL, $cmd_create, $cmd_update, $cmd_cancel) {
+	public function __construct($parent, /*?*/
+		Content $h5p_content = NULL, /*string*/
+		$cmd_create, /*string*/
+		$cmd_update, /*string*/
+		$cmd_cancel) {
 		$this->h5p_content = $h5p_content;
 		$this->cmd_create = $cmd_create;
 		$this->cmd_update = $cmd_update;
@@ -225,6 +229,18 @@ class EditContentFormGUI extends PropertyFormGUI {
 	/**
 	 * @return string
 	 */
+	public function getHTML()/*: string*/ {
+		$html = parent::getHTML();
+
+		$html = str_replace('<div class="form-group" id="il_prop_cont_upload_file">', '<div class="form-group ilNoDisplay" id="il_prop_cont_upload_file">', $html);
+
+		return $html;
+	}
+
+
+	/**
+	 * @return string
+	 */
 	public function getH5PTitle()/*_: string*/ {
 		return $this->h5p_title;
 	}
@@ -249,7 +265,11 @@ class EditContentFormGUI extends PropertyFormGUI {
 	/**
 	 * @param Content $h5p_content
 	 */
-	public function handleFileUpload(Content $h5p_content) {
+	public function handleFileUpload(Content $h5p_content)/*: void*/ {
+		if (strpos($this->library, "H5P.IFrameEmbed") !== 0) {
+			return;
+		}
+
 		if (is_array($this->upload_file) && !empty($this->upload_file["tmp_name"])) {
 			if (pathinfo($this->upload_file["name"], PATHINFO_EXTENSION) === "zip") {
 				$zip = new ZipArchive();
@@ -260,7 +280,10 @@ class EditContentFormGUI extends PropertyFormGUI {
 
 					$zip->close();
 
-					ilUtil::sendInfo(self::plugin()->translate("uploaded_file_zip", self::LANG_MODULE, [ $this->upload_file["name"], $dest ]), true);
+					ilUtil::sendInfo(self::plugin()->translate("uploaded_file_zip", self::LANG_MODULE, [
+						$this->upload_file["name"],
+						$dest
+					]), true);
 				}
 			} else {
 				$dest = self::h5p()->getH5PFolder() . "/content/" . $h5p_content->getContentId() . "/" . $this->upload_file["name"];

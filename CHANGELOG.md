@@ -1,7 +1,7 @@
 # Changelog
 
 ## [2.1.0]
-- Supports upload html and zip files to the content folder. Used for example in the library "Iframe Embedder"
+- Supports upload html and zip files for Iframe Embedder
 - Fix div embed type
 
 ## [2.0.1]
