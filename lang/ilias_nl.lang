@@ -51,6 +51,7 @@ embed_include_script#:#Include this script on your website if you want dynamic s
 enable_lrs_content_types#:#Enable LRS dependent content types.
 enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 example#:#Example
+files#:#Files:
 finish#:#Finish
 finished#:#Finished
 fullscreen#:#Fullscreen

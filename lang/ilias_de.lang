@@ -51,6 +51,7 @@ embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des 
 enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
 example#:#Beispiel
+files#:#Dateien:
 finish#:#Beenden
 finished#:#Beendet
 fullscreen#:#Vollbild

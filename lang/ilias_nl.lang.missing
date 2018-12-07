@@ -51,6 +51,7 @@ embed_include_script#:#MISSING embed_include_script
 enable_lrs_content_types#:#MISSING enable_lrs_content_types
 enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
 example#:#MISSING example
+files#:#MISSING files
 finish#:#MISSING finish
 finished#:#MISSING finished
 fullscreen#:#MISSING fullscreen
