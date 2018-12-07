@@ -317,6 +317,9 @@ class EditContentFormGUI extends PropertyFormGUI {
 			$uploaded_files = [];
 			$uploaded_files_invalid = [];
 
+			$whitelist_ext = explode(" ", self::h5p()->framework()->getWhitelist(false, H5PCore::$defaultContentWhitelist
+				. " html", H5PCore::$defaultLibraryWhitelistExtras));
+
 			if (pathinfo($this->upload_file["name"], PATHINFO_EXTENSION) === "zip") {
 				$zip = new ZipArchive();
 
@@ -328,9 +331,6 @@ class EditContentFormGUI extends PropertyFormGUI {
 					$zip->close();
 
 					$files = ilUtil::getDir($temp_folder, true);
-
-					$whitelist_ext = explode(" ", self::h5p()->framework()->getWhitelist(false, H5PCore::$defaultContentWhitelist
-						. " html", H5PCore::$defaultLibraryWhitelistExtras));
 
 					foreach ($files as $file => $info) {
 						if ($file !== "." && $file !== ".." && $info["type"] === "file") {
@@ -358,9 +358,18 @@ class EditContentFormGUI extends PropertyFormGUI {
 					}
 				}
 			} else {
-				rename($this->upload_file["tmp_name"], $content_folder . "/" . $this->upload_file["name"]);
+				$temp_file = $this->upload_file["tmp_name"];
 
-				$uploaded_files[] = $this->upload_file["name"];
+				$new_file = $content_folder . "/" . $this->upload_file["name"];
+
+				$ext = pathinfo($new_file, PATHINFO_EXTENSION);
+				if (in_array($ext, $whitelist_ext)) {
+					ilUtil::makeDirParents(dirname($new_file));
+
+					rename($temp_file, $new_file);
+
+					$uploaded_files[] = $this->upload_file["name"];
+				}
 			}
 
 			if (count($uploaded_files) > 0) {
