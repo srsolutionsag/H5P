@@ -31,11 +31,12 @@ contents#:#Contents
 delete#:#Delete
 delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
-deleted_content#:#Content %s deleted
 delete_library_confirm#:#Are you really want to delete the library: %s ?
 delete_library_in_use#:#The library is still in use
-deleted_library#:#Library %s deleted
 delete_results_confirm#:#Are you really want to delete the results of %s?
+deleted_content#:#Content %s deleted
+deleted_files#:#Follow files was deleted in %s:
+deleted_library#:#Library %s deleted
 deleted_results#:#Results of %s deleted
 description#:#Description
 details#:#Details
@@ -119,8 +120,8 @@ upload#:#Uploaden
 upload_file#:#Upload file
 upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
 upload_library#:#Bibliotheken uploaden
-uploaded_file#:#The file %s was uploaded to %s
-uploaded_file_zip#:#The file %s was extracted to %s
+uploaded_files#:#The follow file(s) was uploaded to %s:
+uploaded_files_failed#:#The following file(s) were not accepted because it has a harmful extension:
 usage_statistics#:#Gebruiks Statistieken
 user#:#Gebruiker
 version#:#Versie

@@ -31,11 +31,12 @@ contents#:#Inhalte
 delete#:#Löschen
 delete_content#:#Inhalt löschen
 delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
-deleted_content#:#Inhalt %s gelöscht
 delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
 delete_library_in_use#:#Die Bibliothek wird noch benutzt
-deleted_library#:#Bibliothek %s gelöscht
 delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
+deleted_content#:#Inhalt %s gelöscht
+deleted_files#:#Folgende Dateien wurden in %s gelöscht:
+deleted_library#:#Bibliothek %s gelöscht
 deleted_results#:#Resultate von %s gelöscht
 description#:#Beschreibung
 details#:#Details
@@ -115,10 +116,10 @@ upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
 upload_file#:#Datei hochladen
-upload_file_info2#:#Lädt eine Datei nach %s hoch. Zip-Datein werden automatisch entpackt
+upload_file_info2#:#Lädt eine Datei nach %s hoch. Zip-Dateien werden automatisch entpackt
 upload_library#:#Bibliothek hochladen
-uploaded_file#:#Die Datei %s wurde nach %s hochgeladen
-uploaded_file_zip#:#Die Datei %s wurde nach %s entpackt
+uploaded_files#:#Folgende Datei(en) wurde(n) nach %s hochgeladen:
+uploaded_files_failed#:#Folgende Datei(en) wurde(n) nicht angenommen, da sie eine schädliche Endung haben/hat:
 usage_contents#:#Inhalte, die es verwenden
 usage_libraries#:#Bibliotheken, die es verwenden
 usage_statistics#:#Nutzungsstatistik

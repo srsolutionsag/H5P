@@ -399,6 +399,14 @@ class Content extends ActiveRecord {
 	 * @con_is_notnull   true
 	 */
 	protected $sort;
+	/**
+	 * @var string[]
+	 *
+	 * @con_has_field    true
+	 * @con_fieldtype    text
+	 * @con_is_notnull   true
+	 */
+	protected $uploaded_files = [];
 
 
 	/**
@@ -424,7 +432,9 @@ class Content extends ActiveRecord {
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
+
+			case "uploaded_files":
+				return json_encode($field_value);
 
 			default:
 				return NULL;
@@ -446,12 +456,10 @@ class Content extends ActiveRecord {
 			case "disable":
 			case "sort":
 				return intval($field_value);
-				break;
 
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			case "obj_id":
 				if ($field_value !== NULL) {
@@ -459,7 +467,9 @@ class Content extends ActiveRecord {
 				} else {
 					return NULL;
 				}
-				break;
+
+			case "uploaded_files":
+				return json_decode($field_value);
 
 			default:
 				return NULL;
@@ -806,5 +816,21 @@ class Content extends ActiveRecord {
 	 */
 	public function setSort($sort) {
 		$this->sort = $sort;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getUploadedFiles() {
+		return $this->uploaded_files;
+	}
+
+
+	/**
+	 * @param string[] $uploaded_files
+	 */
+	public function setUploadedFiles(array $uploaded_files) {
+		$this->uploaded_files = $uploaded_files;
 	}
 }

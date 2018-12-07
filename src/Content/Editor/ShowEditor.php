@@ -181,7 +181,8 @@ class ShowEditor {
 
 		$h5p_content = Content::getContentById($content["id"]);
 
-		$form->handleFileUpload($h5p_content);
+		$form->setH5pContent($h5p_content);
+		$form->handleFileUpload();
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);

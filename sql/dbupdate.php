@@ -33,3 +33,7 @@ if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Op
 	\srag\DIC\H5P\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
 }
 ?>
+<#3>
+<?php
+\srag\Plugins\H5P\Content\Content::updateDB();
+?>
