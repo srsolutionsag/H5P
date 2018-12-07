@@ -31,11 +31,12 @@ contents#:#Contents
 delete#:#Delete
 delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
-deleted_content#:#Content %s deleted
 delete_library_confirm#:#Are you really want to delete the library: %s ?
 delete_library_in_use#:#The library is still in use
-deleted_library#:#Library %s deleted
 delete_results_confirm#:#Are you really want to delete the results of %s?
+deleted_content#:#Content %s deleted
+deleted_files#:#Follow files was deleted in %s:
+deleted_library#:#Library %s deleted
 deleted_results#:#Results of %s deleted
 description#:#Description
 details#:#Details
@@ -50,6 +51,7 @@ embed_include_script#:#Include this script on your website if you want dynamic s
 enable_lrs_content_types#:#Enable LRS dependent content types.
 enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 example#:#Example
+files#:#Files:
 finish#:#Finish
 finished#:#Finished
 fullscreen#:#Fullscreen
@@ -104,6 +106,7 @@ solved_content#:#You have already solved this content.
 source#:#Source
 start_over#:#You'll be starting over.
 status#:#Status
+sublevel#:#Sublevel
 summary#:#Samenvatting
 thumbnail#:#Miniatuur
 title#:#Titel
@@ -112,10 +115,14 @@ updated_library#:#Bijgewerkt %%old H5P bibliotheek.
 updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
 upgrade#:#Bijwerken
 upgrade_available#:#Opwaardering beschikbaar
-upload#:#Uploaden
 usage_contents#:#Inhouden die dit gebruiken
 usage_libraries#:#Bibliotheken die dit gebruiken
+upload#:#Uploaden
+upload_file#:#Upload file
+upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
 upload_library#:#Bibliotheken uploaden
+uploaded_files#:#The follow file(s) was uploaded to %s:
+uploaded_files_failed#:#The following file(s) were not accepted because it has a harmful extension:
 usage_statistics#:#Gebruiks Statistieken
 user#:#Gebruiker
 version#:#Versie

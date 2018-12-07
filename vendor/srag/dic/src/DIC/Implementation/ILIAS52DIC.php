@@ -343,7 +343,7 @@ final class ILIAS52DIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function settings()/*: ilSetting*/ {
-		return $this->dic->settings();
+		return $this->dic["ilSetting"];
 	}
 
 

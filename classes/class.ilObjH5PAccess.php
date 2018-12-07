@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -11,7 +12,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ilObjH5PAccess extends ilObjectPluginAccess {
+class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass {
 
 	use DICTrait;
 	use H5PTrait;
@@ -178,5 +179,43 @@ class ilObjH5PAccess extends ilObjectPluginAccess {
 	 */
 	public static function hasEditPermissionAccess($ref_id = NULL) {
 		return self::checkAccess("edit_permission", "edit_permission", $ref_id);
+	}
+
+
+	/**
+	 * @param ilWACPath $ilWACPath
+	 *
+	 * @return bool
+	 */
+	public function canBeDelivered(ilWACPath $ilWACPath) {
+		switch ($ilWACPath->getModuleIdentifier()) {
+			case "cachedassets":
+			case "libraries":
+				return true;
+
+			case "content":
+				$content_id = intval(substr($ilWACPath->getPath(), strlen($ilWACPath->getModulePath() . "content/")));
+
+				$content = Content::getContentById($content_id);
+
+				if ($content !== NULL) {
+					switch ($content->getParentType()) {
+						case Content::PARENT_TYPE_OBJECT:
+							return self::hasReadAccess(current(ilObject::_getAllReferences($content->getObjId())));
+
+						case Content::PARENT_TYPE_PAGE:
+							return true;
+
+						default:
+							break;
+					}
+				}
+				break;
+
+			default:
+				break;
+		}
+
+		return false;
 	}
 }

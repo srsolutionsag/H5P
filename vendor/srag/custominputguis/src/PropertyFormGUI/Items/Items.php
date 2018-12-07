@@ -32,7 +32,8 @@ final class Items {
 	 */
 	public static final function getItem($key, array $field, $parent_item, $parent) {
 		if (!class_exists($field[PropertyFormGUI::PROPERTY_CLASS])) {
-			throw new PropertyFormGUIException("Class " . $field[PropertyFormGUI::PROPERTY_CLASS] . " not exists!");
+			throw new PropertyFormGUIException("Class " . $field[PropertyFormGUI::PROPERTY_CLASS]
+				. " not exists!", PropertyFormGUIException::CODE_INVALID_PROPERTY_CLASS);
 		}
 
 		/**
@@ -82,6 +83,10 @@ final class Items {
 
 		if (method_exists($item, "getDate")) {
 			return $item->getDate();
+		}
+
+		if (method_exists($item, "getImage")) {
+			return $item->getImage();
 		}
 
 		if (method_exists($item, "getValue") && !($item instanceof ilRadioOption)) {
@@ -166,6 +171,12 @@ final class Items {
 
 		if (method_exists($item, "setDate")) {
 			$item->setDate($value);
+
+			return;
+		}
+
+		if (method_exists($item, "setImage")) {
+			$item->setImage($value);
 
 			return;
 		}

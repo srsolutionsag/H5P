@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.14.7]
+- Output ...
+
+## [0.14.6]
+- Output ...
+
+## [0.14.5]
+- Output $exit_after=true default
+
+## [0.14.4]
+- Output $exit_after
+- DICException::CODE_X
+
+## [0.14.3]
+- Fix ILIAS 5.2
+
 ## [0.14.2]
 - PHPVersionChecker fix cache
 

@@ -104,17 +104,15 @@ class H5PActionGUI {
 					case self::CMD_H5P_ACTION:
 						// Read commands
 						if (!ilObjH5PAccess::hasReadAccess()) {
-							die();
+							return;
 						}
 
 						$this->{$cmd}();
 
-						exit();
 						break;
 
 					default:
 						// Unknown commands
-						die();
 						break;
 				}
 				break;
@@ -138,7 +136,7 @@ class H5PActionGUI {
 			case self::H5P_ACTION_SET_FINISHED:
 				// Read actions
 				if (!ilObjH5PAccess::hasReadAccess()) {
-					die();
+					return;
 				}
 
 				$this->{$action}();
@@ -154,15 +152,17 @@ class H5PActionGUI {
 			case self::H5P_ACTION_RESTRICT_LIBRARY:
 				// Write actions
 				if (!ilObjH5PAccess::hasWriteAccess()) {
-					die();
+					return;
 				}
 
 				$this->{$action}();
+
+				exit;
+
 				break;
 
 			default:
 				// Unknown action
-				die();
 				break;
 		}
 	}

@@ -119,17 +119,17 @@
     },
     {
         "name": "srag/activerecordconfig",
-        "version": "v0.13.2",
-        "version_normalized": "0.13.2.0",
+        "version": "v0.13.3",
+        "version_normalized": "0.13.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-            "reference": "4c12107c37cafe977c3a99bae4c57ec16929e97a"
+            "reference": "903a1838db18c502e60e1fb5edd5f3ada8e4ae50"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/4c12107c37cafe977c3a99bae4c57ec16929e97a",
-            "reference": "4c12107c37cafe977c3a99bae4c57ec16929e97a",
+            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/903a1838db18c502e60e1fb5edd5f3ada8e4ae50",
+            "reference": "903a1838db18c502e60e1fb5edd5f3ada8e4ae50",
             "shasum": ""
         },
         "require": {
@@ -137,7 +137,7 @@
             "srag/custominputguis": ">=0.1.0",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2018-11-23T10:42:57+00:00",
+        "time": "2018-12-06T08:03:38+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -167,24 +167,24 @@
     },
     {
         "name": "srag/custominputguis",
-        "version": "v0.13.19",
-        "version_normalized": "0.13.19.0",
+        "version": "v0.14.0",
+        "version_normalized": "0.14.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-            "reference": "3db75fc743668d35d47ea8fd7889447b9a18e984"
+            "reference": "3056f3ba2ac4885093bb1ccf5eea10d8abb339c9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/3db75fc743668d35d47ea8fd7889447b9a18e984",
-            "reference": "3db75fc743668d35d47ea8fd7889447b9a18e984",
+            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/3056f3ba2ac4885093bb1ccf5eea10d8abb339c9",
+            "reference": "3056f3ba2ac4885093bb1ccf5eea10d8abb339c9",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2018-11-26T12:16:00+00:00",
+        "time": "2018-12-06T08:52:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -216,23 +216,23 @@
     },
     {
         "name": "srag/dic",
-        "version": "v0.14.2",
-        "version_normalized": "0.14.2.0",
+        "version": "v0.14.7",
+        "version_normalized": "0.14.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9"
+            "reference": "064f3a20a7ed1090a6853041f174d47d3231935f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9",
-            "reference": "cf93a05f7c14ed9f0279f64e2325e8e88a66fbf9",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/064f3a20a7ed1090a6853041f174d47d3231935f",
+            "reference": "064f3a20a7ed1090a6853041f174d47d3231935f",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6"
         },
-        "time": "2018-11-30T09:06:55+00:00",
+        "time": "2018-12-06T15:01:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -263,23 +263,23 @@
     },
     {
         "name": "srag/librariesnamespacechanger",
-        "version": "v0.3.6",
-        "version_normalized": "0.3.6.0",
+        "version": "v0.3.7",
+        "version_normalized": "0.3.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a"
+            "reference": "ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf5f3be4341270fbe46a977bbd1403d744fb797a",
-            "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301",
+            "reference": "ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6"
         },
-        "time": "2018-11-21T08:31:42+00:00",
+        "time": "2018-12-06T08:18:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -308,24 +308,24 @@
     },
     {
         "name": "srag/removeplugindataconfirm",
-        "version": "v0.3.3",
-        "version_normalized": "0.3.3.0",
+        "version": "v0.3.5",
+        "version_normalized": "0.3.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-            "reference": "0a4c2efb645c77ed609885366d3ac8f17c1dedbc"
+            "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/0a4c2efb645c77ed609885366d3ac8f17c1dedbc",
-            "reference": "0a4c2efb645c77ed609885366d3ac8f17c1dedbc",
+            "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
+            "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2018-11-28T08:24:16+00:00",
+        "time": "2018-12-06T15:01:06+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

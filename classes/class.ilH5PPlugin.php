@@ -18,6 +18,7 @@ use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Option\OptionOld;
 use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\Utils\H5P;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 
@@ -109,5 +110,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 		$h5p_folder = self::h5p()->getH5PFolder();
 
 		H5PCore::deleteFileTree($h5p_folder);
+
+		ilWACSecurePath::find(H5P::DATA_FOLDER)->delete();
 	}
 }

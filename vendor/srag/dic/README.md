@@ -81,12 +81,13 @@ For output HTML or GUI use:
 /**
  * Output HTML or GUI
  * 
- * @param string|object $html HTML code or some GUI instance
- * @param bool $main Display main skin?
+ * @param string|object $html          HTML code or some GUI instance
+ * @param bool          $show          Show main template?
+ * @param bool          $main_template Display main skin?
  *
  * @throws DICException
  */
-self::output()->output($value, $main = true)/*: void*/;
+self::output()->output($value, $show = false, $main_template = true)/*: void*/;
 ```
 
 For output JSON:

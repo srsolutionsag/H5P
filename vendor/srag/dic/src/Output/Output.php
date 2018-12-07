@@ -57,7 +57,7 @@ final class Output implements OutputInterface {
 
 				// Not supported!
 				default:
-					throw new DICException("Class " . get_class($value) . " is not supported for output!");
+					throw new DICException("Class " . get_class($value) . " is not supported for output!", DICException::CODE_OUTPUT_INVALID_VALUE);
 					break;
 			}
 		}
@@ -70,20 +70,25 @@ final class Output implements OutputInterface {
 	 * @inheritdoc
 	 */
 	public function output($value, /*bool*/
-		$main = true)/*: void*/ {
+		$show = false, /*bool*/
+		$main_template = true)/*: void*/ {
 		$html = $this->getHTML($value);
 
 		if (self::dic()->ctrl()->isAsynch()) {
 			echo $html;
+
+			exit;
 		} else {
-			if ($main) {
+			if ($main_template) {
 				self::dic()->mainTemplate()->getStandardTemplate();
 			}
-			self::dic()->mainTemplate()->setContent($html);
-			self::dic()->mainTemplate()->show();
-		}
 
-		exit;
+			self::dic()->mainTemplate()->setContent($html);
+
+			if ($show) {
+				self::dic()->mainTemplate()->show();
+			}
+		}
 	}
 
 
@@ -106,13 +111,13 @@ final class Output implements OutputInterface {
 
 				echo $value;
 
+				exit;
+
 				break;
 
 			default:
-				throw new DICException(get_class($value) . " is not a valid JSON value!");
+				throw new DICException(get_class($value) . " is not a valid JSON value!", DICException::CODE_OUTPUT_INVALID_VALUE);
 				break;
 		}
-
-		exit;
 	}
 }

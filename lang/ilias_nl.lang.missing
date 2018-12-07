@@ -31,11 +31,12 @@ contents#:#MISSING contents
 delete#:#MISSING delete
 delete_content#:#MISSING delete_content
 delete_content_confirm#:#MISSING delete_content_confirm
-deleted_content#:#MISSING deleted_content
 delete_library_confirm#:#MISSING delete_library_confirm
 delete_library_in_use#:#MISSING delete_library_in_use
-deleted_library#:#MISSING deleted_library
 delete_results_confirm#:#MISSING delete_results_confirm
+deleted_content#:#MISSING deleted_content
+deleted_files#:#MISSING deleted_files
+deleted_library#:#MISSING deleted_library
 deleted_results#:#MISSING deleted_results
 description#:#MISSING description
 details#:#MISSING details
@@ -50,6 +51,7 @@ embed_include_script#:#MISSING embed_include_script
 enable_lrs_content_types#:#MISSING enable_lrs_content_types
 enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
 example#:#MISSING example
+files#:#MISSING files
 finish#:#MISSING finish
 finished#:#MISSING finished
 fullscreen#:#MISSING fullscreen
@@ -114,9 +116,13 @@ updated_libraries#:#Bijgewerkt %%old H5P bibliotheken.
 upgrade#:#Bijwerken
 upgrade_available#:#Opwaardering beschikbaar
 upload#:#Uploaden
+upload_file#:#MISSING upload_file
+upload_file_info2#:#MISSING upload_file_info2
+upload_library#:#Bibliotheken uploaden
+uploaded_files#:#MISSING uploaded_files
+uploaded_files_failed#:#MISSING uploaded_files_failed
 usage_contents#:#Inhouden die dit gebruiken
 usage_libraries#:#Bibliotheken die dit gebruiken
-upload_library#:#Bibliotheken uploaden
 usage_statistics#:#Gebruiks Statistieken
 user#:#Gebruiker
 version#:#Versie

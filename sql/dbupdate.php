@@ -33,3 +33,24 @@ if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\H5P\Op
 	\srag\DIC\H5P\DICStatic::dic()->database()->dropTable(\srag\Plugins\H5P\Option\OptionOld::TABLE_NAME);
 }
 ?>
+<#3>
+<?php
+\srag\Plugins\H5P\Content\Content::updateDB();
+?>
+<#4>
+<?php
+/**
+ * @var \ilWACSecurePath $path
+ */
+$path = \ilWACSecurePath::findOrGetInstance(\srag\Plugins\H5P\Utils\H5P::DATA_FOLDER);
+
+$path->setPath(\srag\Plugins\H5P\Utils\H5P::DATA_FOLDER);
+
+$path->setCheckingClass(\ilObjH5PAccess::class);
+
+$path->setInSecFolder(false);
+
+$path->setComponentDirectory(\srag\DIC\H5P\DICStatic::plugin(\ilH5PPlugin::PLUGIN_CLASS_NAME)->directory());
+
+$path->store();
+?>

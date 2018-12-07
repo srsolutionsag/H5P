@@ -9,7 +9,6 @@ use ilTable2GUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\TableGUI\Exception\TableGUIException;
 use srag\DIC\H5P\DICTrait;
-use srag\DIC\H5P\Exception\DICException;
 
 /**
  * Class TableGUI
@@ -111,18 +110,18 @@ abstract class TableGUI extends ilTable2GUI {
 		$this->initFilterFields();
 
 		if (!is_array($this->filter_fields)) {
-			throw new TableGUIException("\$filters needs to be an array!");
+			throw new TableGUIException("\$filters needs to be an array!", TableGUIException::CODE_INVALID_FIELD);
 		}
 
 		foreach ($this->filter_fields as $key => $field) {
 			if (!is_array($field)) {
-				throw new TableGUIException("\$field needs to be an array!");
+				throw new TableGUIException("\$field needs to be an array!", TableGUIException::CODE_INVALID_FIELD);
 			}
 
 			$item = Items::getItem($key, $field, $this, $this);
 
 			/*if (!($item instanceof ilTableFilterItem)) {
-				throw new TableGUIException("\$item must be an instance of ilTableFilterItem!");
+				throw new TableGUIException("\$item must be an instance of ilTableFilterItem!", TableGUIException::CODE_INVALID_FIELD);
 			}*/
 
 			$this->filter_cache[$key] = $item;
@@ -182,17 +181,9 @@ abstract class TableGUI extends ilTable2GUI {
 		$key,/*?string*/
 		$default = NULL)/*: string*/ {
 		if ($default !== NULL) {
-			try {
-				return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
-			} catch (DICException $ex) {
-				return $default;
-			}
+			return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
 		} else {
-			try {
-				return self::plugin()->translate($key, static::LANG_MODULE);
-			} catch (DICException $ex) {
-				return "";
-			}
+			return self::plugin()->translate($key, static::LANG_MODULE);
 		}
 	}
 

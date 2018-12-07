@@ -17,13 +17,14 @@
 
 		H5PEditor.contentId = H5PIntegration.editor.contentId;
 
-		var $library = $('input[name="xhfp_library"]');
-		var $params = $('input[name="xhfp_params"]');
+		var $library = $('input[name="library"]');
+		var $params = $('input[name="params"]');
 		var $editor = $("#xhfp_editor");
 		var $form = $("#form_xhfp_edit_form");
 		var $toolbar = $("#xhfp_edit_toolbar");
 		var $toolbar_tutorial = $("#xhfp_edit_toolbar_tutorial");
 		var $toolbar_example = $("#xhfp_edit_toolbar_example");
+		var $upload_file = $("#il_prop_cont_upload_file");
 		//var $editor_error = $("#xhfp_editor_error");
 
 		var library = $library.val();
@@ -71,6 +72,12 @@
 				$toolbar.addClass("ilNoDisplay");
 				$toolbar_tutorial.addClass("ilNoDisplay");
 				$toolbar_example.addClass("ilNoDisplay");
+
+				if (library.indexOf("H5P.IFrameEmbed") === 0) {
+					$upload_file.removeClass("ilNoDisplay");
+				} else {
+					$upload_file.addClass("ilNoDisplay");
+				}
 
 				if (typeof library === "string" && library !== "" && library !== "-") {
 					var get_url = H5PEditor.getAjaxUrl("getTutorial", {

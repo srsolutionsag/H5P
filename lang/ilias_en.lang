@@ -27,14 +27,16 @@ content_changed#:#This content has changed since you last used it.
 content_count#:#Content %1$d of %2$d
 content_not_exists#:#The H5P content does not exist anymore
 content_types#:#Content Types
+contents#:#Contents
 delete#:#Delete
 delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
-deleted_content#:#Content %s deleted
 delete_library_confirm#:#Are you really want to delete the library: %s ?
 delete_library_in_use#:#The library is still in use
-deleted_library#:#Library %s deleted
 delete_results_confirm#:#Are you really want to delete the results of %s?
+deleted_content#:#Content %s deleted
+deleted_files#:#Follow files was deleted in %s:
+deleted_library#:#Library %s deleted
 deleted_results#:#Results of %s deleted
 description#:#Description
 details#:#Details
@@ -49,6 +51,7 @@ embed_include_script#:#Include this script on your website if you want dynamic s
 enable_lrs_content_types#:#Enable LRS dependent content types.
 enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 example#:#Example
+files#:#Files:
 finish#:#Finish
 finished#:#Finished
 fullscreen#:#Fullscreen
@@ -113,9 +116,13 @@ updated_libraries#:#Updated %%old H5P libraries.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade available
 upload#:#Upload
+upload_file#:#Upload file
+upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
+upload_library#:#Upload library
+uploaded_files#:#The follow file(s) was uploaded to %s:
+uploaded_files_failed#:#The following file(s) were not accepted because it has a harmful extension:
 usage_contents#:#Contents using it
 usage_libraries#:#Libraries using it
-upload_library#:#Upload library
 usage_statistics#:#Usage statistics
 user#:#User
 version#:#Version

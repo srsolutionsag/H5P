@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.1.0]
+- Supports upload html and zip files for Iframe Embedder
+- Check read access in h5p data folder
+- Fix div embed type
+
 ## [2.0.1]
 - PHPVersionChecker
 - Fix sub folder installations again

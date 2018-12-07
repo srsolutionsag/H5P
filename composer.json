@@ -63,7 +63,9 @@
       "../../../../../../../Services/UIComponent/Toolbar/classes/class.ilToolbarGUI.php",
       "../../../../../../../Services/Utilities/classes/class.ilConfirmationGUI.php",
       "../../../../../../../Services/Utilities/classes/class.ilUtil.php",
-      "../../../../../../../Services/WebAccessChecker/classes/class.ilWACSignedPath.php",
+      "../../../../../../../Services/WebAccessChecker/classes/class.ilWACPath.php",
+      "../../../../../../../Services/WebAccessChecker/classes/class.ilWACSecurePath.php",
+      "../../../../../../../Services/WebAccessChecker/interfaces/interface.ilWACCheckingClass.php",
       "../../../../../../../Services/WebServices/Curl/classes/class.ilCurlConnection.php"
     ]
   },
