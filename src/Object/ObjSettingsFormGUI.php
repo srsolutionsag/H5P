@@ -7,7 +7,7 @@ use ilH5PPlugin;
 use ilObjH5PGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\ObjectPropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -17,7 +17,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ObjSettingsFormGUI extends PropertyFormGUI {
+class ObjSettingsFormGUI extends ObjectPropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
@@ -27,25 +27,14 @@ class ObjSettingsFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function getValue(/*string*/
-		$key)/*: void*/ {
+		$key) {
 		switch ($key) {
-			case "title":
-				return $this->parent->object->getTitle();
-
 			case "description":
-				return $this->parent->object->getLongDescription();
-
-			case "online":
-				return $this->parent->object->isOnline();
-
-			case "solve_only_once":
-				return $this->parent->object->isSolveOnlyOnce();
+				return $this->object->getLongDescription();
 
 			default:
-				break;
+				return parent::getValue($key);
 		}
-
-		return NULL;
 	}
 
 
@@ -102,42 +91,17 @@ class ObjSettingsFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function storeForm()/*: bool*/ {
-		if (!parent::storeForm()) {
-			return false;
-		}
-
-		$this->parent->object->update();
-
-		return true;
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
 	protected function storeValue(/*string*/
 		$key, $value)/*: void*/ {
 		switch ($key) {
-			case "title":
-				$this->parent->object->setTitle($value);
-				break;
-
-			case "description":
-				$this->parent->object->setDescription($value);
-				break;
-
-			case "online":
-				$this->parent->object->setOnline($value);
-				break;
-
 			case "solve_only_once":
 				if (!$this->parent->hasResults()) {
-					$this->parent->object->setSolveOnlyOnce($value);
+					parent::storeValue($key, $value);
 				}
 				break;
 
 			default:
+				parent::storeValue($key, $value);
 				break;
 		}
 	}

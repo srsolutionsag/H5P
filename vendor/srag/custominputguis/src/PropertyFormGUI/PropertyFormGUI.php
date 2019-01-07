@@ -36,6 +36,10 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	/**
 	 * @var string
 	 */
+	const PROPERTY_NOT_ADD = "not_add";
+	/**
+	 * @var string
+	 */
 	const PROPERTY_OPTIONS = "options";
 	/**
 	 * @var string
@@ -100,6 +104,10 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 		foreach ($fields as $key => $field) {
 			if (!is_array($field)) {
 				throw new PropertyFormGUIException("\$fields needs to be an array!", PropertyFormGUIException::CODE_INVALID_FIELD);
+			}
+
+			if ($field[self::PROPERTY_NOT_ADD]) {
+				continue;
 			}
 
 			$item = Items::getItem($key, $field, $parent_item, $this);
@@ -178,16 +186,18 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	 */
 	private final function storeFormItems(array $fields)/*: void*/ {
 		foreach ($fields as $key => $field) {
-			$item = $this->items_cache[$key];
+			if (isset($this->items_cache[$key])) {
+				$item = $this->items_cache[$key];
 
-			if ($item instanceof ilFormPropertyGUI) {
-				$value = Items::getValueFromItem($item);
+				if ($item instanceof ilFormPropertyGUI) {
+					$value = Items::getValueFromItem($item);
 
-				$this->storeValue($key, $value);
-			}
+					$this->storeValue($key, $value);
+				}
 
-			if (is_array($field[self::PROPERTY_SUBITEMS])) {
-				$this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
+				if (is_array($field[self::PROPERTY_SUBITEMS])) {
+					$this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
+				}
 			}
 		}
 	}

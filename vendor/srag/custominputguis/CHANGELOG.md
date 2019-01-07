@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.16.0]
+- ConfigPropertyFormGUI, ObjectPropertyFormGUI
+
+## [0.15.3]
+- Not auto call setTitle/setInfo if it manuelly should set
+
+## [0.15.2]
+- Use native ProgressMeterFactory on ILIAS 5.4
+
+## [0.15.1]
+- CustomInputGUIsTrait
+
+## [0.15.0]
+- ProgressMeter (From ILIAS 5.4)
+
+## [0.14.2]
+- PROPERTY_NOT_ADD
+
+## [0.14.1]
+- Min css changes
+
 ## [0.14.0]
 - HiddenInputGUI
 

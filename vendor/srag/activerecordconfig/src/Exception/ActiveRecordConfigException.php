@@ -24,11 +24,7 @@ final class ActiveRecordConfigException extends ilException {
 	/**
 	 * @var int
 	 */
-	const CODE_MISSING_CONST_CONFIG_CLASS_NAME = 3;
-	/**
-	 * @var int
-	 */
-	const CODE_INVALID_CONFIG_GUI_CLASS = 4;
+	const CODE_INVALID_CONFIG_GUI_CLASS = 3;
 
 
 	/**

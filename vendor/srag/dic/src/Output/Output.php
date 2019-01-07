@@ -37,22 +37,22 @@ final class Output implements OutputInterface {
 					$html = $value;
 					break;
 
-				// GUI instance
-				case method_exists($value, "getHTML"):
-					$html = $value->getHTML();
+				// Component instance
+				case ($value instanceof Component):
+					$html = self::dic()->ui()->renderer()->render($value);
 					break;
+
+				// GUI instance
 				case method_exists($value, "render"):
 					$html = $value->render();
+					break;
+				case method_exists($value, "getHTML"):
+					$html = $value->getHTML();
 					break;
 
 				// Template instance
 				case ($value instanceof ilTemplate):
 					$html = $value->get();
-					break;
-
-				// Component instance
-				case ($value instanceof Component):
-					$html = self::dic()->ui()->renderer()->render($value);
 					break;
 
 				// Not supported!

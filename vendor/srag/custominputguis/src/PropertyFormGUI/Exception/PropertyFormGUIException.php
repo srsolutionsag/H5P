@@ -21,6 +21,10 @@ final class PropertyFormGUIException extends ilFormException {
 	 * @var int
 	 */
 	const CODE_INVALID_FIELD = 2;
+	/**
+	 * @var int
+	 */
+	const CODE_MISSING_CONST_CONFIG_CLASS_NAME = 3;
 
 
 	/**

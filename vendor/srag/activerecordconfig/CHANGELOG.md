@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.13.4]
+- Use ConfigPropertyFormGUI
+
 ## [0.13.3]
 - ActiveRecordConfigException::CODE_X
 
