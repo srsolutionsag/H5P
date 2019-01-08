@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.1.1]
+Improve Iframe Embedder upload files:
+- Hint to set start file
+- Display not absolute client path
+
 ## [2.1.0]
 - Supports upload html and zip files for Iframe Embedder
 - Check read access in h5p data folder
