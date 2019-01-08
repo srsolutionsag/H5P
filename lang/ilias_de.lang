@@ -117,7 +117,7 @@ upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
 upload_file#:#Datei hochladen
-upload_file_info2#:#Lädt eine Datei nach %s hoch. Zip-Dateien werden automatisch entpackt
+upload_file_info#:#Lädt eine Datei hoch\nZip-Dateien werden automatisch entpackt\nBitte geben Sie die Startdatei unter 'Quelle' an
 upload_library#:#Bibliothek hochladen
 uploaded_files#:#Folgende Datei(en) wurde(n) nach %s hochgeladen:
 uploaded_files_failed#:#Folgende Datei(en) wurde(n) nicht angenommen, da sie eine schädliche Endung haben/hat:

@@ -171,7 +171,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 				PropertyFormGUI::PROPERTY_CLASS => ilFileInputGUI::class,
 				PropertyFormGUI::PROPERTY_REQUIRED => false,
 				"setSuffixes" => [ [ "html", "zip" ] ],
-				"setInfo" => self::plugin()->translate("upload_file_info2", self::LANG_MODULE, [ self::h5p()->getH5PFolder() . "/content" ]),
+				"setInfo" => nl2br(str_replace("\\n", "\n", $this->txt("upload_file_info")), false),
 				"setAllowDeletion" => true
 			]
 		];
