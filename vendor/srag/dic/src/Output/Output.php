@@ -3,6 +3,7 @@
 namespace srag\DIC\H5P\Output;
 
 use ILIAS\UI\Component\Component;
+use ilTable2GUI;
 use ilTemplate;
 use JsonSerializable;
 use srag\DIC\H5P\DICTrait;
@@ -40,6 +41,12 @@ final class Output implements OutputInterface {
 				// Component instance
 				case ($value instanceof Component):
 					$html = self::dic()->ui()->renderer()->render($value);
+					break;
+
+				// ilTable2GUI instance
+				case ($value instanceof ilTable2GUI):
+					// Fix stupid broken ilTable2GUI (render has only header without rows)
+					$html = $value->getHTML();
 					break;
 
 				// GUI instance

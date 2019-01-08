@@ -49,6 +49,7 @@ return array(
     'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigFormGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
     'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',
     'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigTableGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigTableGUI.php',
+    'srag\\ActiveRecordConfig\\H5P\\ActiveRecordObjectFormGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordObjectFormGUI.php',
     'srag\\ActiveRecordConfig\\H5P\\Exception\\ActiveRecordConfigException' => $vendorDir . '/srag/activerecordconfig/src/Exception/ActiveRecordConfigException.php',
     'srag\\CustomInputGUIs\\H5P\\CheckboxInputGUI\\CheckboxInputGUI' => $vendorDir . '/srag/custominputguis/src/CheckboxInputGUI/CheckboxInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\CustomInputGUIs' => $vendorDir . '/srag/custominputguis/src/CustomInputGUIs.php',

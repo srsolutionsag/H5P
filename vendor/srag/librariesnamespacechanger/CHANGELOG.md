@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.5.0]
+- Added GitCurl
+
 ## [0.4.1]
 - Sort ...
 

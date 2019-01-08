@@ -28,6 +28,7 @@ final class LibrariesNamespaceChanger {
 		"CustomInputGUIs" => "CustomInputGUIs",
 		"DclExtension" => "DclExtension",
 		"DIC" => "DIC",
+		"GitCurl" => "GitCurl",
 		"JasperReport" => "JasperReport",
 		"JiraCurl" => "JiraCurl",
 		"RemovePluginDataConfirm" => "RemovePluginDataConfirm"

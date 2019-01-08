@@ -34,6 +34,7 @@ It support the follow libraries:
 * [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
 * [srag/dclextensions](https://packagist.org/packages/srag/dclextension)
 * [srag/dic](https://packagist.org/packages/srag/dic)
+* [srag/gitcurl](https://packagist.org/packages/srag/gitcurl)
 * [srag/jasperreport](https://packagist.org/packages/srag/jasperreport)
 * [srag/jiracurl](https://packagist.org/packages/srag/jiracurl)
 * [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)

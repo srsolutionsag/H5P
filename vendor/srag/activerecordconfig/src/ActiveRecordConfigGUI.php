@@ -81,7 +81,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	 * @param string $cmd
 	 *
 	 * @throws ActiveRecordConfigException Unknown command $cmd!
-	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordConfigTableGUI!
+	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI, ActiveRecordObjectFormGUI or ActiveRecordConfigTableGUI!
 	 *
 	 * @internal
 	 */
@@ -169,7 +169,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @param string $tab_id
 	 *
-	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordConfigTableGUI!
+	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI, ActiveRecordObjectFormGUI or ActiveRecordConfigTableGUI!
 	 *
 	 * @internal
 	 */
@@ -186,7 +186,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @param string $tab_id
 	 *
-	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI!
+	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordObjectFormGUI!
 	 *
 	 * @internal
 	 */
@@ -247,9 +247,9 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @param string $tab_id
 	 *
-	 * @return ActiveRecordConfigFormGUI|ActiveRecordConfigTableGUI
+	 * @return ActiveRecordConfigFormGUI|ActiveRecordObjectFormGUI|ActiveRecordConfigTableGUI
 	 *
-	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordConfigTableGUI!
+	 * @throws ActiveRecordConfigException Class $config_gui_class_name not extends ActiveRecordConfigFormGUI, ActiveRecordObjectFormGUI or ActiveRecordConfigTableGUI!
 	 *
 	 * @internal
 	 */
@@ -267,7 +267,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 				break;
 
 			default:
-				throw new ActiveRecordConfigException("Class $config_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordConfigTableGUI!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
+				throw new ActiveRecordConfigException("Class $config_gui_class_name not extends ActiveRecordConfigFormGUI, ActiveRecordObjectFormGUI or ActiveRecordConfigTableGUI!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
 				break;
 		}
 
@@ -279,10 +279,10 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	 * @param string $config_form_gui_class_name
 	 * @param string $tab_id
 	 *
-	 * @return ActiveRecordConfigFormGUI
+	 * @return ActiveRecordConfigFormGUI|ActiveRecordObjectFormGUI
 	 *
 	 * @throws ActiveRecordConfigException Class $config_form_gui_class_name not exists!
-	 * @throws ActiveRecordConfigException Class $config_form_gui_class_name not extends ActiveRecordConfigFormGUI!
+	 * @throws ActiveRecordConfigException Class $config_form_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordObjectFormGUI!
 	 *
 	 * @internal
 	 */
@@ -295,8 +295,8 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 
 		$config_form_gui = new $config_form_gui_class_name($this, $tab_id);
 
-		if (!$config_form_gui instanceof ActiveRecordConfigFormGUI) {
-			throw new ActiveRecordConfigException("Class $config_form_gui_class_name not extends ActiveRecordConfigFormGUI!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
+		if (!($config_form_gui instanceof ActiveRecordConfigFormGUI || $config_form_gui instanceof ActiveRecordObjectFormGUI)) {
+			throw new ActiveRecordConfigException("Class $config_form_gui_class_name not extends ActiveRecordConfigFormGUI or ActiveRecordObjectFormGUI!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
 		}
 
 		return $config_form_gui;

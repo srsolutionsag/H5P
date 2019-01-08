@@ -16,7 +16,7 @@ use TypeError;
 abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 
 	/**
-	 * @var ilObject|ActiveRecord|object
+	 * @var ilObject|ActiveRecord|object|null
 	 */
 	protected $object;
 	/**
@@ -28,11 +28,11 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	/**
 	 * ObjectPropertyFormGUI constructor
 	 *
-	 * @param object                       $parent
-	 * @param ilObject|ActiveRecord|object $object
-	 * @param bool                         $object_auto_store
+	 * @param object                            $parent
+	 * @param ilObject|ActiveRecord|object|null $object
+	 * @param bool                              $object_auto_store
 	 */
-	public function __construct($parent, $object,/*bool*/
+	public function __construct($parent, $object = NULL,/*bool*/
 		$object_auto_store = true) {
 		$this->object = $object;
 		$this->object_auto_store = $object_auto_store;
@@ -46,15 +46,17 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	 */
 	protected function getValue(/*string*/
 		$key) {
-		switch ($key) {
-			default:
-				if (method_exists($this->object, $method = "get" . $this->strToCamelCase($key))) {
-					return $this->object->{$method}($key);
-				}
-				if (method_exists($this->object, $method = "is" . $this->strToCamelCase($key))) {
-					return $this->object->{$method}($key);
-				}
-				break;
+		if ($this->object !== NULL) {
+			switch ($key) {
+				default:
+					if (method_exists($this->object, $method = "get" . $this->strToCamelCase($key))) {
+						return $this->object->{$method}($key);
+					}
+					if (method_exists($this->object, $method = "is" . $this->strToCamelCase($key))) {
+						return $this->object->{$method}($key);
+					}
+					break;
+			}
 		}
 
 		return NULL;
@@ -88,6 +90,11 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	public function storeForm()/*: bool*/ {
+		if ($this->object === NULL) {
+			// TODO:
+			//$this->object = new Object();
+		}
+
 		if (!parent::storeForm()) {
 			return false;
 		}
@@ -96,11 +103,19 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 			if (method_exists($this->object, "store")) {
 				$this->object->store();
 			} else {
-				if (method_exists($this->object, "save")) {
-					$this->object->save();
-				} else {
-					if (method_exists($this->object, "update")) {
+				if ($this->object instanceof ilObject) {
+					if ($this->object->getId()) {
 						$this->object->update();
+					} else {
+						$this->object->create();
+					}
+				} else {
+					if (method_exists($this->object, "save")) {
+						$this->object->save();
+					} else {
+						if (method_exists($this->object, "update")) {
+							$this->object->update();
+						}
 					}
 				}
 			}
