@@ -36,14 +36,14 @@ class HubSettingsFormGUI extends ActiveRecordConfigFormGUI {
 						self::PROPERTY_CLASS => ilCheckboxInputGUI::class
 					],
 					Option::KEY_SEND_USAGE_STATISTICS => [
-						self::PROPERTY_CLASS => ilCheckboxInputGUI::class
+						self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
+						"setInfo" => self::plugin()->translate("send_usage_statistics_info", "", [
+							file_get_contents(__DIR__ . "/../../templates/send_usage_statistics_info_link.html")
+						])
 					]
 				]
 			]
 		];
-		/*$send_usage_statistics->setInfo(self::plugin()->translate("send_usage_statistics_info", "", [
-			file_get_contents(__DIR__ . "/../../templates/send_usage_statistics_info_link.html")
-		]));*/
 	}
 
 
