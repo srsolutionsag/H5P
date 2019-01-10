@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.16.6]
+- Fix PHP 7 syntax
+
 ## [0.16.5]
 - Fix PHP 7 syntax
 

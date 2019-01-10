@@ -49,7 +49,7 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI {
 	protected function storeValue(/*string*/
 		$key, $value)/*: void*/ {
 		//return (static::CONFIG_CLASS_NAME)::setField($key, $value);
-		return call_user_func(static::CONFIG_CLASS_NAME, "::setField", $key, $value);
+		return call_user_func(static::CONFIG_CLASS_NAME . "::setField", $key, $value);
 	}
 
 
