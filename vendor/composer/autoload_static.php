@@ -26,7 +26,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
             'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
+            'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\' => 21,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
@@ -45,7 +45,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),

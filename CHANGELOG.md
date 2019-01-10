@@ -1,6 +1,7 @@
 # Changelog
 
 ## [2.1.1]
+- Fix hub settings tab on PHP 5
 Improve Iframe Embedder upload files:
 - Hint to set start file
 - Display not absolute client path
