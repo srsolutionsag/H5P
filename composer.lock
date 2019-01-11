@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "171c1174c58ca2a8d9f18db0db3349da",
+    "content-hash": "ba451fec2bcf4fd279bc79442911938c",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -65,16 +65,16 @@
         },
         {
             "name": "h5p/h5p-editor",
-            "version": "1.18.0",
+            "version": "1.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-editor-php-library.git",
-                "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90"
+                "reference": "86baa08f790481cd139bf37639b898dcaa35a157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
-                "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
+                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/86baa08f790481cd139bf37639b898dcaa35a157",
+                "reference": "86baa08f790481cd139bf37639b898dcaa35a157",
                 "shasum": ""
             },
             "require": {
@@ -118,7 +118,7 @@
                 "interactive",
                 "quiz"
             ],
-            "time": "2018-11-02T08:51:28+00:00"
+            "time": "2018-11-22T09:12:19+00:00"
         },
         {
             "name": "srag/activerecordconfig",
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

@@ -1,6 +1,7 @@
 # Changelog
 
 ## [2.1.1]
+- Upgrade to latest H5P library which fixes and fallback to english language if current language not should supports
 - Fix hub settings tab on PHP 5
 Improve Iframe Embedder upload files:
 - Hint to set start file

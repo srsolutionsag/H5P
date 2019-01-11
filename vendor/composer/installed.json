@@ -60,23 +60,23 @@
     },
     {
         "name": "h5p/h5p-editor",
-        "version": "1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "1.18.2",
+        "version_normalized": "1.18.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/h5p/h5p-editor-php-library.git",
-            "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90"
+            "reference": "86baa08f790481cd139bf37639b898dcaa35a157"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
-            "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
+            "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/86baa08f790481cd139bf37639b898dcaa35a157",
+            "reference": "86baa08f790481cd139bf37639b898dcaa35a157",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2018-11-02T08:51:28+00:00",
+        "time": "2018-11-22T09:12:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
