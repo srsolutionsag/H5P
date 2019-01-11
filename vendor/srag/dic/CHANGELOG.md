@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.14.10]
+- Fix stupid broken ilTable2GUI (render has only header without rows)
+
+## [0.14.9]
+- Output getHTML change order check
+
+## [0.14.8]
+- Remove @deprecated from getPluginObject
+
 ## [0.14.7]
 - Output ...
 

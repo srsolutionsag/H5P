@@ -26,7 +26,9 @@ final class LibrariesNamespaceChanger {
 		"ActiveRecordConfig" => "ActiveRecordConfig",
 		"BexioCurl" => "BexioCurl",
 		"CustomInputGUIs" => "CustomInputGUIs",
+		"DclExtension" => "DclExtension",
 		"DIC" => "DIC",
+		"GitCurl" => "GitCurl",
 		"JasperReport" => "JasperReport",
 		"JiraCurl" => "JiraCurl",
 		"RemovePluginDataConfirm" => "RemovePluginDataConfirm"

@@ -7,6 +7,7 @@ use ilExcel;
 use ilFormPropertyGUI;
 use ilTable2GUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\Exception\TableGUIException;
 use srag\DIC\H5P\DICTrait;
 
@@ -118,6 +119,10 @@ abstract class TableGUI extends ilTable2GUI {
 				throw new TableGUIException("\$field needs to be an array!", TableGUIException::CODE_INVALID_FIELD);
 			}
 
+			if ($field[PropertyFormGUI::PROPERTY_NOT_ADD]) {
+				continue;
+			}
+
 			$item = Items::getItem($key, $field, $this, $this);
 
 			/*if (!($item instanceof ilTableFilterItem)) {
@@ -143,7 +148,7 @@ abstract class TableGUI extends ilTable2GUI {
 			$this->setRowTemplate(static::ROW_TEMPLATE, self::plugin()->directory());
 		} else {
 			$dir = __DIR__;
-			$dir = substr($dir, strpos($dir, "/Customizing/") + 1);
+			$dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 			$this->setRowTemplate("table_row.html", $dir);
 		}
 	}

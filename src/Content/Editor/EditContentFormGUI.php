@@ -171,7 +171,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 				PropertyFormGUI::PROPERTY_CLASS => ilFileInputGUI::class,
 				PropertyFormGUI::PROPERTY_REQUIRED => false,
 				"setSuffixes" => [ [ "html", "zip" ] ],
-				"setInfo" => self::plugin()->translate("upload_file_info2", self::LANG_MODULE, [ self::h5p()->getH5PFolder() . "/content" ]),
+				"setInfo" => nl2br(str_replace("\\n", "\n", $this->txt("upload_file_info")), false),
 				"setAllowDeletion" => true
 			]
 		];
@@ -301,7 +301,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 				}
 
 				ilUtil::sendInfo(self::plugin()->translate("deleted_files", self::LANG_MODULE, [
-						$content_folder
+						"content/" . $this->h5p_content->getContentId()
 					]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
 						return "<li>$uploaded_file</li>";
 					}, $this->h5p_content->getUploadedFiles())) . '</ul>', true);
@@ -374,7 +374,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 
 			if (count($uploaded_files) > 0) {
 				ilUtil::sendInfo(self::plugin()->translate("uploaded_files", self::LANG_MODULE, [
-						$content_folder
+						"content/" . $this->h5p_content->getContentId()
 					]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
 						return "<li>$uploaded_file</li>";
 					}, $uploaded_files)) . '</ul>', true);
@@ -382,7 +382,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 
 			if (count($uploaded_files_invalid) > 0) {
 				ilUtil::sendFailure(self::plugin()->translate("uploaded_files_failed", self::LANG_MODULE, [
-						$content_folder
+						"content/" . $this->h5p_content->getContentId()
 					]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
 						return "<li>$uploaded_file</li>";
 					}, $uploaded_files_invalid)) . '</ul>', true);

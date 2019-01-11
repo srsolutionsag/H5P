@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.16.6]
+- Fix PHP 7 syntax
+
+## [0.16.5]
+- Fix PHP 7 syntax
+
+## [0.16.4]
+- Revert "Fix broken ilTableGUI render function"
+
+## [0.16.3]
+- Fix broken ilTableGUI render function
+
+## [0.16.2]
+- ObjectPropertyFormGUI
+
+## [0.16.1]
+- ObjectPropertyFormGUI
+
+## [0.16.0]
+- ConfigPropertyFormGUI, ObjectPropertyFormGUI
+
+## [0.15.3]
+- Not auto call setTitle/setInfo if it manuelly should set
+
+## [0.15.2]
+- Use native ProgressMeterFactory on ILIAS 5.4
+
+## [0.15.1]
+- CustomInputGUIsTrait
+
+## [0.15.0]
+- ProgressMeter (From ILIAS 5.4)
+
+## [0.14.2]
+- PROPERTY_NOT_ADD
+
+## [0.14.1]
+- Min css changes
+
 ## [0.14.0]
 - HiddenInputGUI
 

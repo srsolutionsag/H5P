@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "171c1174c58ca2a8d9f18db0db3349da",
+    "content-hash": "ba451fec2bcf4fd279bc79442911938c",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -65,16 +65,16 @@
         },
         {
             "name": "h5p/h5p-editor",
-            "version": "1.18.0",
+            "version": "1.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-editor-php-library.git",
-                "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90"
+                "reference": "86baa08f790481cd139bf37639b898dcaa35a157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
-                "reference": "01a2a553c62cf4f5c0c26c3ec7f69059e6133f90",
+                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/86baa08f790481cd139bf37639b898dcaa35a157",
+                "reference": "86baa08f790481cd139bf37639b898dcaa35a157",
                 "shasum": ""
             },
             "require": {
@@ -118,20 +118,20 @@
                 "interactive",
                 "quiz"
             ],
-            "time": "2018-11-02T08:51:28+00:00"
+            "time": "2018-11-22T09:12:19+00:00"
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.13.3",
+            "version": "v0.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "903a1838db18c502e60e1fb5edd5f3ada8e4ae50"
+                "reference": "87da1b59758f89b6885091182474c5476ea76173"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/903a1838db18c502e60e1fb5edd5f3ada8e4ae50",
-                "reference": "903a1838db18c502e60e1fb5edd5f3ada8e4ae50",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/87da1b59758f89b6885091182474c5476ea76173",
+                "reference": "87da1b59758f89b6885091182474c5476ea76173",
                 "shasum": ""
             },
             "require": {
@@ -164,20 +164,20 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2018-12-06T08:03:38+00:00"
+            "time": "2019-01-07T12:14:48+00:00"
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.14.0",
+            "version": "v0.16.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "3056f3ba2ac4885093bb1ccf5eea10d8abb339c9"
+                "reference": "5f0fca9e8197fc1fc57ff8db4a38b45166dba3c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/3056f3ba2ac4885093bb1ccf5eea10d8abb339c9",
-                "reference": "3056f3ba2ac4885093bb1ccf5eea10d8abb339c9",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/5f0fca9e8197fc1fc57ff8db4a38b45166dba3c7",
+                "reference": "5f0fca9e8197fc1fc57ff8db4a38b45166dba3c7",
                 "shasum": ""
             },
             "require": {
@@ -211,20 +211,20 @@
                 "input",
                 "table"
             ],
-            "time": "2018-12-06T08:52:35+00:00"
+            "time": "2019-01-10T14:42:56+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "v0.14.7",
+            "version": "v0.14.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "064f3a20a7ed1090a6853041f174d47d3231935f"
+                "reference": "eff364972d8012b553984d54fbdb098a78c5fe4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/064f3a20a7ed1090a6853041f174d47d3231935f",
-                "reference": "064f3a20a7ed1090a6853041f174d47d3231935f",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/eff364972d8012b553984d54fbdb098a78c5fe4a",
+                "reference": "eff364972d8012b553984d54fbdb098a78c5fe4a",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -256,20 +256,20 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-12-06T15:01:56+00:00"
+            "time": "2019-01-08T07:42:33+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.3.7",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301"
+                "reference": "71d6c40b125bd639b5a49c5d8705881ad891d48a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301",
-                "reference": "ca033d1d77b1c48ac24b5bc18b56eb1f2dc61301",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/71d6c40b125bd639b5a49c5d8705881ad891d48a",
+                "reference": "71d6c40b125bd639b5a49c5d8705881ad891d48a",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2018-12-06T08:18:29+00:00"
+            "time": "2019-01-07T10:48:36+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

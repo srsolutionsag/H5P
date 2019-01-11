@@ -126,8 +126,6 @@ final class Plugin implements PluginInterface {
 
 	/**
 	 * @inheritdoc
-	 *
-	 * @deprecated Please avoid to use ILIAS plugin object instance and instead use methods in this class!
 	 */
 	public function getPluginObject()/*: ilPlugin*/ {
 		return $this->plugin_object;

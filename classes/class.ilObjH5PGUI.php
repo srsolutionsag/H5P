@@ -620,7 +620,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	 * @return ObjSettingsFormGUI
 	 */
 	protected function getSettingsForm() {
-		$form = new ObjSettingsFormGUI($this);
+		$form = new ObjSettingsFormGUI($this, $this->object);
 
 		return $form;
 	}

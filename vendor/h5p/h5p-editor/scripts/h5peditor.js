@@ -267,7 +267,6 @@ ns.processSemanticsChunk = function (semanticsChunk, params, $wrapper, parent, m
         ancestor = ns.findAncestor(parent);
       }
 
-
       var library = machineName ? machineName
         : (field.library ? field.library
           : (parent.currentLibrary ? parent.currentLibrary : 'Other libraries'));
@@ -362,7 +361,6 @@ ns.processSemanticsChunk = function (semanticsChunk, params, $wrapper, parent, m
             }
           });
 
-          // Attach to common ancestor if it is not already attached
           if (!hasLibraryWrapper && ancestor) {
             ancestor.$common[0].appendChild(commonFieldsLibraryWrapper);
           }
@@ -388,6 +386,7 @@ ns.processSemanticsChunk = function (semanticsChunk, params, $wrapper, parent, m
  */
 ns.setCommonFieldsWrapper = function (parent, wrapper) {
   var ancestor = ns.findAncestor(parent);
+  // Hide the ancestor whose children will be reattached elsewhere
   wrapper.appendChild(ancestor.$common[0]);
 };
 

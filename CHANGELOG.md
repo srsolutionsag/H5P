@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1]
+- Upgrade to latest H5P library which fixes and fallback to english language if current language not should supports
+- Fix hub settings tab on PHP 5
+Improve Iframe Embedder upload files:
+- Hint to set start file
+- Display not absolute client path
+
 ## [2.1.0]
 - Supports upload html and zip files for Iframe Embedder
 - Check read access in h5p data folder

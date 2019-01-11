@@ -139,10 +139,6 @@ class H5peditor {
    * @param array $oldParameters
    */
   public function processParameters($content, $newLibrary, $newParameters, $oldLibrary = NULL, $oldParameters = NULL) {
-    // Old core versions didn't have params wrapped together with metadata
-    if (isset($newParameters->params) && isset($newParameters->metadata)) {
-      $newParameters = $newParameters->params;
-    }
     $newFiles = array();
     $oldFiles = array();
 
@@ -434,6 +430,12 @@ class H5peditor {
     foreach ($libraries as $library) {
       if (empty($library['semantics'])) {
         $translation = $this->getLibraryLanguage($library['machineName'], $library['majorVersion'], $library['minorVersion'], $languageCode);
+
+        // If translation was not found, and this is not the English one, try to load
+        // the English translation
+        if ($translation === NULL && $languageCode !== 'en') {
+          $translation = $this->getLibraryLanguage($library['machineName'], $library['majorVersion'], $library['minorVersion'], 'en');
+        }
 
         if ($translation !== NULL) {
           $translations[$library['machineName']] = json_decode($translation);

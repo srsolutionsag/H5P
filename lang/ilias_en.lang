@@ -117,7 +117,7 @@ upgrade#:#Upgrade
 upgrade_available#:#Upgrade available
 upload#:#Upload
 upload_file#:#Upload file
-upload_file_info2#:#Upload a file to %s. Zip files are automatically extracted
+upload_file_info#:#Upload a file\nZip files are automatically extracted\nPlease enter the start file under 'Source'
 upload_library#:#Upload library
 uploaded_files#:#The follow file(s) was uploaded to %s:
 uploaded_files_failed#:#The following file(s) were not accepted because it has a harmful extension:
