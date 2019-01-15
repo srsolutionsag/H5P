@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.1.2]
+- Fix PHP 7 syntax
+
 ## [2.1.1]
 - Upgrade to latest H5P library which fixes and fallback to english language if current language not should supports
 - Fix hub settings tab on PHP 5
