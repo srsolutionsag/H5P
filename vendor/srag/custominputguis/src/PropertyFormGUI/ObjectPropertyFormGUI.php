@@ -130,7 +130,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	 *
 	 * @return string
 	 */
-	protected final function strToCamelCase($string): string {
+	protected final function strToCamelCase($string) {
 		return str_replace("_", "", ucwords($string, "_"));
 	}
 
