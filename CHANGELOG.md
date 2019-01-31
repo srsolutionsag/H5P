@@ -1,5 +1,8 @@
 # Changelog
 
+## [Next Version]
+- Fix WAC editor folder
+
 ## [2.1.2]
 - Fix PHP 7 syntax
 

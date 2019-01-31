@@ -190,6 +190,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	public function canBeDelivered(ilWACPath $ilWACPath) {
 		switch ($ilWACPath->getModuleIdentifier()) {
 			case "cachedassets":
+			case "editor":
 			case "libraries":
 				return true;
 
