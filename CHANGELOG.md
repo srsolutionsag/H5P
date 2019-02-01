@@ -2,6 +2,7 @@
 
 ## [Next Version]
 - Fix WAC editor folder
+- Add some new missing language txt's
 
 ## [2.1.2]
 - Fix PHP 7 syntax
