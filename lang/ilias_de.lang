@@ -3,8 +3,13 @@ obj_xhfp_duplicate#:#H5P kopieren
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#H5P's kopieren
 rbac_create_xhfp#:#H5P anlegen
-xhfp_new#:#H5P anlegen
 xhfp_add#:#Hinzufügen
+xhfp_delete#:#Löschen
+xhfp_edit_permission#:#Rechte bearbeiten
+xhfp_new#:#H5P anlegen
+xhfp_read#:#Lesen
+xhfp_visible#:#Sichtbar
+xhfp_write#:#Bearbeiten
 actions#:#Aktionen
 add#:#Hinzufügen
 add_content#:#Inhalt hinzufügen
