@@ -93,7 +93,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilterFields()/*: void*/ {
+	protected function initFilterFields()/*: void*/ {
 		parent::initFilterFields();
 
 		$this->filter_fields = [

@@ -127,7 +127,7 @@ class ResultsTableGUI extends TableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	public function initFilterFields()/*: void*/ {
+	protected function initFilterFields()/*: void*/ {
 
 	}
 
