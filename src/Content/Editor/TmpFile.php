@@ -129,7 +129,6 @@ class TmpFile extends ActiveRecord {
 		switch ($field_name) {
 			case "created_at":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -147,11 +146,9 @@ class TmpFile extends ActiveRecord {
 		switch ($field_name) {
 			case "tmp_id":
 				return intval($field_value);
-				break;
 
 			case "created_at":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			default:
 				return NULL;

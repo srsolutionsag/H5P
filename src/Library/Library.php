@@ -359,12 +359,10 @@ class Library extends ActiveRecord {
 			case "fullscreen":
 			case "has_icon":
 				return ($field_value ? 1 : 0);
-				break;
 
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -385,19 +383,16 @@ class Library extends ActiveRecord {
 			case "minor_version":
 			case "patch_version":
 				return intval($field_value);
-				break;
 
 			case "runnable":
 			case "restricted":
 			case "fullscreen":
 			case "has_icon":
 				return boolval($field_value);
-				break;
 
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			default:
 				return NULL;

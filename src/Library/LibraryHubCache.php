@@ -313,12 +313,10 @@ class LibraryHubCache extends ActiveRecord {
 		switch ($field_name) {
 			case "is_recommended":
 				return ($field_value ? 1 : 0);
-				break;
 
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -343,16 +341,13 @@ class LibraryHubCache extends ActiveRecord {
 			case "h5p_patch_version":
 			case "popularity":
 				return intval($field_value);
-				break;
 
 			case "is_recommended":
 				return boolval($field_value);
-				break;
 
 			case "created_at":
 			case "updated_at":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			default:
 				return NULL;

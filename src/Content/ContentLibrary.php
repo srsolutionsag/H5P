@@ -148,7 +148,6 @@ class ContentLibrary extends ActiveRecord {
 		switch ($field_name) {
 			case "drop_css":
 				return ($field_value ? 1 : 0);
-				break;
 
 			default:
 				return NULL;
@@ -169,11 +168,9 @@ class ContentLibrary extends ActiveRecord {
 			case "library_id":
 			case "weight":
 				return intval($field_value);
-				break;
 
 			case "drop_css":
 				return boolval($field_value);
-				break;
 
 			default:
 				return NULL;

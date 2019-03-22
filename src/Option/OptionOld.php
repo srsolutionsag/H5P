@@ -181,7 +181,6 @@ class OptionOld extends ActiveRecord {
 		switch ($field_name) {
 			case "value":
 				return json_encode($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -201,11 +200,9 @@ class OptionOld extends ActiveRecord {
 		switch ($field_name) {
 			case "id":
 				return intval($field_value);
-				break;
 
 			case "value":
 				return json_decode($field_value);
-				break;
 
 			default:
 				return NULL;
