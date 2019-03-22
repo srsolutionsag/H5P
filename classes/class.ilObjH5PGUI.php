@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
-
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentsTableGUI;
@@ -395,7 +393,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		}
 
 		$h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
-		if ($h5p_content === NULL) {
+		if ($h5p_content === null) {
 			// Take first content
 			$h5p_content = $h5p_contents[0];
 		}
@@ -425,7 +423,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			}
 
 			$h5p_result = Result::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
-			if ($h5p_result !== NULL) {
+			if ($h5p_result !== null) {
 				$this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count, self::plugin()
 					->translate("solved_content")));
 
@@ -467,7 +465,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
 
-		if ($h5p_content === NULL) {
+		if ($h5p_content === null) {
 			// Take first content
 			$h5p_content = $h5p_contents[0];
 		}
@@ -498,7 +496,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
 
-		if ($h5p_content === NULL) {
+		if ($h5p_content === null) {
 			// Take first content
 			$h5p_content = $h5p_contents[0];
 		}
@@ -573,11 +571,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$user = new ilObjUser($user_id);
 		} catch (Exception $ex) {
 			// User not exists anymore
-			$user = NULL;
+			$user = null;
 		}
-		$confirmation->setHeaderText(self::plugin()->translate("delete_results_confirm", "", [ $user !== NULL ? $user->getFullname() : "" ]));
+		$confirmation->setHeaderText(self::plugin()->translate("delete_results_confirm", "", [ $user !== null ? $user->getFullname() : "" ]));
 
-		if ($user !== NULL) {
+		if ($user !== null) {
 			$confirmation->addItem("xhfp_user", $user->getId(), $user->getFullname());
 		}
 
@@ -595,7 +593,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$user_id = filter_input(INPUT_GET, "xhfp_user");
 
 		$h5p_solve_status = SolveStatus::getByUser($this->obj_id, $user_id);
-		if ($h5p_solve_status !== NULL) {
+		if ($h5p_solve_status !== null) {
 			$h5p_solve_status->delete();
 		}
 
@@ -608,9 +606,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			$user = new ilObjUser($user_id);
 		} catch (Exception $ex) {
 			// User not exists anymore
-			$user = NULL;
+			$user = null;
 		}
-		ilUtil::sendSuccess(self::plugin()->translate("deleted_results", "", [ $user !== NULL ? $user->getFullname() : "" ]), true);
+		ilUtil::sendSuccess(self::plugin()->translate("deleted_results", "", [ $user !== null ? $user->getFullname() : "" ]), true);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_RESULTS);
 	}
