@@ -21,6 +21,8 @@ use ILIAS\DI\LoggingServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
+use ILIAS\GlobalScreen\Services as GlobalScreenService;
+use ILIAS\Services\AssessmentQuestion\Factory\AsqFactory;
 use ilIniFile;
 use ilLanguage;
 use ilLearningHistoryService;
@@ -165,6 +167,17 @@ interface DICInterface {
 	 * @since ILIAS 5.3
 	 */
 	public function filesystem()/*: Filesystems*/
+	;
+
+
+	/**
+	 * @return GlobalScreenService
+	 *
+	 * @throws DICException GlobalScreenService not exists in ILIAS 5.3 or below!
+	 *
+	 * @since ILIAS 5.4
+	 */
+	public function globalScreen()/*: GlobalScreenService*/
 	;
 
 
@@ -326,6 +339,17 @@ interface DICInterface {
 	 * @since ILIAS 5.4
 	 */
 	public function object()/*: ilObjectService*/
+	;
+
+
+	/**
+	 * @return AsqFactory
+	 *
+	 * @throws DICException AsqFactory not exists in ILIAS 5.4 or below!
+	 *
+	 * @since ILIAS 6.0
+	 */
+	public function question()/*: AsqFactory*/
 	;
 
 

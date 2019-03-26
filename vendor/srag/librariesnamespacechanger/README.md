@@ -31,6 +31,7 @@ So you can force to use your libraries classes in the `vendor` folder of your pl
 It support the follow libraries:
 * [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
 * [srag/bexiocurl](https://packagist.org/packages/srag/bexiocurl)
+* [srag/commentsui](https://packagist.org/packages/srag/commentsui)
 * [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
 * [srag/dclextensions](https://packagist.org/packages/srag/dclextension)
 * [srag/dic](https://packagist.org/packages/srag/dic)
@@ -46,17 +47,7 @@ It support the follow libraries:
 Please use it for further development!
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/LibrariesNamespaceChanger/tree/develop
+* Adjustment suggestions by pull requests
 * Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LNAMESPACECHANGER
 * Bug reports under https://jira.studer-raimann.ch/projects/LNAMESPACECHANGER
-* For external users please send an email to support-custom1@studer-raimann.ch
-
-### Development
-If you want development in this library you should install this library like follow:
-
-Start at your ILIAS root directory
-```bash
-mkdir -p Customizing/global/libraries
-cd Customizing/global/libraries
-git clone -b develop git@git.studer-raimann.ch:ILIAS/Plugins/LibrariesNamespaceChanger.git LibrariesNamespaceChanger
-```
+* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER

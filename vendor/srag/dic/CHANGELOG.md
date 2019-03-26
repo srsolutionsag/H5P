@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.15.4]
+- Fix
+
+## [0.15.3]
+- Allow plugins to modify library languages if needed
+
+## [0.15.2]
+- LibraryLanguageInstaller
+
+## [0.15.1]
+- LibraryLanguageInstaller
+
+## [0.15.0]
+- LibraryLanguageInstaller
+- Changed `setPlugin` to `withPlugin` in `Pluginable`
+
+## [0.14.13]
+- Add GlobalScreen for ILIAS 5.4
+
+## [0.14.12]
+- Add AsqFactory for ILIAS 6.0
+
+## [0.14.11]
+- Fixes
+
 ## [0.14.10]
 - Fix stupid broken ilTable2GUI (render has only header without rows)
 

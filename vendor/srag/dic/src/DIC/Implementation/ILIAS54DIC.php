@@ -3,7 +3,9 @@
 namespace srag\DIC\H5P\DIC\Implementation;
 
 use ILIAS\DI\Container;
+use ILIAS\Services\AssessmentQuestion\Factory\AsqFactory;
 use srag\DIC\H5P\DIC\AbstractDIC;
+use srag\DIC\H5P\DICStatic;
 
 /**
  * Class ILIAS54DIC
@@ -24,8 +26,6 @@ final class ILIAS54DIC extends AbstractDIC {
 	 * ILIAS54DIC constructor
 	 *
 	 * @param Container $dic
-	 *
-	 * @internal
 	 */
 	public function __construct(Container $dic) {
 		parent::__construct();
@@ -143,6 +143,14 @@ final class ILIAS54DIC extends AbstractDIC {
 	 */
 	public function filesystem()/*: Filesystems*/ {
 		return $this->dic->filesystem();
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function globalScreen()/*: GlobalScreenService*/ {
+		return $this->dic->globalScreen();
 	}
 
 
@@ -295,6 +303,18 @@ final class ILIAS54DIC extends AbstractDIC {
 	 */
 	public function object()/*: ilObjectService*/ {
 		return $this->dic->object();
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function question()/*: AsqFactory*/ {
+		if (DICStatic::version()->is60()) {
+			return new AsqFactory();
+		} else {
+			throw new DICException("AsqFactory not exists in ILIAS 5.4 or below!");
+		}
 	}
 
 

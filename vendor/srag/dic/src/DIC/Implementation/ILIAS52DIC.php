@@ -25,8 +25,6 @@ final class ILIAS52DIC extends AbstractDIC {
 	 * ILIAS52DIC constructor
 	 *
 	 * @param Container $dic
-	 *
-	 * @internal
 	 */
 	public function __construct(Container $dic) {
 		parent::__construct();
@@ -144,6 +142,14 @@ final class ILIAS52DIC extends AbstractDIC {
 	 */
 	public function filesystem()/*: Filesystems*/ {
 		throw new DICException("Filesystems not exists in ILIAS 5.2 or below!");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function globalScreen()/*: GlobalScreenService*/ {
+		throw new DICException("GlobalScreenService not exists in ILIAS 5.3 or below!");
 	}
 
 
@@ -304,6 +310,14 @@ final class ILIAS52DIC extends AbstractDIC {
 	 */
 	public function pluginAdmin()/*: ilPluginAdmin*/ {
 		return $this->dic["ilPluginAdmin"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function question()/*: AsqFactory*/ {
+		throw new DICException("AsqFactory not exists in ILIAS 5.4 or below!");
 	}
 
 

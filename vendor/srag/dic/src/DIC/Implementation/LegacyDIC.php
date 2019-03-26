@@ -25,8 +25,6 @@ final class LegacyDIC extends AbstractDIC {
 	 * LegacyDIC constructor
 	 *
 	 * @param array $globals
-	 *
-	 * @internal
 	 */
 	public function __construct(array &$globals) {
 		parent::__construct();
@@ -144,6 +142,14 @@ final class LegacyDIC extends AbstractDIC {
 	 */
 	public function filesystem()/*: Filesystems*/ {
 		throw new DICException("Filesystems not exists in ILIAS 5.2 or below!");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function globalScreen()/*: GlobalScreenService*/ {
+		throw new DICException("GlobalScreenService not exists in ILIAS 5.3 or below!");
 	}
 
 
@@ -304,6 +310,14 @@ final class LegacyDIC extends AbstractDIC {
 	 */
 	public function pluginAdmin()/*: ilPluginAdmin*/ {
 		return $this->globals["ilPluginAdmin"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function question()/*: AsqFactory*/ {
+		throw new DICException("AsqFactory not exists in ILIAS 5.4 or below!");
 	}
 
 

@@ -25,6 +25,7 @@ final class LibrariesNamespaceChanger {
 	private static $libraries = [
 		"ActiveRecordConfig" => "ActiveRecordConfig",
 		"BexioCurl" => "BexioCurl",
+		"CommentsUI" => "CommentsUI",
 		"CustomInputGUIs" => "CustomInputGUIs",
 		"DclExtension" => "DclExtension",
 		"DIC" => "DIC",
