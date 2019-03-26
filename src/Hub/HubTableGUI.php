@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Hub;
 
-use ilAdvancedSelectionListGUI;
 use ilCheckboxInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
@@ -81,8 +80,8 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 		$title = $filter["title"];
 		$status = $filter["status"];
-		$runnable = ($filter["only_runnable"] ? true : NULL);
-		$not_used = ($filter["only_not_used"] ? true : NULL);
+		$runnable = ($filter["only_runnable"] ? true : null);
+		$not_used = ($filter["only_not_used"] ? true : null);
 
 		$libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
 
@@ -139,15 +138,15 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		// Links
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);
 		$install_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", null);
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", $row["key"]);
 		$details_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_LIBRARY_DETAILS);
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_key", null);
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", $row["installed_id"]);
 		$delete_link = self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", null);
 
 		if ($row["icon"] !== "") {
 			$this->tpl->setVariable("ICON", $row["icon"]);
@@ -164,8 +163,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 			$this->tpl->setVariable("LATEST_VERSION", self::plugin()->translate("not_available"));
 		}
 
-		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::plugin()->translate("actions"));
+		$actions = [];
 
 		switch ($row["status"]) {
 			case ShowHub::STATUS_INSTALLED:
@@ -173,7 +171,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 				$this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-				$actions->addItem(self::plugin()->translate("delete"), "", $delete_link);
+				$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
 				break;
 
 			case ShowHub::STATUS_UPGRADE_AVAILABLE:
@@ -181,9 +179,9 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 				$this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-				$actions->addItem(self::plugin()->translate("upgrade"), "", $install_link);
+				$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("upgrade"), $install_link);
 
-				$actions->addItem(self::plugin()->translate("delete"), "", $delete_link);
+				$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
 				break;
 
 			case ShowHub::STATUS_NOT_INSTALLED:
@@ -191,7 +189,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 
 				$this->tpl->setVariable("INSTALLED_VERSION", "-");
 
-				$actions->addItem(self::plugin()->translate("install"), "", $install_link);
+				$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("install"), $install_link);
 				break;
 
 			default:
@@ -205,11 +203,12 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 		$this->tpl->setVariable("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
 
 		$this->tpl->setVariable("DETAILS_LINK", $details_link);
-		$actions->addItem(self::plugin()->translate("details"), "", $details_link);
+		$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("details"), $details_link);
 
-		$this->tpl->setVariable("ACTIONS", self::output()->getHTML($actions));
+		$this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+			->withLabel($this->txt("actions"))));
 
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", null);
 	}
 
 

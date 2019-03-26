@@ -240,7 +240,6 @@ class Result extends ActiveRecord {
 			case "opened":
 			case "finished":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -263,12 +262,10 @@ class Result extends ActiveRecord {
 			case "max_score":
 			case "time":
 				return intval($field_value);
-				break;
 
 			case "opened":
 			case "finished":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			default:
 				return NULL;

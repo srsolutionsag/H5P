@@ -214,12 +214,12 @@ abstract class ActiveRecordConfig extends ActiveRecord {
 					return;
 
 				default:
-					throw new ActiveRecordConfigException("Invalid type $type!");
+					throw new ActiveRecordConfigException("Invalid type $type!", ActiveRecordConfigException::CODE_INVALID_FIELD);
 					break;
 			}
 		}
 
-		throw new ActiveRecordConfigException("Invalid field $name!", ActiveRecordConfigException::CODE_INVALID_FIELD, ActiveRecordConfigException::CODE_INVALID_FIELD);
+		throw new ActiveRecordConfigException("Invalid field $name!", ActiveRecordConfigException::CODE_INVALID_FIELD);
 	}
 
 

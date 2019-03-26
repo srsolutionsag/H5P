@@ -130,7 +130,6 @@ class LibraryCachedAsset extends ActiveRecord {
 			case "id":
 			case "library_id":
 				return intval($field_value);
-				break;
 
 			default:
 				return NULL;

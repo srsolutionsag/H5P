@@ -33,8 +33,6 @@ final class Plugin implements PluginInterface {
 	 * Plugin constructor
 	 *
 	 * @param ilPlugin $plugin_object
-	 *
-	 * @internal
 	 */
 	public function __construct(ilPlugin $plugin_object) {
 		$this->plugin_object = $plugin_object;
@@ -111,7 +109,7 @@ final class Plugin implements PluginInterface {
 				throw new DICException("Please use the placeholders feature and not direct `sprintf` or `vsprintf` in your code!", DICException::CODE_MISUSE_TRANSLATE_WITH_SPRINTF);
 			}
 		} else {
-			if ($default !== NULL) {
+			if ($default !== null) {
 				try {
 					$txt = sprintf($default, $key);
 				} catch (Exception $ex) {

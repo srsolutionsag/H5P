@@ -1,5 +1,11 @@
 # Changelog
 
+## [x]
+- Supports ILIAS 5.4
+- Remove ILIAS 5.2 support
+- Fix Object description is voluntary (Make create and edit identical)
+- Using some new ILIAS 5.3 UI's
+
 ## [2.1.3]
 - Fix WAC editor folder
 - Add some new missing language txt's

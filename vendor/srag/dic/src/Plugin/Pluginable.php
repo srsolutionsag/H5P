@@ -20,7 +20,9 @@ interface Pluginable {
 
 	/**
 	 * @param PluginInterface $plugin
+	 *
+	 * @return static
 	 */
-	public function setPlugin(PluginInterface $plugin)/*: void*/
+	public function withPlugin(PluginInterface $plugin)/*: static*/
 	;
 }

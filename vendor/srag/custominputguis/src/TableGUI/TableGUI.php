@@ -53,13 +53,7 @@ abstract class TableGUI extends ilTable2GUI {
 
 		parent::__construct($parent, $parent_cmd);
 
-		if (!(strpos($parent_cmd, "applyFilter") === 0
-			|| strpos($parent_cmd, "resetFilter") === 0)) {
-			$this->initTable();
-		} else {
-			// Speed up, not init data, only filter
-			$this->initFilter();
-		}
+		$this->initTable();
 	}
 
 
@@ -74,9 +68,9 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 *
+	 * @return array
 	 */
-	public final function getSelectableColumns() {
+	public final function getSelectableColumns()/*: array*/ {
 		return array_map(function (array &$column)/*: array*/ {
 			if (!isset($column["txt"])) {
 				$column["txt"] = $this->txt($column["id"]);
@@ -100,8 +94,6 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 *
-	 *
 	 * @throws TableGUIException $filters needs to be an array!
 	 * @throws TableGUIException $field needs to be an array!
 	 */
@@ -158,21 +150,27 @@ abstract class TableGUI extends ilTable2GUI {
 	 *
 	 */
 	private final function initTable()/*: void*/ {
-		$this->initAction();
+		if (!(strpos($this->parent_cmd, "applyFilter") === 0
+			|| strpos($this->parent_cmd, "resetFilter") === 0)) {
+			$this->initAction();
 
-		$this->initTitle();
+			$this->initTitle();
 
-		$this->initFilter();
+			$this->initFilter();
 
-		$this->initData();
+			$this->initData();
 
-		$this->initColumns();
+			$this->initColumns();
 
-		$this->initExport();
+			$this->initExport();
 
-		$this->initRowTemplate();
+			$this->initRowTemplate();
 
-		$this->initCommands();
+			$this->initCommands();
+		} else {
+			// Speed up, not init data on applyFilter or resetFilter, only filter
+			$this->initFilter();
+		}
 	}
 
 
@@ -246,7 +244,9 @@ abstract class TableGUI extends ilTable2GUI {
 	protected function fillHeaderCSV(/*ilCSVWriter*/
 		$csv)/*: void*/ {
 		foreach ($this->getSelectableColumns() as $column) {
-			$csv->addColumn($column["txt"]);
+			if ($this->isColumnSelected($column["id"])) {
+				$csv->addColumn($column["txt"]);
+			}
 		}
 
 		$csv->addRow();
@@ -279,11 +279,15 @@ abstract class TableGUI extends ilTable2GUI {
 		$col = 0;
 
 		foreach ($this->getSelectableColumns() as $column) {
-			$excel->setCell($row, $col, $column["txt"]);
-			$col ++;
+			if ($this->isColumnSelected($column["id"])) {
+				$excel->setCell($row, $col, $column["txt"]);
+				$col ++;
+			}
 		}
 
-		$excel->setBold("A" . $row . ":" . $excel->getColumnCoord($col - 1) . $row);
+		if ($col > 0) {
+			$excel->setBold("A" . $row . ":" . $excel->getColumnCoord($col - 1) . $row);
+		}
 	}
 
 

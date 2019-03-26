@@ -59,7 +59,7 @@ class ObjSettingsFormGUI extends ObjectPropertyFormGUI {
 			],
 			"description" => [
 				self::PROPERTY_CLASS => ilTextAreaInputGUI::class,
-				self::PROPERTY_REQUIRED => true
+				self::PROPERTY_REQUIRED => false
 			],
 			"online" => [
 				self::PROPERTY_CLASS => ilCheckboxInputGUI::class

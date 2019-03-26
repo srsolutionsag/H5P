@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.14.1",
+            "version": "v0.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "87da1b59758f89b6885091182474c5476ea76173"
+                "reference": "96d6c2b61cd1a3fb219a7fabf8ffc07aa95e1b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/87da1b59758f89b6885091182474c5476ea76173",
-                "reference": "87da1b59758f89b6885091182474c5476ea76173",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/96d6c2b61cd1a3fb219a7fabf8ffc07aa95e1b02",
+                "reference": "96d6c2b61cd1a3fb219a7fabf8ffc07aa95e1b02",
                 "shasum": ""
             },
             "require": {
@@ -164,20 +164,20 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2019-01-07T12:14:48+00:00"
+            "time": "2019-02-11T14:20:12+00:00"
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.16.7",
+            "version": "v0.19.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "3571f81c64615cf278927e3a444b8a20965a393a"
+                "reference": "ad4420a2a53a82bbf109682ce6ebc9a01fd49202"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/3571f81c64615cf278927e3a444b8a20965a393a",
-                "reference": "3571f81c64615cf278927e3a444b8a20965a393a",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/ad4420a2a53a82bbf109682ce6ebc9a01fd49202",
+                "reference": "ad4420a2a53a82bbf109682ce6ebc9a01fd49202",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -211,20 +211,20 @@
                 "input",
                 "table"
             ],
-            "time": "2019-01-15T12:44:07+00:00"
+            "time": "2019-03-26T09:38:29+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "v0.14.10",
+            "version": "v0.15.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "eff364972d8012b553984d54fbdb098a78c5fe4a"
+                "reference": "9f90f54f36a00a793fc08a7916dfdb06ebe3a76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/eff364972d8012b553984d54fbdb098a78c5fe4a",
-                "reference": "eff364972d8012b553984d54fbdb098a78c5fe4a",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/9f90f54f36a00a793fc08a7916dfdb06ebe3a76c",
+                "reference": "9f90f54f36a00a793fc08a7916dfdb06ebe3a76c",
                 "shasum": ""
             },
             "require": {
@@ -256,20 +256,20 @@
                 "globals",
                 "trait"
             ],
-            "time": "2019-01-08T07:42:33+00:00"
+            "time": "2019-03-26T13:15:41+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.5.0",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "71d6c40b125bd639b5a49c5d8705881ad891d48a"
+                "reference": "4db267d97b5768d31429c14acde288181bfa4928"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/71d6c40b125bd639b5a49c5d8705881ad891d48a",
-                "reference": "71d6c40b125bd639b5a49c5d8705881ad891d48a",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/4db267d97b5768d31429c14acde288181bfa4928",
+                "reference": "4db267d97b5768d31429c14acde288181bfa4928",
                 "shasum": ""
             },
             "require": {
@@ -299,20 +299,20 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2019-01-07T10:48:36+00:00"
+            "time": "2019-03-19T14:25:06+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "v0.3.5",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457"
+                "reference": "fc1f1828c05ac2548d3b4022d53422cf1335ffc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
-                "reference": "3b4e5133cb1d3f6aa0cdd9e45f27bd56c74cb457",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/fc1f1828c05ac2548d3b4022d53422cf1335ffc2",
+                "reference": "fc1f1828c05ac2548d3b4022d53422cf1335ffc2",
                 "shasum": ""
             },
             "require": {
@@ -346,7 +346,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2018-12-06T15:01:06+00:00"
+            "time": "2019-03-26T13:17:27+00:00"
         }
     ],
     "packages-dev": [],

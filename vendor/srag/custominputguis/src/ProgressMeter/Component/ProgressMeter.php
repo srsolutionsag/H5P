@@ -9,7 +9,7 @@ use ILIAS\UI\Component\Component;
 /**
  * Interface ProgressMeter
  *
- * https://github.com/ILIAS-eLearning/ILIAS/tree/trunk/src/UI/Component/Card/ProgressMeter.php
+ * https://github.com/ILIAS-eLearning/ILIAS/tree/trunk/src/UI/Component/Chart/ProgressMeter/ProgressMeter.php
  *
  * @package srag\CustomInputGUIs\H5P\ProgressMeter\Component
  *

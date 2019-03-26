@@ -9,7 +9,6 @@ use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ILIAS\FileUpload\DTO\UploadResult;
 use ilTemplate;
 use srag\DIC\H5P\DICTrait;
-use srag\DIC\H5P\Plugin\Plugin;
 use srag\DIC\H5P\Plugin\Pluginable;
 use srag\DIC\H5P\Plugin\PluginInterface;
 
@@ -39,9 +38,9 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable {
 	 */
 	protected $screenshots = [];
 	/**
-	 * @var Plugin|null
+	 * @var PluginInterface|null
 	 */
-	protected $plugin = NULL;
+	protected $plugin = null;
 
 
 	/**
@@ -94,7 +93,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable {
 
 
 	/**
-	 * @return PluginInterface
+	 * @inheritdoc
 	 */
 	public function getPlugin(): PluginInterface {
 		return $this->plugin;
@@ -204,18 +203,6 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable {
 
 
 	/**
-	 * @param PluginInterface $plugin
-	 *
-	 * @return self
-	 */
-	public function setPlugin(PluginInterface $plugin): self {
-		$this->plugin = $plugin;
-
-		return $this;
-	}
-
-
-	/**
 	 * @param string $post_var
 	 *
 	 * @return self
@@ -260,5 +247,15 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable {
 	public function setValueByArray(/*array*/
 		$values)/*: void*/ {
 		//throw new ilFormException("ScreenshotsInputGUI does not support set screenshots!");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withPlugin(PluginInterface $plugin): self {
+		$this->plugin = $plugin;
+
+		return $this;
 	}
 }

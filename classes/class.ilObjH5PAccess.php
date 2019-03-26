@@ -37,9 +37,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 * ilObjH5PAccess constructor
 	 */
 	public function __construct() {
-		if (self::version()->is53()) {
-			parent::__construct();
-		}
+		parent::__construct();
 	}
 
 

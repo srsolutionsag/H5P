@@ -29,11 +29,11 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @var DICInterface|null
 	 */
-	private static $dic = NULL;
+	private static $dic = null;
 	/**
 	 * @var OutputInterface|null
 	 */
-	private static $output = NULL;
+	private static $output = null;
 	/**
 	 * @var PluginInterface[]
 	 */
@@ -41,17 +41,17 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @var VersionInterface|null
 	 */
-	private static $version = NULL;
+	private static $version = null;
 
 
 	/**
 	 * @inheritdoc
 	 */
 	public static function clearCache()/*: void*/ {
-		self::$dic = NULL;
-		self::$output = NULL;
+		self::$dic = null;
+		self::$output = null;
 		self::$plugins = [];
-		self::$version = NULL;
+		self::$version = null;
 	}
 
 
@@ -59,7 +59,7 @@ final class DICStatic implements DICStaticInterface {
 	 * @inheritdoc
 	 */
 	public static function dic()/*: DICInterface*/ {
-		if (self::$dic === NULL) {
+		if (self::$dic === null) {
 			switch (true) {
 				case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_2)):
 					global $GLOBALS;
@@ -91,7 +91,7 @@ final class DICStatic implements DICStaticInterface {
 	 * @inheritdoc
 	 */
 	public static function output()/*: OutputInterface*/ {
-		if (self::$output === NULL) {
+		if (self::$output === null) {
 			self::$output = new Output();
 		}
 
@@ -132,7 +132,7 @@ final class DICStatic implements DICStaticInterface {
 	 * @inheritdoc
 	 */
 	public static function version()/*: VersionInterface*/ {
-		if (self::$version === NULL) {
+		if (self::$version === null) {
 			self::$version = new Version();
 		}
 

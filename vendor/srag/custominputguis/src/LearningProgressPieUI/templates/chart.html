@@ -1,0 +1,83 @@
+<div class="learningprogresspie" id="{ID}"></div>
+<script>
+	(function () {
+		var data = {DATA};
+		var show_legend = {SHOW_LEGEND};
+
+
+		var size = 160,
+			radius = 90;
+
+		var arc = d3.arc()
+			.outerRadius(radius - 10)
+			.innerRadius(30);
+
+		var pie = d3.pie()
+			.sort(null)
+			.value(function (d) {
+				return d.value;
+			});
+
+		var svg = d3.select('#{ID}').append("svg")
+			.attr("width", (show_legend ? (size * 2) : size))
+			.attr("height", size)
+			.append("g")
+			.attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
+
+		var g = svg.selectAll(".arc")
+			.data(pie(data))
+			.enter().append("g");
+
+		g.append("path")
+			.attr("d", arc)
+			.style("fill", function (d) {
+				return d.data.color;
+			});
+
+		g.append("text")
+			.attr("transform", function (d) {
+				var _d = arc.centroid(d);
+				_d[0] *= 1;	//multiply by a varant factor
+				_d[1] *= 1;	//multiply by a varant factor
+				return "translate(" + _d + ")";
+			})
+			.style('fill', "#434343")
+			.attr("dy", ".50em")
+			.style("text-anchor", "middle")
+			.text(function (d) {
+				return d.data.label;
+			});
+
+		g.append("text")
+			.attr("text-anchor", "middle")
+			.attr('font-size', '2em')
+			.attr('y', 10)
+			.text({COUNT});
+
+		if (show_legend) {
+			// https://stackoverflow.com/questions/32298837/how-to-add-a-nice-legend-to-a-d3-pie-chart
+			var legendG = svg.selectAll(".legend")
+				.data(pie(data))
+				.enter().append("g")
+				.attr("transform", function (d, i) {
+					return "translate(" + (size - 60) + "," + (i * 15 + 20) + ")";
+				})
+				.attr("class", "legend");
+
+			legendG.append("rect")
+				.attr("width", 10)
+				.attr("height", 10)
+				.attr("fill", function (d) {
+					return d.data.color;
+				});
+
+			legendG.append("text")
+				.text(function (d) {
+					return d.data.title;
+				})
+				.style("font-size", 12)
+				.attr("y", 10)
+				.attr("x", 11);
+		}
+	})();
+</script>

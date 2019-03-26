@@ -112,7 +112,6 @@ class H5PObject extends ActiveRecord {
 			case "is_online":
 			case "solve_only_once":
 				return ($field_value ? 1 : 0);
-				break;
 
 			default:
 				return NULL;
@@ -130,12 +129,10 @@ class H5PObject extends ActiveRecord {
 		switch ($field_name) {
 			case "obj_id":
 				return intval($field_value);
-				break;
 
 			case "is_online":
 			case "solve_only_once":
 				return boolval($field_value);
-				break;
 
 			default:
 				return NULL;

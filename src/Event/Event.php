@@ -187,7 +187,6 @@ class Event extends ActiveRecord {
 		switch ($field_name) {
 			case "created_at":
 				return self::h5p()->timestampToDbDate($field_value);
-				break;
 
 			default:
 				return NULL;
@@ -206,11 +205,9 @@ class Event extends ActiveRecord {
 			case "event_id":
 			case "user_id":
 				return intval($field_value);
-				break;
 
 			case "created_at":
 				return self::h5p()->dbDateToTimestamp($field_value);
-				break;
 
 			case "content_id":
 				if ($field_value !== NULL) {
@@ -218,7 +215,6 @@ class Event extends ActiveRecord {
 				} else {
 					return NULL;
 				}
-				break;
 
 			default:
 				return NULL;

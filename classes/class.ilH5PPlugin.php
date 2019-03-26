@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\H5P\Util\LibraryLanguageInstaller;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Content\ContentUserData;
@@ -39,14 +40,14 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	/**
 	 * @var self|null
 	 */
-	protected static $instance = NULL;
+	protected static $instance = null;
 
 
 	/**
 	 * @return self
 	 */
 	public static function getInstance() {
-		if (self::$instance === NULL) {
+		if (self::$instance === null) {
 			self::$instance = new self();
 		}
 
@@ -75,6 +76,17 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin {
 	 */
 	public function allowCopy() {
 		return true;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateLanguages(array $a_lang_keys = null) {
+		parent::updateLanguages($a_lang_keys);
+
+		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__
+			. "/../vendor/srag/removeplugindataconfirm/lang")->updateLanguages();
 	}
 
 

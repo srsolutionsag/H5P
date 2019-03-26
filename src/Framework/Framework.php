@@ -265,16 +265,13 @@ class Framework implements H5PFrameworkInterface {
 			switch ($found[1]) {
 				case "@":
 					return htmlentities($text);
-					break;
 
 				case "%":
 					return "<b>" . htmlentities($text) . "</b>";
-					break;
 
 				case "!":
 				default:
 					return $text;
-					break;
 			}
 		}, $message);
 
