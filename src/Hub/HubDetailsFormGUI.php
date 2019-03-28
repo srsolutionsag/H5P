@@ -112,14 +112,15 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		// Links
 		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library_name", $library["name"]);
 		$install_link = self::dic()->ctrl()->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
-		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library_name", NULL);
+		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library_name", null);
 
 		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library", $library["installed_id"]);
 		$delete_link = self::dic()->ctrl()->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
-		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library", NULL);
+		self::dic()->ctrl()->setParameter($this->parent, "xhfp_library", null);
 
 		// Buttons
 		if ($library["tutorial_url"] !== "") {
+			//self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("tutorial"), $library["tutorial_url"]));
 			$tutorial = ilLinkButton::getInstance();
 			$tutorial->setCaption(self::plugin()->translate("tutorial"), false);
 			$tutorial->setUrl($library["tutorial_url"]);
@@ -128,6 +129,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		}
 
 		if ($library["example_url"] !== "") {
+			//self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("example"), $library["example_url"]));
 			$example = ilLinkButton::getInstance();
 			$example->setCaption(self::plugin()->translate("example"), false);
 			$example->setUrl($library["example_url"]);
@@ -136,6 +138,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		}
 
 		if ($library["status"] === ShowHub::STATUS_NOT_INSTALLED) {
+			//self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("install"), $install_link));
 			$install = ilLinkButton::getInstance();
 			$install->setCaption(self::plugin()->translate("install"), false);
 			$install->setUrl($install_link);
@@ -143,6 +146,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		}
 
 		if ($library["status"] === ShowHub::STATUS_UPGRADE_AVAILABLE) {
+			//self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("upgrade"), $install_link));
 			$upgrade = ilLinkButton::getInstance();
 			$upgrade->setCaption(self::plugin()->translate("upgrade"), false);
 			$upgrade->setUrl($install_link);
@@ -150,6 +154,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		}
 
 		if ($library["status"] !== ShowHub::STATUS_NOT_INSTALLED) {
+			//self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("delete"), $delete_link));
 			$delete = ilLinkButton::getInstance();
 			$delete->setCaption(self::plugin()->translate("delete"), false);
 			$delete->setUrl($delete_link);

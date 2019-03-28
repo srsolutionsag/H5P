@@ -224,10 +224,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		}
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$add_content = ilLinkButton::getInstance();
-			$add_content->setCaption(self::plugin()->translate("add_content"), false);
-			$add_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_ADD_CONTENT));
-			self::dic()->toolbar()->addButtonInstance($add_content);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("add_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_ADD_CONTENT)));
 		}
 
 		$table = $this->getContentsTable();
@@ -401,25 +399,19 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		$index = array_search($h5p_content, $h5p_contents);
 
 		if ($index > 0) {
-			$previous_content = ilLinkButton::getInstance();
-			$previous_content->setCaption(self::plugin()->translate("previous_content"), false);
-			$previous_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_PREVIOUS_CONTENT));
-			self::dic()->toolbar()->addButtonInstance($previous_content);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("previous_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_PREVIOUS_CONTENT)));
 		}
 
 		if ($index < ($count - 1)) {
-			$next_content = ilLinkButton::getInstance();
-			$next_content->setCaption(self::plugin()->translate("next_content"), false);
-			$next_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_NEXT_CONTENT));
-			self::dic()->toolbar()->addButtonInstance($next_content);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("next_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_NEXT_CONTENT)));
 		}
 
 		if ($this->object->isSolveOnlyOnce()) {
 			if ($index === ($count - 1)) {
-				$finish_contents = ilLinkButton::getInstance();
-				$finish_contents->setCaption(self::plugin()->translate("finish"), false);
-				$finish_contents->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_FINISH_CONTENTS));
-				self::dic()->toolbar()->addButtonInstance($finish_contents);
+				self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("finish"), self::dic()
+					->ctrl()->getLinkTarget($this, self::CMD_FINISH_CONTENTS)));
 			}
 
 			$h5p_result = Result::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
@@ -432,19 +424,15 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		}
 
 		/*if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			self::dic()->ctrl()->saveParamter($this, "xhfp_content");
+			self::dic()->ctrl()->saveParameter($this, "xhfp_content");
 
-			self::dic()->toolbar()->addSeparator();
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->divider()->vertical());
 
-			$edit_content = ilLinkButton::getInstance();
-			$edit_content->setCaption(self::plugin()->translate("edit_content"), false);
-			$edit_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_CONTENT));
-			self::dic()->toolbar()->addButtonInstance($edit_content);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("edit_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_CONTENT)));
 
-			$delete_content = ilLinkButton::getInstance();
-			$delete_content->setCaption(self::plugin()->translate("delete_content"), false);
-			$delete_content->setUrl(self::dic()->ctrl()->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM));
-			self::dic()->toolbar()->addButtonInstance($delete_content);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("delete_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM)));
 		}*/
 
 		//self::h5p()->show_content()->addH5pScript(substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js");
