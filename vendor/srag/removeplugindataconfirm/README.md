@@ -83,7 +83,7 @@ Expand you plugin class for installing languages of the library to your plugin
 	/**
 	 * @inheritdoc
 	 */
-	public function updateLanguages(array $a_lang_keys = null) {
+	public function updateLanguages($a_lang_keys = null) {
 		parent::updateLanguages($a_lang_keys);
 
 		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/removeplugindataconfirm/lang")
