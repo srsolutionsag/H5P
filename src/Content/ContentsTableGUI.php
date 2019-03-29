@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Content;
 
-use ilAdvancedSelectionListGUI;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
@@ -159,23 +158,23 @@ class ContentsTableGUI extends TableGUI {
 
 		$this->tpl->setVariable("TITLE", $row["title"]);
 
-		$this->tpl->setVariable("LIBRARY", ($h5p_library !== NULL ? $h5p_library->getTitle() : ""));
+		$this->tpl->setVariable("LIBRARY", ($h5p_library !== null ? $h5p_library->getTitle() : ""));
 
 		$this->tpl->setVariable("RESULTS", count($h5p_results));
 
-		$actions = new ilAdvancedSelectionListGUI();
-		$actions->setListTitle(self::plugin()->translate("actions"));
+		$actions = [];
 
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
-			$actions->addItem(self::plugin()->translate("edit"), "", self::dic()->ctrl()
+			$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("edit"), self::dic()->ctrl()
 				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-			$actions->addItem(self::plugin()->translate("delete"), "", self::dic()->ctrl()
+			$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), self::dic()->ctrl()
 				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
 		}
 
-		$this->tpl->setVariable("ACTIONS", self::output()->getHTML($actions));
+		$this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+			->withLabel($this->txt("actions"))));
 
-		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", NULL);
+		self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", null);
 	}
 }

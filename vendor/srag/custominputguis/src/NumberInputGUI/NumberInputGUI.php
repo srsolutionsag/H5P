@@ -19,9 +19,7 @@ class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem {
 
 
 	/**
-	 * Get input item HTML to be inserted into table filters
-	 *
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getTableFilterHTML()/*: string*/ {
 		return $this->render();

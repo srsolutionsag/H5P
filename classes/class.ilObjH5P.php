@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
-
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Object\H5PObject;
@@ -74,7 +72,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 *
 	 */
 	public function doDelete() {
-		if ($this->object !== NULL) {
+		if ($this->object !== null) {
 			$this->object->delete();
 		}
 
@@ -96,7 +94,7 @@ class ilObjH5P extends ilObjectPlugin {
 	 * @param int      $a_target_id
 	 * @param int      $a_copy_id
 	 */
-	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = NULL) {
+	protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null) {
 		$new_obj->object = $this->object->copy();
 
 		$new_obj->object->setObjId($new_obj->id);

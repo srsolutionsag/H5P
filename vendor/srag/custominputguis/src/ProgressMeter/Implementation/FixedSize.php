@@ -9,7 +9,7 @@ use srag\CustomInputGUIs\H5P\ProgressMeter\Component\FixedSize as FixedSizeCompo
 /**
  * Class FixedSize
  *
- * https://github.com/ILIAS-eLearning/ILIAS/tree/trunk/src/UI/Implementation/Component/Card/FixedSize.php
+ * https://github.com/ILIAS-eLearning/ILIAS/tree/trunk/src/UI/Implementation/Component/Chart/ProgressMeter/FixedSize.php
  *
  * @package srag\CustomInputGUIs\H5P\ProgressMeter\Implementation
  *

@@ -254,7 +254,6 @@ class SolveStatus extends ActiveRecord {
 		switch ($field_name) {
 			case "finished":
 				return ($field_value ? 1 : 0);
-				break;
 
 			default:
 				return NULL;
@@ -274,7 +273,6 @@ class SolveStatus extends ActiveRecord {
 			case "obj_id":
 			case "user_id":
 				return intval($field_value);
-				break;
 
 			case "content_id":
 				if ($field_value !== NULL) {
@@ -282,11 +280,9 @@ class SolveStatus extends ActiveRecord {
 				} else {
 					return NULL;
 				}
-				break;
 
 			case "finished":
 				return boolval($field_value);
-				break;
 
 			default:
 				return NULL;

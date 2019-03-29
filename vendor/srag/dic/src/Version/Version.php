@@ -12,6 +12,14 @@ namespace srag\DIC\H5P\Version;
 final class Version implements VersionInterface {
 
 	/**
+	 * Version constructor
+	 */
+	public function __construct() {
+
+	}
+
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getILIASVersion()/*: string*/ {
@@ -85,5 +93,13 @@ final class Version implements VersionInterface {
 	 */
 	public function is54()/*: bool*/ {
 		return $this->isMinVersion(self::ILIAS_VERSION_5_4);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is60()/*: bool*/ {
+		return $this->isMinVersion(self::ILIAS_VERSION_6_0);
 	}
 }

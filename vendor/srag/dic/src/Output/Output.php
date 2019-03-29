@@ -23,6 +23,14 @@ final class Output implements OutputInterface {
 
 
 	/**
+	 * Output constructor
+	 */
+	public function __construct() {
+
+	}
+
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getHTML($value)/*: string*/ {
@@ -110,7 +118,7 @@ final class Output implements OutputInterface {
 			case (is_bool($value)):
 			case (is_array($value)):
 			case ($value instanceof stdClass):
-			case ($value === NULL):
+			case ($value === null):
 			case ($value instanceof JsonSerializable):
 				$value = json_encode($value);
 

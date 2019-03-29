@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
-
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Object\H5PObject;
@@ -20,14 +18,14 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	/**
 	 * @var self
 	 */
-	protected static $instance = NULL;
+	protected static $instance = null;
 
 
 	/**
 	 * @return self
 	 */
 	public static function getInstance() {
-		if (self::$instance === NULL) {
+		if (self::$instance === null) {
 			self::$instance = new self();
 		}
 
@@ -39,9 +37,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 * ilObjH5PAccess constructor
 	 */
 	public function __construct() {
-		if (self::version()->is53()) {
-			parent::__construct();
-		}
+		parent::__construct();
 	}
 
 
@@ -54,16 +50,16 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public function _checkAccess($a_cmd, $a_permission, $a_ref_id = NULL, $a_obj_id = NULL, $a_user_id = NULL) {
-		if ($a_ref_id === NULL) {
+	public function _checkAccess($a_cmd, $a_permission, $a_ref_id = null, $a_obj_id = null, $a_user_id = null) {
+		if ($a_ref_id === null) {
 			$a_ref_id = filter_input(INPUT_GET, "ref_id");
 		}
 
-		if ($a_obj_id === NULL) {
+		if ($a_obj_id === null) {
 			$a_obj_id = ilObjH5P::_lookupObjectId($a_ref_id);
 		}
 
-		if ($a_user_id == NULL) {
+		if ($a_user_id == null) {
 			$a_user_id = self::dic()->user()->getId();
 		}
 
@@ -94,7 +90,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	protected static function checkAccess($a_cmd, $a_permission, $a_ref_id = NULL, $a_obj_id = NULL, $a_user_id = NULL) {
+	protected static function checkAccess($a_cmd, $a_permission, $a_ref_id = null, $a_obj_id = null, $a_user_id = null) {
 		return self::getInstance()->_checkAccess($a_cmd, $a_permission, $a_ref_id, $a_obj_id, $a_user_id);
 	}
 
@@ -124,7 +120,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	public static function _isOffline($a_obj_id) {
 		$object = H5PObject::getObjectById(intval($a_obj_id));
 
-		if ($object !== NULL) {
+		if ($object !== null) {
 			return (!$object->isOnline());
 		} else {
 			return true;
@@ -137,7 +133,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public static function hasVisibleAccess($ref_id = NULL) {
+	public static function hasVisibleAccess($ref_id = null) {
 		return self::checkAccess("visible", "visible", $ref_id);
 	}
 
@@ -147,7 +143,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public static function hasReadAccess($ref_id = NULL) {
+	public static function hasReadAccess($ref_id = null) {
 		return self::checkAccess("read", "read", $ref_id);
 	}
 
@@ -157,7 +153,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public static function hasWriteAccess($ref_id = NULL) {
+	public static function hasWriteAccess($ref_id = null) {
 		return self::checkAccess("write", "write", $ref_id);
 	}
 
@@ -167,7 +163,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public static function hasDeleteAccess($ref_id = NULL) {
+	public static function hasDeleteAccess($ref_id = null) {
 		return self::checkAccess("delete", "delete", $ref_id);
 	}
 
@@ -177,7 +173,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 	 *
 	 * @return bool
 	 */
-	public static function hasEditPermissionAccess($ref_id = NULL) {
+	public static function hasEditPermissionAccess($ref_id = null) {
 		return self::checkAccess("edit_permission", "edit_permission", $ref_id);
 	}
 
@@ -199,7 +195,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass 
 
 				$content = Content::getContentById($content_id);
 
-				if ($content !== NULL) {
+				if ($content !== null) {
 					switch ($content->getParentType()) {
 						case Content::PARENT_TYPE_OBJECT:
 							return self::hasReadAccess(current(ilObject::_getAllReferences($content->getObjId())));

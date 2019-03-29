@@ -6,7 +6,6 @@ use H5PCore;
 use H5PEditorEndpoints;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
-use ilLinkButton;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
@@ -48,7 +47,7 @@ class ShowHub {
 	 *
 	 * @return array
 	 */
-	public function getLibraries($title = "", $status = self::STATUS_ALL, $runnable = NULL, $not_used = NULL) {
+	public function getLibraries($title = "", $status = self::STATUS_ALL, $runnable = null, $not_used = null) {
 		$libraries = [];
 
 		// Hub libraries
@@ -136,7 +135,7 @@ class ShowHub {
 					"screenshots" => [],
 					"example_url" => "",
 					"tutorial_url" => "",
-					"license" => NULL
+					"license" => null
 				];
 				$libraries[$key] = &$library;
 			}
@@ -165,8 +164,8 @@ class ShowHub {
 		foreach ($libraries as $key => &$library) {
 			if (($title !== "" && stripos($library["title"], $title) === false)
 				|| (!empty($status) && $status !== self::STATUS_ALL && $library["status"] !== $status)
-				|| ($runnable !== NULL && $library["runnable"] !== $runnable)
-				|| ($not_used !== NULL
+				|| ($runnable !== null && $library["runnable"] !== $runnable)
+				|| ($not_used !== null
 					&& ($library["contents_count"] == 0 && $library["usage_contents"] == 0 && $library["usage_libraries"] == 0) !== $not_used)) {
 				// Does not apply to the filter
 				unset($libraries[$key]);
@@ -186,10 +185,8 @@ class ShowHub {
 	 * @return string
 	 */
 	public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, $table) {
-		$hub_refresh = ilLinkButton::getInstance();
-		$hub_refresh->setCaption(self::plugin()->translate("hub_refresh"), false);
-		$hub_refresh->setUrl(self::dic()->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB));
-		self::dic()->toolbar()->addButtonInstance($hub_refresh);
+		self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
+			->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
 
 		$hub_last_refresh = Option::getOption("content_type_cache_updated_at", "");
 		$hub_last_refresh = self::h5p()->formatTime($hub_last_refresh);

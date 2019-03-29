@@ -177,7 +177,6 @@ class Counter extends ActiveRecord {
 			case "id":
 			case "num":
 				return intval($field_value);
-				break;
 
 			default:
 				return NULL;

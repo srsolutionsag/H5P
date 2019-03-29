@@ -174,7 +174,6 @@ class LibraryDependencies extends ActiveRecord {
 			case "library_id":
 			case "required_library_id":
 				return intval($field_value);
-				break;
 
 			default:
 				return NULL;

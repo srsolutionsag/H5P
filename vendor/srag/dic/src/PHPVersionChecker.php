@@ -10,33 +10,25 @@ use Throwable;
  * @package srag\DIC\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
- * @internal
  */
 final class PHPVersionChecker {
 
 	/**
 	 * @var string
-	 *
-	 * @internal
 	 */
 	const ERROR_MESSAGE = 'The plugin %1$s could not be used! Because it\'s needed at least PHP version %2$s, but you have only PHP version %3$s<br>Please upgrade your PHP version or delete the plugin directory %4$s';
 	/**
 	 * @var string
-	 *
-	 * @internal
 	 */
 	const PLUGIN_NAME_REG_EXP = "/\/([A-Za-z0-9_]+)\/vendor\//";
 	/**
 	 * @var string
-	 *
-	 * @internal
 	 */
 	const VERSION_CHECK_REG_EXP = "/([0-9]+(\.[0-9]+){1,2})/";
 	/**
 	 * @var bool|null
 	 */
-	private static $cache = NULL;
+	private static $cache = null;
 	/**
 	 * @var string
 	 */
@@ -48,7 +40,7 @@ final class PHPVersionChecker {
 
 
 	/**
-	 * @internal
+	 *
 	 */
 	public static function checkPHPVersionOutput()/*: void**/ {
 		if (!self::checkPHPVersion()) {
@@ -62,7 +54,7 @@ final class PHPVersionChecker {
 	 * @return bool
 	 */
 	private static function checkPHPVersion()/*: bool*/ {
-		if (self::$cache === NULL) {
+		if (self::$cache === null) {
 			try {
 				$composer_file = __DIR__ . "/../../../../composer.json";
 

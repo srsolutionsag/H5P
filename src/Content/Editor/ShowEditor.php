@@ -95,10 +95,10 @@ class ShowEditor {
 	 *
 	 * @return string
 	 */
-	public function getEditor(Content $h5p_content = NULL) {
+	public function getEditor(Content $h5p_content = null) {
 		$this->initEditor();
 
-		self::h5p()->show_content()->core["editor"]["contentId"] = ($h5p_content !== NULL ? $h5p_content->getContentId() : "");
+		self::h5p()->show_content()->core["editor"]["contentId"] = ($h5p_content !== null ? $h5p_content->getContentId() : "");
 
 		self::h5p()->show_content()->initCoreToOutput();
 
@@ -108,12 +108,14 @@ class ShowEditor {
 		$tutorial_toolbar->setId("xhfp_edit_toolbar");
 		$tutorial_toolbar->setHidden(true);
 
+		//$tutorial_toolbar->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("tutorial"), ""));
 		$tutorial = ilLinkButton::getInstance();
 		$tutorial->setCaption(self::plugin()->translate("tutorial"), false);
 		$tutorial->setTarget("_blank");
 		$tutorial->setId("xhfp_edit_toolbar_tutorial");
 		$tutorial_toolbar->addButtonInstance($tutorial);
 
+		//$tutorial_toolbar->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("example"), ""));
 		$example = ilLinkButton::getInstance();
 		$example->setCaption(self::plugin()->translate("example"), false);
 		$example->setTarget("_blank");
@@ -142,7 +144,7 @@ class ShowEditor {
 	 *
 	 * @return EditContentFormGUI
 	 */
-	public function getEditorForm(Content $h5p_content = NULL, $parent, $cmd_create, $cmd_update, $cmd_cancel) {
+	public function getEditorForm(Content $h5p_content = null, $parent, $cmd_create, $cmd_update, $cmd_cancel) {
 		$form = new EditContentFormGUI($parent, $h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 
 		return $form;
@@ -177,7 +179,7 @@ class ShowEditor {
 
 		$content["id"] = self::h5p()->core()->saveContent($content);
 
-		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, NULL);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, null);
 
 		$h5p_content = Content::getContentById($content["id"]);
 
@@ -210,7 +212,7 @@ class ShowEditor {
 
 		self::h5p()->core()->saveContent($content);
 
-		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, NULL, $oldParams);
+		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, $oldParams);
 
 		$form->handleFileUpload($h5p_content);
 
