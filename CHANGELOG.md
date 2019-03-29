@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [2.2.0]
 - Supports ILIAS 5.4
 - Remove ILIAS 5.2 support
 - Fix Object description is voluntary (Make create and edit identical)
