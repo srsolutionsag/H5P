@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.5.3]
+- Notifications4Plugin
+
 ## [0.5.2]
 - CommentsUI
 

@@ -114,7 +114,7 @@ Other `ActiveRecord` methods should be not used!
 
 ### ActiveRecordConfigGUI
 This class is experimental. Use it with care!
-It only supports a config with an `ilPropertyFormGUI` or an `ilTable2GUI`!
+It only supports a config with `ActiveRecordConfigGUI`, `ActiveRecordObjectFormGUI` or `ActiveRecordConfigTableGUI`!
 
 Create a class `ilXConfigGUI`:
 ```php
@@ -133,7 +133,7 @@ class ilXConfigGUI extends ActiveRecordConfigGUI {
 
 Declare in `$tabs` your tabs. The key is the tab id and the value your config tab class.
 
-A config tab class can be either a class `ConfigFormGUI`:
+A config tab class can be either `ilCtrl` flow class (`self::TAB_CONFIGURATION => [Ctrl::class, "cmd]`) or a property form `ActiveRecordConfigFormGUI` or `ActiveRecordObjectFormGUI`:
 ```php
 //...
 namespace srag\Plugins\X\Config
@@ -153,7 +153,9 @@ class ConfigFormGUI extends ActiveRecordConfigFormGUI {
     }
 }
 ```
-or a class `ConfigTableGUI`:
+Look more at https://github.com/studer-raimann/CustomInputGUIs/blob/master/src/PropertyFormGUI/doc/PropertyFormGUI.md
+
+Or it can be a table `ActiveRecordConfigTableGUI`:
 ```php
 //...
 namespace srag\Plugins\X\Config
@@ -163,51 +165,39 @@ use srag\ActiveRecordConfig\H5P\ActiveRecordConfigTableGUI;
 class ConfigTableGUI extends ActiveRecordConfigTableGUI {
     //...
     const PLUGIN_CLASS_NAME = ilXPlugin::class;
-    
-    /**
-     *
-     */
-    protected function initTable()/*: void*/ {
-        parent::initTable();
 
-        // TODO: Set your config template file
-    }
-    
-    
+
     /**
-     *
+     * @inheritdoc
      */
-    public function initFilter() {
-        parent::initFilter();
-        
-        // TODO: Set your config filter
+    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*bool*/ $raw_export = false): string {
+		switch ($column) {
+			default:
+				$column = $row[$column];
+				break;
+		}
+
+		return strval($column);
     }
 
 
-    /**
-     *
-     */
+	/**
+	 * @inheritdoc
+	 */
+	public function getSelectableColumns2(): array {
+		return [];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
     protected function initData()/*: void*/ {
         // TODO: Set your config data
     }
-
-
-    /**
-     *
-     */
-    protected function initColumns()/*: void*/ {
-        // TODO: Set your config columns
-    }
-
-
-    /**
-     * @param array $row
-     */
-    protected function fillRow(/*array*/ $row)/*: void*/ {
-        // TODO: Set your config row
-    }
 }
 ```
+Look more at https://github.com/studer-raimann/CustomInputGUIs/blob/master/src/TableGUI/doc/TableGUI.md
 
 `ilXPlugin` is the name of your plugin class ([DICTrait](https://github.com/studer-raimann/DIC)).
 `ConfigFormGUI` is the name of your config form gui class.
@@ -264,7 +254,7 @@ There exists some help functions in `ilXConfigGUI`:
  *
  * @return string
  */
-$this->getCmdForTab(/*string*/ $tab_id)/*: void*/;
+$this->getCmdForTab(/*string*/ $tab_id)/*: string*/;
 
 /**
  * @param string $tab_id
@@ -344,17 +334,7 @@ if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\X\Conf
 Please use it for further development!
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/ActiveRecordConfig/tree/develop
+* Adjustment suggestions by pull
 * Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/ACCONF
 * Bug reports under https://jira.studer-raimann.ch/projects/ACCONF
-* For external users please send an email to support-custom1@studer-raimann.ch
-
-### Development
-If you want development in this library you should install this library like follow:
-
-Start at your ILIAS root directory
-```bash
-mkdir -p Customizing/global/libraries
-cd Customizing/global/libraries
-git clone -b develop git@git.studer-raimann.ch:ILIAS/Plugins/ActiveRecordConfig.git ActiveRecordConfig
-```
+* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_ACCONF

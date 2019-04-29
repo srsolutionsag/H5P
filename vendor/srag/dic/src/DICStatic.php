@@ -46,6 +46,8 @@ final class DICStatic implements DICStaticInterface {
 
 	/**
 	 * @inheritdoc
+	 *
+	 * @deprecated
 	 */
 	public static function clearCache()/*: void*/ {
 		self::$dic = null;
@@ -62,7 +64,6 @@ final class DICStatic implements DICStaticInterface {
 		if (self::$dic === null) {
 			switch (true) {
 				case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_2)):
-					global $GLOBALS;
 					self::$dic = new LegacyDIC($GLOBALS);
 					break;
 

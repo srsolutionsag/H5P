@@ -255,9 +255,9 @@ interface DICInterface {
 	/**
 	 * @return LoggingServices
 	 *
-	 * @throws DICException LoggingServices not exists in ILIAS 5.2 or below!
+	 * @throws DICException LoggingServices not exists in ILIAS 5.1 or below!
 	 *
-	 * @since ILIAS 5.3
+	 * @since ILIAS 5.2
 	 */
 	public function logger()/*: LoggingServices*/
 	;

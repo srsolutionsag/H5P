@@ -229,7 +229,7 @@ final class LegacyDIC extends AbstractDIC {
 	 * @inheritdoc
 	 */
 	public function logger()/*: LoggingServices*/ {
-		throw new DICException("LoggingServices not exists in ILIAS 5.2 or below!");
+		throw new DICException("LoggingServices not exists in ILIAS 5.1 or below!");
 	}
 
 

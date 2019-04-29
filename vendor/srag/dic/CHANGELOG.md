@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.15.6]
+- Fix LoggingServices exists in ILIAS 5.2
+- Pass `$DIC` by reference to prevent `clearCache`, if `$DIC` should be replaced somewhere in ILIAS core ...
+
 ## [0.15.4]
 - Fix
 

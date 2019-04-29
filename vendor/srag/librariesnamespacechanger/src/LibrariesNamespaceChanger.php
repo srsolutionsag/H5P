@@ -18,7 +18,7 @@ final class LibrariesNamespaceChanger {
 	/**
 	 * @var self
 	 */
-	private static $instance = NULL;
+	private static $instance = null;
 	/**
 	 * @var array
 	 */
@@ -32,6 +32,7 @@ final class LibrariesNamespaceChanger {
 		"GitCurl" => "GitCurl",
 		"JasperReport" => "JasperReport",
 		"JiraCurl" => "JiraCurl",
+		"Notifications4Plugin" => "Notifications4Plugin",
 		"RemovePluginDataConfirm" => "RemovePluginDataConfirm"
 	];
 	/**
@@ -62,7 +63,7 @@ final class LibrariesNamespaceChanger {
 	 * @return self
 	 */
 	private static function getInstance(Event $event)/*: self*/ {
-		if (self::$instance === NULL) {
+		if (self::$instance === null) {
 			self::$instance = new self($event);
 		}
 

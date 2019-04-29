@@ -27,10 +27,10 @@ final class ILIAS54DIC extends AbstractDIC {
 	 *
 	 * @param Container $dic
 	 */
-	public function __construct(Container $dic) {
+	public function __construct(Container &$dic) {
 		parent::__construct();
 
-		$this->dic = $dic;
+		$this->dic = &$dic;
 	}
 
 
@@ -425,7 +425,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @return Container
 	 */
-	public function dic()/*: Container*/ {
+	public function &dic()/*: Container*/ {
 		return $this->dic;
 	}
 }
