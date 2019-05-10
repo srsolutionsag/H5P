@@ -121,9 +121,11 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 
 			if ($item instanceof ilFormPropertyGUI) {
 				if (!isset($field[self::PROPERTY_VALUE])) {
-					$value = $this->getValue($key);
+					if (!($parent_item instanceof MultiLineInputGUI)) {
+						$value = $this->getValue($key);
 
-					Items::setValueToItem($item, $value);
+						Items::setValueToItem($item, $value);
+					}
 				}
 			}
 

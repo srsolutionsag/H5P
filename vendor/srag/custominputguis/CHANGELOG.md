@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.20.2]
+- Use export format in `getColumnValue`
+
+## [0.20.1]
+- Improvments TableGUI PDF export
+
+## [0.20.0]
+- TableGUI PDF export
+- Fix TableGUI excel export
+
 ## [0.19.11]
 - PropertyFormGUI supports MultiLineInputGUI
 

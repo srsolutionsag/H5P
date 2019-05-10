@@ -31,8 +31,8 @@ class HubTableGUI extends ActiveRecordConfigTableGUI {
 	 */
 	protected function getColumnValue(/*string*/
 		$column, /*array*/
-		$row, /*bool*/
-		$raw_export = false)/*: string*/ {
+		$row, /*int*/
+		$format = 0)/*: string*/ {
 		switch ($column) {
 			default:
 				$column = $row[$column];

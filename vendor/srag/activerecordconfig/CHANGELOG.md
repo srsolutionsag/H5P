@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.2]
+- Fix
+
+## [0.16.1]
+- Fix
+
+## [0.16.0]
+- `addTab` overridable
+
 ## [0.15.1]
 - Fix reset offset
 

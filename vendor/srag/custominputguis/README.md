@@ -39,22 +39,9 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 * [ViewControlModeUI](./src/ViewControlModeUI/doc/ViewControlModeUI.md)
 * [Waiter](./src/Waiter/doc/Waiter.md)
 
-### Dependencies
-* ILIAS 5.2 or ILIAS 5.3
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
 * PHP >=5.6
-* [composer](https://getcomposer.org)
-* [npm](https://nodejs.org)
-* [canvas-toBlob](https://www.npmjs.com/package/canvas-toBlob)
-* [d3](https://www.npmjs.com/package/d3)
-* [es6-promise](https://www.npmjs.com/package/es6-promise)
-* [html2canvas](https://www.npmjs.com/package/html2canvas)
-* [select2](https://www.npmjs.com/package/select2)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-* [babel-minify -g](https://www.npmjs.com/package/babel-minify)
-* [clean-css-cli](https://www.npmjs.com/package/clean-css-cli)
-* [less -g](https://www.npmjs.com/package/less)
-
-Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests

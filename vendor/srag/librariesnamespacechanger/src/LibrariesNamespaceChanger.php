@@ -22,19 +22,7 @@ final class LibrariesNamespaceChanger {
 	/**
 	 * @var array
 	 */
-	private static $libraries = [
-		"ActiveRecordConfig" => "ActiveRecordConfig",
-		"BexioCurl" => "BexioCurl",
-		"CommentsUI" => "CommentsUI",
-		"CustomInputGUIs" => "CustomInputGUIs",
-		"DclExtension" => "DclExtension",
-		"DIC" => "DIC",
-		"GitCurl" => "GitCurl",
-		"JasperReport" => "JasperReport",
-		"JiraCurl" => "JiraCurl",
-		"Notifications4Plugin" => "Notifications4Plugin",
-		"RemovePluginDataConfirm" => "RemovePluginDataConfirm"
-	];
+	private static $libraries = Libraries::LIBRARIES;
 	/**
 	 * @var array
 	 */
@@ -76,7 +64,7 @@ final class LibrariesNamespaceChanger {
 	 *
 	 * @internal
 	 */
-	public static function rewriteLibrariesNamespaces(Event $event) {
+	public static function rewriteLibrariesNamespaces(Event $event)/*: void*/ {
 		self::getInstance($event)->doRewriteLibrariesNamespaces();
 	}
 
