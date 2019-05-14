@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.20.4]
+- Nothing to fix ...
+
+## [0.20.3]
+- Nothing to fix ...
+
 ## [0.20.2]
 - Use export format in `getColumnValue`
 

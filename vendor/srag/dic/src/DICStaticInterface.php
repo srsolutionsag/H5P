@@ -22,17 +22,17 @@ interface DICStaticInterface {
 	 *
 	 * @deprecated
 	 */
-	public static function clearCache()/*: void*/
-	;
+	public static function clearCache()/*: void*/ ;
 
 
 	/**
 	 * Get DIC interface
 	 *
 	 * @return DICInterface DIC interface
+	 *
+	 * @throws DICException DIC not supports ILIAS X.X.X anymore!"
 	 */
-	public static function dic()/*: DICInterface*/
-	;
+	public static function dic();
 
 
 	/**
@@ -40,8 +40,7 @@ interface DICStaticInterface {
 	 *
 	 * @return OutputInterface Output interface
 	 */
-	public static function output()/*: OutputInterface*/
-	;
+	public static function output();
 
 
 	/**
@@ -55,9 +54,7 @@ interface DICStaticInterface {
 	 * @throws DICException Class $plugin_class_name not extends ilPlugin!
 	 * @logs   DEBUG Please implement $plugin_class_name::getInstance()!
 	 */
-	public static function plugin(/*string*/
-		$plugin_class_name)/*: PluginInterface*/
-	;
+	public static function plugin($plugin_class_name);
 
 
 	/**
@@ -65,6 +62,5 @@ interface DICStaticInterface {
 	 *
 	 * @return VersionInterface Version interface
 	 */
-	public static function version()/*: VersionInterface*/
-	;
+	public static function version();
 }

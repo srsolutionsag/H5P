@@ -14,8 +14,7 @@ interface Pluginable {
 	/**
 	 * @return PluginInterface
 	 */
-	public function getPlugin()/*: PluginInterface*/
-	;
+	public function getPlugin();
 
 
 	/**
@@ -23,6 +22,5 @@ interface Pluginable {
 	 *
 	 * @return static
 	 */
-	public function withPlugin(PluginInterface $plugin)/*: static*/
-	;
+	public function withPlugin(PluginInterface $plugin)/*: static*/ ;
 }

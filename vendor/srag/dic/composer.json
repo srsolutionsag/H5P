@@ -22,7 +22,7 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC"
   },
   "require": {
-    "php": ">=5.6"
+    "php": ">=7.0"
   },
   "autoload": {
     "psr-4": {

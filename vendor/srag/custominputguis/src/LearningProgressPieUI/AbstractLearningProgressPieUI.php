@@ -57,7 +57,7 @@ abstract class AbstractLearningProgressPieUI {
 	 *
 	 * @return self
 	 */
-	public function withId(string $id): self {
+	public function withId($id) {
 		$this->id = $id;
 
 		return $this;
@@ -69,7 +69,7 @@ abstract class AbstractLearningProgressPieUI {
 	 *
 	 * @return self
 	 */
-	public function withShowLegend(bool $show_legend): self {
+	public function withShowLegend($show_legend) {
 		$this->show_legend = $show_legend;
 
 		return $this;
@@ -96,23 +96,18 @@ abstract class AbstractLearningProgressPieUI {
 	/**
 	 * @return string
 	 */
-	public function render(): string {
+	public function render() {
 		$data = $this->parseData();
 
 		if (count($data) > 0) {
 
-			$data = array_map(function (int $status) use ($data): array {
-				return [
-					"color" => self::LP_STATUS_COLOR[$status],
-					"label" => $data[$status],
-					"title" => $this->getText($status),
-					"value" => $data[$status]
-				];
-			}, self::LP_STATUS);
+			$data = array_map(function ($status) use($data) {
+    return array('color' => self::LP_STATUS_COLOR[$status], 'label' => $data[$status], 'title' => $this->getText($status), 'value' => $data[$status]);
+}, self::LP_STATUS);
 
-			$data = array_filter($data, function (array $data): bool {
-				return ($data["value"] > 0);
-			});
+			$data = array_filter($data, function (array $data) {
+    return $data['value'] > 0;
+});
 
 			$data = array_values($data);
 
@@ -139,7 +134,7 @@ abstract class AbstractLearningProgressPieUI {
 	 *
 	 * @return string
 	 */
-	private function getText(int $status): string {
+	private function getText($status) {
 		self::dic()->language()->loadLanguageModule("trac");
 
 		return ilLearningProgressBaseGUI::_getStatusText($status);
@@ -149,11 +144,11 @@ abstract class AbstractLearningProgressPieUI {
 	/**
 	 * @return int[]
 	 */
-	protected abstract function parseData(): array;
+	protected abstract function parseData();
 
 
 	/**
 	 * @return int
 	 */
-	protected abstract function getCount(): int;
+	protected abstract function getCount();
 }

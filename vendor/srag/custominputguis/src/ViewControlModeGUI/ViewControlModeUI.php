@@ -47,7 +47,7 @@ class ViewControlModeUI {
 	 *
 	 * @return self
 	 */
-	public function withButtons(array $buttons): self {
+	public function withButtons(array $buttons) {
 		$this->buttons = $buttons;
 
 		return $this;
@@ -59,7 +59,7 @@ class ViewControlModeUI {
 	 *
 	 * @return self
 	 */
-	public function withDefaultActiveId(string $default_active_id): self {
+	public function withDefaultActiveId($default_active_id) {
 		$this->default_active_id = $default_active_id;
 
 		return $this;
@@ -71,7 +71,7 @@ class ViewControlModeUI {
 	 *
 	 * @return self
 	 */
-	public function withId(string $id): self {
+	public function withId($id) {
 		$this->id = $id;
 
 		return $this;
@@ -83,7 +83,7 @@ class ViewControlModeUI {
 	 *
 	 * @return self
 	 */
-	public function withLink(string $link): self {
+	public function withLink($link) {
 		$this->link = $link;
 
 		return $this;
@@ -93,7 +93,7 @@ class ViewControlModeUI {
 	/**
 	 * @return string
 	 */
-	public function render(): string {
+	public function render() {
 		ilSession::set(self::CMD_HANDLE_BUTTONS . "_" . $this->id . "_url", $_SERVER["REQUEST_URI"]);
 
 		$actions = [];
@@ -122,7 +122,7 @@ class ViewControlModeUI {
 	/**
 	 * @return string
 	 */
-	public function getActiveId(): string {
+	public function getActiveId() {
 		$active_id = ilSession::get(self::CMD_HANDLE_BUTTONS . "_" . $this->id);
 
 		if ($active_id === null || !isset($this->buttons[$active_id])) {

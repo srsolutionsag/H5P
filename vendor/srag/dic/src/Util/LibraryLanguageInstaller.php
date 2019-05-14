@@ -23,7 +23,7 @@ final class LibraryLanguageInstaller implements Pluginable {
 	/**
 	 * @return self
 	 */
-	public static function getInstance()/*: self*/ {
+	public static function getInstance() {
 		return new self();
 	}
 
@@ -49,7 +49,7 @@ final class LibraryLanguageInstaller implements Pluginable {
 	/**
 	 * @inheritdoc
 	 */
-	public function getPlugin()/*: PluginInterface*/ {
+	public function getPlugin() {
 		return $this->plugin;
 	}
 
@@ -57,7 +57,7 @@ final class LibraryLanguageInstaller implements Pluginable {
 	/**
 	 * @inheritdoc
 	 */
-	public function withPlugin(PluginInterface $plugin)/*: self*/ {
+	public function withPlugin(PluginInterface $plugin) {
 		$this->plugin = $plugin;
 
 		return $this;
@@ -69,8 +69,7 @@ final class LibraryLanguageInstaller implements Pluginable {
 	 *
 	 * @return self
 	 */
-	public function withLibraryLanguageDirectory(/*string*/
-		$library_language_directory)/*: self*/ {
+	public function withLibraryLanguageDirectory($library_language_directory) {
 		$this->library_language_directory = $library_language_directory;
 
 		return $this;
@@ -145,7 +144,7 @@ final class LibraryLanguageInstaller implements Pluginable {
 	 *
 	 * @return array
 	 */
-	protected function getAvailableLangFiles()/*: array*/ {
+	protected function getAvailableLangFiles() {
 		$langs = [];
 
 		if (!@is_dir($this->library_language_directory)) {

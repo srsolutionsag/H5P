@@ -130,9 +130,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 			}
 
 			if (is_array($field[self::PROPERTY_SUBITEMS])) {
-				if (!($item instanceof MultiLineInputGUI)) {
-					$this->getFields($field[self::PROPERTY_SUBITEMS], $item);
-				}
+				$this->getFields($field[self::PROPERTY_SUBITEMS], $item);
 			}
 
 			if ($parent_item instanceof MultiLineInputGUI) {
@@ -220,9 +218,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	 *
 	 * @return string
 	 */
-	public function txt(/*string*/
-		$key,/*?string*/
-		$default = null)/*: string*/ {
+	public function txt(/*string*/ $key,/*?string*/ $default = null)/*: string*/ {
 		if ($default !== null) {
 			return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
 		} else {
@@ -266,43 +262,36 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	 *
 	 * @return mixed
 	 */
-	protected abstract function getValue(/*string*/
-		$key);
+	protected abstract function getValue(/*string*/ $key);
 
 
 	/**
 	 *
 	 */
-	protected abstract function initCommands()/*: void*/
-	;
+	protected abstract function initCommands()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initFields()/*: void*/
-	;
+	protected abstract function initFields()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initId()/*: void*/
-	;
+	protected abstract function initId()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initTitle()/*: void*/
-	;
+	protected abstract function initTitle()/*: void*/ ;
 
 
 	/**
 	 * @param string $key
 	 * @param mixed  $value
 	 */
-	protected abstract function storeValue(/*string*/
-		$key, $value)/*: void*/
-	;
+	protected abstract function storeValue(/*string*/ $key, $value)/*: void*/ ;
 }

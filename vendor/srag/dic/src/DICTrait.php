@@ -31,7 +31,7 @@ trait DICTrait {
 	 *
 	 * @return DICInterface DIC interface
 	 */
-	protected static final function dic()/*: DICInterface*/ {
+	protected static final function dic() {
 		return DICStatic::dic();
 	}
 
@@ -41,7 +41,7 @@ trait DICTrait {
 	 *
 	 * @return OutputInterface Output interface
 	 */
-	protected static final function output()/*: OutputInterface*/ {
+	protected static final function output() {
 		return DICStatic::output();
 	}
 
@@ -55,7 +55,7 @@ trait DICTrait {
 	 * @throws DICException Class $plugin_class_name not extends ilPlugin!
 	 * @logs   DEBUG Please implement $plugin_class_name::getInstance()!
 	 */
-	protected static final function plugin()/*: PluginInterface*/ {
+	protected static final function plugin() {
 		self::checkPluginClassNameConst();
 
 		return DICStatic::plugin(static::PLUGIN_CLASS_NAME);
@@ -67,7 +67,7 @@ trait DICTrait {
 	 *
 	 * @return VersionInterface Version interface
 	 */
-	protected static final function version()/*: VersionInterface*/ {
+	protected static final function version() {
 		return DICStatic::version();
 	}
 

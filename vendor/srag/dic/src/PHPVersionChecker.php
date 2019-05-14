@@ -42,7 +42,7 @@ final class PHPVersionChecker {
 	/**
 	 *
 	 */
-	public static function checkPHPVersionOutput()/*: void**/ {
+	public static function checkPHPVersionOutput()/*: void*/ {
 		if (!self::checkPHPVersion()) {
 			die(sprintf(self::ERROR_MESSAGE, self::getPluginName(), self::$should_php_version, self::$current_php_version, self::normalizePath(__DIR__
 				. "/../../../..")));
@@ -116,11 +116,8 @@ final class PHPVersionChecker {
 	 *
 	 * @return string
 	 */
-	private static function normalizePath(/*string*/
-		$path)/*: string*/ {
-		return array_reduce(explode("/", $path), function (/*string*/
-			$a, /*string*/
-			$b)/*: string*/ {
+	private static function normalizePath(/*string*/ $path)/*: string*/ {
+		return array_reduce(explode("/", $path), function (/*string*/ $a, /*string*/ $b)/*: string*/ {
 			if ($b === "" || $b === ".") {
 				return $a;
 			}

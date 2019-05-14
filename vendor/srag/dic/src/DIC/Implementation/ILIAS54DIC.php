@@ -2,10 +2,54 @@
 
 namespace srag\DIC\H5P\DIC\Implementation;
 
+use Collator;
+use ilAccessHandler;
+use ilAppEventHandler;
+use ilAuthSession;
+use ilBenchmark;
+use ilBrowser;
+use ilConditionService;
+use ilCtrl;
+use ilCtrlStructureReader;
+use ilDBInterface;
+use ilErrorHandling;
+use ilHelpGUI;
+use ILIAS;
+use ILIAS\DI\BackgroundTaskServices;
 use ILIAS\DI\Container;
-use ILIAS\Services\AssessmentQuestion\Factory\AsqFactory;
+use ILIAS\DI\HTTPServices;
+use ILIAS\DI\LoggingServices;
+use ILIAS\DI\UIServices;
+use ILIAS\Filesystem\Filesystems;
+use ILIAS\FileUpload\FileUpload;
+use ILIAS\GlobalScreen\Services as GlobalScreenService;
+use ilIniFile;
+use ilLanguage;
+use ilLearningHistoryService;
+use ilLocatorGUI;
+use ilLog;
+use ilLoggerFactory;
+use ilMailMimeSenderFactory;
+use ilMailMimeTransportFactory;
+use ilMainMenuGUI;
+use ilNavigationHistory;
+use ilNewsService;
+use ilObjectDataCache;
+use ilObjectDefinition;
+use ilObjectService;
+use ilObjUser;
+use ilPluginAdmin;
+use ilRbacAdmin;
+use ilRbacReview;
+use ilRbacSystem;
+use ilSetting;
+use ilStyleDefinition;
+use ilTabsGUI;
+use ilTemplate;
+use ilToolbarGUI;
+use ilTree;
+use Session;
 use srag\DIC\H5P\DIC\AbstractDIC;
-use srag\DIC\H5P\DICStatic;
 
 /**
  * Class ILIAS54DIC
@@ -37,7 +81,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function access()/*: ilAccess*/ {
+	public function access() {
 		return $this->dic->access();
 	}
 
@@ -45,7 +89,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function appEventHandler()/*: ilAppEventHandler*/ {
+	public function appEventHandler() {
 		return $this->dic->event();
 	}
 
@@ -53,7 +97,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function authSession()/*: ilAuthSession*/ {
+	public function authSession() {
 		return $this->dic["ilAuthSession"];
 	}
 
@@ -61,7 +105,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function backgroundTasks()/*: BackgroundTaskServices*/ {
+	public function backgroundTasks() {
 		return $this->dic->backgroundTasks();
 	}
 
@@ -69,7 +113,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function benchmark()/*: ilBenchmark*/ {
+	public function benchmark() {
 		return $this->dic["ilBench"];
 	}
 
@@ -77,7 +121,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function browser()/*: ilBrowser*/ {
+	public function browser() {
 		return $this->dic["ilBrowser"];
 	}
 
@@ -85,7 +129,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function clientIni()/*: ilIniFile*/ {
+	public function clientIni() {
 		return $this->dic->clientIni();
 	}
 
@@ -93,7 +137,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function collator()/*: Collator*/ {
+	public function collator() {
 		return $this->dic["ilCollator"];
 	}
 
@@ -101,7 +145,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function conditions()/*: ilConditionService*/ {
+	public function conditions() {
 		return $this->dic->conditions();
 	}
 
@@ -109,7 +153,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ctrl()/*: ilCtrl*/ {
+	public function ctrl() {
 		return $this->dic->ctrl();
 	}
 
@@ -117,7 +161,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ctrlStructureReader()/*: ilCtrlStructureReader*/ {
+	public function ctrlStructureReader() {
 		return $this->dic["ilCtrlStructureReader"];
 	}
 
@@ -125,7 +169,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function database()/*: ilDBInterface*/ {
+	public function database() {
 		return $this->dic->database();
 	}
 
@@ -133,7 +177,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function error()/*: ilErrorHandling*/ {
+	public function error() {
 		return $this->dic["ilErr"];
 	}
 
@@ -141,7 +185,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function filesystem()/*: Filesystems*/ {
+	public function filesystem() {
 		return $this->dic->filesystem();
 	}
 
@@ -149,7 +193,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function globalScreen()/*: GlobalScreenService*/ {
+	public function globalScreen() {
 		return $this->dic->globalScreen();
 	}
 
@@ -157,7 +201,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function help()/*: ilHelpGUI*/ {
+	public function help() {
 		return $this->dic->help();
 	}
 
@@ -165,7 +209,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function history()/*: ilNavigationHistory*/ {
+	public function history() {
 		return $this->dic["ilNavigationHistory"];
 	}
 
@@ -173,7 +217,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function http()/*: HTTPServices*/ {
+	public function http() {
 		return $this->dic->http();
 	}
 
@@ -181,7 +225,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ilias()/*: ILIAS*/ {
+	public function ilias() {
 		return $this->dic["ilias"];
 	}
 
@@ -189,7 +233,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function iliasIni()/*: ilIniFile*/ {
+	public function iliasIni() {
 		return $this->dic->iliasIni();
 	}
 
@@ -197,7 +241,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function language()/*: ilLanguage*/ {
+	public function language() {
 		return $this->dic->language();
 	}
 
@@ -205,7 +249,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function learningHistory()/*: ilLearningHistoryService*/ {
+	public function learningHistory() {
 		return $this->dic->learningHistory();
 	}
 
@@ -213,7 +257,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function locator()/*: ilLocatorGUI*/ {
+	public function locator() {
 		return $this->dic["ilLocator"];
 	}
 
@@ -221,7 +265,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function log()/*: ilLog*/ {
+	public function log() {
 		return $this->dic["ilLog"];
 	}
 
@@ -229,7 +273,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function logger()/*: LoggingServices*/ {
+	public function logger() {
 		return $this->dic->logger();
 	}
 
@@ -237,7 +281,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function loggerFactory()/*: ilLoggerFactory*/ {
+	public function loggerFactory() {
 		return $this->dic["ilLoggerFactory"];
 	}
 
@@ -245,7 +289,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mailMimeSenderFactory()/*: ilMailMimeSenderFactory*/ {
+	public function mailMimeSenderFactory() {
 		return $this->dic["mail.mime.sender.factory"];
 	}
 
@@ -253,7 +297,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mailMimeTransportFactory()/*: ilMailMimeTransportFactory*/ {
+	public function mailMimeTransportFactory() {
 		return $this->dic["mail.mime.transport.factory"];
 	}
 
@@ -261,7 +305,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mainMenu()/*: ilMainMenuGUI*/ {
+	public function mainMenu() {
 		return $this->dic["ilMainMenu"];
 	}
 
@@ -269,7 +313,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mainTemplate()/*: ilTemplate*/ {
+	public function mainTemplate() {
 		return $this->dic->ui()->mainTemplate();
 	}
 
@@ -277,7 +321,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function news()/*: ilNewsService*/ {
+	public function news() {
 		return $this->dic->news();
 	}
 
@@ -285,7 +329,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function objDataCache()/*: ilObjectDataCache*/ {
+	public function objDataCache() {
 		return $this->dic["ilObjDataCache"];
 	}
 
@@ -293,7 +337,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function objDefinition()/*: ilObjectDefinition*/ {
+	public function objDefinition() {
 		return $this->dic["objDefinition"];
 	}
 
@@ -301,7 +345,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function object()/*: ilObjectService*/ {
+	public function object() {
 		return $this->dic->object();
 	}
 
@@ -309,19 +353,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function question()/*: AsqFactory*/ {
-		if (DICStatic::version()->is60()) {
-			return new AsqFactory();
-		} else {
-			throw new DICException("AsqFactory not exists in ILIAS 5.4 or below!");
-		}
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function pluginAdmin()/*: ilPluginAdmin*/ {
+	public function pluginAdmin() {
 		return $this->dic["ilPluginAdmin"];
 	}
 
@@ -329,7 +361,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacadmin()/*: ilRbacAdmin*/ {
+	public function rbacadmin() {
 		return $this->dic->rbac()->admin();
 	}
 
@@ -337,7 +369,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacreview()/*: ilRbacReview*/ {
+	public function rbacreview() {
 		return $this->dic->rbac()->review();
 	}
 
@@ -345,7 +377,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacsystem()/*: ilRbacSystem*/ {
+	public function rbacsystem() {
 		return $this->dic->rbac()->system();
 	}
 
@@ -353,7 +385,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function session()/*: Session*/ {
+	public function session() {
 		return $this->dic["sess"];
 	}
 
@@ -361,7 +393,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function settings()/*: ilSetting*/ {
+	public function settings() {
 		return $this->dic->settings();
 	}
 
@@ -369,7 +401,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function systemStyle()/*: ilStyleDefinition*/ {
+	public function systemStyle() {
 		return $this->dic->systemStyle();
 	}
 
@@ -377,7 +409,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function tabs()/*: ilTabsGUI*/ {
+	public function tabs() {
 		return $this->dic->tabs();
 	}
 
@@ -385,7 +417,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function toolbar()/*: ilToolbarGUI*/ {
+	public function toolbar() {
 		return $this->dic->toolbar();
 	}
 
@@ -393,7 +425,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function tree()/*: ilTree*/ {
+	public function tree() {
 		return $this->dic->repositoryTree();
 	}
 
@@ -401,7 +433,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ui()/*: UIServices*/ {
+	public function ui() {
 		return $this->dic->ui();
 	}
 
@@ -409,7 +441,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function upload()/*: FileUpload*/ {
+	public function upload() {
 		return $this->dic->upload();
 	}
 
@@ -417,7 +449,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function user()/*: ilObjUser*/ {
+	public function user() {
 		return $this->dic->user();
 	}
 
@@ -425,7 +457,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @return Container
 	 */
-	public function &dic()/*: Container*/ {
+	public function &dic() {
 		return $this->dic;
 	}
 }

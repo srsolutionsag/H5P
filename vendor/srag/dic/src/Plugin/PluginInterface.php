@@ -21,8 +21,7 @@ interface PluginInterface {
 	 *
 	 * @return string Plugin directory
 	 */
-	public function directory()/*: string*/
-	;
+	public function directory();
 
 
 	/**
@@ -37,12 +36,7 @@ interface PluginInterface {
 	 *
 	 * @throws ilTemplateException
 	 */
-	public function template(/*string*/
-		$template, /*bool*/
-		$remove_unknown_variables = true, /*bool*/
-		$remove_empty_blocks = true, /*bool*/
-		$plugin = true)/*: ilTemplate*/
-	;
+	public function template($template, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true);
 
 
 	/**
@@ -60,13 +54,7 @@ interface PluginInterface {
 	 * @throws DICException Please use the placeholders feature and not direct `sprintf` or `vsprintf` in your code!
 	 * @throws DICException Please use only one placeholder in the default text for the key!
 	 */
-	public function translate(/*string*/
-		$key, /*string*/
-		$module = "", array $placeholders = [], /*bool*/
-		$plugin = true, /*string*/
-		$lang = "", /*string*/
-		$default = "MISSING %s")/*: string*/
-	;
+	public function translate($key, $module = '', array $placeholders = array(), $plugin = true, $lang = '', $default = 'MISSING %s');
 
 
 	/**
@@ -76,6 +64,5 @@ interface PluginInterface {
 	 *
 	 * @return ilPlugin ILIAS plugin object instance
 	 */
-	public function getPluginObject()/*: ilPlugin*/
-	;
+	public function getPluginObject();
 }
