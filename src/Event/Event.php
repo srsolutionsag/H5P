@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Event;
 
 use ActiveRecord;
 use arConnector;
+use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -51,7 +52,7 @@ class Event extends ActiveRecord {
             FROM " . self::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
             GROUP BY library_name
-            ORDER BY max_created_at DESC", [ "integer" ], [ $user_id ]);
+            ORDER BY max_created_at DESC", [ ilDBConstants::T_INTEGER ], [ $user_id ]);
 
 		$h5p_events = [];
 

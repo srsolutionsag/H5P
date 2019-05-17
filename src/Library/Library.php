@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Library;
 
 use ActiveRecord;
 use arConnector;
+use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
@@ -134,7 +135,7 @@ class Library extends ActiveRecord {
           FROM " . self::TABLE_NAME . " AS l
           JOIN " . ContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
           JOIN " . Content::TABLE_NAME . " AS c ON cl.content_id = c.content_id
-          WHERE l.library_id = %s", [ "integer" ], [ $library_id ]);
+          WHERE l.library_id = %s", [ ilDBConstants::T_INTEGER ], [ $library_id ]);
 
 		$count = intval($result->fetchAssoc()["count"]);
 
