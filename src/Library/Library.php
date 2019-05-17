@@ -101,7 +101,7 @@ class Library extends ActiveRecord {
 	 *
 	 * @return Library|null
 	 */
-	public static function getLibraryByVersion($name, $major_version = NULL, $minor_version = NULL) {
+	public static function getLibraryByVersion($name, $major_version = null, $minor_version = null) {
 		/**
 		 * @var Library|null $h5p_library
 		 */
@@ -110,11 +110,11 @@ class Library extends ActiveRecord {
 			"name" => $name
 		];
 
-		if ($major_version !== NULL) {
+		if ($major_version !== null) {
 			$where["major_version"] = $major_version;
 		}
 
-		if ($minor_version !== NULL) {
+		if ($minor_version !== null) {
 			$where["minor_version"] = $minor_version;
 		}
 
@@ -341,7 +341,7 @@ class Library extends ActiveRecord {
 	 * @param int              $primary_key_value
 	 * @param arConnector|null $connector
 	 */
-	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+	public function __construct($primary_key_value = 0, arConnector $connector = null) {
 		parent::__construct($primary_key_value, $connector);
 	}
 
@@ -366,7 +366,7 @@ class Library extends ActiveRecord {
 				return self::h5p()->timestampToDbDate($field_value);
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 
@@ -396,7 +396,7 @@ class Library extends ActiveRecord {
 				return self::h5p()->dbDateToTimestamp($field_value);
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 
