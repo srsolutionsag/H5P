@@ -30,7 +30,7 @@
 		var library = $library.val();
 		var params = $params.val();
 
-		// prevent remove id edtor
+		// prevent remove id editor
 		var $tmp = $("<div></div>").appendTo($editor);
 
 		var h5peditor = new ns.Editor(library, params, $tmp);

@@ -1,24 +1,46 @@
 <?php
 
-namespace srag\Plugins\H5P\Hub;
+namespace srag\Plugins\H5P\Content\Editor;
 
 use ilFileInputGUI;
-use ilH5PConfigGUI;
 use ilH5PPlugin;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class UploadLibraryFormGUI
+ * Class ImportContentFormGUI
  *
- * @package srag\Plugins\H5P\Hub
+ * @package srag\Plugins\H5P\Content\Editor
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UploadLibraryFormGUI extends PropertyFormGUI {
+class ImportContentFormGUI extends PropertyFormGUI {
 
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+	/**
+	 * @var string
+	 */
+	protected $cmd_import;
+	/**
+	 * @var string
+	 */
+	protected $cmd_cancel;
+
+
+	/**
+	 * ImportContentFormGUI constructor
+	 *
+	 * @param object $parent
+	 * @param string $cmd_import
+	 * @param string $cmd_cancel
+	 */
+	public function __construct($parent, /*string*/ $cmd_import, /*string*/ $cmd_cancel) {
+		$this->cmd_import = $cmd_import;
+		$this->cmd_cancel = $cmd_cancel;
+
+		parent::__construct($parent);
+	}
 
 
 	/**
@@ -33,7 +55,8 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initCommands()/*: void*/ {
-		$this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
+		$this->addCommandButton($this->cmd_import, self::plugin()->translate("import"));
+		$this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
 	}
 
 
@@ -42,11 +65,11 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	 */
 	protected function initFields()/*: void*/ {
 		$this->fields = [
-			"xhfp_library" => [
+			"xhfp_content" => [
 				self::PROPERTY_CLASS => ilFileInputGUI::class,
 				self::PROPERTY_REQUIRED => true,
 				"setSuffixes" => [ [ "h5p" ] ],
-				"setTitle" => self::plugin()->translate("library")
+				"setTitle" => self::plugin()->translate("content")
 			]
 		];
 	}
@@ -64,7 +87,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initTitle()/*: void*/ {
-		$this->setTitle(self::plugin()->translate("upload_library"));
+		$this->setTitle(self::plugin()->translate("import_content"));
 	}
 
 

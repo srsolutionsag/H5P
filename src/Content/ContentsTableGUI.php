@@ -50,10 +50,7 @@ class ContentsTableGUI extends TableGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getColumnValue(/*string*/
-		$column, /*array*/
-		$row, /*int*/
-		$format = 0)/*: string*/ {
+	protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0)/*: string*/ {
 		switch ($column) {
 			default:
 				$column = $row[$column];
@@ -141,8 +138,7 @@ class ContentsTableGUI extends TableGUI {
 	/**
 	 * @param array $row
 	 */
-	protected function fillRow(/*array*/
-		$row)/*: void*/ {
+	protected function fillRow(/*array*/ $row)/*: void*/ {
 		$h5p_library = Library::getLibraryById($row["library_id"]);
 		$h5p_results = Result::getResultsByContent($row["content_id"]);
 
@@ -170,6 +166,9 @@ class ContentsTableGUI extends TableGUI {
 
 			$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), self::dic()->ctrl()
 				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+
+			$actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("export"), self::dic()->ctrl()
+				->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EXPORT_CONTENT));
 		}
 
 		$this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)

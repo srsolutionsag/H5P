@@ -4,6 +4,7 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentsTableGUI;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
+use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
 use srag\Plugins\H5P\Object\ObjSettingsFormGUI;
 use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Results\ResultsTableGUI;
@@ -36,7 +37,10 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 	const CMD_DELETE_RESULTS = "deleteResults";
 	const CMD_DELETE_RESULTS_CONFIRM = "deleteResultsConfirm";
 	const CMD_EDIT_CONTENT = "editContent";
+	const CMD_EXPORT_CONTENT = "exportContent";
 	const CMD_FINISH_CONTENTS = "finishContents";
+	const CMD_IMPORT_CONTENT = "importContent";
+	const CMD_IMPORT_CONTENT_SELECT = "importContentSelect";
 	const CMD_MANAGE_CONTENTS = "manageContents";
 	const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
 	const CMD_MOVE_CONTENT_UP = "moveContentUp";
@@ -119,6 +123,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					case self::CMD_DELETE_CONTENT:
 					case self::CMD_DELETE_CONTENT_CONFIRM:
 					case self::CMD_EDIT_CONTENT:
+					case self::CMD_EXPORT_CONTENT:
+					case self::CMD_IMPORT_CONTENT:
+					case self::CMD_IMPORT_CONTENT_SELECT:
 					case self::CMD_MOVE_CONTENT_DOWN:
 					case self::CMD_MOVE_CONTENT_UP:
 					case self::CMD_UPDATE_CONTENT:
@@ -226,6 +233,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		if (ilObjH5PAccess::hasWriteAccess() && !$this->hasResults()) {
 			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
 				->translate("add_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_ADD_CONTENT)));
+
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("import_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_IMPORT_CONTENT_SELECT)));
 		}
 
 		$table = $this->getContentsTable();
@@ -297,7 +307,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		self::h5p()->show_editor()->createContent($form);
+		self::h5p()->show_editor()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -331,7 +341,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 		$h5p_content = Content::getCurrentContent();
 
-		self::h5p()->show_editor()->updateContent($h5p_content, $form);
+		self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
@@ -641,6 +651,60 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 		ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
 
 		self::dic()->ctrl()->redirect($this, self::CMD_SETTINGS);
+	}
+
+
+	/**
+	 * @return ImportContentFormGUI
+	 */
+	protected function getImportContentForm() {
+		$form = self::h5p()->show_editor()->getImportContentForm($this, self::CMD_IMPORT_CONTENT, self::CMD_MANAGE_CONTENTS);
+
+		return $form;
+	}
+
+
+	/**
+	 *
+	 */
+	protected function importContentSelect() {
+		self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
+
+		$form = $this->getImportContentForm();
+
+		$this->show($form);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function importContent() {
+		self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
+
+		$form = $this->getImportContentForm();
+
+		if (!$form->storeForm()) {
+			$this->show($form);
+
+			return;
+		}
+
+		$h5p_content = self::h5p()->show_editor()->importContent($form);
+
+		self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+
+		self::dic()->ctrl()->redirect($this, self::CMD_EDIT_CONTENT);
+	}
+
+
+	/**
+	 *
+	 */
+	protected function exportContent() {
+		$h5p_content = Content::getCurrentContent();
+
+		self::h5p()->show_editor()->exportContent($h5p_content);
 	}
 
 

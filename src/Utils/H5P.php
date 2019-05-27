@@ -35,14 +35,14 @@ class H5P {
 	/**
 	 * @var self
 	 */
-	protected static $instance = NULL;
+	protected static $instance = null;
 
 
 	/**
 	 * @return self
 	 */
 	public static function getInstance()/*: self*/ {
-		if (self::$instance === NULL) {
+		if (self::$instance === null) {
 			self::$instance = new self();
 		}
 
@@ -55,55 +55,55 @@ class H5P {
 	/**
 	 * @var H5PActionGUI
 	 */
-	protected $action = NULL;
+	protected $action = null;
 	/**
 	 * @var H5PContentValidator
 	 */
-	protected $content_validator = NULL;
+	protected $content_validator = null;
 	/**
 	 * @var H5PCore
 	 */
-	protected $core = NULL;
+	protected $core = null;
 	/**
 	 * @var H5peditor
 	 */
-	protected $editor = NULL;
+	protected $editor = null;
 	/**
 	 * @var EditorAjax
 	 */
-	protected $editor_ajax = NULL;
+	protected $editor_ajax = null;
 	/**
 	 * @var EditorStorage
 	 */
-	protected $editor_storage = NULL;
+	protected $editor_storage = null;
 	/**
 	 * @var H5PFileStorage
 	 */
-	protected $filesystem = NULL;
+	protected $filesystem = null;
 	/**
 	 * @var Framework
 	 */
-	protected $framework = NULL;
+	protected $framework = null;
 	/**
 	 * @var ShowContent
 	 */
-	protected $show_content = NULL;
+	protected $show_content = null;
 	/**
 	 * @var ShowEditor
 	 */
-	protected $show_editor = NULL;
+	protected $show_editor = null;
 	/**
 	 * @var ShowHub
 	 */
-	protected $show_hub = NULL;
+	protected $show_hub = null;
 	/**
 	 * @var H5PStorage
 	 */
-	protected $storage = NULL;
+	protected $storage = null;
 	/**
 	 * @var H5PValidator
 	 */
-	protected $validator = NULL;
+	protected $validator = null;
 
 
 	/**
@@ -202,7 +202,7 @@ class H5P {
 	 * @return H5PActionGUI
 	 */
 	public function action() {
-		if ($this->action === NULL) {
+		if ($this->action === null) {
 			$this->action = new H5PActionGUI();
 		}
 
@@ -214,7 +214,7 @@ class H5P {
 	 * @return H5PContentValidator
 	 */
 	public function content_validator() {
-		if ($this->content_validator === NULL) {
+		if ($this->content_validator === null) {
 			$this->content_validator = new H5PContentValidator($this->framework(), $this->core());
 		}
 
@@ -226,9 +226,9 @@ class H5P {
 	 * @return H5PCore
 	 */
 	public function core() {
-		if ($this->core === NULL) {
+		if ($this->core === null) {
 			$this->core = new H5PCore($this->framework(), $this->getH5PFolder(), ILIAS_HTTP_PATH . "/" . $this->getH5PFolder(), self::dic()->user()
-				->getLanguage(), false);
+				->getLanguage(), true);
 		}
 
 		return $this->core;
@@ -239,7 +239,7 @@ class H5P {
 	 * @return H5peditor
 	 */
 	public function editor() {
-		if ($this->editor === NULL) {
+		if ($this->editor === null) {
 			$this->editor = new H5peditor($this->core(), $this->editor_storage(), $this->editor_ajax());
 		}
 
@@ -251,7 +251,7 @@ class H5P {
 	 * @return EditorAjax
 	 */
 	public function editor_ajax() {
-		if ($this->editor_ajax === NULL) {
+		if ($this->editor_ajax === null) {
 			$this->editor_ajax = new EditorAjax();
 		}
 
@@ -263,7 +263,7 @@ class H5P {
 	 * @return EditorStorage
 	 */
 	public function editor_storage() {
-		if ($this->editor_storage === NULL) {
+		if ($this->editor_storage === null) {
 			$this->editor_storage = new EditorStorage();
 		}
 
@@ -275,7 +275,7 @@ class H5P {
 	 * @return H5PFileStorage
 	 */
 	public function filesystem() {
-		if ($this->filesystem === NULL) {
+		if ($this->filesystem === null) {
 			$this->filesystem = $this->core()->fs;
 		}
 
@@ -287,7 +287,7 @@ class H5P {
 	 * @return Framework
 	 */
 	public function framework() {
-		if ($this->framework === NULL) {
+		if ($this->framework === null) {
 			$this->framework = new Framework();
 		}
 
@@ -299,7 +299,7 @@ class H5P {
 	 * @return ShowContent
 	 */
 	public function show_content() {
-		if ($this->show_content === NULL) {
+		if ($this->show_content === null) {
 			$this->show_content = new ShowContent();
 		}
 
@@ -311,7 +311,7 @@ class H5P {
 	 * @return ShowEditor
 	 */
 	public function show_editor() {
-		if ($this->show_editor === NULL) {
+		if ($this->show_editor === null) {
 			$this->show_editor = new ShowEditor();
 		}
 
@@ -323,7 +323,7 @@ class H5P {
 	 * @return ShowHub
 	 */
 	public function show_hub() {
-		if ($this->show_hub === NULL) {
+		if ($this->show_hub === null) {
 			$this->show_hub = new ShowHub();
 		}
 
@@ -335,7 +335,7 @@ class H5P {
 	 * @return H5PStorage
 	 */
 	public function storage() {
-		if ($this->storage === NULL) {
+		if ($this->storage === null) {
 			$this->storage = new H5PStorage($this->framework(), $this->core());
 		}
 
@@ -347,7 +347,7 @@ class H5P {
 	 * @return H5PValidator
 	 */
 	public function validator() {
-		if ($this->validator === NULL) {
+		if ($this->validator === null) {
 			$this->validator = new H5PValidator($this->framework(), $this->core());
 		}
 

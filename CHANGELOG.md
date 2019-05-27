@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Import/Export contents
+
 ## [2.2.0]
 - Supports ILIAS 5.4
 - Remove ILIAS 5.2 support

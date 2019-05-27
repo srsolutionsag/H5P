@@ -89,6 +89,7 @@ return array(
     'srag\\Plugins\\H5P\\Content\\Editor\\EditContentFormGUI' => $baseDir . '/src/Content/Editor/EditContentFormGUI.php',
     'srag\\Plugins\\H5P\\Content\\Editor\\EditorAjax' => $baseDir . '/src/Content/Editor/EditorAjax.php',
     'srag\\Plugins\\H5P\\Content\\Editor\\EditorStorage' => $baseDir . '/src/Content/Editor/EditorStorage.php',
+    'srag\\Plugins\\H5P\\Content\\Editor\\ImportContentFormGUI' => $baseDir . '/src/Content/Editor/ImportContentFormGUI.php',
     'srag\\Plugins\\H5P\\Content\\Editor\\ShowEditor' => $baseDir . '/src/Content/Editor/ShowEditor.php',
     'srag\\Plugins\\H5P\\Content\\Editor\\TmpFile' => $baseDir . '/src/Content/Editor/TmpFile.php',
     'srag\\Plugins\\H5P\\Content\\ShowContent' => $baseDir . '/src/Content/ShowContent.php',
