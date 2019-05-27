@@ -58,6 +58,7 @@ enable_lrs_content_types#:#MISSING enable_lrs_content_types
 enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
 example#:#MISSING example
 export#:#MISSING export
+export_content#:#MISSING export_content
 files#:#MISSING files
 finish#:#MISSING finish
 finished#:#MISSING finished

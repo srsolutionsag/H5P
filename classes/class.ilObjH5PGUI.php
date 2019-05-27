@@ -690,11 +690,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 			return;
 		}
 
-		$h5p_content = self::h5p()->show_editor()->importContent($form);
+		self::h5p()->show_editor()->importContent($form);
 
-		self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
-
-		self::dic()->ctrl()->redirect($this, self::CMD_EDIT_CONTENT);
+		self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
 	}
 
 

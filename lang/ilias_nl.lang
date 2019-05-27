@@ -58,6 +58,7 @@ enable_lrs_content_types#:#Enable LRS dependent content types.
 enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 example#:#Example
 export#:#Export
+export_content#:#Export content
 files#:#Files:
 finish#:#Finish
 finished#:#Finished

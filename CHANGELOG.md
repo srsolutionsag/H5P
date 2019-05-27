@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [2.3.0]
 - Import/Export contents
 
 ## [2.2.0]
