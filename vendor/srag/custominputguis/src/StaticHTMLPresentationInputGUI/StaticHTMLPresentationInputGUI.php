@@ -28,7 +28,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	 *
 	 * @param string $title
 	 */
-	public function __construct(string $title = "") {
+	public function __construct($title = '') {
 		parent::__construct($title, "");
 	}
 
@@ -36,7 +36,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	/**
 	 * @return bool
 	 */
-	public function checkInput(): bool {
+	public function checkInput() {
 		return true;
 	}
 
@@ -44,7 +44,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	/**
 	 * @return string
 	 */
-	protected function getDataUrl(): string {
+	protected function getDataUrl() {
 		return "data:text/html;base64," . base64_encode($this->html);
 	}
 
@@ -52,7 +52,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	/**
 	 * @return string
 	 */
-	public function getHtml(): string {
+	public function getHtml() {
 		return $this->html;
 	}
 
@@ -60,7 +60,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	/**
 	 * @return string
 	 */
-	public function getValue(): string {
+	public function getValue() {
 		return "";
 	}
 
@@ -80,7 +80,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	/**
 	 * @return string
 	 */
-	public function render(): string {
+	public function render() {
 		$iframe_tpl = new ilTemplate(__DIR__ . "/templates/iframe.html", true, true);
 
 		$iframe_tpl->setVariable("URL", $this->getDataUrl());
@@ -94,7 +94,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	 *
 	 * @return self
 	 */
-	public function setHtml(string $html): self {
+	public function setHtml($html) {
 		$this->html = $html;
 
 		return $this;
@@ -106,8 +106,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI {
 	 *
 	 * @return self
 	 */
-	public function setTitle(/*string*/
-		$title): self {
+	public function setTitle($title) {
 		$this->title = $title;
 
 		return $this;

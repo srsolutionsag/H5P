@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.1]
+- PHP7Backport
+
+## [0.6.0]
+- PHP7Backport
+
+## [0.5.3]
+- Notifications4Plugin
+
 ## [0.5.2]
 - CommentsUI
 

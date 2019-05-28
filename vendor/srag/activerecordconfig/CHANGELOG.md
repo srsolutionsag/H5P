@@ -1,7 +1,22 @@
 # Changelog
 
+## [0.16.2]
+- Fix
+
+## [0.16.1]
+- Fix
+
+## [0.16.0]
+- `addTab` overridable
+
+## [0.15.1]
+- Fix reset offset
+
+## [0.15.0]
+- Supports an custom command or other gui class as tab
+
 ## [0.14.3]
-  - Fix initFilterFields
+- Fix initFilterFields
 
 ## [0.14.2]
 - Fixes

@@ -7,6 +7,7 @@ use ilFormSectionHeaderGUI;
 use ilNumberInputGUI;
 use ilPropertyFormGUI;
 use ilRadioOption;
+use srag\CustomInputGUIs\H5P\MultiLineInputGUI\MultiLineInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
@@ -85,6 +86,11 @@ final class Items {
 	 * @return mixed
 	 */
 	public static function getValueFromItem($item) {
+		if ($item instanceof MultiLineInputGUI) {
+			//return filter_input(INPUT_POST,$item->getPostVar()); // Not work because MultiLineInputGUI modify $_POST
+			return $_POST[$item->getPostVar()];
+		}
+
 		if (method_exists($item, "getChecked")) {
 			return boolval($item->getChecked());
 		}
@@ -115,7 +121,7 @@ final class Items {
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 
@@ -172,6 +178,14 @@ final class Items {
 	 * @param mixed                                                  $value
 	 */
 	public static function setValueToItem($item, $value)/*: void*/ {
+		if ($item instanceof MultiLineInputGUI) {
+			$item->setValueByArray([
+				$item->getPostVar() => $value
+			]);
+
+			return;
+		}
+
 		if (method_exists($item, "setChecked")) {
 			$item->setChecked($value);
 

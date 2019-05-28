@@ -46,6 +46,8 @@ final class DICStatic implements DICStaticInterface {
 
 	/**
 	 * @inheritdoc
+	 *
+	 * @deprecated
 	 */
 	public static function clearCache()/*: void*/ {
 		self::$dic = null;
@@ -58,17 +60,11 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function dic()/*: DICInterface*/ {
+	public static function dic() {
 		if (self::$dic === null) {
 			switch (true) {
-				case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_2)):
-					global $GLOBALS;
-					self::$dic = new LegacyDIC($GLOBALS);
-					break;
-
 				case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_3)):
-					global $DIC;
-					self::$dic = new ILIAS52DIC($DIC);
+					throw new DICException("DIC not supports ILIAS " . self::version()->getILIASVersion() . " anymore!");
 					break;
 
 				case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_4)):
@@ -90,7 +86,7 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function output()/*: OutputInterface*/ {
+	public static function output() {
 		if (self::$output === null) {
 			self::$output = new Output();
 		}
@@ -102,8 +98,7 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function plugin(/*string*/
-		$plugin_class_name)/*: PluginInterface*/ {
+	public static function plugin($plugin_class_name) {
 		if (!isset(self::$plugins[$plugin_class_name])) {
 			if (!class_exists($plugin_class_name)) {
 				throw new DICException("Class $plugin_class_name not exists!", DICException::CODE_INVALID_PLUGIN_CLASS);
@@ -131,7 +126,7 @@ final class DICStatic implements DICStaticInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function version()/*: VersionInterface*/ {
+	public static function version() {
 		if (self::$version === null) {
 			self::$version = new Version();
 		}

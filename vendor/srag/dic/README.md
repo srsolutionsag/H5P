@@ -41,7 +41,7 @@ You can now access the DIC interface, in instance and in static places:
  * 
  * @return DICInterface DIC interface
  */
-self::dic()/*: DICInterface*/;
+self::dic(): DICInterface;
 ```
 
 For instance you can access the ilCtrl global like:
@@ -49,7 +49,7 @@ For instance you can access the ilCtrl global like:
 /**
  * @return ilCtrl
  */
-self::dic()->ctrl()/*: ilCtrl*/;
+self::dic()->ctrl(): ilCtrl;
 ```
 
 You can access the plugin interface, in instance and in static places:
@@ -61,7 +61,7 @@ You can access the plugin interface, in instance and in static places:
  *
  * @throws DICException
  */
-self::plugin()/*: PluginInterface*/;
+self::plugin(): PluginInterface;
 ```
 
 The plugin interface has the follow methods:
@@ -73,7 +73,7 @@ For plugin dir use:
  * 
  * @return string Plugin directory
  */
-self::plugin()->directory()/*: string*/;
+self::plugin()->directory(): string;
 ```
 
 For output HTML or GUI use:
@@ -87,7 +87,7 @@ For output HTML or GUI use:
  *
  * @throws DICException
  */
-self::output()->output($value, $show = false, $main_template = true)/*: void*/;
+self::output()->output($value, bool $show = false, bool $main_template = true)/*: void*/;
 ```
 
 For output JSON:
@@ -113,7 +113,7 @@ For get HTML of GUI:
  *
  * @throws DICException
  */
-self::output()->getHTML($value)/*: string*/;
+self::output()->getHTML($value): string;
 ```
 
 For get a template use:
@@ -130,7 +130,7 @@ For get a template use:
  *
  * @throws DICException
  */
-self::plugin()->template(/*string*/$template, /*bool*/$remove_unknown_variables = true, /*bool*/$remove_empty_blocks = true, /*bool*/$plugin = true)/*: ilTemplate*/;
+self::plugin()->template(string $template, bool $remove_unknown_variables = true, bool $remove_empty_blocks = true, bool $plugin = true): ilTemplate;
 ```
 
 For translate use:
@@ -149,7 +149,7 @@ For translate use:
  *
  * @throws DICException
  */
-self::plugin()->translate(/*string*/$key, /*string*/$module = "", array $placeholders = [], /*bool*/$plugin = true, /*string*/$lang = "", /*string*/$default = "MISSING %s")/*: string*/;
+self::plugin()->translate(string $key, string $module = "", array $placeholders = [], bool $plugin = true, string $lang = "", string $default = "MISSING %s"): string;
 ```
 Hints:
 - Please use not more manually `sprintf` or `vsprintf`, use the `$placeholders` parameter. Otherwise you will get an appropriate DICException thrown. This because `translate` use always `vsprintf` and if you pass to few palceholders, `vsprintf` will throw an Exception.
@@ -164,7 +164,7 @@ If you really need the ILIAS plugin object use but avoid this:
  *
  * @return ilPlugin ILIAS plugin object instance
  */
-self::plugin()->getPluginObject()/*: ilPlugin*/;
+self::plugin()->getPluginObject(): ilPlugin;
 ```
 
 You can access ILIAS version informations, in instance and in static places:
@@ -174,7 +174,7 @@ You can access ILIAS version informations, in instance and in static places:
  * 
  * @return VersionInterface Version interface
  */
-self::version()/*: VersionInterface*/;
+self::version(): VersionInterface;
 ```
 
 If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()` or `DICStatic::plugin(ilXPlugin::class)`.
@@ -200,18 +200,9 @@ Expand you plugin class for installing languages of a library to your plugin
 You can now remove all usages of ILIAS globals in your class and replace it with this library.
 Please avoid to store in variables or class variables.
 
-#### Other tips
-- Use `__DIR__`
-- Use not `__FILE__`
-- Use not `dirname(dirname(..))`, use `../../`
-- Use also `__DIR__` for `Customizing/..` and use relative paths from your class perspective (Except in `dbupdate.php`)
-- Try to avoid use `$pl`
-
-### Dependencies
-* PHP >=5.6
-* [composer](https://getcomposer.org)
-
-Please use it for further development!
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
+* PHP >=7.0
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests

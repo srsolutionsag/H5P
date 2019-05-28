@@ -77,6 +77,8 @@ class ilH5PConfigGUI extends ActiveRecordConfigGUI {
 			return;
 		}
 
+		self::h5p()->show_hub()->uploadLibrary($form);
+
 		$this->redirectToTab(self::TAB_HUB);
 	}
 

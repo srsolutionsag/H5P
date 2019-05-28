@@ -266,4 +266,18 @@ class ShowHub {
 
 		return $details_form;
 	}
+
+
+	/**
+	 * @param UploadLibraryFormGUI $form
+	 */
+	public function uploadLibrary(UploadLibraryFormGUI $form) {
+		$file_path = $form->getInput("xhfp_library")["tmp_name"];
+
+		ob_start(); // prevent output from editor
+
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+
+		ob_end_clean();
+	}
 }

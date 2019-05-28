@@ -5,6 +5,8 @@ namespace srag\Plugins\H5P\Content\Editor;
 use H5PActionGUI;
 use H5PCore;
 use H5peditor;
+use H5PEditorEndpoints;
+use ilFileDelivery;
 use ilH5PPlugin;
 use ilLinkButton;
 use ilToolbarGUI;
@@ -152,16 +154,14 @@ class ShowEditor {
 
 
 	/**
-	 * @param EditContentFormGUI $form
-	 * @param bool               $message
+	 * @param string                  $title
+	 * @param string                  $library
+	 * @param string                  $params
+	 * @param EditContentFormGUI|null $form
 	 *
 	 * @return Content
 	 */
-	public function createContent(EditContentFormGUI $form, $message = true) {
-		$title = $form->getH5PTitle();
-		$library = $form->getLibrary();
-		$params = $form->getParams();
-
+	public function createContent($title, $library, $params, EditContentFormGUI $form = null, $message = true) {
 		$library_id = H5PCore::libraryFromString($library);
 		$h5p_library = Library::getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
 
@@ -183,8 +183,10 @@ class ShowEditor {
 
 		$h5p_content = Content::getContentById($content["id"]);
 
-		$form->setH5pContent($h5p_content);
-		$form->handleFileUpload();
+		if ($form !== null) {
+			$form->setH5pContent($h5p_content);
+			$form->handleFileUpload();
+		}
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);
@@ -195,18 +197,18 @@ class ShowEditor {
 
 
 	/**
-	 * @param Content            $h5p_content
-	 * @param EditContentFormGUI $form
-	 * @param bool               $message
+	 * @param Content                 $h5p_content
+	 * @param string                  $title
+	 * @param string                  $params
+	 * @param EditContentFormGUI|null $form
+	 * @param bool                    $message
 	 */
-	public function updateContent(Content $h5p_content, EditContentFormGUI $form, $message = true) {
+	public function updateContent(Content $h5p_content, $title, $params, EditContentFormGUI $form = null, $message = true) {
 		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
 
-		$title = $form->getH5PTitle();
 		$content["title"] = $title;
 
 		$oldParams = json_decode($content["params"]);
-		$params = $form->getParams();
 		$params = json_decode($params);
 		$content["params"] = json_encode($params->params);
 
@@ -214,7 +216,9 @@ class ShowEditor {
 
 		self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, $oldParams);
 
-		$form->handleFileUpload($h5p_content);
+		if ($form !== null) {
+			$form->handleFileUpload();
+		}
 
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [ $h5p_content->getTitle() ]), true);
@@ -235,5 +239,62 @@ class ShowEditor {
 		if ($message) {
 			ilUtil::sendSuccess(self::plugin()->translate("deleted_content", "", [ $h5p_content->getTitle() ]), true);
 		}
+	}
+
+
+	/**
+	 * @param object $parent
+	 * @param string $cmd_import
+	 * @param string $cmd_cancel
+	 *
+	 * @return ImportContentFormGUI
+	 */
+	public function getImportContentForm($parent, $cmd_import, $cmd_cancel) {
+		$form = new ImportContentFormGUI($parent, $cmd_import, $cmd_cancel);
+
+		return $form;
+	}
+
+
+	/**
+	 * @param ImportContentFormGUI $form
+	 * @param bool                 $message
+	 *
+	 * @return Content
+	 */
+	public function importContent(ImportContentFormGUI $form, $message = true) {
+		$title = pathinfo($form->getInput("xhfp_content")["name"], PATHINFO_FILENAME);
+		$file_path = $form->getInput("xhfp_content")["tmp_name"];
+
+		ob_start(); // prevent output from editor
+
+		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+
+		$result = ob_get_clean();
+
+		ob_end_clean();
+
+		$data = json_decode($result)->data;
+
+		$library = Library::getLibraryByVersion($data->h5p->mainLibrary);
+		$library = $library->getName() . "-" . $library->getMajorVersion() . "." . $library->getMinorVersion();
+
+		$params = json_encode([ "params" => $data->content ]);
+
+		return $this->createContent($title, $library, $params, null, $message);
+	}
+
+
+	/**
+	 * @param Content $h5p_content
+	 */
+	public function exportContent(Content $h5p_content) {
+		$content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+
+		self::h5p()->core()->filterParameters($content);
+
+		$export_file = self::h5p()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
+
+		ilFileDelivery::deliverFileAttached($export_file, $content["slug"] . ".h5p");
 	}
 }

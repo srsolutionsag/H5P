@@ -7,6 +7,7 @@ use ilFormSectionHeaderGUI;
 use ilPropertyFormGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
+use srag\CustomInputGUIs\H5P\MultiLineInputGUI\MultiLineInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\DIC\H5P\DICTrait;
@@ -120,9 +121,11 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 
 			if ($item instanceof ilFormPropertyGUI) {
 				if (!isset($field[self::PROPERTY_VALUE])) {
-					$value = $this->getValue($key);
+					if (!($parent_item instanceof MultiLineInputGUI)) {
+						$value = $this->getValue($key);
 
-					Items::setValueToItem($item, $value);
+						Items::setValueToItem($item, $value);
+					}
 				}
 			}
 
@@ -130,13 +133,17 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 				$this->getFields($field[self::PROPERTY_SUBITEMS], $item);
 			}
 
-			if ($parent_item instanceof ilRadioGroupInputGUI) {
-				$parent_item->addOption($item);
+			if ($parent_item instanceof MultiLineInputGUI) {
+				$parent_item->addInput($item);
 			} else {
-				if ($parent_item instanceof ilPropertyFormGUI) {
-					$parent_item->addItem($item);
+				if ($parent_item instanceof ilRadioGroupInputGUI) {
+					$parent_item->addOption($item);
 				} else {
-					$parent_item->addSubItem($item);
+					if ($parent_item instanceof ilPropertyFormGUI) {
+						$parent_item->addItem($item);
+					} else {
+						$parent_item->addSubItem($item);
+					}
 				}
 			}
 		}
@@ -196,7 +203,9 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 				}
 
 				if (is_array($field[self::PROPERTY_SUBITEMS])) {
-					$this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
+					if (!($item instanceof MultiLineInputGUI)) {
+						$this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
+					}
 				}
 			}
 		}
@@ -209,10 +218,8 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	 *
 	 * @return string
 	 */
-	public final function txt(/*string*/
-		$key,/*?string*/
-		$default = NULL)/*: string*/ {
-		if ($default !== NULL) {
+	public function txt(/*string*/ $key,/*?string*/ $default = null)/*: string*/ {
+		if ($default !== null) {
 			return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
 		} else {
 			return self::plugin()->translate($key, static::LANG_MODULE);
@@ -255,43 +262,36 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI {
 	 *
 	 * @return mixed
 	 */
-	protected abstract function getValue(/*string*/
-		$key);
+	protected abstract function getValue(/*string*/ $key);
 
 
 	/**
 	 *
 	 */
-	protected abstract function initCommands()/*: void*/
-	;
+	protected abstract function initCommands()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initFields()/*: void*/
-	;
+	protected abstract function initFields()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initId()/*: void*/
-	;
+	protected abstract function initId()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initTitle()/*: void*/
-	;
+	protected abstract function initTitle()/*: void*/ ;
 
 
 	/**
 	 * @param string $key
 	 * @param mixed  $value
 	 */
-	protected abstract function storeValue(/*string*/
-		$key, $value)/*: void*/
-	;
+	protected abstract function storeValue(/*string*/ $key, $value)/*: void*/ ;
 }

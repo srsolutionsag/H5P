@@ -27,7 +27,7 @@ class LearningProgressPieUI {
 	/**
 	 * @return CountLearningProgressPieUI
 	 */
-	public function count(): CountLearningProgressPieUI {
+	public function count() {
 		return new CountLearningProgressPieUI();
 	}
 
@@ -35,7 +35,7 @@ class LearningProgressPieUI {
 	/**
 	 * @return ObjIdsLearningProgressPieUI
 	 */
-	public function objIds(): ObjIdsLearningProgressPieUI {
+	public function objIds() {
 		return new ObjIdsLearningProgressPieUI();
 	}
 
@@ -43,7 +43,7 @@ class LearningProgressPieUI {
 	/**
 	 * @return UsrIdsLearningProgressPieUI
 	 */
-	public function usrIds(): UsrIdsLearningProgressPieUI {
+	public function usrIds() {
 		return new UsrIdsLearningProgressPieUI();
 	}
 }

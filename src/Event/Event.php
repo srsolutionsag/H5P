@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Event;
 
 use ActiveRecord;
 use arConnector;
+use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -51,7 +52,7 @@ class Event extends ActiveRecord {
             FROM " . self::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
             GROUP BY library_name
-            ORDER BY max_created_at DESC", [ "integer" ], [ $user_id ]);
+            ORDER BY max_created_at DESC", [ ilDBConstants::T_INTEGER ], [ $user_id ]);
 
 		$h5p_events = [];
 
@@ -135,7 +136,7 @@ class Event extends ActiveRecord {
 	 * @con_length       8
 	 * @con_is_notnull   false
 	 */
-	protected $content_id = NULL;
+	protected $content_id = null;
 	/**
 	 * @var string
 	 *
@@ -171,7 +172,7 @@ class Event extends ActiveRecord {
 	 * @param int              $primary_key_value
 	 * @param arConnector|null $connector
 	 */
-	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+	public function __construct($primary_key_value = 0, arConnector $connector = null) {
 		parent::__construct($primary_key_value, $connector);
 	}
 
@@ -189,7 +190,7 @@ class Event extends ActiveRecord {
 				return self::h5p()->timestampToDbDate($field_value);
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 
@@ -210,14 +211,14 @@ class Event extends ActiveRecord {
 				return self::h5p()->dbDateToTimestamp($field_value);
 
 			case "content_id":
-				if ($field_value !== NULL) {
+				if ($field_value !== null) {
 					return intval($field_value);
 				} else {
-					return NULL;
+					return null;
 				}
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 

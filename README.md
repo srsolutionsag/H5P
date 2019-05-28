@@ -17,22 +17,9 @@ TODO
 ### Documentation
 Click [here](./doc/Documentation.pdf) for a more detailed documentation.
 
-### Dependencies
+### Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=5.6
-* [composer](https://getcomposer.org)
-* [H5PCron](https://github.com/studer-raimann/H5PCron)
-* [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent)
-* [h5p/h5p-core](https://packagist.org/packages/h5p/h5p-core)
-* [h5p/h5p-editor](https://packagist.org/packages/h5p/h5p-editor)
-* [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
-* [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-* [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger)
-* [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
-* [babel-minify -g](https://www.npmjs.com/package/babel-minify)
-
-Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests

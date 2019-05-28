@@ -28,6 +28,7 @@ close#:#MISSING close
 confirm#:#MISSING confirm
 confirm_action#:#MISSING confirm_action
 confirm_action_text#:#MISSING confirm_action_text
+content#:#MISSING content
 content_changed#:#MISSING content_changed
 content_count#:#MISSING content_count
 content_not_exists#:#MISSING content_not_exists
@@ -56,6 +57,8 @@ embed_include_script#:#MISSING embed_include_script
 enable_lrs_content_types#:#MISSING enable_lrs_content_types
 enable_lrs_content_types_info#:#MISSING enable_lrs_content_types_info
 example#:#MISSING example
+export#:#MISSING export
+export_content#:#MISSING export_content
 files#:#MISSING files
 finish#:#MISSING finish
 finished#:#MISSING finished
@@ -64,6 +67,8 @@ hide_advanced#:#MISSING hide_advanced
 hub_last_refresh#:#MISSING hub_last_refresh
 hub_refresh#:#MISSING hub_refresh
 hub_refreshed#:#MISSING hub_refreshed
+import#:#MISSING import
+import_content#:#MISSING import_content
 incomplete_content#:#MISSING incomplete_content
 install#:#MISSING install
 installed#:#MISSING installed

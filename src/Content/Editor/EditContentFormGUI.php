@@ -44,19 +44,19 @@ class EditContentFormGUI extends PropertyFormGUI {
 	/**
 	 * @var string|null
 	 */
-	protected $h5p_title = NULL;
+	protected $h5p_title = null;
 	/**
 	 * @var string|null
 	 */
-	protected $library = NULL;
+	protected $library = null;
 	/**
 	 * @var string|null
 	 */
-	protected $params = NULL;
+	protected $params = null;
 	/**
 	 * @var array|null
 	 */
-	protected $upload_file = NULL;
+	protected $upload_file = null;
 
 
 	/**
@@ -68,11 +68,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 	 * @param string       $cmd_update
 	 * @param string       $cmd_cancel
 	 */
-	public function __construct($parent, /*?*/
-		Content $h5p_content = NULL, /*string*/
-		$cmd_create, /*string*/
-		$cmd_update, /*string*/
-		$cmd_cancel) {
+	public function __construct($parent, /*?*/ Content $h5p_content = null, /*string*/ $cmd_create, /*string*/ $cmd_update, /*string*/ $cmd_cancel) {
 		$this->h5p_content = $h5p_content;
 		$this->cmd_create = $cmd_create;
 		$this->cmd_update = $cmd_update;
@@ -85,9 +81,8 @@ class EditContentFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getValue(/*string*/
-		$key)/*: void*/ {
-		if ($this->h5p_content !== NULL) {
+	protected function getValue(/*string*/ $key)/*: void*/ {
+		if ($this->h5p_content !== null) {
 			switch ($key) {
 				case "title":
 					return $this->h5p_content->getTitle();
@@ -116,7 +111,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 
@@ -124,7 +119,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initAction()/*: void*/ {
-		if ($this->h5p_content !== NULL) {
+		if ($this->h5p_content !== null) {
 			self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
 		}
 
@@ -138,8 +133,8 @@ class EditContentFormGUI extends PropertyFormGUI {
 	protected function initCommands()/*: void*/ {
 		//$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
-		$this->addCommandButton($this->h5p_content !== NULL ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
-		!== NULL ? "save" : "add"), "xhfp_edit_form_submit");
+		$this->addCommandButton($this->h5p_content !== null ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
+		!== null ? "save" : "add"), "xhfp_edit_form_submit");
 		$this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
 	}
 
@@ -190,27 +185,14 @@ class EditContentFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function initTitle()/*: void*/ {
-		$this->setTitle(self::plugin()->translate($this->h5p_content !== NULL ? "edit_content" : "add_content"));
+		$this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function storeForm()/*: bool*/ {
-		if (!parent::storeForm()) {
-			return false;
-		}
-
-		return true;
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function storeValue(/*string*/
-		$key, $value)/*: void*/ {
+	protected function storeValue(/*string*/ $key, $value)/*: void*/ {
 		switch ($key) {
 			case "title":
 				$this->h5p_title = strval($value);

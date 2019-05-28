@@ -28,6 +28,7 @@ close#:#Close
 confirm#:#Confirm
 confirm_action#:#Confirm action
 confirm_action_text#:#Please confirm that you wish to proceed. This action is not reversible.
+content#:#Content
 content_changed#:#This content has changed since you last used it.
 content_count#:#Content %1$d of %2$d
 content_not_exists#:#The H5P content does not exist anymore
@@ -56,6 +57,8 @@ embed_include_script#:#Include this script on your website if you want dynamic s
 enable_lrs_content_types#:#Enable LRS dependent content types.
 enable_lrs_content_types_info#:#Makes it possible to use content types that rely upon a Learning Record Store to function properly, like the Questionnaire content type.
 example#:#Example
+export#:#Export
+export_content#:#Export content
 files#:#Files:
 finish#:#Finish
 finished#:#Finished
@@ -64,6 +67,8 @@ hide_advanced#:#Hide advanced
 hub_last_refresh#:#HUB last refreshed: %s
 hub_refresh#:#Resresh HUB
 hub_refreshed#:#HUB was successfully refreshed
+import#:#Import
+import_content#:#Import content
 incomplete_content#:#The H5P content is incomplete. Please check all inputs and required fields
 install#:#Install
 installed#:#Installed

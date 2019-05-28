@@ -87,26 +87,48 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	 */
 	public final function performCommand(/*string*/
 		$cmd)/*: void*/ {
+		$this->setTabs();
+
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
 		switch (strtolower($next_class)) {
-			default:
-				$this->setTabs();
-
+			case "":
 				switch (true) {
 					case (in_array($cmd, static::$custom_commands)):
+						/*foreach (static::$tabs as $tab_id => $config_gui_class_name) {
+							if ($config_gui_class_name === $cmd) {
+								self::dic()->tabs()->activateTab($tab_id);
+								break;
+							}
+						}*/
+
 						$this->{$cmd}();
 						break;
 
 					case ($cmd === self::CMD_CONFIGURE):
 						reset(static::$tabs);
-						$this->configure(key(static::$tabs));
+
+						$tab_id = key(static::$tabs);
+
+						if (in_array(static::$tabs[$tab_id], static::$custom_commands)) {
+							self::dic()->tabs()->activateTab($tab_id);
+
+							$this->{$tab_id};
+						} else {
+							$this->configure($tab_id);
+						}
 						break;
 
 					case (strpos($cmd, $this->getCmdForTab("")) === 0):
 						$tab_id = substr($cmd, strlen($this->getCmdForTab("")));
 
-						$this->configure($tab_id);
+						if (in_array(static::$tabs[$tab_id], static::$custom_commands)) {
+							self::dic()->tabs()->activateTab($tab_id);
+
+							$this->{$tab_id};
+						} else {
+							$this->configure($tab_id);
+						}
 						break;
 
 					case (strpos($cmd, self::CMD_UPDATE_CONFIGURE . "_") === 0):
@@ -132,6 +154,17 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 						break;
 				}
 				break;
+
+			default:
+				/*foreach (static::$tabs as $tab_id => $config_gui_class_name) {
+					if ($config_gui_class_name[1] === $cmd) {
+						self::dic()->tabs()->activateTab($tab_id);
+						break;
+					}
+				}*/
+
+				self::dic()->ctrl()->forwardCommand(new $next_class());
+				break;
 		}
 	}
 
@@ -139,10 +172,25 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @internal
 	 */
-	private final function setTabs() {
+	private final function setTabs()/*: void*/ {
 		foreach (static::$tabs as $tab_id => $config_gui_class_name) {
-			self::dic()->tabs()->addTab($tab_id, $this->txt($tab_id), self::dic()->ctrl()->getLinkTarget($this, $this->getCmdForTab($tab_id)));
+			if (in_array($config_gui_class_name, static::$custom_commands)) {
+				$this->addTab($tab_id, $config_gui_class_name);
+			} else {
+				$this->addTab($tab_id, $this->getCmdForTab($tab_id));
+			}
 		}
+	}
+
+
+	/**
+	 * @param string $tab_id
+	 * @param string $cmd
+	 */
+	protected function addTab(/*string*/
+		$tab_id,/*string*/
+		$cmd)/*: void*/ {
+		self::dic()->tabs()->addTab($tab_id, $this->txt($tab_id), self::dic()->ctrl()->getLinkTarget($this, $cmd));
 	}
 
 
@@ -152,7 +200,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	 * @return string
 	 */
 	public final function getCmdForTab(/*string*/
-		$tab_id)/*: void*/ {
+		$tab_id)/*: string*/ {
 		return self::CMD_CONFIGURE . "_" . $tab_id;
 	}
 
@@ -221,7 +269,10 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 
 		$table->writeFilterToSession();
 
-		$this->redirectToTab($tab_id);
+		$table->resetOffset();
+
+		//$this->redirectToTab($tab_id);
+		$this->configure($this->getCmdForTab($tab_id)); // Fix reset offset
 	}
 
 
@@ -240,7 +291,8 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 
 		$table->resetOffset();
 
-		$this->redirectToTab($tab_id);
+		//$this->redirectToTab($tab_id);
+		$this->configure($this->getCmdForTab($tab_id)); // Fix reset offset
 	}
 
 
@@ -258,6 +310,11 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 		$config_gui_class_name = static::$tabs[$tab_id];
 
 		switch (true) {
+			case is_array($config_gui_class_name):
+				$this->addTab($tab_id, $config_gui_class_name[1]);
+				self::dic()->ctrl()->redirect(new $config_gui_class_name[0](), $config_gui_class_name[1]);
+				break;
+
 			case (substr($config_gui_class_name, - strlen("FormGUI")) === "FormGUI"):
 				$config_gui = $this->getConfigurationFormGUI($config_gui_class_name, $tab_id);
 				break;
@@ -338,7 +395,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 	 *
 	 * @return string
 	 */
-	protected final function txt(/*string*/
+	protected function txt(/*string*/
 		$key)/*: string*/ {
 		return self::plugin()->translate($key, self::LANG_MODULE_CONFIG);
 	}

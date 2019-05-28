@@ -28,6 +28,7 @@ close#:#Schliessen
 confirm#:#Bestätigen
 confirm_action#:#Aktion bestätigen
 confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese Aktion ist nicht umkehrbar.
+content#:#Inhalt
 content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
 content_count#:#Inhalt %1$d von %2$d
 content_not_exists#:#Der H5P-Inhalt existiert nicht mehr
@@ -56,6 +57,8 @@ embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des 
 enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
 enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
 example#:#Beispiel
+export#:#Exportieren
+export_content#:#Inhalt exportieren
 files#:#Dateien:
 finish#:#Beenden
 finished#:#Beendet
@@ -64,6 +67,8 @@ hide_advanced#:#Details ausblenden
 hub_last_refresh#:#HUB zuletzt aktualisiert: %s
 hub_refresh#:#HUB neu laden
 hub_refreshed#:#HUB wurde erfolgreich neu geladen
+import#:#Importieren
+import_content#:#Inhalt importieren
 incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder
 install#:#Installieren
 installed#:#Installiert
