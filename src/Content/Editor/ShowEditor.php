@@ -263,7 +263,7 @@ class ShowEditor {
 	 * @return Content
 	 */
 	public function importContent(ImportContentFormGUI $form, $message = true) {
-		$title = $form->getInput("xhfp_content")["name"];
+		$title = pathinfo($form->getInput("xhfp_content")["name"], PATHINFO_FILENAME);
 		$file_path = $form->getInput("xhfp_content")["tmp_name"];
 
 		ob_start(); // prevent output from editor
