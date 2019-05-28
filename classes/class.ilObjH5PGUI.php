@@ -106,6 +106,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 
 					case self::CMD_DELETE_RESULTS:
 					case self::CMD_DELETE_RESULTS_CONFIRM:
+					case self::CMD_EXPORT_CONTENT:
 					case self::CMD_MANAGE_CONTENTS:
 					case self::CMD_RESULTS:
 					case self::CMD_SETTINGS:
@@ -123,7 +124,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 					case self::CMD_DELETE_CONTENT:
 					case self::CMD_DELETE_CONTENT_CONFIRM:
 					case self::CMD_EDIT_CONTENT:
-					case self::CMD_EXPORT_CONTENT:
 					case self::CMD_IMPORT_CONTENT:
 					case self::CMD_IMPORT_CONTENT_SELECT:
 					case self::CMD_MOVE_CONTENT_DOWN:
