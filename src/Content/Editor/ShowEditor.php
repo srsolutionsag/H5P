@@ -295,6 +295,6 @@ class ShowEditor {
 
 		$export_file = self::h5p()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
 
-		ilFileDelivery::deliverFileAttached($export_file, basename($export_file));
+		ilFileDelivery::deliverFileAttached($export_file, $content["slug"]);
 	}
 }
