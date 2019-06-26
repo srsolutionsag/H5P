@@ -24,8 +24,11 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getValue(/*string*/ $key)/*: void*/ {
-
+	protected function getValue(/*string*/ $key) {
+		switch ($key) {
+			default:
+				return null;
+		}
 	}
 
 
@@ -72,6 +75,9 @@ class UploadLibraryFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	protected function storeValue(/*string*/ $key, $value)/*: void*/ {
-
+		switch ($key) {
+			default:
+				break;
+		}
 	}
 }
