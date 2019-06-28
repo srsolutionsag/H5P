@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.3.1]
+- Making connection to hub work, if a proxy in ILIAS is used
+
 ## [2.3.0]
 - Import/Export contents
 
