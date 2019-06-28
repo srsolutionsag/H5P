@@ -8,6 +8,7 @@ use H5PFrameworkInterface;
 use H5PPermission;
 use ilCurlConnection;
 use ilH5PPlugin;
+use ilProxySettings;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
@@ -95,9 +96,8 @@ class Framework implements H5PFrameworkInterface {
 			$curlConnection->init();
 
 			// use a proxy, if configured by ILIAS
-			$proxy = \ilProxySettings::_getInstance();
+			$proxy = ilProxySettings::_getInstance();
 			if ($proxy->isActive()) {
-
 				$curlConnection->setOpt(CURLOPT_PROXY, $proxy->getHost());
 				$curlConnection->setOpt(CURLOPT_PROXYPORT, $proxy->getPort());
 			}
