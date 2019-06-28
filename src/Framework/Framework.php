@@ -96,10 +96,19 @@ class Framework implements H5PFrameworkInterface {
 			$curlConnection->init();
 
 			// use a proxy, if configured by ILIAS
-			$proxy = ilProxySettings::_getInstance();
-			if ($proxy->isActive()) {
-				$curlConnection->setOpt(CURLOPT_PROXY, $proxy->getHost());
-				$curlConnection->setOpt(CURLOPT_PROXYPORT, $proxy->getPort());
+			if (!self::version()->is60()) {
+				$proxy = ilProxySettings::_getInstance();
+				if ($proxy->isActive()) {
+					$curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
+
+					if (!empty($proxy->getHost())) {
+						$curlConnection->setOpt(CURLOPT_PROXY, $proxy->getHost());
+					}
+
+					if (!empty($proxy->getPort())) {
+						$curlConnection->setOpt(CURLOPT_PROXYPORT, $proxy->getPort());
+					}
+				}
 			}
 
 			$curlConnection->setOpt(CURLOPT_RETURNTRANSFER, true);
