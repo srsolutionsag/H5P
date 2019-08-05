@@ -268,18 +268,19 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 			}
 			$usage_libraries->setInfo(implode('<br />', $usageList));
 			$this->addItem($usage_libraries);
+
+			$depItem = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
+			$dependencies = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
+			$depList = [];
+			foreach ($dependencies as $dep) {
+				$depList[] = $dep['title']. ' ' .$dep['major_version'] . '. ' . $dep['major_version']
+					. ($dep['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
+			}
+			$depItem->setValue(count($depList));
+			$depItem->setInfo(implode('<br />', $depList));
+			$this->addItem($depItem);
 		}
 
-		$depItem = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
-		$dependencies = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
-		$depList = [];
-		foreach ($dependencies as $dep) {
-			$depList[] = $dep['title']. ' ' .$dep['major_version'] . '. ' . $dep['major_version']
-					. ($dep['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
-		}
-		$depItem->setValue(count($depList));
-		$depItem->setInfo(implode('<br />', $depList));
-		$this->addItem($depItem);
 
 		$h5p_tpl->setVariable("DETAILS", parent::getHTML());
 
