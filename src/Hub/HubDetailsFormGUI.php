@@ -263,7 +263,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 			$usages_join = LibraryDependencies::getUsageJoin($library["installed_id"]);
 			$usageList = [];
 			foreach ($usages_join as $us) {
-				$usageList[] = $us['title']. ' ' .$us['major_version'] . '. ' . $us['major_version']
+				$usageList[] = $us['title']. ' ' .$us['major_version'] . '.' . $us['minor_version']
 					. ($us['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
 			}
 			$usage_libraries->setInfo(implode('<br />', $usageList));
@@ -273,7 +273,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 			$dependencies = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
 			$depList = [];
 			foreach ($dependencies as $dep) {
-				$depList[] = $dep['title']. ' ' .$dep['major_version'] . '. ' . $dep['major_version']
+				$depList[] = $dep['title']. ' ' .$dep['major_version'] . '.' . $dep['minor_version']
 					. ($dep['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
 			}
 			$depItem->setValue(count($depList));
