@@ -94,6 +94,23 @@ class LibraryDependencies extends ActiveRecord {
 		return $h5p_library_dependencies;
 	}
 
+	/**
+	 * @param int $library_id
+	 *
+	 * @return array
+	 */
+	public static function getUsageJoin($library_id) {
+		/**
+		 * @var LibraryDependencies[] $h5p_library_dependencies
+		 */
+
+		$h5p_library_dependencies = self::innerjoin(Library::TABLE_NAME, "library_id", "library_id")->where([
+			self::TABLE_NAME . ".required_library_id" => $library_id
+		])->getArray();
+
+		return $h5p_library_dependencies;
+	}
+
 
 	/**
 	 * @var int
