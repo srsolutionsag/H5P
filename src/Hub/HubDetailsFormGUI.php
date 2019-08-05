@@ -10,6 +10,7 @@ use ilLinkButton;
 use ilNonEditableValueGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\Library\LibraryDependencies;
 
 /**
  * Class HubDetailsFormGUI
@@ -261,6 +262,17 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 			$usage_libraries->setValue($library["usage_libraries"]);
 			$this->addItem($usage_libraries);
 		}
+
+		$depItem = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
+		$dependencies = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
+		$depList = [];
+		foreach ($dependencies as $dep) {
+			$depList[] = $dep['title']. ' ' .$dep['major_version'] . '. ' . $dep['major_version']
+					. ($dep['runnable'] ? '('. self::plugin()->translate('runnable') . ')' : '');
+		}
+		$depItem->setValue(count($depList));
+		$depItem->setInfo(implode('<br />', $depList));
+		$this->addItem($depItem);
 
 		$h5p_tpl->setVariable("DETAILS", parent::getHTML());
 
