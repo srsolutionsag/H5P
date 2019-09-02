@@ -3,6 +3,7 @@
 ## [x]
 - Show a list of usages and dependencies in package details
 - Upgrade H5P client to v1.23.1 (No new features implemented)
+- Allow H5P objects to add to personal desktop
 
 ## [2.3.1]
 - Making connection to hub work, if a proxy in ILIAS is used
