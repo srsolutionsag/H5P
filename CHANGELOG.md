@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Show a list of usages and dependencies in package details
+
 ## [2.3.1]
 - Making connection to hub work, if a proxy in ILIAS is used
 

@@ -9,8 +9,8 @@ use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
-use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\Plugins\H5P\Library\LibraryDependencies;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class HubDetailsFormGUI
@@ -45,8 +45,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getValue(/*string*/
-		$key)/*: void*/ {
+	protected function getValue(/*string*/ $key)/*: void*/ {
 
 	}
 
@@ -94,8 +93,7 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function storeValue(/*string*/
-		$key, $value)/*: void*/ {
+	protected function storeValue(/*string*/ $key, $value)/*: void*/ {
 
 	}
 
@@ -107,6 +105,8 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 		// Library
 		$libraries = self::h5p()->show_hub()->getLibraries();
 		$library = $libraries[$this->key];
+		$library["usages"] = LibraryDependencies::getUsageJoin($library["installed_id"]);
+		$library["dependencies"] = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
 
 		$h5p_tpl = self::plugin()->template("H5PLibraryDetails.html");
 
@@ -260,27 +260,20 @@ class HubDetailsFormGUI extends PropertyFormGUI {
 
 			$usage_libraries = new ilNonEditableValueGUI(self::plugin()->translate("usage_libraries"));
 			$usage_libraries->setValue($library["usage_libraries"]);
-			$usages_join = LibraryDependencies::getUsageJoin($library["installed_id"]);
-			$usageList = [];
-			foreach ($usages_join as $us) {
-				$usageList[] = $us['title']. ' ' .$us['major_version'] . '.' . $us['minor_version']
-					. ($us['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
-			}
-			$usage_libraries->setInfo(implode('<br />', $usageList));
+			$usage_libraries->setInfo(nl2br(implode("\n", array_map(function ($usage) {
+				return $usage["title"] . " " . $usage["major_version"] . "." . $usage["minor_version"] . ($usage["runnable"] ? " (" . self::plugin()
+							->translate("runnable") . ")" : "");
+			}, $library["usages"])), false));
 			$this->addItem($usage_libraries);
 
-			$depItem = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
-			$dependencies = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
-			$depList = [];
-			foreach ($dependencies as $dep) {
-				$depList[] = $dep['title']. ' ' .$dep['major_version'] . '.' . $dep['minor_version']
-					. ($dep['runnable'] ? ' ('. self::plugin()->translate('runnable') . ')' : '');
-			}
-			$depItem->setValue(count($depList));
-			$depItem->setInfo(implode('<br />', $depList));
-			$this->addItem($depItem);
+			$required_libraries = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
+			$required_libraries->setValue(count($library["dependencies"]));
+			$required_libraries->setInfo(nl2br(implode("\n", array_map(function ($dependency) {
+				return $dependency["title"] . " " . $dependency["major_version"] . "." . $dependency["minor_version"]
+					. ($dependency["runnable"] ? " (" . self::plugin()->translate("runnable") . ")" : "");
+			}, $library["dependencies"])), false));
+			$this->addItem($required_libraries);
 		}
-
 
 		$h5p_tpl->setVariable("DETAILS", parent::getHTML());
 

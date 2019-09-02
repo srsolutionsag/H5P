@@ -94,6 +94,7 @@ only_runnable#:#Nur startbare
 permission_denied#:#Zugriff verweigert
 previous_content#:#Vorheriger Inhalt
 read#:#Lesen
+required_libraries#:#Benötigte Bibliotheken
 results#:#Resultate
 rights_of_use#:#Nutzungsrechte
 runnable#:#Startbar
@@ -152,4 +153,3 @@ cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen
 cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
 cron_xhfp_refresh_hub#:#Hub-Liste aktualisieren
 cron_xhfp_refresh_hub_description#:#Lädt die Hub-Liste neu
-required_libraries#:#Benötigte Bibliotheken
