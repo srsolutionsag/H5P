@@ -121,8 +121,8 @@ class LibraryLanguage extends ActiveRecord {
 		$h5p_library_languages = self::dic()->database()
 			->queryF("SELECT translation, CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version) AS lib FROM " . Library::TABLE_NAME
 				. " INNER JOIN " . self::TABLE_NAME . " ON " . Library::TABLE_NAME . ".library_id = " . self::TABLE_NAME
-				. ".library_id WHERE hll.language_code=%s AND " . self::dic()->database()
-					->in("CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version)", [], false, ilDBConstants::T_TEXT), [ ilDBConstants::T_TEXT ], [ $libraries ]);
+				. ".library_id WHERE language_code=%s AND " . self::dic()->database()
+					->in("CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version)", $libraries, false, ilDBConstants::T_TEXT), [ ilDBConstants::T_TEXT ], [ $language_code ]);
 
 		$languages = [];
 
