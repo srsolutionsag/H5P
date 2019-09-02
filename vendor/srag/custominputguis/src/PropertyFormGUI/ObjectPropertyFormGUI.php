@@ -4,7 +4,7 @@ namespace srag\CustomInputGUIs\H5P\PropertyFormGUI;
 
 use ActiveRecord;
 use ilObject;
-use TypeError;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 
 /**
  * Class ObjectPropertyFormGUI
@@ -32,8 +32,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	 * @param ilObject|ActiveRecord|object|null $object
 	 * @param bool                              $object_auto_store
 	 */
-	public function __construct($parent, $object = NULL,/*bool*/
-		$object_auto_store = true) {
+	public function __construct($parent, $object = null,/*bool*/ $object_auto_store = true) {
 		$this->object = $object;
 		$this->object_auto_store = $object_auto_store;
 
@@ -44,43 +43,26 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getValue(/*string*/
-		$key) {
-		if ($this->object !== NULL) {
+	protected function getValue(/*string*/ $key) {
+		if ($this->object !== null) {
 			switch ($key) {
 				default:
-					if (method_exists($this->object, $method = "get" . $this->strToCamelCase($key))) {
-						return $this->object->{$method}($key);
-					}
-					if (method_exists($this->object, $method = "is" . $this->strToCamelCase($key))) {
-						return $this->object->{$method}($key);
-					}
+					return Items::getter($this->object, $key);
 					break;
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	protected function storeValue(/*string*/
-		$key, $value)/*: void*/ {
+	protected function storeValue(/*string*/ $key, $value)/*: void*/ {
 		switch ($key) {
 			default:
-				if (method_exists($this->object, $method = "set" . $this->strToCamelCase($key))) {
-					try {
-						$this->object->{$method}($value);
-					} catch (TypeError $ex) {
-						try {
-							$this->object->{$method}(intval($value));
-						} catch (TypeError $ex) {
-							$this->object->{$method}(boolval($value));
-						}
-					}
-				}
+				Items::setter($this->object, $key, $value);
 				break;
 		}
 	}
@@ -90,7 +72,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 	 * @inheritdoc
 	 */
 	public function storeForm()/*: bool*/ {
-		if ($this->object === NULL) {
+		if ($this->object === null) {
 			// TODO:
 			//$this->object = new Object();
 		}
@@ -122,16 +104,6 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI {
 		}
 
 		return true;
-	}
-
-
-	/**
-	 * @param string $string
-	 *
-	 * @return string
-	 */
-	protected final function strToCamelCase($string) {
-		return str_replace("_", "", ucwords($string, "_"));
 	}
 
 

@@ -8,14 +8,17 @@ use ilAppEventHandler;
 use ilAuthSession;
 use ilBenchmark;
 use ilBrowser;
+use ilComponentLogger;
 use ilConditionService;
 use ilCtrl;
 use ilCtrlStructureReader;
 use ilDBInterface;
 use ilErrorHandling;
+use ilGlobalTemplateInterface;
 use ilHelpGUI;
 use ILIAS;
 use ILIAS\DI\BackgroundTaskServices;
+use ILIAS\DI\Container;
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\LoggingServices;
 use ILIAS\DI\UIServices;
@@ -26,7 +29,6 @@ use ilIniFile;
 use ilLanguage;
 use ilLearningHistoryService;
 use ilLocatorGUI;
-use ilLog;
 use ilLoggerFactory;
 use ilMailMimeSenderFactory;
 use ilMailMimeTransportFactory;
@@ -47,7 +49,9 @@ use ilTabsGUI;
 use ilTemplate;
 use ilToolbarGUI;
 use ilTree;
+use ilUIService;
 use Session;
+use srag\DIC\H5P\Database\DatabaseInterface;
 use srag\DIC\H5P\Exception\DICException;
 
 /**
@@ -58,6 +62,14 @@ use srag\DIC\H5P\Exception\DICException;
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 interface DICInterface {
+
+	/**
+	 * DICInterface constructor
+	 *
+	 * @param Container $dic
+	 */
+	public function __construct(Container &$dic);
+
 
 	/**
 	 * @return ilAccessHandler
@@ -132,9 +144,17 @@ interface DICInterface {
 
 
 	/**
-	 * @return ilDBInterface
+	 * @return DatabaseInterface
+	 *
+	 * @throws DICException DatabaseDetector only supports ilDBPdoInterface!
 	 */
 	public function database();
+
+
+	/**
+	 * @return ilDBInterface
+	 */
+	public function databaseCore();
 
 
 	/**
@@ -216,7 +236,7 @@ interface DICInterface {
 
 
 	/**
-	 * @return ilLog
+	 * @return ilComponentLogger
 	 */
 	public function log();
 
@@ -258,10 +278,9 @@ interface DICInterface {
 
 
 	/**
-	 * @return ilTemplate Main ilTemplate instance
+	 * @return ilTemplate|ilGlobalTemplateInterface
 	 */
-	public function mainTemplate();
-
+	public function mainTemplate();/*: ilGlobalTemplateInterface*/
 
 	/**
 	 * @return ilNewsService
@@ -364,6 +383,16 @@ interface DICInterface {
 
 
 	/**
+	 * @return ilUIService
+	 *
+	 * @throws DICException ilUIService not exists in ILIAS 5.4 or below!
+	 * @since ILIAS 6.0
+	 *
+	 */
+	public function uiService();
+
+
+	/**
 	 * @return FileUpload
 	 *
 	 * @since ILIAS 5.3
@@ -375,4 +404,10 @@ interface DICInterface {
 	 * @return ilObjUser
 	 */
 	public function user();
+
+
+	/**
+	 * @return Container
+	 */
+	public function &dic();
 }

@@ -11,6 +11,7 @@ use srag\CustomInputGUIs\H5P\MultiLineInputGUI\MultiLineInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
+use TypeError;
 
 /**
  * Class Items
@@ -207,6 +208,55 @@ final class Items {
 		if (method_exists($item, "setValue") && !($item instanceof ilRadioOption)) {
 			$item->setValue($value);
 		}
+	}
+
+
+	/**
+	 * @param object $object
+	 * @param string $property
+	 *
+	 * @return mixed
+	 */
+	public static function getter(/*object*/ $object,/*string*/ $property) {
+		if (method_exists($object, $method = "get" . self::strToCamelCase($property))) {
+			return $object->{$method}();
+		}
+
+		if (method_exists($object, $method = "is" . self::strToCamelCase($property))) {
+			return $object->{$method}();
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * @param object $object
+	 * @param string $property
+	 * @param mixed  $value
+	 */
+	public static function setter(/*object*/ $object,/*string*/ $property, $value)/*: void*/ {
+		if (method_exists($object, $method = "set" . self::strToCamelCase($property))) {
+			try {
+				$object->{$method}($value);
+			} catch (TypeError $ex) {
+				try {
+					$object->{$method}(intval($value));
+				} catch (TypeError $ex) {
+					$object->{$method}(boolval($value));
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function strToCamelCase($string) {
+		return str_replace("_", "", ucwords($string, "_"));
 	}
 
 

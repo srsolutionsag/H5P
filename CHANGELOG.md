@@ -2,6 +2,7 @@
 
 ## [x]
 - Show a list of usages and dependencies in package details
+- Upgrade H5P client to v1.23.1 (No new features implemented)
 
 ## [2.3.1]
 - Making connection to hub work, if a proxy in ILIAS is used

@@ -199,4 +199,24 @@ interface H5PFileStorage {
    * @return bool
    */
   public function hasPresave($libraryName, $developmentPath = null);
+
+  /**
+   * Check if upgrades script exist for library.
+   *
+   * @param string $machineName
+   * @param int $majorVersion
+   * @param int $minorVersion
+   * @return string Relative path
+   */
+  public function getUpgradeScript($machineName, $majorVersion, $minorVersion);
+
+  /**
+   * Store the given stream into the given file.
+   *
+   * @param string $path
+   * @param string $file
+   * @param resource $stream
+   * @return bool
+   */
+  public function saveFileFromZip($path, $file, $stream);
 }

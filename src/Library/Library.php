@@ -176,6 +176,26 @@ class Library extends ActiveRecord {
 
 
 	/**
+	 * @param string $name
+	 * @param int $major_version
+	 * @param int $minor_version
+	 *
+	 * @return bool
+	 */
+	public static function libraryHasUpgrade($name, $major_version, $minor_version) {
+		$result = self::dic()->database()->queryF("SELECT id FROM " . self::TABLE_NAME
+			. " WHERE name=%s AND (major_version>%s OR (major_version=%s AND minor_version>%s))", [
+			ilDBConstants::T_TEXT,
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER
+		], [ $name, $major_version, $major_version, $minor_version ]);
+
+		return ($result->fetchAssoc() !== false);
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field  true

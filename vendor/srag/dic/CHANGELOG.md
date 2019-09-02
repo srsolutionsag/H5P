@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.18.4]
+- Add exists `self::dic()->dic()` to interface
+
+## [0.18.3]
+- ILIAS 6.0 `uiServices`
+
+## [0.18.2]
+- Supports output `ilTemplateWrapper`
+
+## [0.18.1]
+- Fix ILIAS 6.0 global template
+
+## [0.18.0]
+- Fix ILIAS 6.0 global template
+
+## [0.17.9]
+- Fix PostgreSQL recall `createAutoIncrement`
+- Update readme
+
+## [0.17.8]
+- `Database::store`
+
+## [0.17.7]
+- `Database::fetchObjectCallable`
+
+## [0.17.6]
+- `Database::fetchObjectClass`
+
+## [0.17.5]
+- DatabaseDetector readme
+
+## [0.17.4]
+- DatabaseDetector readme
+
+## [0.17.3]
+- Fix
+
+## [0.17.2]
+- Fix
+
+## [0.17.1]
+- Supports PostgreSQL
+
+## [0.17.0]
+- Custom DatabaseDetector
+
+## [0.16.1]
+- Fix `self::dic()->log()` is an instance of `ilComponentLogger`
+
 ## [0.16.0]
 - PHP7 syntax
 - Min. ILIAS 5.3

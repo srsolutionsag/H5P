@@ -8,6 +8,7 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Library\LibraryHubCache;
+use srag\Plugins\H5P\Library\LibraryLanguage;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -67,7 +68,7 @@ class EditorAjax implements H5PEditorAjaxInterface {
 	 *
 	 * @return array|object|null Returns results from querying the database
 	 */
-	public function getContentTypeCache($machine_name = NULL) {
+	public function getContentTypeCache($machine_name = null) {
 		return LibraryHubCache::getContentTypeCache($machine_name);
 	}
 
@@ -92,5 +93,18 @@ class EditorAjax implements H5PEditorAjaxInterface {
 	 */
 	public function validateEditorToken($token) {
 		return true;
+	}
+
+
+	/**
+	 * Get translations for a language for a list of libraries
+	 *
+	 * @param array  $libraries An array of libraries, in the form "<machineName> <majorVersion>.<minorVersion>
+	 * @param string $language_code
+	 *
+	 * @return array
+	 */
+	public function getTranslations($libraries, $language_code) {
+		return LibraryLanguage::getTranslations($libraries, $language_code);
 	}
 }

@@ -8,6 +8,7 @@ use ilAppEventHandler;
 use ilAuthSession;
 use ilBenchmark;
 use ilBrowser;
+use ilComponentLogger;
 use ilConditionService;
 use ilCtrl;
 use ilCtrlStructureReader;
@@ -27,7 +28,6 @@ use ilIniFile;
 use ilLanguage;
 use ilLearningHistoryService;
 use ilLocatorGUI;
-use ilLog;
 use ilLoggerFactory;
 use ilMailMimeSenderFactory;
 use ilMailMimeTransportFactory;
@@ -48,8 +48,10 @@ use ilTabsGUI;
 use ilTemplate;
 use ilToolbarGUI;
 use ilTree;
+use ilUIService;
 use Session;
 use srag\DIC\H5P\DIC\AbstractDIC;
+use srag\DIC\H5P\Exception\DICException;
 
 /**
  * Class ILIAS54DIC
@@ -59,24 +61,6 @@ use srag\DIC\H5P\DIC\AbstractDIC;
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class ILIAS54DIC extends AbstractDIC {
-
-	/**
-	 * @var Container
-	 */
-	private $dic;
-
-
-	/**
-	 * ILIAS54DIC constructor
-	 *
-	 * @param Container $dic
-	 */
-	public function __construct(Container &$dic) {
-		parent::__construct();
-
-		$this->dic = &$dic;
-	}
-
 
 	/**
 	 * @inheritdoc
@@ -169,7 +153,7 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function database() {
+	public function databaseCore() {
 		return $this->dic->database();
 	}
 
@@ -441,6 +425,14 @@ final class ILIAS54DIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
+	public function uiService() {
+		throw new DICException("ilUIService not exists in ILIAS 5.4 or below!");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	public function upload() {
 		return $this->dic->upload();
 	}
@@ -455,7 +447,7 @@ final class ILIAS54DIC extends AbstractDIC {
 
 
 	/**
-	 * @return Container
+	 * @inheritDoc
 	 */
 	public function &dic() {
 		return $this->dic;

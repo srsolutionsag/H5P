@@ -1287,11 +1287,13 @@ class Framework implements H5PFrameworkInterface {
 	/**
 	 * Get number of contents using library as main library.
 	 *
-	 * @param int $library_id
+	 * @param int        $library_id
+	 * @param array|null $skip
 	 *
 	 * @return int
 	 */
-	public function getNumContent($library_id) {
+	public function getNumContent($library_id, $skip = null) {
+		// TODO: $skip?
 		$h5p_contents = Content::getContentsByLibrary($library_id);
 
 		return count($h5p_contents);
@@ -1519,5 +1521,17 @@ class Framework implements H5PFrameworkInterface {
 	 */
 	public function getLibraryConfig($libraries = null) {
 		return [];
+	}
+
+
+	/**
+	 * Checks if the given library has a higher version.
+	 *
+	 * @param array $library
+	 *
+	 * @return boolean
+	 */
+	public function libraryHasUpgrade($library) {
+		return Library::libraryHasUpgrade($library["machineName"], $library["majorVersion"], $library["minorVersion"]);
 	}
 }

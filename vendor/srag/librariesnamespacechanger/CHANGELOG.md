@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.6.7]
+- DataTable
+
+## [0.6.6]
+- AssessmentQuestion
+
+## [0.6.5]
+- TableUI
+
+## [0.6.4]
+- IliasComponentCourse/IliasComponentUser
+
+## [0.6.3]
+- XML files
+
+## [0.6.2]
+- IliasComponent
+
 ## [0.6.1]
 - PHP7Backport
 

@@ -29,7 +29,8 @@ final class LibrariesNamespaceChanger {
 	private static $exts = [
 		"json",
 		"md",
-		"php"
+		"php",
+		"xml"
 	];
 	/**
 	 * @var string
@@ -93,8 +94,7 @@ final class LibrariesNamespaceChanger {
 
 		if (!empty($plugin_name)) {
 
-			$libraries = array_map(function (/*string*/
-				$library)/*: string*/ {
+			$libraries = array_map(function (/*string*/ $library)/*: string*/ {
 				return __DIR__ . "/../../" . strtolower($library);
 			}, self::$libraries);
 
@@ -152,8 +152,7 @@ final class LibrariesNamespaceChanger {
 	 * @param string $folder
 	 * @param array  $files
 	 */
-	private function getFiles(/*string*/
-		$folder, array &$files = [])/*: void*/ {
+	private function getFiles(/*string*/ $folder, array &$files = [])/*: void*/ {
 		$paths = scandir($folder);
 
 		foreach ($paths as $file) {

@@ -40,7 +40,7 @@ class H5PActionGUI {
 	 *
 	 * @return string
 	 */
-	public static function getUrl($action, $return_class = NULL, $return_cmd = "") {
+	public static function getUrl($action, $return_class = null, $return_cmd = "") {
 		self::dic()->ctrl()->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
 		if (self::isPageComponent()) {
@@ -219,7 +219,7 @@ class H5PActionGUI {
 
 		$output = [];
 
-		if ($h5p_hub_library !== NULL) {
+		if ($h5p_hub_library !== null) {
 			$tutorial_urL = $h5p_hub_library->getTutorial();
 			if ($tutorial_urL !== "") {
 				$output["tutorial_urL"] = $tutorial_urL;
@@ -245,7 +245,7 @@ class H5PActionGUI {
 
 		if (!empty($name)) {
 			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
-				->getLanguage(), "", self::h5p()->getH5PFolder());
+				->getLanguage(), "", self::h5p()->getH5PFolder(), "");
 			//new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
 		} else {
 			self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARIES);
@@ -272,7 +272,7 @@ class H5PActionGUI {
 		$token = "";
 
 		$file_path = $_FILES["h5p"]["tmp_name"];
-		$content_id = NULL;
+		$content_id = null;
 
 		self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $file_path, $content_id);
 	}

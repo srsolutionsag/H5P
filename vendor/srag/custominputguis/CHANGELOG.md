@@ -1,5 +1,69 @@
 # Changelog
 
+## [0.23.4]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.3]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.2]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.1]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.0]
+- TextInputGUIWithModernAutoComplete
+
+## [0.22.10]
+- Fixes
+
+## [0.22.9]
+- Improve template path
+
+## [0.22.8]
+- Allow `storeForm` multiple in `PropertyFormGUI` (`checkInput`!!!)
+
+## [0.22.7]
+- Supports `ilFormSectionHeaderGUI` as sub item in `PropertyFormGUI`
+
+## [0.22.6]
+- Some improvments
+
+## [0.22.5]
+- Fix render multiple legend entries
+
+## [0.22.4]
+- Remove `checkBoolArg` because not exists in older ILIAS versions
+
+## [0.22.3]
+- Remove PHP 7.1 return `void` syntax
+
+## [0.22.2]
+- Remove PHP 7.1 `null` syntax (`?`)
+
+## [0.22.1]
+- Remove d3 library (Not needed anymore)
+
+## [0.22.0]
+- PieChart
+- Use PieChart in LearningProgressPieUI
+
+## [0.21.0]
+- WeekdayInputGUI
+
+## [0.20.8]
+- NumberInputGUI in toolbar
+
+## [0.20.7]
+- PHPDoc
+
+## [0.20.6]
+- `strToCamelCase`
+
+## [0.20.5]
+- `strToCamelCase` in table
+
 ## [0.20.4]
 - Nothing to fix ...
 

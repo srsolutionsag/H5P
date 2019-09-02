@@ -74,8 +74,8 @@ ns.SelectorHub = function (libraries, selectedLibrary, changeLibraryDialog) {
     const uploadedVersion = event.h5p.preloadedDependencies
       .filter(function (dependency) {
         return dependency.machineName === event.h5p.mainLibrary;
-      });
-    self.currentLibrary = self.createContentTypeId(uploadedVersion[0]);
+      })[0];
+    self.currentLibrary = self.createContentTypeId(uploadedVersion);
     self.currentParams = event.content;
     self.currentMetadata = {
       title: event.h5p.title,
@@ -87,15 +87,76 @@ ns.SelectorHub = function (libraries, selectedLibrary, changeLibraryDialog) {
       yearTo: event.h5p.yearTo,
       source: event.h5p.source,
       changes: event.h5p.changes,
-      authorComments: event.h5p.authorComments
+      authorComments: event.h5p.authorComments,
+      defaultLanguage: event.h5p.defaultLanguage
     };
 
-    // Change library immediately or show confirmation dialog
-    if (!previousLibrary) {
-      self.trigger('selected');
+    /**
+     * Change library immediately or show confirmation dialog
+     * @private
+     */
+    const selectLibrary = function () {
+      if (!previousLibrary) {
+        self.trigger('selected');
+      }
+      else {
+        changeLibraryDialog.show(ns.$(self.getElement()).offset().top);
+      }
+    };
+
+    /**
+     * Use backend to filter parameter values according to semantics
+     *
+     * @private
+     * @param {Object} library
+     */
+    const filterParameters = function (library) {
+      const libraryString = ns.ContentType.getNameVersionString(library);
+
+      var formData = new FormData();
+      formData.append('libraryParameters', JSON.stringify({
+        library: libraryString,
+        params: self.currentParams,
+        metadata: self.currentMetadata
+      }));
+      var request = new XMLHttpRequest();
+      request.onload = function () {
+        try {
+          result = JSON.parse(request.responseText);
+          self.currentLibrary = result.data.library;
+          self.currentParams = result.data.params;
+          self.currentMetadata = result.data.metadata;
+          selectLibrary();
+        }
+        catch (err) {
+          H5P.error(err);
+        }
+      };
+      request.open('POST', H5PEditor.getAjaxUrl('filter'), true);
+      request.send(formData);
+    };
+
+    // Check if we have any newer versions
+    const upgradeLibrary = ns.ContentType.getPossibleUpgrade(uploadedVersion, libraries.libraries);
+    if (upgradeLibrary) {
+      // We need to run content upgrade before showing the editor
+      ns.upgradeContent(uploadedVersion, upgradeLibrary, {params: self.currentParams, metadata: self.currentMetadata}, function (err, result) {
+        if (err) {
+          // Reset the Hub
+          var contentType = self.getContentType(self.currentLibrary.split(' ')[0]);
+          self.client.setPanelTitle(contentType.title || contentType.machineName, true);
+        }
+        else {
+          const content = JSON.parse(result);
+          self.currentParams = content.params;
+          self.currentMetadata = content.metadata;
+          self.currentLibrary = self.createContentTypeId(upgradeLibrary, true);
+          filterParameters(upgradeLibrary);
+        }
+      })
     }
     else {
-      changeLibraryDialog.show(ns.$(self.getElement()).offset().top);
+      filterParameters(uploadedVersion);
     }
 
   }, this);

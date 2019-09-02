@@ -4,6 +4,7 @@ namespace srag\CustomInputGUIs\H5P\NumberInputGUI;
 
 use ilNumberInputGUI;
 use ilTableFilterItem;
+use ilToolbarItem;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -13,7 +14,7 @@ use srag\DIC\H5P\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem {
+class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem, ilToolbarItem {
 
 	use DICTrait;
 
@@ -22,6 +23,14 @@ class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem {
 	 * @inheritdoc
 	 */
 	public function getTableFilterHTML()/*: string*/ {
+		return $this->render();
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getToolbarHTML()/*: string*/ {
 		return $this->render();
 	}
 }
