@@ -170,7 +170,7 @@ class ConfigTableGUI extends ActiveRecordConfigTableGUI {
     /**
      * @inheritdoc
      */
-    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*bool*/ $raw_export = false): string {
+    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = self::DEFAULT_FORMAT): string {
 		switch ($column) {
 			default:
 				$column = $row[$column];
@@ -325,13 +325,9 @@ if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\X\Conf
 ?>
 ```
 
-### Dependencies
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
 * PHP >=5.6
-* [composer](https://getcomposer.org)
-* [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-
-Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull

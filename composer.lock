@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.16.2",
+            "version": "v0.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "d1b6274f206afe02d58cb02335bae06fae212b67"
+                "reference": "e9fdbeff6e2b2a05aca25d03e625ae9de98ea9ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/d1b6274f206afe02d58cb02335bae06fae212b67",
-                "reference": "d1b6274f206afe02d58cb02335bae06fae212b67",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/e9fdbeff6e2b2a05aca25d03e625ae9de98ea9ed",
+                "reference": "e9fdbeff6e2b2a05aca25d03e625ae9de98ea9ed",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\H5P\\": "src/"
+                    "srag\\ActiveRecordConfig\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -164,7 +164,7 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2019-05-09T09:05:20+00:00"
+            "time": "2019-09-03T08:14:04+00:00"
         },
         {
             "name": "srag/custominputguis",

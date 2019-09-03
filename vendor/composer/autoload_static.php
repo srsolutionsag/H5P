@@ -28,7 +28,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
             'srag\\LibrariesNamespaceChanger\\' => 31,
             'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\H5P\\' => 25,
-            'srag\\ActiveRecordConfig\\H5P\\' => 28,
+            'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
 
@@ -53,7 +53,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
-        'srag\\ActiveRecordConfig\\H5P\\' => 
+        'srag\\ActiveRecordConfig\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
