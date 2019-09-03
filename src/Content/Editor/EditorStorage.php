@@ -78,16 +78,16 @@ class EditorStorage implements H5peditorStorageInterface {
 	 *
 	 * @return array List of all libraries loaded
 	 */
-	public function getLibraries($libraries = NULL) {
+	public function getLibraries($libraries = null) {
 		$super_user = self::h5p()->framework()->hasPermission("manage_h5p_libraries");
 
-		if ($libraries !== NULL) {
+		if ($libraries !== null) {
 			$librariesWithDetails = [];
 
 			foreach ($libraries as $library) {
 				$h5p_library = Library::getLibraryByVersion($library->name, $library->majorVersion, $library->minorVersion);
 
-				if ($h5p_library !== NULL) {
+				if ($h5p_library !== null) {
 					$library->tutorialUrl = $h5p_library->getTutorialUrl();
 					$library->title = $h5p_library->getTitle();
 					$library->runnable = $h5p_library->canRunnable();
@@ -178,7 +178,7 @@ class EditorStorage implements H5peditorStorageInterface {
 	 * @param H5peditorFile $file
 	 * @param int|null      $content_id
 	 */
-	public static function markFileForCleanup($file, $content_id = NULL) {
+	public static function markFileForCleanup($file, $content_id = null) {
 		$path = self::h5p()->getH5PFolder();
 
 		if (empty($content_id)) {
@@ -209,5 +209,19 @@ class EditorStorage implements H5peditorStorageInterface {
 				unlink($file_path);
 			}
 		}
+	}
+
+
+	/**
+	 * Load a list of available language codes from the database.
+	 *
+	 * @param string $machineName  The machine readable name of the library(content type)
+	 * @param int    $majorVersion Major part of version number
+	 * @param int    $minorVersion Minor part of version number
+	 *
+	 * @return array List of possible language codes
+	 */
+	public function getAvailableLanguages($machineName, $majorVersion, $minorVersion) {
+		return LibraryLanguage::getAvailableLanguages($machineName, $majorVersion, $minorVersion);
 	}
 }

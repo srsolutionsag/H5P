@@ -179,6 +179,10 @@ self::version(): VersionInterface;
 
 If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()` or `DICStatic::plugin(ilXPlugin::class)`.
 
+#### Clean up
+You can now remove all usages of ILIAS globals in your class and replace it with this library.
+Please avoid to store in variables or class variables.
+
 #### LibraryLanguageInstaller
 Expand you plugin class for installing languages of a library to your plugin
 ```php
@@ -196,13 +200,60 @@ Expand you plugin class for installing languages of a library to your plugin
 ...
 ```
 
-#### Clean up
-You can now remove all usages of ILIAS globals in your class and replace it with this library.
-Please avoid to store in variables or class variables.
+#### Database
+This library delivers also a custom `ilDB` decorator class with spec. functions, restricted to `PDO` (Because to make access more core functions), access via `self:.dic()->database()`
+
+If you realy need to access to original ILIAS `ilDB` instance, use `self:.dic()->databaseCore()` instead
+
+##### Native AutoIncrement (MySQL) / Native Sequence (PostgreSQL)
+Use auto increment on a spec. field (in `dbupdate.php`):
+```php
+\srag\DIC\H5P\x\DICStatic::dic()->database()->createAutoIncrement(\srag\Plugins\x\x\x::TABLE_NAME, "id");
+```
+
+Reset auto increment:
+```php
+self::dic()->database()->resetAutoIncrement(x::TABLE_NAME, "id");
+```
+
+Drop auto increment table (Needed for PostgreSQL) (in `ilXPlugin` uninstaller):
+```php
+self::dic()->database()->dropAutoIncrementTable(x::TABLE_NAME);
+```
+
+##### Store (In repository)
+```php
+$x = $this->factory()->newInstance();
+...
+$x->setId(self::dic()->database()->store(x::TABLE_NAME, [
+			"field_1" => [ ilDBConstants::T_TEXT, $x->getField1() ],
+			"field_2" => [ ilDBConstants::T_INTEGER, $x->getField2() ]
+		], "id", $x->getId()));
+```
+
+##### Automatic factory (In repository)
+```php
+$array = self::dic()->database()->fetchAllCallback(self::dic()->database()->query('SELECT * FROM ' . self::dic()->database()
+				->quoteIdentifier(x::TABLE_NAME)), [ $this->factory(), "fromDB" ]);
+		
+...
+
+public function fromDB(stdClass $data): x {
+	$x = $this->newInstance();
+
+	$x->setId($data->id);
+	$x->setField1($data->field_1);
+	$x->setField2($data->field_2);
+
+	return $x;
+}
+
+```
 
 ### Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=7.0
+* PDO (MySQL or PostgreSQL 9.5)
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests

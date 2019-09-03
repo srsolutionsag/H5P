@@ -2,9 +2,10 @@
 
 namespace srag\CustomInputGUIs\H5P\LearningProgressPieUI;
 
+use ILIAS\Data\Color;
 use ilLearningProgressBaseGUI;
 use ilLPStatus;
-use ilTemplate;
+use srag\CustomInputGUIs\H5P\CustomInputGUIsTrait;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -17,6 +18,7 @@ use srag\DIC\H5P\DICTrait;
 abstract class AbstractLearningProgressPieUI {
 
 	use DICTrait;
+	use CustomInputGUIsTrait;
 	const LP_STATUS = [
 		ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM,
 		ilLPStatus::LP_STATUS_IN_PROGRESS_NUM,
@@ -24,20 +26,15 @@ abstract class AbstractLearningProgressPieUI {
 		//ilLPStatus::LP_STATUS_FAILED_NUM
 	];
 	const LP_STATUS_COLOR = [
-		ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM => "#DDDDDD",
-		ilLPStatus::LP_STATUS_IN_PROGRESS_NUM => "#F6D842",
-		ilLPStatus::LP_STATUS_COMPLETED_NUM => "#BDCF32",
-		ilLPStatus::LP_STATUS_FAILED => "#B06060"
+		ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM => [ 221, 221, 221 ],
+		ilLPStatus::LP_STATUS_IN_PROGRESS_NUM => [ 246, 216, 66 ],
+		ilLPStatus::LP_STATUS_COMPLETED_NUM => [ 189, 207, 50 ],
+		ilLPStatus::LP_STATUS_FAILED => [ 176, 96, 96 ]
 	];
-	const BASE_ID = "learningprogresspie_";
 	/**
 	 * @var bool
 	 */
 	protected static $init = false;
-	/**
-	 * @var string
-	 */
-	protected $id = "";
 	/**
 	 * @var bool
 	 */
@@ -49,18 +46,6 @@ abstract class AbstractLearningProgressPieUI {
 	 */
 	public function __construct() {
 
-	}
-
-
-	/**
-	 * @param string $id
-	 *
-	 * @return self
-	 */
-	public function withId($id) {
-		$this->id = $id;
-
-		return $this;
 	}
 
 
@@ -77,23 +62,6 @@ abstract class AbstractLearningProgressPieUI {
 
 
 	/**
-	 *
-	 */
-	private function initJs()/*: void*/ {
-		if (self::$init === false) {
-			self::$init = true;
-
-			$dir = __DIR__;
-			$dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-			self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/d3/dist/d3.min.js");
-
-			self::dic()->mainTemplate()->addCss($dir . "/css/learningprogresspie.css");
-		}
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function render() {
@@ -102,7 +70,7 @@ abstract class AbstractLearningProgressPieUI {
 		if (count($data) > 0) {
 
 			$data = array_map(function ($status) use($data) {
-    return array('color' => self::LP_STATUS_COLOR[$status], 'label' => $data[$status], 'title' => $this->getText($status), 'value' => $data[$status]);
+    return array('color' => self::LP_STATUS_COLOR[$status], 'title' => $this->getText($status), 'value' => $data[$status]);
 }, self::LP_STATUS);
 
 			$data = array_filter($data, function (array $data) {
@@ -111,17 +79,14 @@ abstract class AbstractLearningProgressPieUI {
 
 			$data = array_values($data);
 
+			$data = array_map(function (array $data)/*: PieChartItemInterface*/ {
+				return self::customInputGUIs()
+					->pieChartItem($data["title"], $data["value"], new Color($data["color"][0], $data["color"][1], $data["color"][2]));
+			}, $data);
+
 			if (count($data) > 0) {
-				$this->initJs();
-
-				$tpl = new ilTemplate(__DIR__ . "/templates/chart.html", false, false);
-
-				$tpl->setVariable("ID", self::BASE_ID . $this->id);
-				$tpl->setVariable("DATA", json_encode($data));
-				$tpl->setVariable("COUNT", json_encode($this->getCount()));
-				$tpl->setVariable("SHOW_LEGEND", json_encode($this->show_legend));
-
-				return self::output()->getHTML($tpl);
+				return self::output()->getHTML(self::customInputGUIs()->pieChart($data)->withShowLegend($this->show_legend)
+					->withCustomTotalValue($this->getCount()));
 			}
 		}
 

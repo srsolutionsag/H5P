@@ -6,10 +6,9 @@ namespace srag\CustomInputGUIs\H5P\ProgressMeter\Implementation;
 
 use ILIAS\UI\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
-use ILIAS\UI\Implementation\Render\ilTemplateWrapper;
+use ILIAS\UI\Implementation\Render\ResourceRegistry;
 use ILIAS\UI\Implementation\Render\Template;
 use ILIAS\UI\Renderer as RendererInterface;
-use ilTemplate;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -22,7 +21,7 @@ use srag\DIC\H5P\DICTrait;
  * @author  Ralph Dittrich <dittrich@qualitus.de>
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @since ILIAS 5.4
+ * @since   ILIAS 5.4
  */
 class Renderer extends AbstractComponentRenderer {
 
@@ -33,11 +32,6 @@ class Renderer extends AbstractComponentRenderer {
 	 * @inheritdocs
 	 */
 	public function render(Component\Component $component, RendererInterface $default_renderer) {
-		$dir = __DIR__;
-		$dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1) . "/..";
-
-		self::dic()->mainTemplate()->addCss($dir . "/css/chart.css");
-
 		/**
 		 * @var ProgressMeter $component
 		 */
@@ -71,13 +65,11 @@ class Renderer extends AbstractComponentRenderer {
 	 * @return string
 	 */
 	protected function renderStandard(Standard $component, RendererInterface $default_renderer) {
-		$hasComparison = ($component->getComparison() != NULL && $component->getComparison() > 0);
+		$hasComparison = ($component->getComparison() != null && $component->getComparison() > 0);
 		if ($hasComparison) {
-			$tpl = new ilTemplateWrapper(self::dic()->mainTemplate(), new ilTemplate(__DIR__
-				. "/../templates/tpl.progressmeter_two_bar.html", true, true));
+			$tpl = $this->getTemplate("tpl.progressmeter_two_bar.html", true, true);
 		} else {
-			$tpl = new ilTemplateWrapper(self::dic()->mainTemplate(), new ilTemplate(__DIR__
-				. "/../templates/tpl.progressmeter_one_bar.html", true, true));
+			$tpl = $this->getTemplate("tpl.progressmeter_one_bar.html", true, true);
 		}
 
 		// set "responsive class" false
@@ -104,7 +96,20 @@ class Renderer extends AbstractComponentRenderer {
 
 		$tpl->parseCurrentBlock();
 
-		return $tpl->get();
+		return self::output()->getHTML($tpl);
+	}
+
+
+	/**
+	 * @inheritDoc
+	 */
+	public function registerResources(ResourceRegistry $registry): void {
+		parent::registerResources($registry);
+
+		$dir = __DIR__;
+		$dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1) . "/..";
+
+		$registry->register($dir . "/css/chart.css");
 	}
 
 
@@ -117,13 +122,11 @@ class Renderer extends AbstractComponentRenderer {
 	 * @return string
 	 */
 	protected function renderFixedSize(FixedSize $component, RendererInterface $default_renderer) {
-		$hasComparison = ($component->getComparison() != NULL && $component->getComparison() > 0);
+		$hasComparison = ($component->getComparison() != null && $component->getComparison() > 0);
 		if ($hasComparison) {
-			$tpl = new ilTemplateWrapper(self::dic()->mainTemplate(), new ilTemplate(__DIR__
-				. "/../templates/tpl.progressmeter_two_bar.html", true, true));
+			$tpl = $this->getTemplate("tpl.progressmeter_two_bar.html", true, true);
 		} else {
-			$tpl = new ilTemplateWrapper(self::dic()->mainTemplate(), new ilTemplate(__DIR__
-				. "/../templates/tpl.progressmeter_one_bar.html", true, true));
+			$tpl = $this->getTemplate("tpl.progressmeter_one_bar.html", true, true);
 		}
 
 		// set "responsive class" false
@@ -150,7 +153,7 @@ class Renderer extends AbstractComponentRenderer {
 
 		$tpl->parseCurrentBlock();
 
-		return $tpl->get();
+		return self::output()->getHTML($tpl);
 	}
 
 
@@ -163,7 +166,7 @@ class Renderer extends AbstractComponentRenderer {
 	 * @return string
 	 */
 	protected function renderMini(Mini $component, RendererInterface $default_renderer) {
-		$tpl = new ilTemplateWrapper(self::dic()->mainTemplate(), new ilTemplate(__DIR__ . "/../templates/tpl.progressmeter_mini.html", true, true));
+		$tpl = $this->getTemplate("tpl.progressmeter_mini.html", true, true);
 
 		// new vars
 		/*
@@ -193,7 +196,7 @@ class Renderer extends AbstractComponentRenderer {
 
 		$tpl->parseCurrentBlock();
 
-		return $tpl->get();
+		return self::output()->getHTML($tpl);
 	}
 
 
@@ -349,5 +352,13 @@ class Renderer extends AbstractComponentRenderer {
 	 */
 	protected function getComponentInterfaceName() {
 		return [ ProgressMeter::class ];
+	}
+
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function getTemplatePath(/*string*/ $name): string {
+		return __DIR__ . "/../templates/" . $name;
 	}
 }

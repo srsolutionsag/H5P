@@ -3,6 +3,7 @@
 namespace srag\DIC\H5P\Output;
 
 use ILIAS\UI\Component\Component;
+use ILIAS\UI\Implementation\Render\ilTemplateWrapper;
 use ilTable2GUI;
 use ilTemplate;
 use JsonSerializable;
@@ -67,6 +68,7 @@ final class Output implements OutputInterface {
 
 				// Template instance
 				case ($value instanceof ilTemplate):
+				case ($value instanceof ilTemplateWrapper):
 					$html = $value->get();
 					break;
 
@@ -93,13 +95,21 @@ final class Output implements OutputInterface {
 			exit;
 		} else {
 			if ($main_template) {
-				self::dic()->mainTemplate()->getStandardTemplate();
+				if (self::version()->is60()) {
+					self::dic()->mainTemplate()->loadStandardTemplate();
+				} else {
+					self::dic()->mainTemplate()->getStandardTemplate();
+				}
 			}
 
 			self::dic()->mainTemplate()->setContent($html);
 
 			if ($show) {
-				self::dic()->mainTemplate()->show();
+				if (self::version()->is60()) {
+					self::dic()->mainTemplate()->printToStdout();
+				} else {
+					self::dic()->mainTemplate()->show();
+				}
 			}
 		}
 	}

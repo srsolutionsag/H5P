@@ -2,6 +2,7 @@
 
 namespace srag\DIC\H5P\Util;
 
+use ilDBConstants;
 use ilGlobalCache;
 use ilObjLanguage;
 use srag\DIC\H5P\DICTrait;
@@ -104,8 +105,8 @@ final class LibraryLanguageInstaller implements Pluginable {
 
 			// Read already plugin language keys for not delete them
 			$lang_array = unserialize(self::dic()->database()->queryF("SELECT lang_array FROM lng_modules WHERE lang_key = %s AND module = %s", [
-				"text",
-				"text"
+				ilDBConstants::T_TEXT,
+				ilDBConstants::T_TEXT
 			], [ $lang["key"], $prefix ])->fetchAssoc()["lang_array"]);
 			if (!is_array($lang_array)) {
 				$lang_array = [];

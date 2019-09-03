@@ -239,7 +239,7 @@ H5P.XAPIEvent.prototype.getScore = function () {
  */
 H5P.XAPIEvent.prototype.getContentXAPIId = function (instance) {
   var xAPIId;
-  if (instance.contentId && H5PIntegration && H5PIntegration.contents) {
+  if (instance.contentId && H5PIntegration && H5PIntegration.contents && H5PIntegration.contents['cid-' + instance.contentId]) {
     xAPIId =  H5PIntegration.contents['cid-' + instance.contentId].url;
     if (instance.subContentId) {
       xAPIId += '?subContentId=' +  instance.subContentId;
@@ -312,6 +312,8 @@ H5P.XAPIEvent.allowedXAPIVerbs = [
 
   // Custom verbs used for action toolbar below content
   'downloaded',
+  'copied',
+  'accessed-reuse',
   'accessed-embed',
   'accessed-copyright'
 ];

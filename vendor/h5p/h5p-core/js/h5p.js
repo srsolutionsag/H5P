@@ -74,9 +74,10 @@ H5P.init = function (target) {
      * fullscreen, and the semi-fullscreen solution doesn't work when embedded.
      * @type {boolean}
      */
-    H5P.fullscreenSupported = !(H5P.isFramed && H5P.externalEmbed !== false) || !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled);
-    // We should consider document.msFullscreenEnabled when they get their
-    // element sizing corrected. Ref. https://connect.microsoft.com/IE/feedback/details/838286/ie-11-incorrectly-reports-dom-element-sizes-in-fullscreen-mode-when-fullscreened-element-is-within-an-iframe
+    H5P.fullscreenSupported = !H5PIntegration.fullscreenDisabled && !H5P.fullscreenDisabled && (!(H5P.isFramed && H5P.externalEmbed !== false) || !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled));
+    // -We should consider document.msFullscreenEnabled when they get their
+    // -element sizing corrected. Ref. https://connect.microsoft.com/IE/feedback/details/838286/ie-11-incorrectly-reports-dom-element-sizes-in-fullscreen-mode-when-fullscreened-element-is-within-an-iframe
+    // Update: Seems to be no need as they've moved on to Webkit
   }
 
   // Deprecated variable, kept to maintain backwards compatability
@@ -123,6 +124,9 @@ H5P.init = function (target) {
           };
 
           $dialog.find('.h5p-dialog-ok-button').click(closeDialog).keypress(closeDialog);
+          H5P.trigger(instance, 'resize');
+        }).on('dialog-closed', function () {
+          H5P.trigger(instance, 'resize');
         });
         dialog.open();
       }
@@ -132,6 +136,8 @@ H5P.init = function (target) {
     // Create new instance.
     var instance = H5P.newRunnable(library, contentId, $container, true, {standalone: true});
 
+    H5P.offlineRequestQueue = new H5P.OfflineRequestQueue({instance: instance});
+
     // Check if we should add and display a fullscreen button for this H5P.
     if (contentData.fullScreen == 1 && H5P.fullscreenSupported) {
       H5P.jQuery(
@@ -139,6 +145,7 @@ H5P.init = function (target) {
           '<div role="button" ' +
                 'tabindex="0" ' +
                 'class="h5p-enable-fullscreen" ' +
+                'aria-label="' + H5P.t('fullscreen') + '" ' +
                 'title="' + H5P.t('fullscreen') + '">' +
           '</div>' +
         '</div>')
@@ -174,20 +181,20 @@ H5P.init = function (target) {
       var actionBar = new H5P.ActionBar(displayOptions);
       var $actions = actionBar.getDOMElement();
 
-      actionBar.on('download', function () {
-        window.location.href = contentData.exportUrl;
-        instance.triggerXAPI('downloaded');
+      actionBar.on('reuse', function () {
+        H5P.openReuseDialog($actions, contentData, library, instance, contentId);
+        instance.triggerXAPI('accessed-reuse');
       });
       actionBar.on('copyrights', function () {
         var dialog = new H5P.Dialog('copyrights', H5P.t('copyrightInformation'), copyrights, $container);
-        dialog.open();
+        dialog.open(true);
         instance.triggerXAPI('accessed-copyright');
       });
       actionBar.on('embed', function () {
         H5P.openEmbedDialog($actions, contentData.embedCode, contentData.resizeCode, {
           width: $element.width(),
           height: $element.height()
-        });
+        }, instance);
         instance.triggerXAPI('accessed-embed');
       });
 
@@ -257,6 +264,11 @@ H5P.init = function (target) {
           // Retain parent size to avoid jumping/scrolling
           var parentHeight = iframe.parentElement.style.height;
           iframe.parentElement.style.height = iframe.parentElement.clientHeight + 'px';
+
+          // Note:  Force layout reflow
+          //        This fixes a flickering bug for embedded content on iPads
+          //        @see https://github.com/h5p/h5p-moodle-plugin/issues/237
+          iframe.getBoundingClientRect();
 
           // Reset iframe height, in case content has shrinked.
           iframe.style.height = '1px';
@@ -569,7 +581,7 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
     }
 
     before('h5p-semi-fullscreen');
-    var $disable = H5P.jQuery('<div role="button" tabindex="0" class="h5p-disable-fullscreen" title="' + H5P.t('disableFullscreen') + '"></div>').appendTo($container.find('.h5p-content-controls'));
+    var $disable = H5P.jQuery('<div role="button" tabindex="0" class="h5p-disable-fullscreen" title="' + H5P.t('disableFullscreen') + '" aria-label="' + H5P.t('disableFullscreen') + '"></div>').appendTo($container.find('.h5p-content-controls'));
     var keyup, disableSemiFullscreen = H5P.exitFullScreen = function () {
       if (prevViewportContent) {
         // Use content from the previous viewport tag
@@ -658,52 +670,140 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
   }
 };
 
-/**
- * Find the path to the content files based on the id of the content.
- * Also identifies and returns absolute paths.
- *
- * @param {string} path
- *   Relative to content folder or absolute.
- * @param {number} contentId
- *   ID of the content requesting the path.
- * @returns {string}
- *   Complete URL to path.
- */
-H5P.getPath = function (path, contentId) {
+(function () {
+  /**
+   * Helper for adding a query parameter to an existing path that may already
+   * contain one or a hash.
+   *
+   * @param {string} path
+   * @param {string} parameter
+   * @return {string}
+   */
+  H5P.addQueryParameter = function (path, parameter) {
+    let newPath, secondSplit;
+    const firstSplit = path.split('?');
+    if (firstSplit[1]) {
+      // There is already an existing query
+      secondSplit = firstSplit[1].split('#');
+      newPath = firstSplit[0] + '?' + secondSplit[0] + '&';
+    }
+    else {
+      // No existing query, just need to take care of the hash
+      secondSplit = firstSplit[0].split('#');
+      newPath = secondSplit[0] + '?';
+    }
+    newPath += parameter;
+    if (secondSplit[1]) {
+      // Add back the hash
+      newPath += '#' + secondSplit[1];
+    }
+    return newPath;
+  };
+
+  /**
+   * Helper for setting the crossOrigin attribute + the complete correct source.
+   * Note: This will start loading the resource.
+   *
+   * @param {Element} element DOM element, typically img, video or audio
+   * @param {Object} source File object from parameters/json_content (created by H5PEditor)
+   * @param {number} contentId Needed to determine the complete correct file path
+   */
+  H5P.setSource = function (element, source, contentId) {
+    let path = source.path;
+
+    const crossOrigin = H5P.getCrossOrigin(source);
+    if (crossOrigin) {
+      element.crossOrigin = crossOrigin;
+
+      if (H5PIntegration.crossoriginCacheBuster) {
+        // Some sites may want to add a cache buster in case the same resource
+        // is used elsewhere without the crossOrigin attribute
+        path = H5P.addQueryParameter(path, H5PIntegration.crossoriginCacheBuster);
+      }
+    }
+    else {
+      // In case this element has been used before.
+      element.removeAttribute('crossorigin');
+    }
+
+    element.src = H5P.getPath(path, contentId);
+  };
+
+  /**
+   * Check if the given path has a protocol.
+   *
+   * @private
+   * @param {string} path
+   * @return {string}
+   */
   var hasProtocol = function (path) {
     return path.match(/^[a-z0-9]+:\/\//i);
   };
 
-  if (hasProtocol(path)) {
-    return path;
-  }
-
-  var prefix;
-  var isTmpFile = (path.substr(-4,4) === '#tmp');
-  if (contentId !== undefined && !isTmpFile) {
-    // Check for custom override URL
-    if (H5PIntegration.contents !== undefined &&
-        H5PIntegration.contents['cid-' + contentId]) {
-      prefix = H5PIntegration.contents['cid-' + contentId].contentUrl;
+  /**
+   * Get the crossOrigin policy to use for img, video and audio tags on the current site.
+   *
+   * @param {Object|string} source File object from parameters/json_content - Can also be URL(deprecated usage)
+   * @returns {string|null} crossOrigin attribute value required by the source
+   */
+  H5P.getCrossOrigin = function (source) {
+    if (typeof source !== 'object') {
+      // Deprecated usage.
+      return H5PIntegration.crossorigin && H5PIntegration.crossoriginRegex && source.match(H5PIntegration.crossoriginRegex) ? H5PIntegration.crossorigin : null;
     }
-    if (!prefix) {
-      prefix = H5PIntegration.url + '/content/' + contentId;
+
+    if (H5PIntegration.crossorigin && !hasProtocol(source.path)) {
+      // This is a local file, use the local crossOrigin policy.
+      return H5PIntegration.crossorigin;
+      // Note: We cannot use this for all external sources since we do not know
+      // each server's individual policy. We could add support for a list of
+      // external sources and their policy later on.
     }
-  }
-  else if (window.H5PEditor !== undefined) {
-    prefix = H5PEditor.filesPath;
-  }
-  else {
-    return;
-  }
+  };
 
-  if (!hasProtocol(prefix)) {
-    // Use absolute urls
-    prefix = window.location.protocol + "//" + window.location.host + prefix;
-  }
+  /**
+   * Find the path to the content files based on the id of the content.
+   * Also identifies and returns absolute paths.
+   *
+   * @param {string} path
+   *   Relative to content folder or absolute.
+   * @param {number} contentId
+   *   ID of the content requesting the path.
+   * @returns {string}
+   *   Complete URL to path.
+   */
+  H5P.getPath = function (path, contentId) {
+    if (hasProtocol(path)) {
+      return path;
+    }
 
-  return prefix + '/' + path;
-};
+    var prefix;
+    var isTmpFile = (path.substr(-4,4) === '#tmp');
+    if (contentId !== undefined && !isTmpFile) {
+      // Check for custom override URL
+      if (H5PIntegration.contents !== undefined &&
+          H5PIntegration.contents['cid-' + contentId]) {
+        prefix = H5PIntegration.contents['cid-' + contentId].contentUrl;
+      }
+      if (!prefix) {
+        prefix = H5PIntegration.url + '/content/' + contentId;
+      }
+    }
+    else if (window.H5PEditor !== undefined) {
+      prefix = H5PEditor.filesPath;
+    }
+    else {
+      return;
+    }
+
+    if (!hasProtocol(prefix)) {
+      // Use absolute urls
+      prefix = window.location.protocol + "//" + window.location.host + prefix;
+    }
+
+    return prefix + '/' + path;
+  };
+})();
 
 /**
  * THIS FUNCTION IS DEPRECATED, USE getPath INSTEAD
@@ -924,7 +1024,7 @@ H5P.Dialog = function (name, title, content, $element) {
                               <div class="h5p-inner">\
                                 <h2>' + title + '</h2>\
                                 <div class="h5p-scroll-content">' + content + '</div>\
-                                <div class="h5p-close" role="button" tabindex="0" title="' + H5P.t('close') + '">\
+                                <div class="h5p-close" role="button" tabindex="0" aria-label="' + H5P.t('close') + '" title="' + H5P.t('close') + '"></div>\
                               </div>\
                             </div>')
     .insertAfter($element)
@@ -950,7 +1050,10 @@ H5P.Dialog = function (name, title, content, $element) {
   /**
    * Opens the dialog.
    */
-  self.open = function () {
+  self.open = function (scrollbar) {
+    if (scrollbar) {
+      $dialog.css('height', '100%');
+    }
     setTimeout(function () {
       $dialog.addClass('h5p-open'); // Fade in
       // Triggering an event, in case something has to be done after dialog has been opened.
@@ -965,6 +1068,7 @@ H5P.Dialog = function (name, title, content, $element) {
     $dialog.removeClass('h5p-open'); // Fade out
     setTimeout(function () {
       $dialog.remove();
+      H5P.jQuery(self).trigger('dialog-closed', [$dialog]);
     }, 200);
   };
 };
@@ -1128,6 +1232,65 @@ H5P.buildMetadataCopyrights = function (metadata) {
 };
 
 /**
+ * Display a dialog containing the download button and copy button.
+ *
+ * @param {H5P.jQuery} $element
+ * @param {Object} contentData
+ * @param {Object} library
+ * @param {Object} instance
+ * @param {number} contentId
+ */
+H5P.openReuseDialog = function ($element, contentData, library, instance, contentId) {
+  let html = '';
+  if (contentData.displayOptions.export) {
+    html += '<button type="button" class="h5p-big-button h5p-download-button"><div class="h5p-button-title">Download as an .h5p file</div><div class="h5p-button-description">.h5p files may be uploaded to any web-site where H5P content may be created.</div></button>';
+  }
+  if (contentData.displayOptions.export && contentData.displayOptions.copy) {
+    html += '<div class="h5p-horizontal-line-text"><span>or</span></div>';
+  }
+  if (contentData.displayOptions.copy) {
+    html += '<button type="button" class="h5p-big-button h5p-copy-button"><div class="h5p-button-title">Copy content</div><div class="h5p-button-description">Copied content may be pasted anywhere this content type is supported on this website.</div></button>';
+  }
+
+  const dialog = new H5P.Dialog('reuse', H5P.t('reuseContent'), html, $element);
+
+  // Selecting embed code when dialog is opened
+  H5P.jQuery(dialog).on('dialog-opened', function (e, $dialog) {
+    H5P.jQuery('<a href="https://h5p.org/node/442225" target="_blank">More Info</a>').click(function (e) {
+      e.stopPropagation();
+    }).appendTo($dialog.find('h2'));
+    $dialog.find('.h5p-download-button').click(function () {
+      window.location.href = contentData.exportUrl;
+      instance.triggerXAPI('downloaded');
+      dialog.close();
+    });
+    $dialog.find('.h5p-copy-button').click(function () {
+      const item = new H5P.ClipboardItem(library);
+      item.contentId = contentId;
+      H5P.setClipboard(item);
+      instance.triggerXAPI('copied');
+      dialog.close();
+      H5P.attachToastTo(
+        H5P.jQuery('.h5p-content:first')[0],
+        H5P.t('contentCopied'),
+        {
+          position: {
+            horizontal: 'centered',
+            vertical: 'centered',
+            noOverflowX: true
+          }
+        }
+      );
+    });
+    H5P.trigger(instance, 'resize');
+  }).on('dialog-closed', function () {
+    H5P.trigger(instance, 'resize');
+  });
+
+  dialog.open();
+};
+
+/**
  * Display a dialog containing the embed code.
  *
  * @param {H5P.jQuery} $element
@@ -1141,7 +1304,7 @@ H5P.buildMetadataCopyrights = function (metadata) {
  * @param {number} size.width
  * @param {number} size.height
  */
-H5P.openEmbedDialog = function ($element, embedCode, resizeCode, size) {
+H5P.openEmbedDialog = function ($element, embedCode, resizeCode, size, instance) {
   var fullEmbedCode = embedCode + resizeCode;
   var dialog = new H5P.Dialog('embed', H5P.t('embed'), '<textarea class="h5p-embed-code-container" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>' + H5P.t('size') + ': <input type="text" value="' + Math.ceil(size.width) + '" class="h5p-embed-size"/> × <input type="text" value="' + Math.ceil(size.height) + '" class="h5p-embed-size"/> px<br/><div role="button" tabindex="0" class="h5p-expander">' + H5P.t('showAdvanced') + '</div><div class="h5p-expander-content"><p>' + H5P.t('advancedHelp') + '</p><textarea class="h5p-embed-code-container" autocorrect="off" autocapitalize="off" spellcheck="false">' + resizeCode + '</textarea></div>', $element);
 
@@ -1151,15 +1314,7 @@ H5P.openEmbedDialog = function ($element, embedCode, resizeCode, size) {
     var $scroll = $inner.find('.h5p-scroll-content');
     var diff = $scroll.outerHeight() - $scroll.innerHeight();
     var positionInner = function () {
-      var height = $inner.height();
-      if ($scroll[0].scrollHeight + diff > height) {
-        $inner.css('height', ''); // 100%
-      }
-      else {
-        $inner.css('height', 'auto');
-        height = $inner.height();
-      }
-      $inner.css('marginTop', '-' + (height / 2) + 'px');
+      H5P.trigger(instance, 'resize');
     };
 
     // Handle changing of width/height
@@ -1211,9 +1366,216 @@ H5P.openEmbedDialog = function ($element, embedCode, resizeCode, size) {
         expand.apply(this);
       }
     });
+  }).on('dialog-closed', function () {
+    H5P.trigger(instance, 'resize');
   });
 
   dialog.open();
+};
+
+/**
+ * Show a toast message.
+ *
+ * The reference element could be dom elements the toast should be attached to,
+ * or e.g. the document body for general toast messages.
+ *
+ * @param {DOM} element Reference element to show toast message for.
+ * @param {string} message Message to show.
+ * @param {object} [config] Configuration.
+ * @param {string} [config.style=h5p-toast] Style name for the tooltip.
+ * @param {number} [config.duration=3000] Toast message length in ms.
+ * @param {object} [config.position] Relative positioning of the toast.
+ * @param {string} [config.position.horizontal=centered] [before|left|centered|right|after].
+ * @param {string} [config.position.vertical=below] [above|top|centered|bottom|below].
+ * @param {number} [config.position.offsetHorizontal=0] Extra horizontal offset.
+ * @param {number} [config.position.offsetVertical=0] Extra vetical offset.
+ * @param {boolean} [config.position.noOverflowLeft=false] True to prevent overflow left.
+ * @param {boolean} [config.position.noOverflowRight=false] True to prevent overflow right.
+ * @param {boolean} [config.position.noOverflowTop=false] True to prevent overflow top.
+ * @param {boolean} [config.position.noOverflowBottom=false] True to prevent overflow bottom.
+ * @param {boolean} [config.position.noOverflowX=false] True to prevent overflow left and right.
+ * @param {boolean} [config.position.noOverflowY=false] True to prevent overflow top and bottom.
+ * @param {object} [config.position.overflowReference=document.body] DOM reference for overflow.
+ */
+H5P.attachToastTo = function (element, message, config) {
+  if (element === undefined || message === undefined) {
+    return;
+  }
+
+  const eventPath = function (evt) {
+    var path = (evt.composedPath && evt.composedPath()) || evt.path;
+    var target = evt.target;
+
+    if (path != null) {
+      // Safari doesn't include Window, but it should.
+      return (path.indexOf(window) < 0) ? path.concat(window) : path;
+    }
+
+    if (target === window) {
+      return [window];
+    }
+
+    function getParents(node, memo) {
+      memo = memo || [];
+      var parentNode = node.parentNode;
+
+      if (!parentNode) {
+        return memo;
+      }
+      else {
+        return getParents(parentNode, memo.concat(parentNode));
+      }
+    }
+
+    return [target].concat(getParents(target), window);
+  };
+
+  /**
+   * Handle click while toast is showing.
+   */
+  const clickHandler = function (event) {
+    /*
+     * A common use case will be to attach toasts to buttons that are clicked.
+     * The click would remove the toast message instantly without this check.
+     * Children of the clicked element are also ignored.
+     */
+    var path = eventPath(event);
+    if (path.indexOf(element) !== -1) {
+      return;
+    }
+    clearTimeout(timer);
+    removeToast();
+  };
+
+
+
+  /**
+   * Remove the toast message.
+   */
+  const removeToast = function () {
+    document.removeEventListener('click', clickHandler);
+    if (toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+  };
+
+  /**
+   * Get absolute coordinates for the toast.
+   *
+   * @param {DOM} element Reference element to show toast message for.
+   * @param {DOM} toast Toast element.
+   * @param {object} [position={}] Relative positioning of the toast message.
+   * @param {string} [position.horizontal=centered] [before|left|centered|right|after].
+   * @param {string} [position.vertical=below] [above|top|centered|bottom|below].
+   * @param {number} [position.offsetHorizontal=0] Extra horizontal offset.
+   * @param {number} [position.offsetVertical=0] Extra vetical offset.
+   * @param {boolean} [position.noOverflowLeft=false] True to prevent overflow left.
+   * @param {boolean} [position.noOverflowRight=false] True to prevent overflow right.
+   * @param {boolean} [position.noOverflowTop=false] True to prevent overflow top.
+   * @param {boolean} [position.noOverflowBottom=false] True to prevent overflow bottom.
+   * @param {boolean} [position.noOverflowX=false] True to prevent overflow left and right.
+   * @param {boolean} [position.noOverflowY=false] True to prevent overflow top and bottom.
+   * @return {object}
+   */
+  const getToastCoordinates = function (element, toast, position) {
+    position = position || {};
+    position.offsetHorizontal = position.offsetHorizontal || 0;
+    position.offsetVertical = position.offsetVertical || 0;
+
+    const toastRect = toast.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    let left = 0;
+    let top = 0;
+
+    // Compute horizontal position
+    switch (position.horizontal) {
+      case 'before':
+        left = elementRect.left - toastRect.width - position.offsetHorizontal;
+        break;
+      case 'after':
+        left = elementRect.left + elementRect.width + position.offsetHorizontal;
+        break;
+      case 'left':
+        left = elementRect.left + position.offsetHorizontal;
+        break;
+      case 'right':
+        left = elementRect.left + elementRect.width - toastRect.width - position.offsetHorizontal;
+        break;
+      case 'centered':
+        left = elementRect.left + elementRect.width / 2 - toastRect.width / 2 + position.offsetHorizontal;
+        break;
+      default:
+        left = elementRect.left + elementRect.width / 2 - toastRect.width / 2 + position.offsetHorizontal;
+    }
+
+    // Compute vertical position
+    switch (position.vertical) {
+      case 'above':
+        top = elementRect.top - toastRect.height - position.offsetVertical;
+        break;
+      case 'below':
+        top = elementRect.top + elementRect.height + position.offsetVertical;
+        break;
+      case 'top':
+        top = elementRect.top + position.offsetVertical;
+        break;
+      case 'bottom':
+        top = elementRect.top + elementRect.height - toastRect.height - position.offsetVertical;
+        break;
+      case 'centered':
+        top = elementRect.top + elementRect.height / 2 - toastRect.height / 2 + position.offsetVertical;
+        break;
+      default:
+        top = elementRect.top + elementRect.height + position.offsetVertical;
+    }
+
+    // Prevent overflow
+    const overflowElement = document.body;
+    const bounds = overflowElement.getBoundingClientRect();
+    if ((position.noOverflowLeft || position.noOverflowX) && (left < bounds.x)) {
+      left = bounds.x;
+    }
+    if ((position.noOverflowRight || position.noOverflowX) && ((left + toastRect.width) > (bounds.x + bounds.width))) {
+      left = bounds.x + bounds.width - toastRect.width;
+    }
+    if ((position.noOverflowTop || position.noOverflowY) && (top < bounds.y)) {
+      top = bounds.y;
+    }
+    if ((position.noOverflowBottom || position.noOverflowY) && ((top + toastRect.height) > (bounds.y + bounds.height))) {
+      left = bounds.y + bounds.height - toastRect.height;
+    }
+
+    return {left: left, top: top};
+  };
+
+  // Sanitization
+  config = config || {};
+  config.style = config.style || 'h5p-toast';
+  config.duration = config.duration || 3000;
+
+  // Build toast
+  const toast = document.createElement('div');
+  toast.setAttribute('id', config.style);
+  toast.classList.add('h5p-toast-disabled');
+  toast.classList.add(config.style);
+
+  const msg = document.createElement('span');
+  msg.innerHTML = message;
+  toast.appendChild(msg);
+
+  document.body.appendChild(toast);
+
+  // The message has to be set before getting the coordinates
+  const coordinates = getToastCoordinates(element, toast, config.position);
+  toast.style.left = Math.round(coordinates.left) + 'px';
+  toast.style.top = Math.round(coordinates.top) + 'px';
+
+  toast.classList.remove('h5p-toast-disabled');
+  const timer = setTimeout(removeToast, config.duration);
+
+  // The toast can also be removed by clicking somewhere
+  document.addEventListener('click', clickHandler);
 };
 
 /**
@@ -1665,7 +2027,13 @@ H5P.libraryFromString = function (library) {
  *   The full path to the library.
  */
 H5P.getLibraryPath = function (library) {
-  return (H5PIntegration.libraryUrl !== undefined ? H5PIntegration.libraryUrl + '/' : H5PIntegration.url + '/libraries/') + library;
+  if (H5PIntegration.urlLibraries !== undefined) {
+    // This is an override for those implementations that has a different libraries URL, e.g. Moodle
+    return H5PIntegration.urlLibraries + '/' + library;
+  }
+  else {
+    return H5PIntegration.url + '/libraries/' + library;
+  }
 };
 
 /**
@@ -1787,14 +2155,18 @@ H5P.setFinished = function (contentId, score, maxScore, time) {
     };
 
     // Post the results
-    H5P.jQuery.post(H5PIntegration.ajax.setFinished, {
+    const data = {
       contentId: contentId,
       score: score,
       maxScore: maxScore,
       opened: toUnix(H5P.opened[contentId]),
       finished: toUnix(new Date()),
       time: time
-    });
+    };
+    H5P.jQuery.post(H5PIntegration.ajax.setFinished, data)
+      .fail(function () {
+        H5P.offlineRequestQueue.add(H5PIntegration.ajax.setFinished, data);
+      });
   }
 };
 
@@ -2025,19 +2397,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
   };
 
   /**
-   * Get crossorigin option that is set for site. Usefull for setting crossorigin policy for elements.
-   *
-   * @returns {string|null} Returns the string that should be set as crossorigin policy for elements or null if
-   * no policy is set.
-   */
-  H5P.getCrossOrigin = function (url) {
-    var crossorigin = H5PIntegration.crossorigin;
-    var urlRegex = H5PIntegration.crossoriginRegex;
-
-    return crossorigin && urlRegex && url.match(urlRegex) ? crossorigin : null;
-  };
-
-  /**
    * Async error handling.
    *
    * @callback H5P.ErrorCallback
@@ -2213,22 +2572,12 @@ H5P.createTitle = function (rawTitle, maxLength) {
   };
 
   /**
-   * This is a cache for pasted data to prevent parsing multiple times.
-   * @type {Object}
-   */
-  var parsedClipboard = null;
-
-  /**
    * Retrieve parsed clipboard data.
    *
    * @return {Object}
    */
   H5P.getClipboard = function () {
-    if (!parsedClipboard) {
-      parsedClipboard = parseClipboard();
-    }
-
-    return parsedClipboard;
+    return parseClipboard();
   };
 
   /**
@@ -2238,9 +2587,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
    */
   H5P.setClipboard = function (clipboardItem) {
     localStorage.setItem('h5pClipboard', JSON.stringify(clipboardItem));
-
-    // Clear cache
-    parsedClipboard = null;
 
     // Trigger an event so all 'Paste' buttons may be enabled.
     H5P.externalDispatcher.trigger('datainclipboard', {reset: false});
@@ -2261,7 +2607,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
    * Get item from the H5P Clipboard.
    *
    * @private
-   * @param {boolean} [skipUpdateFileUrls]
    * @return {Object}
    */
   var parseClipboard = function () {
@@ -2279,10 +2624,10 @@ H5P.createTitle = function (rawTitle, maxLength) {
       return;
     }
 
-    // Update file URLs
-    updateFileUrls(clipboardData.specific, function (path) {
+    // Update file URLs and reset content Ids
+    recursiveUpdate(clipboardData.specific, function (path) {
       var isTmpFile = (path.substr(-4, 4) === '#tmp');
-      if (!isTmpFile && clipboardData.contentId) {
+      if (!isTmpFile && clipboardData.contentId && !path.match(/^https?:\/\//i)) {
         // Comes from existing content
 
         if (H5PEditor.contentId) {
@@ -2301,22 +2646,20 @@ H5P.createTitle = function (rawTitle, maxLength) {
     if (clipboardData.generic) {
       // Use reference instead of key
       clipboardData.generic = clipboardData.specific[clipboardData.generic];
-
-      // Avoid multiple content with same ID
-      delete clipboardData.generic.subContentId;
     }
 
     return clipboardData;
   };
 
   /**
-   * Update file URLs. Useful when copying content.
+   * Update file URLs and reset content IDs.
+   * Useful when copying content.
    *
    * @private
    * @param {object} params Reference
    * @param {function} handler Modifies the path to work when pasted
    */
-  var updateFileUrls = function (params, handler) {
+  var recursiveUpdate = function (params, handler) {
     for (var prop in params) {
       if (params.hasOwnProperty(prop) && params[prop] instanceof Object) {
         var obj = params[prop];
@@ -2324,7 +2667,11 @@ H5P.createTitle = function (rawTitle, maxLength) {
           obj.path = handler(obj.path);
         }
         else {
-          updateFileUrls(obj, handler);
+          if (obj.library !== undefined && obj.subContentId !== undefined) {
+            // Avoid multiple content with same ID
+            delete obj.subContentId;
+          }
+          recursiveUpdate(obj, handler);
         }
       }
     }
@@ -2336,9 +2683,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
     window.addEventListener('storage', function (event) {
       // Pick up clipboard changes from other tabs
       if (event.key === 'h5pClipboard') {
-        // Clear cache
-        parsedClipboard = null;
-
         // Trigger an event so all 'Paste' buttons may be enabled.
         H5P.externalDispatcher.trigger('datainclipboard', {reset: event.newValue === null});
       }

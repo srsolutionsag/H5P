@@ -44,6 +44,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		$this->description_enabled = true;
 		$this->notice_properties_enabled = true;
 		$this->properties_enabled = true;
+		$this->subscribe_enabled = true;
 
 		$this->comments_enabled = false;
 		$this->comments_settings_enabled = false;
@@ -58,7 +59,6 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI {
 		$this->repository_transfer_enabled = false;
 		$this->search_fragment_enabled = false;
 		$this->static_link_enabled = false;
-		$this->subscribe_enabled = false;
 		$this->tags_enabled = false;
 		$this->timings_enabled = false;
 

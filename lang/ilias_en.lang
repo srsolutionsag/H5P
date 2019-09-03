@@ -94,6 +94,7 @@ only_runnable#:#Only runnable
 permission_denied#:#Permission denied
 previous_content#:#Previous content
 read#:#Read
+required_libraries#:#Required libraries
 results#:#Results
 rights_of_use#:#Rights of use
 runnable#:#Runnable

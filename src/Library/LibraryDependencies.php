@@ -44,11 +44,11 @@ class LibraryDependencies extends ActiveRecord {
 	/**
 	 * @param int $library_id
 	 *
-	 * @return LibraryDependencies[]
+	 * @return self[]
 	 */
 	public static function getDependencies($library_id) {
 		/**
-		 * @var LibraryDependencies[] $h5p_library_dependencies
+		 * @var self[] $h5p_library_dependencies
 		 */
 
 		$h5p_library_dependencies = self::where([
@@ -66,7 +66,7 @@ class LibraryDependencies extends ActiveRecord {
 	 */
 	public static function getLibraryUsage($library_id) {
 		/**
-		 * @var LibraryDependencies[] $h5p_library_dependencies
+		 * @var self[] $h5p_library_dependencies
 		 */
 
 		$h5p_library_dependencies = self::where([
@@ -92,6 +92,24 @@ class LibraryDependencies extends ActiveRecord {
 		])->getArray();
 
 		return $h5p_library_dependencies;
+	}
+
+
+	/**
+	 * @param int $library_id
+	 *
+	 * @return array
+	 */
+	public static function getUsageJoin($library_id) {
+		/**
+		 * @var self[] $h5p_library_usages
+		 */
+
+		$h5p_library_usages = self::innerjoin(Library::TABLE_NAME, "library_id", "library_id")->where([
+			self::TABLE_NAME . ".required_library_id" => $library_id
+		])->getArray();
+
+		return $h5p_library_usages;
 	}
 
 
@@ -142,7 +160,7 @@ class LibraryDependencies extends ActiveRecord {
 	 * @param int              $primary_key_value
 	 * @param arConnector|null $connector
 	 */
-	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+	public function __construct($primary_key_value = 0, arConnector $connector = null) {
 		parent::__construct($primary_key_value, $connector);
 	}
 
@@ -157,7 +175,7 @@ class LibraryDependencies extends ActiveRecord {
 
 		switch ($field_name) {
 			default:
-				return NULL;
+				return null;
 		}
 	}
 
@@ -176,7 +194,7 @@ class LibraryDependencies extends ActiveRecord {
 				return intval($field_value);
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 

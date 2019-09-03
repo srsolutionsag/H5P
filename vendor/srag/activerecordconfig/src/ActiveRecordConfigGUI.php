@@ -272,7 +272,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 		$table->resetOffset();
 
 		//$this->redirectToTab($tab_id);
-		$this->configure($this->getCmdForTab($tab_id)); // Fix reset offset
+		$this->configure($tab_id); // Fix reset offset
 	}
 
 
@@ -292,7 +292,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI {
 		$table->resetOffset();
 
 		//$this->redirectToTab($tab_id);
-		$this->configure($this->getCmdForTab($tab_id)); // Fix reset offset
+		$this->configure($tab_id); // Fix reset offset
 	}
 
 

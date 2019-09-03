@@ -2,6 +2,10 @@
 
 namespace srag\DIC\H5P\DIC;
 
+use ILIAS\DI\Container;
+use srag\DIC\H5P\Database\DatabaseDetector;
+use srag\DIC\H5P\Database\DatabaseInterface;
+
 /**
  * Class AbstractDIC
  *
@@ -12,9 +16,23 @@ namespace srag\DIC\H5P\DIC;
 abstract class AbstractDIC implements DICInterface {
 
 	/**
-	 * AbstractDIC constructor
+	 * @var Container
 	 */
-	protected function __construct() {
+	protected $dic;
 
+
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct(Container &$dic) {
+		$this->dic = &$dic;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function database() {
+		return DatabaseDetector::getInstance($this->databaseCore());
 	}
 }

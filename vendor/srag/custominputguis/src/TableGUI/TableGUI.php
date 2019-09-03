@@ -57,8 +57,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 * @param object $parent
 	 * @param string $parent_cmd
 	 */
-	public function __construct($parent, /*string*/
-		$parent_cmd) {
+	public function __construct($parent, /*string*/ $parent_cmd) {
 		$this->initId();
 
 		parent::__construct($parent, $parent_cmd);
@@ -96,8 +95,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 *
 	 * @return bool
 	 */
-	protected final function hasSessionValue(/*string*/
-		$field_id)/*: bool*/ {
+	protected final function hasSessionValue(/*string*/ $field_id)/*: bool*/ {
 		// Not set (null) on first visit, false on reset filter, string if is set
 		return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
 	}
@@ -190,9 +188,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 *
 	 * @return string
 	 */
-	public function txt(/*string*/
-		$key,/*?string*/
-		$default = null)/*: string*/ {
+	public function txt(/*string*/ $key,/*?string*/ $default = null)/*: string*/ {
 		if ($default !== null) {
 			return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
 		} else {
@@ -218,10 +214,9 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param array $row
+	 * @param array|object $row
 	 */
-	protected function fillRow(/*array*/
-		$row)/*: void*/ {
+	protected function fillRow(/*array*/ $row)/*: void*/ {
 		$this->tpl->setCurrentBlock("column");
 
 		foreach ($this->getSelectableColumns() as $column) {
@@ -268,9 +263,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 * @param int  $format
 	 * @param bool $send
 	 */
-	public function exportData(/*int*/
-		$format, /*bool*/
-		$send = false)/*: void*/ {
+	public function exportData(/*int*/ $format, /*bool*/ $send = false)/*: void*/ {
 		switch ($format) {
 			case self::EXPORT_PDF:
 				$this->exportPDF($format);
@@ -286,8 +279,7 @@ abstract class TableGUI extends ilTable2GUI {
 	/**
 	 * @param ilCSVWriter $csv
 	 */
-	protected function fillHeaderCSV(/*ilCSVWriter*/
-		$csv)/*: void*/ {
+	protected function fillHeaderCSV(/*ilCSVWriter*/ $csv)/*: void*/ {
 		foreach ($this->getSelectableColumns() as $column) {
 			if ($this->isColumnSelected($column["id"])) {
 				$csv->addColumn($column["txt"]);
@@ -299,12 +291,10 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param ilCSVWriter $csv
-	 * @param array       $row
+	 * @param ilCSVWriter  $csv
+	 * @param array|object $row
 	 */
-	protected function fillRowCSV(/*ilCSVWriter*/
-		$csv, /*array*/
-		$row)/*: void*/ {
+	protected function fillRowCSV(/*ilCSVWriter*/ $csv, /*array*/ $row)/*: void*/ {
 		foreach ($this->getSelectableColumns() as $column) {
 			if ($this->isColumnSelected($column["id"])) {
 				$csv->addColumn($this->getColumnValue($column["id"], $row, self::EXPORT_CSV));
@@ -319,8 +309,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 * @param ilExcel $excel
 	 * @param int     $row
 	 */
-	protected function fillHeaderExcel(ilExcel $excel, /*int*/
-		&$row)/*: void*/ {
+	protected function fillHeaderExcel(ilExcel $excel, /*int*/ &$row)/*: void*/ {
 		$col = 0;
 
 		foreach ($this->getSelectableColumns() as $column) {
@@ -337,13 +326,11 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param ilExcel $excel
-	 * @param int     $row
-	 * @param array   $result
+	 * @param ilExcel      $excel
+	 * @param int          $row
+	 * @param array|object $result
 	 */
-	protected function fillRowExcel(ilExcel $excel, /*int*/
-		&$row, /*array*/
-		$result)/*: void*/ {
+	protected function fillRowExcel(ilExcel $excel, /*int*/ &$row, /*array*/ $result)/*: void*/ {
 		$col = 0;
 		foreach ($this->getSelectableColumns() as $column) {
 			if ($this->isColumnSelected($column["id"])) {
@@ -357,8 +344,7 @@ abstract class TableGUI extends ilTable2GUI {
 	/**
 	 * @param bool $send
 	 */
-	protected function exportPDF(/*bool*/
-		$send = false)/*: void*/ {
+	protected function exportPDF(/*bool*/ $send = false)/*: void*/ {
 
 		$css = file_get_contents(__DIR__ . "/css/table_pdf_export.css");
 
@@ -418,8 +404,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 *
 	 * @return array
 	 */
-	protected function fillRowPDF(/*array*/
-		$row)/*: array*/ {
+	protected function fillRowPDF(/*array*/ $row)/*: array*/ {
 		$strings = [];
 
 		foreach ($this->getSelectableColumns() as $column) {
@@ -433,24 +418,19 @@ abstract class TableGUI extends ilTable2GUI {
 
 
 	/**
-	 * @param string $column
-	 * @param array  $row
-	 * @param int    $format
+	 * @param string       $column
+	 * @param array|object $row
+	 * @param int          $format
 	 *
 	 * @return string
 	 */
-	protected abstract function getColumnValue(/*string*/
-		$column, /*array*/
-		$row, /*int*/
-		$format = self::DEFAULT_FORMAT)/*: string*/
-	;
+	protected abstract function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = self::DEFAULT_FORMAT)/*: string*/ ;
 
 
 	/**
 	 * @return array
 	 */
-	protected abstract function getSelectableColumns2()/*: array*/
-	;
+	protected abstract function getSelectableColumns2()/*: array*/ ;
 
 
 	/**
@@ -494,8 +474,7 @@ abstract class TableGUI extends ilTable2GUI {
 	 *
 	 * @return bool
 	 */
-	public function isColumnSelected(/*string*/
-		$col)/*: bool*/ {
+	public function isColumnSelected(/*string*/ $col)/*: bool*/ {
 		return parent::isColumnSelected($col);
 	}
 
@@ -503,27 +482,23 @@ abstract class TableGUI extends ilTable2GUI {
 	/**
 	 *
 	 */
-	protected abstract function initData()/*: void*/
-	;
+	protected abstract function initData()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initFilterFields()/*: void*/
-	;
+	protected abstract function initFilterFields()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initId()/*: void*/
-	;
+	protected abstract function initId()/*: void*/ ;
 
 
 	/**
 	 *
 	 */
-	protected abstract function initTitle()/*: void*/
-	;
+	protected abstract function initTitle()/*: void*/ ;
 }

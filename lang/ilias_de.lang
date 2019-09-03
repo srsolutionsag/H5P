@@ -94,6 +94,7 @@ only_runnable#:#Nur startbare
 permission_denied#:#Zugriff verweigert
 previous_content#:#Vorheriger Inhalt
 read#:#Lesen
+required_libraries#:#Benötigte Bibliotheken
 results#:#Resultate
 rights_of_use#:#Nutzungsrechte
 runnable#:#Startbar

@@ -147,6 +147,7 @@ a {
     color: $form-input-placeholder-color;
   }
   & > select,
+  .h5peditor-language-switcher select,
   h5peditor-select,
   .field > select {
     padding: 10px 30px 10px 8px;
@@ -277,6 +278,47 @@ a {
     .h5p-add-dialog-table {
       overflow: hidden;
 
+      .av-tablist {
+        overflow: hidden;
+        margin: 1em 1em 0 1em;
+      }
+
+      .av-tab {
+        cursor: pointer;
+        float: left;
+        padding: 0.5em 0.75em;
+        border-top: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        font-weight: bold;
+        font-size: 15px;
+        color: #666;
+        background: #f5f5f5;
+
+        &:first-child {
+          border-left: 1px solid #ccc;
+        }
+        &.selected {
+          color: #333;
+          background: #fff;
+        }
+      }
+
+      .av-tabpanel {
+        border: 1px solid #ccc;
+        margin: 0 1em 1em 1em;
+        overflow: hidden;
+        padding: 1em;
+
+        h3 {
+          margin: 0 0 1em 0;
+        }
+        .h5p-file-drop-upload {
+          width: 90px;
+          margin: 0;
+        }
+      }
+
+
       .h5p-dialog-box {
         float: left;
         padding: 0;
@@ -295,76 +337,76 @@ a {
             text-align: center;
           }
         }
+      }
 
-        h3 {
-          color: #666;
-          font-size: 1em;
-          margin: 1.2em 0;
-          line-height: 1.1em;
+      h3 {
+        color: #666;
+        font-size: 1em;
+        margin: 1.2em 0;
+        line-height: 1.1em;
+      }
+
+      .h5peditor-field-description {
+        color: #bbb;
+      }
+
+      .h5p-file-url-wrapper {
+        background-color: #f5f5f5;
+        border: 1px solid #bbb;
+        padding: 15px 15px 15px 60px;
+        position: relative;
+
+        &:before {
+          font-family: 'H5P';
+          content: "\e904";
+          position: absolute;
+          color: #dd0505;
+          left: 0;
+          top: 0.075em;
+          font-size: 3.8em;
+          line-height: 1;
         }
 
-        .h5peditor-field-description {
-          color: #bbb;
+        input {
+          border-color: #bbb;
+          text-align: left;
+          padding-left: 20px;
+        }
+      }
+
+      .h5p-file-drop-upload {
+        position: relative;
+        width: 70%;
+        height: 90px;
+        margin: 0 15%;
+        float: left;
+        background-color: #f5f5f5;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid #bbb;
+
+        .h5p-file-drop-upload-inner {
+          border: 2px dashed #bbb;;
+          background-color: white;
+          position: absolute;
+          top: 3px;
+          bottom: 3px;
+          left: 3px;
+          right: 3px;
+
+          &:after {
+            font-family: "H5P";
+            content: "\e903";
+            line-height: 1.4em;
+            font-size: 3.5em;
+            color: #bbb;
+          }
         }
 
-        .h5p-file-url-wrapper {
-          background-color: #f5f5f5;
-          border: 1px solid #bbb;
-          padding: 15px 15px 15px 60px;
-          position: relative;
-
-          &:before {
-            font-family: 'H5P';
-            content: "\e904";
-            position: absolute;
-            color: #dd0505;
-            left: 0;
-            top: 0.075em;
-            font-size: 3.8em;
-            line-height: 1;
-          }
-
-          input {
-            border-color: #bbb;
-            text-align: left;
-            padding-left: 20px;
-          }
-        }
-
-        .h5p-file-drop-upload {
-          position: relative;
-          width: 70%;
-          height: 90px;
-          margin: 0 15%;
-          float: left;
-          background-color: #f5f5f5;
-          text-align: center;
-          cursor: pointer;
-          border: 1px solid #bbb;
-
-          .h5p-file-drop-upload-inner {
-            border: 2px dashed #bbb;;
-            background-color: white;
-            position: absolute;
-            top: 3px;
-            bottom: 3px;
-            left: 3px;
-            right: 3px;
-
-            &:after {
-              font-family: "H5P";
-              content: "\e903";
-              line-height: 1.4em;
-              font-size: 3.5em;
-              color: #bbb;
-            }
-          }
-
-          &:hover,
-          &.over {
-            .h5p-file-drop-upload-inner:after {
-              color: #999;
-            }
+        &:hover,
+        &.over {
+          .h5p-file-drop-upload-inner:after {
+            color: #999;
           }
         }
       }
@@ -638,7 +680,7 @@ a {
   .libwrap {
     margin-top: $padding;
 
-    &.no-margin, 
+    &.no-margin,
     &:empty {
       margin-top: 0;
     }
@@ -713,7 +755,7 @@ a {
 
   .h5p-editor-dialog {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     margin: 5.5em 0 1em;
     visibility: hidden;
     opacity: 0;
@@ -755,6 +797,7 @@ a {
         right: -0.125em;
         top: 0;
         position: absolute;
+        z-index: 1;
         font-family: $icon-font-family;
         content: "\e894";
         line-height: 1em;
@@ -820,7 +863,7 @@ a {
     line-height: 0.9;
   }
 
-  &:hover {
+  &:hover:not([disabled]) {
     @include button-background(
       $form-item-importance-medium-background-hover,
       $form-item-importance-medium-background-hover-highlight);
@@ -862,6 +905,11 @@ a {
         $form-item-importance-low-background-hover-highlight);
       border-color: $form-item-importance-low-background-hover;
     }
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.6;
   }
 }
 .h5peditor-field-description,
@@ -955,9 +1003,29 @@ a {
 
 .h5peditor-form {
   position: relative;
-  padding: 20px;
   background: $form-background;
   border: 1px solid $form-border-color;
+
+  &.h5peditor-form-manager {
+    > .tree,
+    > .common,
+    > .field {
+      max-width: 918px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+  }
+
+  &.h5peditor-semi-fullscreen {
+    margin: 0;
+    position: fixed;
+    overflow-y: scroll;
+    margin-top: 40px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
+    background: #fff;
+    height: calc(100% - 40px);
+  }
 }
 
 .h5peditor-label {
@@ -987,17 +1055,14 @@ a {
   margin-right: 20px;
   margin-bottom: 11px;
 }
-.h5p-example-url {
-
-}
 
 .h5p-tutorial-url:before {
   font-family: $icon-font-family;
   content: "\e907";
   font-size: 1.5em;
   position: relative;
-  top: .2em;
-  left: .2em;
+  top: 0.2em;
+  left: 0.2em;
   margin-right: 10px;
 }
 
@@ -1006,8 +1071,8 @@ a {
   content: "\e906";
   font-size: 1.5em;
   position: relative;
-  top: .2em;
-  left: .2em;
+  top: 0.2em;
+  left: 0.2em;
   margin-right: 10px;
 }
 
@@ -1108,32 +1173,6 @@ a {
   clear: right;
 }
 
-// Default toast. Should be available.
-.h5p-editor-toast {
-  font-size: 0.75em;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #fff;
-  z-index: 110;
-  position: absolute;
-  padding: 0 0.5em;
-  line-height: 2;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  top: 0;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 1s;
-}
-
-.h5p-toast-disabled {
-  opacity: 0;
-  visibility: hidden;
-}
-
-
-
-
 .h5peditor fieldset.common-fields-library-wrapper {
   width: 100%;
   padding: 0 1em 1em;
@@ -1183,3 +1222,47 @@ a {
 @import "metadata-changelog-widget";
 @import "metadata-author-widget";
 @import "copy-paste";
+@import "fullscreen-bar";
+
+.h5peditor .h5peditor-language-switcher {
+  float: right;
+  white-space: nowrap;
+  margin-bottom: 1em;
+
+  .language-label {
+    padding: 0 10px;
+    font-size: 15px;
+  }
+  select {
+    padding: 6px 30px 6px 8px;
+    font-size: 15px;
+  }
+}
+.h5peditor-language-notice {
+  display: none;
+  clear: both;
+  font-size: 14px;
+  background: #dcf6ff;
+  color: #295b7a;
+  padding: 10px 20px 10px 40px;
+  margin: 1em 0;
+  line-height: 1.5;
+  position: relative;
+
+  &:before {
+    font-family: h5p;
+    content: "\e90c";
+    position: absolute;
+    left: 15px;
+    font-size: 1.125em;
+  }
+  &.show {
+    display: block;
+  }
+  .first {
+    font-weight: bold;
+  }
+  a {
+    text-decoration: underline;
+  }
+}

@@ -6,6 +6,7 @@
     H5PEditor.ajaxPath = H5PIntegration.editor.ajaxPath;
     H5PEditor.filesPath = H5PIntegration.editor.filesPath;
     H5PEditor.apiVersion = H5PIntegration.editor.apiVersion;
+    H5PEditor.contentLanguage = H5PIntegration.editor.language;
 
     // Semantics describing what copyright information can be stored for media.
     H5PEditor.copyrightSemantics = H5PIntegration.editor.copyrightSemantics;
@@ -46,36 +47,42 @@
       $type.filter('input[value="create"]').attr('checked', true).change();
     }
 
-    $form.submit(function (event) {
-      if (h5peditor !== undefined) {
-        var params = h5peditor.getParams();
+    // Duplicate the submit button input because it is not posted when calling $form.submit()
+    const $submitters = $form.find('input[type="submit"]');
+    $submitters.click(function () {
+      // Create hidden input and give it the value
+      const name = $(this).prop('name');
+      const value = $(this).prop('value');
+      $('<input type="hidden" name="' + name + '" value="' + value + '" />').appendTo($form);
+    });
 
-        if (params !== undefined && params.params !== undefined) {
-          // Validate mandatory main title. Prevent submitting if that's not set.
-          // Deliberatly doing it after getParams(), so that any other validation
-          // problems are also revealed
-          if (!h5peditor.isMainTitleSet()) {
-            return event.preventDefault();
-          }
+    let formIsUpdated = false;
+    $form.submit(function (event) {
+      if ($type.length && $type.filter(':checked').val() === 'upload') {
+        return; // Old file upload
+      }
+
+      if (h5peditor !== undefined && !formIsUpdated) {
+
+        // Get content from editor
+        h5peditor.getContent(function (content) {
 
           // Set the title field to the metadata title if the field exists
-          if ($title && $title.length !== 0) {
-            $title.val(params.metadata.title || '');
-          }
+          $title.val(content.title);
 
           // Set main library
-          $library.val(h5peditor.getLibrary());
+          $library.val(content.library);
 
           // Set params
-          $params.val(JSON.stringify(params));
+          $params.val(content.params);
 
-          // Set max score
-          $maxScore.val(h5peditor.getMaxScore(params.params));
+          // Submit form data
+          formIsUpdated = true;
+          $form.submit();
+        });
 
-          if (submitCallback) {
-            submitCallback(params);
-          }
-        }
+        // Stop default submit
+        event.preventDefault();
       }
     });
   };

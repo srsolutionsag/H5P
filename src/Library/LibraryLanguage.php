@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Library;
 
 use ActiveRecord;
 use arConnector;
+use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -78,11 +79,58 @@ class LibraryLanguage extends ActiveRecord {
 			self::TABLE_NAME . ".language_code" => $language
 		])->first();
 
-		if ($h5p_library_language !== NULL) {
+		if ($h5p_library_language !== null) {
 			return $h5p_library_language->getTranslation();
 		} else {
 			return false;
 		}
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param int    $major_version
+	 * @param int    $minor_version
+	 *
+	 * @return array
+	 */
+	public static function getAvailableLanguages($name, $major_version, $minor_version) {
+		$h5p_library_languages = self::innerjoin(Library::TABLE_NAME, "library_id", "library_id")->where([
+			"name" => $name,
+			"major_version" => $major_version,
+			"minor_version" => $minor_version
+		])->getArray();
+
+		$languages = [];
+
+		foreach ($h5p_library_languages as $h5p_library_language) {
+			$languages[] = $h5p_library_language["language_code"];
+		}
+
+		return $languages;
+	}
+
+
+	/**
+	 * @param array  $libraries
+	 * @param string $language_code
+	 *
+	 * @return array
+	 */
+	public static function getTranslations($libraries, $language_code) {
+		$h5p_library_languages = self::dic()->database()
+			->queryF("SELECT translation, CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version) AS lib FROM " . Library::TABLE_NAME
+				. " INNER JOIN " . self::TABLE_NAME . " ON " . Library::TABLE_NAME . ".library_id = " . self::TABLE_NAME
+				. ".library_id WHERE language_code=%s AND " . self::dic()->database()
+					->in("CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version)", $libraries, false, ilDBConstants::T_TEXT), [ ilDBConstants::T_TEXT ], [ $language_code ]);
+
+		$languages = [];
+
+		foreach ($h5p_library_languages as $h5p_library_language) {
+			$languages[$h5p_library_language["lib"]] = $h5p_library_language["translation"];
+		}
+
+		return $languages;
 	}
 
 
@@ -133,7 +181,7 @@ class LibraryLanguage extends ActiveRecord {
 	 * @param int              $primary_key_value
 	 * @param arConnector|null $connector
 	 */
-	public function __construct($primary_key_value = 0, arConnector $connector = NULL) {
+	public function __construct($primary_key_value = 0, arConnector $connector = null) {
 		parent::__construct($primary_key_value, $connector);
 	}
 
@@ -148,7 +196,7 @@ class LibraryLanguage extends ActiveRecord {
 
 		switch ($field_name) {
 			default:
-				return NULL;
+				return null;
 		}
 	}
 
@@ -166,7 +214,7 @@ class LibraryLanguage extends ActiveRecord {
 				return intval($field_value);
 
 			default:
-				return NULL;
+				return null;
 		}
 	}
 

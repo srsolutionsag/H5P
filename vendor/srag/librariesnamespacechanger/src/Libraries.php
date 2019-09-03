@@ -18,16 +18,22 @@ final class Libraries {
 	 */
 	const LIBRARIES = [
 		"ActiveRecordConfig" => "ActiveRecordConfig",
+		"AssessmentQuestion" => "AssessmentQuestion",
 		"BexioCurl" => "BexioCurl",
 		"CommentsUI" => "CommentsUI",
 		"CustomInputGUIs" => "CustomInputGUIs",
+		"DataTable" => "DataTable",
 		"DclExtension" => "DclExtension",
 		"DIC" => "DIC",
 		"GitCurl" => "GitCurl",
+		"IliasComponent" => "IliasComponent",
+		"IliasComponentCourse" => "IliasComponentCourse",
+		"IliasComponentUser" => "IliasComponentUser",
 		"JasperReport" => "JasperReport",
 		"JiraCurl" => "JiraCurl",
 		"Notifications4Plugin" => "Notifications4Plugin",
-		"RemovePluginDataConfirm" => "RemovePluginDataConfirm"
+		"RemovePluginDataConfirm" => "RemovePluginDataConfirm",
+		"TableUI" => "TableUI"
 	];
 
 
