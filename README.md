@@ -1,3 +1,5 @@
+This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
+
 ## Installation
 
 ### Install H5P repository plugin
