@@ -445,8 +445,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI {
 				->translate("delete_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM)));
 		}*/
 
-		//self::h5p()->show_content()->addH5pScript(substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js");
-
 		$this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count));
 	}
 

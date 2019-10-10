@@ -39,6 +39,7 @@ $(document).ready(function () {
 
 	// Fix H5P contents in accordions
 	$(".il_HAccordionToggleDef, .il_VAccordionToggleDef").click(function() {
-		$(window).trigger("resize");
+		//$(window).trigger("resize");
+		dispatchEvent(new Event("resize"));
 	});
 });
