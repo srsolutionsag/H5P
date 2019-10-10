@@ -488,7 +488,7 @@ class Framework implements H5PFrameworkInterface {
 	 *  FALSE otherwise
 	 */
 	public function isInDevMode() {
-		return (DEVMODE === 1);
+		return (intval(DEVMODE) === 1);
 	}
 
 

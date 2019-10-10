@@ -106,6 +106,8 @@ class ShowContent {
 			$this->initCore();
 
 			$this->core["contents"] = [];
+
+            $this->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js";
 		}
 	}
 

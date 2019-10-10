@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.4.1]
+- Fix H5P contents in accordions
+
 ## [2.4.0]
 - Show a list of usages and dependencies in package details
 - Upgrade H5P client to v1.23.1 (No new features implemented)
