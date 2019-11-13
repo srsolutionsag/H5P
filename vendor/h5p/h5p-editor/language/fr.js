@@ -191,9 +191,9 @@ H5PEditor.language.core = {
   pasteAndReplaceFromClipboard: 'Remplacer le contenu existant par le contenu H5P du presse-papiers',
   pasteNoContent: 'Pas de contenu H5P dans le presse-papiers',
   pasteError: 'Impossible de coller le contenu du presse-papiers',
-  pasteContentNotSupported: 'Le contenu que vous essayez de coller n’est pas pris en charge dans ce contexte.',
-  pasteTooOld: 'Le contenu que vous essayez de coller est d\'une version inférieure (: clip) à celle prise en charge dans ce contexte (: local), essayez si possible de mettre à niveau le contenu que vous souhaitez coller, copiez-le à nouveau et essayez de le coller ici.',
-  pasteTooNew: 'Le contenu que vous essayez de coller est d\'une version supérieure (: clip) à celle prise en charge dans ce contexte (: local), essayez si possible de mettre ce contenu à niveau en premier, puis essayez de coller le contenu ici à nouveau.',
+  pasteContentNotSupported: 'The content in the H5P clipboard is not supported in this context',
+  pasteTooOld: 'The content in the H5P clipboard is of a lower version (:clip) than what is supported in this context (:local), if possible try to have the content you want to paste upgraded, copy it again and try pasting it here.',
+  pasteTooNew: 'The content in the H5P clipboard is of a higher version (:clip) than what is supported in this context (:local), if possible try to have this content upgraded first, and then try pasting the content here again.',
   ok: 'OK',
   avTablistLabel: 'Insérer via',
   tabTitleBasicFileUpload: 'Téléverser fichier',
@@ -210,7 +210,7 @@ H5PEditor.language.core = {
   notAllTextsChanged: 'Les textes n\'ont pas tous été traduits, la traduction pour la langue :language est incomplète.',
   contributeTranslations: 'Si vous souhaitez compléter la traduction de : language, cliquez pour en savoir plus sur la façon de <a href=":url" target="_new"> contribuer aux traductions de H5P </a>.',
   unknownLibrary: 'Malheureusement, la bibliothèque pour le type de contenu sélectionné \'%lib\' n\'est pas installée sur votre système.',
-  proceedButtonLabel: 'Proceed to save',
-  enterFullscreenButtonLabel: 'Enter fullscreen',
-  exitFullscreenButtonLabel: 'Exit fullscreen'
+  proceedButtonLabel: 'Enregistrer',
+  enterFullscreenButtonLabel: 'Afficher en plein écran',
+  exitFullscreenButtonLabel: 'Quitter le mode plein écran'
 };

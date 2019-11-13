@@ -14,58 +14,59 @@ namespace srag\CustomInputGUIs\H5P\ProgressMeter\Component;
  * @author  Ralph Dittrich <dittrich@qualitus.de>
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @since ILIAS 5.4
+ * @since   ILIAS 5.4
  */
-interface Standard extends ProgressMeter {
+interface Standard extends ProgressMeter
+{
 
-	/**
-	 * Get comparison value
-	 *
-	 * This value is represented as the second progress meter bar.
-	 *
-	 * @return int|float|null
-	 */
-	public function getComparison();
-
-
-	/**
-	 * Get clone of Progress Meter with main text
-	 *
-	 * It will be displayed above the main value percentage display.
-	 * Example: withMainText('Your Score')
-	 *
-	 * @param string $text
-	 *
-	 * @return ProgressMeter
-	 */
-	public function withMainText($text);
+    /**
+     * Get comparison value
+     *
+     * This value is represented as the second progress meter bar.
+     *
+     * @return int|float|null
+     */
+    public function getComparison();
 
 
-	/**
-	 * Get main text value
-	 *
-	 * @return string|null
-	 */
-	public function getMainText();
+    /**
+     * Get clone of Progress Meter with main text
+     *
+     * It will be displayed above the main value percentage display.
+     * Example: withMainText('Your Score')
+     *
+     * @param string $text
+     *
+     * @return ProgressMeter
+     */
+    public function withMainText($text);
 
 
-	/**
-	 * Get clone of Progress Meter with required text
-	 *
-	 * It will be displayed below the required percentage display.
-	 * Example: withRequiredText("Minimum Required")
-	 *
-	 * @param string $text
-	 *
-	 * @return ProgressMeter
-	 */
-	public function withRequiredText($text);
+    /**
+     * Get main text value
+     *
+     * @return string|null
+     */
+    public function getMainText();
 
 
-	/**
-	 * Get required text value
-	 *
-	 * @return string|null
-	 */
-	public function getRequiredText();
+    /**
+     * Get clone of Progress Meter with required text
+     *
+     * It will be displayed below the required percentage display.
+     * Example: withRequiredText("Minimum Required")
+     *
+     * @param string $text
+     *
+     * @return ProgressMeter
+     */
+    public function withRequiredText($text);
+
+
+    /**
+     * Get required text value
+     *
+     * @return string|null
+     */
+    public function getRequiredText();
 }
