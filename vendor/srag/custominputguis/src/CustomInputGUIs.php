@@ -24,96 +24,104 @@ use srag\DIC\H5P\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class CustomInputGUIs {
+final class CustomInputGUIs
+{
 
-	use DICTrait;
-	/**
-	 * @var self
-	 */
-	protected static $instance = null;
-
-
-	/**
-	 * @return self
-	 */
-	public static function getInstance()/*: self*/ {
-		if (self::$instance === null) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
+    use DICTrait;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
 
 
-	/**
-	 * CustomInputGUIs constructor
-	 */
-	private function __construct() {
+    /**
+     * @return self
+     */
+    public static function getInstance()/*: self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
 
-	}
-
-
-	/**
-	 * @return LearningProgressPieUI
-	 */
-	public function learningProgressPie() {
-		return new LearningProgressPieUI();
-	}
+        return self::$instance;
+    }
 
 
-	/**
-	 * @param PieChartItemInterfaceCore[]|PieChartItemInterface[] $pieChartItems
-	 *
-	 * @return PieChartInterfaceCore|PieChartInterface
-	 *
-	 * @since ILIAS 6.0
-	 */
-	public function pieChart(array $pieChartItems) {
-		if (self::version()->is60()) {
-			return new PieChartCore($pieChartItems);
-		} else {
-			return new PieChart($pieChartItems);
-		}
-	}
+    /**
+     * CustomInputGUIs constructor
+     */
+    private function __construct()
+    {
+
+    }
 
 
-	/**
-	 * @param string     $name
-	 * @param float      $value
-	 * @param Color      $color
-	 * @param Color|null $textColor
-	 *
-	 * @return PieChartItemInterfaceCore|PieChartItemInterface
-	 *
-	 * @since ILIAS 6.0
-	 */
-	public function pieChartItem($name, $value, Color $color, /*?*/Color $textColor = null) {
-		if (self::version()->is60()) {
-			return new PieChartItemCore($name, $value, $color, $textColor);
-		} else {
-			return new PieChartItem($name, $value, $color, $textColor);
-		}
-	}
+    /**
+     * @return LearningProgressPieUI
+     */
+    public function learningProgressPie()
+    {
+        return new LearningProgressPieUI();
+    }
 
 
-	/**
-	 * @return ProgressMeterFactoryCore|ProgressMeterFactory
-	 *
-	 * @since ILIAS 5.4
-	 */
-	public function progressMeter() {
-		if (self::version()->is54()) {
-			return new ProgressMeterFactoryCore();
-		} else {
-			return new ProgressMeterFactory();
-		}
-	}
+    /**
+     * @param PieChartItemInterfaceCore[]|PieChartItemInterface[] $pieChartItems
+     *
+     * @return PieChartInterfaceCore|PieChartInterface
+     *
+     * @since ILIAS 6.0
+     */
+    public function pieChart(array $pieChartItems)
+    {
+        if (self::version()->is60()) {
+            return new PieChartCore($pieChartItems);
+        } else {
+            return new PieChart($pieChartItems);
+        }
+    }
 
 
-	/**
-	 * @return ViewControlModeUI
-	 */
-	public function viewControlMode() {
-		return new ViewControlModeUI();
-	}
+    /**
+     * @param string     $name
+     * @param float      $value
+     * @param Color      $color
+     * @param Color|null $textColor
+     *
+     * @return PieChartItemInterfaceCore|PieChartItemInterface
+     *
+     * @since ILIAS 6.0
+     */
+    public function pieChartItem($name, $value, Color $color, /*?*/ Color $textColor = null)
+    {
+        if (self::version()->is60()) {
+            return new PieChartItemCore($name, $value, $color, $textColor);
+        } else {
+            return new PieChartItem($name, $value, $color, $textColor);
+        }
+    }
+
+
+    /**
+     * @return ProgressMeterFactoryCore|ProgressMeterFactory
+     *
+     * @since ILIAS 5.4
+     */
+    public function progressMeter()
+    {
+        if (self::version()->is54()) {
+            return new ProgressMeterFactoryCore();
+        } else {
+            return new ProgressMeterFactory();
+        }
+    }
+
+
+    /**
+     * @return ViewControlModeUI
+     */
+    public function viewControlMode()
+    {
+        return new ViewControlModeUI();
+    }
 }

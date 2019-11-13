@@ -16,8 +16,9 @@ use srag\CustomInputGUIs\H5P\ProgressMeter\Component\Mini as MiniComponent;
  * @author  Ralph Dittrich <dittrich@qualitus.de>
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @since ILIAS 5.4
+ * @since   ILIAS 5.4
  */
-class Mini extends ProgressMeter implements MiniComponent {
+class Mini extends ProgressMeter implements MiniComponent
+{
 
 }

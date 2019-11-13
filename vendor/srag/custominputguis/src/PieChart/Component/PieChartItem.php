@@ -13,40 +13,41 @@ use ILIAS\Data\Color;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-interface PieChartItem {
+interface PieChartItem
+{
 
-	const MAX_TITLE_CHARS = 35;
-	const ERR_TOO_MANY_CHARS = "More than " . self::MAX_TITLE_CHARS . " characters in the title";
-
-
-	/**
-	 * Get the title of a pre-section
-	 *
-	 * @return string
-	 */
-	public function getName();
+    const MAX_TITLE_CHARS = 35;
+    const ERR_TOO_MANY_CHARS = "More than " . self::MAX_TITLE_CHARS . " characters in the title";
 
 
-	/**
-	 * Get the value of a pre-section
-	 *
-	 * @return float
-	 */
-	public function getValue();
+    /**
+     * Get the title of a pre-section
+     *
+     * @return string
+     */
+    public function getName();
 
 
-	/**
-	 * Get the color of a pre-section
-	 *
-	 * @return Color
-	 */
-	public function getColor();
+    /**
+     * Get the value of a pre-section
+     *
+     * @return float
+     */
+    public function getValue();
 
 
-	/**
-	 * Get the text color of a pre-section. The default is black.
-	 *
-	 * @return Color
-	 */
-	public function getTextColor();
+    /**
+     * Get the color of a pre-section
+     *
+     * @return Color
+     */
+    public function getColor();
+
+
+    /**
+     * Get the text color of a pre-section. The default is black.
+     *
+     * @return Color
+     */
+    public function getTextColor();
 }

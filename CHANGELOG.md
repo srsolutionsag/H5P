@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.4.2]
+- Update H5P library to 1.24
+
 ## [2.4.1]
 - Fix H5P contents in accordions
 

@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs" role="tablist">
+	<!-- BEGIN tab -->
+	<li class="nav-item{ACTIVE}">
+		<a class="nav-link" data-toggle="tab" id="{TAB_ID}" href="#{TAB_CONTENT_ID}" role="tab" aria-controls="{TAB_CONTENT_ID}" aria-selected="true">{TITLE}</a>
+	</li>
+	<!-- END tab -->
+</ul>
+<div class="tab-content">
+	<!-- BEGIN tab_content -->
+	<div class="tab-pane{ACTIVE}" id="{TAB_CONTENT_ID}" role="tabpanel" aria-labelledby="{TAB_ID}">
+		{INPUTS}
+		<div class="help-block">{INFO}</div>
+	</div>
+	<!-- END tab_content -->
+</div>

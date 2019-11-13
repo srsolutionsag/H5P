@@ -13,26 +13,29 @@ use srag\DIC\H5P\Database\DatabaseInterface;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class AbstractDIC implements DICInterface {
+abstract class AbstractDIC implements DICInterface
+{
 
-	/**
-	 * @var Container
-	 */
-	protected $dic;
-
-
-	/**
-	 * @inheritDoc
-	 */
-	public function __construct(Container &$dic) {
-		$this->dic = &$dic;
-	}
+    /**
+     * @var Container
+     */
+    protected $dic;
 
 
-	/**
-	 * @inheritdoc
-	 */
-	public function database() {
-		return DatabaseDetector::getInstance($this->databaseCore());
-	}
+    /**
+     * @inheritDoc
+     */
+    public function __construct(Container &$dic)
+    {
+        $this->dic = &$dic;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function database()
+    {
+        return DatabaseDetector::getInstance($this->databaseCore());
+    }
 }
