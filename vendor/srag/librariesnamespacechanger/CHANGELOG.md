@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.6.13]
+- Fix may PHP7Backport running again
+
+## [0.6.12]
+- Fix may PHP7Backport running again
+
+## [0.6.11]
+- Fix may PHP7Backport running again
+
+## [0.6.10]
+- Fix may PHP7Backport running again
+
+## [0.6.9]
+- CQRS
+
+## [0.6.8]
+- CQRS
+
 ## [0.6.7]
 - DataTable
 

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d44a8b7c783843ec8a6355d02dbd49cf",
+    "content-hash": "bacb274f50487e34f9e0209a29edb273",
     "packages": [
         {
             "name": "h5p/h5p-core",
-            "version": "1.23.1",
+            "version": "1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-php-library.git",
-                "reference": "7bc8666f309220a0eb93bca49aaa741bb013b26a"
+                "reference": "55b04018d7def8d2288b768adbcb3cc152fdbd53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/7bc8666f309220a0eb93bca49aaa741bb013b26a",
-                "reference": "7bc8666f309220a0eb93bca49aaa741bb013b26a",
+                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/55b04018d7def8d2288b768adbcb3cc152fdbd53",
+                "reference": "55b04018d7def8d2288b768adbcb3cc152fdbd53",
                 "shasum": ""
             },
             "require": {
@@ -41,15 +41,15 @@
             "authors": [
                 {
                     "name": "Svein-Tore Griff With",
-                    "role": "CEO",
                     "email": "with@joubel.com",
-                    "homepage": "http://joubel.com"
+                    "homepage": "http://joubel.com",
+                    "role": "CEO"
                 },
                 {
                     "name": "Frode Petterson",
-                    "role": "Developer",
                     "email": "frode.petterson@joubel.com",
-                    "homepage": "http://joubel.com"
+                    "homepage": "http://joubel.com",
+                    "role": "Developer"
                 }
             ],
             "description": "H5P Core functionality in PHP",
@@ -61,20 +61,20 @@
                 "interactive",
                 "quiz"
             ],
-            "time": "2019-08-15T19:15:55+00:00"
+            "time": "2019-10-30T10:42:15+00:00"
         },
         {
             "name": "h5p/h5p-editor",
-            "version": "1.23.1",
+            "version": "1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-editor-php-library.git",
-                "reference": "7fc23cda93ae4225320f4903017c67e8f4294157"
+                "reference": "9361892a22ac6ab91e010e0b8a0a0e836f45a16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/7fc23cda93ae4225320f4903017c67e8f4294157",
-                "reference": "7fc23cda93ae4225320f4903017c67e8f4294157",
+                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/9361892a22ac6ab91e010e0b8a0a0e836f45a16a",
+                "reference": "9361892a22ac6ab91e010e0b8a0a0e836f45a16a",
                 "shasum": ""
             },
             "require": {
@@ -118,7 +118,7 @@
                 "interactive",
                 "quiz"
             ],
-            "time": "2019-08-16T08:05:14+00:00"
+            "time": "2019-10-30T14:56:53+00:00"
         },
         {
             "name": "srag/activerecordconfig",
@@ -142,7 +142,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\": "src/"
+                    "srag\\ActiveRecordConfig\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -168,16 +168,16 @@
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.23.4",
+            "version": "v0.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "3d03b9fa3a960a5da5026080e73b761ceb74cdf2"
+                "reference": "8b3805e9478c4c57389a4b4606a6dd58fa35d54e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/3d03b9fa3a960a5da5026080e73b761ceb74cdf2",
-                "reference": "3d03b9fa3a960a5da5026080e73b761ceb74cdf2",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/8b3805e9478c4c57389a4b4606a6dd58fa35d54e",
+                "reference": "8b3805e9478c4c57389a4b4606a6dd58fa35d54e",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\H5P\\": "src/"
+                    "srag\\CustomInputGUIs\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -197,9 +197,9 @@
             "authors": [
                 {
                     "name": "studer + raimann ag - Team Custom 1",
-                    "role": "Developer",
                     "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch"
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
                 }
             ],
             "description": "Custom Input-GUI's",
@@ -211,20 +211,20 @@
                 "input",
                 "table"
             ],
-            "time": "2019-07-24T07:24:41+00:00"
+            "time": "2019-11-06T09:29:49+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "v0.18.4",
+            "version": "v0.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "f3a3877e52e571f794e54c96d4413de20b274472"
+                "reference": "27d2533be7652c7599970efb65019eea711539d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/f3a3877e52e571f794e54c96d4413de20b274472",
-                "reference": "f3a3877e52e571f794e54c96d4413de20b274472",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/27d2533be7652c7599970efb65019eea711539d9",
+                "reference": "27d2533be7652c7599970efb65019eea711539d9",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\H5P\\": "src/"
+                    "srag\\DIC\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -243,9 +243,9 @@
             "authors": [
                 {
                     "name": "studer + raimann ag - Team Custom 1",
-                    "role": "Developer",
                     "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch"
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
                 }
             ],
             "description": "Use all ILIAS globals in your class",
@@ -256,20 +256,20 @@
                 "globals",
                 "trait"
             ],
-            "time": "2019-07-05T09:55:53+00:00"
+            "time": "2019-11-06T09:25:37+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.6.7",
+            "version": "v0.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "8815a3167fe2fb69ac316962a9f4ebd89df4ac47"
+                "reference": "b90172668c936568dc0b6a992a7ac046b3fc5546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/8815a3167fe2fb69ac316962a9f4ebd89df4ac47",
-                "reference": "8815a3167fe2fb69ac316962a9f4ebd89df4ac47",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/b90172668c936568dc0b6a992a7ac046b3fc5546",
+                "reference": "b90172668c936568dc0b6a992a7ac046b3fc5546",
                 "shasum": ""
             },
             "require": {
@@ -288,9 +288,9 @@
             "authors": [
                 {
                     "name": "studer + raimann ag - Team Custom 1",
-                    "role": "Developer",
                     "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch"
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
                 }
             ],
             "description": "Change namespace of libraries to plugin namespace",
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2019-07-08T14:54:11+00:00"
+            "time": "2019-09-19T08:53:12+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",

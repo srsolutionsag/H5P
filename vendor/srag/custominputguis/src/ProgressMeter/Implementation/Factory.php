@@ -16,30 +16,34 @@ use srag\CustomInputGUIs\H5P\ProgressMeter\Component\Factory as FactoryComponent
  * @author  Ralph Dittrich <dittrich@qualitus.de>
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @since ILIAS 5.4
+ * @since   ILIAS 5.4
  */
-class Factory implements FactoryComponent {
+class Factory implements FactoryComponent
+{
 
-	/**
-	 * @inheritdoc
-	 */
-	public function standard($maximum, $main, $required = NULL, $comparison = NULL) {
-		return new Standard($maximum, $main, $required, $comparison);
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function fixedSize($maximum, $main, $required = NULL, $comparison = NULL) {
-		return new FixedSize($maximum, $main, $required, $comparison);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function standard($maximum, $main, $required = null, $comparison = null)
+    {
+        return new Standard($maximum, $main, $required, $comparison);
+    }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	public function mini($maximum, $main, $required = NULL) {
-		return new Mini($maximum, $main, $required);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function fixedSize($maximum, $main, $required = null, $comparison = null)
+    {
+        return new FixedSize($maximum, $main, $required, $comparison);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function mini($maximum, $main, $required = null)
+    {
+        return new Mini($maximum, $main, $required);
+    }
 }

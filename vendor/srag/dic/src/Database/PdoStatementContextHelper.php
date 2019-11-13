@@ -16,34 +16,37 @@ use srag\DIC\H5P\Exception\DICException;
  *
  * @internal
  */
-final class PdoStatementContextHelper extends ilPDOStatement {
+final class PdoStatementContextHelper extends ilPDOStatement
+{
 
-	/**
-	 * @param ilDBStatement $stm
-	 *
-	 * @return PDOStatement
-	 *
-	 * @throws DICException PdoStatementContextHelper only supports ilPDOStatement!
-	 *
-	 * @internal
-	 */
-	public static function getPdoStatement(ilDBStatement $stm) {
-		if (!($stm instanceof ilPDOStatement)) {
-			throw new DICException("PdoStatementContextHelper only supports ilPDOStatement!");
-		}
+    /**
+     * @param ilDBStatement $stm
+     *
+     * @return PDOStatement
+     *
+     * @throws DICException PdoStatementContextHelper only supports ilPDOStatement!
+     *
+     * @internal
+     */
+    public static function getPdoStatement(ilDBStatement $stm)
+    {
+        if (!($stm instanceof ilPDOStatement)) {
+            throw new DICException("PdoStatementContextHelper only supports ilPDOStatement!");
+        }
 
-		return $stm->pdo_statement;
-	}
+        return $stm->pdo_statement;
+    }
 
 
-	/**
-	 * PdoStatementContextHelper constructor
-	 *
-	 * @throws DICException
-	 */
-	public function __construct() {
-		throw new DICException("");
+    /**
+     * PdoStatementContextHelper constructor
+     *
+     * @throws DICException
+     */
+    public function __construct()
+    {
+        throw new DICException("");
 
-		parent::__construct(self::getPdoStatement($this));
-	}
+        parent::__construct(self::getPdoStatement($this));
+    }
 }

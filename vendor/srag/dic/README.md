@@ -187,7 +187,6 @@ Please avoid to store in variables or class variables.
 Expand you plugin class for installing languages of a library to your plugin
 ```php
 ...
-
 	/**
 	 * @inheritdoc
 	 */
@@ -251,12 +250,13 @@ public function fromDB(stdClass $data): x {
 ```
 
 ### Requirements
-* ILIAS 5.3 or ILIAS 5.4
+* ILIAS 5.3 or ILIAS 5.4 or ILIAS 6
 * PHP >=7.0
 * PDO (MySQL or PostgreSQL 9.5)
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull requests
-* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LDIC
-* Bug reports under https://jira.studer-raimann.ch/projects/LDIC
-* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC
+* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC
+* Adjustment suggestions by pull requests via github
+* Customer of studer + raimann ag: 
+	* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LDIC
+	* Bug reports under https://jira.studer-raimann.ch/projects/LDIC

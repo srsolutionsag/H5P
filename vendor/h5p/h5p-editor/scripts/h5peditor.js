@@ -819,12 +819,12 @@ ns.createItem = function (type, label, description, content) {
  * @since 1.12
  * @param  {SemanticField} field
  * @param  {string} content
- *
+ * @param  {string} [inputId]
  * @return {string}
  */
-ns.createFieldMarkup = function (field, content) {
+ns.createFieldMarkup = function (field, content, inputId) {
   content = content || '';
-  var markup = this.createLabel(field) + this.createDescription(field.description) + content;
+  var markup = this.createLabel(field, '', inputId) + this.createDescription(field.description, inputId) + content;
 
   return this.wrapFieldMarkup(field, markup);
 };
@@ -834,13 +834,14 @@ ns.createFieldMarkup = function (field, content) {
  *
  * @param  {SemanticField} field
  * @param  {string} content
+ * @param  {string} [inputId]
  *
  * @return {string}
  */
-ns.createBooleanFieldMarkup = function (field, content) {
-  var markup =
-    '<label class="h5peditor-label">' + content + (field.label || field.name || '') + '</label>' +
-    this.createDescription(field.description);
+ns.createBooleanFieldMarkup = function (field, content, inputId) {
+  var markup = '<label class="h5peditor-label">' +
+    content + (field.label || field.name || '') + '</label>' +
+    this.createDescription(field.description, inputId);
 
   return this.wrapFieldMarkup(field, markup);
 };
@@ -898,11 +899,20 @@ ns.createOption = function (value, text, selected) {
  * @param {String} value
  * @param {number} maxLength
  * @param {String} placeholder
- *
+ * @param {number} [id]
+ * @param {number} [describedby]
  * @returns {String}
  */
-ns.createText = function (value, maxLength, placeholder) {
+ns.createText = function (value, maxLength, placeholder, id, describedby) {
   var html = '<input class="h5peditor-text" type="text"';
+
+  if (id !== undefined) {
+    html += ' id="' + id + '"';
+  }
+
+  if (describedby !== undefined) {
+    html += ' aria-describedby="' + describedby + '"';
+  }
 
   if (value !== undefined) {
     html += ' value="' + value + '"';
@@ -917,16 +927,44 @@ ns.createText = function (value, maxLength, placeholder) {
   return html;
 };
 
+ns.getNextFieldId = (function (counter) {
+  /**
+   * Generates a consistent and unique field ID for the given field.
+   *
+   * @param {Object} field
+   * @return {number}
+   */
+  return function (field) {
+    return 'field-' + field.name.toLowerCase() +  '-' + (counter++);
+  };
+})(-1);
+
+/**
+ * Helps generates a consistent description ID across fields.
+ *
+ * @param {string} id
+ * @return {string}
+ */
+ns.getDescriptionId = function (id) {
+  return id + '-description';
+};
+
 /**
  * Create a label to wrap content in.
  *
  * @param {SemanticField} field
  * @param {String} [content]
+ * @param {String} [inputId]
  * @returns {String}
  */
-ns.createLabel = function (field, content) {
+ns.createLabel = function (field, content, inputId) {
   // New items can be added next to the label within the flex-wrapper
-  var html = '<label class="h5peditor-label-wrapper">';
+  var html = '<label class="h5peditor-label-wrapper"';
+
+  if (inputId !== undefined) {
+    html += ' for="' + inputId + '"';
+  }
+  html+= '>'
 
   // Temporary fix for the old version of CoursePresentation's custom editor
   if (field.widget === 'coursepresentation' && field.name === 'presentation') {
@@ -943,12 +981,17 @@ ns.createLabel = function (field, content) {
 /**
  * Create a description
  * @param {String} description
+ * @param {number} [inputId] Used to reference description from input
  * @returns {string}
  */
-ns.createDescription = function (description) {
+ns.createDescription = function (description, inputId) {
   var html = '';
   if (description !== undefined) {
-    html += '<div class="h5peditor-field-description">' + description + '</div>';
+    html += '<div class="h5peditor-field-description"';
+    if (inputId !== undefined) {
+      html += ' id="' + ns.getDescriptionId(inputId) + '"';
+    }
+    html += '>' + description + '</div>';
   }
   return html;
 };
@@ -1069,8 +1112,8 @@ ns.bindImportantDescriptionEvents = function (widget, fieldName, parent) {
  */
 ns.createCopyPasteButtons = function () {
   return '<div class="h5peditor-copypaste-wrap">' +
-           '<button class="h5peditor-copy-button disabled" title="' + H5PEditor.t('core', 'copyToClipboard') + '">' + ns.t('core', 'copyButton') + '</button>' +
-           '<button class="h5peditor-paste-button disabled" title="' + H5PEditor.t('core', 'pasteFromClipboard') + '">' + ns.t('core', 'pasteButton') + '</button>' +
+           '<button class="h5peditor-copy-button disabled" title="' + H5PEditor.t('core', 'copyToClipboard') + '" disabled>' + ns.t('core', 'copyButton') + '</button>' +
+           '<button class="h5peditor-paste-button disabled" title="' + H5PEditor.t('core', 'pasteFromClipboard') + '" disabled>' + ns.t('core', 'pasteButton') + '</button>' +
          '</div><div class="h5peditor-clearfix"></div>';
 };
 

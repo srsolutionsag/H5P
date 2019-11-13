@@ -11,36 +11,40 @@ namespace srag\LibrariesNamespaceChanger;
  *
  * @internal
  */
-final class Libraries {
+final class Libraries
+{
 
-	/**
-	 * @var array
-	 */
-	const LIBRARIES = [
-		"ActiveRecordConfig" => "ActiveRecordConfig",
-		"AssessmentQuestion" => "AssessmentQuestion",
-		"BexioCurl" => "BexioCurl",
-		"CommentsUI" => "CommentsUI",
-		"CustomInputGUIs" => "CustomInputGUIs",
-		"DataTable" => "DataTable",
-		"DclExtension" => "DclExtension",
-		"DIC" => "DIC",
-		"GitCurl" => "GitCurl",
-		"IliasComponent" => "IliasComponent",
-		"IliasComponentCourse" => "IliasComponentCourse",
-		"IliasComponentUser" => "IliasComponentUser",
-		"JasperReport" => "JasperReport",
-		"JiraCurl" => "JiraCurl",
-		"Notifications4Plugin" => "Notifications4Plugin",
-		"RemovePluginDataConfirm" => "RemovePluginDataConfirm",
-		"TableUI" => "TableUI"
-	];
+    /**
+     * @var array
+     */
+    const LIBRARIES
+        = [
+            "ActiveRecordConfig"      => "ActiveRecordConfig",
+            "AssessmentQuestion"      => "AssessmentQuestion",
+            "BexioCurl"               => "BexioCurl",
+            "CommentsUI"              => "CommentsUI",
+            "CQRS"                    => "CQRS",
+            "CustomInputGUIs"         => "CustomInputGUIs",
+            "DataTable"               => "DataTable",
+            "DclExtension"            => "DclExtension",
+            "DIC"                     => "DIC",
+            "GitCurl"                 => "GitCurl",
+            "IliasComponent"          => "IliasComponent",
+            "IliasComponentCourse"    => "IliasComponentCourse",
+            "IliasComponentUser"      => "IliasComponentUser",
+            "JasperReport"            => "JasperReport",
+            "JiraCurl"                => "JiraCurl",
+            "Notifications4Plugin"    => "Notifications4Plugin",
+            "RemovePluginDataConfirm" => "RemovePluginDataConfirm",
+            "TableUI"                 => "TableUI"
+        ];
 
 
-	/**
-	 * Libraries constructor
-	 */
-	private function __construct() {
+    /**
+     * Libraries constructor
+     */
+    private function __construct()
+    {
 
-	}
+    }
 }

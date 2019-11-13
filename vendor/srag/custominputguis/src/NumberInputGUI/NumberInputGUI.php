@@ -14,23 +14,26 @@ use srag\DIC\H5P\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem, ilToolbarItem {
+class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem, ilToolbarItem
+{
 
-	use DICTrait;
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getTableFilterHTML()/*: string*/ {
-		return $this->render();
-	}
+    use DICTrait;
 
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getToolbarHTML()/*: string*/ {
-		return $this->render();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getTableFilterHTML()/*: string*/
+    {
+        return $this->render();
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getToolbarHTML()/*: string*/
+    {
+        return $this->render();
+    }
 }
