@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.4.3]
+- Fix validate required library field
+
 ## [2.4.2]
 - Update H5P library to 1.24
 

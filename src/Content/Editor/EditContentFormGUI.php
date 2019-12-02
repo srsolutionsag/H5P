@@ -154,7 +154,7 @@ class EditContentFormGUI extends PropertyFormGUI {
 			],
 			"library_h5p" => [
 				PropertyFormGUI::PROPERTY_CLASS => ilCustomInputGUI::class,
-				PropertyFormGUI::PROPERTY_REQUIRED => false,
+				PropertyFormGUI::PROPERTY_REQUIRED => true,
 				"setHTML" => self::h5p()->show_editor()->getEditor($this->h5p_content),
 				"setTitle" => $this->txt("library")
 			],
@@ -217,7 +217,18 @@ class EditContentFormGUI extends PropertyFormGUI {
 	}
 
 
-	/**
+    /**
+     * @inheritDoc
+     */
+	public function storeForm()/*: bool*/
+    {
+        $_POST["library_h5p"] = $_POST["library"];
+
+        return parent::storeForm();
+    }
+
+
+    /**
 	 * @return string
 	 */
 	public function getHTML()/*: string*/ {
