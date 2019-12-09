@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.4.4]
+- Fix cron job
+
 ## [2.4.3]
 - Fix validate required library field
 

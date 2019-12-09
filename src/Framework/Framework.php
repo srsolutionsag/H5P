@@ -6,6 +6,7 @@ use Exception;
 use H5PCore;
 use H5PFrameworkInterface;
 use H5PPermission;
+use ilContext;
 use ilCurlConnection;
 use ilH5PPlugin;
 use ilProxySettings;
@@ -170,7 +171,7 @@ class Framework implements H5PFrameworkInterface {
 			"code" => $code
 		];
 
-		if (!self::dic()->ctrl()->isAsynch()) {
+		if (ilContext::getType() === ilContext::CONTEXT_WEB && !self::dic()->ctrl()->isAsynch()) {
 			ilUtil::sendFailure($message, true);
 		}
 	}
@@ -185,7 +186,7 @@ class Framework implements H5PFrameworkInterface {
 	public function setInfoMessage($message) {
 		$this->messages["info"][] = $message;
 
-		if (!self::dic()->ctrl()->isAsynch()) {
+		if (ilContext::getType() === ilContext::CONTEXT_WEB && !self::dic()->ctrl()->isAsynch()) {
 			ilUtil::sendInfo($message, true);
 		}
 	}
