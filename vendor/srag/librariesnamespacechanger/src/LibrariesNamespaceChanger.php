@@ -23,10 +23,6 @@ final class LibrariesNamespaceChanger
     /**
      * @var array
      */
-    private static $libraries = Libraries::LIBRARIES;
-    /**
-     * @var array
-     */
     private static $exts
         = [
             "json",
@@ -40,12 +36,6 @@ final class LibrariesNamespaceChanger
      * @internal
      */
     const PLUGIN_NAME_REG_EXP = "/\/([A-Za-z0-9_]+)\/vendor\//";
-    /**
-     * @var string
-     *
-     * @internal
-     */
-    const SRAG = "srag";
 
 
     /**
@@ -98,39 +88,66 @@ final class LibrariesNamespaceChanger
     {
         $plugin_name = $this->getPluginName();
 
-        if (!empty($plugin_name)) {
+        if (empty($plugin_name)) {
+            return;
+        }
 
-            $libraries = array_map(function (/*string*/ $library)/*: string*/ {
-                return __DIR__ . "/../../" . strtolower($library);
-            }, self::$libraries);
+        $libraries = [];
+        foreach (
+            array_filter(scandir(__DIR__ . "/../../"), function (/*string*/ $folder)/* : bool*/ {
+                return (!in_array($folder, [".", "..", "librariesnamespacechanger"]));
+            }) as $folder
+        ) {
+            $folder = __DIR__ . "/../../" . $folder;
 
-            $files = [];
-            foreach ($libraries as $library => $folder) {
-                if (is_dir($folder)) {
-                    $this->getFiles($folder, $files);
-                }
+            $composer_json = json_decode(file_get_contents($folder . "/composer.json"), true);
+
+            $namespaces = array_keys($composer_json["autoload"]["psr-4"]);
+
+            if (empty($namespaces)) {
+                continue;
             }
-            $this->getFiles(__DIR__ . "/../../../composer", $files);
 
-            foreach ($libraries as $library => $folder) {
-                if (is_dir($folder)) {
+            $namespaces = array_map(function (/*string*/ $namespace)/*:string*/ use ($plugin_name) {
+                if (substr($namespace, -1) === "\\") {
+                    $namespace = substr($namespace, 0, -1);
+                }
 
-                    foreach ($files as $file) {
-                        $code = file_get_contents($file);
+                if (substr($namespace, -strlen("\\" . $plugin_name)) === ("\\" . $plugin_name)) {
+                    $namespace = substr($namespace, 0, -strlen("\\" . $plugin_name));
+                }
 
-                        $replaces = [
-                            self::SRAG . "\\" . $library   => self::SRAG . "\\" . $library . "\\" . $plugin_name,
-                            self::SRAG . "\\\\" . $library => self::SRAG . "\\\\" . $library . "\\\\" . $plugin_name
-                        ];
+                return $namespace;
+            }, $namespaces);
 
-                        foreach ($replaces as $search => $replace) {
-                            if (strpos($code, $replace) === false) {
-                                $code = str_replace($search, $replace, $code);
-                            }
+            $libraries[$folder] = $namespaces;
+        }
+
+        $files = [];
+        foreach (array_keys($libraries) as $folder) {
+            $this->getFiles($folder, $files);
+        }
+        $this->getFiles(__DIR__ . "/../../../composer", $files);
+
+        foreach ($libraries as $folder => $namespaces) {
+
+            foreach ($namespaces as $namespace) {
+
+                foreach ($files as $file) {
+                    $code = file_get_contents($file);
+
+                    $replaces = [
+                        $namespace                            => $namespace . "\\" . $plugin_name,
+                        str_replace("\\", "\\\\", $namespace) => str_replace("\\", "\\\\", $namespace) . "\\\\" . $plugin_name
+                    ];
+
+                    foreach ($replaces as $search => $replace) {
+                        if (strpos($code, $replace) === false) {
+                            $code = str_replace($search, $replace, $code);
                         }
-
-                        file_put_contents($file, $code);
                     }
+
+                    file_put_contents($file, $code);
                 }
             }
         }

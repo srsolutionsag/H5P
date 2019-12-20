@@ -29,21 +29,7 @@ So you have to adjust it's namespaces in your code such in `classes` or `src` fo
 So you can force to use your libraries classes in the `vendor` folder of your plugin and come not in conflict to other plugins with different library versions and you don't need to adjust your plugins to newer library versions until you run `composer update` on your plugin.
 
 It support the follow libraries:
-* [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
-* [srag/assessmentquestion](https://packagist.org/packages/srag/assessmentquestion)
-* [srag/bexiocurl](https://packagist.org/packages/srag/bexiocurl)
-* [srag/commentsui](https://packagist.org/packages/srag/commentsui)
-* [srag/cqrs](https://packagist.org/packages/srag/cqrs)
-* [srag/custominputguis](https://packagist.org/packages/srag/custominputguis)
-* [srag/dclextensions](https://packagist.org/packages/srag/dclextension)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-* [srag/gitcurl](https://packagist.org/packages/srag/gitcurl)
-* [srag/iliascomponent](https://packagist.org/packages/srag/iliascomponent)
-* [srag/jasperreport](https://packagist.org/packages/srag/jasperreport)
-* [srag/jiracurl](https://packagist.org/packages/srag/jiracurl)
-* [srag/notifications4plugin](https://packagist.org/packages/srag/notifications4plugin)
-* [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
-* [srag/tableui](https://packagist.org/packages/srag/tableui)
+* [srag libraries](https://packagist.org/packages/srag)
 
 ### php7backport
 If your plugin needs a PHP 5.6 compatible of version of the library, you can also add additionally the follow composer script:

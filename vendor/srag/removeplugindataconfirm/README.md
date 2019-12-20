@@ -22,12 +22,9 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 First declare your plugin class like follow:
 ```php
 //...
-use srag\RemovePluginDataConfirm\H5P\PluginUninstallTrait;
+use srag\RemovePluginDataConfirm\H5P\x\PluginUninstallTrait;
 //...
 use PluginUninstallTrait;
-//...
-const PLUGIN_CLASS_NAME = self::class;
-const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = XRemoveDataConfirm::class;
 //...
 /**
  * @inheritdoc
@@ -37,13 +34,12 @@ protected function deleteData()/*: void*/ {
 }
 //...
 ```
-`XRemoveDataConfirm` is the name of your remove data confirm class.
 You don't need to use `DICTrait`, it is already in use!
 
 If your plugin is a RepositoryObject use `RepositoryObjectPluginUninstallTrait` instead:
 ```php
 //...
-use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
+use srag\RemovePluginDataConfirm\H5P\x\RepositoryObjectPluginUninstallTrait;
 //...
 use RepositoryObjectPluginUninstallTrait;
 //...
@@ -51,35 +47,9 @@ use RepositoryObjectPluginUninstallTrait;
 
 Remove also the methods `beforeUninstall`, `afterUninstall`, `beforeUninstallCustom` and `uninstallCustom` in your plugin class.
 
-Then create a class called `XRemoveDataConfirm` in `classes/uninstall/class.XRemoveDataConfirm.php`:
-```php
-<?php
-
-require_once __DIR__ . "/../../vendor/autoload.php";
-
-use srag\RemovePluginDataConfirm\H5P\AbstractRemovePluginDataConfirm;
-
-/**
- * Class XRemoveDataConfirm
- *
- * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
- * @ilCtrl_isCalledBy XRemoveDataConfirm: ilUIPluginRouterGUI
- */
-class XRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
-
-    const PLUGIN_CLASS_NAME = ilXPlugin::class;
-}
-
-```
-`ilXPlugin` is the name of your plugin class ([DICTrait](https://github.com/studer-raimann/DIC)).
-Replace the `X` in `XRemoveDataConfirm` with your plugin name.
-You don't need to use `DICTrait`, it is already in use!
-
 Expand you plugin class for installing languages of the library to your plugin
 ```php
 ...
-
 	/**
 	 * @inheritdoc
 	 */
@@ -94,21 +64,13 @@ Expand you plugin class for installing languages of the library to your plugin
 
 Notice to also adjust `dbupdate.php` so it can be reinstalled if the data should already exists!
 
-If you want to use this library, but don't want to confirm to remove data, you can disable it with add the follow to your `ilXPlugin` class:
-```php
-//...
-const REMOVE_PLUGIN_DATA_CONFIRM = false;
-//...
-```
-### Dependencies
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
 * PHP >=5.6
-* [composer](https://getcomposer.org)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-
-Please use it for further development!
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull requests
-* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LRPDC
-* Bug reports under https://jira.studer-raimann.ch/projects/LRPDC
-* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LRPDC
+* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LRPDC
+* Adjustment suggestions by pull requests via github
+* Customer of studer + raimann ag: 
+	* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LRPDC
+	* Bug reports under https://jira.studer-raimann.ch/projects/LRPDC

@@ -106,6 +106,8 @@ final class Output implements OutputInterface
                 }
             }
 
+            self::dic()->mainTemplate()->setLocator();
+
             self::dic()->mainTemplate()->setContent($html);
 
             if ($show) {

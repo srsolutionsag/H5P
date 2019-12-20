@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.4.5]
+- Some improvments
+
 ## [2.4.4]
 - Fix cron job
 

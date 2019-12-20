@@ -10,6 +10,7 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilSubEnabledFormPropertyGUI;
 use srag\CustomInputGUIs\H5P\MultiLineInputGUI\MultiLineInputGUI;
+use srag\CustomInputGUIs\H5P\MultiLineNewInputGUI\MultiLineNewInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\TabsInputGUI\TabsInputGUI;
@@ -128,7 +129,9 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
 
             if ($item instanceof ilFormPropertyGUI) {
                 if (!isset($field[self::PROPERTY_VALUE])) {
-                    if (!($parent_item instanceof MultiLineInputGUI)) {
+                    if (!($parent_item instanceof MultiLineInputGUI) && !($parent_item instanceof MultiLineNewInputGUI) && !($parent_item instanceof TabsInputGUI)
+                        && !($parent_item instanceof TabsInputGUITab)
+                    ) {
                         $value = $this->getValue($key);
 
                         Items::setValueToItem($item, $value);
@@ -143,7 +146,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
             if ($parent_item instanceof TabsInputGUI) {
                 $parent_item->addTab($item);
             } else {
-                if ($parent_item instanceof TabsInputGUITab || $parent_item instanceof MultiLineInputGUI) {
+                if ($parent_item instanceof TabsInputGUITab || $parent_item instanceof MultiLineInputGUI || $parent_item instanceof MultiLineNewInputGUI) {
                     $parent_item->addInput($item);
                 } else {
                     if ($parent_item instanceof ilRadioGroupInputGUI) {
@@ -228,7 +231,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
                 }
 
                 if (is_array($field[self::PROPERTY_SUBITEMS])) {
-                    if (!($item instanceof MultiLineInputGUI)) {
+                    if (!($item instanceof MultiLineInputGUI) && !($item instanceof MultiLineNewInputGUI) && !($item instanceof TabsInputGUI) && !($item instanceof TabsInputGUITab)) {
                         $this->storeFormItems($field[self::PROPERTY_SUBITEMS]);
                     }
                 }

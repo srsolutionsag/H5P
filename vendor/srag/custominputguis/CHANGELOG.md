@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.27.3]
+- Optimized `MultiSelectSearchInputGUI` ajax
+
+## [0.27.2]
+- `MultiLineNewInputGUI`: Add new line below
+
+## [0.27.1]
+- `MultiLineNewInputGUI`: Possibility to disable sort
+
+## [0.27.0]
+- New `MultiLineNewInputGUI`
+- Optimized `TabsInputGUI` to work with `MultiLineNewInputGUI`
+- Optimized `MultiSelectSearchInputGUI` ajax
+- Deprecated `MultiLineInputGUI`, `MultiSelectSearchInput2GUI` and `GlyphGUI`
+
+## [0.26.4]
+- `MultilangualTabsInputGUI` default language
+
+## [0.26.3]
+- `MultilangualTabsInputGUI` default language
+
+## [0.26.2]
+- `MultilangualTabsInputGUI` default language
+
 ## [0.26.1]
 - Fix
 

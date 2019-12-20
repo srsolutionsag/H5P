@@ -13,18 +13,24 @@ use ilUtil;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Oskar Truffer <ot@studer-raimann.ch>
+ *
+ * @deprecated
  */
 class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 {
 
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $placeholder = "";
 
 
     /**
      * @return array
+     *
+     * @deprecated
      */
     public function getValue()/*: array*/
     {
@@ -41,6 +47,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @return array
+     *
+     * @deprecated
      */
     public function getSubItems()/*: array*/
     {
@@ -50,6 +58,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getContainerType()/*: string*/
     {
@@ -59,6 +69,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function render()/*: string*/
     {
@@ -78,7 +90,7 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
         $tpl->setVariable('CONTAINER_TYPE', $this->getContainerType());
         $tpl->setVariable('Class', $this->getCssClass());
 
-        if (isset($this->ajax_link)) {
+        if (!empty($this->getAjaxLink())) {
             $tpl->setVariable('AJAX_LINK', $this->getAjaxLink());
         }
 
@@ -88,11 +100,17 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
         if ($options) {
             foreach ($options as $option_value => $option_text) {
+                $selected = in_array($option_value, $values);
+
+                if (!empty($this->getAjaxLink()) && !$selected) {
+                    continue;
+                }
+
                 $tpl->setCurrentBlock('item');
                 if ($this->getDisabled()) {
                     $tpl->setVariable('DISABLED', ' disabled=\'disabled\'');
                 }
-                if (in_array($option_value, $values)) {
+                if ($selected) {
                     $tpl->setVariable('SELECTED', 'selected');
                 }
 
@@ -108,6 +126,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     protected function getValueAsJson()/*: string*/
     {
@@ -119,6 +139,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
      * @param string $postVar
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function escapePostVar(/*string*/
         $postVar
@@ -137,6 +159,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
      * @param string $string
      *
      * @return string
+     *
+     * @deprecated
      */
     private function stripLastStringOccurrence(/*string*/
         $text, /*string*/
@@ -154,6 +178,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getPlaceholder()/*: string*/
     {
@@ -163,6 +189,8 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
     /**
      * @param string $placeholder
+     *
+     * @deprecated
      */
     public function setPlaceholder(/*string*/
         $placeholder

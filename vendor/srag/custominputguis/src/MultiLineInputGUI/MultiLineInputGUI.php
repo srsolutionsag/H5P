@@ -19,74 +19,117 @@ use srag\DIC\H5P\DICTrait;
 /**
  * Class MultiLineInputGUI
  *
- * @package srag\CustomInputGUIs\H5P\MultiLineInputGUI
+ * @package    srag\CustomInputGUIs\H5P\MultiLineInputGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Michael Herren <mh@studer-raimann.ch>
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     Michael Herren <mh@studer-raimann.ch>
  *
- * TODO: Complete refactoring
+ * @deprecated Please switch to `MultiLineNewInputGUI`
  */
 class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToolbarItem
 {
 
     use DICTrait;
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
     const HOOK_IS_LINE_REMOVABLE = "hook_is_line_removable";
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
     const HOOK_IS_INPUT_DISABLED = "hook_is_disabled";
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
     const HOOK_BEFORE_INPUT_RENDER = "hook_before_render";
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $cust_attr = array();
     /**
      * @var
+     *
+     * @deprecated
      */
     protected $value;
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $inputs = array();
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $input_options = array();
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $hooks = array();
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $line_values = array();
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $template_dir = '';
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $post_var_cache = array();
     /**
      * @var bool
+     *
+     * @deprecated
      */
     protected $show_label = false;
     /**
      * @var bool
+     *
+     * @deprecated
      */
     protected $show_label_once = false;
     /**
      * @var array
+     *
+     * @deprecated
      */
     protected $hidden_inputs = array();
     /**
      * @var bool
+     *
+     * @deprecated
      */
     protected $position_movable = false;
     /**
      * @var int
+     *
+     * @deprecated
      */
     protected $counter = 0;
     /**
      * @var bool
+     *
+     * @deprecated
      */
     protected $show_info = false;
 
@@ -96,6 +139,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      *
      * @param string $a_title   Title
      * @param string $a_postvar Post Variable
+     *
+     * @deprecated
      */
     public function __construct(/*string*/ $a_title = "", /*string*/ $a_postvar = "")
     {
@@ -108,6 +153,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getHook(/*string*/ $key)/*: string*/
     {
@@ -122,6 +169,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
     /**
      * @param string $key
      * @param array  $options
+     *
+     * @deprecated
      */
     public function addHook(/*string*/ $key, /*array*/ $options)/*: void*/
     {
@@ -133,6 +182,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * @param string $key
      *
      * @return bool
+     *
+     * @deprecated
      */
     public function removeHook(/*string*/ $key)/*: bool*/
     {
@@ -149,6 +200,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
     /**
      * @param ilFormPropertyGUI $input
      * @param array             $options
+     *
+     * @deprecated
      */
     public function addInput(ilFormPropertyGUI $input, /*: array*/ $options = array())/*: void*/
     {
@@ -161,6 +214,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getTemplateDir()/*: string*/
     {
@@ -170,6 +225,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param string $template_dir
+     *
+     * @deprecated
      */
     public function setTemplateDir(/*string*/ $template_dir)/*: void*/
     {
@@ -179,6 +236,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return boolean
+     *
+     * @deprecated
      */
     public function isShowLabel()/*: bool*/
     {
@@ -188,6 +247,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param boolean $show_label
+     *
+     * @deprecated
      */
     public function setShowLabel(/*bool*/ $show_label)/*: void*/
     {
@@ -199,6 +260,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * Get Options.
      *
      * @return array Options. Array ("value" => "option_text")
+     *
+     * @deprecated
      */
     public function getInputs()/*: array*/
     {
@@ -210,6 +273,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * @param bool $a_multi
      * @param bool $a_sortable
      * @param bool $a_addremove
+     *
+     * @deprecated
      */
     public function setMulti(/*bool*/ $a_multi, /*bool*/ $a_sortable = false, /*bool*/ $a_addremove = true)/*: void*/
     {
@@ -221,6 +286,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * Set Value.
      *
      * @param string $a_value Value
+     *
+     * @deprecated
      */
     public function setValue(/*string*/ $a_value)/*: void*/
     {
@@ -243,6 +310,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * Get Value.
      *
      * @return string|array Value
+     *
+     * @deprecated
      */
     public function getValue()
     {
@@ -259,6 +328,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * Set value by array
      *
      * @param array $a_values value array
+     *
+     * @deprecated
      */
     public function setValueByArray(/*array*/ $a_values)/*: void*/
     {
@@ -275,6 +346,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * Check input, strip slashes etc. set alert, if input is not ok.
      *
      * @return boolean Input ok, true/false
+     *
+     * @deprecated
      */
     public function checkInput()/*: bool*/
     {
@@ -337,6 +410,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * @param string     $key
      * @param string     $value
      * @param bool|false $override
+     *
+     * @deprecated
      */
     public function addCustomAttribute(/*string*/ $key, /*string*/ $value, /*bool*/ $override = false)/*: void*/
     {
@@ -350,6 +425,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return array
+     *
+     * @deprecated
      */
     public function getCustomAttributes()/*: array*/
     {
@@ -362,6 +439,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      * @param ilFormPropertyGUI $input
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function createInputPostVar(/*string*/ $iterator_id, ilFormPropertyGUI $input)/*: string*/
     {
@@ -381,6 +460,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
      *
      * @return string
      * @throws ilException
+     *
+     * @deprecated
      */
     public function render(/*int*/ $iterator_id = 0, /*bool*/ $clean_render = false)/*: string*/
     {
@@ -509,7 +590,7 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
 
     /**
-     *
+     * @deprecated
      */
     public function initCSSandJS()/*: void*/
     {
@@ -523,6 +604,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param ilTemplate $tpl
+     *
+     * @deprecated
      */
     public function insert(ilTemplate $tpl) /*: void*/
     {
@@ -570,6 +653,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @inheritdoc
+     *
+     * @deprecated
      */
     public function getTableFilterHTML()/*: string*/
     {
@@ -579,6 +664,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @inheritdoc
+     *
+     * @deprecated
      */
     public function getToolbarHTML()/*: string*/
     {
@@ -588,6 +675,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return boolean
+     *
+     * @deprecated
      */
     public function isPositionMovable()/*: bool*/
     {
@@ -597,6 +686,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param boolean $position_movable
+     *
+     * @deprecated
      */
     public function setPositionMovable(/*bool*/ $position_movable)/*: void*/
     {
@@ -606,6 +697,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return boolean
+     *
+     * @deprecated
      */
     public function isShowLabelOnce()/*: bool*/
     {
@@ -615,6 +708,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param boolean $show_label_once
+     *
+     * @deprecated
      */
     public function setShowLabelOnce(/*bool*/ $show_label_once)/*: void*/
     {
@@ -625,6 +720,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @return boolean
+     *
+     * @deprecated
      */
     public function isShowInfo()/*: bool*/
     {
@@ -634,6 +731,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
     /**
      * @param boolean $show_info
+     *
+     * @deprecated
      */
     public function setShowInfo(/*bool*/ $show_info)/*: void*/
     {

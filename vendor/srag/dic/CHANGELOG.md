@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.3]
+- Remove ILIAS 5.2 hints
+
+## [0.19.2]
+- `setLocator` on output
+
 ## [0.19.1]
 - Fix
 
