@@ -9,57 +9,79 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\ObjectPropertyFormGUI;
 /**
  * Class ActiveRecordObjectFormGUI
  *
- * @package srag\ActiveRecordConfig\H5P
+ * @package    srag\ActiveRecordConfig\H5P
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ *
+ * @deprecated Please use ObjectPropertyFormGUI from CustomInputGUIs instead
  */
-abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI {
+abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
+{
 
-	/**
-	 * @var string
-	 */
-	const LANG_MODULE = ActiveRecordConfigGUI::LANG_MODULE_CONFIG;
-	/**
-	 * @var string
-	 */
-	protected $tab_id;
-
-
-	/**
-	 * ActiveRecordObjectFormGUI constructor
-	 *
-	 * @param object                            $parent
-	 * @param ilObject|ActiveRecord|object|null $object
-	 * @param bool                              $object_auto_store
-	 */
-	public function __construct($parent, $tab_id, $object = NULL,/*bool*/
-		$object_auto_store = true) {
-		$this->tab_id = $tab_id;
-
-		parent::__construct($parent, $object, $object_auto_store);
-	}
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
+    const LANG_MODULE = ActiveRecordConfigGUI::LANG_MODULE_CONFIG;
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
+    protected $tab_id;
 
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function initCommands()/*: void*/ {
-		$this->addCommandButton(ActiveRecordConfigGUI::CMD_UPDATE_CONFIGURE . "_" . $this->tab_id, $this->txt("save"));
-	}
+    /**
+     * ActiveRecordObjectFormGUI constructor
+     *
+     * @param object                            $parent
+     * @param ilObject|ActiveRecord|object|null $object
+     * @param bool                              $object_auto_store
+     *
+     * @deprecated
+     */
+    public function __construct(
+        $parent,
+        $tab_id,
+        $object = null,/*bool*/
+        $object_auto_store = true
+    ) {
+        $this->tab_id = $tab_id;
+
+        parent::__construct($parent, $object, $object_auto_store);
+    }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function initId()/*: void*/ {
+    /**
+     * @inheritdoc
+     *
+     * @deprecated
+     */
+    protected function initCommands()/*: void*/
+    {
+        $this->addCommandButton(ActiveRecordConfigGUI::CMD_UPDATE_CONFIGURE . "_" . $this->tab_id, $this->txt("save"));
+    }
 
-	}
+
+    /**
+     * @inheritdoc
+     *
+     * @deprecated
+     */
+    protected function initId()/*: void*/
+    {
+
+    }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function initTitle()/*: void*/ {
-		$this->setTitle($this->txt($this->tab_id));
-	}
+    /**
+     * @inheritdoc
+     *
+     * @deprecated
+     */
+    protected function initTitle()/*: void*/
+    {
+        $this->setTitle($this->txt($this->tab_id));
+    }
 }

@@ -35,9 +35,9 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      */
     protected $css_class;
     /**
-     * @var int
+     * @var int|null
      */
-    protected $minimum_input_length = 0;
+    protected $minimum_input_length = null;
     /**
      * @var string
      */
@@ -131,7 +131,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
         $tpl->setVariable("MINIMUM_INPUT_LENGTH", $this->getMinimumInputLength());
         $tpl->setVariable("Class", $this->getCssClass());
 
-        if (isset($this->ajax_link)) {
+        if (!empty($this->getAjaxLink())) {
             $tpl->setVariable("AJAX_LINK", $this->getAjaxLink());
         }
 
@@ -141,11 +141,17 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
         if ($options) {
             foreach ($options as $option_value => $option_text) {
+                $selected = in_array($option_value, $values);
+
+                if (!empty($this->getAjaxLink()) && !$selected) {
+                    continue;
+                }
+
                 $tpl->setCurrentBlock("item");
                 if ($this->getDisabled()) {
                     $tpl->setVariable("DISABLED", " disabled=\"disabled\"");
                 }
-                if (in_array($option_value, $values)) {
+                if ($selected) {
                     $tpl->setVariable("SELECTED", "selected");
                 }
 
@@ -228,11 +234,9 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
 
     /**
-     * @param int $minimum_input_length
+     * @param int|null $minimum_input_length
      */
-    public function setMinimumInputLength(/*int*/
-        $minimum_input_length
-    )/*: void*/
+    public function setMinimumInputLength(/*?int*/ $minimum_input_length = null)/*: void*/
     {
         $this->minimum_input_length = $minimum_input_length;
     }
@@ -243,7 +247,11 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      */
     public function getMinimumInputLength()/*: int*/
     {
-        return $this->minimum_input_length;
+        if ($this->minimum_input_length !== null) {
+            return $this->minimum_input_length;
+        } else {
+            return (!empty($this->getAjaxLink()) ? 1 : 0);
+        }
     }
 
 
@@ -305,9 +313,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
     /**
      * @param array $array
      */
-    public function setValueByArray(/*array*/
-        $array
-    )/*: void*/
+    public function setValueByArray(/*array*/ $array)/*: void*/
     {
         //		print_r($array);
 

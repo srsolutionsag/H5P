@@ -27,6 +27,7 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 * [LearningProgressPieUI](./src/LearningProgressPieUI/doc/LearningProgressPieUI.md)
 * [MultilangualTabsInputGUI](./src/TabsInputGUI/doc/MultilangualTabsInputGUI.md)
 * [MultiLineInputGUI](./src/MultiLineInputGUI/doc/MultiLineInputGUI.md)
+* [MultiLineNewInputGUI](./src/MultiLineNewInputGUI/doc/MultiLineNewInputGUI.md)
 * [MultiSelectSearchInputGUI](./src/MultiSelectSearchInputGUI/doc/MultiSelectSearchInputGUI.md)
 * [MultiSelectSearchInput2GUI](./src/MultiSelectSearchInputGUI/doc/MultiSelectSearchInput2GUI.md)
 * [NumberInputGUI](./src/NumberInputGUI/doc/NumberInputGUI.md)

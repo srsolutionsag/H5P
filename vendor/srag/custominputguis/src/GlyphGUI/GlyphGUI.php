@@ -12,6 +12,8 @@ use srag\DIC\H5P\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Fabian Schmid <fs@studer-raimann.ch>
+ *
+ * @deprecated
  */
 class GlyphGUI extends ilGlyphGUI
 {
@@ -26,6 +28,8 @@ class GlyphGUI extends ilGlyphGUI
      * @param string $a_text  text representation
      *
      * @return string html
+     *
+     * @deprecated
      */
     static function get($a_glyph, $a_text = "")
     {
@@ -44,6 +48,8 @@ class GlyphGUI extends ilGlyphGUI
      * @param $a_glyph
      *
      * @return string
+     *
+     * @deprecated
      */
     static function gets($a_glyph)
     {

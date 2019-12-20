@@ -10,17 +10,6 @@ First add the following to your `composer.json` file:
 },
 ```
 
-If your plugin should support ILIAS 5.2 or earlier you need to require some ILIAS core classes like follow in your `composer.json` file:
-```json
-"autoload": {
-    "classmap": [
-      "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",
-      "../../../../../../../Services/Component/classes/class.ilPluginConfigGUI.php",
-      "../../../../../../../Services/Form/classes/class.ilPropertyFormGUI.php",
-      "../../../../../../../Services/Table/classes/class.ilTable2GUI.php",
-```
-May you need to adjust the relative `ActiveRecord` path
-
 And run a `composer install`.
 
 If you deliver your plugin, the plugin has it's own copy of this library and the user doesn't need to install the library.
@@ -330,7 +319,8 @@ if (\srag\DIC\H5P\DICStatic::dic()->database()->tableExists(\srag\Plugins\X\Conf
 * PHP >=5.6
 
 ### Adjustment suggestions
-* Adjustment suggestions by pull
-* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/ACCONF
-* Bug reports under https://jira.studer-raimann.ch/projects/ACCONF
-* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_ACCONF
+* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_ACCONF
+* Adjustment suggestions by pull requests via github
+* Customer of studer + raimann ag: 
+	* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/ACCONF
+	* Bug reports under https://jira.studer-raimann.ch/projects/ACCONF

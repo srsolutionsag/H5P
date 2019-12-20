@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'H5PActionGUI' => $baseDir . '/classes/Action/class.H5PActionGUI.php',
-    'H5PRemoveDataConfirm' => $baseDir . '/classes/uninstall/class.H5PRemoveDataConfirm.php',
     'ilH5PConfigGUI' => $baseDir . '/classes/class.ilH5PConfigGUI.php',
     'ilH5PPlugin' => $baseDir . '/classes/class.ilH5PPlugin.php',
     'ilObjH5P' => $baseDir . '/classes/class.ilObjH5P.php',
@@ -37,6 +36,7 @@ return array(
     'srag\\CustomInputGUIs\\H5P\\LearningProgressPieUI\\ObjIdsLearningProgressPieUI' => $vendorDir . '/srag/custominputguis/src/LearningProgressPieUI/ObjIdsLearningProgressPieUI.php',
     'srag\\CustomInputGUIs\\H5P\\LearningProgressPieUI\\UsrIdsLearningProgressPieUI' => $vendorDir . '/srag/custominputguis/src/LearningProgressPieUI/UsrIdsLearningProgressPieUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiLineInputGUI\\MultiLineInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiLineInputGUI/MultiLineInputGUI.php',
+    'srag\\CustomInputGUIs\\H5P\\MultiLineNewInputGUI\\MultiLineNewInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiLineNewInputGUI/MultiLineNewInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiSelectSearchInputGUI\\MultiSelectSearchInput2GUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInput2GUI.php',
     'srag\\CustomInputGUIs\\H5P\\MultiSelectSearchInputGUI\\MultiSelectSearchInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInputGUI.php',
     'srag\\CustomInputGUIs\\H5P\\NumberInputGUI\\NumberInputGUI' => $vendorDir . '/srag/custominputguis/src/NumberInputGUI/NumberInputGUI.php',
@@ -106,7 +106,6 @@ return array(
     'srag\\DIC\\H5P\\Util\\LibraryLanguageInstaller' => $vendorDir . '/srag/dic/src/Util/LibraryLanguageInstaller.php',
     'srag\\DIC\\H5P\\Version\\Version' => $vendorDir . '/srag/dic/src/Version/Version.php',
     'srag\\DIC\\H5P\\Version\\VersionInterface' => $vendorDir . '/srag/dic/src/Version/VersionInterface.php',
-    'srag\\LibrariesNamespaceChanger\\Libraries' => $vendorDir . '/srag/librariesnamespacechanger/src/Libraries.php',
     'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => $vendorDir . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
     'srag\\LibrariesNamespaceChanger\\PHP7Backport' => $vendorDir . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
     'srag\\Plugins\\H5P\\Access\\Access' => $baseDir . '/src/Access/Access.php',
@@ -148,9 +147,8 @@ return array(
     'srag\\Plugins\\H5P\\Results\\SolveStatus' => $baseDir . '/src/Results/SolveStatus.php',
     'srag\\Plugins\\H5P\\Utils\\H5P' => $baseDir . '/src/Utils/H5P.php',
     'srag\\Plugins\\H5P\\Utils\\H5PTrait' => $baseDir . '/src/Utils/H5PTrait.php',
-    'srag\\RemovePluginDataConfirm\\H5P\\AbstractPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
-    'srag\\RemovePluginDataConfirm\\H5P\\AbstractRemovePluginDataConfirm' => $vendorDir . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
-    'srag\\RemovePluginDataConfirm\\H5P\\Exception\\RemovePluginDataConfirmException' => $vendorDir . '/srag/removeplugindataconfirm/src/Exception/RemovePluginDataConfirmException.php',
+    'srag\\RemovePluginDataConfirm\\H5P\\BasePluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',
     'srag\\RemovePluginDataConfirm\\H5P\\PluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
+    'srag\\RemovePluginDataConfirm\\H5P\\RemovePluginDataConfirmCtrl' => $vendorDir . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
     'srag\\RemovePluginDataConfirm\\H5P\\RepositoryObjectPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
 );

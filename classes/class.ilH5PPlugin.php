@@ -36,7 +36,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     const PLUGIN_ID = "xhfp";
     const PLUGIN_NAME = "H5P";
     const PLUGIN_CLASS_NAME = self::class;
-    const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = H5PRemoveDataConfirm::class;
     const LANG_MODULE_CRON = "cron";
     /**
      * @var self|null

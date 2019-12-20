@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.0]
+- Support all srag libraries
+
+## [0.6.14]
+- RequiredData
+
 ## [0.6.13]
 - Fix may PHP7Backport running again
 
