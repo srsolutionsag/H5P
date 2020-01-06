@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Utils;
+namespace srag\Plugins\H5P;
 
 use H5PActionGUI;
 use H5PContentValidator;
@@ -12,27 +12,48 @@ use H5PValidator;
 use ilDatePresentation;
 use ilDateTime;
 use ilH5PPlugin;
+use ilObjH5PAccess;
+use ilWACSecurePath;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Content\ContentLibrary;
+use srag\Plugins\H5P\Content\ContentUserData;
 use srag\Plugins\H5P\Content\Editor\EditorAjax;
 use srag\Plugins\H5P\Content\Editor\EditorStorage;
 use srag\Plugins\H5P\Content\Editor\ShowEditor;
+use srag\Plugins\H5P\Content\Editor\TmpFile;
 use srag\Plugins\H5P\Content\ShowContent;
+use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Framework\Framework;
 use srag\Plugins\H5P\Hub\ShowHub;
+use srag\Plugins\H5P\Library\Counter;
+use srag\Plugins\H5P\Library\Library;
+use srag\Plugins\H5P\Library\LibraryCachedAsset;
+use srag\Plugins\H5P\Library\LibraryDependencies;
+use srag\Plugins\H5P\Library\LibraryHubCache;
+use srag\Plugins\H5P\Library\LibraryLanguage;
+use srag\Plugins\H5P\Object\H5PObject;
+use srag\Plugins\H5P\Option\Option;
+use srag\Plugins\H5P\Option\OptionOld;
+use srag\Plugins\H5P\Results\Result;
+use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class H5P
+ * Class Repository
  *
- * @package srag\Plugins\H5P\Utils
+ * @package srag\Plugins\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class H5P
+final class Repository
 {
 
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    const CSV_SEPARATOR = ", ";
+    const DATA_FOLDER = "h5p";
     /**
      * @var self
      */
@@ -42,7 +63,7 @@ class H5P
     /**
      * @return self
      */
-    public static function getInstance()/*: self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,8 +73,6 @@ class H5P
     }
 
 
-    const CSV_SEPARATOR = ", ";
-    const DATA_FOLDER = "h5p";
     /**
      * @var H5PActionGUI
      */
@@ -109,11 +128,88 @@ class H5P
 
 
     /**
-     * H5P constructor
+     * Repository constructor
      */
-    protected function __construct()
+    private function __construct()
     {
 
+    }
+
+
+    /**
+     *
+     */
+    public function dropTables()/*: void*/
+    {
+        self::dic()->database()->dropTable(Content::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ContentLibrary::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ContentUserData::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Counter::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Event::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Library::TABLE_NAME, false);
+        self::dic()->database()->dropTable(LibraryCachedAsset::TABLE_NAME, false);
+        self::dic()->database()->dropTable(LibraryHubCache::TABLE_NAME, false);
+        self::dic()->database()->dropTable(LibraryLanguage::TABLE_NAME, false);
+        self::dic()->database()->dropTable(LibraryDependencies::TABLE_NAME, false);
+        self::dic()->database()->dropTable(H5PObject::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Option::TABLE_NAME, false);
+        self::dic()->database()->dropTable(OptionOld::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Result::TABLE_NAME, false);
+        self::dic()->database()->dropTable(SolveStatus::TABLE_NAME, false);
+        self::dic()->database()->dropTable(TmpFile::TABLE_NAME, false);
+
+        $this->removeH5PFolder();
+    }
+
+
+    /**
+     *
+     */
+    public function installTables()/*: void*/
+    {
+        Content::updateDB();
+        ContentLibrary::updateDB();
+        ContentUserData::updateDB();
+        Counter::updateDB();
+        Event::updateDB();
+        Library::updateDB();
+        LibraryCachedAsset::updateDB();
+        LibraryHubCache::updateDB();
+        LibraryLanguage::updateDB();
+        LibraryDependencies::updateDB();
+        H5PObject::updateDB();
+        Option::updateDB();
+        Result::updateDB();
+        SolveStatus::updateDB();
+        TmpFile::updateDB();
+
+        if (self::dic()->database()->tableExists(OptionOld::TABLE_NAME)) {
+            OptionOld::updateDB();
+
+            foreach (OptionOld::get() as $option) {
+                /**
+                 * @var OptionOld $option
+                 */
+                Option::setOption($option->getName(), $option->getValue());
+            }
+
+            self::dic()->database()->dropTable(OptionOld::TABLE_NAME);
+        }
+
+        /**
+         * @var ilWACSecurePath $path
+         */
+        $path = ilWACSecurePath::findOrGetInstance(self::DATA_FOLDER);
+
+        $path->setPath(self::DATA_FOLDER);
+
+        $path->setCheckingClass(ilObjH5PAccess::class);
+
+        $path->setInSecFolder(false);
+
+        $path->setComponentDirectory(self::plugin()->directory());
+
+        $path->store();
     }
 
 
@@ -123,6 +219,19 @@ class H5P
     public function getH5PFolder()
     {
         return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/" . self::DATA_FOLDER;
+    }
+
+
+    /**
+     *
+     */
+    protected function removeH5PFolder()
+    {
+        $h5p_folder = self::h5p()->getH5PFolder();
+
+        H5PCore::deleteFileTree($h5p_folder);
+
+        ilWACSecurePath::find(self::DATA_FOLDER)->delete();
     }
 
 
