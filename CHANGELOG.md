@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.5.0]
+- Some improvments
+
 ## [2.4.5]
 - Some improvments
 
