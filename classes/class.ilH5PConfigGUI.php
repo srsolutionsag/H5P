@@ -106,7 +106,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function configure()/*: void*/
     {
-        self::dic()->ctrl()->redirectByClass(self::class, self::CMD_HUB);
+        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
 
 
