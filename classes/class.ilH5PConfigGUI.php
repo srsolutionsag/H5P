@@ -283,7 +283,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      * @return HubSettingsFormGUI
      */
-    protected function getSettingsForm()/*:HubTableGUI*/
+    protected function getSettingsForm()/*:HubSettingsFormGUI*/
     {
         $form = new HubSettingsFormGUI($this);
 
