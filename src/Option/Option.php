@@ -29,7 +29,6 @@ class Option extends ActiveRecordConfig
         = [
             self::KEY_CONTENT_TYPES            => [self::TYPE_JSON, "", false],
             self::KEY_ENABLE_LRS_CONTENT_TYPES => [self::TYPE_JSON, false, false],
-            self::KEY_ENABLE_LRS_CONTENT_TYPES => [self::TYPE_JSON, false, false],
             self::KEY_SEND_USAGE_STATISTICS    => [self::TYPE_JSON, true, false]
         ];
 

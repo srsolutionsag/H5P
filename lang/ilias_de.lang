@@ -143,10 +143,7 @@ visible#:#Sichtbar
 write#:#Schreiben
 year#:#Jahr
 yes#:#Ja
-config_hub#:#HUB
-config_save#:#Speichern
-config_settings#:#Einstellungen
-config_settings_saved#:#Einstellungen gespeichert
+hub#:#HUB
 cron_xhfp_delete_old_events#:#Alte Event-Logs löschen
 cron_xhfp_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
 cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen

@@ -7,8 +7,8 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTextInputGUI;
-use srag\ActiveRecordConfig\H5P\ActiveRecordConfigTableGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
+use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,13 +18,25 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubTableGUI extends ActiveRecordConfigTableGUI
+class HubTableGUI extends TableGUI
 {
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "hub_table_row.html";
     const LANG_MODULE = "";
+
+
+    /**
+     * HubTableGUI constructor
+     *
+     * @param ilH5PConfigGUI $parent
+     * @param string         $parent_cmd
+     */
+    public function __construct(ilH5PConfigGUI $parent, /*string*/ $parent_cmd)
+    {
+        parent::__construct($parent, $parent_cmd);
+    }
 
 
     /**
@@ -98,10 +110,17 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
     /**
      * @inheritdoc
      */
+    protected function initId()/*: void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     protected function initFilterFields()/*: void*/
     {
-        parent::initFilterFields();
-
         $this->filter_fields = [
             "title"         => [
                 PropertyFormGUI::PROPERTY_CLASS => ilTextInputGUI::class

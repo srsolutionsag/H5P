@@ -2,10 +2,10 @@
 
 namespace srag\Plugins\H5P\Content;
 
-use H5PActionGUI;
 use H5PCore;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Results\SolveStatus;

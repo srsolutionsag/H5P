@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'H5PActionGUI' => $baseDir . '/classes/Action/class.H5PActionGUI.php',
     'ilH5PConfigGUI' => $baseDir . '/classes/class.ilH5PConfigGUI.php',
     'ilH5PPlugin' => $baseDir . '/classes/class.ilH5PPlugin.php',
     'ilObjH5P' => $baseDir . '/classes/class.ilObjH5P.php',
@@ -108,6 +107,7 @@ return array(
     'srag\\DIC\\H5P\\Version\\VersionInterface' => $vendorDir . '/srag/dic/src/Version/VersionInterface.php',
     'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => $vendorDir . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
     'srag\\LibrariesNamespaceChanger\\PHP7Backport' => $vendorDir . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
+    'srag\\Plugins\\H5P\\Action\\H5PActionGUI' => $baseDir . '/src/Action/class.H5PActionGUI.php',
     'srag\\Plugins\\H5P\\Content\\Content' => $baseDir . '/src/Content/Content.php',
     'srag\\Plugins\\H5P\\Content\\ContentLibrary' => $baseDir . '/src/Content/ContentLibrary.php',
     'srag\\Plugins\\H5P\\Content\\ContentUserData' => $baseDir . '/src/Content/ContentUserData.php',

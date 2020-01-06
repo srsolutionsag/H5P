@@ -1,7 +1,16 @@
 <?php
 
+namespace srag\Plugins\H5P\Action;
+
 require_once __DIR__ . "/../../vendor/autoload.php";
 
+use H5PCore;
+use H5PEditorEndpoints;
+use ilH5PConfigGUI;
+use ilH5PPlugin;
+use ilObjH5PAccess;
+use ilObjH5PGUI;
+use ilUIPluginRouterGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Library\Library;
@@ -11,9 +20,11 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 /**
  * Class H5PActionGUI
  *
+ * @package           srag\Plugins\H5P\Action
+ *
  * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @ilCtrl_isCalledBy H5PActionGUI: ilUIPluginRouterGUI
+ * @ilCtrl_isCalledBy srag\Plugins\H5P\Action\H5PActionGUI: ilUIPluginRouterGUI
  */
 class H5PActionGUI
 {

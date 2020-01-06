@@ -1,6 +1,7 @@
 <?php
 
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentsTableGUI;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
@@ -23,7 +24,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  * @ilCtrl_Calls      ilObjH5PGUI: ilInfoScreenGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilObjectCopyGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilCommonActionDispatcherGUI
- * @ilCtrl_Calls      ilObjH5PGUI: H5PActionGUI
+ * @ilCtrl_Calls      ilObjH5PGUI: srag\Plugins\H5P\Action\H5PActionGUI
  */
 class ilObjH5PGUI extends ilObjectPluginGUI
 {

@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Content\Editor;
 
-use H5PActionGUI;
 use H5PCore;
 use H5peditor;
 use H5PEditorEndpoints;
@@ -12,6 +11,7 @@ use ilLinkButton;
 use ilToolbarGUI;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Utils\H5PTrait;

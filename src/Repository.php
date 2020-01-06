@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P;
 
-use H5PActionGUI;
 use H5PContentValidator;
 use H5PCore;
 use H5peditor;
@@ -15,6 +14,7 @@ use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilWACSecurePath;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Content\ContentUserData;
