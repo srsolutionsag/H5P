@@ -291,13 +291,13 @@ final class Repository
 
 
     /**
-     * @param string $formated
+     * @param string $formatted
      *
      * @return int
      */
-    public function dbDateToTimestamp($formated)
+    public function dbDateToTimestamp($formatted)
     {
-        $date_time = new ilDateTime($formated, IL_CAL_DATETIME);
+        $date_time = new ilDateTime($formatted, IL_CAL_DATETIME);
 
         $timestamp = $date_time->getUnixTime();
 
@@ -312,9 +312,9 @@ final class Repository
      */
     public function formatTime($time)
     {
-        $formated_time = ilDatePresentation::formatDate(new ilDateTime($time, IL_CAL_UNIX));
+        $formatted_time = ilDatePresentation::formatDate(new ilDateTime($time, IL_CAL_UNIX));
 
-        return $formated_time;
+        return $formatted_time;
     }
 
 
