@@ -95,6 +95,15 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
         switch (strtolower($next_class)) {
+            case strtolower(H5PActionGUI::class):
+                // Read commands
+                if (!ilObjH5PAccess::hasReadAccess()) {
+                    ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+                }
+
+                H5PActionGUI::forward($this);
+                break;
+
             default:
                 switch ($cmd) {
                     case self::CMD_FINISH_CONTENTS:
@@ -140,15 +149,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                         }
 
                         $this->{$cmd}();
-                        break;
-
-                    case H5PActionGUI::CMD_H5P_ACTION:
-                        // Read commands
-                        if (!ilObjH5PAccess::hasReadAccess()) {
-                            ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
-                        }
-
-                        H5PActionGUI::forward($this);
                         break;
 
                     default:
