@@ -200,7 +200,7 @@ class HubTableGUI extends TableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), $delete_link);
                 break;
 
             case ShowHub::STATUS_UPGRADE_AVAILABLE:
@@ -208,9 +208,9 @@ class HubTableGUI extends TableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("upgrade"), $install_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("upgrade"), $install_link);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), $delete_link);
                 break;
 
             case ShowHub::STATUS_NOT_INSTALLED:
@@ -218,7 +218,7 @@ class HubTableGUI extends TableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", "-");
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("install"), $install_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("install"), $install_link);
                 break;
 
             default:
@@ -232,7 +232,7 @@ class HubTableGUI extends TableGUI
         $this->tpl->setVariable("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
 
         $this->tpl->setVariable("DETAILS_LINK", $details_link);
-        $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("details"), $details_link);
+        $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("details"), $details_link);
 
         $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
             ->withLabel($this->txt("actions"))));

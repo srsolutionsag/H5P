@@ -189,7 +189,7 @@ class ResultsTableGUI extends TableGUI
         $actions = [];
 
         if (ilObjH5PAccess::hasWriteAccess()) {
-            $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), self::dic()->ctrl()
+            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
         }
 

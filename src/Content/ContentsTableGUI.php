@@ -174,14 +174,14 @@ class ContentsTableGUI extends TableGUI
 
         if (ilObjH5PAccess::hasWriteAccess()) {
             if (!$this->hasResults()) {
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("edit"), self::dic()->ctrl()
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("edit"), self::dic()->ctrl()
                     ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), self::dic()->ctrl()
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
                     ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
             }
 
-            $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("export"), self::dic()->ctrl()
+            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("export"), self::dic()->ctrl()
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EXPORT_CONTENT));
         }
 
