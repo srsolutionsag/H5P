@@ -246,7 +246,7 @@ class HubTableGUI extends TableGUI
      */
     public function getHTML()
     {
-        $form = self::h5p()->show_hub()->getUploadLibraryForm($this->parent_obj);
+        $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
 
         $hub = self::h5p()->show_hub()->getHub($form, $this->parent_obj, parent::getHTML());
 

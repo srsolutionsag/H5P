@@ -7,7 +7,6 @@ use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -119,10 +118,10 @@ class DeleteOldEventsJob extends ilCronJob
 
         $older_than = (time() - H5PEventBase::$log_time);
 
-        $h5p_events = Event::getOldEvents($older_than);
+        $h5p_events = self::h5p()->events()->getOldEvents($older_than);
 
         foreach ($h5p_events as $h5p_event) {
-            $h5p_event->delete();
+            self::h5p()->events()->deleteEvent($h5p_event);
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

@@ -5,10 +5,6 @@ namespace srag\Plugins\H5P\Content\Editor;
 use H5PEditorAjaxInterface;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Event\Event;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryHubCache;
-use srag\Plugins\H5P\Library\LibraryLanguage;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -42,7 +38,7 @@ class EditorAjax implements H5PEditorAjaxInterface
      */
     public function getLatestLibraryVersions()
     {
-        $h5p_libraries = Library::getLatestLibraryVersions();
+        $h5p_libraries = self::h5p()->libraries()->getLatestLibraryVersions();
 
         $libraries = [];
 
@@ -73,7 +69,7 @@ class EditorAjax implements H5PEditorAjaxInterface
      */
     public function getContentTypeCache($machine_name = null)
     {
-        return LibraryHubCache::getContentTypeCache($machine_name);
+        return self::h5p()->libraries()->getContentTypeCache($machine_name);
     }
 
 
@@ -85,7 +81,7 @@ class EditorAjax implements H5PEditorAjaxInterface
      */
     public function getAuthorsRecentlyUsedLibraries()
     {
-        return Event::getAuthorsRecentlyUsedLibraries();
+        return self::h5p()->events()->getAuthorsRecentlyUsedLibraries();
     }
 
 
@@ -112,6 +108,6 @@ class EditorAjax implements H5PEditorAjaxInterface
      */
     public function getTranslations($libraries, $language_code)
     {
-        return LibraryLanguage::getTranslations($libraries, $language_code);
+        return self::h5p()->libraries()->getTranslations($libraries, $language_code);
     }
 }

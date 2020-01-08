@@ -7,8 +7,6 @@ use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Object\H5PObject;
-use srag\Plugins\H5P\Results\Result;
-use srag\Plugins\H5P\Results\SolveStatus;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -275,7 +273,7 @@ class ShowContent
                 break;
         }
 
-        $content_user_datas = ContentUserData::getUserDatasByUser($user_id, $h5p_content->getContentId());
+        $content_user_datas = self::h5p()->contents()->getUserDatasByUser($user_id, $h5p_content->getContentId());
         foreach ($content_user_datas as $content_user_data) {
             $content_integration["contentUserData"][$content_user_data->getSubContentId()][$content_user_data->getDataId()] = $content_user_data->getData();
         }
@@ -340,7 +338,7 @@ class ShowContent
      */
     public function setFinished($content_id, $score, $max_score, $opened, $finished, $time = null)
     {
-        $h5p_content = Content::getContentById($content_id);
+        $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
             $object = H5PObject::getObjectById($h5p_content->getObjId());
         } else {
@@ -349,15 +347,12 @@ class ShowContent
 
         $user_id = self::dic()->user()->getId();
 
-        $h5p_result = Result::getResultByUserContent($user_id, $content_id);
+        $h5p_result = self::h5p()->results()->getResultByUserContent($user_id, $content_id);
 
-        $new = false;
         if ($h5p_result === null) {
-            $h5p_result = new Result();
+            $h5p_result = self::h5p()->results()->factory()->newResultInstance();
 
             $h5p_result->setContentId($content_id);
-
-            $new = true;
         } else {
             // Prevent update result on a repository object with "Solve only once"
             if ($object !== null && $object->isSolveOnlyOnce()) {
@@ -377,15 +372,11 @@ class ShowContent
             $h5p_result->setTime($time);
         }
 
-        if ($new) {
-            $h5p_result->create();
-        } else {
-            $h5p_result->update();
-        }
+        self::h5p()->results()->storeResult($h5p_result);
 
         if ($object !== null) {
             // Store solve status because user may not scroll to contents
-            SolveStatus::setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
+            self::h5p()->results()->setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
         }
     }
 
@@ -402,7 +393,7 @@ class ShowContent
      */
     public function contentsUserData($content_id, $data_id, $sub_content_id, $data = null, $preload = false, $invalidate = false)
     {
-        $h5p_content = Content::getContentById($content_id);
+        $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
             $object = H5PObject::getObjectById($h5p_content->getObjId());
         } else {
@@ -411,28 +402,25 @@ class ShowContent
 
         $user_id = self::dic()->user()->getId();
 
-        $h5p_content_user_data = ContentUserData::getUserData($content_id, $data_id, $user_id, $sub_content_id);
+        $h5p_content_user_data = self::h5p()->contents()->getUserData($content_id, $data_id, $user_id, $sub_content_id);
 
         if ($data !== null) {
             if ($data === "0") {
                 if ($h5p_content_user_data !== null) {
-                    $h5p_content_user_data->delete();
+                    self::h5p()->contents()->deleteContentUserData($h5p_content_user_data);
                 }
             } else {
-                $new = false;
                 if ($h5p_content_user_data === null) {
-                    $h5p_content_user_data = new ContentUserData();
+                    $h5p_content_user_data = self::h5p()->contents()->factory()->newContentUserDataInstance();
 
                     $h5p_content_user_data->setContentId($content_id);
 
                     $h5p_content_user_data->setSubContentId($sub_content_id);
 
                     $h5p_content_user_data->setDataId($data_id);
-
-                    $new = true;
                 } else {
                     // Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
-                    if ($object !== null && $object->isSolveOnlyOnce() && Result::hasContentResults($h5p_content->getContentId())) {
+                    if ($object !== null && $object->isSolveOnlyOnce() && self::h5p()->results()->hasContentResults($h5p_content->getContentId())) {
                         return null;
                     }
                 }
@@ -443,11 +431,7 @@ class ShowContent
 
                 $h5p_content_user_data->setInvalidate($invalidate);
 
-                if ($new) {
-                    $h5p_content_user_data->create();
-                } else {
-                    $h5p_content_user_data->update();
-                }
+                self::h5p()->contents()->storeContentUserData($h5p_content_user_data);
             }
 
             return null;

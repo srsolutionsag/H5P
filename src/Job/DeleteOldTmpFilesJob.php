@@ -6,7 +6,6 @@ use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Editor\TmpFile;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -118,14 +117,14 @@ class DeleteOldTmpFilesJob extends ilCronJob
 
         $older_than = (time() - 86400);
 
-        $h5p_tmp_files = TmpFile::getOldTmpFiles($older_than);
+        $h5p_tmp_files = self::h5p()->contents()->editor()->getOldTmpFiles($older_than);
 
         foreach ($h5p_tmp_files as $h5p_tmp_file) {
             if (file_exists($h5p_tmp_file->getPath())) {
                 unlink($h5p_tmp_file->getPath());
             }
 
-            $h5p_tmp_file->delete();
+            self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

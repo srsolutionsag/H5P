@@ -45,50 +45,6 @@ class Counter extends ActiveRecord
 
 
     /**
-     * @param string $type
-     *
-     * @return Counter[]
-     */
-    public static function getCountersByType($type)
-    {
-        /**
-         * @var Counter[] $h5p_counters
-         */
-
-        $h5p_counters = self::where([
-            "type" => $type
-        ])->get();
-
-        return $h5p_counters;
-    }
-
-
-    /**
-     * @param string $type
-     * @param string $library_name
-     * @param string $libray_version
-     *
-     * @return Counter|null
-     */
-    public static function getCounterByLibrary($type, $library_name, $library_version)
-    {
-        /**
-         * @var Counter|null $h5p_counter
-         */
-
-        $h5p_counter = self::where([
-            "type"            => $type,
-            "library_name"    => $library_name,
-            "library_version" => $library_version
-        ])->first();
-
-        return $h5p_counter;
-    }
-
-
-    /**
-     * Workaround for multiple primary keys: type, library_name, library_version
-     *
      * @var int
      *
      * @con_has_field    true

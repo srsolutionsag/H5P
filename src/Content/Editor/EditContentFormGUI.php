@@ -316,7 +316,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
                 $this->h5p_content->setUploadedFiles([]);
 
-                $this->h5p_content->store();
+                self::h5p()->contents()->storeContent($this->h5p_content);
             }
         }
 
@@ -398,7 +398,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
             $this->h5p_content->setUploadedFiles($uploaded_files);
 
-            $this->h5p_content->store();
+            self::h5p()->contents()->storeContent($this->h5p_content);
         }
     }
 }

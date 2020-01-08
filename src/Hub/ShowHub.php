@@ -9,7 +9,6 @@ use ilH5PPlugin;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryHubCache;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -54,7 +53,7 @@ class ShowHub
         $libraries = [];
 
         // Hub libraries
-        $hub_libraries = LibraryHubCache::getLibraries();
+        $hub_libraries = self::h5p()->libraries()->getHubLibraries();
         foreach ($hub_libraries as $hub_library) {
             $name = $hub_library->getMachineName();
 
@@ -95,7 +94,7 @@ class ShowHub
         }
 
         // Installed libraries
-        $installed_libraries = Library::getLibraries();
+        $installed_libraries = self::h5p()->libraries()->getLibraries();
         foreach ($installed_libraries as $installed_library) {
             $name = $installed_library->getName();
 
@@ -218,19 +217,6 @@ class ShowHub
 
 
     /**
-     * @param ilH5PConfigGUI $parent
-     *
-     * @return UploadLibraryFormGUI
-     */
-    public function getUploadLibraryForm(ilH5PConfigGUI $parent)
-    {
-        $form = new UploadLibraryFormGUI($parent);
-
-        return $form;
-    }
-
-
-    /**
      * @param string $name
      */
     public function installLibrary($name)
@@ -261,20 +247,6 @@ class ShowHub
         if ($message) {
             ilUtil::sendSuccess(self::plugin()->translate("deleted_library", "", [$h5p_library->getTitle()]), true);
         }
-    }
-
-
-    /**
-     * @param ilH5PConfigGUI $parent
-     * @param string         $key
-     *
-     * @return HubDetailsFormGUI
-     */
-    public function getDetailsForm(ilH5PConfigGUI $parent, $key)
-    {
-        $details_form = new HubDetailsFormGUI($parent, $key);
-
-        return $details_form;
     }
 
 

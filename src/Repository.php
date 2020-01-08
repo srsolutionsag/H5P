@@ -15,28 +15,20 @@ use ilObjH5PAccess;
 use ilWACSecurePath;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Content\ContentLibrary;
-use srag\Plugins\H5P\Content\ContentUserData;
 use srag\Plugins\H5P\Content\Editor\EditorAjax;
 use srag\Plugins\H5P\Content\Editor\EditorStorage;
 use srag\Plugins\H5P\Content\Editor\ShowEditor;
-use srag\Plugins\H5P\Content\Editor\TmpFile;
+use srag\Plugins\H5P\Content\Repository as ContentRepository;
 use srag\Plugins\H5P\Content\ShowContent;
-use srag\Plugins\H5P\Event\Event;
+use srag\Plugins\H5P\Event\Repository as EventRepository;
 use srag\Plugins\H5P\Framework\Framework;
+use srag\Plugins\H5P\Hub\Repository as HubRepository;
 use srag\Plugins\H5P\Hub\ShowHub;
-use srag\Plugins\H5P\Library\Counter;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryCachedAsset;
-use srag\Plugins\H5P\Library\LibraryDependencies;
-use srag\Plugins\H5P\Library\LibraryHubCache;
-use srag\Plugins\H5P\Library\LibraryLanguage;
+use srag\Plugins\H5P\Library\Repository as LibraryRepository;
 use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Option\OptionOld;
-use srag\Plugins\H5P\Results\Result;
-use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\Result\Repository as ResultRepository;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -137,28 +129,47 @@ final class Repository
 
 
     /**
+     * @return ContentRepository
+     */
+    public function contents()/* : ContentRepository*/
+    {
+        return ContentRepository::getInstance();
+    }
+
+
+    /**
      *
      */
     public function dropTables()/*: void*/
     {
-        self::dic()->database()->dropTable(Content::TABLE_NAME, false);
-        self::dic()->database()->dropTable(ContentLibrary::TABLE_NAME, false);
-        self::dic()->database()->dropTable(ContentUserData::TABLE_NAME, false);
-        self::dic()->database()->dropTable(Counter::TABLE_NAME, false);
-        self::dic()->database()->dropTable(Event::TABLE_NAME, false);
-        self::dic()->database()->dropTable(Library::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryCachedAsset::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryHubCache::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryLanguage::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryDependencies::TABLE_NAME, false);
+        $this->contents()->dropTables();
+        $this->events()->dropTables();
+        $this->hub()->dropTables();
+        $this->libraries()->dropTables();
+        $this->results()->dropTables();
         self::dic()->database()->dropTable(H5PObject::TABLE_NAME, false);
         self::dic()->database()->dropTable(Option::TABLE_NAME, false);
         self::dic()->database()->dropTable(OptionOld::TABLE_NAME, false);
-        self::dic()->database()->dropTable(Result::TABLE_NAME, false);
-        self::dic()->database()->dropTable(SolveStatus::TABLE_NAME, false);
-        self::dic()->database()->dropTable(TmpFile::TABLE_NAME, false);
 
         $this->removeH5PFolder();
+    }
+
+
+    /**
+     * @return EventRepository
+     */
+    public function events()/* : EventRepository*/
+    {
+        return EventRepository::getInstance();
+    }
+
+
+    /**
+     * @return HubRepository
+     */
+    public function hub()/* : HubRepository*/
+    {
+        return HubRepository::getInstance();
     }
 
 
@@ -167,21 +178,13 @@ final class Repository
      */
     public function installTables()/*: void*/
     {
-        Content::updateDB();
-        ContentLibrary::updateDB();
-        ContentUserData::updateDB();
-        Counter::updateDB();
-        Event::updateDB();
-        Library::updateDB();
-        LibraryCachedAsset::updateDB();
-        LibraryHubCache::updateDB();
-        LibraryLanguage::updateDB();
-        LibraryDependencies::updateDB();
+        $this->contents()->installTables();
+        $this->events()->installTables();
+        $this->hub()->installTables();
+        $this->libraries()->installTables();
+        $this->results()->installTables();
         H5PObject::updateDB();
         Option::updateDB();
-        Result::updateDB();
-        SolveStatus::updateDB();
-        TmpFile::updateDB();
 
         if (self::dic()->database()->tableExists(OptionOld::TABLE_NAME)) {
             OptionOld::updateDB();
@@ -210,6 +213,24 @@ final class Repository
         $path->setComponentDirectory(self::plugin()->directory());
 
         $path->store();
+    }
+
+
+    /**
+     * @return LibraryRepository
+     */
+    public function libraries()/* : LibraryRepository*/
+    {
+        return LibraryRepository::getInstance();
+    }
+
+
+    /**
+     * @return ResultRepository
+     */
+    public function results()/* : ResultRepository*/
+    {
+        return ResultRepository::getInstance();
     }
 
 

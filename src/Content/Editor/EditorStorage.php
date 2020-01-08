@@ -7,8 +7,6 @@ use H5peditorFile;
 use H5peditorStorage as H5peditorStorageInterface;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryLanguage;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -48,7 +46,7 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public function getLanguage($machine_name, $major_version, $minor_version, $language)
     {
-        return LibraryLanguage::getTranslationJson($machine_name, $major_version, $minor_version, $language);
+        return self::h5p()->libraries()->getTranslationJson($machine_name, $major_version, $minor_version, $language);
     }
 
 
@@ -60,10 +58,10 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public function keepFile($file_id)
     {
-        $h5p_tmp_files = TmpFile::getFilesByPath($file_id);
+        $h5p_tmp_files = self::h5p()->contents()->editor()->getFilesByPath($file_id);
 
         foreach ($h5p_tmp_files as $h5p_tmp_file) {
-            $h5p_tmp_file->delete();
+            self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
         }
     }
 
@@ -90,7 +88,7 @@ class EditorStorage implements H5peditorStorageInterface
             $librariesWithDetails = [];
 
             foreach ($libraries as $library) {
-                $h5p_library = Library::getLibraryByVersion($library->name, $library->majorVersion, $library->minorVersion);
+                $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library->name, $library->majorVersion, $library->minorVersion);
 
                 if ($h5p_library !== null) {
                     $library->tutorialUrl = $h5p_library->getTutorialUrl();
@@ -103,7 +101,7 @@ class EditorStorage implements H5peditorStorageInterface
 
             return $librariesWithDetails;
         } else {
-            $h5p_libraries = Library::getLatestLibraryVersions();
+            $h5p_libraries = self::h5p()->libraries()->getLatestLibraryVersions();
 
             $libraries = [];
 
@@ -197,11 +195,11 @@ class EditorStorage implements H5peditorStorageInterface
         }
         $path .= $file->getType() . "s/" . $file->getName();
 
-        $h5p_tmp_file = new TmpFile();
+        $h5p_tmp_file = self::h5p()->contents()->editor()->factory()->newTmpFileInstance();
 
         $h5p_tmp_file->setPath($path);
 
-        $h5p_tmp_file->store();
+        self::h5p()->contents()->editor()->storeTmpFile($h5p_tmp_file);
     }
 
 
@@ -233,6 +231,6 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public function getAvailableLanguages($machineName, $majorVersion, $minorVersion)
     {
-        return LibraryLanguage::getAvailableLanguages($machineName, $majorVersion, $minorVersion);
+        return self::h5p()->libraries()->getAvailableLanguages($machineName, $majorVersion, $minorVersion);
     }
 }

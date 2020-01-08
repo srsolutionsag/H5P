@@ -206,7 +206,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
             case "content":
                 $content_id = intval(substr($ilWACPath->getPath(), strlen($ilWACPath->getModulePath() . "content/")));
 
-                $content = Content::getContentById($content_id);
+                $content = self::h5p()->contents()->getContentById($content_id);
 
                 if ($content !== null) {
                     switch ($content->getParentType()) {

@@ -45,73 +45,6 @@ class ContentUserData extends ActiveRecord
 
 
     /**
-     * @param int $content_id
-     *
-     * @return ContentUserData[]
-     */
-    public static function getUserDatasByContent($content_id)
-    {
-        /**
-         * @var ContentUserData[] $h5p_content_user_datas
-         */
-
-        $h5p_content_user_datas = self::where([
-            "content_id" => $content_id
-        ])->get();
-
-        return $h5p_content_user_datas;
-    }
-
-
-    /**
-     * @param int $content_id
-     * @param int $data_id
-     * @param int $user_id
-     * @param int $sub_content_id
-     *
-     * @return ContentUserData|null
-     */
-    public static function getUserData($content_id, $data_id, $user_id, $sub_content_id)
-    {
-        /**
-         * @var ContentUserData|null $h5p_content_user_data
-         */
-
-        $h5p_content_user_data = self::where([
-            "content_id"     => $content_id,
-            "data_id"        => $data_id,
-            "user_id"        => $user_id,
-            "sub_content_id" => $sub_content_id
-        ])->first();
-
-        return $h5p_content_user_data;
-    }
-
-
-    /**
-     * @param int $user_id
-     * @param int $content_id
-     *
-     * @return ContentUserData[]
-     */
-    public static function getUserDatasByUser($user_id, $content_id)
-    {
-        /**
-         * @var ContentUserData[] $h5p_content_user_datas
-         */
-
-        $h5p_content_user_datas = self::where([
-            "user_id"    => $user_id,
-            "content_id" => $content_id
-        ])->get();
-
-        return $h5p_content_user_datas;
-    }
-
-
-    /**
-     * Workaround for multiple primary keys: content_id, user_id, sub_content_id, data_id
-     *
      * @var int
      *
      * @con_has_field    true
@@ -264,30 +197,6 @@ class ContentUserData extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->created_at = $this->updated_at = time();
-
-        $this->user_id = self::dic()->user()->getId();
-
-        parent::create();
-    }
-
-
-    /**
-     *
-     */
-    public function update()
-    {
-        $this->updated_at = time();
-
-        parent::update();
     }
 
 

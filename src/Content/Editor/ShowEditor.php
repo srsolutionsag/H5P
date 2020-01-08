@@ -13,7 +13,6 @@ use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -142,23 +141,6 @@ class ShowEditor
 
 
     /**
-     * @param Content|null $h5p_content
-     * @param object       $parent
-     * @param string       $cmd_create
-     * @param string       $cmd_update
-     * @param string       $cmd_cancel
-     *
-     * @return EditContentFormGUI
-     */
-    public function getEditorForm(Content $h5p_content = null, $parent, $cmd_create, $cmd_update, $cmd_cancel)
-    {
-        $form = new EditContentFormGUI($parent, $h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
-
-        return $form;
-    }
-
-
-    /**
      * @param string                  $title
      * @param string                  $library
      * @param string                  $params
@@ -169,7 +151,7 @@ class ShowEditor
     public function createContent($title, $library, $params, EditContentFormGUI $form = null, $message = true)
     {
         $library_id = H5PCore::libraryFromString($library);
-        $h5p_library = Library::getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
 
         $content = [
             "title"   => $title,
@@ -187,7 +169,7 @@ class ShowEditor
 
         self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, null);
 
-        $h5p_content = Content::getContentById($content["id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($content["id"]);
 
         if ($form !== null) {
             $form->setH5pContent($h5p_content);
@@ -251,21 +233,6 @@ class ShowEditor
 
 
     /**
-     * @param object $parent
-     * @param string $cmd_import
-     * @param string $cmd_cancel
-     *
-     * @return ImportContentFormGUI
-     */
-    public function getImportContentForm($parent, $cmd_import, $cmd_cancel)
-    {
-        $form = new ImportContentFormGUI($parent, $cmd_import, $cmd_cancel);
-
-        return $form;
-    }
-
-
-    /**
      * @param ImportContentFormGUI $form
      * @param bool                 $message
      *
@@ -286,7 +253,7 @@ class ShowEditor
 
         $data = json_decode($result)->data;
 
-        $library = Library::getLibraryByVersion($data->h5p->mainLibrary);
+        $library = self::h5p()->libraries()->getLibraryByVersion($data->h5p->mainLibrary);
         $library = $library->getName() . "-" . $library->getMajorVersion() . "." . $library->getMinorVersion();
 
         $params = json_encode(["params" => $data->content]);

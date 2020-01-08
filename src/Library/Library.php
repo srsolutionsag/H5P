@@ -4,11 +4,8 @@ namespace srag\Plugins\H5P\Library;
 
 use ActiveRecord;
 use arConnector;
-use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -44,165 +41,6 @@ class Library extends ActiveRecord
     public static function returnDbTableName()
     {
         return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @param int $library_id
-     *
-     * @return Library|null
-     */
-    public static function getLibraryById($library_id)
-    {
-        /**
-         * @var Library|null $h5p_library
-         */
-
-        $h5p_library = self::where([
-            "library_id" => $library_id
-        ])->first();
-
-        return $h5p_library;
-    }
-
-
-    /**
-     * @return Library[]
-     */
-    public static function getLibraries()
-    {
-        /**
-         * @var Library[] $h5p_libraries
-         */
-
-        $h5p_libraries = self::orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
-
-        return $h5p_libraries;
-    }
-
-
-    /**
-     * @param string $name
-     *
-     * @return Library[]
-     */
-    public static function getLibraryAllVersions($name)
-    {
-        /**
-         * @var Library[] $h5p_libraries
-         */
-
-        $h5p_libraries = self::where([
-            "name" => $name
-        ])->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
-
-        return $h5p_libraries;
-    }
-
-
-    /**
-     * @param string   $name
-     * @param int|null $major_version
-     * @param int|null $minor_version
-     *
-     * @return Library|null
-     */
-    public static function getLibraryByVersion($name, $major_version = null, $minor_version = null)
-    {
-        /**
-         * @var Library|null $h5p_library
-         */
-
-        $where = [
-            "name" => $name
-        ];
-
-        if ($major_version !== null) {
-            $where["major_version"] = $major_version;
-        }
-
-        if ($minor_version !== null) {
-            $where["minor_version"] = $minor_version;
-        }
-
-        $h5p_library = self::where($where)->orderBy("major_version", "desc")->orderBy("minor_version", "desc")->orderBy("patch_version", "desc")
-            ->first(); // Order desc version for the case no version specification to get latest version
-
-        return $h5p_library;
-    }
-
-
-    /**
-     * @param int $library_id
-     *
-     * @return int
-     */
-    public static function getLibraryUsage($library_id)
-    {
-        $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
-          FROM " . self::TABLE_NAME . " AS l
-          JOIN " . ContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
-          JOIN " . Content::TABLE_NAME . " AS c ON cl.content_id = c.content_id
-          WHERE l.library_id = %s", [ilDBConstants::T_INTEGER], [$library_id]);
-
-        $count = intval($result->fetchAssoc()["count"]);
-
-        return $count;
-    }
-
-
-    /**
-     * @return Library[]
-     */
-    public static function getLatestLibraryVersions()
-    {
-        /**
-         * @var Library[] $h5p_libraries_
-         */
-
-        $h5p_libraries = self::where([
-            "runnable" => true
-        ])->orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
-
-        return $h5p_libraries;
-    }
-
-
-    /**
-     * @return Library|null
-     */
-    public static function getCurrentLibrary()
-    {
-        /**
-         * @var Library|null $xhfp_library
-         */
-
-        $library_id = filter_input(INPUT_GET, "xhfp_library", FILTER_SANITIZE_NUMBER_INT);
-
-        $xhfp_library = self::getLibraryById($library_id);
-
-        return $xhfp_library;
-    }
-
-
-    /**
-     * @param string $name
-     * @param int    $major_version
-     * @param int    $minor_version
-     *
-     * @return bool
-     */
-    public static function libraryHasUpgrade($name, $major_version, $minor_version)
-    {
-        $result = self::dic()->database()->queryF("SELECT id FROM " . self::TABLE_NAME
-            . " WHERE name=%s AND (major_version>%s OR (major_version=%s AND minor_version>%s))", [
-            ilDBConstants::T_TEXT,
-            ilDBConstants::T_INTEGER,
-            ilDBConstants::T_INTEGER,
-            ilDBConstants::T_INTEGER
-        ], [$name, $major_version, $major_version, $minor_version]);
-
-        return ($result->fetchAssoc() !== false);
     }
 
 
@@ -432,28 +270,6 @@ class Library extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->created_at = $this->updated_at = time();
-
-        parent::create();
-    }
-
-
-    /**
-     *
-     */
-    public function update()
-    {
-        $this->updated_at = time();
-
-        parent::update();
     }
 
 

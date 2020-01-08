@@ -5,7 +5,6 @@ namespace srag\Plugins\H5P\Event;
 use H5PEventBase;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Library\Counter;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -76,7 +75,7 @@ class EventFramework extends H5PEventBase
      */
     protected function save()
     {
-        $h5p_event = new Event();
+        $h5p_event = self::h5p()->events()->factory()->newEventInstance();
 
         $h5p_event->setType($this->type);
 
@@ -100,7 +99,7 @@ class EventFramework extends H5PEventBase
             $h5p_event->setLibraryVersion($this->library_version);
         }
 
-        $h5p_event->store();
+        self::h5p()->events()->storeEvent($h5p_event);
     }
 
 
@@ -111,15 +110,11 @@ class EventFramework extends H5PEventBase
      */
     protected function saveStats()
     {
-        $h5p_counter = Counter::getCounterByLibrary($this->type, ($this->library_name != null ? $this->library_name : ""), ($this->library_version
+        $h5p_counter = self::h5p()->libraries()->getCounterByLibrary($this->type, ($this->library_name != null ? $this->library_name : ""), ($this->library_version
         != null ? $this->library_version : ""));
 
-        if ($h5p_counter !== null) {
-            $new = false;
-        } else {
-            $new = true;
-
-            $h5p_counter = new Counter();
+        if ($h5p_counter === null) {
+            $h5p_counter = self::h5p()->libraries()->factory()->newCounterInstance();
 
             $h5p_counter->setType($this->type);
         }
@@ -134,10 +129,6 @@ class EventFramework extends H5PEventBase
             $h5p_counter->setLibraryVersion($this->library_version);
         }
 
-        if ($new) {
-            $h5p_counter->create();
-        } else {
-            $h5p_counter->update();
-        }
+        self::h5p()->libraries()->storeCounter($h5p_counter);
     }
 }

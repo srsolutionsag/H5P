@@ -3,7 +3,9 @@
 namespace srag\Plugins\H5P\Content\Editor;
 
 use ilFileInputGUI;
+use ilH5PPageComponentPluginGUI;
 use ilH5PPlugin;
+use ilObjH5PGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -32,9 +34,9 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * ImportContentFormGUI constructor
      *
-     * @param object $parent
-     * @param string $cmd_import
-     * @param string $cmd_cancel
+     * @param ilObjH5PGUI|ilH5PPageComponentPluginGUI $parent
+     * @param string                                  $cmd_import
+     * @param string                                  $cmd_cancel
      */
     public function __construct($parent, /*string*/ $cmd_import, /*string*/ $cmd_cancel)
     {

@@ -2,14 +2,9 @@
 
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Content\ContentsTableGUI;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
 use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
 use srag\Plugins\H5P\Object\ObjSettingsFormGUI;
-use srag\Plugins\H5P\Results\Result;
-use srag\Plugins\H5P\Results\ResultsTableGUI;
-use srag\Plugins\H5P\Results\SolveStatus;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -213,20 +208,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     public function hasResults()
     {
-        return Result::hasObjectResults($this->obj_id);
-    }
-
-
-    /**
-     * @param string $cmd
-     *
-     * @return ContentsTableGUI
-     */
-    protected function getContentsTable($cmd = self::CMD_MANAGE_CONTENTS)
-    {
-        $table = new ContentsTableGUI($this, $cmd);
-
-        return $table;
+        return self::h5p()->results()->hasObjectResults($this->obj_id);
     }
 
 
@@ -249,7 +231,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                 ->translate("import_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_IMPORT_CONTENT_SELECT)));
         }
 
-        $table = $this->getContentsTable();
+        $table = self::h5p()->contents()->factory()->newContentsTableInstance($this);
 
         $this->show($table);
     }
@@ -262,7 +244,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $content_id = filter_input(INPUT_GET, "xhfp_content");
 
-        Content::moveContentDown($content_id, $this->obj_id);
+        self::h5p()->contents()->moveContentDown($content_id, $this->obj_id);
 
         $this->show("");
     }
@@ -275,7 +257,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $content_id = filter_input(INPUT_GET, "xhfp_content");
 
-        Content::moveContentUp($content_id, $this->obj_id);
+        self::h5p()->contents()->moveContentUp($content_id, $this->obj_id);
 
         $this->show("");
     }
@@ -286,10 +268,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function getEditorForm()
     {
-        $h5p_content = Content::getCurrentContent();
+        $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        $form = self::h5p()->show_editor()
-            ->getEditorForm($h5p_content, $this, self::CMD_CREATE_CONTENT, self::CMD_UPDATE_CONTENT, self::CMD_MANAGE_CONTENTS);
+        $form = self::h5p()->contents()->editor()->factory()->newEditContentFormInstance($this, $h5p_content, self::CMD_CREATE_CONTENT, self::CMD_UPDATE_CONTENT, self::CMD_MANAGE_CONTENTS);
 
         return $form;
     }
@@ -357,7 +338,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        $h5p_content = Content::getCurrentContent();
+        $h5p_content = self::h5p()->contents()->getCurrentContent();
 
         self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
@@ -372,7 +353,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
-        $h5p_content = Content::getCurrentContent();
+        $h5p_content = self::h5p()->contents()->getCurrentContent();
 
         self::dic()->ctrl()->saveParameter($this, "xhfp_content");
 
@@ -396,7 +377,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function deleteContent()
     {
-        $h5p_content = Content::getCurrentContent();
+        $h5p_content = self::h5p()->contents()->getCurrentContent();
 
         self::h5p()->show_editor()->deleteContent($h5p_content);
 
@@ -411,17 +392,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
 
-        $h5p_contents = Content::getContentsByObject($this->obj_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->obj_id);
 
         $count = count($h5p_contents);
 
-        if (SolveStatus::isUserFinished($this->obj_id, self::dic()->user()->getId()) || $count === 0) {
+        if (self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId()) || $count === 0) {
             $this->show(self::plugin()->translate("solved_all_contents"));
 
             return;
         }
 
-        $h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
+        $h5p_content = self::h5p()->results()->getContentByUser($this->obj_id, self::dic()->user()->getId());
         if ($h5p_content === null) {
             // Take first content
             $h5p_content = $h5p_contents[0];
@@ -445,7 +426,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                     ->ctrl()->getLinkTarget($this, self::CMD_FINISH_CONTENTS)));
             }
 
-            $h5p_result = Result::getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
+            $h5p_result = self::h5p()->results()->getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
             if ($h5p_result !== null) {
                 $this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count, self::plugin()
                     ->translate("solved_content")));
@@ -475,13 +456,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function previousContent()
     {
-        if (SolveStatus::isUserFinished($this->obj_id, self::dic()->user()->getId())) {
+        if (self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
         }
 
-        $h5p_contents = Content::getContentsByObject($this->obj_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->obj_id);
 
-        $h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
+        $h5p_content = self::h5p()->results()->getContentByUser($this->obj_id, self::dic()->user()->getId());
 
         if ($h5p_content === null) {
             // Take first content
@@ -495,7 +476,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         if (isset($h5p_contents[$index])) {
             $h5p_content = $h5p_contents[$index];
 
-            SolveStatus::setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
+            self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
         self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
@@ -507,13 +488,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function nextContent()
     {
-        if (SolveStatus::isUserFinished($this->obj_id, self::dic()->user()->getId())) {
+        if (self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
         }
 
-        $h5p_contents = Content::getContentsByObject($this->obj_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->obj_id);
 
-        $h5p_content = SolveStatus::getContentByUser($this->obj_id, self::dic()->user()->getId());
+        $h5p_content = self::h5p()->results()->getContentByUser($this->obj_id, self::dic()->user()->getId());
 
         if ($h5p_content === null) {
             // Take first content
@@ -527,7 +508,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         if (isset($h5p_contents[$index])) {
             $h5p_content = $h5p_contents[$index];
 
-            SolveStatus::setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
+            self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
         self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
@@ -539,26 +520,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function finishContents()
     {
-        if (!$this->object->isSolveOnlyOnce() || SolveStatus::isUserFinished($this->obj_id, self::dic()->user()->getId())) {
+        if (!$this->object->isSolveOnlyOnce() || self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
         }
 
-        SolveStatus::setUserFinished($this->obj_id, self::dic()->user()->getId());
+        self::h5p()->results()->setUserFinished($this->obj_id, self::dic()->user()->getId());
 
         self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
-    }
-
-
-    /**
-     * @param string $cmd
-     *
-     * @return ResultsTableGUI
-     */
-    protected function getResultsTable($cmd = self::CMD_MANAGE_CONTENTS)
-    {
-        $table = new ResultsTableGUI($this, $cmd);
-
-        return $table;
     }
 
 
@@ -569,7 +537,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_RESULTS);
 
-        $table = $this->getResultsTable();
+        $table = self::h5p()->results()->factory()->newResultsTableInstance($this);
 
         $this->show($table);
     }
@@ -616,14 +584,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $user_id = filter_input(INPUT_GET, "xhfp_user");
 
-        $h5p_solve_status = SolveStatus::getByUser($this->obj_id, $user_id);
+        $h5p_solve_status = self::h5p()->results()->getByUser($this->obj_id, $user_id);
         if ($h5p_solve_status !== null) {
-            $h5p_solve_status->delete();
+            self::h5p()->results()->deleteSolveStatus($h5p_solve_status);
         }
 
-        $h5p_results = Result::getResultsByUserObject($user_id, $this->obj_id);
+        $h5p_results = self::h5p()->results()->getResultsByUserObject($user_id, $this->obj_id);
         foreach ($h5p_results as $h5p_result) {
-            $h5p_result->delete();
+            self::h5p()->results()->deleteResult($h5p_result);
         }
 
         try {
@@ -688,7 +656,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function getImportContentForm()
     {
-        $form = self::h5p()->show_editor()->getImportContentForm($this, self::CMD_IMPORT_CONTENT, self::CMD_MANAGE_CONTENTS);
+        $form = self::h5p()->contents()->editor()->factory()->newImportContentFormInstance($this, self::CMD_IMPORT_CONTENT, self::CMD_MANAGE_CONTENTS);
 
         return $form;
     }
@@ -733,7 +701,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function exportContent()
     {
-        $h5p_content = Content::getCurrentContent();
+        $h5p_content = self::h5p()->contents()->getCurrentContent();
 
         self::h5p()->show_editor()->exportContent($h5p_content);
     }

@@ -8,8 +8,6 @@ use ilObjH5PGUI;
 use ilUtil;
 use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\CustomInputGUIs\H5P\Waiter\Waiter;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -93,7 +91,7 @@ class ContentsTableGUI extends TableGUI
      */
     protected function initData()/*: void*/
     {
-        $this->setData(Content::getContentsByObjectArray($this->parent_obj->object->getId()));
+        $this->setData(self::h5p()->contents()->getContentsByObjectArray($this->parent_obj->object->getId()));
     }
 
 
@@ -142,7 +140,7 @@ class ContentsTableGUI extends TableGUI
      */
     protected function hasResults()
     {
-        return Result::hasObjectResults($this->obj_id);
+        return self::h5p()->results()->hasObjectResults($this->obj_id);
     }
 
 
@@ -151,8 +149,8 @@ class ContentsTableGUI extends TableGUI
      */
     protected function fillRow(/*array*/ $row)/*: void*/
     {
-        $h5p_library = Library::getLibraryById($row["library_id"]);
-        $h5p_results = Result::getResultsByContent($row["content_id"]);
+        $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
+        $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);
 
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
 

@@ -12,9 +12,6 @@ use ilObjH5PAccess;
 use ilObjH5PGUI;
 use ilUIPluginRouterGUI;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryHubCache;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -238,7 +235,7 @@ class H5PActionGUI
 
         $name = H5PCore::libraryFromString($library)["machineName"];
 
-        $h5p_hub_library = LibraryHubCache::getLibraryByName($name);
+        $h5p_hub_library = self::h5p()->libraries()->getLibraryByName($name);
 
         $output = [];
 
@@ -311,7 +308,7 @@ class H5PActionGUI
     {
         $start = microtime(true);
 
-        $h5P_contents = Content::getContentsNotFiltered();
+        $h5P_contents = self::h5p()->contents()->getContentsNotFiltered();
 
         $done = 0;
 
@@ -338,11 +335,11 @@ class H5PActionGUI
     {
         $restricted = filter_input(INPUT_GET, "restrict");
 
-        $h5p_library = Library::getCurrentLibrary();
+        $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
         $h5p_library->setRestricted($restricted);
 
-        $h5p_library->store();
+        self::h5p()->libraries()->storeLibrary($h5p_library);
 
         self::dic()->ctrl()->saveParameter($this, "xhfp_library");
 

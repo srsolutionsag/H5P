@@ -45,44 +45,6 @@ class TmpFile extends ActiveRecord
 
 
     /**
-     * @param string $path
-     *
-     * @return TmpFile[]
-     */
-    public static function getFilesByPath($path)
-    {
-        /**
-         * @var TmpFile[] $h5p_tmp_files
-         */
-
-        $h5p_tmp_files = self::where([
-            "path" => $path
-        ])->get();
-
-        return $h5p_tmp_files;
-    }
-
-
-    /**
-     * @param int $older_than
-     *
-     * @return TmpFile[]
-     */
-    public static function getOldTmpFiles($older_than)
-    {
-        /**
-         * @var TmpFile[] $h5p_tmp_files
-         */
-
-        $h5p_tmp_files = self::where([
-            "created_at" => $older_than
-        ], "<")->get();
-
-        return $h5p_tmp_files;
-    }
-
-
-    /**
      * @var int
      *
      * @con_has_field    true
@@ -161,17 +123,6 @@ class TmpFile extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->created_at = time();
-
-        parent::create();
     }
 
 

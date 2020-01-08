@@ -45,34 +45,6 @@ class ContentLibrary extends ActiveRecord
 
 
     /**
-     * @param int         $content_id
-     * @param string|null $dependency_type
-     *
-     * @return ContentLibrary[]
-     */
-    public static function getContentLibraries($content_id, $dependency_type = null)
-    {
-        /**
-         * @var ContentLibrary[] $h5p_content_libraries
-         */
-
-        $where = [
-            "content_id" => $content_id
-        ];
-
-        if ($dependency_type !== null) {
-            $where["dependency_type"] = $dependency_type;
-        }
-
-        $h5p_content_libraries = self::where($where)->orderBy("weight", "asc")->get();
-
-        return $h5p_content_libraries;
-    }
-
-
-    /**
-     * Workaround for multiple primary keys: content_id, library_id, dependency_type
-     *
      * @var int
      *
      * @con_has_field    true

@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Event;
 
 use ActiveRecord;
 use arConnector;
-use ilDBConstants;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -42,48 +41,6 @@ class Event extends ActiveRecord
     public static function returnDbTableName()
     {
         return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @return string[]
-     */
-    public static function getAuthorsRecentlyUsedLibraries()
-    {
-        $user_id = self::dic()->user()->getId();
-
-        $result = self::dic()->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
-            FROM " . self::TABLE_NAME . "
-            WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
-            GROUP BY library_name
-            ORDER BY max_created_at DESC", [ilDBConstants::T_INTEGER], [$user_id]);
-
-        $h5p_events = [];
-
-        while (($h5p_event = $result->fetchAssoc()) !== false) {
-            $h5p_events[] = $h5p_event["library_name"];
-        }
-
-        return $h5p_events;
-    }
-
-
-    /**
-     * @param int $older_than
-     *
-     * @return Event[]
-     */
-    public static function getOldEvents($older_than)
-    {
-        /**
-         * @var Event[] $h5p_events
-         */
-
-        $h5p_events = self::where([
-            "created_at" => $older_than
-        ], "<")->get();
-
-        return $h5p_events;
     }
 
 
@@ -228,19 +185,6 @@ class Event extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->created_at = time();
-
-        $this->user_id = self::dic()->user()->getId();
-
-        parent::create();
     }
 
 

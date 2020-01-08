@@ -111,17 +111,15 @@ class OptionOld extends ActiveRecord
 
         if ($h5p_option !== null) {
             $h5p_option->setValue($value);
-
-            $h5p_option->update();
         } else {
             $h5p_option = new self();
 
             $h5p_option->setName($name);
 
             $h5p_option->setValue($value);
-
-            $h5p_option->create();
         }
+
+        $h5p_option->store();
     }
 
 

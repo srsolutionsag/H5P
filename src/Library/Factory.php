@@ -1,0 +1,114 @@
+<?php
+
+namespace srag\Plugins\H5P\Library;
+
+use ilH5PPlugin;
+use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Utils\H5PTrait;
+
+/**
+ * Class Factory
+ *
+ * @package srag\Plugins\H5P\Library
+ *
+ * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ */
+final class Factory
+{
+
+    use DICTrait;
+    use H5PTrait;
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
+     * @return Counter
+     */
+    public function newCounterInstance()/*:Counter*/
+    {
+        $counter = new Counter();
+
+        return $counter;
+    }
+
+
+    /**
+     * @return Library
+     */
+    public function newLibraryInstance()/*:Library*/
+    {
+        $library = new Library();
+
+        return $library;
+    }
+
+
+    /**
+     * @return LibraryCachedAsset
+     */
+    public function newLibraryCachedAssetInstance()/*:LibraryCachedAsset*/
+    {
+        $library_cached_asset = new LibraryCachedAsset();
+
+        return $library_cached_asset;
+    }
+
+
+    /**
+     * @return LibraryDependencies
+     */
+    public function newLibraryDependenciesInstance()/*:LibraryDependencies*/
+    {
+        $library_dependencies = new LibraryDependencies();
+
+        return $library_dependencies;
+    }
+
+
+    /**
+     * @return LibraryHubCache
+     */
+    public function newLibraryHubCacheInstance()/*:LibraryHubCache*/
+    {
+        $library_hub_cache = new LibraryHubCache();
+
+        return $library_hub_cache;
+    }
+
+
+    /**
+     * @return LibraryLanguage
+     */
+    public function newLibraryLanguageInstance()/*:LibraryLanguage*/
+    {
+        $library_language = new LibraryLanguage();
+
+        return $library_language;
+    }
+}
