@@ -2,10 +2,11 @@
 
 namespace srag\Plugins\H5P\Content;
 
+use H5PCore;
 use ilH5PPlugin;
-use ilObjH5P;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Editor\Repository as EditorRepository;
+use srag\Plugins\H5P\Framework\Framework;
 use srag\Plugins\H5P\Library\Counter;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -42,6 +43,21 @@ final class Repository
 
 
     /**
+     * @var H5PCore
+     */
+    protected $core = null;
+
+
+    /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @param Content $content
      *
      * @return Content
@@ -60,6 +76,20 @@ final class Repository
     public function cloneContentLibrary(ContentLibrary $content_library)/*:ContentLibrary*/
     {
         return $content_library->copy();
+    }
+
+
+    /**
+     * @return H5PCore
+     */
+    public function core()/*:H5PCore*/
+    {
+        if ($this->core === null) {
+            $this->core = new H5PCore($this->framework(), self::h5p()->objects()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder(), self::dic()->user()
+                ->getLanguage(), true);
+        }
+
+        return $this->core;
     }
 
 
@@ -124,6 +154,24 @@ final class Repository
 
 
     /**
+     * @return Framework
+     */
+    public function framework()/*:Framework*/
+    {
+        return Framework::getInstance();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCorePath()/*:string*/
+    {
+        return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-core";
+    }
+
+
+    /**
      * @internal
      */
     public function installTables()/*:void*/
@@ -132,6 +180,15 @@ final class Repository
         ContentLibrary::updateDB();
         ContentUserData::updateDB();
         $this->editor()->installTables();
+    }
+
+
+    /**
+     * @return ShowContent
+     */
+    public function show()/*:ShowContent*/
+    {
+        return ShowContent::getInstance();
     }
 
 
@@ -148,10 +205,10 @@ final class Repository
             $content->setContentUserId(self::dic()->user()->getId());
 
             if ($content->getObjId() === null) {
-                $content->setObjId(ilObjH5P::_lookupObjectId(filter_input(INPUT_GET, "ref_id")));
+                $content->setObjId(self::dic()->objDataCache()->lookupObjId(filter_input(INPUT_GET, "ref_id")));
             }
 
-            $content->setSort((count(self::h5p()->contents()->getContentsByObject($content->getObjId())) + 1) * 10);
+            $content->setSort((count($this->getContentsByObject($content->getObjId())) + 1) * 10);
         }
 
         $content->setUpdatedAt($time);

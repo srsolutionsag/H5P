@@ -28,12 +28,29 @@ class ShowEditor
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
     /**
      * ShowEditor constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -44,13 +61,13 @@ class ShowEditor
      */
     protected function initEditor()
     {
-        self::h5p()->show_content()->initCore();
+        self::h5p()->contents()->show()->initCore();
 
-        $editor_path = self::h5p()->getEditorPath();
+        $editor_path = self::h5p()->contents()->editor()->getCorePath();
 
         $assets = [
-            "js"  => self::h5p()->show_content()->core["core"]["scripts"],
-            "css" => self::h5p()->show_content()->core["core"]["styles"]
+            "js"  => self::h5p()->contents()->show()->core["core"]["scripts"],
+            "css" => self::h5p()->contents()->show()->core["core"]["styles"]
         ];
 
         foreach (H5peditor::$scripts as $script) {
@@ -58,7 +75,7 @@ class ShowEditor
                 /*$this->h5p_scripts[] = */
                 $assets["js"][] = $editor_path . "/" . $script;
             } else {
-                self::h5p()->show_content()->js_files[] = $editor_path . "/" . $script;
+                self::h5p()->contents()->show()->js_files[] = $editor_path . "/" . $script;
             }
         }
 
@@ -67,8 +84,8 @@ class ShowEditor
             $assets["css"][] = $editor_path . "/" . $style;
         }
 
-        self::h5p()->show_content()->core["editor"] = [
-            "filesPath"          => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder() . "/editor",
+        self::h5p()->contents()->show()->core["editor"] = [
+            "filesPath"          => ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder() . "/editor",
             "fileIcon"           => [
                 "path"   => $editor_path . "/images/binary-file.png",
                 "width"  => 50,
@@ -76,21 +93,21 @@ class ShowEditor
             ],
             "ajaxPath"           => H5PActionGUI::getUrl("") . "&" . H5PActionGUI::CMD_H5P_ACTION . "=",
             "libraryUrl"         => ILIAS_HTTP_PATH . "/" . $editor_path . "/",
-            "copyrightSemantics" => self::h5p()->content_validator()->getCopyrightSemantics(),
-            "metadataSemantics"  => self::h5p()->content_validator()->getMetadataSemantics(),
+            "copyrightSemantics" => self::h5p()->contents()->editor()->contentValidatorCore()->getCopyrightSemantics(),
+            "metadataSemantics"  => self::h5p()->contents()->editor()->contentValidatorCore()->getMetadataSemantics(),
             "assets"             => $assets,
             "apiVersion"         => H5PCore::$coreApi
         ];
 
         $language = self::dic()->user()->getLanguage();
-        $language_path = self::h5p()->getEditorPath() . "/language/";
+        $language_path = self::h5p()->contents()->editor()->getCorePath() . "/language/";
         $language_script = $language_path . $language . ".js";
         if (!file_exists($language_script)) {
             $language_script = $language_path . "en.js";
         }
-        self::h5p()->show_content()->js_files[] = $language_script;
+        self::h5p()->contents()->show()->js_files[] = $language_script;
 
-        self::h5p()->show_content()->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PEditor.min.js";
+        self::h5p()->contents()->show()->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PEditor.min.js";
     }
 
 
@@ -103,11 +120,11 @@ class ShowEditor
     {
         $this->initEditor();
 
-        self::h5p()->show_content()->core["editor"]["contentId"] = ($h5p_content !== null ? $h5p_content->getContentId() : "");
+        self::h5p()->contents()->show()->core["editor"]["contentId"] = ($h5p_content !== null ? $h5p_content->getContentId() : "");
 
-        self::h5p()->show_content()->initCoreToOutput();
+        self::h5p()->contents()->show()->initCoreToOutput();
 
-        self::h5p()->show_content()->outputHeader();
+        self::h5p()->contents()->show()->outputHeader();
 
         $tutorial_toolbar = new ilToolbarGUI();
         $tutorial_toolbar->setId("xhfp_edit_toolbar");
@@ -165,9 +182,9 @@ class ShowEditor
         $params = json_decode($params);
         $content["params"] = json_encode($params->params);
 
-        $content["id"] = self::h5p()->core()->saveContent($content);
+        $content["id"] = self::h5p()->contents()->core()->saveContent($content);
 
-        self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, null);
+        self::h5p()->contents()->editor()->core()->processParameters($content["id"], $content["library"], $params->params, null, null);
 
         $h5p_content = self::h5p()->contents()->getContentById($content["id"]);
 
@@ -193,7 +210,7 @@ class ShowEditor
      */
     public function updateContent(Content $h5p_content, $title, $params, EditContentFormGUI $form = null, $message = true)
     {
-        $content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+        $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
         $content["title"] = $title;
 
@@ -201,9 +218,9 @@ class ShowEditor
         $params = json_decode($params);
         $content["params"] = json_encode($params->params);
 
-        self::h5p()->core()->saveContent($content);
+        self::h5p()->contents()->core()->saveContent($content);
 
-        self::h5p()->editor()->processParameters($content["id"], $content["library"], $params->params, null, $oldParams);
+        self::h5p()->contents()->editor()->core()->processParameters($content["id"], $content["library"], $params->params, null, $oldParams);
 
         if ($form !== null) {
             $form->handleFileUpload();
@@ -221,7 +238,7 @@ class ShowEditor
      */
     public function deleteContent(Content $h5p_content, $message = true)
     {
-        self::h5p()->storage()->deletePackage([
+        self::h5p()->contents()->editor()->storageCore()->deletePackage([
             "id"   => $h5p_content->getContentId(),
             "slug" => $h5p_content->getSlug()
         ]);
@@ -245,7 +262,7 @@ class ShowEditor
 
         ob_start(); // prevent output from editor
 
-        self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+        self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
 
         $result = ob_get_clean();
 
@@ -267,11 +284,11 @@ class ShowEditor
      */
     public function exportContent(Content $h5p_content)
     {
-        $content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+        $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
-        self::h5p()->core()->filterParameters($content);
+        self::h5p()->contents()->core()->filterParameters($content);
 
-        $export_file = self::h5p()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
+        $export_file = self::h5p()->objects()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
 
         ilFileDelivery::deliverFileAttached($export_file, $content["slug"] . ".h5p");
     }

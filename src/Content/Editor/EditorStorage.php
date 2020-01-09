@@ -22,12 +22,29 @@ class EditorStorage implements H5peditorStorageInterface
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
     /**
      * EditorStorage constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -82,7 +99,7 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public function getLibraries($libraries = null)
     {
-        $super_user = self::h5p()->framework()->hasPermission("manage_h5p_libraries");
+        $super_user = self::h5p()->contents()->framework()->hasPermission("manage_h5p_libraries");
 
         if ($libraries !== null) {
             $librariesWithDetails = [];
@@ -162,7 +179,7 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public static function saveFileTemporarily($data, $move_file)
     {
-        $path = self::h5p()->framework()->getUploadedH5pPath();
+        $path = self::h5p()->contents()->framework()->getUploadedH5pPath();
 
         if ($move_file) {
             rename($data, $path);
@@ -186,7 +203,7 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public static function markFileForCleanup($file, $content_id = null)
     {
-        $path = self::h5p()->getH5PFolder();
+        $path = self::h5p()->objects()->getH5PFolder();
 
         if (empty($content_id)) {
             $path .= "/editor/";

@@ -1,19 +1,21 @@
 <?php
 
-namespace srag\Plugins\H5P\Hub;
+namespace srag\Plugins\H5P\Object;
 
 use ilH5PPlugin;
+use ilObjH5P;
+use ilObjH5PGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class Repository
+ * Class Factory
  *
- * @package srag\Plugins\H5P\Hub
+ * @package srag\Plugins\H5P\Object
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Repository
+final class Factory
 {
 
     use DICTrait;
@@ -39,7 +41,7 @@ final class Repository
 
 
     /**
-     * Repository constructor
+     * Factory constructor
      */
     private function __construct()
     {
@@ -48,37 +50,26 @@ final class Repository
 
 
     /**
-     * @internal
+     * @return H5PObject
      */
-    public function dropTables()/*:void*/
+    public function newInstance()/* : H5PObject*/
     {
+        $object = new H5PObject();
 
+        return $object;
     }
 
 
     /**
-     * @return Factory
+     * @param ilObjH5PGUI $parent
+     * @param ilObjH5P    $object
+     *
+     * @return ObjSettingsFormGUI
      */
-    public function factory()/* : Factory*/
+    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object)/*:ObjSettingsFormGUI*/
     {
-        return Factory::getInstance();
-    }
+        $form = new ObjSettingsFormGUI($parent, $object);
 
-
-    /**
-     * @internal
-     */
-    public function installTables()/*:void*/
-    {
-
-    }
-
-
-    /**
-     * @return ShowHub
-     */
-    public function show()/*:ShowHub*/
-    {
-        return ShowHub::getInstance();
+        return $form;
     }
 }

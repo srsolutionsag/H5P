@@ -2,7 +2,6 @@
 
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -60,7 +59,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
         }
 
         if ($a_obj_id === null) {
-            $a_obj_id = ilObjH5P::_lookupObjectId($a_ref_id);
+            $a_obj_id = self::dic()->objDataCache()->lookupObjId($a_ref_id);
         }
 
         if ($a_user_id == null) {
@@ -125,7 +124,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function _isOffline($a_obj_id)
     {
-        $object = H5PObject::getObjectById(intval($a_obj_id));
+        $object = self::h5p()->objects()->getObjectById(intval($a_obj_id));
 
         if ($object !== null) {
             return (!$object->isOnline());

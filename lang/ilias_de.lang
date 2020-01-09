@@ -106,7 +106,7 @@ settings#:#Einstellungen
 settings_saved#:#Einstellungen gespeichert
 show#:#Anzeigen
 show_advanced#:#Weitere Details
-show_contents#:#Inhalte
+contents()->shows#:#Inhalte
 show_less#:#Weniger anzeigen
 show_more#:#Mehr anzeigen
 size#:#Grösse

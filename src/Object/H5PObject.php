@@ -45,25 +45,6 @@ class H5PObject extends ActiveRecord
 
 
     /**
-     * @param int $obj_id
-     *
-     * @return H5PObject|null
-     */
-    public static function getObjectById($obj_id)
-    {
-        /**
-         * @var H5PObject|null $object
-         */
-
-        $object = self::where([
-            "obj_id" => $obj_id
-        ])->first();
-
-        return $object;
-    }
-
-
-    /**
      * @var int
      *
      * @con_has_field    true

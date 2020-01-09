@@ -42,6 +42,15 @@ final class Repository
 
 
     /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @param Counter $counter
      */
     public function deleteCounter(Counter $counter)/*:void*/

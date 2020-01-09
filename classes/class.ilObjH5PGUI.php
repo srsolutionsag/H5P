@@ -4,7 +4,6 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
 use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
-use srag\Plugins\H5P\Object\ObjSettingsFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -47,19 +46,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     const CMD_RESULTS = "results";
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
-    const CMD_SHOW_CONTENTS = "showContents";
+    const CMD_contents()->showS = "showContents";
     const CMD_UPDATE_CONTENT = "updateContent";
     const TAB_CONTENTS = "contents";
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_RESULTS = "results";
     const TAB_SETTINGS = "settings";
-    const TAB_SHOW_CONTENTS = "show_contents";
+    const TAB_contents()->showS = "contents()->shows";
     /**
-     * Fix autocomplete (Defined in parent)
-     *
      * @var ilObjH5P
      */
-    var $object;
+    public $object;
 
 
     /**
@@ -104,7 +101,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                     case self::CMD_FINISH_CONTENTS:
                     case self::CMD_NEXT_CONTENT:
                     case self::CMD_PREVIOUS_CONTENT:
-                    case self::CMD_SHOW_CONTENTS:
+                    case self::CMD_contents()->showS:
                         // Read commands
                         if (!ilObjH5PAccess::hasReadAccess()) {
                             ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
@@ -304,7 +301,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        self::h5p()->show_editor()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -340,7 +337,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -379,7 +376,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->show_editor()->deleteContent($h5p_content);
+        self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -390,7 +387,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function showContents()
     {
-        self::dic()->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
+        self::dic()->tabs()->activateTab(self::TAB_contents()->showS);
 
         $h5p_contents = self::h5p()->contents()->getContentsByObject($this->obj_id);
 
@@ -428,7 +425,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
             $h5p_result = self::h5p()->results()->getResultByUserContent(self::dic()->user()->getId(), $h5p_content->getContentId());
             if ($h5p_result !== null) {
-                $this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count, self::plugin()
+                $this->show(self::h5p()->contents()->show()->getH5PContentStep($h5p_content, $index, $count, self::plugin()
                     ->translate("solved_content")));
 
                 return;
@@ -447,7 +444,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                 ->translate("delete_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_DELETE_CONTENT_CONFIRM)));
         }*/
 
-        $this->show(self::h5p()->show_content()->getH5PContentStep($h5p_content, $index, $count));
+        $this->show(self::h5p()->contents()->show()->getH5PContentStep($h5p_content, $index, $count));
     }
 
 
@@ -479,7 +476,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
+        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
     }
 
 
@@ -511,7 +508,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
+        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
     }
 
 
@@ -526,7 +523,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         self::h5p()->results()->setUserFinished($this->obj_id, self::dic()->user()->getId());
 
-        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
+        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
     }
 
 
@@ -607,24 +604,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
 
     /**
-     * @return ObjSettingsFormGUI
-     */
-    protected function getSettingsForm()
-    {
-        $form = new ObjSettingsFormGUI($this, $this->object);
-
-        return $form;
-    }
-
-
-    /**
      *
      */
     protected function settings()
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->objects()->factory()->newFormInstance($this, $this->object);
 
         $this->show($form);
     }
@@ -637,7 +623,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->objects()->factory()->newFormInstance($this, $this->object);
 
         if (!$form->storeForm()) {
             $this->show($form);
@@ -690,7 +676,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        self::h5p()->show_editor()->importContent($form);
+        self::h5p()->contents()->editor()->show()->importContent($form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -703,7 +689,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->show_editor()->exportContent($h5p_content);
+        self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
     }
 
 
@@ -712,8 +698,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function setTabs()
     {
-        self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("show_contents"), self::dic()->ctrl()
-            ->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
+        self::dic()->tabs()->addTab(self::TAB_contents()->showS, self::plugin()->translate("contents()->shows"), self::dic()->ctrl()
+            ->getLinkTarget($this, self::CMD_contents()->showS));
 
         if (ilObjH5PAccess::hasWriteAccess()) {
             self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("manage_contents"), self::dic()->ctrl()
@@ -746,7 +732,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         if (ilObjH5PAccess::hasWriteAccess()) {
             return self::CMD_MANAGE_CONTENTS;
         } else {
-            return self::CMD_SHOW_CONTENTS;
+            return self::CMD_contents()->showS;
         }
     }
 

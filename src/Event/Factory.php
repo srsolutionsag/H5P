@@ -56,4 +56,22 @@ final class Factory
 
         return $event;
     }
+
+
+    /**
+     * @param string      $type
+     * @param string|null $sub_type
+     * @param string|null $content_id
+     * @param string|null $content_title
+     * @param string|null $library_name
+     * @param string|null $library_version
+     *
+     * @return EventFramework
+     */
+    public function newEventFrameworkInstance($type, $sub_type = null, $content_id = null, $content_title = null, $library_name = null, $library_version = null)/*:EventFramework*/
+    {
+        $event_framework = new EventFramework($type, $sub_type, $content_id, $content_title, $library_name, $library_version);
+
+        return $event_framework;
+    }
 }

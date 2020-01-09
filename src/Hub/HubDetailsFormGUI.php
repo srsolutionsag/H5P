@@ -112,7 +112,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     public function getHTML()
     {
         // Library
-        $libraries = self::h5p()->show_hub()->getLibraries();
+        $libraries = self::h5p()->hub()->show()->getLibraries();
         $library = $libraries[$this->key];
         $library["usages"] = self::h5p()->libraries()->getUsageJoin($library["installed_id"]);
         $library["dependencies"] = self::h5p()->libraries()->getDependenciesJoin($library["installed_id"]);

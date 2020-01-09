@@ -20,12 +20,29 @@ class EditorAjax implements H5PEditorAjaxInterface
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
     /**
      * EditorAjax constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }

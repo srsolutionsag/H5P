@@ -101,7 +101,7 @@ class HubTableGUI extends TableGUI
         $runnable = ($filter["only_runnable"] ? true : null);
         $not_used = ($filter["only_not_used"] ? true : null);
 
-        $libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
+        $libraries = self::h5p()->hub()->show()->getLibraries($title, $status, $runnable, $not_used);
 
         $this->setData($libraries);
     }
@@ -248,7 +248,7 @@ class HubTableGUI extends TableGUI
     {
         $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
 
-        $hub = self::h5p()->show_hub()->getHub($form, $this->parent_obj, parent::getHTML());
+        $hub = self::h5p()->hub()->show()->getHub($form, $this->parent_obj, parent::getHTML());
 
         return $hub;
     }

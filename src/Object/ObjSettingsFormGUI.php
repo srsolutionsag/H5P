@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Object;
 
 use ilCheckboxInputGUI;
 use ilH5PPlugin;
+use ilObjH5P;
 use ilObjH5PGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
@@ -22,6 +23,18 @@ class ObjSettingsFormGUI extends ObjectPropertyFormGUI
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+
+
+    /**
+     * ObjSettingsFormGUI constructor
+     *
+     * @param ilObjH5PGUI $parent
+     * @param ilObjH5P    $object
+     */
+    public function __construct(ilObjH5PGUI $parent, ilObjH5P $object)
+    {
+        parent::__construct($parent, $object);
+    }
 
 
     /**

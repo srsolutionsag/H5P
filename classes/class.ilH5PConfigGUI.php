@@ -158,7 +158,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function refreshHub()
     {
-        self::h5p()->show_hub()->refreshHub();
+        self::h5p()->hub()->show()->refreshHub();
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
@@ -179,7 +179,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
             return;
         }
 
-        self::h5p()->show_hub()->uploadLibrary($form);
+        self::h5p()->hub()->show()->uploadLibrary($form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
@@ -192,7 +192,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         $name = filter_input(INPUT_GET, "xhfp_library_name");
 
-        self::h5p()->show_hub()->installLibrary($name);
+        self::h5p()->hub()->show()->installLibrary($name);
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
@@ -225,8 +225,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
-        $contents_count = self::h5p()->framework()->getNumContent($h5p_library->getLibraryId());
-        $usage = self::h5p()->framework()->getLibraryUsage($h5p_library->getLibraryId());
+        $contents_count = self::h5p()->contents()->framework()->getNumContent($h5p_library->getLibraryId());
+        $usage = self::h5p()->contents()->framework()->getLibraryUsage($h5p_library->getLibraryId());
 
         $not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
         if (!$not_in_use) {
@@ -261,7 +261,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
-        self::h5p()->show_hub()->deleteLibrary($h5p_library);
+        self::h5p()->hub()->show()->deleteLibrary($h5p_library);
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }

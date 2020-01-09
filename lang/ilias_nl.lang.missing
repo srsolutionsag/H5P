@@ -106,7 +106,7 @@ settings#:#MISSING settings
 settings_saved#:#MISSING settings_saved
 show#:#MISSING show
 show_advanced#:#MISSING show_advanced
-show_contents#:#MISSING show_contents
+contents()->shows#:#MISSING contents()->shows
 show_less#:#MISSING show_less
 show_more#:#MISSING show_more
 size#:#MISSING size

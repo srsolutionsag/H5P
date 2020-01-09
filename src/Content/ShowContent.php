@@ -6,7 +6,6 @@ use H5PCore;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
-use srag\Plugins\H5P\Object\H5PObject;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -42,12 +41,29 @@ class ShowContent
      * @var array
      */
     protected $js_files_output = [];
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
     /**
      * ShowContent constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -61,7 +77,7 @@ class ShowContent
         if ($this->core === null) {
             $this->core = [
                 "baseUrl"            => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-                "url"                => ILIAS_HTTP_PATH . "/" . self::h5p()->getH5PFolder(),
+                "url"                => ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder(),
                 "postUserStatistics" => true,
                 "ajax"               => [
                     H5PActionGUI::H5P_ACTION_SET_FINISHED      => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -75,7 +91,7 @@ class ShowContent
                 ],
                 "siteUrl"            => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
                 "l10n"               => [
-                    "H5P" => self::h5p()->core()->getLocalization()
+                    "H5P" => self::h5p()->contents()->core()->getLocalization()
                 ],
                 "hubIsEnabled"       => false,
                 "core"               => [
@@ -86,7 +102,7 @@ class ShowContent
                 "loadedJs"           => []
             ];
 
-            $core_path = self::h5p()->getCorePath() . "/";
+            $core_path = self::h5p()->contents()->getCorePath() . "/";
 
             foreach (H5PCore::$styles as $style) {
                 $this->core["core"]["styles"][] = $this->css_files[] = $core_path . $style;
@@ -216,9 +232,9 @@ class ShowContent
     {
         self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
-        $content = self::h5p()->core()->loadContent($h5p_content->getContentId());
+        $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
-        $safe_parameters = self::h5p()->core()->filterParameters($content);
+        $safe_parameters = self::h5p()->contents()->core()->filterParameters($content);
 
         $user_id = self::dic()->user()->getId();
 
@@ -246,9 +262,9 @@ class ShowContent
             "embedType"       => H5PCore::determineEmbedType($h5p_content->getEmbedType(), $content["library"]["embedTypes"])
         ];
 
-        $content_dependencies = self::h5p()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
+        $content_dependencies = self::h5p()->contents()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-        $files = self::h5p()->core()->getDependenciesFiles($content_dependencies, self::h5p()->getH5PFolder());
+        $files = self::h5p()->contents()->core()->getDependenciesFiles($content_dependencies, self::h5p()->objects()->getH5PFolder());
         $scripts = array_map(function ($file) {
             return $file->path;
         }, $files["scripts"]);
@@ -340,7 +356,7 @@ class ShowContent
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object = H5PObject::getObjectById($h5p_content->getObjId());
+            $object = self::h5p()->objects()->getObjectById($h5p_content->getObjId());
         } else {
             $object = null;
         }
@@ -395,7 +411,7 @@ class ShowContent
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object = H5PObject::getObjectById($h5p_content->getObjId());
+            $object = self::h5p()->objects()->getObjectById($h5p_content->getObjId());
         } else {
             $object = null;
         }

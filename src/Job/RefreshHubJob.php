@@ -115,7 +115,7 @@ class RefreshHubJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        self::h5p()->show_hub()->refreshHub();
+        self::h5p()->hub()->show()->refreshHub();
 
         $result->setStatus(ilCronJobResult::STATUS_OK);
 

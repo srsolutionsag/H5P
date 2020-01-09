@@ -40,6 +40,15 @@ final class Repository
 
 
     /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @param Result $result
      */
     public function deleteResult(Result $result)/*:void*/
@@ -304,7 +313,7 @@ final class Repository
             $h5p_solve_status->setContentId($content_id);
         }
 
-        self::h5p()->results()->storeSolveStatus($h5p_solve_status);
+        $this->storeSolveStatus($h5p_solve_status);
     }
 
 
@@ -358,6 +367,6 @@ final class Repository
             $h5p_solve_status->setFinished(true);
         }
 
-        self::h5p()->results()->storeSolveStatus($h5p_solve_status);
+        $this->storeSolveStatus($h5p_solve_status);
     }
 }

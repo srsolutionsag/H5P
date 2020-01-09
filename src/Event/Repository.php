@@ -40,6 +40,15 @@ final class Repository
 
 
     /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @param Event $event
      */
     public function deleteEvent(Event $event)/*:void*/

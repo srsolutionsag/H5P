@@ -46,11 +46,11 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function doCreate()
     {
-        $this->object = new H5PObject();
+        $this->object = self::h5p()->objects()->factory()->newInstance();
 
         $this->object->setObjId($this->id);
 
-        $this->object->store();
+        self::h5p()->objects()->storeObject($this->object);
     }
 
 
@@ -59,7 +59,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function doRead()
     {
-        $this->object = H5PObject::getObjectById(intval($this->id));
+        $this->object = self::h5p()->objects()->getObjectById(intval($this->id));
     }
 
 
@@ -68,7 +68,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function doUpdate()
     {
-        $this->object->store();
+        self::h5p()->objects()->storeObject($this->object);
     }
 
 
@@ -78,13 +78,13 @@ class ilObjH5P extends ilObjectPlugin
     public function doDelete()
     {
         if ($this->object !== null) {
-            $this->object->delete();
+            self::h5p()->objects()->deleteObject($this->object);
         }
 
         $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
 
         foreach ($h5p_contents as $h5p_content) {
-            self::h5p()->show_editor()->deleteContent($h5p_content, false);
+            self::h5p()->contents()->editor()->show()->deleteContent($h5p_content, false);
         }
 
         $h5p_solve_statuses = self::h5p()->results()->getByObject($this->id);
@@ -101,11 +101,11 @@ class ilObjH5P extends ilObjectPlugin
      */
     protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null)
     {
-        $new_obj->object = $this->object->copy();
+        $new_obj->object = self::h5p()->objects()->cloneObject($this->object);
 
         $new_obj->object->setObjId($new_obj->id);
 
-        $new_obj->object->store();
+        self::h5p()->objects()->storeObject($new_obj->object);
 
         $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
 
@@ -116,7 +116,7 @@ class ilObjH5P extends ilObjectPlugin
 
             self::h5p()->contents()->storeContent($h5p_content_copy);
 
-            self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+            self::h5p()->contents()->editor()->storageCore()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
         }
     }
 

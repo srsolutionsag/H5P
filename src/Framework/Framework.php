@@ -12,7 +12,6 @@ use ilH5PPlugin;
 use ilProxySettings;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Event\EventFramework;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
@@ -30,6 +29,28 @@ class Framework implements H5PFrameworkInterface
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * @var array
+     */
     private $messages
         = [
             "error" => [],
@@ -48,7 +69,7 @@ class Framework implements H5PFrameworkInterface
     /**
      * Framework constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -307,7 +328,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryFileUrl($library_folder_name, $file_name)
     {
-        return "/" . self::h5p()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+        return "/" . self::h5p()->objects()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
     }
 
 
@@ -316,7 +337,7 @@ class Framework implements H5PFrameworkInterface
      */
     protected function setUploadedH5pPath()
     {
-        $tmp_path = self::h5p()->core()->fs->getTmpPath();
+        $tmp_path = self::h5p()->contents()->core()->fs->getTmpPath();
 
         $this->uploaded_h5p_folder_path = $tmp_path;
 
@@ -629,7 +650,7 @@ class Framework implements H5PFrameworkInterface
             $this->deleteLibraryDependencies($h5p_library->getLibraryId());
         }
 
-        $h5p_event = new EventFramework("library", ($new ? "create" : "update"), null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion()
+        self::h5p()->events()->factory()->newEventFrameworkInstance("library", ($new ? "create" : "update"), null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion()
             . "." . $h5p_library->getMinorVersion()));
 
         $h5p_languages = self::h5p()->libraries()->getLanguagesByLibrary($h5p_library->getLibraryId());
@@ -721,7 +742,7 @@ class Framework implements H5PFrameworkInterface
             $content["id"] = $h5p_content->getContentId();
         }
 
-        $h5p_event = new EventFramework("content", (($new ? "create" : "update")
+        self::h5p()->events()->factory()->newEventFrameworkInstance("content", (($new ? "create" : "update")
             . (!empty($content["uploaded"]) ? " upload" : "")), $h5p_content->getContentId(), $h5p_content->getTitle(), $content["library"]["name"], ($content["library"]["majorVersion"]
             . "." . $content["library"]["minorVersion"]));
 
@@ -816,7 +837,7 @@ class Framework implements H5PFrameworkInterface
     {
         $content = $this->loadContent($content_id);
 
-        $h5p_event = new EventFramework("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
+        self::h5p()->events()->factory()->newEventFrameworkInstance("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
             . "." . $content["libraryMinorVersion"]));
 
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
@@ -1101,7 +1122,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteLibrary($library)
     {
-        H5PCore::deleteFileTree(self::h5p()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+        H5PCore::deleteFileTree(self::h5p()->objects()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
             . $library->minor_version);
 
         $this->deleteLibraryDependencies($library->library_id);
@@ -1116,7 +1137,7 @@ class Framework implements H5PFrameworkInterface
             self::h5p()->libraries()->deleteLibrary($h5p_library);
         }
 
-        $h5p_event = new EventFramework("library", "delete", null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
+        self::h5p()->events()->factory()->newEventFrameworkInstance("library", "delete", null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
             . $h5p_library->getMinorVersion()));
     }
 
