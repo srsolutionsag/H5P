@@ -210,7 +210,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
         $key = filter_input(INPUT_GET, "xhfp_library_key");
 
-        $details = self::h5p()->hub()->factory()->newHubTableInstance($this, $key);
+        $details = self::h5p()->hub()->factory()->newHubDetailsFormInstance($this, $key);
 
         self::output()->output($details);
     }

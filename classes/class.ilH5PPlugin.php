@@ -83,6 +83,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
      */
     protected function deleteData()/*: void*/
     {
-
+        self::h5p()->dropTables();
     }
 }

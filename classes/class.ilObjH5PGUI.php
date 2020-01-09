@@ -46,13 +46,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     const CMD_RESULTS = "results";
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
-    const CMD_contents()->showS = "showContents";
+    const CMD_SHOW_CONTENTS = "showContents";
     const CMD_UPDATE_CONTENT = "updateContent";
     const TAB_CONTENTS = "contents";
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_RESULTS = "results";
     const TAB_SETTINGS = "settings";
-    const TAB_contents()->showS = "contents()->shows";
+    const TAB_SHOW_CONTENTS = "show_contents";
     /**
      * @var ilObjH5P
      */
@@ -101,7 +101,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                     case self::CMD_FINISH_CONTENTS:
                     case self::CMD_NEXT_CONTENT:
                     case self::CMD_PREVIOUS_CONTENT:
-                    case self::CMD_contents()->showS:
+                    case self::CMD_SHOW_CONTENTS:
                         // Read commands
                         if (!ilObjH5PAccess::hasReadAccess()) {
                             ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
@@ -387,7 +387,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function showContents()
     {
-        self::dic()->tabs()->activateTab(self::TAB_contents()->showS);
+        self::dic()->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
 
         $h5p_contents = self::h5p()->contents()->getContentsByObject($this->obj_id);
 
@@ -476,7 +476,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
+        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
     }
 
 
@@ -508,7 +508,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             self::h5p()->results()->setContentByUser($this->obj_id, self::dic()->user()->getId(), $h5p_content->getContentId());
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
+        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
     }
 
 
@@ -523,7 +523,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         self::h5p()->results()->setUserFinished($this->obj_id, self::dic()->user()->getId());
 
-        self::dic()->ctrl()->redirect($this, self::CMD_contents()->showS);
+        self::dic()->ctrl()->redirect($this, self::CMD_SHOW_CONTENTS);
     }
 
 
@@ -698,8 +698,8 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function setTabs()
     {
-        self::dic()->tabs()->addTab(self::TAB_contents()->showS, self::plugin()->translate("contents()->shows"), self::dic()->ctrl()
-            ->getLinkTarget($this, self::CMD_contents()->showS));
+        self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("contents()->shows"), self::dic()->ctrl()
+            ->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
         if (ilObjH5PAccess::hasWriteAccess()) {
             self::dic()->tabs()->addTab(self::TAB_CONTENTS, self::plugin()->translate("manage_contents"), self::dic()->ctrl()
@@ -732,7 +732,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         if (ilObjH5PAccess::hasWriteAccess()) {
             return self::CMD_MANAGE_CONTENTS;
         } else {
-            return self::CMD_contents()->showS;
+            return self::CMD_SHOW_CONTENTS;
         }
     }
 
