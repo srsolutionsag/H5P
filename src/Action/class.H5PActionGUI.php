@@ -266,7 +266,7 @@ class H5PActionGUI
 
         if (!empty($name)) {
             self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
-                ->getLanguage(), "", self::h5p()->objects()->getH5PFolder(), "");
+                ->getLanguage(), "", self::h5p()->objectSettings()->getH5PFolder(), "");
             //new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
         } else {
             self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARIES);

@@ -24,7 +24,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance()/*:self*/
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -44,15 +44,9 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
 
 
     /**
-     * @param string   $a_cmd
-     * @param string   $a_permission
-     * @param int|null $a_ref_id
-     * @param int|null $a_obj_id
-     * @param int|null $a_user_id
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function _checkAccess($a_cmd, $a_permission, $a_ref_id = null, $a_obj_id = null, $a_user_id = null)
+    public function _checkAccess(/*string*/ $a_cmd, /*string*/ $a_permission, /*?int*/ $a_ref_id = null, /*?int*/ $a_obj_id = null, /*?int*/ $a_user_id = null)/* : bool*/
     {
         if ($a_ref_id === null) {
             $a_ref_id = filter_input(INPUT_GET, "ref_id");
@@ -93,7 +87,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    protected static function checkAccess($a_cmd, $a_permission, $a_ref_id = null, $a_obj_id = null, $a_user_id = null)
+    protected static function checkAccess(/*string*/ $a_cmd, /*string*/ $a_permission, /*?int*/ $a_ref_id = null, /*?int*/ $a_obj_id = null, /*?int*/ $a_user_id = null)/* : bool*/
     {
         return self::getInstance()->_checkAccess($a_cmd, $a_permission, $a_ref_id, $a_obj_id, $a_user_id);
     }
@@ -103,7 +97,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      * @param object|string $class
      * @param string        $cmd
      */
-    public static function redirectNonAccess($class, $cmd = "")
+    public static function redirectNonAccess($class, /*string*/ $cmd = "")/*:void*/
     {
         ilUtil::sendFailure(self::plugin()->translate("permission_denied"), true);
 
@@ -118,16 +112,14 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
 
 
     /**
-     * @param int $obj_id
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public static function _isOffline($a_obj_id)
+    public static function _isOffline(/*?int*/ $a_obj_id)/* : bool*/
     {
-        $object = self::h5p()->objects()->getObjectById(intval($a_obj_id));
+        $object_settings = self::h5p()->objectSettings()->getObjectSettingsById(intval($a_obj_id));
 
-        if ($object !== null) {
-            return (!$object->isOnline());
+        if ($object_settings !== null) {
+            return (!$object_settings->isOnline());
         } else {
             return true;
         }
@@ -139,7 +131,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    public static function hasVisibleAccess($ref_id = null)
+    public static function hasVisibleAccess(/*?int*/ $ref_id = null)/* : bool*/
     {
         return self::checkAccess("visible", "visible", $ref_id);
     }
@@ -150,7 +142,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    public static function hasReadAccess($ref_id = null)
+    public static function hasReadAccess(/*?int*/ $ref_id = null)/* : bool*/
     {
         return self::checkAccess("read", "read", $ref_id);
     }
@@ -161,7 +153,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    public static function hasWriteAccess($ref_id = null)
+    public static function hasWriteAccess(/*?int*/ $ref_id = null)/* : bool*/
     {
         return self::checkAccess("write", "write", $ref_id);
     }
@@ -172,7 +164,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    public static function hasDeleteAccess($ref_id = null)
+    public static function hasDeleteAccess(/*?int*/ $ref_id = null)/* : bool*/
     {
         return self::checkAccess("delete", "delete", $ref_id);
     }
@@ -183,18 +175,16 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      *
      * @return bool
      */
-    public static function hasEditPermissionAccess($ref_id = null)
+    public static function hasEditPermissionAccess(/*?int*/ $ref_id = null)/* : bool*/
     {
         return self::checkAccess("edit_permission", "edit_permission", $ref_id);
     }
 
 
     /**
-     * @param ilWACPath $ilWACPath
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function canBeDelivered(ilWACPath $ilWACPath)
+    public function canBeDelivered(ilWACPath $ilWACPath)/*:bool*/
     {
         switch ($ilWACPath->getModuleIdentifier()) {
             case "cachedassets":

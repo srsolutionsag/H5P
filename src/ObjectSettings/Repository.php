@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Object;
+namespace srag\Plugins\H5P\ObjectSettings;
 
 use H5PCore;
 use ilH5PPlugin;
@@ -12,7 +12,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 /**
  * Class Repository
  *
- * @package srag\Plugins\H5P\Object
+ * @package srag\Plugins\H5P\ObjectSettings
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -52,22 +52,22 @@ final class Repository
 
 
     /**
-     * @param H5PObject $object
+     * @param ObjectSettings $object_settings
      *
-     * @return H5PObject
+     * @return ObjectSettings
      */
-    public function cloneObject(H5PObject $object)/*:H5PObject*/
+    public function cloneObjectSettings(ObjectSettings $object_settings)/*:ObjectSettings*/
     {
-        return $object->copy();
+        return $object_settings->copy();
     }
 
 
     /**
-     * @param H5PObject $object
+     * @param ObjectSettings $object_settings
      */
-    public function deleteObject(H5PObject $object)/*:void*/
+    public function deleteObjectSettings(ObjectSettings $object_settings)/*:void*/
     {
-        $object->delete();
+        $object_settings->delete();
     }
 
 
@@ -76,7 +76,7 @@ final class Repository
      */
     public function dropTables()/*:void*/
     {
-        self::dic()->database()->dropTable(H5PObject::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ObjectSettings::TABLE_NAME, false);
 
         ilWACSecurePath::find(self::DATA_FOLDER)->delete();
 
@@ -96,7 +96,7 @@ final class Repository
     /**
      * @return string
      */
-    public function getH5PFolder()
+    public function getH5PFolder()/*:string*/
     {
         return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/" . self::DATA_FOLDER;
     }
@@ -105,19 +105,19 @@ final class Repository
     /**
      * @param int $obj_id
      *
-     * @return H5PObject|null
+     * @return ObjectSettings|null
      */
-    public function getObjectById(/*int*/ $obj_id)/*:?H5PObject*/
+    public function getObjectSettingsById(/*int*/ $obj_id)/*:?ObjectSettings*/
     {
         /**
-         * @var H5PObject|null $object
+         * @var ObjectSettings|null $object_settings
          */
 
-        $object = H5PObject::where([
+        $object_settings = ObjectSettings::where([
             "obj_id" => $obj_id
         ])->first();
 
-        return $object;
+        return $object_settings;
     }
 
 
@@ -126,7 +126,7 @@ final class Repository
      */
     public function installTables()/*:void*/
     {
-        H5PObject::updateDB();
+        ObjectSettings::updateDB();
 
         /**
          * @var ilWACSecurePath $path
@@ -146,10 +146,10 @@ final class Repository
 
 
     /**
-     * @param H5PObject $object
+     * @param ObjectSettings $object_settings
      */
-    public function storeObject(H5PObject $object)/*:void*/
+    public function storeObjectSettings(ObjectSettings $object_settings)/*:void*/
     {
-        $object->store();
+        $object_settings->store();
     }
 }

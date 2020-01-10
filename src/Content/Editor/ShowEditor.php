@@ -85,7 +85,7 @@ class ShowEditor
         }
 
         self::h5p()->contents()->show()->core["editor"] = [
-            "filesPath"          => ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder() . "/editor",
+            "filesPath"          => ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder() . "/editor",
             "fileIcon"           => [
                 "path"   => $editor_path . "/images/binary-file.png",
                 "width"  => 50,
@@ -288,7 +288,7 @@ class ShowEditor
 
         self::h5p()->contents()->core()->filterParameters($content);
 
-        $export_file = self::h5p()->objects()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
+        $export_file = self::h5p()->objectSettings()->getH5PFolder() . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
 
         ilFileDelivery::deliverFileAttached($export_file, $content["slug"] . ".h5p");
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Object;
+namespace srag\Plugins\H5P\ObjectSettings;
 
 use ActiveRecord;
 use arConnector;
@@ -9,13 +9,13 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class H5PObject
+ * Class ObjectSettings
  *
- * @package srag\Plugins\H5P\Object
+ * @package srag\Plugins\H5P\ObjectSettings
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class H5PObject extends ActiveRecord
+class ObjectSettings extends ActiveRecord
 {
 
     use DICTrait;
@@ -27,7 +27,7 @@ class H5PObject extends ActiveRecord
     /**
      * @return string
      */
-    public function getConnectorContainerName()
+    public function getConnectorContainerName()/*: string*/
     {
         return self::TABLE_NAME;
     }
@@ -38,7 +38,7 @@ class H5PObject extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()
+    public static function returnDbTableName()/*: string*/
     {
         return self::TABLE_NAME;
     }
@@ -75,12 +75,12 @@ class H5PObject extends ActiveRecord
 
 
     /**
-     * H5PObject constructor
+     * ObjectSettings constructor
      *
      * @param int              $primary_key_value
      * @param arConnector|null $connector
      */
-    public function __construct($primary_key_value = 0, arConnector $connector = null)
+    public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
     }
@@ -91,7 +91,7 @@ class H5PObject extends ActiveRecord
      *
      * @return mixed|null
      */
-    public function sleep($field_name)
+    public function sleep(/*string*/ $field_name)
     {
         $field_value = $this->{$field_name};
 
@@ -112,7 +112,7 @@ class H5PObject extends ActiveRecord
      *
      * @return mixed|null
      */
-    public function wakeUp($field_name, $field_value)
+    public function wakeUp(/*string*/ $field_name, $field_value)
     {
         switch ($field_name) {
             case "obj_id":
@@ -131,7 +131,7 @@ class H5PObject extends ActiveRecord
     /**
      * @return int
      */
-    public function getObjId()
+    public function getObjId()/*: int*/
     {
         return $this->obj_id;
     }
@@ -140,7 +140,7 @@ class H5PObject extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId($obj_id)
+    public function setObjId(/*int*/ $obj_id)/*: void*/
     {
         $this->obj_id = $obj_id;
     }
@@ -149,7 +149,7 @@ class H5PObject extends ActiveRecord
     /**
      * @return bool
      */
-    public function isOnline()
+    public function isOnline()/*: bool*/
     {
         return $this->is_online;
     }
@@ -158,7 +158,7 @@ class H5PObject extends ActiveRecord
     /**
      * @param bool $is_online
      */
-    public function setOnline($is_online = true)
+    public function setOnline(/*bool*/ $is_online = true)/*: void*/
     {
         $this->is_online = $is_online;
     }
@@ -167,7 +167,7 @@ class H5PObject extends ActiveRecord
     /**
      * @return bool
      */
-    public function isSolveOnlyOnce()
+    public function isSolveOnlyOnce()/*: bool*/
     {
         return $this->solve_only_once;
     }
@@ -176,7 +176,7 @@ class H5PObject extends ActiveRecord
     /**
      * @param bool $solve_only_once
      */
-    public function setSolveOnlyOnce($solve_only_once)
+    public function setSolveOnlyOnce(/*bool*/ $solve_only_once)/*: void*/
     {
         $this->solve_only_once = $solve_only_once;
     }

@@ -85,7 +85,7 @@ final class Repository
     public function core()/*:H5PCore*/
     {
         if ($this->core === null) {
-            $this->core = new H5PCore($this->framework(), self::h5p()->objects()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder(), self::dic()->user()
+            $this->core = new H5PCore($this->framework(), self::h5p()->objectSettings()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder(), self::dic()->user()
                 ->getLanguage(), true);
         }
 

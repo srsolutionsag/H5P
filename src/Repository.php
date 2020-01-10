@@ -9,7 +9,7 @@ use srag\Plugins\H5P\Content\Repository as ContentRepository;
 use srag\Plugins\H5P\Event\Repository as EventRepository;
 use srag\Plugins\H5P\Hub\Repository as HubRepository;
 use srag\Plugins\H5P\Library\Repository as LibraryRepository;
-use srag\Plugins\H5P\Object\Repository as ObjectRepository;
+use srag\Plugins\H5P\ObjectSettings\Repository as ObjectSettingRepository;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Option\OptionOld;
 use srag\Plugins\H5P\Result\Repository as ResultRepository;
@@ -82,7 +82,7 @@ final class Repository
         $this->events()->dropTables();
         $this->hub()->dropTables();
         $this->libraries()->dropTables();
-        $this->objects()->dropTables();
+        $this->objectSettings()->dropTables();
         $this->results()->dropTables();
     }
 
@@ -115,7 +115,7 @@ final class Repository
         $this->events()->installTables();
         $this->hub()->installTables();
         $this->libraries()->installTables();
-        $this->objects()->installTables();
+        $this->objectSettings()->installTables();
         $this->results()->installTables();
 
         if (self::dic()->database()->tableExists(OptionOld::TABLE_NAME)) {
@@ -143,11 +143,11 @@ final class Repository
 
 
     /**
-     * @return ObjectRepository
+     * @return ObjectSettingRepository
      */
-    public function objects()/* : ResultRepository*/
+    public function objectSettings()/* : ResultRepository*/
     {
-        return ObjectRepository::getInstance();
+        return ObjectSettingRepository::getInstance();
     }
 
 

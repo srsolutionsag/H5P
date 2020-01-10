@@ -328,7 +328,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryFileUrl($library_folder_name, $file_name)
     {
-        return "/" . self::h5p()->objects()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+        return "/" . self::h5p()->objectSettings()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
     }
 
 
@@ -1122,7 +1122,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteLibrary($library)
     {
-        H5PCore::deleteFileTree(self::h5p()->objects()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+        H5PCore::deleteFileTree(self::h5p()->objectSettings()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
             . $library->minor_version);
 
         $this->deleteLibraryDependencies($library->library_id);

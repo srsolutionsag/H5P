@@ -60,18 +60,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    protected function afterConstructor()
+    protected function afterConstructor()/*: void*/
     {
 
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public final function getType()
+    public final function getType()/*: string*/
     {
         return ilH5PPlugin::PLUGIN_ID;
     }
@@ -80,7 +80,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @param string $cmd
      */
-    public function performCommand($cmd)
+    public function performCommand(/*string*/ $cmd)/*: void*/
     {
         self::dic()->help()->setScreenIdComponent(ilH5PPlugin::PLUGIN_ID);
 
@@ -156,7 +156,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @param string $html
      */
-    protected function show($html)
+    protected function show(/*string*/ $html)/*: void*/
     {
         if (!self::dic()->ctrl()->isAsynch()) {
             self::dic()->mainTemplate()->setTitle($this->object->getTitle());
@@ -179,11 +179,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
 
     /**
-     * @param string $a_new_type
-     *
-     * @return ilPropertyFormGUI
+     * @inheritDoc
      */
-    public function initCreateForm($a_new_type)
+    public function initCreateForm(/*string*/ $a_new_type)/* : ilPropertyFormGUI*/
     {
         $form = parent::initCreateForm($a_new_type);
 
@@ -192,9 +190,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilObjH5P $a_new_object
      */
-    public function afterSave(ilObject $a_new_object)
+    public function afterSave(/*ilObjH5P*/ $a_new_object)/*: void*/
     {
         parent::afterSave($a_new_object);
     }
@@ -203,7 +203,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @return bool
      */
-    public function hasResults()
+    public function hasResults()/*: bool*/
     {
         return self::h5p()->results()->hasObjectResults($this->obj_id);
     }
@@ -212,7 +212,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function manageContents()
+    protected function manageContents()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -237,7 +237,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function moveContentDown()
+    protected function moveContentDown()/*: void*/
     {
         $content_id = filter_input(INPUT_GET, "xhfp_content");
 
@@ -250,7 +250,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function moveContentUp()
+    protected function moveContentUp()/*: void*/
     {
         $content_id = filter_input(INPUT_GET, "xhfp_content");
 
@@ -263,7 +263,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @return EditContentFormGUI
      */
-    protected function getEditorForm()
+    protected function getEditorForm()/*: EditContentFormGUI*/
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
@@ -276,7 +276,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function addContent()
+    protected function addContent()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -289,7 +289,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function createContent()
+    protected function createContent()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -310,7 +310,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function editContent()
+    protected function editContent()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -323,7 +323,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function updateContent()
+    protected function updateContent()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -346,7 +346,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function deleteContentConfirm()
+    protected function deleteContentConfirm()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -372,7 +372,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function deleteContent()
+    protected function deleteContent()/*: void*/
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
@@ -385,7 +385,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function showContents()
+    protected function showContents()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
 
@@ -451,7 +451,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function previousContent()
+    protected function previousContent()/*: void*/
     {
         if (self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
@@ -483,7 +483,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function nextContent()
+    protected function nextContent()/*: void*/
     {
         if (self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
@@ -515,7 +515,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function finishContents()
+    protected function finishContents()/*: void*/
     {
         if (!$this->object->isSolveOnlyOnce() || self::h5p()->results()->isUserFinished($this->obj_id, self::dic()->user()->getId())) {
             return;
@@ -530,7 +530,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function results()
+    protected function results()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_RESULTS);
 
@@ -543,7 +543,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function deleteResultsConfirm()
+    protected function deleteResultsConfirm()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_RESULTS);
 
@@ -577,7 +577,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function deleteResults()
+    protected function deleteResults()/*: void*/
     {
         $user_id = filter_input(INPUT_GET, "xhfp_user");
 
@@ -606,11 +606,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function settings()
+    protected function settings()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = self::h5p()->objects()->factory()->newFormInstance($this, $this->object);
+        $form = self::h5p()->objectSettings()->factory()->newFormInstance($this, $this->object);
 
         $this->show($form);
     }
@@ -619,11 +619,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function settingsStore()
+    protected function settingsStore()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = self::h5p()->objects()->factory()->newFormInstance($this, $this->object);
+        $form = self::h5p()->objectSettings()->factory()->newFormInstance($this, $this->object);
 
         if (!$form->storeForm()) {
             $this->show($form);
@@ -640,7 +640,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @return ImportContentFormGUI
      */
-    protected function getImportContentForm()
+    protected function getImportContentForm()/*: ImportContentFormGUI*/
     {
         $form = self::h5p()->contents()->editor()->factory()->newImportContentFormInstance($this, self::CMD_IMPORT_CONTENT, self::CMD_MANAGE_CONTENTS);
 
@@ -651,7 +651,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function importContentSelect()
+    protected function importContentSelect()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -664,7 +664,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function importContent()
+    protected function importContent()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
@@ -685,7 +685,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function exportContent()
+    protected function exportContent()/*: void*/
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
@@ -696,7 +696,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      *
      */
-    protected function setTabs()
+    protected function setTabs()/*: void*/
     {
         self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("contents()->shows"), self::dic()->ctrl()
             ->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
@@ -727,7 +727,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     /**
      * @return string
      */
-    public static function getStartCmd()
+    public static function getStartCmd()/*:string*/
     {
         if (ilObjH5PAccess::hasWriteAccess()) {
             return self::CMD_MANAGE_CONTENTS;
@@ -738,18 +738,18 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getAfterCreationCmd()
+    public function getAfterCreationCmd()/*:string*/
     {
         return self::getStartCmd();
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getStandardCmd()
+    public function getStandardCmd()/*:string*/
     {
         return self::getStartCmd();
     }

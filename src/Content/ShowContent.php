@@ -77,7 +77,7 @@ class ShowContent
         if ($this->core === null) {
             $this->core = [
                 "baseUrl"            => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
-                "url"                => ILIAS_HTTP_PATH . "/" . self::h5p()->objects()->getH5PFolder(),
+                "url"                => ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder(),
                 "postUserStatistics" => true,
                 "ajax"               => [
                     H5PActionGUI::H5P_ACTION_SET_FINISHED      => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_SET_FINISHED),
@@ -264,7 +264,7 @@ class ShowContent
 
         $content_dependencies = self::h5p()->contents()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
-        $files = self::h5p()->contents()->core()->getDependenciesFiles($content_dependencies, self::h5p()->objects()->getH5PFolder());
+        $files = self::h5p()->contents()->core()->getDependenciesFiles($content_dependencies, self::h5p()->objectSettings()->getH5PFolder());
         $scripts = array_map(function ($file) {
             return $file->path;
         }, $files["scripts"]);
@@ -356,9 +356,9 @@ class ShowContent
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object = self::h5p()->objects()->getObjectById($h5p_content->getObjId());
+            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
         } else {
-            $object = null;
+            $object_settings = null;
         }
 
         $user_id = self::dic()->user()->getId();
@@ -371,7 +371,7 @@ class ShowContent
             $h5p_result->setContentId($content_id);
         } else {
             // Prevent update result on a repository object with "Solve only once"
-            if ($object !== null && $object->isSolveOnlyOnce()) {
+            if ($object_settings !== null && $object_settings->isSolveOnlyOnce()) {
                 return;
             }
         }
@@ -390,7 +390,7 @@ class ShowContent
 
         self::h5p()->results()->storeResult($h5p_result);
 
-        if ($object !== null) {
+        if ($object_settings !== null) {
             // Store solve status because user may not scroll to contents
             self::h5p()->results()->setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
         }
@@ -411,9 +411,9 @@ class ShowContent
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object = self::h5p()->objects()->getObjectById($h5p_content->getObjId());
+            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
         } else {
-            $object = null;
+            $object_settings = null;
         }
 
         $user_id = self::dic()->user()->getId();
@@ -436,7 +436,7 @@ class ShowContent
                     $h5p_content_user_data->setDataId($data_id);
                 } else {
                     // Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
-                    if ($object !== null && $object->isSolveOnlyOnce() && self::h5p()->results()->hasContentResults($h5p_content->getContentId())) {
+                    if ($object_settings !== null && $object_settings->isSolveOnlyOnce() && self::h5p()->results()->hasContentResults($h5p_content->getContentId())) {
                         return null;
                     }
                 }

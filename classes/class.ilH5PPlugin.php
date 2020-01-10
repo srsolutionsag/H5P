@@ -29,7 +29,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance()/*:self*/
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -49,27 +49,27 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getPluginName()
+    public function getPluginName()/*:string*/
     {
         return self::PLUGIN_NAME;
     }
 
 
     /**
-     * @return bool
+     * @inheritDoc
      */
-    public function allowCopy()
+    public function allowCopy()/*:bool*/
     {
         return true;
     }
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function updateLanguages($a_lang_keys = null)
+    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/
     {
         parent::updateLanguages($a_lang_keys);
 

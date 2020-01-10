@@ -156,7 +156,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function refreshHub()
+    protected function refreshHub()/*: void*/
     {
         self::h5p()->hub()->show()->refreshHub();
 
@@ -167,7 +167,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function uploadLibrary()
+    protected function uploadLibrary()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
@@ -188,7 +188,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function installLibrary()
+    protected function installLibrary()/*: void*/
     {
         $name = filter_input(INPUT_GET, "xhfp_library_name");
 
@@ -201,7 +201,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function libraryDetails()
+    protected function libraryDetails()/*: void*/
     {
         self::dic()->tabs()->clearTargets();
 
@@ -219,7 +219,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function deleteLibraryConfirm()
+    protected function deleteLibraryConfirm()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
@@ -257,7 +257,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function deleteLibrary()
+    protected function deleteLibrary()/*: void*/
     {
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 

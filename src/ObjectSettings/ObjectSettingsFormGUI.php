@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Object;
+namespace srag\Plugins\H5P\ObjectSettings;
 
 use ilCheckboxInputGUI;
 use ilH5PPlugin;
@@ -12,13 +12,13 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\ObjectPropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class ObjSettingsFormGUI
+ * Class ObjectSettingsFormGUI
  *
- * @package srag\Plugins\H5P\Object
+ * @package srag\Plugins\H5P\ObjectSettings
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ObjSettingsFormGUI extends ObjectPropertyFormGUI
+class ObjectSettingsFormGUI extends ObjectPropertyFormGUI
 {
 
     use H5PTrait;
@@ -26,7 +26,7 @@ class ObjSettingsFormGUI extends ObjectPropertyFormGUI
 
 
     /**
-     * ObjSettingsFormGUI constructor
+     * ObjectSettingsFormGUI constructor
      *
      * @param ilObjH5PGUI $parent
      * @param ilObjH5P    $object
@@ -40,9 +40,8 @@ class ObjSettingsFormGUI extends ObjectPropertyFormGUI
     /**
      * @inheritdoc
      */
-    protected function getValue(/*string*/
-        $key
-    ) {
+    protected function getValue(/*string*/ $key)
+    {
         switch ($key) {
             case "description":
                 return $this->object->getLongDescription();
@@ -110,10 +109,7 @@ class ObjSettingsFormGUI extends ObjectPropertyFormGUI
     /**
      * @inheritdoc
      */
-    protected function storeValue(/*string*/
-        $key,
-        $value
-    )/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/*: void*/
     {
         switch ($key) {
             case "solve_only_once":

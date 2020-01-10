@@ -203,7 +203,7 @@ class EditorStorage implements H5peditorStorageInterface
      */
     public static function markFileForCleanup($file, $content_id = null)
     {
-        $path = self::h5p()->objects()->getH5PFolder();
+        $path = self::h5p()->objectSettings()->getH5PFolder();
 
         if (empty($content_id)) {
             $path .= "/editor/";

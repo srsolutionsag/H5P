@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Object;
+namespace srag\Plugins\H5P\ObjectSettings;
 
 use ilH5PPlugin;
 use ilObjH5P;
@@ -11,7 +11,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 /**
  * Class Factory
  *
- * @package srag\Plugins\H5P\Object
+ * @package srag\Plugins\H5P\ObjectSettings
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -50,13 +50,13 @@ final class Factory
 
 
     /**
-     * @return H5PObject
+     * @return ObjectSettings
      */
-    public function newInstance()/* : H5PObject*/
+    public function newInstance()/* : ObjectSettings*/
     {
-        $object = new H5PObject();
+        $object_settings = new ObjectSettings();
 
-        return $object;
+        return $object_settings;
     }
 
 
@@ -64,11 +64,11 @@ final class Factory
      * @param ilObjH5PGUI $parent
      * @param ilObjH5P    $object
      *
-     * @return ObjSettingsFormGUI
+     * @return ObjectSettingsFormGUI
      */
-    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object)/*:ObjSettingsFormGUI*/
+    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object)/*:ObjectSettingsFormGUI*/
     {
-        $form = new ObjSettingsFormGUI($parent, $object);
+        $form = new ObjectSettingsFormGUI($parent, $object);
 
         return $form;
     }

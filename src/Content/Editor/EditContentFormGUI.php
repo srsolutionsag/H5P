@@ -295,7 +295,7 @@ class EditContentFormGUI extends PropertyFormGUI
             return;
         }
 
-        $content_folder = self::h5p()->objects()->getH5PFolder() . "/content/" . $this->h5p_content->getContentId();
+        $content_folder = self::h5p()->objectSettings()->getH5PFolder() . "/content/" . $this->h5p_content->getContentId();
 
         if ((is_array($this->upload_file) && !empty($this->upload_file["tmp_name"])) || $this->getInput("upload_file_delete")) {
 
