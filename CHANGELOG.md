@@ -1,7 +1,7 @@
 # Changelog
 
 ## [2.5.0]
-- Some improvments
+- May fix missing db tables
 
 ## [2.4.5]
 - Some improvments

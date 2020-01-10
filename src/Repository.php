@@ -167,7 +167,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function splitCsv($csv)
+    public function splitCsv(/*:string*/ $csv)/*:array*/
     {
         return explode(self::CSV_SEPARATOR, $csv);
     }
@@ -180,7 +180,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function joinCsv(array $array)
+    public function joinCsv(array $array)/*:string*/
     {
         return implode(self::CSV_SEPARATOR, $array);
     }
@@ -193,7 +193,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function timestampToDbDate($timestamp)
+    public function timestampToDbDate(/*:int*/ $timestamp)/*:string*/
     {
         $date_time = new ilDateTime($timestamp, IL_CAL_UNIX);
 
@@ -210,7 +210,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function dbDateToTimestamp($formatted)
+    public function dbDateToTimestamp(/*string*/ $formatted)/*:int*/
     {
         $date_time = new ilDateTime($formatted, IL_CAL_DATETIME);
 
