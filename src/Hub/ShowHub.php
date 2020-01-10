@@ -4,12 +4,13 @@ namespace srag\Plugins\H5P\Hub;
 
 use H5PCore;
 use H5PEditorEndpoints;
+use ilDatePresentation;
+use ilDateTime;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryHubCache;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -30,12 +31,29 @@ class ShowHub
     const STATUS_INSTALLED = "installed";
     const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
     const STATUS_NOT_INSTALLED = "not_installed";
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
     /**
      * ShowHub constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -54,7 +72,7 @@ class ShowHub
         $libraries = [];
 
         // Hub libraries
-        $hub_libraries = LibraryHubCache::getLibraries();
+        $hub_libraries = self::h5p()->libraries()->getHubLibraries();
         foreach ($hub_libraries as $hub_library) {
             $name = $hub_library->getMachineName();
 
@@ -95,7 +113,7 @@ class ShowHub
         }
 
         // Installed libraries
-        $installed_libraries = Library::getLibraries();
+        $installed_libraries = self::h5p()->libraries()->getLibraries();
         foreach ($installed_libraries as $installed_library) {
             $name = $installed_library->getName();
 
@@ -105,7 +123,7 @@ class ShowHub
                 "patch_version" => $installed_library->getPatchVersion()
             ]);
 
-            $icon = self::h5p()->framework()->getLibraryFileUrl(H5PCore::libraryToString([
+            $icon = self::h5p()->contents()->framework()->getLibraryFileUrl(H5PCore::libraryToString([
                 "machineName"  => $name,
                 "majorVersion" => $installed_library->getMajorVersion(),
                 "minorVersion" => $installed_library->getMinorVersion(),
@@ -115,8 +133,8 @@ class ShowHub
                 $icon = "";
             }
 
-            $contents_count = self::h5p()->framework()->getNumContent($installed_library->getLibraryId());
-            $usage = self::h5p()->framework()->getLibraryUsage($installed_library->getLibraryId());
+            $contents_count = self::h5p()->contents()->framework()->getNumContent($installed_library->getLibraryId());
+            $usage = self::h5p()->contents()->framework()->getLibraryUsage($installed_library->getLibraryId());
 
             $key = $name . "_latest";
             if (isset($libraries[$key]) && isset($libraries[$key]["installed_id"])) {
@@ -194,7 +212,7 @@ class ShowHub
             ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
 
         $hub_last_refresh = Option::getOption("content_type_cache_updated_at", "");
-        $hub_last_refresh = self::h5p()->formatTime($hub_last_refresh);
+        $hub_last_refresh = ilDatePresentation::formatDate(new ilDateTime($hub_last_refresh, IL_CAL_UNIX));
 
         $h5p_tpl = self::plugin()->template("H5PHub.html");
 
@@ -213,20 +231,7 @@ class ShowHub
      */
     public function refreshHub()
     {
-        self::h5p()->core()->updateContentTypeCache();
-    }
-
-
-    /**
-     * @param ilH5PConfigGUI $parent
-     *
-     * @return UploadLibraryFormGUI
-     */
-    public function getUploadLibraryForm(ilH5PConfigGUI $parent)
-    {
-        $form = new UploadLibraryFormGUI($parent);
-
-        return $form;
+        self::h5p()->contents()->core()->updateContentTypeCache();
     }
 
 
@@ -239,7 +244,7 @@ class ShowHub
 
         $_SERVER["REQUEST_METHOD"] = "POST"; // Fix
 
-        self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, "", $name);
+        self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, "", $name);
 
         ob_end_clean();
     }
@@ -251,7 +256,7 @@ class ShowHub
      */
     public function deleteLibrary(Library $h5p_library, $message = true)
     {
-        self::h5p()->core()->deleteLibrary((object) [
+        self::h5p()->contents()->core()->deleteLibrary((object) [
             "library_id"    => $h5p_library->getLibraryId(),
             "name"          => $h5p_library->getName(),
             "major_version" => $h5p_library->getMajorVersion(),
@@ -265,20 +270,6 @@ class ShowHub
 
 
     /**
-     * @param ilH5PConfigGUI $parent
-     * @param string         $key
-     *
-     * @return HubDetailsFormGUI
-     */
-    public function getDetailsForm(ilH5PConfigGUI $parent, $key)
-    {
-        $details_form = new HubDetailsFormGUI($parent, $key);
-
-        return $details_form;
-    }
-
-
-    /**
      * @param UploadLibraryFormGUI $form
      */
     public function uploadLibrary(UploadLibraryFormGUI $form)
@@ -287,7 +278,7 @@ class ShowHub
 
         ob_start(); // prevent output from editor
 
-        self::h5p()->editor()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+        self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
 
         ob_end_clean();
     }

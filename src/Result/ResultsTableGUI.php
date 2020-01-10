@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Results;
+namespace srag\Plugins\H5P\Result;
 
 use Exception;
 use ilH5PPlugin;
@@ -14,7 +14,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 /**
  * Class ResultsTableGUI
  *
- * @package srag\Plugins\H5P\Results
+ * @package srag\Plugins\H5P\Result
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -97,11 +97,11 @@ class ResultsTableGUI extends TableGUI
      */
     protected function initData()/*: void*/
     {
-        $this->contents = Content::getContentsByObject($this->parent_obj->object->getId());
+        $this->contents = self::h5p()->contents()->getContentsByObject($this->parent_obj->object->getId());
 
         $this->results = [];
 
-        $h5p_solve_statuses = SolveStatus::getByObject($this->parent_obj->object->getId());
+        $h5p_solve_statuses = self::h5p()->results()->getByObject($this->parent_obj->object->getId());
 
         foreach ($h5p_solve_statuses as $h5p_solve_status) {
             $user_id = $h5p_solve_status->getUserId();
@@ -116,7 +116,7 @@ class ResultsTableGUI extends TableGUI
             foreach ($this->contents as $h5p_content) {
                 $content_key = "content_" . $h5p_content->getContentId();
 
-                $h5p_result = Result::getResultByUserContent($user_id, $h5p_content->getContentId());
+                $h5p_result = self::h5p()->results()->getResultByUserContent($user_id, $h5p_content->getContentId());
 
                 if ($h5p_result !== null) {
                     $this->results[$user_id][$content_key] = ($h5p_result->getScore() . "/" . $h5p_result->getMaxScore());
@@ -189,7 +189,7 @@ class ResultsTableGUI extends TableGUI
         $actions = [];
 
         if (ilObjH5PAccess::hasWriteAccess()) {
-            $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), self::dic()->ctrl()
+            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
         }
 

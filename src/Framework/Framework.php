@@ -12,18 +12,7 @@ use ilH5PPlugin;
 use ilProxySettings;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Content\ContentLibrary;
-use srag\Plugins\H5P\Content\ContentUserData;
-use srag\Plugins\H5P\Event\EventFramework;
-use srag\Plugins\H5P\Library\Counter;
-use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Library\LibraryCachedAsset;
-use srag\Plugins\H5P\Library\LibraryDependencies;
-use srag\Plugins\H5P\Library\LibraryHubCache;
-use srag\Plugins\H5P\Library\LibraryLanguage;
 use srag\Plugins\H5P\Option\Option;
-use srag\Plugins\H5P\Results\Result;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
 
@@ -40,6 +29,28 @@ class Framework implements H5PFrameworkInterface
     use DICTrait;
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance()/* : self*/
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * @var array
+     */
     private $messages
         = [
             "error" => [],
@@ -58,7 +69,7 @@ class Framework implements H5PFrameworkInterface
     /**
      * Framework constructor
      */
-    public function __construct()
+    private function __construct()
     {
 
     }
@@ -155,12 +166,12 @@ class Framework implements H5PFrameworkInterface
      */
     public function setLibraryTutorialUrl($machine_name, $tutorial_url)
     {
-        $h5p_libraries = Library::getLibraryAllVersions($machine_name);
+        $h5p_libraries = self::h5p()->libraries()->getLibraryAllVersions($machine_name);
 
         foreach ($h5p_libraries as $h5p_library) {
             $h5p_library->setTutorialUrl($tutorial_url);
 
-            $h5p_library->store();
+            self::h5p()->libraries()->storeLibrary($h5p_library);
         }
     }
 
@@ -317,7 +328,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryFileUrl($library_folder_name, $file_name)
     {
-        return "/" . self::h5p()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
+        return "/" . self::h5p()->objectSettings()->getH5PFolder() . "/libraries/" . $library_folder_name . "/" . $file_name;
     }
 
 
@@ -326,7 +337,7 @@ class Framework implements H5PFrameworkInterface
      */
     protected function setUploadedH5pPath()
     {
-        $tmp_path = self::h5p()->core()->fs->getTmpPath();
+        $tmp_path = self::h5p()->contents()->core()->fs->getTmpPath();
 
         $this->uploaded_h5p_folder_path = $tmp_path;
 
@@ -375,7 +386,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function loadLibraries()
     {
-        $h5p_libraries = Library::getLibraries();
+        $h5p_libraries = self::h5p()->libraries()->getLibraries();
 
         $libraries = [];
 
@@ -431,7 +442,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryId($machine_name, $major_version = null, $minor_version = null)
     {
-        $h5p_library = Library::getLibraryByVersion($machine_name, $major_version, $minor_version);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($machine_name, $major_version, $minor_version);
 
         if ($h5p_library !== null) {
             return $h5p_library->getLibraryId();
@@ -489,7 +500,7 @@ class Framework implements H5PFrameworkInterface
             return true;
         }
 
-        $h5p_library = Library::getLibraryByVersion($library["machineName"], $library["majorVersion"], $library["minorVersion"]);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library["machineName"], $library["majorVersion"], $library["minorVersion"]);
 
         if ($h5p_library !== null) {
             return ($library["patchVersion"] > $h5p_library->getPatchVersion());
@@ -556,14 +567,14 @@ class Framework implements H5PFrameworkInterface
     public function saveLibraryData(&$library_data, $new = true)
     {
         if ($new) {
-            $h5p_library = new Library();
+            $h5p_library = self::h5p()->libraries()->factory()->newLibraryInstance();
 
             $h5p_library->setLibraryId($library_data["libraryId"]);
         } else {
-            $h5p_library = Library::getLibraryById($library_data["libraryId"]);
+            $h5p_library = self::h5p()->libraries()->getLibraryById($library_data["libraryId"]);
 
             if ($h5p_library === null) {
-                $h5p_library = new Library();
+                $h5p_library = self::h5p()->libraries()->factory()->newLibraryInstance();
 
                 $h5p_library->setLibraryId($library_data["libraryId"]);
 
@@ -631,27 +642,25 @@ class Framework implements H5PFrameworkInterface
             $h5p_library->setHasIcon(false);
         }
 
-        if ($new) {
-            $h5p_library->create();
+        self::h5p()->libraries()->storeLibrary($h5p_library);
 
+        if ($new) {
             $library_data["libraryId"] = $h5p_library->getLibraryId();
         } else {
-            $h5p_library->update();
-
             $this->deleteLibraryDependencies($h5p_library->getLibraryId());
         }
 
-        $h5p_event = new EventFramework("library", ($new ? "create" : "update"), null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion()
+        self::h5p()->events()->factory()->newEventFrameworkInstance("library", ($new ? "create" : "update"), null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion()
             . "." . $h5p_library->getMinorVersion()));
 
-        $h5p_languages = LibraryLanguage::getLanguagesByLibrary($h5p_library->getLibraryId());
+        $h5p_languages = self::h5p()->libraries()->getLanguagesByLibrary($h5p_library->getLibraryId());
         foreach ($h5p_languages as $h5p_language) {
-            $h5p_language->delete();
+            self::h5p()->libraries()->deleteLibraryLanguage($h5p_language);
         }
 
         if (isset($library_data["language"])) {
             foreach ($library_data["language"] as $language_code => $language_json) {
-                $h5p_language = new LibraryLanguage();
+                $h5p_language = self::h5p()->libraries()->factory()->newLibraryLanguageInstance();
 
                 $h5p_language->setLibraryId($h5p_library->getLibraryId());
 
@@ -659,7 +668,7 @@ class Framework implements H5PFrameworkInterface
 
                 $h5p_language->setTranslation($language_json);
 
-                $h5p_language->store();
+                self::h5p()->libraries()->storeLibraryLanguage($h5p_language);
             }
         }
     }
@@ -701,14 +710,14 @@ class Framework implements H5PFrameworkInterface
      */
     public function updateContent($content, $content_main_id = null)
     {
-        $h5p_content = Content::getContentById($content["id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($content["id"]);
 
         if ($h5p_content !== null) {
             $new = false;
         } else {
             $new = true;
 
-            $h5p_content = new Content();
+            $h5p_content = self::h5p()->contents()->factory()->newContentInstance();
 
             $h5p_content->setEmbedType("div");
 
@@ -727,15 +736,13 @@ class Framework implements H5PFrameworkInterface
             $h5p_content->setDisable(0);
         }
 
-        if ($new) {
-            $h5p_content->create();
+        self::h5p()->contents()->storeContent($h5p_content);
 
+        if ($new) {
             $content["id"] = $h5p_content->getContentId();
-        } else {
-            $h5p_content->update();
         }
 
-        $h5p_event = new EventFramework("content", (($new ? "create" : "update")
+        self::h5p()->events()->factory()->newEventFrameworkInstance("content", (($new ? "create" : "update")
             . (!empty($content["uploaded"]) ? " upload" : "")), $h5p_content->getContentId(), $h5p_content->getTitle(), $content["library"]["name"], ($content["library"]["majorVersion"]
             . "." . $content["library"]["minorVersion"]));
 
@@ -750,12 +757,12 @@ class Framework implements H5PFrameworkInterface
      */
     public function resetContentUserData($content_id)
     {
-        $h5p_user_datas = ContentUserData::getUserDatasByContent($content_id);
+        $h5p_user_datas = self::h5p()->contents()->getUserDatasByContent($content_id);
 
         foreach ($h5p_user_datas as $h5p_user_data) {
             $h5p_user_data->setData("RESET");
 
-            $h5p_user_data->store();
+            self::h5p()->contents()->storeContentUserData($h5p_user_data);
         }
     }
 
@@ -779,9 +786,9 @@ class Framework implements H5PFrameworkInterface
     public function saveLibraryDependencies($library_id, $dependencies, $dependency_type)
     {
         foreach ($dependencies as $dependency) {
-            $h5p_library = Library::getLibraryByVersion($dependency["machineName"], $dependency["majorVersion"], $dependency["minorVersion"]);
+            $h5p_library = self::h5p()->libraries()->getLibraryByVersion($dependency["machineName"], $dependency["majorVersion"], $dependency["minorVersion"]);
 
-            $h5p_dependency = new LibraryDependencies();
+            $h5p_dependency = self::h5p()->libraries()->factory()->newLibraryDependenciesInstance();
 
             $h5p_dependency->setLibraryId($library_id);
 
@@ -789,7 +796,7 @@ class Framework implements H5PFrameworkInterface
 
             $h5p_dependency->setDependencyType($dependency_type);
 
-            $h5p_dependency->store();
+            self::h5p()->libraries()->storeLibraryDependencies($h5p_dependency);
         }
     }
 
@@ -808,18 +815,14 @@ class Framework implements H5PFrameworkInterface
      */
     public function copyLibraryUsage($content_id, $copy_from_id, $content_main_id = null)
     {
-        $h5p_content_libraries = ContentLibrary::getContentLibraries($copy_from_id);
+        $h5p_content_libraries = self::h5p()->contents()->getContentLibraries($copy_from_id);
 
         foreach ($h5p_content_libraries as $h5p_content_library) {
-            /**
-             * @var ContentLibrary $h5p_content_library_copy
-             */
-
-            $h5p_content_library_copy = $h5p_content_library->copy();
+            $h5p_content_library_copy = self::h5p()->contents()->cloneContentLibrary($h5p_content_library);
 
             $h5p_content_library_copy->setContentId($content_id);
 
-            $h5p_content_library_copy->store();
+            self::h5p()->contents()->storeContentLibrary($h5p_content_library_copy);
         }
     }
 
@@ -834,24 +837,24 @@ class Framework implements H5PFrameworkInterface
     {
         $content = $this->loadContent($content_id);
 
-        $h5p_event = new EventFramework("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
+        self::h5p()->events()->factory()->newEventFrameworkInstance("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
             . "." . $content["libraryMinorVersion"]));
 
-        $h5p_content = Content::getContentById($content_id);
+        $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null) {
-            $h5p_content->delete();
+            self::h5p()->contents()->deleteContent($h5p_content);
         }
 
         $this->deleteLibraryUsage($content_id);
 
-        $h5p_results = Result::getResultsByContent($content_id);
+        $h5p_results = self::h5p()->results()->getResultsByContent($content_id);
         foreach ($h5p_results as $h5p_result) {
-            $h5p_result->delete();
+            self::h5p()->results()->deleteResult($h5p_result);
         }
 
-        $h5p_user_datas = ContentUserData::getUserDatasByContent($content_id);
+        $h5p_user_datas = self::h5p()->contents()->getUserDatasByContent($content_id);
         foreach ($h5p_user_datas as $h5p_user_data) {
-            $h5p_user_data->delete();
+            self::h5p()->contents()->deleteContentUserData($h5p_user_data);
         }
     }
 
@@ -864,10 +867,10 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteLibraryUsage($content_id)
     {
-        $h5p_content_libraries = ContentLibrary::getContentLibraries($content_id);
+        $h5p_content_libraries = self::h5p()->contents()->getContentLibraries($content_id);
 
         foreach ($h5p_content_libraries as $h5p_content_library) {
-            $h5p_content_library->delete();
+            self::h5p()->contents()->deleteContentLibrary($h5p_content_library);
         }
     }
 
@@ -899,7 +902,7 @@ class Framework implements H5PFrameworkInterface
         }
 
         foreach ($libraries_in_use as $library_in_use) {
-            $h5p_content_library = new ContentLibrary();
+            $h5p_content_library = self::h5p()->contents()->factory()->newContentLibraryInstance();
 
             $h5p_content_library->setContentId($content_id);
 
@@ -911,7 +914,7 @@ class Framework implements H5PFrameworkInterface
 
             $h5p_content_library->setWeight($library_in_use["weight"]);
 
-            $h5p_content_library->store();
+            self::h5p()->contents()->storeContentLibrary($h5p_content_library);
         }
     }
 
@@ -933,12 +936,12 @@ class Framework implements H5PFrameworkInterface
     public function getLibraryUsage($library_id, $skip_content = false)
     {
         if (!$skip_content) {
-            $content = Library::getLibraryUsage($library_id);
+            $content = self::h5p()->libraries()->getLibraryUsage($library_id);
         } else {
             $content = -1;
         }
 
-        $libraries = LibraryDependencies::getLibraryUsage($library_id);
+        $libraries = self::h5p()->libraries()->getLibraryDependenciesUsage($library_id);
 
         return [
             "content"   => $content,
@@ -989,7 +992,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function loadLibrary($machine_name, $major_version, $minor_version)
     {
-        $h5p_library = Library::getLibraryByVersion($machine_name, $major_version, $minor_version);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($machine_name, $major_version, $minor_version);
 
         if ($h5p_library !== null) {
             $library = [
@@ -1012,7 +1015,7 @@ class Framework implements H5PFrameworkInterface
                 "editorDependencies"    => []
             ];
 
-            $h5p_dependencies = LibraryDependencies::getDependenciesJoin($h5p_library->getLibraryId());
+            $h5p_dependencies = self::h5p()->libraries()->getDependenciesJoin($h5p_library->getLibraryId());
             foreach ($h5p_dependencies as $h5p_dependency) {
                 $library[$h5p_dependency["dependency_type"] . "Dependencies"][] = [
                     "machineName"  => $h5p_dependency["name"],
@@ -1043,7 +1046,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function loadLibrarySemantics($machine_name, $major_version, $minor_version)
     {
-        $h5p_library = Library::getLibraryByVersion($machine_name, $major_version, $minor_version);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($machine_name, $major_version, $minor_version);
 
         if ($h5p_library !== null) {
             return $h5p_library->getSemantics();
@@ -1067,12 +1070,12 @@ class Framework implements H5PFrameworkInterface
      */
     public function alterLibrarySemantics(&$semantics, $machine_name, $major_version, $minor_version)
     {
-        $h5p_library = Library::getLibraryByVersion($machine_name, $major_version, $minor_version);
+        $h5p_library = self::h5p()->libraries()->getLibraryByVersion($machine_name, $major_version, $minor_version);
 
         if ($h5p_library !== null) {
             $h5p_library->setSemantics(json_encode($semantics));
 
-            $h5p_library->store();
+            self::h5p()->libraries()->storeLibrary($h5p_library);
         }
     }
 
@@ -1085,10 +1088,10 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteLibraryDependencies($library_id)
     {
-        $h5p_dependencies = LibraryDependencies::getDependencies($library_id);
+        $h5p_dependencies = self::h5p()->libraries()->getDependencies($library_id);
 
         foreach ($h5p_dependencies as $h5p_dependency) {
-            $h5p_dependency->delete();
+            self::h5p()->libraries()->deleteLibraryDependencies($h5p_dependency);
         }
     }
 
@@ -1119,22 +1122,22 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteLibrary($library)
     {
-        H5PCore::deleteFileTree(self::h5p()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
+        H5PCore::deleteFileTree(self::h5p()->objectSettings()->getH5PFolder() . "/libraries/" . $library->name . "-" . $library->major_version . "."
             . $library->minor_version);
 
         $this->deleteLibraryDependencies($library->library_id);
 
-        $h5p_languages = LibraryLanguage::getLanguagesByLibrary($library->library_id);
+        $h5p_languages = self::h5p()->libraries()->getLanguagesByLibrary($library->library_id);
         foreach ($h5p_languages as $h5p_language) {
-            $h5p_language->delete();
+            self::h5p()->libraries()->deleteLibraryLanguage($h5p_language);
         }
 
-        $h5p_library = Library::getLibraryById($library->library_id);
+        $h5p_library = self::h5p()->libraries()->getLibraryById($library->library_id);
         if ($h5p_library !== null) {
-            $h5p_library->delete();
+            self::h5p()->libraries()->deleteLibrary($h5p_library);
         }
 
-        $h5p_event = new EventFramework("library", "delete", null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
+        self::h5p()->events()->factory()->newEventFrameworkInstance("library", "delete", null, null, $h5p_library->getName(), ($h5p_library->getMajorVersion() . "."
             . $h5p_library->getMinorVersion()));
     }
 
@@ -1163,7 +1166,7 @@ class Framework implements H5PFrameworkInterface
     {
         $content = [];
 
-        $h5p_content = Content::getContentById($id);
+        $h5p_content = self::h5p()->contents()->getContentById($id);
 
         if ($h5p_content !== null) {
             $content = [
@@ -1179,7 +1182,7 @@ class Framework implements H5PFrameworkInterface
                 "libraryId" => $h5p_content->getLibraryId(),
             ];
 
-            $h5p_library = Library::getLibraryById($h5p_content->getLibraryId());
+            $h5p_library = self::h5p()->libraries()->getLibraryById($h5p_content->getLibraryId());
             if ($h5p_library !== null) {
                 $content = array_merge($content, [
                     "libraryName"         => $h5p_library->getName(),
@@ -1221,10 +1224,10 @@ class Framework implements H5PFrameworkInterface
     {
         $dependencies = [];
 
-        $h5p_content_libraries = ContentLibrary::getContentLibraries($id, $type);
+        $h5p_content_libraries = self::h5p()->contents()->getContentLibraries($id, $type);
 
         foreach ($h5p_content_libraries as $h5p_content_library) {
-            $h5p_library = Library::getLibraryById($h5p_content_library->getLibraryId());
+            $h5p_library = self::h5p()->libraries()->getLibraryById($h5p_content_library->getLibraryId());
 
             if ($h5p_library !== null) {
                 $dependencies[] = [
@@ -1285,14 +1288,14 @@ class Framework implements H5PFrameworkInterface
      */
     public function updateContentFields($id, $fields)
     {
-        $h5p_content = Content::getContentById($id);
+        $h5p_content = self::h5p()->contents()->getContentById($id);
 
         if ($h5p_content !== null) {
             $h5p_content->setFiltered($fields["filtered"]);
 
             $h5p_content->setSlug($fields["slug"]);
 
-            $h5p_content->store();
+            self::h5p()->contents()->storeContent($h5p_content);
         }
     }
 
@@ -1306,12 +1309,12 @@ class Framework implements H5PFrameworkInterface
      */
     public function clearFilteredParameters($library_id)
     {
-        $h5p_contents = Content::getContentsByLibrary($library_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByLibrary($library_id);
 
         foreach ($h5p_contents as $h5p_content) {
             $h5p_content->setFiltered("");
 
-            $h5p_content->store();
+            self::h5p()->contents()->storeContent($h5p_content);
         }
     }
 
@@ -1324,7 +1327,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getNumNotFiltered()
     {
-        $h5p_contents = Content::getContentsNotFiltered();
+        $h5p_contents = self::h5p()->contents()->getContentsNotFiltered();
 
         return count($h5p_contents);
     }
@@ -1341,7 +1344,7 @@ class Framework implements H5PFrameworkInterface
     public function getNumContent($library_id, $skip = null)
     {
         // TODO: $skip?
-        $h5p_contents = Content::getContentsByLibrary($library_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByLibrary($library_id);
 
         return count($h5p_contents);
     }
@@ -1356,7 +1359,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function isContentSlugAvailable($slug)
     {
-        $h5p_content = Content::getContentsBySlug($slug);
+        $h5p_content = self::h5p()->contents()->getContentsBySlug($slug);
 
         return ($h5p_content === null);
     }
@@ -1371,7 +1374,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryStats($type)
     {
-        $h5p_counters = Counter::getCountersByType($type);
+        $h5p_counters = self::h5p()->libraries()->getCountersByType($type);
 
         $count = [];
 
@@ -1390,7 +1393,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getNumAuthors()
     {
-        return Content::getNumAuthors();
+        return self::h5p()->contents()->getNumAuthors();
     }
 
 
@@ -1407,13 +1410,13 @@ class Framework implements H5PFrameworkInterface
     public function saveCachedAssets($key, $libraries)
     {
         foreach ($libraries as $library) {
-            $h5p_cached_asset = new LibraryCachedAsset();
+            $h5p_cached_asset = self::h5p()->libraries()->factory()->newLibraryCachedAssetInstance();
 
             $h5p_cached_asset->setLibraryId(isset($library["id"]) ? $library["id"] : $library["libraryId"]);
 
             $h5p_cached_asset->setHash($key);
 
-            $h5p_cached_asset->store();
+            self::h5p()->libraries()->storeLibraryCachedAsset($h5p_cached_asset);
         }
     }
 
@@ -1430,12 +1433,12 @@ class Framework implements H5PFrameworkInterface
      */
     public function deleteCachedAssets($library_id)
     {
-        $h5p_cached_assets = LibraryCachedAsset::getCachedAssetsByLibrary($library_id);
+        $h5p_cached_assets = self::h5p()->libraries()->getCachedAssetsByLibrary($library_id);
 
         $hashes = [];
 
         foreach ($h5p_cached_assets as $h5p_cached_asset) {
-            $h5p_cached_asset->delete();
+            self::h5p()->libraries()->deleteLibraryCachedAsset($h5p_cached_asset);
 
             $hashes[] = $h5p_cached_asset->getHash();
         }
@@ -1451,14 +1454,14 @@ class Framework implements H5PFrameworkInterface
      */
     public function getLibraryContentCount()
     {
-        $h5p_libraries = Library::getLibraries();
+        $h5p_libraries = self::h5p()->libraries()->getLibraries();
 
         $count = [];
 
         foreach ($h5p_libraries as $h5p_library) {
             $count[$h5p_library->getName() . " " . $h5p_library->getMajorVersion() . " "
             . $h5p_library->getMinorVersion()]
-                = count(Content::getContentsByLibrary($h5p_library->getLibraryId()));
+                = count(self::h5p()->contents()->getContentsByLibrary($h5p_library->getLibraryId()));
         }
 
         return $count;
@@ -1499,10 +1502,10 @@ class Framework implements H5PFrameworkInterface
      */
     public function replaceContentTypeCache($content_type_cache)
     {
-        LibraryHubCache::truncateDB();
+        self::h5p()->libraries()->truncateLibraryHubCaches();
 
         foreach ($content_type_cache->contentTypes as $content_type) {
-            $library_hub_cache = new LibraryHubCache();
+            $library_hub_cache = self::h5p()->libraries()->factory()->newLibraryHubCacheInstance();
 
             $library_hub_cache->setMachineName($content_type->id);
 
@@ -1554,7 +1557,7 @@ class Framework implements H5PFrameworkInterface
 
             $library_hub_cache->setOwner($content_type->owner);
 
-            $library_hub_cache->store();
+            self::h5p()->libraries()->storeLibraryHubCache($library_hub_cache);
         }
     }
 
@@ -1592,6 +1595,6 @@ class Framework implements H5PFrameworkInterface
      */
     public function libraryHasUpgrade($library)
     {
-        return Library::libraryHasUpgrade($library["machineName"], $library["majorVersion"], $library["minorVersion"]);
+        return self::h5p()->libraries()->libraryHasUpgrade($library["machineName"], $library["majorVersion"], $library["minorVersion"]);
     }
 }

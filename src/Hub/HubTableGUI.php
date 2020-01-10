@@ -7,8 +7,8 @@ use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilSelectInputGUI;
 use ilTextInputGUI;
-use srag\ActiveRecordConfig\H5P\ActiveRecordConfigTableGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
+use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,13 +18,25 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubTableGUI extends ActiveRecordConfigTableGUI
+class HubTableGUI extends TableGUI
 {
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "hub_table_row.html";
     const LANG_MODULE = "";
+
+
+    /**
+     * HubTableGUI constructor
+     *
+     * @param ilH5PConfigGUI $parent
+     * @param string         $parent_cmd
+     */
+    public function __construct(ilH5PConfigGUI $parent, /*string*/ $parent_cmd)
+    {
+        parent::__construct($parent, $parent_cmd);
+    }
 
 
     /**
@@ -89,7 +101,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
         $runnable = ($filter["only_runnable"] ? true : null);
         $not_used = ($filter["only_not_used"] ? true : null);
 
-        $libraries = self::h5p()->show_hub()->getLibraries($title, $status, $runnable, $not_used);
+        $libraries = self::h5p()->hub()->show()->getLibraries($title, $status, $runnable, $not_used);
 
         $this->setData($libraries);
     }
@@ -98,10 +110,17 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
     /**
      * @inheritdoc
      */
+    protected function initId()/*: void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     protected function initFilterFields()/*: void*/
     {
-        parent::initFilterFields();
-
         $this->filter_fields = [
             "title"         => [
                 PropertyFormGUI::PROPERTY_CLASS => ilTextInputGUI::class
@@ -181,7 +200,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), $delete_link);
                 break;
 
             case ShowHub::STATUS_UPGRADE_AVAILABLE:
@@ -189,9 +208,9 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("upgrade"), $install_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("upgrade"), $install_link);
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("delete"), $delete_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), $delete_link);
                 break;
 
             case ShowHub::STATUS_NOT_INSTALLED:
@@ -199,7 +218,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
 
                 $this->tpl->setVariable("INSTALLED_VERSION", "-");
 
-                $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("install"), $install_link);
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("install"), $install_link);
                 break;
 
             default:
@@ -213,7 +232,7 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
         $this->tpl->setVariable("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
 
         $this->tpl->setVariable("DETAILS_LINK", $details_link);
-        $actions[] = self::dic()->ui()->factory()->button()->shy(self::plugin()->translate("details"), $details_link);
+        $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("details"), $details_link);
 
         $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
             ->withLabel($this->txt("actions"))));
@@ -227,9 +246,9 @@ class HubTableGUI extends ActiveRecordConfigTableGUI
      */
     public function getHTML()
     {
-        $form = self::h5p()->show_hub()->getUploadLibraryForm($this->parent_obj);
+        $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
 
-        $hub = self::h5p()->show_hub()->getHub($form, $this->parent_obj, parent::getHTML());
+        $hub = self::h5p()->hub()->show()->getHub($form, $this->parent_obj, parent::getHTML());
 
         return $hub;
     }

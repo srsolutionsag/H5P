@@ -4,8 +4,9 @@ namespace srag\Plugins\H5P\Hub;
 
 use ilCheckboxInputGUI;
 use ilCustomInputGUI;
+use ilH5PConfigGUI;
 use ilH5PPlugin;
-use srag\ActiveRecordConfig\H5P\ActiveRecordConfigFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\ConfigPropertyFormGUI;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -16,13 +17,33 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubSettingsFormGUI extends ActiveRecordConfigFormGUI
+class HubSettingsFormGUI extends ConfigPropertyFormGUI
 {
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CONFIG_CLASS_NAME = Option::class;
     const LANG_MODULE = "";
+
+
+    /**
+     * HubSettingsFormGUI constructor
+     *
+     * @param ilH5PConfigGUI $parent
+     */
+    public function __construct(ilH5PConfigGUI $parent)
+    {
+        parent::__construct($parent);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function initCommands()/*: void*/
+    {
+        $this->addCommandButton(ilH5PConfigGUI::CMD_UPDATE_SETTINGS, $this->txt("save"));
+    }
 
 
     /**
@@ -46,6 +67,15 @@ class HubSettingsFormGUI extends ActiveRecordConfigFormGUI
                 ]
             ]
         ];
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function initId()/*: void*/
+    {
+
     }
 
 

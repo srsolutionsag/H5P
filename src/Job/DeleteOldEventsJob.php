@@ -7,7 +7,6 @@ use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Event\Event;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -36,93 +35,81 @@ class DeleteOldEventsJob extends ilCronJob
 
 
     /**
-     * Get id
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getId()
+    public function getId()/*: string*/
     {
         return self::CRON_JOB_ID;
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getTitle()
+    public function getTitle()/*: string*/
     {
         return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate(self::CRON_JOB_ID, ilH5PPlugin::LANG_MODULE_CRON);
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getDescription()
+    public function getDescription()/*: string*/
     {
         return self::plugin()->translate(self::CRON_JOB_ID . "_description", ilH5PPlugin::LANG_MODULE_CRON);
     }
 
 
     /**
-     * Is to be activated on "installation"
-     *
-     * @return boolean
+     * @inheritDoc
      */
-    public function hasAutoActivation()
+    public function hasAutoActivation()/*: bool*/
     {
         return true;
     }
 
 
     /**
-     * Can the schedule be configured?
-     *
-     * @return boolean
+     * @inheritDoc
      */
-    public function hasFlexibleSchedule()
+    public function hasFlexibleSchedule()/*: bool*/
     {
         return true;
     }
 
 
     /**
-     * Get schedule type
-     *
-     * @return int
+     * @inheritDoc
      */
-    public function getDefaultScheduleType()
+    public function getDefaultScheduleType()/*:int*/
     {
         return self::SCHEDULE_TYPE_DAILY;
     }
 
 
     /**
-     * Get schedule value
-     *
-     * @return int|array
+     * @inheritDoc
      */
-    public function getDefaultScheduleValue()
+    public function getDefaultScheduleValue()/*:?int*/
     {
         return null;
     }
 
 
     /**
-     * Run job
-     *
-     * @return ilCronJobResult
+     * @inheritDoc
      */
-    public function run()
+    public function run()/*: ilCronJobResult*/
     {
         $result = new ilCronJobResult();
 
         $older_than = (time() - H5PEventBase::$log_time);
 
-        $h5p_events = Event::getOldEvents($older_than);
+        $h5p_events = self::h5p()->events()->getOldEvents($older_than);
 
         foreach ($h5p_events as $h5p_event) {
-            $h5p_event->delete();
+            self::h5p()->events()->deleteEvent($h5p_event);
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

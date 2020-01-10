@@ -91,13 +91,13 @@ class EditContentFormGUI extends PropertyFormGUI
                     return $this->h5p_content->getTitle();
 
                 case "library":
-                    $content = self::h5p()->core()->loadContent($this->h5p_content->getContentId());
+                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
 
                     return H5PCore::libraryToString($content["library"]);
 
                 case "params":
-                    $content = self::h5p()->core()->loadContent($this->h5p_content->getContentId());
-                    $params = self::h5p()->core()->filterParameters($content);
+                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
+                    $params = self::h5p()->contents()->core()->filterParameters($content);
 
                     return $params;
 
@@ -161,7 +161,7 @@ class EditContentFormGUI extends PropertyFormGUI
             "library_h5p" => [
                 PropertyFormGUI::PROPERTY_CLASS    => ilCustomInputGUI::class,
                 PropertyFormGUI::PROPERTY_REQUIRED => true,
-                "setHTML"                          => self::h5p()->show_editor()->getEditor($this->h5p_content),
+                "setHTML"                          => self::h5p()->contents()->editor()->show()->getEditor($this->h5p_content),
                 "setTitle"                         => $this->txt("library")
             ],
             "params"      => [
@@ -295,7 +295,7 @@ class EditContentFormGUI extends PropertyFormGUI
             return;
         }
 
-        $content_folder = self::h5p()->getH5PFolder() . "/content/" . $this->h5p_content->getContentId();
+        $content_folder = self::h5p()->objectSettings()->getH5PFolder() . "/content/" . $this->h5p_content->getContentId();
 
         if ((is_array($this->upload_file) && !empty($this->upload_file["tmp_name"])) || $this->getInput("upload_file_delete")) {
 
@@ -316,7 +316,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
                 $this->h5p_content->setUploadedFiles([]);
 
-                $this->h5p_content->store();
+                self::h5p()->contents()->storeContent($this->h5p_content);
             }
         }
 
@@ -325,7 +325,7 @@ class EditContentFormGUI extends PropertyFormGUI
             $uploaded_files = [];
             $uploaded_files_invalid = [];
 
-            $whitelist_ext = explode(" ", self::h5p()->framework()->getWhitelist(false, H5PCore::$defaultContentWhitelist
+            $whitelist_ext = explode(" ", self::h5p()->contents()->framework()->getWhitelist(false, H5PCore::$defaultContentWhitelist
                 . " html", H5PCore::$defaultLibraryWhitelistExtras));
 
             if (pathinfo($this->upload_file["name"], PATHINFO_EXTENSION) === "zip") {
@@ -398,7 +398,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
             $this->h5p_content->setUploadedFiles($uploaded_files);
 
-            $this->h5p_content->store();
+            self::h5p()->contents()->storeContent($this->h5p_content);
         }
     }
 }

@@ -45,27 +45,6 @@ class LibraryCachedAsset extends ActiveRecord
 
 
     /**
-     * @param int $library_id
-     *
-     * @return LibraryCachedAsset[]
-     */
-    public static function getCachedAssetsByLibrary($library_id)
-    {
-        /**
-         * @var LibraryCachedAsset[] $h5p_cached_assets
-         */
-
-        $h5p_cached_assets = self::where([
-            "library_id" => $library_id
-        ])->get();
-
-        return $h5p_cached_assets;
-    }
-
-
-    /**
-     * Workaround for multiple primary keys: library_id, hash
-     *
      * @var int
      *
      * @con_has_field    true

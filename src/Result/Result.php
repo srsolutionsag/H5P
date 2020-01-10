@@ -1,18 +1,17 @@
 <?php
 
-namespace srag\Plugins\H5P\Results;
+namespace srag\Plugins\H5P\Result;
 
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class Result
  *
- * @package srag\Plugins\H5P\Results
+ * @package srag\Plugins\H5P\Result
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -42,113 +41,6 @@ class Result extends ActiveRecord
     public static function returnDbTableName()
     {
         return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @param int $user_id
-     * @param int $content_id
-     *
-     * @return Result|null
-     */
-    public static function getResultByUserContent($user_id, $content_id)
-    {
-        /**
-         * @var Result|null $h5p_result
-         */
-
-        $h5p_result = self::where([
-            "user_id"    => $user_id,
-            "content_id" => $content_id
-        ])->first();
-
-        return $h5p_result;
-    }
-
-
-    /**
-     * @param int $content_id
-     *
-     * @return Result[]
-     */
-    public static function getResultsByContent($content_id)
-    {
-        /**
-         * @var Result[] $h5p_results
-         */
-
-        $h5p_results = self::where([
-            "content_id" => $content_id
-        ])->get();
-
-        return $h5p_results;
-    }
-
-
-    /**
-     * @param int    $obj_id
-     * @param string $parent_type
-     *
-     * @return Result[]
-     */
-    public static function getResultsByObject($obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
-    {
-        /**
-         * @var Result[] $h5p_results
-         */
-
-        $h5p_results = self::innerjoin(Content::TABLE_NAME, "content_id", "content_id")->where([
-            Content::TABLE_NAME . ".obj_id"      => $obj_id,
-            Content::TABLE_NAME . ".parent_type" => $parent_type
-        ])->orderBy(self::TABLE_NAME . ".user_id", "asc")->orderBy(Content::TABLE_NAME . ".sort", "asc")->get();
-
-        return $h5p_results;
-    }
-
-
-    /**
-     *
-     * @param int    $user_id
-     * @param int    $obj_id
-     * @param string $parent_type
-     *
-     * @return Result[]
-     */
-    public static function getResultsByUserObject($user_id, $obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
-    {
-        /**
-         * @var Result[] $h5p_results
-         */
-
-        $h5p_results = self::innerjoin(Content::TABLE_NAME, "content_id", "content_id")->where([
-            Content::TABLE_NAME . ".obj_id"      => $obj_id,
-            Content::TABLE_NAME . ".parent_type" => $parent_type,
-            self::TABLE_NAME . ".user_id"        => $user_id,
-        ])->get();
-
-        return $h5p_results;
-    }
-
-
-    /**
-     * @param int obj_id
-     *
-     * @return bool
-     */
-    public static function hasObjectResults($obj_id)
-    {
-        return (count(self::getResultsByObject($obj_id)) > 0 || count(SolveStatus::getByObject($obj_id)) > 0);
-    }
-
-
-    /**
-     * @param int $content_id
-     *
-     * @return bool
-     */
-    public static function hasContentResults($content_id)
-    {
-        return (count(self::getResultsByContent($content_id)) > 0);
     }
 
 
@@ -282,17 +174,6 @@ class Result extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->user_id = self::dic()->user()->getId();
-
-        parent::create();
     }
 
 

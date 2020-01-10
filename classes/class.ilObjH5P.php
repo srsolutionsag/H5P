@@ -1,9 +1,7 @@
 <?php
 
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Object\H5PObject;
-use srag\Plugins\H5P\Results\SolveStatus;
+use srag\Plugins\H5P\ObjectSettings\ObjectSettings;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,9 +16,9 @@ class ilObjH5P extends ilObjectPlugin
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
-     * @var H5PObject
+     * @var ObjectSettings
      */
-    protected $object;
+    protected $object_settings;
 
 
     /**
@@ -28,101 +26,97 @@ class ilObjH5P extends ilObjectPlugin
      *
      * @param int $a_ref_id
      */
-    public function __construct($a_ref_id = 0)
+    public function __construct(/*int*/ $a_ref_id = 0)
     {
         parent::__construct($a_ref_id);
     }
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public final function initType()
+    public final function initType()/*: void*/
     {
         $this->setType(ilH5PPlugin::PLUGIN_ID);
     }
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function doCreate()
+    public function doCreate()/*: void*/
     {
-        $this->object = new H5PObject();
+        $this->object_settings = self::h5p()->objectSettings()->factory()->newInstance();
 
-        $this->object->setObjId($this->id);
+        $this->object_settings->setObjId($this->id);
 
-        $this->object->store();
+        self::h5p()->objectSettings()->storeObjectSettings($this->object_settings);
     }
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function doRead()
+    public function doRead()/*: void*/
     {
-        $this->object = H5PObject::getObjectById(intval($this->id));
+        $this->object_settings = self::h5p()->objectSettings()->getObjectSettingsById(intval($this->id));
     }
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function doUpdate()
+    public function doUpdate()/*: void*/
     {
-        $this->object->store();
+        self::h5p()->objectSettings()->storeObjectSettings($this->object_settings);
     }
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function doDelete()
+    public function doDelete()/*: void*/
     {
-        if ($this->object !== null) {
-            $this->object->delete();
+        if ($this->object_settings !== null) {
+            self::h5p()->objectSettings()->deleteObjectSettings($this->object_settings);
         }
 
-        $h5p_contents = Content::getContentsByObject($this->id);
+        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
 
         foreach ($h5p_contents as $h5p_content) {
-            self::h5p()->show_editor()->deleteContent($h5p_content, false);
+            self::h5p()->contents()->editor()->show()->deleteContent($h5p_content, false);
         }
 
-        $h5p_solve_statuses = SolveStatus::getByObject($this->id);
+        $h5p_solve_statuses = self::h5p()->results()->getByObject($this->id);
         foreach ($h5p_solve_statuses as $h5p_solve_status) {
-            $h5p_solve_status->delete();
+            self::h5p()->results()->deleteSolveStatus($h5p_solve_status);
         }
     }
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilObjH5P $new_obj
-     * @param int      $a_target_id
-     * @param int      $a_copy_id
      */
-    protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null)
+    protected function doCloneObject(/*ilObjH5P*/ $new_obj, /*int*/ $a_target_id, /*?int*/ $a_copy_id = null)/*: void*/
     {
-        $new_obj->object = $this->object->copy();
+        $new_obj->object_settings = self::h5p()->objectSettings()->cloneObjectSettings($this->object_settings);
 
-        $new_obj->object->setObjId($new_obj->id);
+        $new_obj->object_settings->setObjId($new_obj->id);
 
-        $new_obj->object->store();
+        self::h5p()->objectSettings()->storeObjectSettings($new_obj->object_settings);
 
-        $h5p_contents = Content::getContentsByObject($this->id);
+        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
 
         foreach ($h5p_contents as $h5p_content) {
-            /**
-             * @var Content $h5p_content_copy
-             */
-
-            $h5p_content_copy = $h5p_content->copy();
+            $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
 
             $h5p_content_copy->setObjId($new_obj->id);
 
-            $h5p_content_copy->store();
+            self::h5p()->contents()->storeContent($h5p_content_copy);
 
-            self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+            self::h5p()->contents()->editor()->storageCore()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
         }
     }
 
@@ -130,35 +124,35 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @return bool
      */
-    public function isOnline()
+    public function isOnline()/*:bool*/
     {
-        return $this->object->isOnline();
+        return $this->object_settings->isOnline();
     }
 
 
     /**
      * @param bool $is_online
      */
-    public function setOnline($is_online = true)
+    public function setOnline(/*bool*/ $is_online = true)/*:void*/
     {
-        $this->object->setOnline($is_online);
+        $this->object_settings->setOnline($is_online);
     }
 
 
     /**
      * @return bool
      */
-    public function isSolveOnlyOnce()
+    public function isSolveOnlyOnce()/*:bool*/
     {
-        return $this->object->isSolveOnlyOnce();
+        return $this->object_settings->isSolveOnlyOnce();
     }
 
 
     /**
      * @param bool $solve_only_once
      */
-    public function setSolveOnlyOnce($solve_only_once)
+    public function setSolveOnlyOnce(/*bool*/ $solve_only_once)/*:void*/
     {
-        $this->object->setSolveOnlyOnce($solve_only_once);
+        $this->object_settings->setSolveOnlyOnce($solve_only_once);
     }
 }

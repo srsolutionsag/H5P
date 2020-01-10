@@ -9,7 +9,6 @@ use ilImageLinkButton;
 use ilLinkButton;
 use ilNonEditableValueGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
-use srag\Plugins\H5P\Library\LibraryDependencies;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -36,7 +35,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
      * @param ilH5PConfigGUI $parent
      * @param string         $key
      */
-    public function __construct(ilH5PConfigGUI $parent, $key)
+    public function __construct(ilH5PConfigGUI $parent, /*string*/ $key)
     {
         $this->key = $key;
 
@@ -113,10 +112,10 @@ class HubDetailsFormGUI extends PropertyFormGUI
     public function getHTML()
     {
         // Library
-        $libraries = self::h5p()->show_hub()->getLibraries();
+        $libraries = self::h5p()->hub()->show()->getLibraries();
         $library = $libraries[$this->key];
-        $library["usages"] = LibraryDependencies::getUsageJoin($library["installed_id"]);
-        $library["dependencies"] = LibraryDependencies::getDependenciesJoin($library["installed_id"]);
+        $library["usages"] = self::h5p()->libraries()->getUsageJoin($library["installed_id"]);
+        $library["dependencies"] = self::h5p()->libraries()->getDependenciesJoin($library["installed_id"]);
 
         $h5p_tpl = self::plugin()->template("H5PLibraryDetails.html");
 

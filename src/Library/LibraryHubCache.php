@@ -45,65 +45,6 @@ class LibraryHubCache extends ActiveRecord
 
 
     /**
-     * @return LibraryHubCache[]
-     */
-    public static function getLibraries()
-    {
-        /**
-         * @var LibraryHubCache[] $h5p_hub_libraries
-         */
-
-        $h5p_hub_libraries = self::get();
-
-        return $h5p_hub_libraries;
-    }
-
-
-    /**
-     * @param string $name
-     *
-     * @return LibraryHubCache|null
-     */
-    public static function getLibraryByName($name)
-    {
-        /**
-         * @var LibraryHubCache|null $h5p_hub_library
-         */
-
-        $h5p_hub_library = self::where([
-            "machine_name" => $name
-        ])->first();
-
-        return $h5p_hub_library;
-    }
-
-
-    /**
-     * @param string|null $name
-     *
-     * @return object|array|null
-     */
-    public static function getContentTypeCache($name = null)
-    {
-        if ($name != null) {
-            $library_hub_cache = self::where([
-                "machine_name" => $name
-            ])->getArray(null, ["id", "is_recommended"])[0];
-
-            if ($library_hub_cache != null) {
-                return (object) $library_hub_cache;
-            } else {
-                return null;
-            }
-        } else {
-            return array_map(function ($library_hub_cache) {
-                return (object) $library_hub_cache;
-            }, self::getArray());
-        }
-    }
-
-
-    /**
      * @var int
      *
      * @con_has_field    true

@@ -21,25 +21,25 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
      *
      * @param int $a_context
      */
-    public function __construct($a_context = self::CONTEXT_REPOSITORY)
+    public function __construct(/*int*/ $a_context = self::CONTEXT_REPOSITORY)
     {
         parent::__construct($a_context);
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getGuiClass()
+    public function getGuiClass()/*: string*/
     {
         return ilObjH5PGUI::class;
     }
 
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    public function initCommands()
+    public function initCommands()/*: array*/
     {
         $this->commands_enabled = true;
         $this->copy_enabled = true;
@@ -79,9 +79,9 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
 
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    public function getProperties()
+    public function getProperties()/*:array*/
     {
         $props = [];
 
@@ -98,9 +98,9 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function initType()
+    public function initType()/*:void*/
     {
         $this->setType(ilH5PPlugin::PLUGIN_ID);
     }

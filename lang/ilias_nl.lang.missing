@@ -106,7 +106,7 @@ settings#:#MISSING settings
 settings_saved#:#MISSING settings_saved
 show#:#MISSING show
 show_advanced#:#MISSING show_advanced
-show_contents#:#MISSING show_contents
+contents()->shows#:#MISSING contents()->shows
 show_less#:#MISSING show_less
 show_more#:#MISSING show_more
 size#:#MISSING size
@@ -143,10 +143,7 @@ visible#:#Zichtbaar
 write#:#Schrijven
 year#:#Jaar
 yes#:#Ja
-config_hub#:#MISSING config_hub
-config_save#:#MISSING config_save
-config_settings#:#MISSING config_settings
-config_settings_saved#:#MISSING config_settings_saved
+hub#:#MISSING config_hub
 cron_xhfp_delete_old_events#:#MISSING cron_xhfp_delete_old_events
 cron_xhfp_delete_old_events_description#:#MISSING cron_xhfp_delete_old_events_description
 cron_xhfp_delete_old_tmp_files#:#MISSING cron_xhfp_delete_old_tmp_files

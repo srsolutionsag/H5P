@@ -1,18 +1,17 @@
 <?php
 
-namespace srag\Plugins\H5P\Results;
+namespace srag\Plugins\H5P\Result;
 
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class SolveStatus
  *
- * @package srag\Plugins\H5P\Results
+ * @package srag\Plugins\H5P\Result
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -42,153 +41,6 @@ class SolveStatus extends ActiveRecord
     public static function returnDbTableName()
     {
         return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     *
-     * @return SolveStatus|null
-     */
-    public static function getByUser($obj_id, $user_id)
-    {
-        /**
-         * @var SolveStatus|null $h5p_solve_status
-         */
-
-        $h5p_solve_status = self::where([
-            "obj_id"  => $obj_id,
-            "user_id" => $user_id
-        ])->first();
-
-        return $h5p_solve_status;
-    }
-
-
-    /**
-     * @param int $obj_id
-     *
-     * @return SolveStatus[]
-     */
-    public static function getByObject($obj_id)
-    {
-        /**
-         * @var SolveStatus[] $h5p_solve_statuses
-         */
-
-        $h5p_solve_statuses = self::where([
-            "obj_id" => $obj_id
-        ])->get();
-
-        return $h5p_solve_statuses;
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     *
-     * @return Content|null
-     */
-    public static function getContentByUser($obj_id, $user_id)
-    {
-        $h5p_solve_status = self::getByUser($obj_id, $user_id);
-
-        if ($h5p_solve_status === null) {
-            return null;
-        }
-
-        $h5p_content = Content::getContentById($h5p_solve_status->getContentId());
-
-        return $h5p_content;
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     * @param int $content_id
-     */
-    public static function setContentByUser($obj_id, $user_id, $content_id)
-    {
-        /**
-         * @var SolveStatus|null $h5p_solve_status
-         */
-
-        $h5p_solve_status = self::getByUser($obj_id, $user_id);
-
-        if ($h5p_solve_status !== null) {
-            $h5p_solve_status->setContentId($content_id);
-
-            $h5p_solve_status->update();
-        } else {
-            $h5p_solve_status = new self();
-
-            $h5p_solve_status->setObjId($obj_id);
-
-            $h5p_solve_status->setUserId($user_id);
-
-            $h5p_solve_status->setContentId($content_id);
-
-            $h5p_solve_status->create();
-        }
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     *
-     * @return bool
-     */
-    public static function isUserFinished($obj_id, $user_id)
-    {
-        /**
-         * @var SolveStatus|null $h5p_solve_status
-         */
-
-        $h5p_solve_status = self::getByUser($obj_id, $user_id);
-
-        if ($h5p_solve_status !== null) {
-            return $h5p_solve_status->isFinished();
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     */
-    public static function setUserFinished($obj_id, $user_id)
-    {
-        /**
-         * @var SolveStatus|null $h5p_solve_status
-         */
-
-        $h5p_solve_status = self::getByUser($obj_id, $user_id);
-
-        if ($h5p_solve_status !== null) {
-            $h5p_solve_status->setContentId(null);
-
-            $h5p_solve_status->setFinished(true);
-
-            $h5p_solve_status->update();
-        } else {
-            $h5p_solve_status = new self();
-
-            $h5p_solve_status->setObjId($obj_id);
-
-            $h5p_solve_status->setUserId($user_id);
-
-            $h5p_solve_status->setContentId(null);
-
-            $h5p_solve_status->setFinished(true);
-
-            $h5p_solve_status->create();
-        }
     }
 
 
@@ -299,17 +151,6 @@ class SolveStatus extends ActiveRecord
             default:
                 return null;
         }
-    }
-
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $this->user_id = self::dic()->user()->getId();
-
-        parent::create();
     }
 
 
