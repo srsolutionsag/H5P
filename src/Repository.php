@@ -5,14 +5,14 @@ namespace srag\Plugins\H5P;
 use ilDateTime;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Repository as ContentRepository;
-use srag\Plugins\H5P\Event\Repository as EventRepository;
+use srag\Plugins\H5P\Content\Repository as ContentsRepository;
+use srag\Plugins\H5P\Event\Repository as EventsRepository;
 use srag\Plugins\H5P\Hub\Repository as HubRepository;
-use srag\Plugins\H5P\Library\Repository as LibraryRepository;
-use srag\Plugins\H5P\ObjectSettings\Repository as ObjectSettingRepository;
+use srag\Plugins\H5P\Library\Repository as LibrariesRepository;
+use srag\Plugins\H5P\ObjectSettings\Repository as ObjectSettingsRepository;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Option\OptionOld;
-use srag\Plugins\H5P\Result\Repository as ResultRepository;
+use srag\Plugins\H5P\Result\Repository as ResultsRepository;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -63,11 +63,11 @@ final class Repository
 
 
     /**
-     * @return ContentRepository
+     * @return ContentsRepository
      */
-    public function contents()/* : ContentRepository*/
+    public function contents()/* : ContentsRepository*/
     {
-        return ContentRepository::getInstance();
+        return ContentsRepository::getInstance();
     }
 
 
@@ -88,11 +88,11 @@ final class Repository
 
 
     /**
-     * @return EventRepository
+     * @return EventsRepository
      */
-    public function events()/* : EventRepository*/
+    public function events()/* : EventsRepository*/
     {
-        return EventRepository::getInstance();
+        return EventsRepository::getInstance();
     }
 
 
@@ -134,29 +134,29 @@ final class Repository
 
 
     /**
-     * @return LibraryRepository
+     * @return LibrariesRepository
      */
-    public function libraries()/* : LibraryRepository*/
+    public function libraries()/* : LibrariesRepository*/
     {
-        return LibraryRepository::getInstance();
+        return LibrariesRepository::getInstance();
     }
 
 
     /**
-     * @return ObjectSettingRepository
+     * @return ObjectSettingsRepository
      */
     public function objectSettings()/* : ResultRepository*/
     {
-        return ObjectSettingRepository::getInstance();
+        return ObjectSettingsRepository::getInstance();
     }
 
 
     /**
-     * @return ResultRepository
+     * @return ResultsRepository
      */
-    public function results()/* : ResultRepository*/
+    public function results()/* : ResultsRepository*/
     {
-        return ResultRepository::getInstance();
+        return ResultsRepository::getInstance();
     }
 
 
