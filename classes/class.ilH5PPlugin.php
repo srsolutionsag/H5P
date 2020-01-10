@@ -79,7 +79,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function deleteData()/*: void*/
     {
