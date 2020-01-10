@@ -115,11 +115,9 @@ class Counter extends ActiveRecord
 
 
     /**
-     * @param string $field_name
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function sleep($field_name)
+    public function sleep(/*string*/ $field_name)
     {
         $field_value = $this->{$field_name};
 
@@ -131,12 +129,9 @@ class Counter extends ActiveRecord
 
 
     /**
-     * @param string $field_name
-     * @param mixed  $field_value
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function wakeUp($field_name, $field_value)
+    public function wakeUp(/*string*/ $field_name, $field_value)
     {
         switch ($field_name) {
             case "id":
