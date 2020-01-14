@@ -27,7 +27,7 @@ class Content extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getConnectorContainerName()/*:string*/
     {
@@ -36,7 +36,7 @@ class Content extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */

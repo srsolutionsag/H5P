@@ -37,7 +37,7 @@ class OptionOld extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -48,7 +48,7 @@ class OptionOld extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */
