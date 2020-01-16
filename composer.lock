@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.18.2",
+            "version": "v0.18.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "fd8eaf24feceeacf28741fcb1283fab13fd1dfc2"
+                "reference": "5caebf2480f8381a11eb04c070a9f6de59a14817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/fd8eaf24feceeacf28741fcb1283fab13fd1dfc2",
-                "reference": "fd8eaf24feceeacf28741fcb1283fab13fd1dfc2",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/5caebf2480f8381a11eb04c070a9f6de59a14817",
+                "reference": "5caebf2480f8381a11eb04c070a9f6de59a14817",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2020-01-16T09:11:40+00:00"
+            "time": "2020-01-16T12:44:38+00:00"
         },
         {
             "name": "srag/custominputguis",

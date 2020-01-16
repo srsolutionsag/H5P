@@ -323,7 +323,7 @@ final class Repository
         ])->first();
 
         if ($config === null) {
-            $config = $this->factory();
+            $config = $this->factory()->newInstance();
 
             $config->setName($name);
 
@@ -337,8 +337,8 @@ final class Repository
 
 
     /**
-     * @param string     $name
-     * @param mixed $default_value
+     * @param string $name
+     * @param mixed  $default_value
      *
      * @return mixed
      */
@@ -533,9 +533,9 @@ final class Repository
 
 
     /**
-     * @param string     $name
-     * @param bool       $assoc
-     * @param mixed $default_value
+     * @param string $name
+     * @param bool   $assoc
+     * @param mixed  $default_value
      *
      * @return mixed
      */
