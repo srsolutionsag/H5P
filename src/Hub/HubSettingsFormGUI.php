@@ -6,7 +6,7 @@ use ilCheckboxInputGUI;
 use ilCustomInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\ConfigPropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -17,12 +17,11 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class HubSettingsFormGUI extends ConfigPropertyFormGUI
+class HubSettingsFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-    const CONFIG_CLASS_NAME = Option::class;
     const LANG_MODULE = "";
 
 
@@ -34,6 +33,18 @@ class HubSettingsFormGUI extends ConfigPropertyFormGUI
     public function __construct(ilH5PConfigGUI $parent)
     {
         parent::__construct($parent);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getValue(/*string*/ $key)
+    {
+        switch ($key) {
+            default:
+                return Option::getField($key);
+        }
     }
 
 
@@ -85,5 +96,18 @@ class HubSettingsFormGUI extends ConfigPropertyFormGUI
     protected function initTitle()/*: void*/
     {
         $this->setTitle(self::plugin()->translate("settings"));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    {
+        switch ($key) {
+            default:
+                Option::setField($key, $value);
+                break;
+        }
     }
 }
