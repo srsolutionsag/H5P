@@ -48,7 +48,7 @@ final class PdoContextHelper extends ilDBPdo
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function initHelpers()
     {

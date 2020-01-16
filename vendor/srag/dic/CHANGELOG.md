@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.19.4]
+- Fix
+
 ## [0.19.3]
 - Remove ILIAS 5.2 hints
 

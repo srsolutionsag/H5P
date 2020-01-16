@@ -49,7 +49,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function createAutoIncrement($table_name, $field)/*: void*/
     {
@@ -74,7 +74,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function dropAutoIncrementTable($table_name)/*: void*/
     {
@@ -94,7 +94,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fetchAllCallback(ilDBStatement $stm, callable $callback)
     {
@@ -103,7 +103,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fetchAllClass(ilDBStatement $stm, $class_name)
     {
@@ -112,7 +112,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fetchObjectCallback(ilDBStatement $stm, callable $callback)/*:?object*/
     {
@@ -127,7 +127,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fetchObjectClass(ilDBStatement $stm, $class_name)/*:?object*/
     {
@@ -142,7 +142,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function resetAutoIncrement($table_name, $field)/*: void*/
     {
@@ -163,7 +163,7 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function store($table_name, array $values, $primary_key_field, $primary_key_value = 0)
     {

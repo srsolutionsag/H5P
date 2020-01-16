@@ -22,7 +22,7 @@ class Factory implements FactoryComponent
 {
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function standard($maximum, $main, $required = null, $comparison = null)
     {
@@ -31,7 +31,7 @@ class Factory implements FactoryComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fixedSize($maximum, $main, $required = null, $comparison = null)
     {
@@ -40,7 +40,7 @@ class Factory implements FactoryComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function mini($maximum, $main, $required = null)
     {

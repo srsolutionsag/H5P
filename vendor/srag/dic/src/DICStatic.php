@@ -45,7 +45,7 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -59,7 +59,7 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function dic()
     {
@@ -91,7 +91,7 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function output()
     {
@@ -104,7 +104,7 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function plugin($plugin_class_name)
     {
@@ -133,7 +133,7 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function version()
     {

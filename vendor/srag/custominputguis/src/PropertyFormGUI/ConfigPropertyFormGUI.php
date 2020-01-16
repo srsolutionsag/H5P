@@ -7,9 +7,11 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
 /**
  * Class ConfigPropertyFormGUI
  *
- * @package srag\CustomInputGUIs\H5P\PropertyFormGUI
+ * @package    srag\CustomInputGUIs\H5P\PropertyFormGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ *
+ * @deprecated Please use PropertyFormGUI instead
  */
 abstract class ConfigPropertyFormGUI extends PropertyFormGUI
 {
@@ -18,6 +20,8 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      * @var string
      *
      * @abstract
+     *
+     * @deprecated
      */
     const CONFIG_CLASS_NAME = "";
 
@@ -26,6 +30,8 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      * ConfigPropertyFormGUI constructor
      *
      * @param object $parent
+     *
+     * @deprecated
      */
     public function __construct($parent)
     {
@@ -36,23 +42,23 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
+     *
+     * @deprecated
      */
-    protected function getValue(/*string*/
-        $key
-    ) {
+    protected function getValue(/*string*/ $key)
+    {
         //return (static::CONFIG_CLASS_NAME)::getField($key);
         return call_user_func(static::CONFIG_CLASS_NAME . "::getField", $key);
     }
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
+     *
+     * @deprecated
      */
-    protected function storeValue(/*string*/
-        $key,
-        $value
-    )/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/*: void*/
     {
         //(static::CONFIG_CLASS_NAME)::setField($key, $value);
         call_user_func(static::CONFIG_CLASS_NAME . "::setField", $key, $value);
@@ -61,6 +67,8 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
 
     /**
      * @throws PropertyFormGUIException Your class needs to implement the CONFIG_CLASS_NAME constant!
+     *
+     * @deprecated
      */
     private final function checkConfigClassNameConst()/*: void*/
     {

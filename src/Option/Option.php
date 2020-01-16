@@ -2,8 +2,11 @@
 
 namespace srag\Plugins\H5P\Option;
 
+use Closure;
 use ilH5PPlugin;
 use srag\ActiveRecordConfig\H5P\ActiveRecordConfig;
+use srag\ActiveRecordConfig\H5P\Config\Repository as ConfigRepository;
+use srag\ActiveRecordConfig\H5P\Utils\ConfigTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -17,6 +20,7 @@ class Option extends ActiveRecordConfig
 {
 
     use H5PTrait;
+    use ConfigTrait;
     const TABLE_NAME = "rep_robj_xhfp_opt_n";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const KEY_CONTENT_TYPES = "content_types";
@@ -41,7 +45,12 @@ class Option extends ActiveRecordConfig
      */
     public static function getOption($name, $default_value = null)
     {
-        return self::getJsonValue($name, false, $default_value);
+        // TODO
+        self::getTableName();
+
+        return Closure::bind(function ($name, $default_value) {
+            return $this->getJsonValue($name, false, $default_value);
+        }, self::config(), ConfigRepository::class)($name, $default_value);
     }
 
 
@@ -51,6 +60,10 @@ class Option extends ActiveRecordConfig
      */
     public static function setOption($name, $value)
     {
-        self::setJsonValue($name, $value);
+        self::getTableName();
+
+        Closure::bind(function ($name, $value) {
+            $this->setJsonValue($name, $value);
+        }, self::config(), ConfigRepository::class)($name, $value);
     }
 }

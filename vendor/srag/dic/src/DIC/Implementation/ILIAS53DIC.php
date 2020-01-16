@@ -69,7 +69,7 @@ final class ILIAS53DIC extends AbstractDIC
 {
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function access()
     {
@@ -78,7 +78,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function appEventHandler()
     {
@@ -87,7 +87,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function authSession()
     {
@@ -96,7 +96,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function backgroundTasks()
     {
@@ -105,7 +105,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function benchmark()
     {
@@ -114,7 +114,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function bookingManager()
     {
@@ -123,7 +123,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function browser()
     {
@@ -132,7 +132,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function clientIni()
     {
@@ -141,7 +141,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function collator()
     {
@@ -150,7 +150,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function conditions()
     {
@@ -159,7 +159,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function ctrl()
     {
@@ -168,7 +168,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function ctrlStructureReader()
     {
@@ -177,7 +177,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function databaseCore()
     {
@@ -186,7 +186,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function error()
     {
@@ -195,7 +195,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function exercise()
     {
@@ -204,7 +204,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function filesystem()
     {
@@ -213,7 +213,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function globalScreen()
     {
@@ -222,7 +222,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function help()
     {
@@ -231,7 +231,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function history()
     {
@@ -240,7 +240,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function http()
     {
@@ -249,7 +249,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function ilias()
     {
@@ -258,7 +258,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function iliasIni()
     {
@@ -267,7 +267,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function language()
     {
@@ -276,7 +276,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function learningHistory()
     {
@@ -285,7 +285,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function locator()
     {
@@ -294,7 +294,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function log()
     {
@@ -303,7 +303,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function logger()
     {
@@ -312,7 +312,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function loggerFactory()
     {
@@ -321,7 +321,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function mailMimeSenderFactory()
     {
@@ -330,7 +330,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function mailMimeTransportFactory()
     {
@@ -339,7 +339,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function mainMenu()
     {
@@ -348,7 +348,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function mainTemplate()
     {
@@ -357,7 +357,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function news()
     {
@@ -366,7 +366,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function objDataCache()
     {
@@ -375,7 +375,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function objDefinition()
     {
@@ -384,7 +384,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function object()
     {
@@ -393,7 +393,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function pluginAdmin()
     {
@@ -402,7 +402,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function question()
     {
@@ -411,7 +411,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function rbacadmin()
     {
@@ -420,7 +420,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function rbacreview()
     {
@@ -429,7 +429,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function rbacsystem()
     {
@@ -438,7 +438,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function refinery()
     {
@@ -447,7 +447,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function session()
     {
@@ -456,7 +456,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function settings()
     {
@@ -465,7 +465,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function systemStyle()
     {
@@ -474,7 +474,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function tabs()
     {
@@ -483,7 +483,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function task()
     {
@@ -492,7 +492,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function toolbar()
     {
@@ -501,7 +501,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function tree()
     {
@@ -510,7 +510,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function ui()
     {
@@ -519,7 +519,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function uiService()
     {
@@ -528,7 +528,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function upload()
     {
@@ -537,7 +537,7 @@ final class ILIAS53DIC extends AbstractDIC
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function user()
     {

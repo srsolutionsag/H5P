@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.28.5]
+- Deprecate `ConfigPropertyFormGUI` and `ObjectPropertyFormGUI`
+
+## [0.28.4]
+- Fix `ilCheckboxInputGUI` in `MultiLineNewInputGUI`
+
+## [0.28.3]
+- Revert 'Fix `fields` in `MultiLineNewInputGUI`'
+
+## [0.28.2]
+- Fix `fields` in `MultiLineNewInputGUI`
+
+## [0.28.1]
+- Fix `ilCheckboxInputGUI` in `MultiLineNewInputGUI`
+
+## [0.28.0]
+- Improve `MultiLineNewInputGUI`
+    - Fix input fields with show label once
+    - Supports `ilDateTimeInputGUI`
+    - Hide remove button if only one line
+    - Allow to remove all elements if not required
+    - Fix empty info block in `ilNumberInputGUI`
+
 ## [0.27.3]
 - Optimized `MultiSelectSearchInputGUI` ajax
 

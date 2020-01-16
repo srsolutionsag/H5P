@@ -32,7 +32,7 @@ abstract class AbstractDIC implements DICInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function database()
     {

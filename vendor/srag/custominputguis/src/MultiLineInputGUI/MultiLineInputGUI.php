@@ -652,7 +652,7 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -663,7 +663,7 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */

@@ -35,18 +35,15 @@ abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
     /**
      * ActiveRecordObjectFormGUI constructor
      *
-     * @param object                            $parent
+     * @param ActiveRecordConfigGUI             $parent
+     * @param string                            $tab_id
      * @param ilObject|ActiveRecord|object|null $object
      * @param bool                              $object_auto_store
      *
      * @deprecated
      */
-    public function __construct(
-        $parent,
-        $tab_id,
-        $object = null,/*bool*/
-        $object_auto_store = true
-    ) {
+    public function __construct(ActiveRecordConfigGUI $parent, $tab_id, $object = null, $object_auto_store = true)
+    {
         $this->tab_id = $tab_id;
 
         parent::__construct($parent, $object, $object_auto_store);
@@ -54,7 +51,7 @@ abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -65,7 +62,7 @@ abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -76,7 +73,7 @@ abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */

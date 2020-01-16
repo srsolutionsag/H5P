@@ -80,8 +80,8 @@ class OptionOld extends ActiveRecord
 
 
     /**
-     * @param string     $name
-     * @param mixed|null $default
+     * @param string $name
+     * @param mixed  $default
      *
      * @return mixed
      *
