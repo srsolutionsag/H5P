@@ -60,6 +60,7 @@ class Option extends ActiveRecordConfig
      */
     public static function setOption($name, $value)
     {
+        // TODO
         self::getTableName();
 
         Closure::bind(function ($name, $value) {
