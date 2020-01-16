@@ -8,7 +8,8 @@ use ilObjH5P;
 use ilObjH5PGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use srag\CustomInputGUIs\H5P\PropertyFormGUI\ObjectPropertyFormGUI;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
+use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,11 +19,15 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class ObjectSettingsFormGUI extends ObjectPropertyFormGUI
+class ObjectSettingsFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    /**
+     * @var ilObjH5P
+     */
+    protected $object;
 
 
     /**
@@ -33,7 +38,9 @@ class ObjectSettingsFormGUI extends ObjectPropertyFormGUI
      */
     public function __construct(ilObjH5PGUI $parent, ilObjH5P $object)
     {
-        parent::__construct($parent, $object);
+        $this->object = $object;
+
+        parent::__construct($parent);
     }
 
 
@@ -44,10 +51,10 @@ class ObjectSettingsFormGUI extends ObjectPropertyFormGUI
     {
         switch ($key) {
             case "description":
-                return $this->object->getLongDescription();
+                return Items::getter($this->object, "long_description");
 
             default:
-                return parent::getValue($key);
+                return Items::getter($this->object, $key);
         }
     }
 
@@ -114,13 +121,28 @@ class ObjectSettingsFormGUI extends ObjectPropertyFormGUI
         switch ($key) {
             case "solve_only_once":
                 if (!$this->parent->hasResults()) {
-                    parent::storeValue($key, $value);
+                    Items::setter($this->object, $key, $value);
                 }
                 break;
 
             default:
-                parent::storeValue($key, $value);
+                Items::setter($this->object, $key, $value);
                 break;
         }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function storeForm()/* : bool*/
+    {
+        if (!parent::storeForm()) {
+            return false;
+        }
+
+        $this->object->update();
+
+        return true;
     }
 }
