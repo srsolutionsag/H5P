@@ -18,22 +18,109 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-#### Using trait
-Your class in this you want to use Config needs to use the trait `ConfigTrait`
-```php
-...
-use srag\ActiveRecordConfig\H5P\x\Utils\ConfigTrait;
-...
-class x {
-...
-use ConfigTrait;
-...
-```
-
 #### Config ActiveRecord
-First you need to init the `Config` active record classes with your own table name prefix. Please add this very early in your plugin code
+First you need to init the active record class with your own table name and fields with your own repository and factory. Please call it very early in your plugin code
 ```php
-self::config()->withTableName(ilXPlugin::PLUGIN_ID . "_config")->withFields([]);
+...
+use srag\ActiveRecordConfig\H5P\x\Config\AbstractFactory;
+use srag\ActiveRecordConfig\H5P\x\Config\AbstractRepository;
+...
+final class Repository extends AbstractRepository
+{
+    ...
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+        parent::__construct();
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @return Factory
+     */
+    public function factory() : AbstractFactory
+    {
+        return Factory::getInstance();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTableName() : string
+    {
+        return ilXPlugin::PLUGIN_ID . "_config";
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getFields() : array
+    {
+        return [
+            ...
+        ];
+    }
+}
+```
+```php
+...
+use srag\ActiveRecordConfig\H5P\x\Config\AbstractFactory;
+...
+final class Factory extends AbstractFactory
+{
+    ...
+    /**
+     * @var self
+     */
+    protected static $instance = null;
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+        parent::__construct();
+    }
+}
 ```
 
 Add an update step to your `dbupdate.php`
@@ -41,7 +128,7 @@ Add an update step to your `dbupdate.php`
 ...
 <#x>
 <?php
-\srag\ActiveRecordConfig\H5P\x\Repository::getInstance()->installTables();
+\srag\Plugins\x\Config\Repository::getInstance()->installTables();
 ?>
 ```
 

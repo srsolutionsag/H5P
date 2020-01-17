@@ -12,7 +12,6 @@ use ilH5PPlugin;
 use ilProxySettings;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
 
@@ -1261,7 +1260,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function getOption($name, $default = null)
     {
-        return Option::getOption($name, $default);
+        return self::h5p()->options()->getOption($name, $default);
     }
 
 
@@ -1276,7 +1275,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function setOption($name, $value)
     {
-        Option::setOption($name, $value);
+        self::h5p()->options()->setOption($name, $value);
     }
 
 

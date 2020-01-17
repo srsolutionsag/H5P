@@ -4,7 +4,7 @@ namespace srag\ActiveRecordConfig\H5P\Config;
 
 use ActiveRecord;
 use arConnector;
-use srag\ActiveRecordConfig\H5P\Utils\ConfigTrait;
+use LogicException;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -18,7 +18,6 @@ class Config extends ActiveRecord
 {
 
     use DICTrait;
-    use ConfigTrait;
     /**
      * @var string
      */
@@ -51,6 +50,10 @@ class Config extends ActiveRecord
      * @var int
      */
     const TYPE_JSON = 7;
+    /**
+     * @var string
+     */
+    protected static $table_name;
 
 
     /**
@@ -58,7 +61,20 @@ class Config extends ActiveRecord
      */
     public static function getTableName()
     {
-        return self::config()->getTableName();
+        if (empty(self::$table_name)) {
+            throw new LogicException("table name is empty - please call repository earlier!");
+        }
+
+        return self::$table_name;
+    }
+
+
+    /**
+     * @param string $table_name
+     */
+    public static function setTableName($table_name)/* : void*/
+    {
+        self::$table_name = $table_name;
     }
 
 

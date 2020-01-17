@@ -7,7 +7,6 @@ use ilCustomInputGUI;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
-use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -22,6 +21,9 @@ class HubSettingsFormGUI extends PropertyFormGUI
 
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    const KEY_CONTENT_TYPES = "content_types";
+    const KEY_ENABLE_LRS_CONTENT_TYPES = "enable_lrs_content_types";
+    const KEY_SEND_USAGE_STATISTICS = "send_usage_statistics";
     const LANG_MODULE = "";
 
 
@@ -43,7 +45,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     {
         switch ($key) {
             default:
-                return Option::getField($key);
+                return self::h5p()->options()->getValue($key);
         }
     }
 
@@ -63,13 +65,13 @@ class HubSettingsFormGUI extends PropertyFormGUI
     protected function initFields()/*: void*/
     {
         $this->fields = [
-            Option::KEY_CONTENT_TYPES => [
+            self::KEY_CONTENT_TYPES => [
                 self::PROPERTY_CLASS    => ilCustomInputGUI::class,
                 self::PROPERTY_SUBITEMS => [
-                    Option::KEY_ENABLE_LRS_CONTENT_TYPES => [
+                    self::KEY_ENABLE_LRS_CONTENT_TYPES => [
                         self::PROPERTY_CLASS => ilCheckboxInputGUI::class
                     ],
-                    Option::KEY_SEND_USAGE_STATISTICS    => [
+                    self::KEY_SEND_USAGE_STATISTICS    => [
                         self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
                         "setInfo"            => self::plugin()->translate("send_usage_statistics_info", "", [
                             file_get_contents(__DIR__ . "/../../templates/send_usage_statistics_info_link.html")
@@ -106,7 +108,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     {
         switch ($key) {
             default:
-                Option::setField($key, $value);
+                self::h5p()->options()->setValue($key, $value);
                 break;
         }
     }

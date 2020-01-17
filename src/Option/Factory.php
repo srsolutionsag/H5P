@@ -1,20 +1,23 @@
 <?php
 
-namespace srag\ActiveRecordConfig\H5P\Config;
+namespace srag\Plugins\H5P\Options;
 
-use srag\DIC\H5P\DICTrait;
+use ilH5PPlugin;
+use srag\ActiveRecordConfig\H5P\Config\AbstractFactory;
+use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
  * Class Factory
  *
- * @package srag\ActiveRecordConfig\H5P\Config
+ * @package srag\Plugins\H5P\Options
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Factory
+final class Factory extends AbstractFactory
 {
 
-    use DICTrait;
+    use H5PTrait;
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self
      */
@@ -24,7 +27,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance()/* : self*/
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -39,17 +42,6 @@ final class Factory
      */
     private function __construct()
     {
-
-    }
-
-
-    /**
-     * @return Config
-     */
-    public function newInstance()
-    {
-        $config = new Config();
-
-        return $config;
+        parent::__construct();
     }
 }
