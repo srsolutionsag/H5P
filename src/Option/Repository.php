@@ -42,7 +42,7 @@ final class Repository extends AbstractRepository
     /**
      * Repository constructor
      */
-    private function __construct()
+    protected function __construct()
     {
         parent::__construct();
     }
