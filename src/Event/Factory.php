@@ -74,4 +74,15 @@ final class Factory
 
         return $event_framework;
     }
+
+
+    /**
+     * @return DeleteOldEventsJob
+     */
+    public function newDeleteOldEventsJobInstance()/*:DeleteOldEventsJob*/
+    {
+        $job = new DeleteOldEventsJob();
+
+        return $job;
+    }
 }

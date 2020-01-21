@@ -15,7 +15,7 @@ use srag\ActiveRecordConfig\H5P\Exception\ActiveRecordConfigException;
  *
  * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @deprecated Please use repository instead
+ * @deprecated Please use AbstractRepository instead
  */
 class ActiveRecordConfig extends Config
 {

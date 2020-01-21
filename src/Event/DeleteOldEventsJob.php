@@ -1,7 +1,8 @@
 <?php
 
-namespace srag\Plugins\H5P\Job;
+namespace srag\Plugins\H5P\Event;
 
+use H5PEventBase;
 use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
@@ -9,23 +10,23 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class RefreshHubJob
+ * Class DeleteOldEventsJob
  *
- * @package srag\Plugins\H5P\Job
+ * @package srag\Plugins\H5P\Event
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class RefreshHubJob extends ilCronJob
+class DeleteOldEventsJob extends ilCronJob
 {
 
     use DICTrait;
     use H5PTrait;
-    const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
+    const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
     /**
-     * RefreshHubJob constructor
+     * DeleteOldEventsJob constructor
      */
     public function __construct()
     {
@@ -47,7 +48,7 @@ class RefreshHubJob extends ilCronJob
      */
     public function getTitle()/*: string*/
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate(self::CRON_JOB_ID, ilH5PPlugin::LANG_MODULE_CRON);
+        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("delete_old_events");
     }
 
 
@@ -56,7 +57,7 @@ class RefreshHubJob extends ilCronJob
      */
     public function getDescription()/*: string*/
     {
-        return self::plugin()->translate(self::CRON_JOB_ID . "_description", ilH5PPlugin::LANG_MODULE_CRON);
+        return self::plugin()->translate("delete_old_events_description");
     }
 
 
@@ -103,7 +104,13 @@ class RefreshHubJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        self::h5p()->hub()->show()->refreshHub();
+        $older_than = (time() - H5PEventBase::$log_time);
+
+        $h5p_events = self::h5p()->events()->getOldEvents($older_than);
+
+        foreach ($h5p_events as $h5p_event) {
+            self::h5p()->events()->deleteEvent($h5p_event);
+        }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);
 

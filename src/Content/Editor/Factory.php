@@ -91,4 +91,15 @@ final class Factory
 
         return $form;
     }
+
+
+    /**
+     * @return DeleteOldTmpFilesJob
+     */
+    public function newDeleteOldTmpFilesJobInstance()/*:DeleteOldTmpFilesJob*/
+    {
+        $job = new DeleteOldTmpFilesJob();
+
+        return $job;
+    }
 }

@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.6.3]
+- `installRemovePluginDataConfirmLanguages`
+
 ## [0.6.2]
 - Min. PHP 7.0
 

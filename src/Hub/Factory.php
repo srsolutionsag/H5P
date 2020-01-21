@@ -87,4 +87,15 @@ final class Factory
 
         return $details_form;
     }
+
+
+    /**
+     * @return RefreshHubJob
+     */
+    public function newRefreshHubJobInstance()/*:RefreshHubJob*/
+    {
+        $job = new RefreshHubJob();
+
+        return $job;
+    }
 }

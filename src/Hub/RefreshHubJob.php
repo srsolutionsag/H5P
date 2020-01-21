@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\H5P\Job;
+namespace srag\Plugins\H5P\Hub;
 
 use ilCronJob;
 use ilCronJobResult;
@@ -9,23 +9,23 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class DeleteOldTmpFilesJob
+ * Class RefreshHubJob
  *
- * @package srag\Plugins\H5P\Job
+ * @package srag\Plugins\H5P\Hub
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class DeleteOldTmpFilesJob extends ilCronJob
+class RefreshHubJob extends ilCronJob
 {
 
     use DICTrait;
     use H5PTrait;
-    const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_tmp_files";
+    const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
     /**
-     * DeleteOldTmpFilesJob constructor
+     * RefreshHubJob constructor
      */
     public function __construct()
     {
@@ -36,7 +36,7 @@ class DeleteOldTmpFilesJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getId()/*:string*/
+    public function getId()/*: string*/
     {
         return self::CRON_JOB_ID;
     }
@@ -45,25 +45,25 @@ class DeleteOldTmpFilesJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getTitle()/*:string*/
+    public function getTitle()/*: string*/
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate(self::CRON_JOB_ID, ilH5PPlugin::LANG_MODULE_CRON);
+        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("refresh_hub");
     }
 
 
     /**
      * @inheritDoc
      */
-    public function getDescription()/*:string*/
+    public function getDescription()/*: string*/
     {
-        return self::plugin()->translate(self::CRON_JOB_ID . "_description", ilH5PPlugin::LANG_MODULE_CRON);
+        return self::plugin()->translate("refresh_hub_description");
     }
 
 
     /**
      * @inheritDoc
      */
-    public function hasAutoActivation()/*:bool*/
+    public function hasAutoActivation()/*: bool*/
     {
         return true;
     }
@@ -72,7 +72,7 @@ class DeleteOldTmpFilesJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasFlexibleSchedule()/*:bool*/
+    public function hasFlexibleSchedule()/*: bool*/
     {
         return true;
     }
@@ -103,17 +103,7 @@ class DeleteOldTmpFilesJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        $older_than = (time() - 86400);
-
-        $h5p_tmp_files = self::h5p()->contents()->editor()->getOldTmpFiles($older_than);
-
-        foreach ($h5p_tmp_files as $h5p_tmp_file) {
-            if (file_exists($h5p_tmp_file->getPath())) {
-                unlink($h5p_tmp_file->getPath());
-            }
-
-            self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
-        }
+        self::h5p()->hub()->show()->refreshHub();
 
         $result->setStatus(ilCronJobResult::STATUS_OK);
 

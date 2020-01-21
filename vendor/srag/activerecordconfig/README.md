@@ -50,7 +50,7 @@ final class Repository extends AbstractRepository
     /**
      * Repository constructor
      */
-    private function __construct()
+    protected function __construct()
     {
         parent::__construct();
     }
@@ -116,7 +116,7 @@ final class Factory extends AbstractFactory
     /**
      * Factory constructor
      */
-    private function __construct()
+    protected function __construct()
     {
         parent::__construct();
     }

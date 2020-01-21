@@ -144,9 +144,9 @@ write#:#Schrijven
 year#:#Jaar
 yes#:#Ja
 hub#:#MISSING config_hub
-cron_xhfp_delete_old_events#:#MISSING cron_xhfp_delete_old_events
-cron_xhfp_delete_old_events_description#:#MISSING cron_xhfp_delete_old_events_description
-cron_xhfp_delete_old_tmp_files#:#MISSING cron_xhfp_delete_old_tmp_files
-cron_xhfp_delete_old_tmp_files_description#:#MISSING cron_xhfp_delete_old_tmp_files_description
-cron_xhfp_refresh_hub#:#MISSING cron_xhfp_refresh_hub
-cron_xhfp_refresh_hub_description#:#MISSING cron_xhfp_refresh_hub_description
+delete_old_events#:#MISSING delete_old_events
+delete_old_events_description#:#MISSING delete_old_events_description
+delete_old_tmp_files#:#MISSING delete_old_tmp_files
+delete_old_tmp_files_description#:#MISSING delete_old_tmp_files_description
+refresh_hub#:#MISSING refresh_hub
+refresh_hub_description#:#MISSING refresh_hub_description

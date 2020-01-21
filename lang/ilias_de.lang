@@ -144,9 +144,9 @@ write#:#Schreiben
 year#:#Jahr
 yes#:#Ja
 hub#:#HUB
-cron_xhfp_delete_old_events#:#Alte Event-Logs löschen
-cron_xhfp_delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
-cron_xhfp_delete_old_tmp_files#:#Alte Temp-Dateien löschen
-cron_xhfp_delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
-cron_xhfp_refresh_hub#:#Hub-Liste aktualisieren
-cron_xhfp_refresh_hub_description#:#Lädt die Hub-Liste neu
+delete_old_events#:#Alte Event-Logs löschen
+delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
+delete_old_tmp_files#:#Alte Temp-Dateien löschen
+delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
+refresh_hub#:#Hub-Liste aktualisieren
+refresh_hub_description#:#Lädt die Hub-Liste neu

@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "v0.19.0",
+            "version": "v0.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "c63344d4ba5414617266773793eb57d7a7ffd61c"
+                "reference": "e5dc0ca901979bff0107b147ee15e4b70d602d0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/c63344d4ba5414617266773793eb57d7a7ffd61c",
-                "reference": "c63344d4ba5414617266773793eb57d7a7ffd61c",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/e5dc0ca901979bff0107b147ee15e4b70d602d0f",
+                "reference": "e5dc0ca901979bff0107b147ee15e4b70d602d0f",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2020-01-17T09:04:56+00:00"
+            "time": "2020-01-21T07:05:13+00:00"
         },
         {
             "name": "srag/custominputguis",
@@ -303,16 +303,16 @@
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "v0.6.2",
+            "version": "v0.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "d85688714df5f1b90b8f0301849e4fc96cdaa162"
+                "reference": "d3faed97ec4e5d9a20bf2c8a80cc395997caf591"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/d85688714df5f1b90b8f0301849e4fc96cdaa162",
-                "reference": "d85688714df5f1b90b8f0301849e4fc96cdaa162",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/d3faed97ec4e5d9a20bf2c8a80cc395997caf591",
+                "reference": "d3faed97ec4e5d9a20bf2c8a80cc395997caf591",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -346,7 +346,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2020-01-16T08:09:56+00:00"
+            "time": "2020-01-21T08:23:18+00:00"
         }
     ],
     "packages-dev": [],

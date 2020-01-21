@@ -8,6 +8,7 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Repository as ContentsRepository;
 use srag\Plugins\H5P\Event\Repository as EventsRepository;
 use srag\Plugins\H5P\Hub\Repository as HubRepository;
+use srag\Plugins\H5P\Job\Repository as JobsRepository;
 use srag\Plugins\H5P\Library\Repository as LibrariesRepository;
 use srag\Plugins\H5P\ObjectSettings\Repository as ObjectSettingsRepository;
 use srag\Plugins\H5P\Options\Repository as OptionsRepository;
@@ -78,6 +79,7 @@ final class Repository
         $this->contents()->dropTables();
         $this->events()->dropTables();
         $this->hub()->dropTables();
+        $this->jobs()->dropTables();
         $this->libraries()->dropTables();
         $this->objectSettings()->dropTables();
         $this->options()->dropTables();
@@ -111,10 +113,20 @@ final class Repository
         $this->contents()->installTables();
         $this->events()->installTables();
         $this->hub()->installTables();
+        $this->jobs()->installTables();
         $this->libraries()->installTables();
         $this->objectSettings()->installTables();
         $this->options()->installTables();
         $this->results()->installTables();
+    }
+
+
+    /**
+     * @return JobsRepository
+     */
+    public function jobs()/* : JobsRepository*/
+    {
+        return JobsRepository::getInstance();
     }
 
 
