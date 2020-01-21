@@ -84,8 +84,6 @@ class HubTableGUI extends TableGUI
         $this->addColumn(self::plugin()->translate("usage_contents"));
         $this->addColumn(self::plugin()->translate("usage_libraries"));
         $this->addColumn(self::plugin()->translate("actions"));
-
-        $this->setDefaultOrderField("title");
     }
 
 
@@ -94,6 +92,9 @@ class HubTableGUI extends TableGUI
      */
     protected function initData()/*: void*/
     {
+        $this->setDefaultOrderField("title");
+        $this->setDefaultOrderDirection("asc");
+
         $filter = $this->getFilterValues();
 
         $title = $filter["title"];
