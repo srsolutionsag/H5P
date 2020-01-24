@@ -25,20 +25,20 @@ class ContentLibrary extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getConnectorContainerName()
+    public function getConnectorContainerName()/*:string*/
     {
         return self::TABLE_NAME;
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */
-    public static function returnDbTableName()
+    public static function returnDbTableName()/*:string*/
     {
         return self::TABLE_NAME;
     }
@@ -108,18 +108,16 @@ class ContentLibrary extends ActiveRecord
      * @param int              $primary_key_value
      * @param arConnector|null $connector
      */
-    public function __construct($primary_key_value = 0, arConnector $connector = null)
+    public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
     }
 
 
     /**
-     * @param string $field_name
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function sleep($field_name)
+    public function sleep(/*string*/ $field_name)
     {
         $field_value = $this->{$field_name};
 
@@ -134,12 +132,9 @@ class ContentLibrary extends ActiveRecord
 
 
     /**
-     * @param string $field_name
-     * @param mixed  $field_value
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function wakeUp($field_name, $field_value)
+    public function wakeUp(/*string*/ $field_name, $field_value)
     {
         switch ($field_name) {
             case "id":

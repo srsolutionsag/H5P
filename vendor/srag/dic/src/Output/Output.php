@@ -34,7 +34,7 @@ final class Output implements OutputInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getHTML($value)
     {
@@ -87,7 +87,7 @@ final class Output implements OutputInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function output($value, $show = false, $main_template = true)/*: void*/
     {
@@ -122,7 +122,7 @@ final class Output implements OutputInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function outputJSON($value)/*: void*/
     {

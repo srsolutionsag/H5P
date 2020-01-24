@@ -24,7 +24,7 @@ class Renderer extends InputRenderer
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function getComponentInterfaceName()
     {

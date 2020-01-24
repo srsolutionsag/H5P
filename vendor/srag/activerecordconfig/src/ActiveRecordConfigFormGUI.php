@@ -11,7 +11,7 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\ConfigPropertyFormGUI;
  *
  * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @deprecated Please use ConfigPropertyFormGUI from CustomInputGUIs instead
+ * @deprecated Please use PropertyFormGUI from instead
  */
 abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
 {
@@ -38,10 +38,8 @@ abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct(
-        ActiveRecordConfigGUI $parent, /*string*/
-        $tab_id
-    ) {
+    public function __construct(ActiveRecordConfigGUI $parent, $tab_id)
+    {
         $this->tab_id = $tab_id;
 
         parent::__construct($parent);
@@ -49,7 +47,7 @@ abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -60,7 +58,7 @@ abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -71,7 +69,7 @@ abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @deprecated
      */

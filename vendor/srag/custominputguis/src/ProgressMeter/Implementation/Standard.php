@@ -32,7 +32,7 @@ class Standard extends ProgressMeter implements StandardComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getComparison()
     {
@@ -52,7 +52,7 @@ class Standard extends ProgressMeter implements StandardComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withMainText($text)
     {
@@ -66,7 +66,7 @@ class Standard extends ProgressMeter implements StandardComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMainText()
     {
@@ -75,7 +75,7 @@ class Standard extends ProgressMeter implements StandardComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withRequiredText($text)
     {
@@ -89,7 +89,7 @@ class Standard extends ProgressMeter implements StandardComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getRequiredText()
     {

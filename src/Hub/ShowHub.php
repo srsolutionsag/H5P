@@ -11,7 +11,6 @@ use ilH5PPlugin;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
-use srag\Plugins\H5P\Option\Option;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -211,7 +210,7 @@ class ShowHub
         self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
             ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
 
-        $hub_last_refresh = Option::getOption("content_type_cache_updated_at", "");
+        $hub_last_refresh = self::h5p()->options()->getOption("content_type_cache_updated_at", "");
         $hub_last_refresh = ilDatePresentation::formatDate(new ilDateTime($hub_last_refresh, IL_CAL_UNIX));
 
         $h5p_tpl = self::plugin()->template("H5PHub.html");

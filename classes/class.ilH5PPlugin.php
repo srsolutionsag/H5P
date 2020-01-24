@@ -2,7 +2,6 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\H5P\Util\LibraryLanguageInstaller;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 
@@ -19,7 +18,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     const PLUGIN_ID = "xhfp";
     const PLUGIN_NAME = "H5P";
     const PLUGIN_CLASS_NAME = self::class;
-    const LANG_MODULE_CRON = "cron";
     /**
      * @var self|null
      */
@@ -73,13 +71,12 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     {
         parent::updateLanguages($a_lang_keys);
 
-        LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__
-            . "/../vendor/srag/removeplugindataconfirm/lang")->updateLanguages();
+        $this->installRemovePluginDataConfirmLanguages();
     }
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function deleteData()/*: void*/
     {

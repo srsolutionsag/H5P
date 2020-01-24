@@ -42,7 +42,7 @@ class ProgressMeter implements ProgressMeterComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __construct($maximum, $main, $required = null, $comparison = null)
     {
@@ -68,7 +68,7 @@ class ProgressMeter implements ProgressMeterComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMaximum()
     {
@@ -77,7 +77,7 @@ class ProgressMeter implements ProgressMeterComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getRequired()
     {
@@ -97,7 +97,7 @@ class ProgressMeter implements ProgressMeterComponent
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMainValue()
     {

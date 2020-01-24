@@ -48,7 +48,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0)/*: string*/
     {
@@ -63,7 +63,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getSelectableColumns2()/*: array*/
     {
@@ -74,7 +74,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initColumns()/*: void*/
     {
@@ -87,7 +87,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initData()/*: void*/
     {
@@ -96,7 +96,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initFilterFields()/*: void*/
     {
@@ -105,7 +105,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initId()/*: void*/
     {
@@ -114,7 +114,7 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initTitle()/*: void*/
     {

@@ -27,7 +27,7 @@ use srag\RemovePluginDataConfirm\H5P\x\PluginUninstallTrait;
 use PluginUninstallTrait;
 //...
 /**
- * @inheritdoc
+ * @inheritDoc
  */
 protected function deleteData()/*: void*/ {
     // TODO: Delete your plugin data in this method
@@ -51,13 +51,12 @@ Expand you plugin class for installing languages of the library to your plugin
 ```php
 ...
 	/**
-	 * @inheritdoc
-	 */
-	public function updateLanguages($a_lang_keys = null) {
+     * @inheritDoc
+     */
+    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/ {
 		parent::updateLanguages($a_lang_keys);
 
-		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/removeplugindataconfirm/lang")
-			->updateLanguages($a_lang_keys);
+		$this->installRemovePluginDataConfirmLanguages();
 	}
 ...
 ```
@@ -66,7 +65,7 @@ Notice to also adjust `dbupdate.php` so it can be reinstalled if the data should
 
 ### Requirements
 * ILIAS 5.3 or ILIAS 5.4
-* PHP >=5.6
+* PHP >=7.0
 
 ### Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LRPDC

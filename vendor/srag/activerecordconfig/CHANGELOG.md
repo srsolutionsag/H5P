@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.19.2]
+- Fix
+
+## [0.19.1]
+- Fix
+
+## [0.19.0]
+- Refactor
+
+## [0.18.7]
+- Fix
+
+## [0.18.6]
+- Fix
+
+## [0.18.5]
+- Fix
+
+## [0.18.4]
+- Fix
+
+## [0.18.3]
+- Fix
+
+## [0.18.2]
+- Fix
+
+## [0.18.1]
+- Fix
+
+## [0.18.0]
+- Refactor, deprecated old `ActiveRecordConfig`
+- Min PHP 7.0
+
 ## [0.17.1]
 - Remove ILIAS 5.2 hints
 

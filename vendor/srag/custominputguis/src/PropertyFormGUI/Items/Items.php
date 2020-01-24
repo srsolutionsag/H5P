@@ -2,6 +2,7 @@
 
 namespace srag\CustomInputGUIs\H5P\PropertyFormGUI\Items;
 
+use ilDateTime;
 use ilFormPropertyGUI;
 use ilFormSectionHeaderGUI;
 use ILIAS\UI\Component\Input\Field\Input;
@@ -175,7 +176,9 @@ final class Items
                 $input_tpl->setVariable("REQUIRED", self::output()->getHTML(new ilTemplate(__DIR__ . "/templates/input_gui_input_required.html", true, false)));
             }
 
-            $input_tpl->setVariable("INPUT", self::output()->getHTML($input));
+            $input_html = self::output()->getHTML($input);
+            $input_html = str_replace('<div class="help-block"></div>', "", $input_html);
+            $input_tpl->setVariable("INPUT", $input_html);
 
             if ($input->getInfo()) {
                 $input_info_tpl = new ilTemplate(__DIR__ . "/templates/input_gui_input_info.html", true, true);
@@ -270,6 +273,10 @@ final class Items
         }
 
         if (method_exists($item, "setDate")) {
+            if (is_string($value)) {
+                $value = new ilDateTime($value, IL_CAL_DATE);
+            }
+
             $item->setDate($value);
 
             return;

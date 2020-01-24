@@ -23,17 +23,17 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
+            'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
             'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\H5P\\' => 25,
-            'srag\\ActiveRecordConfig\\H5P\\' => 28,
+            'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\H5P\\' => 
+        'srag\\RemovePluginDataConfirm\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -53,7 +53,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
-        'srag\\ActiveRecordConfig\\H5P\\' => 
+        'srag\\ActiveRecordConfig\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
@@ -67,10 +67,15 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'ilObjH5PGUI' => __DIR__ . '/../..' . '/classes/class.ilObjH5PGUI.php',
         'ilObjH5PListGUI' => __DIR__ . '/../..' . '/classes/class.ilObjH5PListGUI.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfig' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
+        'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigFactory' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigFormGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',
+        'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigRepository' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordConfigTableGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigTableGUI.php',
         'srag\\ActiveRecordConfig\\H5P\\ActiveRecordObjectFormGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordObjectFormGUI.php',
+        'srag\\ActiveRecordConfig\\H5P\\Config\\AbstractFactory' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Config/AbstractFactory.php',
+        'srag\\ActiveRecordConfig\\H5P\\Config\\AbstractRepository' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Config/AbstractRepository.php',
+        'srag\\ActiveRecordConfig\\H5P\\Config\\Config' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Config/Config.php',
         'srag\\ActiveRecordConfig\\H5P\\Exception\\ActiveRecordConfigException' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Exception/ActiveRecordConfigException.php',
         'srag\\CustomInputGUIs\\H5P\\CheckboxInputGUI\\CheckboxInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/CheckboxInputGUI/CheckboxInputGUI.php',
         'srag\\CustomInputGUIs\\H5P\\CustomInputGUIs' => __DIR__ . '/..' . '/srag/custominputguis/src/CustomInputGUIs.php',
@@ -166,6 +171,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'srag\\Plugins\\H5P\\Content\\ContentLibrary' => __DIR__ . '/../..' . '/src/Content/ContentLibrary.php',
         'srag\\Plugins\\H5P\\Content\\ContentUserData' => __DIR__ . '/../..' . '/src/Content/ContentUserData.php',
         'srag\\Plugins\\H5P\\Content\\ContentsTableGUI' => __DIR__ . '/../..' . '/src/Content/ContentsTableGUI.php',
+        'srag\\Plugins\\H5P\\Content\\Editor\\DeleteOldTmpFilesJob' => __DIR__ . '/../..' . '/src/Content/Editor/DeleteOldTmpFilesJob.php',
         'srag\\Plugins\\H5P\\Content\\Editor\\EditContentFormGUI' => __DIR__ . '/../..' . '/src/Content/Editor/EditContentFormGUI.php',
         'srag\\Plugins\\H5P\\Content\\Editor\\EditorAjax' => __DIR__ . '/../..' . '/src/Content/Editor/EditorAjax.php',
         'srag\\Plugins\\H5P\\Content\\Editor\\EditorStorage' => __DIR__ . '/../..' . '/src/Content/Editor/EditorStorage.php',
@@ -177,6 +183,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'srag\\Plugins\\H5P\\Content\\Factory' => __DIR__ . '/../..' . '/src/Content/Factory.php',
         'srag\\Plugins\\H5P\\Content\\Repository' => __DIR__ . '/../..' . '/src/Content/Repository.php',
         'srag\\Plugins\\H5P\\Content\\ShowContent' => __DIR__ . '/../..' . '/src/Content/ShowContent.php',
+        'srag\\Plugins\\H5P\\Event\\DeleteOldEventsJob' => __DIR__ . '/../..' . '/src/Event/DeleteOldEventsJob.php',
         'srag\\Plugins\\H5P\\Event\\Event' => __DIR__ . '/../..' . '/src/Event/Event.php',
         'srag\\Plugins\\H5P\\Event\\EventFramework' => __DIR__ . '/../..' . '/src/Event/EventFramework.php',
         'srag\\Plugins\\H5P\\Event\\Factory' => __DIR__ . '/../..' . '/src/Event/Factory.php',
@@ -186,12 +193,12 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'srag\\Plugins\\H5P\\Hub\\HubDetailsFormGUI' => __DIR__ . '/../..' . '/src/Hub/HubDetailsFormGUI.php',
         'srag\\Plugins\\H5P\\Hub\\HubSettingsFormGUI' => __DIR__ . '/../..' . '/src/Hub/HubSettingsFormGUI.php',
         'srag\\Plugins\\H5P\\Hub\\HubTableGUI' => __DIR__ . '/../..' . '/src/Hub/HubTableGUI.php',
+        'srag\\Plugins\\H5P\\Hub\\RefreshHubJob' => __DIR__ . '/../..' . '/src/Hub/RefreshHubJob.php',
         'srag\\Plugins\\H5P\\Hub\\Repository' => __DIR__ . '/../..' . '/src/Hub/Repository.php',
         'srag\\Plugins\\H5P\\Hub\\ShowHub' => __DIR__ . '/../..' . '/src/Hub/ShowHub.php',
         'srag\\Plugins\\H5P\\Hub\\UploadLibraryFormGUI' => __DIR__ . '/../..' . '/src/Hub/UploadLibraryFormGUI.php',
-        'srag\\Plugins\\H5P\\Job\\DeleteOldEventsJob' => __DIR__ . '/../..' . '/src/Job/DeleteOldEventsJob.php',
-        'srag\\Plugins\\H5P\\Job\\DeleteOldTmpFilesJob' => __DIR__ . '/../..' . '/src/Job/DeleteOldTmpFilesJob.php',
-        'srag\\Plugins\\H5P\\Job\\RefreshHubJob' => __DIR__ . '/../..' . '/src/Job/RefreshHubJob.php',
+        'srag\\Plugins\\H5P\\Job\\Factory' => __DIR__ . '/../..' . '/src/Job/Factory.php',
+        'srag\\Plugins\\H5P\\Job\\Repository' => __DIR__ . '/../..' . '/src/Job/Repository.php',
         'srag\\Plugins\\H5P\\Library\\Counter' => __DIR__ . '/../..' . '/src/Library/Counter.php',
         'srag\\Plugins\\H5P\\Library\\Factory' => __DIR__ . '/../..' . '/src/Library/Factory.php',
         'srag\\Plugins\\H5P\\Library\\Library' => __DIR__ . '/../..' . '/src/Library/Library.php',
@@ -204,8 +211,8 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         'srag\\Plugins\\H5P\\ObjectSettings\\ObjectSettings' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettings.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\ObjectSettingsFormGUI' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettingsFormGUI.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\Repository' => __DIR__ . '/../..' . '/src/ObjectSettings/Repository.php',
-        'srag\\Plugins\\H5P\\Option\\Option' => __DIR__ . '/../..' . '/src/Option/Option.php',
-        'srag\\Plugins\\H5P\\Option\\OptionOld' => __DIR__ . '/../..' . '/src/Option/OptionOld.php',
+        'srag\\Plugins\\H5P\\Options\\Factory' => __DIR__ . '/../..' . '/src/Option/Factory.php',
+        'srag\\Plugins\\H5P\\Options\\Repository' => __DIR__ . '/../..' . '/src/Option/Repository.php',
         'srag\\Plugins\\H5P\\Repository' => __DIR__ . '/../..' . '/src/Repository.php',
         'srag\\Plugins\\H5P\\Result\\Factory' => __DIR__ . '/../..' . '/src/Result/Factory.php',
         'srag\\Plugins\\H5P\\Result\\Repository' => __DIR__ . '/../..' . '/src/Result/Repository.php',

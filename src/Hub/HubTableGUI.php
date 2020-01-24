@@ -40,7 +40,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function getColumnValue(/*string*/
         $column, /*array*/
@@ -59,7 +59,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getSelectableColumns2()/*: array*/
     {
@@ -70,7 +70,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initColumns()/*: void*/
     {
@@ -84,16 +84,17 @@ class HubTableGUI extends TableGUI
         $this->addColumn(self::plugin()->translate("usage_contents"));
         $this->addColumn(self::plugin()->translate("usage_libraries"));
         $this->addColumn(self::plugin()->translate("actions"));
-
-        $this->setDefaultOrderField("title");
     }
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initData()/*: void*/
     {
+        $this->setDefaultOrderField("title");
+        $this->setDefaultOrderDirection("asc");
+
         $filter = $this->getFilterValues();
 
         $title = $filter["title"];
@@ -108,7 +109,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initId()/*: void*/
     {
@@ -117,7 +118,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initFilterFields()/*: void*/
     {
@@ -149,7 +150,7 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function initTitle()/*: void*/
     {

@@ -344,7 +344,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getTableFilterHTML()/*: string*/
     {
@@ -353,7 +353,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getToolbarHTML()/*: string*/
     {

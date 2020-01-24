@@ -8,10 +8,10 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Repository as ContentsRepository;
 use srag\Plugins\H5P\Event\Repository as EventsRepository;
 use srag\Plugins\H5P\Hub\Repository as HubRepository;
+use srag\Plugins\H5P\Job\Repository as JobsRepository;
 use srag\Plugins\H5P\Library\Repository as LibrariesRepository;
 use srag\Plugins\H5P\ObjectSettings\Repository as ObjectSettingsRepository;
-use srag\Plugins\H5P\Option\Option;
-use srag\Plugins\H5P\Option\OptionOld;
+use srag\Plugins\H5P\Options\Repository as OptionsRepository;
 use srag\Plugins\H5P\Result\Repository as ResultsRepository;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -76,13 +76,13 @@ final class Repository
      */
     public function dropTables()/*: void*/
     {
-        self::dic()->database()->dropTable(Option::TABLE_NAME, false);
-        self::dic()->database()->dropTable(OptionOld::TABLE_NAME, false);
         $this->contents()->dropTables();
         $this->events()->dropTables();
         $this->hub()->dropTables();
+        $this->jobs()->dropTables();
         $this->libraries()->dropTables();
         $this->objectSettings()->dropTables();
+        $this->options()->dropTables();
         $this->results()->dropTables();
     }
 
@@ -110,26 +110,23 @@ final class Repository
      */
     public function installTables()/*: void*/
     {
-        Option::updateDB();
         $this->contents()->installTables();
         $this->events()->installTables();
         $this->hub()->installTables();
+        $this->jobs()->installTables();
         $this->libraries()->installTables();
         $this->objectSettings()->installTables();
+        $this->options()->installTables();
         $this->results()->installTables();
+    }
 
-        if (self::dic()->database()->tableExists(OptionOld::TABLE_NAME)) {
-            OptionOld::updateDB();
 
-            foreach (OptionOld::get() as $option) {
-                /**
-                 * @var OptionOld $option
-                 */
-                Option::setOption($option->getName(), $option->getValue());
-            }
-
-            self::dic()->database()->dropTable(OptionOld::TABLE_NAME);
-        }
+    /**
+     * @return JobsRepository
+     */
+    public function jobs()/* : JobsRepository*/
+    {
+        return JobsRepository::getInstance();
     }
 
 
@@ -145,9 +142,18 @@ final class Repository
     /**
      * @return ObjectSettingsRepository
      */
-    public function objectSettings()/* : ResultRepository*/
+    public function objectSettings()/* : ObjectSettingsRepository*/
     {
         return ObjectSettingsRepository::getInstance();
+    }
+
+
+    /**
+     * @return OptionsRepository
+     */
+    public function options()/* : OptionsRepository*/
+    {
+        return OptionsRepository::getInstance();
     }
 
 

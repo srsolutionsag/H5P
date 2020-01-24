@@ -32,7 +32,7 @@ class CountLearningProgressPieUI extends AbstractLearningProgressPieUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function parseData()
     {
@@ -45,7 +45,7 @@ class CountLearningProgressPieUI extends AbstractLearningProgressPieUI
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function getCount()
     {

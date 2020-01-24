@@ -51,7 +51,7 @@ class WeekdayInputGUI extends ilFormPropertyGUI implements ilTableFilterItem
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getTableFilterHTML()/*: string*/
     {

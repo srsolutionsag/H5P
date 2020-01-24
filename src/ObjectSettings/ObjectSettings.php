@@ -25,7 +25,7 @@ class ObjectSettings extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getConnectorContainerName()/*: string*/
     {
@@ -34,7 +34,7 @@ class ObjectSettings extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */
@@ -87,9 +87,7 @@ class ObjectSettings extends ActiveRecord
 
 
     /**
-     * @param string $field_name
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
     public function sleep(/*string*/ $field_name)
     {
@@ -107,10 +105,7 @@ class ObjectSettings extends ActiveRecord
 
 
     /**
-     * @param string $field_name
-     * @param mixed  $field_value
-     *
-     * @return mixed|null
+     * @inheritDoc
      */
     public function wakeUp(/*string*/ $field_name, $field_value)
     {
