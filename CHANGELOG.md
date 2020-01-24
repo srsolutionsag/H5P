@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.5.1]
+- Fixes
+
 ## [2.5.0]
 - May fix missing db tables
 
