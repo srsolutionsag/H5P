@@ -175,9 +175,9 @@ class HubDetailsFormGUI extends PropertyFormGUI
         if ($library["icon"] !== "") {
             $h5p_tpl->setCurrentBlock("iconBlock");
 
-            $h5p_tpl->setVariable("TITLE", $library["title"]);
+            $h5p_tpl->setVariableEscaped("TITLE", $library["title"]);
 
-            $h5p_tpl->setVariable("ICON", $library["icon"]);
+            $h5p_tpl->setVariableEscaped("ICON", $library["icon"]);
         }
 
         // Details

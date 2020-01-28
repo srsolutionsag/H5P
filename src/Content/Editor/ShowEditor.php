@@ -151,7 +151,7 @@ class ShowEditor
 
         /*$h5p_tpl->setCurrentBlock("errorBlock");
         $h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-        $h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
+        $h5p_tpl->setVariableEscaped("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
 
         return self::output()->getHTML($h5p_tpl);
     }

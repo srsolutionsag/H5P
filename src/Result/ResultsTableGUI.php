@@ -172,16 +172,16 @@ class ResultsTableGUI extends TableGUI
             // User not exists anymore
             $user = null;
         }
-        $this->tpl->setVariable("USER", $user !== null ? $user->getFullname() : "");
+        $this->tpl->setVariableEscaped("USER", $user !== null ? $user->getFullname() : "");
 
         $this->tpl->setCurrentBlock("contentBlock");
         foreach ($this->contents as $h5p_content) {
             $content_key = "content_" . $h5p_content->getContentId();
 
             if ($row[$content_key] !== null) {
-                $this->tpl->setVariable("POINTS", $row[$content_key]);
+                $this->tpl->setVariableEscaped("POINTS", $row[$content_key]);
             } else {
-                $this->tpl->setVariable("POINTS", self::plugin()->translate("no_result"));
+                $this->tpl->setVariableEscaped("POINTS", self::plugin()->translate("no_result"));
             }
             $this->tpl->parseCurrentBlock();
         }
@@ -193,7 +193,7 @@ class ResultsTableGUI extends TableGUI
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
         }
 
-        $this->tpl->setVariable("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
+        $this->tpl->setVariableEscaped("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
 
         $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
             ->withLabel($this->txt("actions"))));
