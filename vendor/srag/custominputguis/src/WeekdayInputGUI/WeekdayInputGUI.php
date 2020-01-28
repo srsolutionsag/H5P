@@ -6,6 +6,7 @@ use ilCalendarUtil;
 use ilFormPropertyGUI;
 use ilTableFilterItem;
 use ilTemplate;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -90,7 +91,7 @@ class WeekdayInputGUI extends ilFormPropertyGUI implements ilTableFilterItem
      */
     public function render()/*: string*/
     {
-        $tpl = new ilTemplate(__DIR__ . "/templates/tpl.weekday_input.html", true, true);
+        $tpl = new Template(__DIR__ . "/templates/tpl.weekday_input.html", true, true);
 
         $days = [1 => 'MO', 2 => 'TU', 3 => 'WE', 4 => 'TH', 5 => 'FR', 6 => 'SA', 7 => 'SU'];
 

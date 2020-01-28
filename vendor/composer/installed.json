@@ -167,24 +167,24 @@
     },
     {
         "name": "srag/custominputguis",
-        "version": "v0.28.5",
-        "version_normalized": "0.28.5.0",
+        "version": "v0.31.2",
+        "version_normalized": "0.31.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-            "reference": "f814b96c22623b34a338ea163c48da7c1ad06158"
+            "reference": "07dc764ee0402347d5fa3bbd0ad33c63e3a92833"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/f814b96c22623b34a338ea163c48da7c1ad06158",
-            "reference": "f814b96c22623b34a338ea163c48da7c1ad06158",
+            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/07dc764ee0402347d5fa3bbd0ad33c63e3a92833",
+            "reference": "07dc764ee0402347d5fa3bbd0ad33c63e3a92833",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2020-01-16T07:59:55+00:00",
+        "time": "2020-01-28T08:36:07+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -216,23 +216,23 @@
     },
     {
         "name": "srag/dic",
-        "version": "v0.19.4",
-        "version_normalized": "0.19.4.0",
+        "version": "v0.20.0",
+        "version_normalized": "0.20.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "e0198e3490b03dfc9a0c39d8d89ead8638c9ff69"
+            "reference": "94d039173ca2ec209dd88300cdcb415dbc8ba7a3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/e0198e3490b03dfc9a0c39d8d89ead8638c9ff69",
-            "reference": "e0198e3490b03dfc9a0c39d8d89ead8638c9ff69",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/94d039173ca2ec209dd88300cdcb415dbc8ba7a3",
+            "reference": "94d039173ca2ec209dd88300cdcb415dbc8ba7a3",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-01-16T08:05:38+00:00",
+        "time": "2020-01-28T07:42:40+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

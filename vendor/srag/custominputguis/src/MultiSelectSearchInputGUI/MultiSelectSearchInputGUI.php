@@ -7,16 +7,19 @@ use ilTableFilterItem;
 use ilTemplate;
 use ilToolbarItem;
 use ilUtil;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
  * Class MultiSelectSearchInputGUI
  *
- * @package srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI
+ * @package    srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Oskar Truffer <ot@studer-raimann.ch>
- * @author  Martin Studer <ms@studer-raimann.ch>
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     Oskar Truffer <ot@studer-raimann.ch>
+ * @author     Martin Studer <ms@studer-raimann.ch>
+ *
+ * @deprecated Please switch to `MultiSelectSearchNewInputGUI`
  */
 class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTableFilterItem, ilToolbarItem
 {
@@ -24,26 +27,38 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
     use DICTrait;
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $width;
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $height;
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $css_class;
     /**
      * @var int|null
+     *
+     * @deprecated
      */
     protected $minimum_input_length = null;
     /**
      * @var string
+     *
+     * @deprecated
      */
     protected $ajax_link;
     /**
      * @var ilTemplate
+     *
+     * @deprecated
      */
     protected $input_template;
 
@@ -53,6 +68,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @param string $title
      * @param string $post_var
+     *
+     * @deprecated
      */
     public function __construct(/*string*/
         $title = "", /*string*/
@@ -66,12 +83,12 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
         $dir = __DIR__;
         $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-        self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
-        self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
+        self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
+        self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
             . ".js");
-        self::dic()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
-        self::dic()->mainTemplate()->addCss($dir . "/css/multiselectsearchinputgui.css");
-        $this->setInputTemplate(new ilTemplate(__DIR__ . "/templates/tpl.multiple_select.html", true, true));
+        self::dic()->ui()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
+        self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multiselectsearchinputgui.css");
+        $this->setInputTemplate(new Template(__DIR__ . "/templates/tpl.multiple_select.html", true, true));
         $this->setWidth("308px");
     }
 
@@ -80,12 +97,19 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * Check input, strip slashes etc. set alert, if input is not ok.
      *
      * @return boolean Input ok, true/false
+     *
+     * @deprecated
      */
     public function checkInput()/*: bool*/
     {
-        //var_dump($this->getValue());
-        if ($this->getRequired() && count($this->getValue()) == 0) {
+        if ($this->getRequired() && empty($this->getValue())) {
             $this->setAlert(self::dic()->language()->txt("msg_input_is_required"));
+
+            return false;
+        }
+
+        if ($this->getLimitCount() !== null && count($this->getValue()) > $this->getLimitCount()) {
+            $this->setAlert(self::dic()->language()->txt("form_input_not_valid"));
 
             return false;
         }
@@ -96,6 +120,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return array
+     *
+     * @deprecated
      */
     public function getSubItems()/*: array*/
     {
@@ -105,6 +131,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function render()/*: string*/
     {
@@ -169,6 +197,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * @param string $height
      *
      * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     *
+     * @deprecated
      */
     public function setHeight(/*string*/
         $height
@@ -182,6 +212,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * @return string
      *
      * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     *
+     * @deprecated
      */
     public function getHeight()/*: string*/
     {
@@ -193,6 +225,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * @param string $width
      *
      * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     *
+     * @deprecated
      */
     public function setWidth(/*string*/
         $width
@@ -206,6 +240,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * @return string
      *
      * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     *
+     * @deprecated
      */
     public function getWidth()/*: string*/
     {
@@ -215,6 +251,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param string $css_class
+     *
+     * @deprecated
      */
     public function setCssClass(/*string*/
         $css_class
@@ -226,6 +264,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getCssClass()/*: string*/
     {
@@ -235,6 +275,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param int|null $minimum_input_length
+     *
+     * @deprecated
      */
     public function setMinimumInputLength(/*?int*/ $minimum_input_length = null)/*: void*/
     {
@@ -244,6 +286,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return int
+     *
+     * @deprecated
      */
     public function getMinimumInputLength()/*: int*/
     {
@@ -257,6 +301,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param string $ajax_link setting the ajax link will lead to ignoration of the "setOptions" function as the link given will be used to get the
+     *
+     * @deprecated
      */
     public function setAjaxLink(/*string*/
         $ajax_link
@@ -268,6 +314,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return string
+     *
+     * @deprecated
      */
     public function getAjaxLink()/*: string*/
     {
@@ -277,6 +325,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param ilTemplate $input_template
+     *
+     * @deprecated
      */
     public function setInputTemplate(/*ilTemplate*/
         $input_template
@@ -288,6 +338,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @return ilTemplate
+     *
+     * @deprecated
      */
     public function getInputTemplate()/*ilTemplate*/
     {
@@ -299,6 +351,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      * This implementation might sound silly. But the multiple select input used parses the post vars differently if you use ajax. thus we have to do this stupid "trick". Shame on select2 project ;)
      *
      * @return string the real postvar.
+     *
+     * @deprecated
      */
     protected function searchPostVar()/*: string*/
     {
@@ -312,6 +366,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param array $array
+     *
+     * @deprecated
      */
     public function setValueByArray(/*array*/ $array)/*: void*/
     {
@@ -331,6 +387,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @param string $a_postvar
+     *
+     * @deprecated
      */
     public function setPostVar(/*string*/
         $a_postvar
@@ -345,6 +403,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
     public function getTableFilterHTML()/*: string*/
     {
@@ -354,6 +414,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
     public function getToolbarHTML()/*: string*/
     {

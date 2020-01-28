@@ -78,60 +78,51 @@ il.MultiLineNewInputGUI = {
             action_el.on("click", this[action_el.data("action")].bind(this, el))
         }.bind(this));
 
-        if (!add_first_line && !this.clone_template) {
+        if (!add_first_line) {
             $(".input-group.date:not([data-cached_options_id])", el).each(function (i2, el2) {
                 el2 = $(el2);
 
                 if (el2.data("DateTimePicker")) {
                     this.cacheOptions(el2, "datetimepicker", el2.datetimepicker("options"));
-
-                    el2.datetimepicker("destroy");
-
-                    el2.id = "";
                 }
             }.bind(this));
 
-            this.clone_template = el.clone();
+            $("select[data-multipleselectnewinputgui]:not([data-cached_options_id])", el).each(function (i2, el2) {
+                el2 = $(el2);
 
-            $("[name]", this.clone_template).each(function (i2, el2) {
-                if (el2.type === "checkbox") {
-                    el2.checked = false;
-                } else {
-                    el2.value = "";
+                const options = JSON.parse(atob(el2.data("multipleselectnewinputgui")));
+
+                this.cacheOptions(el2, "select2", options);
+            }.bind(this));
+
+            if (!this.clone_template) {
+                this.clone_template = el.clone();
+
+                $("[name]", this.clone_template).each(function (i2, el2) {
+                    if (el2.type === "checkbox") {
+                        el2.checked = false;
+                    } else {
+                        el2.value = "";
+                    }
+                });
+
+                $(".alert", this.clone_template).remove();
+
+                this.clone_template.show();
+
+                $("select[data-multipleselectnewinputgui]", this.clone_template).each(function (i2, el2) {
+                    el2 = $(el2);
+
+                    el2.html("");
+                }.bind(this));
+
+                if (el.parent().parent().data("remove_first_line")) {
+                    this.remove(el);
                 }
-            });
-
-            $(".alert", this.clone_template).remove();
-
-            this.clone_template.show();
-
-            if (el.parent().parent().data("remove_first_line")) {
-                this.remove(el);
-
-                return;
             }
-        }
-
-        if (add_first_line) {
+        } else {
             this.add_first_line = el;
         }
-
-        $("[data-cached_options_id]", el).each(function (i2, el2) {
-            el2 = $(el2);
-
-            const options = this.cached_options[el2.attr("data-cached_options_id")];
-            if (!options) {
-                return;
-            }
-            switch (options.type) {
-                case "datetimepicker":
-                    el2.datetimepicker(options.options);
-                    break;
-
-                default:
-                    break;
-            }
-        }.bind(this));
     },
 
     /**
@@ -160,6 +151,12 @@ il.MultiLineNewInputGUI = {
      * @param {jQuery} el
      */
     update: function (el) {
+        $("span[data-action=up]", el).show();
+        $("> div:first-of-type span[data-action=up]", el).hide();
+
+        $("span[data-action=down]", el).show();
+        $("> div:last-of-type span[data-action=down]", el).hide();
+
         for (const key of ["aria-controls", "aria-labelledby", "href", "id", "name"]) {
             el.children().each(function (i, el) {
                 $("[" + key + "]", el).each(function (i2, el2) {
@@ -183,5 +180,43 @@ il.MultiLineNewInputGUI = {
                 this.add_first_line.show();
             }
         }
+
+        $("[data-cached_options_id]", el).each(function (i2, el2) {
+            el2 = $(el2);
+
+            const options = this.cached_options[el2.attr("data-cached_options_id")];
+            if (!options) {
+                return;
+            }
+            switch (options.type) {
+                case "datetimepicker":
+                    if (el2.data("DateTimePicker")) {
+                        el2.datetimepicker("destroy");
+                    }
+
+                    el2.prop("id", "");
+
+                    el2.datetimepicker(options.options);
+                    break;
+
+                case "select2":
+                    if (el2.data("select2")) {
+                        el2.select2("destroy");
+                    }
+
+                    el2.next(".select2").remove();
+
+                    el2.removeAttr("class");
+                    el2.removeAttr("data-select2-id");
+                    el2.removeAttr("aria-hidden");
+                    el2.removeAttr("tabindex");
+
+                    el2.select2(options.options);
+                    break;
+
+                default:
+                    break;
+            }
+        }.bind(this));
     }
 };

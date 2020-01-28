@@ -159,12 +159,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     protected function show(/*string*/ $html)/*: void*/
     {
         if (!self::dic()->ctrl()->isAsynch()) {
-            self::dic()->mainTemplate()->setTitle($this->object->getTitle());
+            self::dic()->ui()->mainTemplate()->setTitle($this->object->getTitle());
 
-            self::dic()->mainTemplate()->setDescription($this->object->getDescription());
+            self::dic()->ui()->mainTemplate()->setDescription($this->object->getDescription());
 
             if (!$this->object->isOnline()) {
-                self::dic()->mainTemplate()->setAlertProperties([
+                self::dic()->ui()->mainTemplate()->setAlertProperties([
                     [
                         "alert"    => true,
                         "property" => self::plugin()->translate("status"),

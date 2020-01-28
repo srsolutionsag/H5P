@@ -5,6 +5,7 @@ namespace srag\CustomInputGUIs\H5P\StaticHTMLPresentationInputGUI;
 use ilFormException;
 use ilFormPropertyGUI;
 use ilTemplate;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -89,9 +90,9 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
      */
     public function render()
     {
-        $iframe_tpl = new ilTemplate(__DIR__ . "/templates/iframe.html", true, true);
+        $iframe_tpl = new Template(__DIR__ . "/templates/iframe.html");
 
-        $iframe_tpl->setVariable("URL", $this->getDataUrl());
+        $iframe_tpl->setVariableEscaped("URL", $this->getDataUrl());
 
         return self::output()->getHTML($iframe_tpl);
     }

@@ -57,7 +57,7 @@ class ResultsTableGUI extends TableGUI
     {
         switch ($column) {
             default:
-                $column = $row[$column];
+                $column = htmlspecialchars($row[$column]);
                 break;
         }
 

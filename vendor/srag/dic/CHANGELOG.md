@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.20.0]
+- Deprecate `self::dic()->mainTemplate()`
+- Switch from `ilTemplate` to `Template`
+
 ## [0.19.4]
 - Fix
 

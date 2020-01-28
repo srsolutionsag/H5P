@@ -348,6 +348,8 @@ final class ILIAS60DIC extends AbstractDIC
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->ui()->mainTemplate()`
      */
     public function mainTemplate()
     {

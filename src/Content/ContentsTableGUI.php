@@ -54,7 +54,7 @@ class ContentsTableGUI extends TableGUI
     {
         switch ($column) {
             default:
-                $column = $row[$column];
+                $column = htmlspecialchars($row[$column]);
                 break;
         }
 
@@ -129,8 +129,8 @@ class ContentsTableGUI extends TableGUI
     {
         Waiter::init(Waiter::TYPE_WAITER);
 
-        self::dic()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
-        self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
+        self::dic()->ui()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
+        self::dic()->ui()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
             . '");');
     }
 

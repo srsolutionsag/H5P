@@ -86,9 +86,9 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     public function getJSOnLoadCode()
     {
         $screenshot_tpl = $this->getPlugin()->template(__DIR__ . "/templates/screenshot.html", true, true, false);
-        $screenshot_tpl->setVariable("TXT_REMOVE_SCREENSHOT", $this->getPlugin()
+        $screenshot_tpl->setVariableEscaped("TXT_REMOVE_SCREENSHOT", $this->getPlugin()
             ->translate("remove_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
-        $screenshot_tpl->setVariable("TXT_PREVIEW_SCREENSHOT", $this->getPlugin()
+        $screenshot_tpl->setVariableEscaped("TXT_PREVIEW_SCREENSHOT", $this->getPlugin()
             ->translate("preview_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
 
         return 'il.ScreenshotsInputGUI.PAGE_SCREENSHOT_NAME = ' . json_encode($this->getPlugin()
@@ -118,7 +118,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      *
      */
-    public function initJS()/*: void*/
+    public function init()/*: void*/
     {
         if (self::$init === false) {
             self::$init = true;
@@ -126,12 +126,12 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js");
-            self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js");
-            self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js");
 
-            self::dic()->mainTemplate()->addJavaScript($dir . "/js/ScreenshotsInputGUI.min.js", false);
-            self::dic()->mainTemplate()->addOnLoadCode($this->getJSOnLoadCode());
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/ScreenshotsInputGUI.min.js", false);
+            self::dic()->ui()->mainTemplate()->addOnLoadCode($this->getJSOnLoadCode());
         }
     }
 
@@ -182,7 +182,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      */
     public function render()
     {
-        $this->initJS();
+        $this->init();
 
         $screenshots_tpl = $this->getPlugin()->template(__DIR__ . "/templates/screenshots.html", true, true, false);
         $screenshots_tpl->setVariable("TXT_UPLOAD_SCREENSHOT", $this->getPlugin()

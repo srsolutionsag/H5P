@@ -204,7 +204,7 @@ class ShowContent
     public function outputHeader()
     {
         foreach ($this->css_files as $css_file) {
-            self::dic()->mainTemplate()->addCss($css_file);
+            self::dic()->ui()->mainTemplate()->addCss($css_file);
         }
 
         foreach ($this->js_files as $js_file) {
@@ -212,12 +212,12 @@ class ShowContent
                 if (!isset($this->js_files_output[$js_file])) {
                     $this->js_files_output[$js_file] = true;
 
-                    self::dic()->mainTemplate()->setCurrentBlock("js_file");
-                    self::dic()->mainTemplate()->setVariable("JS_FILE", $js_file);
-                    self::dic()->mainTemplate()->parseCurrentBlock();
+                    self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
+                    self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
+                    self::dic()->ui()->mainTemplate()->parseCurrentBlock();
                 }
             } else {
-                self::dic()->mainTemplate()->addJavaScript($js_file);
+                self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
             }
         }
     }

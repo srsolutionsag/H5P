@@ -14,6 +14,7 @@ use ilTextAreaInputGUI;
 use ilToolbarItem;
 use ilUtil;
 use srag\CustomInputGUIs\H5P\GlyphGUI\GlyphGUI;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -466,7 +467,7 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
     public function render(/*int*/ $iterator_id = 0, /*bool*/ $clean_render = false)/*: string*/
     {
         $first_label = true;
-        $tpl = new ilTemplate(__DIR__ . "/templates/tpl.multi_line_input.html", true, true);
+        $tpl = new Template(__DIR__ . "/templates/tpl.multi_line_input.html", true, true);
         $class = 'multi_input_line';
         $this->addCustomAttribute('class', $class, true);
         foreach ($this->getCustomAttributes() as $key => $value) {
@@ -597,8 +598,8 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
         $dir = __DIR__;
         $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-        self::dic()->mainTemplate()->addCss($dir . '/css/multi_line_input.css');
-        self::dic()->mainTemplate()->addJavascript($dir . '/js/multi_line_input.min.js');
+        self::dic()->ui()->mainTemplate()->addCss($dir . '/css/multi_line_input.css');
+        self::dic()->ui()->mainTemplate()->addJavascript($dir . '/js/multi_line_input.min.js');
     }
 
 
