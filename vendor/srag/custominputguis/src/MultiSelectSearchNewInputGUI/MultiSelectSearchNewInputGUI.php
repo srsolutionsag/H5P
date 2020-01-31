@@ -39,6 +39,8 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
             self::dic()->ui()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
 
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_select_search_new_input_gui.css");
+
             self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
 
             self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
@@ -212,7 +214,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      */
     public function render()
     {
-        $tpl = new Template(__DIR__ . "/templates/multiple_select_new_input_gui.html");
+        $tpl = new Template(__DIR__ . "/templates/multi_select_search_new_input_gui.html");
 
         $tpl->setVariableEscaped("ID", $this->getFieldId());
 

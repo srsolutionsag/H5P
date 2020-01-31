@@ -108,12 +108,6 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
             return false;
         }
 
-        if ($this->getLimitCount() !== null && count($this->getValue()) > $this->getLimitCount()) {
-            $this->setAlert(self::dic()->language()->txt("form_input_not_valid"));
-
-            return false;
-        }
-
         return true;
     }
 

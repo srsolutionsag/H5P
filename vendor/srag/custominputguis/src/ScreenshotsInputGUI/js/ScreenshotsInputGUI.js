@@ -72,11 +72,6 @@ il.ScreenshotsInputGUI.prototype = {
     /**
      * @type {jQuery|null}
      */
-    $form: null,
-
-    /**
-     * @type {jQuery|null}
-     */
     $screenshot_file_input: null,
 
     /**
@@ -108,11 +103,6 @@ il.ScreenshotsInputGUI.prototype = {
      * @type {File[]}
      */
     screenshots: [],
-
-    /**
-     * @type {string}
-     */
-    submitButtonID: [],
 
     /**
      *
@@ -218,13 +208,11 @@ il.ScreenshotsInputGUI.prototype = {
         this.$add_screenshot = $(".add_screenshot", this.element);
         this.$add_page_screenshot = $(".add_page_screenshot", this.element);
         this.$screenshot_file_input = $(".screenshot_file_input", this.element);
-        this.$form = this.$screenshot_file_input.parents("form");
         this.$screenshots = $(".screenshots", this.element);
 
         this.$add_screenshot.click(this.addScreenshot.bind(this));
         this.$add_page_screenshot.click(this.addPageScreenshot.bind(this));
         this.$screenshot_file_input.change(this.addScreenshotOnChange.bind(this));
-        this.$form.submit(this.submit.bind(this));
     },
 
     /**
@@ -257,39 +245,6 @@ il.ScreenshotsInputGUI.prototype = {
             $(".modal-backdrop").css("visibility", "");
             $("body").css("overflow", "");
         }
-    },
-
-
-    /**
-     * @returns {boolean}
-     */
-    submit: function () {
-        var $submit = $("#" + this.submitButtonID);
-
-        var post_url = this.$form.attr("action");
-
-        var data = new FormData(this.$form[0]); // Supports files upload
-        data.append($submit.prop("name"), $submit.val()); // Send submit button with cmd
-
-        this.addScreenshotsToUpload(data);
-
-        $.ajax({
-            type: "post",
-            url: post_url,
-            contentType: false,
-            processData: false,
-            data: data,
-            success: this.submitFunction.bind(this)
-        });
-
-        return false;
-    },
-
-    /**
-     *
-     */
-    submitFunction: function () {
-
     },
 
     /**

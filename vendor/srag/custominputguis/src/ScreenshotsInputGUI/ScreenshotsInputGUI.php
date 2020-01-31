@@ -18,14 +18,12 @@ use srag\DIC\H5P\Plugin\PluginInterface;
  * @package srag\CustomInputGUIs\H5P\ScreenshotsInputGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
- * @since   ILIAS 5.3
  */
 class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 {
 
     use DICTrait;
-    const LANG_MODULE_SCREENSHOTSINPUTGUI = "screenshotsinputgui";
+    const LANG_MODULE = "screenshotsinputgui";
     /**
      * @var bool
      */
@@ -57,13 +55,15 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 
 
     /**
-     * @return bool
+     * @inheritDoc
      */
     public function checkInput()
     {
         $this->processScreenshots();
 
-        if ($this->getRequired() && count($this->screenshots) === 0) {
+        if ($this->getRequired() && empty($this->getValue())) {
+            $this->setAlert(self::dic()->language()->txt("msg_input_is_required"));
+
             return false;
         }
 
@@ -87,12 +87,12 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     {
         $screenshot_tpl = $this->getPlugin()->template(__DIR__ . "/templates/screenshot.html", true, true, false);
         $screenshot_tpl->setVariableEscaped("TXT_REMOVE_SCREENSHOT", $this->getPlugin()
-            ->translate("remove_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
+            ->translate("remove_screenshot", self::LANG_MODULE));
         $screenshot_tpl->setVariableEscaped("TXT_PREVIEW_SCREENSHOT", $this->getPlugin()
-            ->translate("preview_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
+            ->translate("preview_screenshot", self::LANG_MODULE));
 
         return 'il.ScreenshotsInputGUI.PAGE_SCREENSHOT_NAME = ' . json_encode($this->getPlugin()
-                ->translate("page_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI)) . ';
+                ->translate("page_screenshot", self::LANG_MODULE)) . ';
 		il.ScreenshotsInputGUI.SCREENSHOT_TEMPLATE = ' . json_encode(self::output()->getHTML($screenshot_tpl)) . ';';
     }
 
@@ -186,13 +186,13 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 
         $screenshots_tpl = $this->getPlugin()->template(__DIR__ . "/templates/screenshots.html", true, true, false);
         $screenshots_tpl->setVariable("TXT_UPLOAD_SCREENSHOT", $this->getPlugin()
-            ->translate("upload_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
+            ->translate("upload_screenshot", self::LANG_MODULE));
         $screenshots_tpl->setVariable("TXT_TAKE_PAGE_SCREENSHOT", $this->getPlugin()
-            ->translate("take_page_screenshot", self::LANG_MODULE_SCREENSHOTSINPUTGUI));
+            ->translate("take_page_screenshot", self::LANG_MODULE));
         $screenshots_tpl->setVariable("POST_VAR", $this->getPostVar());
         $screenshots_tpl->setVariable("ALLOWED_FORMATS", implode(",", array_map(function ($format) {
     return "." . $format;
-}, $this->allowed_formats)));
+}, $this->getAllowedFormats())));
 
         return self::output()->getHTML($screenshots_tpl);
     }
@@ -216,7 +216,8 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      *
      * @return self
      */
-    public function setPostVar($post_var) {
+    public function setPostVar($post_var)
+    {
         $this->postvar = $post_var;
 
         return $this;
@@ -228,7 +229,8 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      *
      * @return self
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
 
         return $this;

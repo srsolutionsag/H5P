@@ -87,10 +87,10 @@ il.MultiLineNewInputGUI = {
                 }
             }.bind(this));
 
-            $("select[data-multipleselectnewinputgui]:not([data-cached_options_id])", el).each(function (i2, el2) {
+            $("select[data-multiselectsearchnewinputgui]:not([data-cached_options_id])", el).each(function (i2, el2) {
                 el2 = $(el2);
 
-                const options = JSON.parse(atob(el2.data("multipleselectnewinputgui")));
+                const options = JSON.parse(atob(el2.data("multiselectsearchnewinputgui")));
 
                 this.cacheOptions(el2, "select2", options);
             }.bind(this));
@@ -110,7 +110,7 @@ il.MultiLineNewInputGUI = {
 
                 this.clone_template.show();
 
-                $("select[data-multipleselectnewinputgui]", this.clone_template).each(function (i2, el2) {
+                $("select[data-multiselectsearchnewinputgui]", this.clone_template).each(function (i2, el2) {
                     el2 = $(el2);
 
                     el2.html("");
