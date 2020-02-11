@@ -676,7 +676,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        self::h5p()->contents()->editor()->show()->importContent($form);
+        if (!self::h5p()->contents()->editor()->show()->importContent($form)) {
+            $this->show($form);
+
+            return;
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }

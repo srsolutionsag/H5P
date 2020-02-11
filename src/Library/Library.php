@@ -202,6 +202,14 @@ class Library extends ActiveRecord
      * @con_is_notnull true
      */
     protected $has_icon = false;
+    /**
+     * @var string|null
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_is_notnull false
+     */
+    protected $add_to = null;
 
 
     /**
@@ -589,5 +597,23 @@ class Library extends ActiveRecord
     public function setHasIcon($has_icon)
     {
         $this->has_icon = $has_icon;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getAddTo()/* : ?string*/
+    {
+        return $this->add_to;
+    }
+
+
+    /**
+     * @param string|null $add_to
+     */
+    public function setAddTo(/*?string*/ $add_to = null)/* : void*/
+    {
+        $this->add_to = $add_to;
     }
 }
