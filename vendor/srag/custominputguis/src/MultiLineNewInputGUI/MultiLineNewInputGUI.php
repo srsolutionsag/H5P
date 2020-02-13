@@ -28,6 +28,10 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
      * @var bool
      */
     protected static $init = false;
+    /**
+     * @var int
+     */
+    protected static $counter = 0;
 
 
     /**
@@ -118,6 +122,8 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
                 $_POST[$input->getPostVar()] = $b_value;
             }
         }
+
+        $this->inputs_generated = null;
 
         if ($ok) {
             return true;
@@ -239,7 +245,11 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
      */
     public function render()
     {
+        $counter = ++self::$counter;
+
         $tpl = new Template(__DIR__ . "/templates/multi_line_new_input_gui.html");
+
+        $tpl->setVariableEscaped("COUNTER", $counter);
 
         $remove_first_line = (!$this->getRequired() && empty($this->getValue(false)));
         $tpl->setVariableEscaped("REMOVE_FIRST_LINE", $remove_first_line);
@@ -253,7 +263,7 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
                 $tpl->setVariable("HIDE_ADD_FIRST_LINE", self::output()->getHTML(new Template(__DIR__ . "/templates/multi_line_new_input_gui_hide.html", false, false)));
             }
 
-            $tpl->setVariable("ADD_FIRST_LINE", self::output()->getHTML(self::dic()->ui()->factory()->glyph()->add()->withAdditionalOnLoadCode(function ($id) {    return 'il.MultiLineNewInputGUI.init($("#' . $id . '").parent().parent().parent(), true)';
+            $tpl->setVariable("ADD_FIRST_LINE", self::output()->getHTML(self::dic()->ui()->factory()->glyph()->add()->withAdditionalOnLoadCode(function ($id) use($counter) {    return 'il.MultiLineNewInputGUI.init(' . $counter . ', $("#' . $id . '").parent().parent().parent(), true)';
 })));
 
             $tpl->parseCurrentBlock();
@@ -284,8 +294,8 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
                 $tpl->setVariable("SORT", self::output()->getHTML($sort_tpl));
             }
 
-            $tpl->setVariable("ADD", self::output()->getHTML(self::dic()->ui()->factory()->glyph()->add()->withAdditionalOnLoadCode(function ($id) use($i) {
-    return 'il.MultiLineNewInputGUI.init($("#' . $id . '").parent().parent().parent())' . ($i === count($this->getInputs()) - 1 ? ';il.MultiLineNewInputGUI.update($("#' . $id . '").parent().parent().parent().parent())' : '');
+            $tpl->setVariable("ADD", self::output()->getHTML(self::dic()->ui()->factory()->glyph()->add()->withAdditionalOnLoadCode(function ($id) use($i, $counter) {
+    return 'il.MultiLineNewInputGUI.init(' . $counter . ', $("#' . $id . '").parent().parent().parent())' . ($i === count($this->getInputs()) - 1 ? ';il.MultiLineNewInputGUI.update(' . $counter . ', $("#' . $id . '").parent().parent().parent().parent())' : '');
 })));
 
             $tpl->setVariable("REMOVE", self::output()->getHTML(self::dic()->ui()->factory()->glyph()->remove()));

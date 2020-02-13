@@ -172,7 +172,7 @@ class EditContentFormGUI extends PropertyFormGUI
                 PropertyFormGUI::PROPERTY_CLASS    => ilFileInputGUI::class,
                 PropertyFormGUI::PROPERTY_REQUIRED => false,
                 "setSuffixes"                      => [["html", "zip"]],
-                "setInfo"                          => nl2br(str_replace("\\n", "\n", $this->txt("upload_file_info")), false),
+                "setInfo"                          => nl2br($this->txt("upload_file_info"), false),
                 "setAllowDeletion"                 => true
             ]
         ];

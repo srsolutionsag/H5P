@@ -1,81 +1,89 @@
 il.MultiLineNewInputGUI = {
     /**
+     * @param {number} counter
      * @param {jQuery} el
      */
-    add: function (el) {
-        var cloned_el = this.clone_template.clone();
+    add: function (counter, el) {
+        var cloned_el = this.clone_template[counter].clone();
 
-        this.init(cloned_el);
+        this.init(counter, cloned_el);
 
         el.after(cloned_el);
 
-        this.update(el.parent());
+        this.update(counter, el.parent());
     },
 
     /**
-     *
+     * @param {number} counter
      */
-    addFirstLine: function () {
-        this.add_first_line.hide();
+    addFirstLine: function (counter) {
+        this.add_first_line[counter].hide();
 
-        var cloned_el = this.clone_template.clone();
+        var cloned_el = this.clone_template[counter].clone();
 
-        this.init(cloned_el);
+        this.init(counter, cloned_el);
 
-        this.add_first_line.parent().parent().children().eq(1).append(cloned_el);
+        this.add_first_line[counter].parent().parent().children().eq(1).append(cloned_el);
 
-        this.update(this.add_first_line.parent().parent().children().eq(1));
+        this.update(counter, this.add_first_line[counter].parent().parent().children().eq(1));
     },
 
     /**
-     * @type {jQuery|null}
+     * @type {object}
      */
-    add_first_line: null,
+    add_first_line: {},
 
     /**
-     * @type {Array}
+     * @type {object}
      */
     cached_options: [],
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      * @param {string} type
      * @param {Object} options
      */
-    cacheOptions(el, type, options) {
-        this.cached_options.push({
+    cacheOptions(counter, el, type, options) {
+        if (!Array.isArray(this.cached_options[counter])) {
+            this.cached_options[counter] = [];
+        }
+
+        this.cached_options[counter].push({
             type: type,
             options: options
         });
 
-        el.attr("data-cached_options_id", (this.cached_options.length - 1));
+        el.attr("data-cached_options_id", (this.cached_options[counter].length - 1));
     },
 
     /**
-     * @type {jQuery|null}
+     * @type {object}
      */
-    clone_template: null,
+    clone_template: {},
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      */
-    down: function (el) {
+    down: function (counter, el) {
         el.insertAfter(el.next());
 
-        this.update(el.parent());
+        this.update(counter, el.parent());
     },
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      * @param {boolean} add_first_line
      */
-    init: function (el, add_first_line) {
+    init: function (counter, el, add_first_line) {
         $("span[data-action]", el).each(function (i, action_el) {
             action_el = $(action_el);
 
             action_el.off();
 
-            action_el.on("click", this[action_el.data("action")].bind(this, el))
+            action_el.on("click", this[action_el.data("action")].bind(this, counter, el))
         }.bind(this));
 
         if (!add_first_line) {
@@ -83,7 +91,7 @@ il.MultiLineNewInputGUI = {
                 el2 = $(el2);
 
                 if (el2.data("DateTimePicker")) {
-                    this.cacheOptions(el2, "datetimepicker", el2.datetimepicker("options"));
+                    this.cacheOptions(counter, el2, "datetimepicker", el2.datetimepicker("options"));
                 }
             }.bind(this));
 
@@ -92,13 +100,13 @@ il.MultiLineNewInputGUI = {
 
                 const options = JSON.parse(atob(el2.data("multiselectsearchnewinputgui")));
 
-                this.cacheOptions(el2, "select2", options);
+                this.cacheOptions(counter, el2, "select2", options);
             }.bind(this));
 
-            if (!this.clone_template) {
-                this.clone_template = el.clone();
+            if (!this.clone_template[counter]) {
+                this.clone_template[counter] = el.clone();
 
-                $("[name]", this.clone_template).each(function (i2, el2) {
+                $("[name]", this.clone_template[counter]).each(function (i2, el2) {
                     if (el2.type === "checkbox") {
                         el2.checked = false;
                     } else {
@@ -106,51 +114,54 @@ il.MultiLineNewInputGUI = {
                     }
                 });
 
-                $(".alert", this.clone_template).remove();
+                $(".alert", this.clone_template[counter]).remove();
 
-                this.clone_template.show();
+                this.clone_template[counter].show();
 
-                $("select[data-multiselectsearchnewinputgui]", this.clone_template).each(function (i2, el2) {
+                $("select[data-multiselectsearchnewinputgui]", this.clone_template[counter]).each(function (i2, el2) {
                     el2 = $(el2);
 
                     el2.html("");
                 }.bind(this));
 
                 if (el.parent().parent().data("remove_first_line")) {
-                    this.remove(el);
+                    this.remove(counter, el);
                 }
             }
         } else {
-            this.add_first_line = el;
+            this.add_first_line[counter] = el;
         }
     },
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      */
-    remove: function (el) {
+    remove: function (counter, el) {
         var parent = el.parent();
 
         if (!parent.parent().data("required") || parent.children().length > 1) {
             el.remove();
 
-            this.update(parent);
+            this.update(counter, parent);
         }
     },
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      */
-    up: function (el) {
+    up: function (counter, el) {
         el.insertBefore(el.prev());
 
-        this.update(el.parent());
+        this.update(counter, el.parent());
     },
 
     /**
+     * @param {number} counter
      * @param {jQuery} el
      */
-    update: function (el) {
+    update: function (counter, el) {
         $("span[data-action=up]", el).show();
         $("> div:first-of-type span[data-action=up]", el).hide();
 
@@ -177,14 +188,14 @@ il.MultiLineNewInputGUI = {
             $("span[data-action=remove]", el).show();
 
             if (el.children().length === 0) {
-                this.add_first_line.show();
+                this.add_first_line[counter].show();
             }
         }
 
         $("[data-cached_options_id]", el).each(function (i2, el2) {
             el2 = $(el2);
 
-            const options = this.cached_options[el2.attr("data-cached_options_id")];
+            const options = this.cached_options[counter][el2.attr("data-cached_options_id")];
             if (!options) {
                 return;
             }

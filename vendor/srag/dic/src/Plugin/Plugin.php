@@ -114,7 +114,11 @@ final class Plugin implements PluginInterface
             }
         }
 
-        return strval($txt);
+        $txt = strval($txt);
+
+        $txt = str_replace("\\n", "\n", $txt);
+
+        return $txt;
     }
 
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.20.2]
+- Auto replace manually line breaks text in language files to real line breaks
+
+## [0.20.1]
+- Fix
+
 ## [0.20.0]
 - Deprecate `self::dic()->mainTemplate()`
 - Switch from `ilTemplate` to `Template`
