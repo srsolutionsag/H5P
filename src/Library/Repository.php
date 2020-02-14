@@ -363,12 +363,29 @@ final class Repository
     public function getLatestLibraryVersions()
     {
         /**
-         * @var Library[] $h5p_libraries_
+         * @var Library[] $h5p_libraries
          */
 
         $h5p_libraries = Library::where([
             "runnable" => true
         ])->orderBy("title", "asc")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
+
+        return $h5p_libraries;
+    }
+
+
+    /**
+     * @return Library[]
+     */
+    public function getAddonsLibraries()
+    {
+        /**
+         * @var Library[] $h5p_libraries
+         */
+
+        $h5p_libraries = Library::where([
+            "add_to" => null
+        ], "IS NOT")->orderBy("major_version", "asc")->orderBy("minor_version", "asc")->get();
 
         return $h5p_libraries;
     }

@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Content\Editor;
 
 use H5PCore;
 use H5peditor;
-use H5PEditorEndpoints;
 use ilFileDelivery;
 use ilH5PPlugin;
 use ilLinkButton;
@@ -151,7 +150,7 @@ class ShowEditor
 
         /*$h5p_tpl->setCurrentBlock("errorBlock");
         $h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
-        $h5p_tpl->setVariable("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
+        $h5p_tpl->setVariableEscaped("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
 
         return self::output()->getHTML($h5p_tpl);
     }
@@ -251,31 +250,35 @@ class ShowEditor
 
     /**
      * @param ImportContentFormGUI $form
-     * @param bool                 $message
      *
-     * @return Content
+     * @return Content|null
      */
-    public function importContent(ImportContentFormGUI $form, $message = true)
+    public function importContent(ImportContentFormGUI $form)
     {
         $title = pathinfo($form->getInput("xhfp_content")["name"], PATHINFO_FILENAME);
         $file_path = $form->getInput("xhfp_content")["tmp_name"];
 
-        ob_start(); // prevent output from editor
+        self::h5p()->contents()->editor()->storageFramework()->saveFileTemporarily($file_path, true);
 
-        self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+        if (!self::h5p()->contents()->editor()->validatorCore()->isValidPackage()) {
+            return null;
+        }
 
-        $result = ob_get_clean();
+        self::h5p()->contents()->editor()->storageCore()->savePackage([
+            "title" => $title
+        ]);
 
-        ob_end_clean();
+        self::h5p()->contents()->editor()->storageFramework()->removeTemporarilySavedFiles(self::h5p()->contents()->framework()->getUploadedH5pFolderPath());
 
-        $data = json_decode($result)->data;
+        $h5p_content = self::h5p()->contents()->getContentById(self::h5p()->contents()->editor()->storageCore()->contentId);
 
-        $library = self::h5p()->libraries()->getLibraryByVersion($data->h5p->mainLibrary);
-        $library = $library->getName() . "-" . $library->getMajorVersion() . "." . $library->getMinorVersion();
+        if ($h5p_content === null) {
+            return null;
+        }
 
-        $params = json_encode(["params" => $data->content]);
+        ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [$h5p_content->getTitle()]), true);
 
-        return $this->createContent($title, $library, $params, null, $message);
+        return $h5p_content;
     }
 
 

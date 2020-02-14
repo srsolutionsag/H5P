@@ -50,7 +50,7 @@ class HubTableGUI extends TableGUI
     {
         switch ($column) {
             default:
-                $column = $row[$column];
+                $column = htmlspecialchars($row[$column]);
                 break;
         }
 
@@ -179,35 +179,35 @@ class HubTableGUI extends TableGUI
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library", null);
 
         if ($row["icon"] !== "") {
-            $this->tpl->setVariable("ICON", $row["icon"]);
+            $this->tpl->setVariableEscaped("ICON", $row["icon"]);
         } else {
-            $this->tpl->setVariable("ICON", self::plugin()->directory() . "/templates/images/h5p_placeholder.svg");
+            $this->tpl->setVariableEscaped("ICON", self::plugin()->directory() . "/templates/images/h5p_placeholder.svg");
         }
 
-        $this->tpl->setVariable("LIBRARY", $row["title"]);
+        $this->tpl->setVariableEscaped("LIBRARY", $row["title"]);
 
         if (isset($row["latest_version"])) {
-            $this->tpl->setVariable("LATEST_VERSION", $row["latest_version"]);
+            $this->tpl->setVariableEscaped("LATEST_VERSION", $row["latest_version"]);
         } else {
             // Library is not available on the hub
-            $this->tpl->setVariable("LATEST_VERSION", self::plugin()->translate("not_available"));
+            $this->tpl->setVariableEscaped("LATEST_VERSION", self::plugin()->translate("not_available"));
         }
 
         $actions = [];
 
         switch ($row["status"]) {
             case ShowHub::STATUS_INSTALLED:
-                $this->tpl->setVariable("STATUS", self::plugin()->translate("installed"));
+                $this->tpl->setVariableEscaped("STATUS", self::plugin()->translate("installed"));
 
-                $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
+                $this->tpl->setVariableEscaped("INSTALLED_VERSION", $row["installed_version"]);
 
                 $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), $delete_link);
                 break;
 
             case ShowHub::STATUS_UPGRADE_AVAILABLE:
-                $this->tpl->setVariable("STATUS", self::plugin()->translate("upgrade_available"));
+                $this->tpl->setVariableEscaped("STATUS", self::plugin()->translate("upgrade_available"));
 
-                $this->tpl->setVariable("INSTALLED_VERSION", $row["installed_version"]);
+                $this->tpl->setVariableEscaped("INSTALLED_VERSION", $row["installed_version"]);
 
                 $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("upgrade"), $install_link);
 
@@ -215,9 +215,9 @@ class HubTableGUI extends TableGUI
                 break;
 
             case ShowHub::STATUS_NOT_INSTALLED:
-                $this->tpl->setVariable("STATUS", self::plugin()->translate("not_installed"));
+                $this->tpl->setVariableEscaped("STATUS", self::plugin()->translate("not_installed"));
 
-                $this->tpl->setVariable("INSTALLED_VERSION", "-");
+                $this->tpl->setVariableEscaped("INSTALLED_VERSION", "-");
 
                 $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("install"), $install_link);
                 break;
@@ -226,11 +226,11 @@ class HubTableGUI extends TableGUI
                 break;
         }
 
-        $this->tpl->setVariable("RUNNABLE", self::plugin()->translate($row["runnable"] ? "yes" : "no"));
+        $this->tpl->setVariableEscaped("RUNNABLE", self::plugin()->translate($row["runnable"] ? "yes" : "no"));
 
-        $this->tpl->setVariable("CONTENTS", ($row["contents_count"] != 0 ? $row["contents_count"] : ""));
-        $this->tpl->setVariable("USAGE_CONTENTS", ($row["usage_contents"] != 0 ? $row["usage_contents"] : ""));
-        $this->tpl->setVariable("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
+        $this->tpl->setVariableEscaped("CONTENTS", ($row["contents_count"] != 0 ? $row["contents_count"] : ""));
+        $this->tpl->setVariableEscaped("USAGE_CONTENTS", ($row["usage_contents"] != 0 ? $row["usage_contents"] : ""));
+        $this->tpl->setVariableEscaped("USAGE_LIBRARIES", ($row["usage_libraries"] != 0 ? $row["usage_libraries"] : ""));
 
         $this->tpl->setVariable("DETAILS_LINK", $details_link);
         $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("details"), $details_link);

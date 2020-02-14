@@ -7,10 +7,10 @@ use ilExcel;
 use ilFormPropertyGUI;
 use ilHtmlToPdfTransformerFactory;
 use ilTable2GUI;
-use ilTemplate;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\Exception\TableGUIException;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -50,6 +50,10 @@ abstract class TableGUI extends ilTable2GUI
      * @var ilFormPropertyGUI[]
      */
     private $filter_cache = [];
+    /**
+     * @var Template
+     */
+    protected $tpl;
 
 
     /**
@@ -60,6 +64,9 @@ abstract class TableGUI extends ilTable2GUI
      */
     public function __construct($parent, /*string*/ $parent_cmd)
     {
+        $this->parent_obj = $parent;
+        $this->parent_cmd = $parent_cmd;
+
         $this->initId();
 
         parent::__construct($parent, $parent_cmd);
@@ -169,6 +176,8 @@ abstract class TableGUI extends ilTable2GUI
         if (!(strpos($this->parent_cmd, "applyFilter") === 0
             || strpos($this->parent_cmd, "resetFilter") === 0)
         ) {
+            $this->tpl = new Template($this->tpl->lastTemplatefile, $this->tpl->removeUnknownVariables, $this->tpl->removeEmptyBlocks);
+
             $this->initAction();
 
             $this->initTitle();
@@ -369,7 +378,7 @@ abstract class TableGUI extends ilTable2GUI
 
         $css = file_get_contents(__DIR__ . "/css/table_pdf_export.css");
 
-        $tpl = new ilTemplate(__DIR__ . "/templates/table_pdf_export.html", true, true);
+        $tpl = new Template(__DIR__ . "/templates/table_pdf_export.html");
 
         $tpl->setVariable("CSS", $css);
 
@@ -382,7 +391,7 @@ abstract class TableGUI extends ilTable2GUI
 
         $tpl->setCurrentBlock("body");
         foreach ($this->row_data as $row) {
-            $tpl_row = new ilTemplate(__DIR__ . "/templates/table_pdf_export_row.html", true, true);
+            $tpl_row = new Template(__DIR__ . "/templates/table_pdf_export_row.html");
 
             $tpl_row->setCurrentBlock("row");
 

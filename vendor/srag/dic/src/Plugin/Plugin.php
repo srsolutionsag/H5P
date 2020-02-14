@@ -5,7 +5,7 @@ namespace srag\DIC\H5P\Plugin;
 use Exception;
 use ilLanguage;
 use ilPlugin;
-use ilTemplate;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 use srag\DIC\H5P\Exception\DICException;
 
@@ -53,12 +53,12 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function template($template, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true)
+    public function template($template_file, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true)
     {
         if ($plugin) {
-            return $this->plugin_object->getTemplate($template, $remove_unknown_variables, $remove_empty_blocks);
+            return new Template($this->directory() . "/templates/" . $template_file, $remove_unknown_variables, $remove_empty_blocks);
         } else {
-            return new ilTemplate($template, $remove_unknown_variables, $remove_empty_blocks);
+            return new Template($template_file, $remove_unknown_variables, $remove_empty_blocks);
         }
     }
 
@@ -114,7 +114,11 @@ final class Plugin implements PluginInterface
             }
         }
 
-        return strval($txt);
+        $txt = strval($txt);
+
+        $txt = str_replace("\\n", "\n", $txt);
+
+        return $txt;
     }
 
 

@@ -305,6 +305,8 @@ interface DICInterface
 
     /**
      * @return ilTemplate|ilGlobalTemplateInterface
+     *
+     * @deprecated Please use `self::dic()->ui()->mainTemplate()`
      */
     public function mainTemplate();/*: ilGlobalTemplateInterface*/
 

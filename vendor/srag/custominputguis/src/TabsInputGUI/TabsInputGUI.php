@@ -7,6 +7,7 @@ use ilTableFilterItem;
 use ilTemplate;
 use ilToolbarItem;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 
 /**
@@ -23,6 +24,28 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     const SHOW_INPUT_LABEL_NONE = 1;
     const SHOW_INPUT_LABEL_AUTO = 2;
     const SHOW_INPUT_LABEL_ALWAYS = 3;
+    /**
+     * @var bool
+     */
+    protected static $init = false;
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/tabs_input_gui.css");
+        }
+    }
+
+
     /**
      * @var int
      */
@@ -46,6 +69,8 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     public function __construct($title = "", $post_var = "")
     {
         parent::__construct($title, $post_var);
+
+        self::init();
     }
 
 
@@ -59,14 +84,14 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
 
 
     /**
-     * @return bool
+     * @inheritDoc
      */
     public function checkInput()
     {
         $ok = true;
 
         foreach ($this->tabs as $tab) {
-            foreach ($tab->getInputs($this->getPostVar(), $this->value) as $org_post_var => $input) {
+            foreach ($tab->getInputs($this->getPostVar(), $this->getValue()) as $org_post_var => $input) {
                 $b_value = $_POST[$input->getPostVar()];
 
                 $_POST[$input->getPostVar()] = $_POST[$this->getPostVar()][$tab->getPostVar()][$org_post_var];
@@ -156,14 +181,10 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
      */
     public function render()
     {
-        $dir = __DIR__;
-        $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-        self::dic()->mainTemplate()->addCss($dir . "/css/tabs_input_gui.css");
+        $tpl = new Template(__DIR__ . "/templates/tabs_input_gui.html");
 
-        $tpl = new ilTemplate(__DIR__ . "/templates/tabs_input_gui.html", true, true);
-
-        foreach ($this->tabs as $tab) {
-            $inputs = $tab->getInputs($this->getPostVar(), $this->value);
+        foreach ($this->getTabs() as $tab) {
+            $inputs = $tab->getInputs($this->getPostVar(), $this->getValue());
 
             $tpl->setCurrentBlock("tab");
 
@@ -171,36 +192,36 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
             $tab_id = "tabsinputgui_tab_" . $post_var;
             $tab_content_id = "tabsinputgui_tab_content_" . $post_var;
 
-            $tpl->setVariable("TAB_ID", $tab_id);
-            $tpl->setVariable("TAB_CONTENT_ID", $tab_content_id);
+            $tpl->setVariableEscaped("TAB_ID", $tab_id);
+            $tpl->setVariableEscaped("TAB_CONTENT_ID", $tab_content_id);
 
-            $tpl->setVariable("TITLE", $tab->getTitle());
+            $tpl->setVariableEscaped("TITLE", $tab->getTitle());
 
             if ($tab->isActive()) {
-                $tpl->setVariable("ACTIVE", " active");
+                $tpl->setVariableEscaped("ACTIVE", " active");
             }
 
             $tpl->parseCurrentBlock();
 
             $tpl->setCurrentBlock("tab_content");
 
-            if ($this->show_input_label === self::SHOW_INPUT_LABEL_AUTO) {
-                $tpl->setVariable("SHOW_INPUT_LABEL", (count($inputs) > 1 ? self::SHOW_INPUT_LABEL_ALWAYS : self::SHOW_INPUT_LABEL_NONE));
+            if ($this->getShowInputLabel() === self::SHOW_INPUT_LABEL_AUTO) {
+                $tpl->setVariableEscaped("SHOW_INPUT_LABEL", (count($inputs) > 1 ? self::SHOW_INPUT_LABEL_ALWAYS : self::SHOW_INPUT_LABEL_NONE));
             } else {
-                $tpl->setVariable("SHOW_INPUT_LABEL", $this->show_input_label);
+                $tpl->setVariableEscaped("SHOW_INPUT_LABEL", $this->getShowInputLabel());
             }
 
             if ($tab->isActive()) {
-                $tpl->setVariable("ACTIVE", " active");
+                $tpl->setVariableEscaped("ACTIVE", " active");
             }
 
-            $tpl->setVariable("TAB_ID", $tab_id);
-            $tpl->setVariable("TAB_CONTENT_ID", $tab_content_id);
+            $tpl->setVariableEscaped("TAB_ID", $tab_id);
+            $tpl->setVariableEscaped("TAB_CONTENT_ID", $tab_content_id);
 
             if (!empty($tab->getInfo())) {
-                $info_tpl = new ilTemplate(__DIR__ . "/../PropertyFormGUI/Items/templates/input_gui_input_info.html", true, true);
+                $info_tpl = new Template(__DIR__ . "/../PropertyFormGUI/Items/templates/input_gui_input_info.html");
 
-                $info_tpl->setVariable("INFO", $tab->getInfo());
+                $info_tpl->setVariableEscaped("INFO", $tab->getInfo());
 
                 $tpl->setVariable("INFO", self::output()->getHTML($info_tpl));
             }

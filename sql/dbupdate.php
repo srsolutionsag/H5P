@@ -16,5 +16,9 @@
 ?>
 <#5>
 <?php
+//
+?>
+<#6>
+<?php
 \srag\Plugins\H5P\Repository::getInstance()->installTables();
 ?>

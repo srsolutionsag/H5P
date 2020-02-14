@@ -7,14 +7,12 @@ use ilUtil;
 /**
  * Class MultiSelectSearchInput2GUI
  *
- * TODO: Merge this class with MultiSelectSearchInput2GUI - almost identical
+ * @package    srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI
  *
- * @package srag\CustomInputGUIs\H5P\MultiSelectSearchInputGUI
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     Oskar Truffer <ot@studer-raimann.ch>
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Oskar Truffer <ot@studer-raimann.ch>
- *
- * @deprecated
+ * @deprecated Please switch to `MultiSelectSearchNewInputGUI`
  */
 class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 {
@@ -87,6 +85,7 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
         $tpl->setVariable('HEIGHT', $this->getHeight());
         $tpl->setVariable('PLACEHOLDER', $this->getPlaceholder());
         $tpl->setVariable('MINIMUM_INPUT_LENGTH', $this->getMinimumInputLength());
+        $tpl->setVariable("LIMIT_COUNT", $this->getLimitCount());
         $tpl->setVariable('CONTAINER_TYPE', $this->getContainerType());
         $tpl->setVariable('Class', $this->getCssClass());
 

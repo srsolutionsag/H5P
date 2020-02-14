@@ -159,12 +159,12 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     protected function show(/*string*/ $html)/*: void*/
     {
         if (!self::dic()->ctrl()->isAsynch()) {
-            self::dic()->mainTemplate()->setTitle($this->object->getTitle());
+            self::dic()->ui()->mainTemplate()->setTitle($this->object->getTitle());
 
-            self::dic()->mainTemplate()->setDescription($this->object->getDescription());
+            self::dic()->ui()->mainTemplate()->setDescription($this->object->getDescription());
 
             if (!$this->object->isOnline()) {
-                self::dic()->mainTemplate()->setAlertProperties([
+                self::dic()->ui()->mainTemplate()->setAlertProperties([
                     [
                         "alert"    => true,
                         "property" => self::plugin()->translate("status"),
@@ -676,7 +676,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        self::h5p()->contents()->editor()->show()->importContent($form);
+        if (!self::h5p()->contents()->editor()->show()->importContent($form)) {
+            $this->show($form);
+
+            return;
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -716,7 +720,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             self::dic()->tabs()->addTab(self::TAB_PERMISSIONS, self::plugin()->translate(self::TAB_PERMISSIONS, "", [], false), self::dic()->ctrl()
                 ->getLinkTargetByClass([
                     self::class,
-                    ilPermissionGUI::class,
+                    ilPermissionGUI::class
                 ], self::CMD_PERMISSIONS));
         }
 

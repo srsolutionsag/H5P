@@ -3,8 +3,8 @@
 namespace srag\CustomInputGUIs\H5P\TextInputGUI;
 
 use iljQueryUtil;
-use ilTemplate;
 use ilUtil;
+use srag\CustomInputGUIs\H5P\Template\Template;
 
 /**
  * Class TextInputGUIWithModernAutoComplete
@@ -25,7 +25,7 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
     /**
      *
      */
-    public function initJS()/*: void*/
+    public static function init()/*: void*/
     {
         if (self::$init === false) {
             self::$init = true;
@@ -36,13 +36,27 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
             iljQueryUtil::initjQuery();
             iljQueryUtil::initjQueryUI();
 
-            self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/babel-polyfill/dist/polyfill.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/babel-polyfill/dist/polyfill.min.js");
 
-            self::dic()->mainTemplate()->addJavaScript($dir . "/js/text_input_gui_with_modern_auto_complete.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/text_input_gui_with_modern_auto_complete.min.js");
 
-            self::dic()->mainTemplate()->addOnLoadCode("il.textinput_more_txt = " . json_encode(self::dic()->language()->txt('autocomplete_more')
+            self::dic()->ui()->mainTemplate()->addOnLoadCode("il.textinput_more_txt = " . json_encode(self::dic()->language()->txt('autocomplete_more')
                     . ";") . ";");
         }
+    }
+
+
+    /**
+     * TextInputGUIWithModernAutoComplete constructor
+     *
+     * @param string $a_title
+     * @param string $a_postvar
+     */
+    public function __construct($a_title = "", $a_postvar = "")
+    {
+        parent::__construct($a_title, $a_postvar);
+
+        self::init();
     }
 
 
@@ -53,9 +67,7 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
      */
     public function render($a_mode = "")
     {
-        $this->initJS();
-
-        $tpl = new ilTemplate(__DIR__ . "/templates/text_input_gui_with_modern_auto_complete.html", true, true);
+        $tpl = new Template(__DIR__ . "/templates/text_input_gui_with_modern_auto_complete.html", true, true);
         if (strlen($this->getValue())) {
             $tpl->setCurrentBlock("prop_text_propval");
             $tpl->setVariable("PROPERTY_VALUE", ilUtil::prepareFormOutput($this->getValue()));

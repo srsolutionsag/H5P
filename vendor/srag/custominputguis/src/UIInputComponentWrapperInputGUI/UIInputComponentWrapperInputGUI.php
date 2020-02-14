@@ -9,6 +9,7 @@ use ILIAS\UI\Implementation\Component\Input\Container\Form\PostDataFromServerReq
 use ilTableFilterItem;
 use ilTemplate;
 use ilToolbarItem;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
 use Throwable;
 
@@ -23,6 +24,28 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
 {
 
     use DICTrait;
+    /**
+     * @var bool
+     */
+    protected static $init = false;
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/UIInputComponentWrapperInputGUI.css");
+        }
+    }
+
+
     /**
      * @var Input
      */
@@ -40,7 +63,10 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
         $this->input = $input;
 
         $this->setPostVar($post_var);
+
         //parent::__construct($title, $post_var);
+
+        self::init();
     }
 
 
@@ -173,12 +199,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      */
     public function render()
     {
-        $dir = __DIR__;
-        $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-        self::dic()->mainTemplate()->addCss($dir . "/css/UIInputComponentWrapperInputGUI.css");
-
-        $tpl = new ilTemplate(__DIR__ . "/templates/input.html", true, true);
+        $tpl = new Template(__DIR__ . "/templates/input.html");
 
         $tpl->setVariable("INPUT", self::output()->getHTML($this->input));
 

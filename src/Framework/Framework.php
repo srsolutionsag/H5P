@@ -641,6 +641,12 @@ class Framework implements H5PFrameworkInterface
             $h5p_library->setHasIcon(false);
         }
 
+        if (isset($library_data["addTo"])) {
+            $h5p_library->setAddTo(json_encode($library_data["addTo"]));
+        } else {
+            $h5p_library->setAddTo(null);
+        }
+
         self::h5p()->libraries()->storeLibrary($h5p_library);
 
         if ($new) {
@@ -1568,7 +1574,26 @@ class Framework implements H5PFrameworkInterface
      */
     public function loadAddons()
     {
-        return [];
+        $h5p_libraries = self::h5p()->libraries()->getAddonsLibraries();
+
+        $libraries = [];
+
+        foreach ($h5p_libraries as $h5p_library) {
+            $library = [
+                "libraryId"    => $h5p_library->getLibraryId(),
+                "machineName"  => $h5p_library->getName(),
+                "title"        => $h5p_library->getTitle(),
+                "majorVersion" => $h5p_library->getMajorVersion(),
+                "minorVersion" => $h5p_library->getMinorVersion(),
+                "addTo"        => $h5p_library->getAddTo(),
+                "preloadedJs"  => $h5p_library->getPreloadedJs(),
+                "preloadedCss" => $h5p_library->getPreloadedCss()
+            ];
+
+            $libraries[] = $library;
+        }
+
+        return $libraries;
     }
 
 

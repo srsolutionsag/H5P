@@ -54,7 +54,7 @@ class ContentsTableGUI extends TableGUI
     {
         switch ($column) {
             default:
-                $column = $row[$column];
+                $column = htmlspecialchars($row[$column]);
                 break;
         }
 
@@ -129,8 +129,8 @@ class ContentsTableGUI extends TableGUI
     {
         Waiter::init(Waiter::TYPE_WAITER);
 
-        self::dic()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
-        self::dic()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
+        self::dic()->ui()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
+        self::dic()->ui()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
             . '");');
     }
 
@@ -156,17 +156,17 @@ class ContentsTableGUI extends TableGUI
 
         if (!$this->hasResults()) {
             $this->tpl->setCurrentBlock("upDownBlock");
-            $this->tpl->setVariable("IMG_ARROW_UP", ilUtil::getImagePath("arrow_up.svg"));
-            $this->tpl->setVariable("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
+            $this->tpl->setVariableEscaped("IMG_ARROW_UP", ilUtil::getImagePath("arrow_up.svg"));
+            $this->tpl->setVariableEscaped("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
         }
 
-        $this->tpl->setVariable("ID", $row["content_id"]);
+        $this->tpl->setVariableEscaped("ID", $row["content_id"]);
 
-        $this->tpl->setVariable("TITLE", $row["title"]);
+        $this->tpl->setVariableEscaped("TITLE", $row["title"]);
 
-        $this->tpl->setVariable("LIBRARY", ($h5p_library !== null ? $h5p_library->getTitle() : ""));
+        $this->tpl->setVariableEscaped("LIBRARY", ($h5p_library !== null ? $h5p_library->getTitle() : ""));
 
-        $this->tpl->setVariable("RESULTS", count($h5p_results));
+        $this->tpl->setVariableEscaped("RESULTS", count($h5p_results));
 
         $actions = [];
 

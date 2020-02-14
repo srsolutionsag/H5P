@@ -217,7 +217,7 @@ class ShowHub
 
         $h5p_tpl->setVariable("H5P_HUB", $table);
 
-        $h5p_tpl->setVariable("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [$hub_last_refresh]));
+        $h5p_tpl->setVariableEscaped("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [$hub_last_refresh]));
 
         $h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
 

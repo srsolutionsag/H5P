@@ -160,10 +160,10 @@ class ShowContent
         if ($text === null) {
             $h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContent($h5p_content, false));
         } else {
-            $h5p_tpl->setVariable("H5P_CONTENT", $text);
+            $h5p_tpl->setVariableEscaped("H5P_CONTENT", $text);
         }
 
-        $h5p_tpl->setVariable("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [($index + 1), $count]) . " - "
+        $h5p_tpl->setVariableEscaped("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [($index + 1), $count]) . " - "
             . $h5p_content->getTitle());
 
         return self::output()->getHTML([$h5p_tpl, self::dic()->toolbar()]);
@@ -204,7 +204,7 @@ class ShowContent
     public function outputHeader()
     {
         foreach ($this->css_files as $css_file) {
-            self::dic()->mainTemplate()->addCss($css_file);
+            self::dic()->ui()->mainTemplate()->addCss($css_file);
         }
 
         foreach ($this->js_files as $js_file) {
@@ -212,12 +212,12 @@ class ShowContent
                 if (!isset($this->js_files_output[$js_file])) {
                     $this->js_files_output[$js_file] = true;
 
-                    self::dic()->mainTemplate()->setCurrentBlock("js_file");
-                    self::dic()->mainTemplate()->setVariable("JS_FILE", $js_file);
-                    self::dic()->mainTemplate()->parseCurrentBlock();
+                    self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
+                    self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
+                    self::dic()->ui()->mainTemplate()->parseCurrentBlock();
                 }
             } else {
-                self::dic()->mainTemplate()->addJavaScript($js_file);
+                self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
             }
         }
     }
@@ -310,17 +310,17 @@ class ShowContent
     {
         $content_tpl = self::plugin()->template("H5PContent.min.js");
         $content_tpl->setVariable("H5P_CONTENT", json_encode($content));
-        $content_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+        $content_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
         $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
 
         $h5p_tpl = self::plugin()->template("H5PContent.html");
 
-        $h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
 
         if ($title !== null) {
             $h5p_tpl->setCurrentBlock("titleBlock");
 
-            $h5p_tpl->setVariable("H5P_TITLE", $title);
+            $h5p_tpl->setVariableEscaped("H5P_TITLE", $title);
         }
 
         switch ($embed_type) {
@@ -336,7 +336,7 @@ class ShowContent
                 break;
         }
 
-        $h5p_tpl->setVariable("H5P_CONTENT_ID", $content_id);
+        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
 
         $h5p_tpl->parseCurrentBlock();
 

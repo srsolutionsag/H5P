@@ -3,8 +3,8 @@
 namespace srag\DIC\H5P\Plugin;
 
 use ilPlugin;
-use ilTemplate;
 use ilTemplateException;
+use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\Exception\DICException;
 
 /**
@@ -33,7 +33,7 @@ interface PluginInterface
      * @param bool   $remove_empty_blocks      Should remove empty blocks?
      * @param bool   $plugin                   Plugin template or ILIAS core template?
      *
-     * @return ilTemplate ilTemplate instance
+     * @return Template ilTemplate instance
      *
      * @throws ilTemplateException
      */

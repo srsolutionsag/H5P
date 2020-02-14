@@ -100,21 +100,21 @@ final class Output implements OutputInterface
         } else {
             if ($main_template) {
                 if (self::version()->is60()) {
-                    self::dic()->mainTemplate()->loadStandardTemplate();
+                    self::dic()->ui()->mainTemplate()->loadStandardTemplate();
                 } else {
-                    self::dic()->mainTemplate()->getStandardTemplate();
+                    self::dic()->ui()->mainTemplate()->getStandardTemplate();
                 }
             }
 
-            self::dic()->mainTemplate()->setLocator();
+            self::dic()->ui()->mainTemplate()->setLocator();
 
-            self::dic()->mainTemplate()->setContent($html);
+            self::dic()->ui()->mainTemplate()->setContent($html);
 
             if ($show) {
                 if (self::version()->is60()) {
-                    self::dic()->mainTemplate()->printToStdout();
+                    self::dic()->ui()->mainTemplate()->printToStdout();
                 } else {
-                    self::dic()->mainTemplate()->show();
+                    self::dic()->ui()->mainTemplate()->show();
                 }
             }
         }

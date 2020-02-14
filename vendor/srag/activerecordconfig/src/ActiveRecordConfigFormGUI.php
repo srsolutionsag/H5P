@@ -11,7 +11,7 @@ use srag\CustomInputGUIs\H5P\PropertyFormGUI\ConfigPropertyFormGUI;
  *
  * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @deprecated Please use PropertyFormGUI from instead
+ * @deprecated Please use PropertyFormGUI from CustomInputGUIs instead
  */
 abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
 {
