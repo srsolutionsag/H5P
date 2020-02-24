@@ -19,7 +19,7 @@ final class Factory extends AbstractFactory
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 

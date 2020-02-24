@@ -31,7 +31,7 @@ class ShowHub
     const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
     const STATUS_NOT_INSTALLED = "not_installed";
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 

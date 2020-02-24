@@ -42,7 +42,7 @@ class ShowContent
      */
     protected $js_files_output = [];
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 
