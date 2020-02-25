@@ -31,7 +31,7 @@ class ShowHub
     const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
     const STATUS_NOT_INSTALLED = "not_installed";
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 
@@ -270,15 +270,23 @@ class ShowHub
 
     /**
      * @param UploadLibraryFormGUI $form
+     *
+     * @return bool
      */
     public function uploadLibrary(UploadLibraryFormGUI $form)
     {
         $file_path = $form->getInput("xhfp_library")["tmp_name"];
 
-        ob_start(); // prevent output from editor
+        self::h5p()->contents()->editor()->storageFramework()->saveFileTemporarily($file_path, true);
 
-        self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, "", $file_path, null);
+        if (!self::h5p()->contents()->editor()->validatorCore()->isValidPackage(true)) {
+            return false;
+        }
 
-        ob_end_clean();
+        self::h5p()->contents()->editor()->storageCore()->savePackage(null, null, true);
+
+        self::h5p()->contents()->editor()->storageFramework()->removeTemporarilySavedFiles(self::h5p()->contents()->framework()->getUploadedH5pFolderPath());
+
+        return true;
     }
 }

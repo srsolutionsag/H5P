@@ -179,7 +179,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
             return;
         }
 
-        self::h5p()->hub()->show()->uploadLibrary($form);
+        if (!self::h5p()->hub()->show()->uploadLibrary($form)) {
+            self::output()->output(self::h5p()->hub()->factory()->newHubTableInstance($this));
+
+            return;
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }

@@ -24,7 +24,7 @@ final class Repository
     const DATA_FOLDER = "h5p";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 

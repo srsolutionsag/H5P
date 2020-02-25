@@ -35,7 +35,7 @@ final class Repository
      */
     const CSV_SEPARATOR = ", ";
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 

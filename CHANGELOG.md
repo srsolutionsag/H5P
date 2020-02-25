@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.5.3]
+- Fix install libraries
+
 ## [2.5.2]
 - Improve import content
 - Implement addons feature (For load MathDisplay/MathJax)
