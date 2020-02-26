@@ -139,7 +139,7 @@ class ShowContent
             $this->core_output = true;
 
             $core_tpl = self::plugin()->template("H5PCore.min.js");
-            $core_tpl->setVariable("H5P_CORE", json_encode($this->core));
+            $core_tpl->setVariableEscaped("H5P_CORE", base64_encode(json_encode($this->core)));
             $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($core_tpl));
         }
     }
@@ -309,7 +309,7 @@ class ShowContent
     protected function getH5PIntegration(array $content, $content_id, $title, $embed_type)
     {
         $content_tpl = self::plugin()->template("H5PContent.min.js");
-        $content_tpl->setVariable("H5P_CONTENT", json_encode($content));
+        $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
         $content_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
         $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
 

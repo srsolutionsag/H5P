@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.5.4]
+- Fix content rendering (curly brackets) due `ilTemplate` replaced/removed it (Occured in some MathJax formulas)
+
 ## [2.5.3]
 - Fix install libraries
 
