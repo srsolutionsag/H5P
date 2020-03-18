@@ -93,7 +93,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                     ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
                 }
 
-                H5PActionGUI::forward($this);
+                self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
                 break;
 
             default:
