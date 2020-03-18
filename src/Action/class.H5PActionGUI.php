@@ -70,7 +70,7 @@ class H5PActionGUI
      */
     public static function forward($a_gui_obj)
     {
-        self::dic()->ctrl()->setReturn($a_gui_obj, "");
+        //self::dic()->ctrl()->setReturn($a_gui_obj, "");
 
         self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
     }
