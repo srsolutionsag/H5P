@@ -56,7 +56,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
         switch (strtolower($next_class)) {
             case strtolower(H5PActionGUI::class):
-                H5PActionGUI::forward($this);
+                self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
                 break;
 
             default:

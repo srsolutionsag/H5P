@@ -205,7 +205,7 @@ final class Repository
             $content->setContentUserId(self::dic()->user()->getId());
 
             if ($content->getObjId() === null) {
-                $content->setObjId(self::dic()->objDataCache()->lookupObjId(filter_input(INPUT_GET, "ref_id")));
+                $content->setObjId(intval(self::dic()->ctrl()->getContextObjId()));
             }
 
             $content->setSort((count($this->getContentsByObject($content->getObjId())) + 1) * 10);

@@ -6,10 +6,11 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 
 use H5PCore;
 use H5PEditorEndpoints;
-use ilH5PConfigGUI;
 use ilH5PPlugin;
+use ilObject;
+use ilObjectFactory;
 use ilObjH5PAccess;
-use ilObjH5PGUI;
+use ilObjPortfolio;
 use ilUIPluginRouterGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -30,6 +31,7 @@ class H5PActionGUI
     use H5PTrait;
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_H5P_ACTION = "h5pAction";
+    const GET_PARAM_OBJ_ID = "obj_id";
     const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
     const H5P_ACTION_CONTENT_USER_DATA = "contentsUserData";
     const H5P_ACTION_FILES = "files";
@@ -40,58 +42,26 @@ class H5PActionGUI
     const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
     const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
     const H5P_ACTION_SET_FINISHED = "setFinished";
+    /**
+     * @var ilObject
+     */
+    protected $object;
 
 
     /**
      * @param string $action
-     * @param string $return_class
-     * @param string $return_cmd
      *
      * @return string
      */
-    public static function getUrl($action, $return_class = null, $return_cmd = "")
+    public static function getUrl(/*string*/ $action)/*:string*/
     {
+        self::dic()->ctrl()->setParameterByClass(self::class, self::GET_PARAM_OBJ_ID, self::dic()->ctrl()->getContextObjId());
+
         self::dic()->ctrl()->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
-        if (self::isPageComponent()) {
-            $url = self::dic()->ctrl()->getLinkTargetByClass([ilUIPluginRouterGUI::class, self::class], self::CMD_H5P_ACTION, "", true, false);
-        } else {
-            $url = self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_H5P_ACTION, "", true, false);
-        }
-
-        //$ctrl->clearParametersByClass(self::class);
+        $url = self::dic()->ctrl()->getLinkTargetByClass([ilUIPluginRouterGUI::class, self::class], self::CMD_H5P_ACTION, "", true, false);
 
         return $url;
-    }
-
-
-    /**
-     * @param $a_gui_obj
-     */
-    public static function forward($a_gui_obj)
-    {
-        self::dic()->ctrl()->setReturn($a_gui_obj, "");
-
-        self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
-    }
-
-
-    /**
-     * @return bool
-     */
-    protected static function isPageComponent()
-    {
-        $callHistory = self::dic()->ctrl()->getCallHistory();
-
-        foreach ($callHistory as $history) {
-            if (strtolower($history["class"]) === strtolower(ilH5PConfigGUI::class)
-                || strtolower($history["class"]) === strtolower(ilObjH5PGUI::class)
-            ) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 
@@ -107,8 +77,18 @@ class H5PActionGUI
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand()/*:void*/
     {
+        $obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_OBJ_ID));
+        if (!empty($ref_id = current(ilObject::_getAllReferences($obj_id)))) {
+            $this->object = ilObjectFactory::getInstanceByRefId($ref_id, false);
+        } else {
+            $this->object = ilObjectFactory::getInstanceByObjId($obj_id, false);
+        }
+        if (empty($this->object)) {
+            die();
+        }
+
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
         switch (strtolower($next_class)) {
@@ -118,7 +98,7 @@ class H5PActionGUI
                 switch ($cmd) {
                     case self::CMD_H5P_ACTION:
                         // Read commands
-                        if (!ilObjH5PAccess::hasReadAccess()) {
+                        if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasReadAccess($this->object->getRefId())) {
                             return;
                         }
 
@@ -138,7 +118,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function h5pAction()
+    protected function h5pAction()/*:void*/
     {
         $action = filter_input(INPUT_GET, H5PActionGUI::CMD_H5P_ACTION);
 
@@ -151,7 +131,7 @@ class H5PActionGUI
             case self::H5P_ACTION_CONTENT_USER_DATA:
             case self::H5P_ACTION_SET_FINISHED:
                 // Read actions
-                if (!ilObjH5PAccess::hasReadAccess()) {
+                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasReadAccess($this->object->getRefId())) {
                     return;
                 }
 
@@ -167,7 +147,7 @@ class H5PActionGUI
             case self::H5P_ACTION_REBUILD_CACHE:
             case self::H5P_ACTION_RESTRICT_LIBRARY:
                 // Write actions
-                if (!ilObjH5PAccess::hasWriteAccess()) {
+                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasWriteAccess($this->object->getRefId())) {
                     return;
                 }
 
@@ -187,7 +167,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function contentTypeCache()
+    protected function contentTypeCache()/*:void*/
     {
         $token = "";
 
@@ -198,7 +178,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function contentsUserData()
+    protected function contentsUserData()/*:void*/
     {
         $content_id = filter_input(INPUT_GET, "content_id");
         $data_id = filter_input(INPUT_GET, "data_type");
@@ -216,7 +196,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function files()
+    protected function files()/*:void*/
     {
         $token = "";
 
@@ -229,7 +209,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function getTutorial()
+    protected function getTutorial()/*:void*/
     {
         $library = filter_input(INPUT_GET, "library");
 
@@ -258,7 +238,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraries()
+    protected function libraries()/*:void*/
     {
         $name = filter_input(INPUT_GET, "machineName", FILTER_SANITIZE_STRING);
         $major_version = filter_input(INPUT_GET, "majorVersion", FILTER_SANITIZE_NUMBER_INT);
@@ -267,7 +247,7 @@ class H5PActionGUI
         if (!empty($name)) {
             self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
                 ->getLanguage(), "", self::h5p()->objectSettings()->getH5PFolder(), "");
-            //new H5P_Event('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
+            //self::h5p()->events()->factory()->newEventFrameworkInstance('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
         } else {
             self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::LIBRARIES);
         }
@@ -277,7 +257,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraryInstall()
+    protected function libraryInstall()/*:void*/
     {
         $token = "";
 
@@ -290,7 +270,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraryUpload()
+    protected function libraryUpload()/*:void*/
     {
         $token = "";
 
@@ -304,7 +284,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function rebuildCache()
+    protected function rebuildCache()/*:void*/
     {
         $start = microtime(true);
 
@@ -324,14 +304,14 @@ class H5PActionGUI
             }
         }
 
-        self::output()->outputJSON((count($h5P_contents) - $done), false);
+        self::output()->outputJSON((count($h5P_contents) - $done));
     }
 
 
     /**
      *
      */
-    protected function restrictLibrary()
+    protected function restrictLibrary()/*:void*/
     {
         $restricted = filter_input(INPUT_GET, "restrict");
 
@@ -354,7 +334,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function setFinished()
+    protected function setFinished()/*:void*/
     {
         $content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
         $score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);
