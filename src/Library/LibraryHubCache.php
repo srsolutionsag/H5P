@@ -20,7 +20,7 @@ class LibraryHubCache extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
-    const TABLE_NAME = "rep_robj_xhfp_lib_hub";
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
