@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Content;
 
 use H5PCore;
 use ilH5PPlugin;
+use ilObjLearningModuleGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -20,6 +21,7 @@ class ShowContent
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var array|null
@@ -209,12 +211,18 @@ class ShowContent
 
         foreach ($this->js_files as $js_file) {
             if (strpos($js_file, "data:application/javascript;base64,") === 0) {
-                if (!isset($this->js_files_output[$js_file])) {
-                    $this->js_files_output[$js_file] = true;
+                // Cause main template skip "not real" files, so add it direct to main template placeholder
+                if (self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningModuleGUI::class)) {
+                    if (!isset($this->js_files_output[$js_file])) {
+                        $this->js_files_output[$js_file] = true;
 
-                    self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
-                    self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
-                    self::dic()->ui()->mainTemplate()->parseCurrentBlock();
+                        self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
+                        self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
+                        self::dic()->ui()->mainTemplate()->parseCurrentBlock();
+                    }
+                } else {
+                    // But content pages use an own kiosk template and merge files from main template and add it to its JS_FILE placeholder without check, but JS_FILE placeholder from main template is not used - but on this case add as regular files will work, because not check
+                    self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
                 }
             } else {
                 self::dic()->ui()->mainTemplate()->addJavaScript($js_file);

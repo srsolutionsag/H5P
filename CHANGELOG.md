@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Fix working in content pages
+
 ## [2.5.5]
 - Fix working in portfolio pages
 
