@@ -3,6 +3,7 @@ obj_xhfp_duplicate#:#Copy H5P
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#Copy H5P's
 rbac_create_xhfp#:#Create H5P
+rep_robj_xhfp_obj_xhfp#:#H5P
 xhfp_add#:#Add
 xhfp_delete#:#Delete
 xhfp_edit_permission#:#Edit permission

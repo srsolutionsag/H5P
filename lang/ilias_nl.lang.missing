@@ -3,6 +3,7 @@ obj_xhfp_duplicate#:#MISSING obj_xhfp_duplicate
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#MISSING objs_xhfp_duplicate
 rbac_create_xhfp#:#MISSING rbac_create_xhfp
+rep_robj_xhfp_obj_xhfp#:#H5P
 xhfp_add#:#MISSING xhfp_add
 xhfp_delete#:#MISSING xhfp_delete
 xhfp_edit_permission#:#MISSING xhfp_edit_permission

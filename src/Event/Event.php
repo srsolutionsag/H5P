@@ -20,7 +20,7 @@ class Event extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
-    const TABLE_NAME = "rep_robj_xhfp_ev";
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_ev";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 

@@ -184,7 +184,7 @@ class EditContentFormGUI extends PropertyFormGUI
      */
     protected function initId()/*: void*/
     {
-        $this->setId("xhfp_edit_form");
+        $this->setId(ilH5PPlugin::PLUGIN_ID . "_edit_form");
     }
 
 

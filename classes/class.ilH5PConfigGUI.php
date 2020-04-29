@@ -91,9 +91,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function setTabs()/*: void*/
     {
-        self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("hub"), self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_HUB));
+        self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
 
-        self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("settings"), self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_EDIT_SETTINGS));
+        self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("settings"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_SETTINGS));
 
         self::dic()->locator()->addItem(ilH5PPlugin::PLUGIN_NAME, self::dic()->ctrl()->getLinkTarget($this, self::CMD_CONFIGURE));
     }
