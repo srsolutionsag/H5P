@@ -4,7 +4,7 @@ namespace srag\Plugins\H5P\Content;
 
 use H5PCore;
 use ilH5PPlugin;
-use ilObjLearningModuleGUI;
+use ilObjLearningSequenceLearnerGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -212,7 +212,7 @@ class ShowContent
         foreach ($this->js_files as $js_file) {
             if (strpos($js_file, "data:application/javascript;base64,") === 0) {
                 // Cause main template skip "not real" files, so add it direct to main template placeholder
-                if (self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningModuleGUI::class)) {
+                if (self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
                     if (!isset($this->js_files_output[$js_file])) {
                         $this->js_files_output[$js_file] = true;
 
