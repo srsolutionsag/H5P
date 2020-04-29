@@ -2,6 +2,7 @@
 
 ## [x]
 - Fix working in content pages
+- Add lucene search
 
 ## [2.5.5]
 - Fix working in portfolio pages
