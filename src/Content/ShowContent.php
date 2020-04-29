@@ -221,7 +221,7 @@ class ShowContent
                         self::dic()->ui()->mainTemplate()->parseCurrentBlock();
                     }
                 } else {
-                    // But content pages use an own kiosk template and merge files from main template and add it to its JS_FILE placeholder without check, but JS_FILE placeholder from main template is not used - but on this case add as regular files will work, because not check
+                    // But learning sequences use an own kiosk template and merge files from main template and add it to its JS_FILE placeholder without check, but JS_FILE placeholder from main template is not used - but on this case add as regular files will work, because not check
                     self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
                 }
             } else {
