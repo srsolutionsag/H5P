@@ -1,7 +1,7 @@
 # Changelog
 
 ## [2.5.6]
-- Fix working in content pages
+- Fix working in learning sequences
 - Add lucene search
 
 ## [2.5.5]
