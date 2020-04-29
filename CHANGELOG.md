@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [2.5.6]
 - Fix working in content pages
 - Add lucene search
 
