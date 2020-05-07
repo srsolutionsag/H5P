@@ -14,6 +14,7 @@ class ilObjH5P extends ilObjectPlugin
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var ObjectSettings

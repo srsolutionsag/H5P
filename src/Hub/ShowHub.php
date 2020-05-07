@@ -25,6 +25,7 @@ class ShowHub
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const STATUS_ALL = "all";
     const STATUS_INSTALLED = "installed";

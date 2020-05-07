@@ -21,6 +21,7 @@ class ContentsTableGUI extends TableGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "contents_table_row.html";
     /**

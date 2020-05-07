@@ -19,6 +19,7 @@ class EventFramework extends H5PEventBase
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 

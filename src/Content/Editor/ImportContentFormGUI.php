@@ -20,6 +20,7 @@ class ImportContentFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string

@@ -29,6 +29,7 @@ class H5PActionGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_H5P_ACTION = "h5pAction";
     const GET_PARAM_OBJ_ID = "obj_id";

@@ -21,6 +21,7 @@ final class Repository
 
     use DICTrait;
     use H5PTrait;
+
     const DATA_FOLDER = "h5p";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**

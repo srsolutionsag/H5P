@@ -27,6 +27,7 @@ class Framework implements H5PFrameworkInterface
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null

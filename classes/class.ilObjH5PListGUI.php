@@ -13,6 +13,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 

@@ -25,6 +25,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_ADD_CONTENT = "addContent";
     const CMD_CREATE_CONTENT = "createContent";

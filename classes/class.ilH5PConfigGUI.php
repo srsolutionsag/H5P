@@ -19,6 +19,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_APPLY_FILTER = "applyFilter";
     const CMD_CONFIGURE = "configure";

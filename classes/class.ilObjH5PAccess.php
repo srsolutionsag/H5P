@@ -14,6 +14,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null

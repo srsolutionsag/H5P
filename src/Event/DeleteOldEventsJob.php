@@ -21,6 +21,7 @@ class DeleteOldEventsJob extends ilCronJob
 
     use DICTrait;
     use H5PTrait;
+
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 

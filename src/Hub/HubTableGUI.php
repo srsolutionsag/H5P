@@ -22,6 +22,7 @@ class HubTableGUI extends TableGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "hub_table_row.html";
     const LANG_MODULE = "";

@@ -20,6 +20,7 @@ class RefreshHubJob extends ilCronJob
 
     use DICTrait;
     use H5PTrait;
+
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
