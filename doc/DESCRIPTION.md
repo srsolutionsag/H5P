@@ -1,1 +1,1 @@
-## H5P Description
+# H5P ILIAS Plugin Description

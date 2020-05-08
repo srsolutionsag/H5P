@@ -1,4 +1,4 @@
-# H5P
+# H5P ILIAS Plugin
 
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 
@@ -17,7 +17,7 @@ git clone https://github.com/studer-raimann/H5P.git H5P
 ```
 Update and activate the plugin in the ILIAS Plugin Administration
 
-Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent).
+Also have a look to [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent) or [H5PCron](https://github.com/studer-raimann/H5PCron).
 
 ## Requirements
 * ILIAS 5.3 or ILIAS 5.4
