@@ -1,8 +1,14 @@
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 
+## Description
+See in [doc/DESCRIPTION.md](./doc/DESCRIPTION.md)
+
+## Documentation
+See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
+
 ## Installation
 
-### Install H5P repository plugin
+### Install H5P Plugin
 Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
@@ -11,13 +17,7 @@ git clone https://github.com/studer-raimann/H5P.git H5P
 ```
 Update and activate the plugin in the ILIAS Plugin Administration
 
-Also have a look to [H5PCron](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent).
-
-### Some screenshots
-TODO
-
-### Documentation
-Click [here](./doc/Documentation.pdf) for a more detailed documentation.
+Also have a look to [H5PCron Plugin](https://github.com/studer-raimann/H5PCron) and [H5PPageComponent Plugin](https://github.com/studer-raimann/H5PPageComponent).
 
 ### Requirements
 * ILIAS 5.3 or ILIAS 5.4
