@@ -18,6 +18,7 @@ class LegendEntry implements LegendEntryInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var string
      */

@@ -22,7 +22,6 @@ class Renderer extends InputRenderer
 
     use DICTrait;
 
-
     /**
      * @inheritDoc
      */

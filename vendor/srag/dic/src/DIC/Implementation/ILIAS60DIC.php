@@ -24,6 +24,7 @@ use ILIAS\DI\BackgroundTaskServices;
 use ILIAS\DI\Container;
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\LoggingServices;
+use ILIAS\DI\RBACServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
@@ -414,27 +415,42 @@ final class ILIAS60DIC extends AbstractDIC
     /**
      * @inheritDoc
      */
-    public function rbacadmin()
+    public function rbac()
     {
-        return $this->dic->rbac()->admin();
+        return $this->dic->rbac();
     }
 
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->admin()`
+     */
+    public function rbacadmin()
+    {
+        return $this->rbac()->admin();
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->review()`
      */
     public function rbacreview()
     {
-        return $this->dic->rbac()->review();
+        return $this->rbac()->review();
     }
 
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->system()`
      */
     public function rbacsystem()
     {
-        return $this->dic->rbac()->system();
+        return $this->rbac()->system();
     }
 
 
@@ -444,6 +460,15 @@ final class ILIAS60DIC extends AbstractDIC
     public function refinery()
     {
         return $this->dic->refinery();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function repositoryTree()
+    {
+        return $this->dic->repositoryTree();
     }
 
 
@@ -503,10 +528,12 @@ final class ILIAS60DIC extends AbstractDIC
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->repositoryTree()`
      */
     public function tree()
     {
-        return $this->dic->repositoryTree();
+        return $this->repositoryTree();
     }
 
 

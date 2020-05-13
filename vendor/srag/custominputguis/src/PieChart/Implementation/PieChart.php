@@ -20,6 +20,7 @@ class PieChart implements PieChartInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var Section[]
      */

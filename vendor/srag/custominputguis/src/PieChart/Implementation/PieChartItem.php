@@ -20,6 +20,7 @@ class PieChartItem implements PieChartItemInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var string
      */

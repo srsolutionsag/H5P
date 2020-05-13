@@ -23,7 +23,6 @@ class Renderer extends AbstractComponentRenderer
 
     use DICTrait;
 
-
     /**
      * @inheritDoc
      */

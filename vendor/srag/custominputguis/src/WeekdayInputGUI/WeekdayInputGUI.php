@@ -21,6 +21,7 @@ class WeekdayInputGUI extends ilFormPropertyGUI implements ilTableFilterItem
 {
 
     use DICTrait;
+
     const TYPE = 'weekday';
     /**
      * @var array

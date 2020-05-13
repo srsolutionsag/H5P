@@ -18,7 +18,6 @@ class MultilangualTabsInputGUI
 
     use DICTrait;
 
-
     /**
      * @param array $items
      * @param bool  $default_language
@@ -71,7 +70,7 @@ class MultilangualTabsInputGUI
                 $tab_input = clone $input;
 
                 if ($default_required && $lang_key === "default") {
-                    $input->setRequired(true);
+                    $tab_input->setRequired(true);
                 }
 
                 $tab->addInput($tab_input);

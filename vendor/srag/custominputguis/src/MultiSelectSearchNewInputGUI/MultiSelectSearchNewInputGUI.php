@@ -20,6 +20,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 {
 
     use DICTrait;
+
     /**
      * @var bool
      */
@@ -50,9 +51,9 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     * @var string|null
+     * @var AbstractAjaxAutoCompleteCtrl|null
      */
-    protected $ajax_link = null;
+    protected $ajax_auto_complete_ctrl = null;
     /**
      * @var int|null
      */
@@ -117,11 +118,19 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
             return false;
         }
 
-        foreach ($values as $key => $value) {
-            if (!isset($this->getOptions()[$value])) {
+        if ($this->getAjaxAutoCompleteCtrl() !== null) {
+            if (!$this->getAjaxAutoCompleteCtrl()->validateOptions($values)) {
                 $this->setAlert(self::dic()->language()->txt("form_input_not_valid"));
 
                 return false;
+            }
+        } else {
+            foreach ($values as $key => $value) {
+                if (!isset($this->getOptions()[$value])) {
+                    $this->setAlert(self::dic()->language()->txt("form_input_not_valid"));
+
+                    return false;
+                }
             }
         }
 
@@ -130,11 +139,11 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     * @return string|null
+     * @return AbstractAjaxAutoCompleteCtrl|null
      */
-    public function getAjaxLink()/*: ?string*/
+    public function getAjaxAutoCompleteCtrl()/*: ?AbstractAjaxAutoCompleteCtrl*/
     {
-        return $this->ajax_link;
+        return $this->ajax_auto_complete_ctrl;
     }
 
 
@@ -155,7 +164,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
         if ($this->minimum_input_length !== null) {
             return $this->minimum_input_length;
         } else {
-            return (!empty($this->getAjaxLink()) ? 1 : 0);
+            return ($this->getAjaxAutoCompleteCtrl() !== null ? 3 : 0);
         }
     }
 
@@ -220,28 +229,29 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
         $tpl->setVariableEscaped("POST_VAR", $this->getPostVar());
 
-        $options = [
+        $config = [
             "maximumSelectionLength" => $this->getLimitCount(),
             "minimumInputLength"     => $this->getMinimumInputLength()
         ];
-        if (!empty($this->getAjaxLink())) {
-            $options["ajax"] = [
-                "url" => $this->getAjaxLink()
+        if ($this->getAjaxAutoCompleteCtrl() !== null) {
+            $config["ajax"] = [
+                "delay" => 500,
+                "url"   => self::dic()->ctrl()->getLinkTarget($this->getAjaxAutoCompleteCtrl(), AbstractAjaxAutoCompleteCtrl::CMD_AJAX_AUTO_COMPLETE, "", true, false)
             ];
+
+            $options = $this->getAjaxAutoCompleteCtrl()->fillOptions($this->getValue());
+        } else {
+            $options = $this->getOptions();
         }
 
-        $tpl->setVariableEscaped("OPTIONS", base64_encode(json_encode($options)));
+        $tpl->setVariableEscaped("CONFIG", base64_encode(json_encode($config)));
 
-        if (!empty($this->getOptions())) {
+        if (!empty($options)) {
 
             $tpl->setCurrentBlock("option");
 
-            foreach ($this->getOptions() as $option_value => $option_text) {
+            foreach ($options as $option_value => $option_text) {
                 $selected = in_array($option_value, $this->getValue());
-
-                if (!empty($this->getAjaxLink()) && !$selected) {
-                    continue;
-                }
 
                 if ($selected) {
                     $tpl->setVariableEscaped("SELECTED", "selected");
@@ -259,11 +269,11 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     * @param string|null $ajax_link
+     * @param AbstractAjaxAutoCompleteCtrl|null $ajax_auto_complete_ctrl
      */
-    public function setAjaxLink(/*?*/ $ajax_link = null)/*: void*/
+    public function setAjaxAutoCompleteCtrl(/*?*/ AbstractAjaxAutoCompleteCtrl $ajax_auto_complete_ctrl = null)/*: void*/
     {
-        $this->ajax_link = $ajax_link;
+        $this->ajax_auto_complete_ctrl = $ajax_auto_complete_ctrl;
     }
 
 

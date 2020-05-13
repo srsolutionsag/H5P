@@ -21,6 +21,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
 {
 
     use DICTrait;
+
     const SHOW_INPUT_LABEL_NONE = 1;
     const SHOW_INPUT_LABEL_AUTO = 2;
     const SHOW_INPUT_LABEL_ALWAYS = 3;

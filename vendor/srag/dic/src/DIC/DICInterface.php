@@ -24,6 +24,7 @@ use ILIAS\DI\BackgroundTaskServices;
 use ILIAS\DI\Container;
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\LoggingServices;
+use ILIAS\DI\RBACServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
@@ -97,8 +98,6 @@ interface DICInterface
 
     /**
      * @return BackgroundTaskServices
-     *
-     * @since ILIAS 5.3
      */
     public function backgroundTasks();
 
@@ -114,7 +113,7 @@ interface DICInterface
      *
      * @throws DICException ilBookingManagerService not exists in ILIAS 5.4 or below!
      *
-     * @since ILIAS 6.0
+     * @since ILIAS 6
      */
     public function bookingManager();
 
@@ -139,10 +138,6 @@ interface DICInterface
 
     /**
      * @return ilConditionService
-     *
-     * @throws DICException ilConditionService not exists in ILIAS 5.3 or below!
-     *
-     * @since ILIAS 5.4
      */
     public function conditions();
 
@@ -184,25 +179,19 @@ interface DICInterface
      *
      * @throws DICException ilExerciseFactory not exists in ILIAS 5.4 or below!
      *
-     * @since ILIAS 6.0
+     * @since ILIAS 6
      */
     public function exercise();
 
 
     /**
      * @return Filesystems
-     *
-     * @since ILIAS 5.3
      */
     public function filesystem();
 
 
     /**
      * @return GlobalScreenService
-     *
-     * @throws DICException GlobalScreenService not exists in ILIAS 5.3 or below!
-     *
-     * @since ILIAS 5.4
      */
     public function globalScreen();
 
@@ -221,8 +210,6 @@ interface DICInterface
 
     /**
      * @return HTTPServices
-     *
-     * @since ILIAS 5.3
      */
     public function http();
 
@@ -247,10 +234,6 @@ interface DICInterface
 
     /**
      * @return ilLearningHistoryService
-     *
-     * @throws DICException ilLearningHistoryService not exists in ILIAS 5.3 or below!
-     *
-     * @since ILIAS 5.4
      */
     public function learningHistory();
 
@@ -283,16 +266,12 @@ interface DICInterface
 
     /**
      * @return ilMailMimeSenderFactory
-     *
-     * @since ILIAS 5.3
      */
     public function mailMimeSenderFactory();
 
 
     /**
      * @return ilMailMimeTransportFactory
-     *
-     * @since ILIAS 5.3
      */
     public function mailMimeTransportFactory();
 
@@ -312,10 +291,6 @@ interface DICInterface
 
     /**
      * @return ilNewsService
-     *
-     * @throws DICException ilNewsService not exists in ILIAS 5.3 or below!
-     *
-     * @since ILIAS 5.4
      */
     public function news();
 
@@ -334,10 +309,6 @@ interface DICInterface
 
     /**
      * @return ilObjectService
-     *
-     * @throws DICException ilObjectService not exists in ILIAS 5.3 or below!
-     *
-     * @since ILIAS 5.4
      */
     public function object();
 
@@ -347,7 +318,7 @@ interface DICInterface
      *
      * @throws DICException ilAsqFactory not exists in ILIAS 5.4 or below!
      *
-     * @since ILIAS 6.0
+     * @since ILIAS 6
      */
     public function question();
 
@@ -359,19 +330,31 @@ interface DICInterface
 
 
     /**
+     * @return RBACServices
+     */
+    public function rbac();
+
+
+    /**
      * @return ilRbacAdmin
+     *
+     * @deprecated Please use `self::dic()->rba()->admin()`
      */
     public function rbacadmin();
 
 
     /**
      * @return ilRbacReview
+     *
+     * @deprecated Please use `self::dic()->rba()->review()`
      */
     public function rbacreview();
 
 
     /**
      * @return ilRbacSystem
+     *
+     * @deprecated Please use `self::dic()->rba()->system()`
      */
     public function rbacsystem();
 
@@ -381,9 +364,15 @@ interface DICInterface
      *
      * @throws DICException RefineryFactory not exists in ILIAS 5.4 or below!
      *
-     * @since ILIAS 6.0
+     * @since ILIAS 6
      */
     public function refinery();
+
+
+    /**
+     * @return ilTree
+     */
+    public function repositoryTree();
 
 
     /**
@@ -415,7 +404,7 @@ interface DICInterface
      *
      * @throws DICException ilTaskService not exists in ILIAS 5.4 or below!
      *
-     * @since ILIAS 6.0
+     * @since ILIAS 6
      */
     public function task();
 
@@ -428,6 +417,8 @@ interface DICInterface
 
     /**
      * @return ilTree
+     *
+     * @deprecated Please use `self::dic()->repositoryTree()`
      */
     public function tree();
 
@@ -444,16 +435,14 @@ interface DICInterface
      * @return ilUIService
      *
      * @throws DICException ilUIService not exists in ILIAS 5.4 or below!
-     * @since ILIAS 6.0
      *
+     * @since ILIAS 6
      */
     public function uiService();
 
 
     /**
      * @return FileUpload
-     *
-     * @since ILIAS 5.3
      */
     public function upload();
 

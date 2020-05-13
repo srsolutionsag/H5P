@@ -9,6 +9,7 @@ use ILIAS\UI\Component\Input\Field\Input;
 use ilNumberInputGUI;
 use ilPropertyFormGUI;
 use ilRadioOption;
+use ilRepositorySelector2InputGUI;
 use ilUtil;
 use srag\CustomInputGUIs\H5P\MultiLineInputGUI\MultiLineInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception\PropertyFormGUIException;
@@ -32,6 +33,7 @@ final class Items
 {
 
     use DICTrait;
+
     /**
      * @var bool
      */
@@ -61,6 +63,8 @@ final class Items
      * @param PropertyFormGUI|TableGUI            $parent
      *
      * @return ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption
+     *
+     * @deprecated
      */
     public static final function getItem($key, array $field, $parent_item, $parent)
     {
@@ -87,7 +91,11 @@ final class Items
                     . " not exists!", PropertyFormGUIException::CODE_INVALID_PROPERTY_CLASS);
             }
 
-            $item = new $field[PropertyFormGUI::PROPERTY_CLASS]();
+            if ($field[PropertyFormGUI::PROPERTY_CLASS] === ilRepositorySelector2InputGUI::class) {
+                $item = new $field[PropertyFormGUI::PROPERTY_CLASS]("", $key, false, get_class($parent));
+            } else {
+                $item = new $field[PropertyFormGUI::PROPERTY_CLASS]();
+            }
 
             if ($item instanceof ilFormSectionHeaderGUI) {
                 if (!$field["setTitle"]) {
@@ -132,6 +140,8 @@ final class Items
      * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
      *
      * @return mixed
+     *
+     * @deprecated
      */
     public static function getValueFromItem($item)
     {
@@ -224,6 +234,8 @@ final class Items
     /**
      * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
      * @param array                                                  $properties
+     *
+     * @deprecated
      */
     private static function setPropertiesToItem($item, array $properties)/*: void*/
     {
@@ -264,7 +276,21 @@ final class Items
                     $property_value = [$property_value];
                 }
 
-                call_user_func_array([$item, $property], $property_value);
+                if (method_exists($item, $property)) {
+                    call_user_func_array([$item, $property], $property_value);
+                } else {
+                    if ($item instanceof ilRepositorySelector2InputGUI) {
+                        if (method_exists($item->getExplorerGUI(), $property)) {
+                            call_user_func_array([$item->getExplorerGUI(), $property], $property_value);
+                        } else {
+                            throw new PropertyFormGUIException("Class " . get_class($item)
+                                . " has no method " . $property . "!", PropertyFormGUIException::CODE_INVALID_FIELD);
+                        }
+                    } else {
+                        throw new PropertyFormGUIException("Class " . get_class($item)
+                            . " has no method " . $property . "!", PropertyFormGUIException::CODE_INVALID_FIELD);
+                    }
+                }
             }
         }
     }
@@ -273,6 +299,8 @@ final class Items
     /**
      * @param ilFormPropertyGUI|ilFormSectionHeaderGUI|ilRadioOption $item
      * @param mixed                                                  $value
+     *
+     * @deprecated
      */
     public static function setValueToItem($item, $value)/*: void*/
     {
@@ -336,20 +364,26 @@ final class Items
      * @param object $object
      * @param string $property
      * @param mixed  $value
+     *
+     * @return mixed
      */
-    public static function setter(/*object*/ $object,/*string*/ $property, $value)/*: void*/
+    public static function setter(/*object*/ $object,/*string*/ $property, $value)
     {
-        if (method_exists($object, $method = "set" . self::strToCamelCase($property))) {
+        $res = null;
+
+        if (method_exists($object, $method = "with" . self::strToCamelCase($property)) || method_exists($object, $method = "set" . self::strToCamelCase($property))) {
             try {
-                $object->{$method}($value);
+                $res = $object->{$method}($value);
             } catch (TypeError $ex) {
                 try {
-                    $object->{$method}(intval($value));
+                    $res = $object->{$method}(intval($value));
                 } catch (TypeError $ex) {
-                    $object->{$method}(boolval($value));
+                    $res = $object->{$method}(boolval($value));
                 }
             }
         }
+
+        return $res;
     }
 
 

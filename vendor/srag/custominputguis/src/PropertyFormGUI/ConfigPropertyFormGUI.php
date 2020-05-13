@@ -33,7 +33,7 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct($parent)
+    public function __construct(/*object*/ $parent)
     {
         $this->checkConfigClassNameConst();
 

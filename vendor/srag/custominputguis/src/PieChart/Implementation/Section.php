@@ -22,6 +22,7 @@ class Section implements SectionInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var string
      */

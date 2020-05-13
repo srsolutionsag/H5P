@@ -23,6 +23,7 @@ class ProgressMeter implements ProgressMeterComponent
 {
 
     use ComponentHelper;
+
     /**
      * @var int
      */

@@ -18,6 +18,7 @@ class SectionValue implements SectionValueInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var float
      */

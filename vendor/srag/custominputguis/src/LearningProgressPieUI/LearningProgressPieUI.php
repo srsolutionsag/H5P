@@ -16,7 +16,6 @@ class LearningProgressPieUI
 
     use DICTrait;
 
-
     /**
      * LearningProgressPieUI constructor
      */

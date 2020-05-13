@@ -23,6 +23,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 {
 
     use DICTrait;
+
     const LANG_MODULE = "screenshotsinputgui";
     /**
      * @var bool

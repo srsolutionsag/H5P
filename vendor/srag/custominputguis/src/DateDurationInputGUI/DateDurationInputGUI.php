@@ -20,7 +20,6 @@ class DateDurationInputGUI extends ilDateDurationInputGUI
 
     use DICTrait;
 
-
     /**
      * Check input, strip slashes etc. set alert, if input is not ok.
      *

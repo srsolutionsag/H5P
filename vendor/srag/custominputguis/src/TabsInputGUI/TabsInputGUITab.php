@@ -17,6 +17,7 @@ class TabsInputGUITab
 {
 
     use DICTrait;
+
     /**
      * @var string
      */

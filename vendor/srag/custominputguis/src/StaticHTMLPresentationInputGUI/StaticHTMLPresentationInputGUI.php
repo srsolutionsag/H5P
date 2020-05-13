@@ -19,6 +19,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
 {
 
     use DICTrait;
+
     /**
      * @var string
      */

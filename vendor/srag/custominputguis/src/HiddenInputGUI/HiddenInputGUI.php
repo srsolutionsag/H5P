@@ -17,7 +17,6 @@ class HiddenInputGUI extends ilHiddenInputGUI
 
     use DICTrait;
 
-
     /**
      * HiddenInputGUI constructor
      *

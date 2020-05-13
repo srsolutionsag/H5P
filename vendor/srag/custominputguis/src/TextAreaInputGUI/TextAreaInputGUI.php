@@ -18,6 +18,7 @@ class TextAreaInputGUI extends ilTextAreaInputGUI
 {
 
     use DICTrait;
+
     /**
      * @var string
      */

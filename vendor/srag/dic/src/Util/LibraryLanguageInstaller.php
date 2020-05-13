@@ -21,7 +21,6 @@ final class LibraryLanguageInstaller implements Pluginable
 
     use DICTrait;
 
-
     /**
      * @return self
      */

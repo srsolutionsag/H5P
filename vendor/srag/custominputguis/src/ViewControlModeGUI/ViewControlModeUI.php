@@ -16,6 +16,7 @@ class ViewControlModeUI
 {
 
     use DICTrait;
+
     const CMD_HANDLE_BUTTONS = "ViewControlModeUIHandleButtons";
     /**
      * @var array

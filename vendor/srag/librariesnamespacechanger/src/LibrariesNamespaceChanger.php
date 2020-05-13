@@ -17,7 +17,7 @@ final class LibrariesNamespaceChanger
 {
 
     /**
-     * @var self
+     * @var self|null
      */
     private static $instance = null;
     /**
@@ -43,7 +43,7 @@ final class LibrariesNamespaceChanger
      *
      * @return self
      */
-    private static function getInstance(Event $event)/*: self*/
+    private static function getInstance(Event $event)
     {
         if (self::$instance === null) {
             self::$instance = new self($event);
@@ -94,9 +94,8 @@ final class LibrariesNamespaceChanger
 
         $libraries = [];
         foreach (
-            array_filter(scandir(__DIR__ . "/../../"), function (/*string*/ $folder)/* : bool*/ {
-                return (!in_array($folder, [".", "..", "librariesnamespacechanger"]));
-            }) as $folder
+            array_filter(scandir(__DIR__ . "/../../"), function ($folder) {    return !in_array($folder, [".", "..", "librariesnamespacechanger"]);
+}) as $folder
         ) {
             $folder = __DIR__ . "/../../" . $folder;
 
@@ -108,17 +107,15 @@ final class LibrariesNamespaceChanger
                 continue;
             }
 
-            $namespaces = array_map(function (/*string*/ $namespace)/*:string*/ use ($plugin_name) {
-                if (substr($namespace, -1) === "\\") {
-                    $namespace = substr($namespace, 0, -1);
-                }
-
-                if (substr($namespace, -strlen("\\" . $plugin_name)) === ("\\" . $plugin_name)) {
-                    $namespace = substr($namespace, 0, -strlen("\\" . $plugin_name));
-                }
-
-                return $namespace;
-            }, $namespaces);
+            $namespaces = array_map(function ($namespace) use($plugin_name) {
+    if (substr($namespace, -1) === "\\") {
+        $namespace = substr($namespace, 0, -1);
+    }
+    if (substr($namespace, -strlen("\\" . $plugin_name)) === "\\" . $plugin_name) {
+        $namespace = substr($namespace, 0, -strlen("\\" . $plugin_name));
+    }
+    return $namespace;
+}, $namespaces);
 
             $libraries[$folder] = $namespaces;
         }
@@ -157,7 +154,7 @@ final class LibrariesNamespaceChanger
     /**
      * @return string
      */
-    private function getPluginName()/*: string*/
+    private function getPluginName()
     {
         $matches = [];
         preg_match(self::PLUGIN_NAME_REG_EXP, __DIR__, $matches);
@@ -176,7 +173,7 @@ final class LibrariesNamespaceChanger
      * @param string $folder
      * @param array  $files
      */
-    private function getFiles(/*string*/ $folder, array &$files = [])/*: void*/
+    private function getFiles($folder, array &$files = [])/*: void*/
     {
         $paths = scandir($folder);
 

@@ -20,6 +20,7 @@ abstract class AbstractLearningProgressPieUI
 
     use DICTrait;
     use CustomInputGUIsTrait;
+
     const LP_STATUS
         = [
             ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM,

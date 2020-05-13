@@ -20,6 +20,7 @@ final class Plugin implements PluginInterface
 {
 
     use DICTrait;
+
     /**
      * @var ilLanguage[]
      */

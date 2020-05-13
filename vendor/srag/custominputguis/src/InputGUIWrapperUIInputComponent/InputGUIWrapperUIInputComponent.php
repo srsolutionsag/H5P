@@ -9,6 +9,7 @@ use ILIAS\Transformation\Factory as TransformationFactory;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
 use ILIAS\UI\Implementation\Component\Input\NameSource;
 use ILIAS\Validation\Factory as ValidationFactory;
+use ilRepositorySelector2InputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\DIC\H5P\DICTrait;
 
@@ -23,6 +24,7 @@ class InputGUIWrapperUIInputComponent extends Input
 {
 
     use DICTrait;
+
     /**
      * @var ilFormPropertyGUI
      */
@@ -36,7 +38,7 @@ class InputGUIWrapperUIInputComponent extends Input
     {
         $this->input = $input;
 
-        if (self::version()->is60()) {
+        if (self::version()->is6()) {
             parent::__construct(new DataFactory(), self::dic()->refinery(), "", null);
         } else {
             parent::__construct($data_factory = new DataFactory(), new ValidationFactory($data_factory, self::dic()->language()), new TransformationFactory(), "", null);
@@ -94,7 +96,7 @@ class InputGUIWrapperUIInputComponent extends Input
      */
     protected function getConstraintForRequirement()/*:?Constraint*/
     {
-        if (self::version()->is60()) {
+        if (self::version()->is6()) {
             return new InputGUIWrapperConstraint($this->input, $this->data_factory, self::dic()->language());
         } else {
             return new InputGUIWrapperConstraint54($this->input, $this->data_factory, self::dic()->language());
@@ -108,6 +110,15 @@ class InputGUIWrapperUIInputComponent extends Input
     protected function isClientSideValueOk($value)
     {
         return $this->input->checkInput();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function isDisabled()/*:bool*/
+    {
+        return $this->input->getDisabled();
     }
 
 
@@ -148,6 +159,22 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
+    public function withDisabled($disabled)
+    {
+        $this->checkBoolArg("disabled", $disabled);
+
+        $clone = clone $this;
+        $clone->input = clone $this->input;
+
+        $clone->input->setDisabled($disabled);
+
+        return $clone;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function withError($error)
     {
         $clone = clone $this;
@@ -162,12 +189,32 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
+    public function withLabel($label)
+    {
+        $this->checkStringArg("label", $label);
+
+        $clone = clone $this;
+        $clone->input = clone $this->input;
+
+        $clone->input->setTitle($label);
+
+        return $clone;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function withNameFrom(NameSource $source)
     {
         $clone = parent::withNameFrom($source);
         $clone->input = clone $this->input;
 
         $clone->input->setPostVar($clone->getName());
+
+        if ($clone->input instanceof ilRepositorySelector2InputGUI) {
+            $clone->input->getExplorerGUI()->setSelectMode($clone->getName() . "_sel", $this->input->multi_nodes);
+        }
 
         return $clone;
     }

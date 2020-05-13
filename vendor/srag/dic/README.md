@@ -1,8 +1,10 @@
+# DIC Library for ILIAS Plugins
+
 Use all ILIAS globals in your class
 
-### Usage
+## Usage
 
-#### Composer
+### Composer
 First add the following to your `composer.json` file:
 ```json
 "require": {
@@ -17,7 +19,7 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-#### Use trait
+## Use trait
 Declare your class like follow:
 ```php
 //...
@@ -33,7 +35,7 @@ class x {
 ```
 `ilXPlugin` is the name of your plugin class.
 
-#### Use
+## Use
 You can now access the DIC interface, in instance and in static places:
 ```php
 /**
@@ -179,11 +181,11 @@ self::version(): VersionInterface;
 
 If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()` or `DICStatic::plugin(ilXPlugin::class)`.
 
-#### Clean up
+## Clean up
 You can now remove all usages of ILIAS globals in your class and replace it with this library.
 Please avoid to store in variables or class variables.
 
-#### LibraryLanguageInstaller
+## LibraryLanguageInstaller
 Expand you plugin class for installing languages of a library to your plugin
 ```php
 ...
@@ -199,12 +201,12 @@ Expand you plugin class for installing languages of a library to your plugin
 ...
 ```
 
-#### Database
+## Database
 This library delivers also a custom `ilDB` decorator class with spec. functions, restricted to `PDO` (Because to make access more core functions), access via `self:.dic()->database()`
 
 If you realy need to access to original ILIAS `ilDB` instance, use `self:.dic()->databaseCore()` instead
 
-##### Native AutoIncrement (MySQL) / Native Sequence (PostgreSQL)
+### Native AutoIncrement (MySQL) / Native Sequence (PostgreSQL)
 Use auto increment on a spec. field (in `dbupdate.php`):
 ```php
 \srag\DIC\H5P\x\DICStatic::dic()->database()->createAutoIncrement(\srag\Plugins\x\x\x::TABLE_NAME, "id");
@@ -220,7 +222,7 @@ Drop auto increment table (Needed for PostgreSQL) (in `ilXPlugin` uninstaller):
 self::dic()->database()->dropAutoIncrementTable(x::TABLE_NAME);
 ```
 
-##### Store (In repository)
+### Store (In repository)
 ```php
 $x = $this->factory()->newInstance();
 ...
@@ -230,7 +232,7 @@ $x->setId(self::dic()->database()->store(x::TABLE_NAME, [
 		], "id", $x->getId()));
 ```
 
-##### Automatic factory (In repository)
+### Automatic factory (In repository)
 ```php
 $array = self::dic()->database()->fetchAllCallback(self::dic()->database()->query('SELECT * FROM ' . self::dic()->database()
 				->quoteIdentifier(x::TABLE_NAME)), [ $this->factory(), "fromDB" ]);
@@ -249,12 +251,12 @@ public function fromDB(stdClass $data): x {
 
 ```
 
-### Requirements
-* ILIAS 5.3 or ILIAS 5.4 or ILIAS 6
+## Requirements
+* ILIAS 5.4 or ILIAS 6
 * PHP >=7.0
 * PDO (MySQL or PostgreSQL 9.5)
 
-### Adjustment suggestions
+## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC
 * Adjustment suggestions by pull requests via github
 * Customer of studer + raimann ag: 

@@ -12,9 +12,8 @@ namespace srag\DIC\H5P\Version;
 interface VersionInterface
 {
 
-    const ILIAS_VERSION_5_3 = "5.3.0";
     const ILIAS_VERSION_5_4 = "5.4.0";
-    const ILIAS_VERSION_6_0 = "6.0";
+    const ILIAS_VERSION_6 = "6.0";
 
 
     /**
@@ -24,39 +23,43 @@ interface VersionInterface
 
 
     /**
+     * @param string $version
+     *
      * @return bool
      */
     public function isEqual($version);
 
 
     /**
+     * @param string $version
+     *
      * @return bool
      */
     public function isGreater($version);
 
 
     /**
+     * @param string $version
+     *
      * @return bool
      */
     public function isLower($version);
 
 
     /**
+     * @param string $version
+     *
      * @return bool
      */
     public function isMaxVersion($version);
 
 
     /**
+     * @param string $version
+     *
      * @return bool
      */
     public function isMinVersion($version);
-
-
-    /**
-     * @return bool
-     */
-    public function is53();
 
 
     /**
@@ -68,5 +71,5 @@ interface VersionInterface
     /**
      * @return bool
      */
-    public function is60();
+    public function is6();
 }
