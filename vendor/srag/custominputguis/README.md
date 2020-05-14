@@ -53,7 +53,7 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 * [WeekdayInputGUI](./src/WeekdayInputGUI/doc/WeekdayInputGUI.md)
 
 ## Requirements
-* ILIAS 5.3 or ILIAS 5.4
+* ILIAS 5.4 or ILIAS 6
 * PHP >=7.0
 
 ## Adjustment suggestions

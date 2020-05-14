@@ -87,7 +87,7 @@ class InputGUIWrapperUIInputComponent extends Input
      */
     public function getValue()
     {
-        return Items::getValueFromItem($this->input->getValue());
+        return Items::getValueFromItem($this->input);
     }
 
 

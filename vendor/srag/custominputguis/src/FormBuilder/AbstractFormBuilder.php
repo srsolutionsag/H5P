@@ -7,6 +7,7 @@ use Exception;
 use ilFormPropertyDispatchGUI;
 use ILIAS\UI\Component\Input\Container\Form\Form;
 use ILIAS\UI\Component\Input\Field\DependantGroupProviding;
+use ILIAS\UI\Component\Input\Field\OptionalGroup;
 use ILIAS\UI\Component\Input\Field\Radio as RadioInterface;
 use ILIAS\UI\Component\Input\Field\Section;
 use ILIAS\UI\Component\MessageBox\MessageBox;
@@ -169,21 +170,21 @@ protectpublic function getForm()
                         Closure::bind(function (array $inputs2) {
     $this->inputs = $inputs2;
 }, $field->getDependantGroup(), Group::class)($inputs2);
-                        continue;
                     }
-                } else {
-                    if ($field instanceof RadioInterface
-                        && isset($data[$key]["value"])
-                        && !empty($inputs2 = Closure::bind(function (array $data, $key) {
-    return $this->dependant_fields[$data[$key]["value"]];
-}, $field, Radio::class)($data, $key))
-                    ) {
-                        try {
-                            $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
-                        } catch (Throwable $ex) {
+                    continue;
+                }
 
+                if ($field instanceof OptionalGroup) {
+                    $inputs2 = $field->getInputs();
+                    if (!empty($inputs2)) {
+                        if (isset($data[$key]["value"])) {
+                            try {
+                                $inputs[$key] = $field = $field->withValue($data[$key]["value"] ? [] : null);
+                            } catch (Throwable $ex) {
+
+                            }
                         }
-                        $data2 = $data[$key]["group_values"];
+                        $data2 = (isset($data[$key]["group_values"]) ? $data[$key]["group_values"] : $data[$key])["dependant_group"];
                         foreach ($inputs2 as $key2 => $field2) {
                             if (isset($data2[$key2])) {
                                 try {
@@ -193,37 +194,64 @@ protectpublic function getForm()
                                 }
                             }
                         }
-                        Closure::bind(function (array $data, $key, array $inputs2) {
-    $this->dependant_fields[$data[$key]["value"]] = $inputs2;
-}, $field, Radio::class)($data, $key, $inputs2);
-                        continue;
-                    } else {
-                        if ($field instanceof Section) {
-                            $inputs2 = $field->getInputs();
-                            if (!empty($inputs2)) {
-                                $data2 = $data[$key];
-                                foreach ($inputs2 as $key2 => $field2) {
-                                    if (isset($data2[$key2])) {
-                                        try {
-                                            $inputs2[$key2] = $field2 = $field2->withValue($data2[$key2]);
-                                        } catch (Throwable $ex) {
-
-                                        }
-                                    }
-                                }
-                                Closure::bind(function (array $inputs2) {
+                        Closure::bind(function (array $inputs2) {
     $this->inputs = $inputs2;
 }, $field, Group::class)($inputs2);
-                                continue;
+                    }
+                    continue;
+                }
+
+                if ($field instanceof RadioInterface
+                    && isset($data[$key]["value"])
+                    && !empty($inputs2 = Closure::bind(function (array $data, $key) {
+    return $this->dependant_fields[$data[$key]["value"]];
+}, $field, Radio::class)($data, $key))
+                ) {
+                    try {
+                        $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
+                    } catch (Throwable $ex) {
+
+                    }
+                    $data2 = $data[$key]["group_values"];
+                    foreach ($inputs2 as $key2 => $field2) {
+                        if (isset($data2[$key2])) {
+                            try {
+                                $inputs2[$key2] = $field2 = $field2->withValue($data2[$key2]);
+                            } catch (Throwable $ex) {
+
                             }
                         }
                     }
+                    Closure::bind(function (array $data, $key, array $inputs2) {
+    $this->dependant_fields[$data[$key]["value"]] = $inputs2;
+}, $field, Radio::class)($data, $key, $inputs2);
+                    continue;
                 }
-            }
-            try {
-                $inputs[$key] = $field = $field->withValue($data[$key]);
-            } catch (Throwable $ex) {
 
+                if ($field instanceof Section) {
+                    $inputs2 = $field->getInputs();
+                    if (!empty($inputs2)) {
+                        $data2 = $data[$key];
+                        foreach ($inputs2 as $key2 => $field2) {
+                            if (isset($data2[$key2])) {
+                                try {
+                                    $inputs2[$key2] = $field2 = $field2->withValue($data2[$key2]);
+                                } catch (Throwable $ex) {
+
+                                }
+                            }
+                        }
+                        Closure::bind(function (array $inputs2) {
+    $this->inputs = $inputs2;
+}, $field, Group::class)($inputs2);
+                    }
+                    continue;
+                }
+                try {
+                    $inputs[$key] = $field = $field->withValue($data[$key]);
+                } catch (Throwable $ex) {
+
+                }
             }
         }
         Closure::bind(function (array $inputs) {
