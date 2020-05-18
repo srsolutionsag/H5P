@@ -13,6 +13,7 @@ use ILIAS\UI\Component\Input\Field\Section;
 use ILIAS\UI\Component\MessageBox\MessageBox;
 use ILIAS\UI\Implementation\Component\Input\Field\Group;
 use ILIAS\UI\Implementation\Component\Input\Field\Radio;
+use ILIAS\UI\Implementation\Component\Input\Field\SwitchableGroup;
 use ilSubmitButton;
 use srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent\InputGUIWrapperUIInputComponent;
 use srag\DIC\H5P\DICTrait;
@@ -200,32 +201,6 @@ abstract class AbstractFormBuilder implements FormBuilder
         $inputs = $form->getInputs()["form"]->getInputs();
         foreach ($inputs as $key => $field) {
             if (isset($data[$key])) {
-                if ($field instanceof DependantGroupProviding && !empty($field->getDependantGroup())) {
-                    $inputs2 = $field->getDependantGroup()->getInputs();
-                    if (!empty($inputs2)) {
-                        if (isset($data[$key]["value"])) {
-                            try {
-                                $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
-                            } catch (Throwable $ex) {
-
-                            }
-                        }
-                        $data2 = (isset($data[$key]["group_values"]) ? $data[$key]["group_values"] : $data[$key])["dependant_group"];
-                        foreach ($inputs2 as $key2 => $field2) {
-                            if (isset($data2[$key2])) {
-                                try {
-                                    $inputs2[$key2] = $field2 = $field2->withValue($data2[$key2]);
-                                } catch (Throwable $ex) {
-
-                                }
-                            }
-                        }
-                        Closure::bind(function (array $inputs2)/* : void*/ {
-                            $this->inputs = $inputs2;
-                        }, $field->getDependantGroup(), Group::class)($inputs2);
-                    }
-                    continue;
-                }
 
                 if ($field instanceof OptionalGroup) {
                     $inputs2 = $field->getInputs();
@@ -253,7 +228,66 @@ abstract class AbstractFormBuilder implements FormBuilder
                     }
                     continue;
                 }
+                if ($field instanceof DependantGroupProviding && !empty($field->getDependantGroup())) {
+                    $inputs2 = $field->getDependantGroup()->getInputs();
+                    if (!empty($inputs2)) {
+                        if (isset($data[$key]["value"])) {
+                            try {
+                                $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
+                            } catch (Throwable $ex) {
 
+                            }
+                        }
+                        $data2 = (isset($data[$key]["group_values"]) ? $data[$key]["group_values"] : $data[$key])["dependant_group"];
+                        foreach ($inputs2 as $key2 => $field2) {
+                            if (isset($data2[$key2])) {
+                                try {
+                                    $inputs2[$key2] = $field2 = $field2->withValue($data2[$key2]);
+                                } catch (Throwable $ex) {
+
+                                }
+                            }
+                        }
+                        Closure::bind(function (array $inputs2)/* : void*/ {
+                            $this->inputs = $inputs2;
+                        }, $field->getDependantGroup(), Group::class)($inputs2);
+                    }
+                    continue;
+                }
+
+                if ($field instanceof SwitchableGroup) {
+                    $inputs2 = $field->getInputs();
+                    if (!empty($inputs2)) {
+                        if (isset($data[$key]["value"])) {
+                            try {
+                                $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
+                            } catch (Throwable $ex) {
+
+                            }
+                        }
+                        $data2 = $data[$key]["group_values"];
+                        foreach ($inputs2 as $field2) {
+                            $inputs3 = $field2->getInputs();
+                            if (!empty($inputs3)) {
+                                foreach ($inputs3 as $key3 => $field3) {
+                                    if (isset($data2[$key3])) {
+                                        try {
+                                            $inputs3[$key3] = $field3 = $field3->withValue($data2[$key3]);
+                                        } catch (Throwable $ex) {
+
+                                        }
+                                    }
+                                }
+                                Closure::bind(function (array $inputs3)/* : void*/ {
+                                    $this->inputs = $inputs3;
+                                }, $field2, Group::class)($inputs3);
+                            }
+                        }
+                        Closure::bind(function (array $inputs2)/* : void*/ {
+                            $this->inputs = $inputs2;
+                        }, $field, Group::class)($inputs2);
+                    }
+                }
                 if ($field instanceof RadioInterface
                     && isset($data[$key]["value"])
                     && !empty($inputs2 = Closure::bind(function (array $data, string $key) : array {

@@ -245,7 +245,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
         $tpl->setVariableEscaped("POST_VAR", $this->getPostVar());
 
-        $tpl->setVariableEscaped("EMPTY_PLACEHOLDER", self::EMPTY_PLACEHOLDER); // ILIAS 6 will not set `null` value to input
+        $tpl->setVariableEscaped("EMPTY_PLACEHOLDER", self::EMPTY_PLACEHOLDER); // ILIAS 6 will not set `null` value to input on post
 
         $config = [
             "maximumSelectionLength" => $this->getLimitCount(),

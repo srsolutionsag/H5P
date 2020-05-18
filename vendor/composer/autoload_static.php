@@ -26,8 +26,8 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
             'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\H5P\\' => 13,
-            'srag\\CustomInputGUIs\\H5P\\' => 25,
+            'srag\\DIC\\' => 9,
+            'srag\\CustomInputGUIs\\' => 21,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
     );
@@ -45,11 +45,11 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\H5P\\' => 
+        'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\H5P\\' => 
+        'srag\\CustomInputGUIs\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -86,7 +86,7 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         'srag\\CustomInputGUIs\\H5P\\FormBuilder\\FormBuilder' => __DIR__ . '/..' . '/srag/custominputguis/src/FormBuilder/FormBuilder.php',
         'srag\\CustomInputGUIs\\H5P\\GlyphGUI\\GlyphGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/GlyphGUI/GlyphGUI.php',
         'srag\\CustomInputGUIs\\H5P\\HiddenInputGUI\\HiddenInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/HiddenInputGUI/HiddenInputGUI.php',
-        'srag\\CustomInputGUIs\\H5P\\InputGUIWrapperUIInputComponent\\AbstractRenderer' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/Renderer.php',
+        'srag\\CustomInputGUIs\\H5P\\InputGUIWrapperUIInputComponent\\AbstractRenderer' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/AbstractRenderer.php',
         'srag\\CustomInputGUIs\\H5P\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraint' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraint.php',
         'srag\\CustomInputGUIs\\H5P\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraint54' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraint54.php',
         'srag\\CustomInputGUIs\\H5P\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraintTrait' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraintTrait.php',

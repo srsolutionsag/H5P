@@ -17,6 +17,7 @@ use ilCtrlStructureReader;
 use ilDBInterface;
 use ilErrorHandling;
 use ilExerciseFactory;
+use ilFavouritesDBRepository;
 use ilGlobalTemplateInterface;
 use ilHelpGUI;
 use ILIAS;
@@ -200,6 +201,15 @@ final class ILIAS60DIC extends AbstractDIC
     public function exercise() : ilExerciseFactory
     {
         return $this->dic->exercise();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function favourites() : ilFavouritesDBRepository
+    {
+        return new ilFavouritesDBRepository();
     }
 
 

@@ -17,6 +17,7 @@ use ilCtrlStructureReader;
 use ilDBInterface;
 use ilErrorHandling;
 use ilExerciseFactory;
+use ilFavouritesDBRepository;
 use ilGlobalTemplateInterface;
 use ilHelpGUI;
 use ILIAS;
@@ -182,6 +183,16 @@ interface DICInterface
      * @since ILIAS 6
      */
     public function exercise() : ilExerciseFactory;
+
+
+    /**
+     * @return ilFavouritesDBRepository
+     *
+     * @throws DICException ilExerciseFactory not exists in ILIAS 5.4 or below!
+     *
+     * @since ILIAS 6
+     */
+    public function favourites() : ilFavouritesDBRepository;
 
 
     /**

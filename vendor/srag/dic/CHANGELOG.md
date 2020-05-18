@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.22.0]
+- `ilFavouritesDBRepository`
+
 ## [0.21.0]
 - Remove ILIAS 5.3 support
 - Deprecate `self::dic()->tree()` (> `self::dic()->repositoryTree()`)

@@ -17,6 +17,7 @@ use ilCtrlStructureReader;
 use ilDBInterface;
 use ilErrorHandling;
 use ilExerciseFactory;
+use ilFavouritesDBRepository;
 use ilHelpGUI;
 use ILIAS;
 use ILIAS\DI\BackgroundTaskServices;
@@ -201,6 +202,15 @@ final class ILIAS54DIC extends AbstractDIC
     public function exercise() : ilExerciseFactory
     {
         throw new DICException("ilExerciseFactory not exists in ILIAS 5.4 or below!");
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function favourites() : ilFavouritesDBRepository
+    {
+        throw new DICException("ilFavouritesDBRepository not exists in ILIAS 5.4 or below!");
     }
 
 
