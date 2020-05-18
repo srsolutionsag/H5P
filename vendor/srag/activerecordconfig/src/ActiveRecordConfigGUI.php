@@ -221,7 +221,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    protected function addTab($tab_id, $cmd)/*: void*/
+    protected function addTab(string $tab_id, string $cmd)/*: void*/
     {
         self::dic()->tabs()->addTab($tab_id, $this->txt($tab_id), self::dic()->ctrl()->getLinkTarget($this, $cmd));
     }
@@ -234,7 +234,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    public final function getCmdForTab($tab_id)
+    public final function getCmdForTab(string $tab_id) : string
     {
         return self::CMD_CONFIGURE . "_" . $tab_id;
     }
@@ -245,7 +245,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    public final function redirectToTab($tab_id)/*: void*/
+    public final function redirectToTab(string $tab_id)/*: void*/
     {
         self::dic()->ctrl()->redirect($this, $this->getCmdForTab($tab_id));
     }
@@ -260,7 +260,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function configure($tab_id)/*: void*/
+    private final function configure(string $tab_id)/*: void*/
     {
         self::dic()->tabs()->activateTab($tab_id);
 
@@ -279,7 +279,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function updateConfigure($tab_id)/*: void*/
+    private final function updateConfigure(string $tab_id)/*: void*/
     {
         self::dic()->tabs()->activateTab($tab_id);
 
@@ -306,7 +306,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function applyFilter($tab_id)/*: void*/
+    private final function applyFilter(string $tab_id)/*: void*/
     {
         $table = $this->getConfigurationTable(static::$tabs[$tab_id], self::CMD_APPLY_FILTER . "_" . $tab_id, $tab_id);
 
@@ -328,7 +328,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function resetFilter($tab_id)/*: void*/
+    private final function resetFilter(string $tab_id)/*: void*/
     {
         $table = $this->getConfigurationTable(static::$tabs[$tab_id], self::CMD_RESET_FILTER . "_" . $tab_id, $tab_id);
 
@@ -352,7 +352,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function getConfigurationGUI($tab_id)
+    private final function getConfigurationGUI(string $tab_id)
     {
         $config_gui_class_name = static::$tabs[$tab_id];
 
@@ -393,7 +393,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function getConfigurationFormGUI($config_form_gui_class_name, $tab_id)
+    private final function getConfigurationFormGUI(string $config_form_gui_class_name, string $tab_id)
     {
         if (!class_exists($config_form_gui_class_name)) {
             throw new ActiveRecordConfigException("Class $config_form_gui_class_name not exists!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
@@ -424,7 +424,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    private final function getConfigurationTable($config_table_gui_class_name, $parent_cmd, $tab_id)
+    private final function getConfigurationTable(string $config_table_gui_class_name, string $parent_cmd, string $tab_id)
     {
         if (!class_exists($config_table_gui_class_name)) {
             throw new ActiveRecordConfigException("Class $config_table_gui_class_name not exists!", ActiveRecordConfigException::CODE_INVALID_CONFIG_GUI_CLASS);
@@ -447,7 +447,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
      *
      * @deprecated
      */
-    protected function txt($key)
+    protected function txt(string $key) : string
     {
         return self::plugin()->translate($key, self::LANG_MODULE_CONFIG);
     }

@@ -32,7 +32,7 @@ class EditorStorage implements H5peditorStorageInterface
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();

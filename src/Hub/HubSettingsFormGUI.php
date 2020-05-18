@@ -54,7 +54,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands()/* : void*/
     {
         $this->addCommandButton(ilH5PConfigGUI::CMD_UPDATE_SETTINGS, $this->txt("save"));
     }
@@ -63,7 +63,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields()/* : void*/
     {
         $this->fields = [
             self::KEY_CONTENT_TYPES => [
@@ -87,7 +87,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -96,7 +96,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("settings"));
     }
@@ -105,7 +105,7 @@ class HubSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/* : void*/
     {
         switch ($key) {
             default:

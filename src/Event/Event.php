@@ -28,7 +28,7 @@ class Event extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class Event extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -187,7 +187,7 @@ class Event extends ActiveRecord
     /**
      * @return int
      */
-    public function getEventId()
+    public function getEventId() : int
     {
         return $this->event_id;
     }
@@ -196,7 +196,7 @@ class Event extends ActiveRecord
     /**
      * @param int $event_id
      */
-    public function setEventId($event_id)
+    public function setEventId(int $event_id)/* : void*/
     {
         $this->event_id = $event_id;
     }
@@ -205,7 +205,7 @@ class Event extends ActiveRecord
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId() : int
     {
         return $this->user_id;
     }
@@ -214,7 +214,7 @@ class Event extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)/* : void*/
     {
         $this->user_id = $user_id;
     }
@@ -223,7 +223,7 @@ class Event extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -232,7 +232,7 @@ class Event extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }
@@ -241,7 +241,7 @@ class Event extends ActiveRecord
     /**
      * @return string
      */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
@@ -250,7 +250,7 @@ class Event extends ActiveRecord
     /**
      * @param string $type
      */
-    public function setType($type)
+    public function setType(string $type)/* : void*/
     {
         $this->type = $type;
     }
@@ -259,7 +259,7 @@ class Event extends ActiveRecord
     /**
      * @return string
      */
-    public function getSubType()
+    public function getSubType() : string
     {
         return $this->sub_type;
     }
@@ -268,7 +268,7 @@ class Event extends ActiveRecord
     /**
      * @param string $sub_type
      */
-    public function setSubType($sub_type)
+    public function setSubType(string $sub_type)/* : void*/
     {
         $this->sub_type = $sub_type;
     }
@@ -277,7 +277,7 @@ class Event extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -286,7 +286,7 @@ class Event extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -295,7 +295,7 @@ class Event extends ActiveRecord
     /**
      * @return string
      */
-    public function getContentTitle()
+    public function getContentTitle() : string
     {
         return $this->content_title;
     }
@@ -304,7 +304,7 @@ class Event extends ActiveRecord
     /**
      * @param string $content_title
      */
-    public function setContentTitle($content_title)
+    public function setContentTitle(string $content_title)/* : void*/
     {
         $this->content_title = $content_title;
     }
@@ -313,7 +313,7 @@ class Event extends ActiveRecord
     /**
      * @return string
      */
-    public function getLibraryName()
+    public function getLibraryName() : string
     {
         return $this->library_name;
     }
@@ -322,7 +322,7 @@ class Event extends ActiveRecord
     /**
      * @param string $library_name
      */
-    public function setLibraryName($library_name)
+    public function setLibraryName(string $library_name)/* : void*/
     {
         $this->library_name = $library_name;
     }
@@ -331,7 +331,7 @@ class Event extends ActiveRecord
     /**
      * @return string
      */
-    public function getLibraryVersion()
+    public function getLibraryVersion() : string
     {
         return $this->library_version;
     }
@@ -340,7 +340,7 @@ class Event extends ActiveRecord
     /**
      * @param string $library_version
      */
-    public function setLibraryVersion($library_version)
+    public function setLibraryVersion(string $library_version)/* : void*/
     {
         $this->library_version = $library_version;
     }

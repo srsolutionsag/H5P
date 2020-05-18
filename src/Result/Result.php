@@ -28,7 +28,7 @@ class Result extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class Result extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -176,7 +176,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -185,7 +185,7 @@ class Result extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -194,7 +194,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -203,7 +203,7 @@ class Result extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -212,7 +212,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId() : int
     {
         return $this->user_id;
     }
@@ -221,7 +221,7 @@ class Result extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)/* : void*/
     {
         $this->user_id = $user_id;
     }
@@ -230,7 +230,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getScore()
+    public function getScore() : int
     {
         return $this->score;
     }
@@ -239,7 +239,7 @@ class Result extends ActiveRecord
     /**
      * @param int $score
      */
-    public function setScore($score)
+    public function setScore(int $score)/* : void*/
     {
         $this->score = $score;
     }
@@ -248,7 +248,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getMaxScore()
+    public function getMaxScore() : int
     {
         return $this->max_score;
     }
@@ -257,7 +257,7 @@ class Result extends ActiveRecord
     /**
      * @param int $max_score
      */
-    public function setMaxScore($max_score)
+    public function setMaxScore(int $max_score)/* : void*/
     {
         $this->max_score = $max_score;
     }
@@ -266,7 +266,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getOpened()
+    public function getOpened() : int
     {
         return $this->opened;
     }
@@ -275,7 +275,7 @@ class Result extends ActiveRecord
     /**
      * @param int $opened
      */
-    public function setOpened($opened)
+    public function setOpened(int $opened)/* : void*/
     {
         $this->opened = $opened;
     }
@@ -284,7 +284,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getFinished()
+    public function getFinished() : int
     {
         return $this->finished;
     }
@@ -293,7 +293,7 @@ class Result extends ActiveRecord
     /**
      * @param int $finished
      */
-    public function setFinished($finished)
+    public function setFinished(int $finished)/* : void*/
     {
         $this->finished = $finished;
     }
@@ -302,7 +302,7 @@ class Result extends ActiveRecord
     /**
      * @return int
      */
-    public function getTime()
+    public function getTime() : int
     {
         return $this->time;
     }
@@ -311,7 +311,7 @@ class Result extends ActiveRecord
     /**
      * @param int $time
      */
-    public function setTime($time)
+    public function setTime(int $time)/* : void*/
     {
         $this->time = $time;
     }

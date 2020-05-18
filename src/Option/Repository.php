@@ -3,6 +3,7 @@
 namespace srag\Plugins\H5P\Options;
 
 use ilH5PPlugin;
+use srag\ActiveRecordConfig\H5P\Config\AbstractFactory;
 use srag\ActiveRecordConfig\H5P\Config\AbstractRepository;
 use srag\ActiveRecordConfig\H5P\Config\Config;
 use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
@@ -30,7 +31,7 @@ final class Repository extends AbstractRepository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -54,7 +55,7 @@ final class Repository extends AbstractRepository
      *
      * @return Factory
      */
-    public function factory()/* : AbstractFactory*/
+    public function factory() : AbstractFactory
     {
         return Factory::getInstance();
     }
@@ -63,7 +64,7 @@ final class Repository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    protected function getTableName()/* : string*/
+    protected function getTableName() : string
     {
         return "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_opt_n";
     }
@@ -72,7 +73,7 @@ final class Repository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    protected function getFields()/* : array*/
+    protected function getFields() : array
     {
         return [
             HubSettingsFormGUI::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
@@ -88,7 +89,7 @@ final class Repository extends AbstractRepository
      *
      * @return mixed
      */
-    public function getOption(/*string*/ $name, $default_value = null)
+    public function getOption(string $name, $default_value = null)
     {
         return $this->getJsonValue($name, false, $default_value);
     }
@@ -98,7 +99,7 @@ final class Repository extends AbstractRepository
      * @param string $name
      * @param mixed  $value
      */
-    public function setOption(/*string*/ $name, $value)/*:void*/
+    public function setOption(string $name, $value)/* : void*/
     {
         $this->setJsonValue($name, $value);
     }

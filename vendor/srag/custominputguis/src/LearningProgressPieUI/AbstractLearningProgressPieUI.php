@@ -67,7 +67,7 @@ abstract class AbstractLearningProgressPieUI
      *
      * @return self
      */
-    public function withShowLegend($show_legend)
+    public function withShowLegend(bool $show_legend) : self
     {
         $this->show_legend = $show_legend;
 
@@ -80,7 +80,7 @@ abstract class AbstractLearningProgressPieUI
      *
      * @return self
      */
-    public function withShowEmpty($show_empty)
+    public function withShowEmpty(bool $show_empty) : self
     {
         $this->show_empty = $show_empty;
 
@@ -91,30 +91,35 @@ abstract class AbstractLearningProgressPieUI
     /**
      * @return array
      */
-    public function getTitles()
+    public function getTitles() : array
     {
-        return array_map(function ($status) {    return $this->getText($status);
-}, self::LP_STATUS);
+        return array_map(function (int $status) : string {
+            return $this->getText($status);
+        }, self::LP_STATUS);
     }
 
 
     /**
      * @return array
      */
-    public function getData()
+    public function getData() : array
     {
         if ($this->cache === null) {
 
             $data = $this->parseData();
 
-            $data = array_map(function ($status) use($data) {
-    return ["color" => self::LP_STATUS_COLOR[$status], "title" => $this->getText($status), "value" => $data[$status] ?: 0];
-}, self::LP_STATUS);
+            $data = array_map(function (int $status) use ($data): array {
+                return [
+                    "color" => self::LP_STATUS_COLOR[$status],
+                    "title" => $this->getText($status),
+                    "value" => ($data[$status] ?: 0)
+                ];
+            }, self::LP_STATUS);
 
             if (!$this->show_empty) {
-                $data = array_filter($data, function (array $data) {
-    return $data["value"] > 0;
-});
+                $data = array_filter($data, function (array $data) : bool {
+                    return ($data["value"] > 0);
+                });
             }
 
             $this->cache = [
@@ -130,7 +135,7 @@ abstract class AbstractLearningProgressPieUI
     /**
      * @return string
      */
-    public function render()
+    public function render() : string
     {
         $data = $this->getData();
         $count = $data["count"];
@@ -158,7 +163,7 @@ abstract class AbstractLearningProgressPieUI
      *
      * @return string
      */
-    private function getText($status)
+    private function getText(int $status) : string
     {
         self::dic()->language()->loadLanguageModule("trac");
 
@@ -169,11 +174,11 @@ abstract class AbstractLearningProgressPieUI
     /**
      * @return int[]
      */
-    protected abstract function parseData();
+    protected abstract function parseData() : array;
 
 
     /**
      * @return int
      */
-    protected abstract function getCount();
+    protected abstract function getCount() : int;
 }

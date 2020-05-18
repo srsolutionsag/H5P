@@ -36,7 +36,7 @@ class ContentsTableGUI extends TableGUI
      * @param ilObjH5PGUI $parent
      * @param string      $parent_cmd
      */
-    public function __construct(ilObjH5PGUI $parent, $parent_cmd)
+    public function __construct(ilObjH5PGUI $parent, string $parent_cmd)
     {
         $this->obj_id = $parent->obj_id;
 
@@ -51,7 +51,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0)/*: string*/
+    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0) : string
     {
         switch ($column) {
             default:
@@ -66,7 +66,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    public function getSelectableColumns2()/*: array*/
+    public function getSelectableColumns2() : array
     {
         $columns = [];
 
@@ -77,7 +77,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/*: void*/
+    protected function initColumns()/* : void*/
     {
         $this->addColumn("");
         $this->addColumn(self::plugin()->translate("title"));
@@ -90,7 +90,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/*: void*/
+    protected function initData()/* : void*/
     {
         $this->setData(self::h5p()->contents()->getContentsByObjectArray($this->parent_obj->object->getId()));
     }
@@ -99,7 +99,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/*: void*/
+    protected function initFilterFields()/* : void*/
     {
 
     }
@@ -108,7 +108,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -117,7 +117,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("contents"));
     }
@@ -126,7 +126,7 @@ class ContentsTableGUI extends TableGUI
     /**
      *
      */
-    protected function initUpDown()/*: void*/
+    protected function initUpDown()/* : void*/
     {
         Waiter::init(Waiter::TYPE_WAITER);
 
@@ -139,7 +139,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @return bool
      */
-    protected function hasResults()
+    protected function hasResults() : bool
     {
         return self::h5p()->results()->hasObjectResults($this->obj_id);
     }
@@ -148,7 +148,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @param array $row
      */
-    protected function fillRow(/*array*/ $row)/*: void*/
+    protected function fillRow(/*array*/ $row)/* : void*/
     {
         $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
         $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);

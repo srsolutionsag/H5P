@@ -67,7 +67,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
      * @param string $title
      * @param string $post_var
      */
-    public function __construct($title = "", $post_var = "")
+    public function __construct(string $title = "", string $post_var = "")
     {
         parent::__construct($title, $post_var);
 
@@ -87,7 +87,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @inheritDoc
      */
-    public function checkInput()
+    public function checkInput() : bool
     {
         $ok = true;
 
@@ -122,7 +122,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @return int
      */
-    public function getShowInputLabel()
+    public function getShowInputLabel() : int
     {
         return $this->show_input_label;
     }
@@ -131,7 +131,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @return TabsInputGUITab[]
      */
-    public function getTabs()
+    public function getTabs() : array
     {
         return $this->tabs;
     }
@@ -140,7 +140,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @inheritDoc
      */
-    public function getTableFilterHTML()
+    public function getTableFilterHTML() : string
     {
         return $this->render();
     }
@@ -149,7 +149,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @inheritDoc
      */
-    public function getToolbarHTML()
+    public function getToolbarHTML() : string
     {
         return $this->render();
     }
@@ -158,7 +158,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @return array
      */
-    public function getValue()
+    public function getValue() : array
     {
         return $this->value;
     }
@@ -180,7 +180,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @return string
      */
-    public function render()
+    public function render() : string
     {
         $tpl = new Template(__DIR__ . "/templates/tabs_input_gui.html");
 
@@ -239,7 +239,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param int $show_input_label
      */
-    public function setShowInputLabel($show_input_label)/* : void*/
+    public function setShowInputLabel(int $show_input_label)/* : void*/
     {
         $this->show_input_label = $show_input_label;
     }
@@ -281,7 +281,8 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
      */
     public function __clone()/*:void*/
     {
-        $this->tabs = array_map(function (TabsInputGUITab $tab) {    return clone $tab;
-}, $this->tabs);
+        $this->tabs = array_map(function (TabsInputGUITab $tab) : TabsInputGUITab {
+            return clone $tab;
+        }, $this->tabs);
     }
 }

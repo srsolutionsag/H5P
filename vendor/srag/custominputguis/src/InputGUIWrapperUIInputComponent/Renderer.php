@@ -27,7 +27,7 @@ abstract class AbstractRenderer extends InputRenderer
     /**
      * @inheritDoc
      */
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [
             InputGUIWrapperUIInputComponent::class
@@ -41,7 +41,7 @@ abstract class AbstractRenderer extends InputRenderer
      *
      * @return string
      */
-    protected function renderInput(Template $tpl, InputGUIWrapperUIInputComponent $input)
+    protected function renderInput(Template $tpl, InputGUIWrapperUIInputComponent $input) : string
     {
         $tpl->setVariable("INPUT", self::output()->getHTML($input->getInput()));
 
@@ -66,7 +66,7 @@ abstract class AbstractRenderer extends InputRenderer
     /**
      * @inheritDoc
      */
-    protected function getTemplatePath($name)
+    protected function getTemplatePath(/*string*/ $name) : string
     {
         if ($name === "input.html") {
             return __DIR__ . "/templates/" . $name;
@@ -91,7 +91,7 @@ if (DICStatic::version()->is6()) {
         /**
          * @inheritDoc
          */
-        public function render(Component $component, RendererInterface $default_renderer)
+        public function render(Component $component, RendererInterface $default_renderer) : string
         {
             $input_tpl = $this->getTemplate("input.html", true, true);
 
@@ -104,7 +104,7 @@ if (DICStatic::version()->is6()) {
         /**
          * @inheritDoc
          */
-        protected function renderInputField(Template $tpl, Input $input, $id, RendererInterface $default_renderer)
+        protected function renderInputField(Template $tpl, Input $input, $id, RendererInterface $default_renderer) : string
         {
             return $this->renderInput($tpl, $input);
         }
@@ -123,7 +123,7 @@ if (DICStatic::version()->is6()) {
         /**
          * @inheritDoc
          */
-        protected function renderNoneGroupInput(InputInterface $input, RendererInterface $default_renderer)
+        protected function renderNoneGroupInput(InputInterface $input, RendererInterface $default_renderer) : string
         {
             $input_tpl = $this->getTemplate("input.html", true, true);
 
@@ -136,7 +136,7 @@ if (DICStatic::version()->is6()) {
         /**
          * @inheritDoc
          */
-        protected function renderInputField(Template $tpl, Input $input, $id)
+        protected function renderInputField(Template $tpl, Input $input, $id) : string
         {
             return $this->renderInput($tpl, $input);
         }

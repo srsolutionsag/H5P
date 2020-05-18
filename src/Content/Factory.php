@@ -30,7 +30,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,7 +52,7 @@ final class Factory
     /**
      * @return Content
      */
-    public function newContentInstance()/*:Content*/
+    public function newContentInstance() : Content
     {
         $content = new Content();
 
@@ -66,7 +66,7 @@ final class Factory
      *
      * @return ContentsTableGUI
      */
-    public function newContentsTableInstance(ilObjH5PGUI $parent, $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS)/*:ContentsTableGUI*/
+    public function newContentsTableInstance(ilObjH5PGUI $parent, string $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS) : ContentsTableGUI
     {
         $table = new ContentsTableGUI($parent, $cmd);
 
@@ -77,7 +77,7 @@ final class Factory
     /**
      * @return ContentLibrary
      */
-    public function newContentLibraryInstance()/*:ContentLibrary*/
+    public function newContentLibraryInstance() : ContentLibrary
     {
         $content_library = new ContentLibrary();
 
@@ -88,7 +88,7 @@ final class Factory
     /**
      * @return ContentUserData
      */
-    public function newContentUserDataInstance()/*:ContentUserData*/
+    public function newContentUserDataInstance() : ContentUserData
     {
         $content_user_data = new ContentUserData();
 

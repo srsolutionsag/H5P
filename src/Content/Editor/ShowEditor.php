@@ -37,7 +37,7 @@ class ShowEditor
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -59,7 +59,7 @@ class ShowEditor
     /**
      *
      */
-    protected function initEditor()
+    protected function initEditor()/* : void*/
     {
         self::h5p()->contents()->show()->initCore();
 
@@ -116,7 +116,7 @@ class ShowEditor
      *
      * @return string
      */
-    public function getEditor(Content $h5p_content = null)
+    public function getEditor(Content $h5p_content = null) : string
     {
         $this->initEditor();
 
@@ -162,10 +162,11 @@ class ShowEditor
      * @param string                  $library
      * @param string                  $params
      * @param EditContentFormGUI|null $form
+     * @param bool                    $message
      *
      * @return Content
      */
-    public function createContent($title, $library, $params, EditContentFormGUI $form = null, $message = true)
+    public function createContent(string $title, string $library, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true) : Content
     {
         $library_id = H5PCore::libraryFromString($library);
         $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
@@ -186,7 +187,7 @@ class ShowEditor
 
         self::h5p()->contents()->editor()->core()->processParameters($content["id"], $content["library"], $params->params, null, null);
 
-        $h5p_content = self::h5p()->contents()->getContentById($content["id"]);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($content["id"]));
 
         if ($form !== null) {
             $form->setH5pContent($h5p_content);
@@ -208,7 +209,7 @@ class ShowEditor
      * @param EditContentFormGUI|null $form
      * @param bool                    $message
      */
-    public function updateContent(Content $h5p_content, $title, $params, EditContentFormGUI $form = null, $message = true)
+    public function updateContent(Content $h5p_content, string $title, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true)/* : void*/
     {
         $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
@@ -236,7 +237,7 @@ class ShowEditor
      * @param Content $h5p_content
      * @param bool    $message
      */
-    public function deleteContent(Content $h5p_content, $message = true)
+    public function deleteContent(Content $h5p_content, bool $message = true)/* : void*/
     {
         self::h5p()->contents()->editor()->storageCore()->deletePackage([
             "id"   => $h5p_content->getContentId(),
@@ -254,7 +255,7 @@ class ShowEditor
      *
      * @return Content|null
      */
-    public function importContent(ImportContentFormGUI $form)
+    public function importContent(ImportContentFormGUI $form)/* : ?Content*/
     {
         $title = pathinfo($form->getInput("xhfp_content")["name"], PATHINFO_FILENAME);
         $file_path = $form->getInput("xhfp_content")["tmp_name"];
@@ -271,7 +272,7 @@ class ShowEditor
 
         self::h5p()->contents()->editor()->storageFramework()->removeTemporarilySavedFiles(self::h5p()->contents()->framework()->getUploadedH5pFolderPath());
 
-        $h5p_content = self::h5p()->contents()->getContentById(self::h5p()->contents()->editor()->storageCore()->contentId);
+        $h5p_content = self::h5p()->contents()->getContentById(intval(self::h5p()->contents()->editor()->storageCore()->contentId));
 
         if ($h5p_content === null) {
             return null;
@@ -286,7 +287,7 @@ class ShowEditor
     /**
      * @param Content $h5p_content
      */
-    public function exportContent(Content $h5p_content)
+    public function exportContent(Content $h5p_content)/* : void*/
     {
         $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 

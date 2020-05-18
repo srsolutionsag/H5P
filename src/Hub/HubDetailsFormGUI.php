@@ -36,7 +36,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
      * @param ilH5PConfigGUI $parent
      * @param string         $key
      */
-    public function __construct(ilH5PConfigGUI $parent, /*string*/ $key)
+    public function __construct(ilH5PConfigGUI $parent, string $key)
     {
         $this->key = $key;
 
@@ -47,7 +47,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(/*string*/ $key)/*: void*/
+    protected function getValue(/*string*/ $key)/* : void*/
     {
 
     }
@@ -56,7 +56,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands()/* : void*/
     {
 
     }
@@ -65,7 +65,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields()/* : void*/
     {
 
     }
@@ -74,7 +74,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -83,7 +83,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
 
     }
@@ -92,7 +92,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    public function storeForm()/*: bool*/
+    public function storeForm() : bool
     {
         return false;
     }
@@ -101,7 +101,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/* : void*/
     {
 
     }
@@ -110,13 +110,13 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getHTML()
+    public function getHTML() : string
     {
         // Library
         $libraries = self::h5p()->hub()->show()->getLibraries();
         $library = $libraries[$this->key];
-        $library["usages"] = self::h5p()->libraries()->getUsageJoin($library["installed_id"]);
-        $library["dependencies"] = self::h5p()->libraries()->getDependenciesJoin($library["installed_id"]);
+        $library["usages"] = self::h5p()->libraries()->getUsageJoin(intval($library["installed_id"]));
+        $library["dependencies"] = self::h5p()->libraries()->getDependenciesJoin(intval($library["installed_id"]));
 
         $h5p_tpl = self::plugin()->template("H5PLibraryDetails.html");
 
@@ -270,7 +270,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
 
             $usage_libraries = new ilNonEditableValueGUI(self::plugin()->translate("usage_libraries"));
             $usage_libraries->setValue($library["usage_libraries"]);
-            $usage_libraries->setInfo(nl2br(implode("\n", array_map(function ($usage) {
+            $usage_libraries->setInfo(nl2br(implode("\n", array_map(function (array $usage) : string {
                 return $usage["title"] . " " . $usage["major_version"] . "." . $usage["minor_version"] . ($usage["runnable"] ? " (" . self::plugin()
                             ->translate("runnable") . ")" : "");
             }, $library["usages"])), false));
@@ -278,7 +278,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
 
             $required_libraries = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
             $required_libraries->setValue(count($library["dependencies"]));
-            $required_libraries->setInfo(nl2br(implode("\n", array_map(function ($dependency) {
+            $required_libraries->setInfo(nl2br(implode("\n", array_map(function (array $dependency) : string {
                 return $dependency["title"] . " " . $dependency["major_version"] . "." . $dependency["minor_version"]
                     . ($dependency["runnable"] ? " (" . self::plugin()->translate("runnable") . ")" : "");
             }, $library["dependencies"])), false));

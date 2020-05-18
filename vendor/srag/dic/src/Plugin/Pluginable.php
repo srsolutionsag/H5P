@@ -15,7 +15,7 @@ interface Pluginable
     /**
      * @return PluginInterface
      */
-    public function getPlugin();
+    public function getPlugin() : PluginInterface;
 
 
     /**

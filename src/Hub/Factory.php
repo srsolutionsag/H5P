@@ -30,7 +30,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -55,7 +55,7 @@ final class Factory
      *
      * @return HubTableGUI
      */
-    public function newHubTableInstance(ilH5PConfigGUI $parent,/*string*/ $cmd = ilH5PConfigGUI::CMD_HUB)/*:HubTableGUI*/
+    public function newHubTableInstance(ilH5PConfigGUI $parent, string $cmd = ilH5PConfigGUI::CMD_HUB) : HubTableGUI
     {
         $table = new HubTableGUI($parent, $cmd);
 
@@ -68,7 +68,7 @@ final class Factory
      *
      * @return UploadLibraryFormGUI
      */
-    public function newUploadLibraryFormInstance(ilH5PConfigGUI $parent)/*:UploadLibraryFormGUI*/
+    public function newUploadLibraryFormInstance(ilH5PConfigGUI $parent) : UploadLibraryFormGUI
     {
         $form = new UploadLibraryFormGUI($parent);
 
@@ -82,7 +82,7 @@ final class Factory
      *
      * @return HubDetailsFormGUI
      */
-    public function newHubDetailsFormInstance(ilH5PConfigGUI $parent, /*string*/ $key)/*:HubDetailsFormGUI*/
+    public function newHubDetailsFormInstance(ilH5PConfigGUI $parent, string $key) : HubDetailsFormGUI
     {
         $details_form = new HubDetailsFormGUI($parent, $key);
 
@@ -93,7 +93,7 @@ final class Factory
     /**
      * @return RefreshHubJob
      */
-    public function newRefreshHubJobInstance()/*:RefreshHubJob*/
+    public function newRefreshHubJobInstance() : RefreshHubJob
     {
         $job = new RefreshHubJob();
 

@@ -30,7 +30,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,7 +52,7 @@ final class Repository
     /**
      * @param Result $result
      */
-    public function deleteResult(Result $result)/*:void*/
+    public function deleteResult(Result $result)/* : void*/
     {
         $result->delete();
     }
@@ -61,7 +61,7 @@ final class Repository
     /**
      * @param SolveStatus $solve_status
      */
-    public function deleteSolveStatus(SolveStatus $solve_status)/*:void*/
+    public function deleteSolveStatus(SolveStatus $solve_status)/* : void*/
     {
         $solve_status->delete();
     }
@@ -70,7 +70,7 @@ final class Repository
     /**
      * @internal
      */
-    public function dropTables()/*:void*/
+    public function dropTables()/* : void*/
     {
         self::dic()->database()->dropTable(Result::TABLE_NAME, false);
         self::dic()->database()->dropTable(SolveStatus::TABLE_NAME, false);
@@ -80,7 +80,7 @@ final class Repository
     /**
      * @return Factory
      */
-    public function factory()/* : Factory*/
+    public function factory() : Factory
     {
         return Factory::getInstance();
     }
@@ -89,7 +89,7 @@ final class Repository
     /**
      * @internal
      */
-    public function installTables()/*:void*/
+    public function installTables()/* : void*/
     {
         Result::updateDB();
         SolveStatus::updateDB();
@@ -99,7 +99,7 @@ final class Repository
     /**
      * @param Result $result
      */
-    public function storeResult(Result $result)/*:void*/
+    public function storeResult(Result $result)/* : void*/
     {
         if (empty($result->getId())) {
             $result->setUserId(self::dic()->user()->getId());
@@ -112,7 +112,7 @@ final class Repository
     /**
      * @param SolveStatus $solve_status
      */
-    public function storeSolveStatus(SolveStatus $solve_status)/*:void*/
+    public function storeSolveStatus(SolveStatus $solve_status)/* : void*/
     {
         if (empty($solve_status->getId())) {
             $solve_status->setUserId(self::dic()->user()->getId());
@@ -128,7 +128,7 @@ final class Repository
      *
      * @return Result|null
      */
-    public function getResultByUserContent($user_id, $content_id)
+    public function getResultByUserContent(int $user_id, int $content_id)/* : ?Result*/
     {
         /**
          * @var Result|null $h5p_result
@@ -148,7 +148,7 @@ final class Repository
      *
      * @return Result[]
      */
-    public function getResultsByContent($content_id)
+    public function getResultsByContent(int $content_id) : array
     {
         /**
          * @var Result[] $h5p_results
@@ -168,7 +168,7 @@ final class Repository
      *
      * @return Result[]
      */
-    public function getResultsByObject($obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
+    public function getResultsByObject(int $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
     {
         /**
          * @var Result[] $h5p_results
@@ -191,7 +191,7 @@ final class Repository
      *
      * @return Result[]
      */
-    public function getResultsByUserObject($user_id, $obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
+    public function getResultsByUserObject(int $user_id, int $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
     {
         /**
          * @var Result[] $h5p_results
@@ -212,7 +212,7 @@ final class Repository
      *
      * @return bool
      */
-    public function hasObjectResults($obj_id)
+    public function hasObjectResults(int $obj_id) : bool
     {
         return (count($this->getResultsByObject($obj_id)) > 0 || count($this->getByObject($obj_id)) > 0);
     }
@@ -223,7 +223,7 @@ final class Repository
      *
      * @return bool
      */
-    public function hasContentResults($content_id)
+    public function hasContentResults(int $content_id) : bool
     {
         return (count($this->getResultsByContent($content_id)) > 0);
     }
@@ -235,7 +235,7 @@ final class Repository
      *
      * @return SolveStatus|null
      */
-    public function getByUser($obj_id, $user_id)
+    public function getByUser(int $obj_id, int $user_id)/* : ?SolveStatus*/
     {
         /**
          * @var SolveStatus|null $h5p_solve_status
@@ -255,7 +255,7 @@ final class Repository
      *
      * @return SolveStatus[]
      */
-    public function getByObject($obj_id)
+    public function getByObject(int $obj_id) : array
     {
         /**
          * @var SolveStatus[] $h5p_solve_statuses
@@ -275,7 +275,7 @@ final class Repository
      *
      * @return Content|null
      */
-    public function getContentByUser($obj_id, $user_id)
+    public function getContentByUser(int $obj_id, int $user_id)/* : ?Content*/
     {
         $h5p_solve_status = $this->getByUser($obj_id, $user_id);
 
@@ -294,7 +294,7 @@ final class Repository
      * @param int $user_id
      * @param int $content_id
      */
-    public function setContentByUser($obj_id, $user_id, $content_id)
+    public function setContentByUser(int $obj_id, int $user_id, int $content_id)/* : void*/
     {
         /**
          * @var SolveStatus|null $h5p_solve_status
@@ -324,7 +324,7 @@ final class Repository
      *
      * @return bool
      */
-    public function isUserFinished($obj_id, $user_id)
+    public function isUserFinished(int $obj_id, int $user_id) : bool
     {
         /**
          * @var SolveStatus|null $h5p_solve_status
@@ -344,7 +344,7 @@ final class Repository
      * @param int $obj_id
      * @param int $user_id
      */
-    public function setUserFinished($obj_id, $user_id)
+    public function setUserFinished(int $obj_id, int $user_id)/* : void*/
     {
         /**
          * @var SolveStatus|null $h5p_solve_status

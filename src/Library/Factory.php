@@ -29,7 +29,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -51,7 +51,7 @@ final class Factory
     /**
      * @return Counter
      */
-    public function newCounterInstance()/*:Counter*/
+    public function newCounterInstance() : Counter
     {
         $counter = new Counter();
 
@@ -62,7 +62,7 @@ final class Factory
     /**
      * @return Library
      */
-    public function newLibraryInstance()/*:Library*/
+    public function newLibraryInstance() : Library
     {
         $library = new Library();
 
@@ -73,7 +73,7 @@ final class Factory
     /**
      * @return LibraryCachedAsset
      */
-    public function newLibraryCachedAssetInstance()/*:LibraryCachedAsset*/
+    public function newLibraryCachedAssetInstance() : LibraryCachedAsset
     {
         $library_cached_asset = new LibraryCachedAsset();
 
@@ -84,7 +84,7 @@ final class Factory
     /**
      * @return LibraryDependencies
      */
-    public function newLibraryDependenciesInstance()/*:LibraryDependencies*/
+    public function newLibraryDependenciesInstance() : LibraryDependencies
     {
         $library_dependencies = new LibraryDependencies();
 
@@ -95,7 +95,7 @@ final class Factory
     /**
      * @return LibraryHubCache
      */
-    public function newLibraryHubCacheInstance()/*:LibraryHubCache*/
+    public function newLibraryHubCacheInstance() : LibraryHubCache
     {
         $library_hub_cache = new LibraryHubCache();
 
@@ -106,7 +106,7 @@ final class Factory
     /**
      * @return LibraryLanguage
      */
-    public function newLibraryLanguageInstance()/*:LibraryLanguage*/
+    public function newLibraryLanguageInstance() : LibraryLanguage
     {
         $library_language = new LibraryLanguage();
 

@@ -28,7 +28,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class SolveStatus extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -153,7 +153,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -162,7 +162,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -171,7 +171,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @return int
      */
-    public function getObjId()
+    public function getObjId() : int
     {
         return $this->obj_id;
     }
@@ -180,7 +180,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId($obj_id)
+    public function setObjId(int $obj_id)/* : void*/
     {
         $this->obj_id = $obj_id;
     }
@@ -189,7 +189,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId() : int
     {
         return $this->user_id;
     }
@@ -198,7 +198,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)/* : void*/
     {
         $this->user_id = $user_id;
     }
@@ -207,7 +207,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -216,7 +216,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -225,7 +225,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @return bool
      */
-    public function isFinished()
+    public function isFinished() : bool
     {
         return $this->finished;
     }
@@ -234,7 +234,7 @@ class SolveStatus extends ActiveRecord
     /**
      * @param bool $finished
      */
-    public function setFinished($finished)
+    public function setFinished(bool $finished)/* : void*/
     {
         $this->finished = $finished;
     }

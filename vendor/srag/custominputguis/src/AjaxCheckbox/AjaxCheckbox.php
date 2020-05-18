@@ -65,7 +65,7 @@ class AjaxCheckbox
     /**
      * @return string
      */
-    public function getAjaxChangeLink()
+    public function getAjaxChangeLink() : string
     {
         return $this->ajax_change_link;
     }
@@ -74,7 +74,7 @@ class AjaxCheckbox
     /**
      * @return bool
      */
-    public function isChecked()
+    public function isChecked() : bool
     {
         return $this->checked;
     }
@@ -83,7 +83,7 @@ class AjaxCheckbox
     /**
      * @return string
      */
-    public function render()
+    public function render() : string
     {
         $tpl = new Template(__DIR__ . "/templates/ajax_checkbox.html");
 
@@ -106,7 +106,7 @@ class AjaxCheckbox
      *
      * @return self
      */
-    public function withAjaxChangeLink($ajax_change_link)
+    public function withAjaxChangeLink(string $ajax_change_link) : self
     {
         $this->ajax_change_link = $ajax_change_link;
 
@@ -119,7 +119,7 @@ class AjaxCheckbox
      *
      * @return self
      */
-    public function withChecked($checked)
+    public function withChecked(bool $checked) : self
     {
         $this->checked = $checked;
 

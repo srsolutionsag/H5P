@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
+class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
 {
     public static $files = array (
         '0c6f877f03a67a7485a2a748706e2f2f' => __DIR__ . '/..' . '/h5p/h5p-core/h5p.classes.php',
@@ -27,7 +27,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
             'srag\\DIC\\H5P\\' => 13,
-            'srag\\CustomInputGUIs\\' => 21,
+            'srag\\CustomInputGUIs\\H5P\\' => 25,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
     );
@@ -49,7 +49,7 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\' => 
+        'srag\\CustomInputGUIs\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -240,9 +240,9 @@ class ComposerStaticInit37963d1d5c220705fa8a965804f27ea8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit37963d1d5c220705fa8a965804f27ea8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit37963d1d5c220705fa8a965804f27ea8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit37963d1d5c220705fa8a965804f27ea8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$classMap;
 
         }, null, ClassLoader::class);
     }

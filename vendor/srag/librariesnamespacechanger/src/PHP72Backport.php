@@ -39,7 +39,7 @@ final class PHP72Backport
      *
      * @return self
      */
-    private static function getInstance(Event $event)
+    private static function getInstance(Event $event) : self
     {
         if (self::$instance === null) {
             self::$instance = new self($event);
@@ -101,11 +101,29 @@ final class PHP72Backport
      *
      * @return string
      */
-    protected function convertPHP72To70($code)
+    protected function convertPHP72To70(string $code) : string
     {
         // Run for each found function
-        $new_code = preg_replace_callback("/(" . self::REGEXP_FUNCTION . ")/", function (array $matches) {    $function = $matches[0];    $function = preg_replace("/(\\))(\\s*:\\s*void)/", '$1/*$2*/', $function);    $function = preg_replace("/(\\))(\\s*:\\s*object)/", '$1/*$2*/', $function);    $function = preg_replace("/(\\))(\\s*:\\s*\\?\\s*" . self::REGEXP_NAME . ")/", '$1/*$2*/', $function);    $function = preg_replace("/([(,]\\s*)(object)(\\s*\\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);    $function = preg_replace("/([(,]\\s*)(\\?\\s*" . self::REGEXP_NAME . ")(\\s*\\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);    return $function;
-}, $code);
+        $new_code = preg_replace_callback("/(" . self::REGEXP_FUNCTION . ")/", function (array $matches) : string {
+            $function = $matches[0];
+
+            // : void
+            $function = preg_replace("/(\))(\s*:\s*void)/", '$1/*$2*/', $function);
+
+            // : object
+            $function = preg_replace("/(\))(\s*:\s*object)/", '$1/*$2*/', $function);
+
+            // : ?type
+            $function = preg_replace("/(\))(\s*:\s*\?\s*" . self::REGEXP_NAME . ")/", '$1/*$2*/', $function);
+
+            // object $param
+            $function = preg_replace("/([(,]\s*)(object)(\s*\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);
+
+            // ?type $param
+            $function = preg_replace("/([(,]\s*)(\?\s*" . self::REGEXP_NAME . ")(\s*\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);
+
+            return $function;
+        }, $code);
 
         if (is_string($new_code)) {
             return $new_code;
@@ -120,7 +138,7 @@ final class PHP72Backport
      * @param string $folder
      * @param array  $files
      */
-    private function getFiles($folder, array &$files = [])/*: void*/
+    private function getFiles(string $folder, array &$files = [])/*: void*/
     {
         $paths = scandir($folder);
 

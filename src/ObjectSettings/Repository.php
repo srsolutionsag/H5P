@@ -33,7 +33,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -57,7 +57,7 @@ final class Repository
      *
      * @return ObjectSettings
      */
-    public function cloneObjectSettings(ObjectSettings $object_settings)/*:ObjectSettings*/
+    public function cloneObjectSettings(ObjectSettings $object_settings) : ObjectSettings
     {
         return $object_settings->copy();
     }
@@ -66,7 +66,7 @@ final class Repository
     /**
      * @param ObjectSettings $object_settings
      */
-    public function deleteObjectSettings(ObjectSettings $object_settings)/*:void*/
+    public function deleteObjectSettings(ObjectSettings $object_settings)/* : void*/
     {
         $object_settings->delete();
     }
@@ -75,7 +75,7 @@ final class Repository
     /**
      * @internal
      */
-    public function dropTables()/*:void*/
+    public function dropTables()/* : void*/
     {
         self::dic()->database()->dropTable(ObjectSettings::TABLE_NAME, false);
 
@@ -88,7 +88,7 @@ final class Repository
     /**
      * @return Factory
      */
-    public function factory()/* : Factory*/
+    public function factory() : Factory
     {
         return Factory::getInstance();
     }
@@ -97,7 +97,7 @@ final class Repository
     /**
      * @return string
      */
-    public function getH5PFolder()/*:string*/
+    public function getH5PFolder() : string
     {
         return ILIAS_WEB_DIR . "/" . CLIENT_ID . "/" . self::DATA_FOLDER;
     }
@@ -108,7 +108,7 @@ final class Repository
      *
      * @return ObjectSettings|null
      */
-    public function getObjectSettingsById(/*int*/ $obj_id)/*:?ObjectSettings*/
+    public function getObjectSettingsById(int $obj_id)/* : ?ObjectSettings*/
     {
         /**
          * @var ObjectSettings|null $object_settings
@@ -125,7 +125,7 @@ final class Repository
     /**
      * @internal
      */
-    public function installTables()/*:void*/
+    public function installTables()/* : void*/
     {
         ObjectSettings::updateDB();
 
@@ -149,7 +149,7 @@ final class Repository
     /**
      * @param ObjectSettings $object_settings
      */
-    public function storeObjectSettings(ObjectSettings $object_settings)/*:void*/
+    public function storeObjectSettings(ObjectSettings $object_settings)/* : void*/
     {
         $object_settings->store();
     }

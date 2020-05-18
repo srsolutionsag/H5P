@@ -35,7 +35,7 @@ final class Output implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function getHTML($value)
+    public function getHTML($value) : string
     {
         if (is_array($value)) {
             $html = "";
@@ -88,7 +88,7 @@ final class Output implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function output($value, $show = false, $main_template = true)/*: void*/
+    public function output($value, bool $show = false, bool $main_template = true)/*: void*/
     {
         $html = $this->getHTML($value);
 

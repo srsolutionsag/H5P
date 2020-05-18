@@ -29,7 +29,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -51,7 +51,7 @@ final class Factory
     /**
      * @return Event
      */
-    public function newEventInstance()/*:Event*/
+    public function newEventInstance() : Event
     {
         $event = new Event();
 
@@ -69,8 +69,14 @@ final class Factory
      *
      * @return EventFramework
      */
-    public function newEventFrameworkInstance($type, $sub_type = null, $content_id = null, $content_title = null, $library_name = null, $library_version = null)/*:EventFramework*/
-    {
+    public function newEventFrameworkInstance(
+        string $type,
+        /*?string*/ $sub_type = null,
+        /*?string*/ $content_id = null,
+        /*?string*/ $content_title = null,
+        /*?string*/ $library_name = null,
+        /*?string*/ $library_version = null
+    ) : EventFramework {
         $event_framework = new EventFramework($type, $sub_type, $content_id, $content_title, $library_name, $library_version);
 
         return $event_framework;
@@ -80,7 +86,7 @@ final class Factory
     /**
      * @return DeleteOldEventsJob
      */
-    public function newDeleteOldEventsJobInstance()/*:DeleteOldEventsJob*/
+    public function newDeleteOldEventsJobInstance() : DeleteOldEventsJob
     {
         $job = new DeleteOldEventsJob();
 

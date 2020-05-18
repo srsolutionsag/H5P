@@ -19,7 +19,7 @@ interface VersionInterface
     /**
      * @return string
      */
-    public function getILIASVersion();
+    public function getILIASVersion() : string;
 
 
     /**
@@ -27,7 +27,7 @@ interface VersionInterface
      *
      * @return bool
      */
-    public function isEqual($version);
+    public function isEqual(string $version) : bool;
 
 
     /**
@@ -35,7 +35,7 @@ interface VersionInterface
      *
      * @return bool
      */
-    public function isGreater($version);
+    public function isGreater(string $version) : bool;
 
 
     /**
@@ -43,7 +43,7 @@ interface VersionInterface
      *
      * @return bool
      */
-    public function isLower($version);
+    public function isLower(string $version) : bool;
 
 
     /**
@@ -51,7 +51,7 @@ interface VersionInterface
      *
      * @return bool
      */
-    public function isMaxVersion($version);
+    public function isMaxVersion(string $version) : bool;
 
 
     /**
@@ -59,17 +59,17 @@ interface VersionInterface
      *
      * @return bool
      */
-    public function isMinVersion($version);
+    public function isMinVersion(string $version) : bool;
 
 
     /**
      * @return bool
      */
-    public function is54();
+    public function is54() : bool;
 
 
     /**
      * @return bool
      */
-    public function is6();
+    public function is6() : bool;
 }

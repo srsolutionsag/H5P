@@ -189,7 +189,7 @@ final class Items
      *
      * @return string
      */
-    public static function renderInputs(array $inputs)
+    public static function renderInputs(array $inputs) : string
     {
         self::init();
 

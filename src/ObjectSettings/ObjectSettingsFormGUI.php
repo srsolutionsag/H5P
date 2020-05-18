@@ -63,7 +63,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands()/* : void*/
     {
         $this->addCommandButton(ilObjH5PGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save"));
 
@@ -74,7 +74,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields()/* : void*/
     {
         $this->fields = [
             "title"           => [
@@ -99,7 +99,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -108,7 +108,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("settings"));
     }
@@ -117,7 +117,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/* : void*/
     {
         switch ($key) {
             case "solve_only_once":
@@ -136,7 +136,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    public function storeForm()/* : bool*/
+    public function storeForm() : bool
     {
         if (!parent::storeForm()) {
             return false;

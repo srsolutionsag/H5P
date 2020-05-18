@@ -28,7 +28,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class ContentUserData extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -199,7 +199,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -208,7 +208,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -217,7 +217,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -226,7 +226,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -235,7 +235,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId() : int
     {
         return $this->user_id;
     }
@@ -244,7 +244,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)/* : void*/
     {
         $this->user_id = $user_id;
     }
@@ -253,7 +253,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getSubContentId()
+    public function getSubContentId() : int
     {
         return $this->sub_content_id;
     }
@@ -262,7 +262,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $sub_content_id
      */
-    public function setSubContentId($sub_content_id)
+    public function setSubContentId(int $sub_content_id)/* : void*/
     {
         $this->sub_content_id = $sub_content_id;
     }
@@ -271,7 +271,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return string
      */
-    public function getDataId()
+    public function getDataId() : string
     {
         return $this->data_id;
     }
@@ -280,7 +280,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param string $data_id
      */
-    public function setDataId($data_id)
+    public function setDataId(string $data_id)/* : void*/
     {
         $this->data_id = $data_id;
     }
@@ -289,7 +289,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return string
      */
-    public function getData()
+    public function getData() : string
     {
         return $this->data;
     }
@@ -298,7 +298,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param string $data
      */
-    public function setData($data)
+    public function setData(string $data)/* : void*/
     {
         $this->data = $data;
     }
@@ -307,7 +307,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return bool
      */
-    public function isPreload()
+    public function isPreload() : bool
     {
         return $this->preload;
     }
@@ -316,7 +316,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param bool $preload
      */
-    public function setPreload($preload)
+    public function setPreload(bool $preload)/* : void*/
     {
         $this->preload = $preload;
     }
@@ -325,7 +325,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return bool
      */
-    public function isInvalidate()
+    public function isInvalidate() : bool
     {
         return $this->invalidate;
     }
@@ -334,7 +334,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param bool $invalidate
      */
-    public function setInvalidate($invalidate)
+    public function setInvalidate(bool $invalidate)/* : void*/
     {
         $this->invalidate = $invalidate;
     }
@@ -343,7 +343,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -352,7 +352,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }
@@ -361,7 +361,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @return int
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt() : int
     {
         return $this->updated_at;
     }
@@ -370,7 +370,7 @@ class ContentUserData extends ActiveRecord
     /**
      * @param int $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt(int $updated_at)/* : void*/
     {
         $this->updated_at = $updated_at;
     }

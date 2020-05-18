@@ -54,7 +54,7 @@ class H5PActionGUI
      *
      * @return string
      */
-    public static function getUrl(/*string*/ $action)/*:string*/
+    public static function getUrl(/*string*/ $action) : string
     {
         self::dic()->ctrl()->setParameterByClass(self::class, self::GET_PARAM_OBJ_ID, self::dic()->ctrl()->getContextObjId());
 
@@ -78,7 +78,7 @@ class H5PActionGUI
     /**
      *
      */
-    public function executeCommand()/*:void*/
+    public function executeCommand()/* : void*/
     {
         $obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_OBJ_ID));
         if (!empty($ref_id = current(ilObject::_getAllReferences($obj_id)))) {
@@ -119,12 +119,12 @@ class H5PActionGUI
     /**
      *
      */
-    protected function h5pAction()/*:void*/
+    protected function h5pAction()/* : void*/
     {
         $action = filter_input(INPUT_GET, H5PActionGUI::CMD_H5P_ACTION);
 
         // Slashes to camelCase
-        $action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) {
+        $action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) : string {
             return strtoupper($matches[0][1]);
         }, $action);
 
@@ -168,7 +168,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function contentTypeCache()/*:void*/
+    protected function contentTypeCache()/* : void*/
     {
         $token = "";
 
@@ -179,7 +179,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function contentsUserData()/*:void*/
+    protected function contentsUserData()/* : void*/
     {
         $content_id = filter_input(INPUT_GET, "content_id");
         $data_id = filter_input(INPUT_GET, "data_type");
@@ -197,7 +197,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function files()/*:void*/
+    protected function files()/* : void*/
     {
         $token = "";
 
@@ -210,7 +210,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function getTutorial()/*:void*/
+    protected function getTutorial()/* : void*/
     {
         $library = filter_input(INPUT_GET, "library");
 
@@ -239,7 +239,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraries()/*:void*/
+    protected function libraries()/* : void*/
     {
         $name = filter_input(INPUT_GET, "machineName", FILTER_SANITIZE_STRING);
         $major_version = filter_input(INPUT_GET, "majorVersion", FILTER_SANITIZE_NUMBER_INT);
@@ -258,7 +258,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraryInstall()/*:void*/
+    protected function libraryInstall()/* : void*/
     {
         $token = "";
 
@@ -271,7 +271,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function libraryUpload()/*:void*/
+    protected function libraryUpload()/* : void*/
     {
         $token = "";
 
@@ -285,7 +285,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function rebuildCache()/*:void*/
+    protected function rebuildCache()/* : void*/
     {
         $start = microtime(true);
 
@@ -312,7 +312,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function restrictLibrary()/*:void*/
+    protected function restrictLibrary()/* : void*/
     {
         $restricted = filter_input(INPUT_GET, "restrict");
 
@@ -335,7 +335,7 @@ class H5PActionGUI
     /**
      *
      */
-    protected function setFinished()/*:void*/
+    protected function setFinished()/* : void*/
     {
         $content_id = filter_input(INPUT_POST, "contentId", FILTER_VALIDATE_INT);
         $score = filter_input(INPUT_POST, "score", FILTER_VALIDATE_INT);

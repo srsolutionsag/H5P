@@ -1,5 +1,10 @@
 # Changelog
 
+## [x]
+- ILIAS 6 support
+- Min. PHP 7.0
+- Remove ILIAS 5.3 support
+
 ## [2.5.6]
 - Fix working in learning sequences
 - Add lucene search

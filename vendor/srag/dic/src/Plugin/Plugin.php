@@ -45,7 +45,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function directory()
+    public function directory() : string
     {
         return $this->plugin_object->getDirectory();
     }
@@ -54,7 +54,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function template($template_file, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true)
+    public function template(string $template_file, bool $remove_unknown_variables = true, bool $remove_empty_blocks = true, bool $plugin = true) : Template
     {
         if ($plugin) {
             return new Template($this->directory() . "/templates/" . $template_file, $remove_unknown_variables, $remove_empty_blocks);
@@ -67,7 +67,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function translate($key, $module = "", array $placeholders = [], $plugin = true, $lang = "", $default = "MISSING %s")
+    public function translate(string $key, string $module = "", array $placeholders = [], bool $plugin = true, string $lang = "", string $default = "MISSING %s") : string
     {
         if (!empty($module)) {
             $key = $module . "_" . $key;
@@ -126,7 +126,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function getPluginObject()
+    public function getPluginObject() : ilPlugin
     {
         return $this->plugin_object;
     }
@@ -137,7 +137,7 @@ final class Plugin implements PluginInterface
      *
      * @return ilLanguage
      */
-    private static final function getLanguage($lang)
+    private static final function getLanguage(string $lang) : ilLanguage
     {
         if (!isset(self::$languages[$lang])) {
             self::$languages[$lang] = new ilLanguage($lang);

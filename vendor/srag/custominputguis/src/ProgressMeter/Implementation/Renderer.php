@@ -372,7 +372,7 @@ class Renderer extends AbstractComponentRenderer
     /**
      * @inheritDoc
      */
-    protected function getTemplatePath($name)
+    protected function getTemplatePath(/*string*/ $name) : string
     {
         return __DIR__ . "/../templates/" . $name;
     }

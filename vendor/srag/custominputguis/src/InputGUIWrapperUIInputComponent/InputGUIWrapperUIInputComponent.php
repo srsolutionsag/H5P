@@ -67,7 +67,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @return ilFormPropertyGUI
      */
-    public function getInput()
+    public function getInput() : ilFormPropertyGUI
     {
         return $this->input;
     }
@@ -107,7 +107,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    protected function isClientSideValueOk($value)
+    protected function isClientSideValueOk($value) : bool
     {
         return $this->input->checkInput();
     }
@@ -143,7 +143,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withByline($info)
+    public function withByline(/*string*/ $info) : self
     {
         $this->checkStringArg("byline", $info);
 
@@ -159,7 +159,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withDisabled($disabled)
+    public function withDisabled(/*bool*/ $disabled) : self
     {
         $this->checkBoolArg("disabled", $disabled);
 
@@ -175,7 +175,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withError($error)
+    public function withError(/*string*/ $error) : self
     {
         $clone = clone $this;
         $clone->input = clone $this->input;
@@ -189,7 +189,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withLabel($label)
+    public function withLabel(/*string*/ $label) : self
     {
         $this->checkStringArg("label", $label);
 
@@ -205,7 +205,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withNameFrom(NameSource $source)
+    public function withNameFrom(NameSource $source) : self
     {
         $clone = parent::withNameFrom($source);
         $clone->input = clone $this->input;
@@ -223,7 +223,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withRequired($required)
+    public function withRequired(/*bool*/ $required) : self
     {
         $this->checkBoolArg("is_required", $required);
 
@@ -239,7 +239,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function withValue($value)
+    public function withValue($value) : self
     {
         Items::setValueToItem($this->input, $value);
 
@@ -250,9 +250,10 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function getUpdateOnLoadCode()
+    public function getUpdateOnLoadCode() : Closure
     {
-        return function ($id) {    return "";
-};
+        return function (string $id) : string {
+            return "";
+        };
     }
 }

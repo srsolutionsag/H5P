@@ -57,7 +57,7 @@ final class PHP7Backport
      *
      * @deprecated
      */
-    private static function getInstance(Event $event)
+    private static function getInstance(Event $event) : self
     {
         if (self::$instance === null) {
             self::$instance = new self($event);
@@ -125,10 +125,11 @@ final class PHP7Backport
         }
         mkdir(self::TEMP_FOLDER_LIBRARIES);
 
-        $libraries = array_map(function ($library) {    return __DIR__ . "/../../" . strtolower($library);
-}, array_filter(scandir(__DIR__ . "/../../"), function ($folder) {
-    return !in_array($folder, [".", ".."]);
-}));
+        $libraries = array_map(function (string $library) : string {
+            return __DIR__ . "/../../" . strtolower($library);
+        }, array_filter(scandir(__DIR__ . "/../../"), function (string $folder) : bool {
+            return (!in_array($folder, [".", ".."]));
+        }));
 
         // Apply php7backport for each library
         foreach ($libraries as $library => $folder) {

@@ -28,7 +28,7 @@ class Library extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class Library extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -280,7 +280,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -289,7 +289,7 @@ class Library extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -298,7 +298,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -307,7 +307,7 @@ class Library extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }
@@ -316,7 +316,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt() : int
     {
         return $this->updated_at;
     }
@@ -325,7 +325,7 @@ class Library extends ActiveRecord
     /**
      * @param int $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt(int $updated_at)/* : void*/
     {
         $this->updated_at = $updated_at;
     }
@@ -334,7 +334,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -343,7 +343,7 @@ class Library extends ActiveRecord
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)/* : void*/
     {
         $this->name = $name;
     }
@@ -352,7 +352,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }
@@ -361,7 +361,7 @@ class Library extends ActiveRecord
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)/* : void*/
     {
         $this->title = $title;
     }
@@ -370,7 +370,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getMajorVersion()
+    public function getMajorVersion() : int
     {
         return $this->major_version;
     }
@@ -379,7 +379,7 @@ class Library extends ActiveRecord
     /**
      * @param int $major_version
      */
-    public function setMajorVersion($major_version)
+    public function setMajorVersion(int $major_version)/* : void*/
     {
         $this->major_version = $major_version;
     }
@@ -388,7 +388,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getMinorVersion()
+    public function getMinorVersion() : int
     {
         return $this->minor_version;
     }
@@ -397,7 +397,7 @@ class Library extends ActiveRecord
     /**
      * @param int $minor_version
      */
-    public function setMinorVersion($minor_version)
+    public function setMinorVersion(int $minor_version)/* : void*/
     {
         $this->minor_version = $minor_version;
     }
@@ -406,7 +406,7 @@ class Library extends ActiveRecord
     /**
      * @return int
      */
-    public function getPatchVersion()
+    public function getPatchVersion() : int
     {
         return $this->patch_version;
     }
@@ -415,7 +415,7 @@ class Library extends ActiveRecord
     /**
      * @param int $patch_version
      */
-    public function setPatchVersion($patch_version)
+    public function setPatchVersion(int $patch_version)/* : void*/
     {
         $this->patch_version = $patch_version;
     }
@@ -424,7 +424,7 @@ class Library extends ActiveRecord
     /**
      * @return bool
      */
-    public function canRunnable()
+    public function canRunnable() : bool
     {
         return $this->runnable;
     }
@@ -433,7 +433,7 @@ class Library extends ActiveRecord
     /**
      * @param bool $runnable
      */
-    public function setRunnable($runnable)
+    public function setRunnable(bool $runnable)/* : void*/
     {
         $this->runnable = $runnable;
     }
@@ -442,7 +442,7 @@ class Library extends ActiveRecord
     /**
      * @return bool
      */
-    public function isRestricted()
+    public function isRestricted() : bool
     {
         return $this->restricted;
     }
@@ -451,7 +451,7 @@ class Library extends ActiveRecord
     /**
      * @param bool $restricted
      */
-    public function setRestricted($restricted)
+    public function setRestricted(bool $restricted)/* : void*/
     {
         $this->restricted = $restricted;
     }
@@ -460,7 +460,7 @@ class Library extends ActiveRecord
     /**
      * @return bool
      */
-    public function isFullscreen()
+    public function isFullscreen() : bool
     {
         return $this->fullscreen;
     }
@@ -469,7 +469,7 @@ class Library extends ActiveRecord
     /**
      * @param bool $fullscreen
      */
-    public function setFullscreen($fullscreen)
+    public function setFullscreen(bool $fullscreen)/* : void*/
     {
         $this->fullscreen = $fullscreen;
     }
@@ -478,7 +478,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getEmbedTypes()
+    public function getEmbedTypes() : string
     {
         return $this->embed_types;
     }
@@ -487,7 +487,7 @@ class Library extends ActiveRecord
     /**
      * @param string $embed_types
      */
-    public function setEmbedTypes($embed_types)
+    public function setEmbedTypes(string $embed_types)/* : void*/
     {
         $this->embed_types = $embed_types;
     }
@@ -496,7 +496,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getPreloadedJs()
+    public function getPreloadedJs() : string
     {
         return $this->preloaded_js;
     }
@@ -505,7 +505,7 @@ class Library extends ActiveRecord
     /**
      * @param string $preloaded_js
      */
-    public function setPreloadedJs($preloaded_js)
+    public function setPreloadedJs(string $preloaded_js)/* : void*/
     {
         $this->preloaded_js = $preloaded_js;
     }
@@ -514,7 +514,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getPreloadedCss()
+    public function getPreloadedCss() : string
     {
         return $this->preloaded_css;
     }
@@ -523,7 +523,7 @@ class Library extends ActiveRecord
     /**
      * @param string $preloaded_css
      */
-    public function setPreloadedCss($preloaded_css)
+    public function setPreloadedCss(string $preloaded_css)/* : void*/
     {
         $this->preloaded_css = $preloaded_css;
     }
@@ -532,7 +532,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getDropLibraryCss()
+    public function getDropLibraryCss() : string
     {
         return $this->drop_library_css;
     }
@@ -541,7 +541,7 @@ class Library extends ActiveRecord
     /**
      * @param string $drop_library_css
      */
-    public function setDropLibraryCss($drop_library_css)
+    public function setDropLibraryCss(string $drop_library_css)/* : void*/
     {
         $this->drop_library_css = $drop_library_css;
     }
@@ -550,7 +550,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getSemantics()
+    public function getSemantics() : string
     {
         return $this->semantics;
     }
@@ -559,7 +559,7 @@ class Library extends ActiveRecord
     /**
      * @param string $semantics
      */
-    public function setSemantics($semantics)
+    public function setSemantics(string $semantics)/* : void*/
     {
         $this->semantics = $semantics;
     }
@@ -568,7 +568,7 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getTutorialUrl()
+    public function getTutorialUrl() : string
     {
         return $this->tutorial_url;
     }
@@ -577,7 +577,7 @@ class Library extends ActiveRecord
     /**
      * @param string $tutorial_url
      */
-    public function setTutorialUrl($tutorial_url)
+    public function setTutorialUrl(string $tutorial_url)/* : void*/
     {
         $this->tutorial_url = $tutorial_url;
     }
@@ -586,7 +586,7 @@ class Library extends ActiveRecord
     /**
      * @return bool
      */
-    public function hasIcon()
+    public function hasIcon() : bool
     {
         return $this->has_icon;
     }
@@ -595,7 +595,7 @@ class Library extends ActiveRecord
     /**
      * @param bool $has_icon
      */
-    public function setHasIcon($has_icon)
+    public function setHasIcon(bool $has_icon)/* : void*/
     {
         $this->has_icon = $has_icon;
     }

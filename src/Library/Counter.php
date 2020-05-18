@@ -28,7 +28,7 @@ class Counter extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class Counter extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -109,7 +109,7 @@ class Counter extends ActiveRecord
     /**
      *
      */
-    public function addNum()
+    public function addNum()/* : void*/
     {
         $this->num++;
     }
@@ -148,7 +148,7 @@ class Counter extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -157,7 +157,7 @@ class Counter extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -166,7 +166,7 @@ class Counter extends ActiveRecord
     /**
      * @return string
      */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
@@ -175,7 +175,7 @@ class Counter extends ActiveRecord
     /**
      * @param string $type
      */
-    public function setType($type)
+    public function setType(string $type)/* : void*/
     {
         $this->type = $type;
     }
@@ -184,7 +184,7 @@ class Counter extends ActiveRecord
     /**
      * @return string
      */
-    public function getLibraryName()
+    public function getLibraryName() : string
     {
         return $this->library_name;
     }
@@ -193,7 +193,7 @@ class Counter extends ActiveRecord
     /**
      * @param string $library_name
      */
-    public function setLibraryName($library_name)
+    public function setLibraryName(string $library_name)/* : void*/
     {
         $this->library_name = $library_name;
     }
@@ -202,7 +202,7 @@ class Counter extends ActiveRecord
     /**
      * @return string
      */
-    public function getLibraryVersion()
+    public function getLibraryVersion() : string
     {
         return $this->library_version;
     }
@@ -211,7 +211,7 @@ class Counter extends ActiveRecord
     /**
      * @param string $library_version
      */
-    public function setLibraryVersion($library_version)
+    public function setLibraryVersion(string $library_version)/* : void*/
     {
         $this->library_version = $library_version;
     }
@@ -220,7 +220,7 @@ class Counter extends ActiveRecord
     /**
      * @return int
      */
-    public function getNum()
+    public function getNum() : int
     {
         return $this->num;
     }
@@ -229,7 +229,7 @@ class Counter extends ActiveRecord
     /**
      * @param int $num
      */
-    public function setNum($num)
+    public function setNum(int $num)/* : void*/
     {
         $this->num = $num;
     }

@@ -28,7 +28,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class LibraryDependencies extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -132,7 +132,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -141,7 +141,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -150,7 +150,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -159,7 +159,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -168,7 +168,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @return int
      */
-    public function getRequiredLibraryId()
+    public function getRequiredLibraryId() : int
     {
         return $this->required_library_id;
     }
@@ -177,7 +177,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @param int $required_library_id
      */
-    public function setRequiredLibraryId($required_library_id)
+    public function setRequiredLibraryId(int $required_library_id)/* : void*/
     {
         $this->required_library_id = $required_library_id;
     }
@@ -186,7 +186,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @return string
      */
-    public function getDependencyType()
+    public function getDependencyType() : string
     {
         return $this->dependency_type;
     }
@@ -195,7 +195,7 @@ class LibraryDependencies extends ActiveRecord
     /**
      * @param string $dependency_type
      */
-    public function setDependencyType($dependency_type)
+    public function setDependencyType(string $dependency_type)/* : void*/
     {
         $this->dependency_type = $dependency_type;
     }

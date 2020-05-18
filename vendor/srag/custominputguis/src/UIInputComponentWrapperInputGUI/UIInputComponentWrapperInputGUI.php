@@ -59,7 +59,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      * @param Input  $input
      * @param string $post_var
      */
-    public function __construct(Input $input, $post_var = "")
+    public function __construct(Input $input, string $post_var = "")
     {
         $this->input = $input;
 
@@ -74,7 +74,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @inheritDoc
      */
-    public function checkInput()
+    public function checkInput() : bool
     {
         try {
             $this->input = $this->input->withInput(new PostDataFromServerRequest(self::dic()->http()->request()));
@@ -122,7 +122,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @return Input
      */
-    public function getInput()
+    public function getInput() : Input
     {
         return $this->input;
     }
@@ -149,7 +149,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @inheritDoc
      */
-    public function getTableFilterHTML()
+    public function getTableFilterHTML() : string
     {
         return $this->render();
     }
@@ -167,7 +167,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @inheritDoc
      */
-    public function getToolbarHTML()
+    public function getToolbarHTML() : string
     {
         return $this->render();
     }
@@ -198,7 +198,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @return string
      */
-    public function render()
+    public function render() : string
     {
         $tpl = new Template(__DIR__ . "/templates/input.html");
 

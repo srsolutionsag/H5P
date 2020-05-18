@@ -77,7 +77,7 @@ abstract class AbstractAjaxAutoCompleteCtrl
      *
      * @return bool
      */
-    public function validateOptions(array $ids)
+    public function validateOptions(array $ids) : bool
     {
         return (count($ids) === count($this->fillOptions($ids)));
     }
@@ -88,7 +88,7 @@ abstract class AbstractAjaxAutoCompleteCtrl
      *
      * @return array
      */
-    public abstract function searchOptions($search = null);
+    public abstract function searchOptions(/*?*/ string $search = null) : array;
 
 
     /**
@@ -96,5 +96,5 @@ abstract class AbstractAjaxAutoCompleteCtrl
      *
      * @return array
      */
-    public abstract function fillOptions(array $ids);
+    public abstract function fillOptions(array $ids) : array;
 }

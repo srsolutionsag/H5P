@@ -23,7 +23,7 @@ interface Section
      *
      * @return self
      */
-    public function withTextColor(Color $textColor);
+    public function withTextColor(Color $textColor) : self;
 
 
     /**
@@ -31,7 +31,7 @@ interface Section
      *
      * @return string
      */
-    public function getName();
+    public function getName() : string;
 
 
     /**
@@ -39,7 +39,7 @@ interface Section
      *
      * @return SectionValue
      */
-    public function getValue();
+    public function getValue() : SectionValue;
 
 
     /**
@@ -47,7 +47,7 @@ interface Section
      *
      * @return float
      */
-    public function getPercentage();
+    public function getPercentage() : float;
 
 
     /**
@@ -56,7 +56,7 @@ interface Section
      *
      * @return float
      */
-    public function getStrokeLength();
+    public function getStrokeLength() : float;
 
 
     /**
@@ -65,7 +65,7 @@ interface Section
      *
      * @return float
      */
-    public function getOffset();
+    public function getOffset() : float;
 
 
     /**
@@ -73,7 +73,7 @@ interface Section
      *
      * @return Color
      */
-    public function getColor();
+    public function getColor() : Color;
 
 
     /**
@@ -81,7 +81,7 @@ interface Section
      *
      * @return LegendEntry
      */
-    public function getLegendEntry();
+    public function getLegendEntry() : LegendEntry;
 
 
     /**
@@ -89,5 +89,5 @@ interface Section
      *
      * @return Color
      */
-    public function getTextColor();
+    public function getTextColor() : Color;
 }

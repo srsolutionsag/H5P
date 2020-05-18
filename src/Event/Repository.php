@@ -30,7 +30,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,7 +52,7 @@ final class Repository
     /**
      * @param Event $event
      */
-    public function deleteEvent(Event $event)/*:void*/
+    public function deleteEvent(Event $event)/* : void*/
     {
         $event->delete();
     }
@@ -61,7 +61,7 @@ final class Repository
     /**
      * @internal
      */
-    public function dropTables()/*:void*/
+    public function dropTables()/* : void*/
     {
         self::dic()->database()->dropTable(Event::TABLE_NAME, false);
     }
@@ -70,7 +70,7 @@ final class Repository
     /**
      * @return Factory
      */
-    public function factory()/* : Factory*/
+    public function factory() : Factory
     {
         return Factory::getInstance();
     }
@@ -79,7 +79,7 @@ final class Repository
     /**
      * @internal
      */
-    public function installTables()/*:void*/
+    public function installTables()/* : void*/
     {
         Event::updateDB();
     }
@@ -88,7 +88,7 @@ final class Repository
     /**
      * @param Event $event
      */
-    public function storeEvent(Event $event)/*:void*/
+    public function storeEvent(Event $event)/* : void*/
     {
         if (empty($event->getEventId())) {
             $event->setCreatedAt(time());
@@ -103,7 +103,7 @@ final class Repository
     /**
      * @return string[]
      */
-    public function getAuthorsRecentlyUsedLibraries()
+    public function getAuthorsRecentlyUsedLibraries() : array
     {
         $user_id = self::dic()->user()->getId();
 
@@ -128,7 +128,7 @@ final class Repository
      *
      * @return Event[]
      */
-    public function getOldEvents($older_than)
+    public function getOldEvents(int $older_than) : array
     {
         /**
          * @var Event[] $h5p_events

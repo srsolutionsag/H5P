@@ -21,7 +21,7 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P"
   },
   "require": {
-    "php": ">=5.6",
+    "php": ">=7.0",
     "h5p/h5p-core": "1.24.0",
     "h5p/h5p-editor": "1.24.1",
     "srag/activerecordconfig": ">=0.1.0",
@@ -44,7 +44,9 @@
     "sort-packages": true
   },
   "scripts": {
-    "pre-autoload-dump": "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
-    "post-update-cmd": "srag\\LibrariesNamespaceChanger\\PHP7Backport::PHP7Backport"
+    "pre-autoload-dump": [
+      "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
+      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport"
+    ]
   }
 }

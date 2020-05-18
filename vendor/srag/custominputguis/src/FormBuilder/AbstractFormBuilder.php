@@ -51,7 +51,7 @@ abstract class AbstractFormBuilder implements FormBuilder
      *
      * @param object $parent
      */
-    public function __construct(object $parent)
+    public function __construct(/*object*/ $parent)
     {
         $this->parent = $parent;
     }
@@ -60,7 +60,7 @@ abstract class AbstractFormBuilder implements FormBuilder
     /**
      * @return Form
      */
-    protected function buildForm()
+    protected function buildForm() : Form
     {
         $form = self::dic()->ui()->factory()->input()->container()->form()->standard($this->getAction(), [
             "form" => self::dic()->ui()->factory()->input()->field()->section($this->getFields(), $this->getTitle())
@@ -75,7 +75,7 @@ abstract class AbstractFormBuilder implements FormBuilder
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand()/* : void*/
     {
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
@@ -92,7 +92,44 @@ abstract class AbstractFormBuilder implements FormBuilder
                     }
                 }
                 break;
-protectpublic function getForm()
+
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getAction() : string
+    {
+        return self::dic()->ctrl()->getFormAction($this->parent);
+    }
+
+
+    /**
+     * @return array
+     */
+    protected abstract function getButtons() : array;
+
+
+    /**
+     * @return array
+     */
+    protected abstract function getData() : array;
+
+
+    /**
+     * @return array
+     */
+    protected abstract function getFields() : array;
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getForm() : Form
     {
         if ($this->form === null) {
             $this->form = $this->buildForm();
@@ -105,7 +142,13 @@ protectpublic function getForm()
     /**
      * @return string
      */
-    protepublic function render()
+    protected abstract function getTitle() : string;
+
+
+    /**
+     * @inheritDoc
+     */
+    public function render() : string
     {
         $html = self::output()->getHTML($this->getForm());
 
@@ -120,18 +163,28 @@ protectpublic function getForm()
      *
      * @return string
      */
-    protected function setButtonsToForm($html)
+    protected function setButtonsToForm(string $html) : string
     {
         $html = preg_replace_callback('/(<button\s+class\s*=\s*"btn btn-default"\s+data-action\s*=\s*"#?"(\s+id\s*=\s*"[a-z0-9_]+")?\s*>)(.+)(<\/button\s*>)/',
-            function (array $matches) {    $buttons = [];    foreach ($this->getButtons() as $cmd => $label) {        if (!empty($buttons)) {            $buttons[] = "&nbsp;";
-        }
-        $button = ilSubmitButton::getInstance();
-        $button->setCommand($cmd);
-        $button->setCaption($label, false);
-        $buttons[] = $button;
-    }
-    return self::output()->getHTML($buttons);
-}, $html);
+            function (array $matches) : string {
+                $buttons = [];
+
+                foreach ($this->getButtons() as $cmd => $label) {
+                    if (!empty($buttons)) {
+                        $buttons[] = "&nbsp;";
+                    }
+
+                    $button = ilSubmitButton::getInstance();
+
+                    $button->setCommand($cmd);
+
+                    $button->setCaption($label, false);
+
+                    $buttons[] = $button;
+                }
+
+                return self::output()->getHTML($buttons);
+            }, $html);
 
         return $html;
     }
@@ -140,7 +193,7 @@ protectpublic function getForm()
     /**
      * @param Form $form
      */
-    protected function setDataToForm(Form $form)
+    protected function setDataToForm(Form $form)/* : void*/
     {
         $data = $this->getData();
 
@@ -167,9 +220,9 @@ protectpublic function getForm()
                                 }
                             }
                         }
-                        Closure::bind(function (array $inputs2) {
-    $this->inputs = $inputs2;
-}, $field->getDependantGroup(), Group::class)($inputs2);
+                        Closure::bind(function (array $inputs2)/* : void*/ {
+                            $this->inputs = $inputs2;
+                        }, $field->getDependantGroup(), Group::class)($inputs2);
                     }
                     continue;
                 }
@@ -194,18 +247,18 @@ protectpublic function getForm()
                                 }
                             }
                         }
-                        Closure::bind(function (array $inputs2) {
-    $this->inputs = $inputs2;
-}, $field, Group::class)($inputs2);
+                        Closure::bind(function (array $inputs2)/* : void*/ {
+                            $this->inputs = $inputs2;
+                        }, $field, Group::class)($inputs2);
                     }
                     continue;
                 }
 
                 if ($field instanceof RadioInterface
                     && isset($data[$key]["value"])
-                    && !empty($inputs2 = Closure::bind(function (array $data, $key) {
-    return $this->dependant_fields[$data[$key]["value"]];
-}, $field, Radio::class)($data, $key))
+                    && !empty($inputs2 = Closure::bind(function (array $data, string $key) : array {
+                        return $this->dependant_fields[$data[$key]["value"]];
+                    }, $field, Radio::class)($data, $key))
                 ) {
                     try {
                         $inputs[$key] = $field = $field->withValue($data[$key]["value"]);
@@ -222,9 +275,9 @@ protectpublic function getForm()
                             }
                         }
                     }
-                    Closure::bind(function (array $data, $key, array $inputs2) {
-    $this->dependant_fields[$data[$key]["value"]] = $inputs2;
-}, $field, Radio::class)($data, $key, $inputs2);
+                    Closure::bind(function (array $data, string $key, array $inputs2)/* : void*/ {
+                        $this->dependant_fields[$data[$key]["value"]] = $inputs2;
+                    }, $field, Radio::class)($data, $key, $inputs2);
                     continue;
                 }
 
@@ -241,9 +294,9 @@ protectpublic function getForm()
                                 }
                             }
                         }
-                        Closure::bind(function (array $inputs2) {
-    $this->inputs = $inputs2;
-}, $field, Group::class)($inputs2);
+                        Closure::bind(function (array $inputs2)/* : void*/ {
+                            $this->inputs = $inputs2;
+                        }, $field, Group::class)($inputs2);
                     }
                     continue;
                 }
@@ -254,16 +307,16 @@ protectpublic function getForm()
                 }
             }
         }
-        Closure::bind(function (array $inputs) {
-    $this->inputs = $inputs;
-}, $form->getInputs()["form"], Group::class)($inputs);
+        Closure::bind(function (array $inputs)/* : void*/ {
+            $this->inputs = $inputs;
+        }, $form->getInputs()["form"], Group::class)($inputs);
     }
 
 
     /**
      * @inheritDoc
      */
-    public function storeForm()
+    public function storeForm() : bool
     {
         try {
             $this->form = $this->getForm()->withRequest(self::dic()->http()->request());
@@ -274,7 +327,7 @@ protectpublic function getForm()
                 throw new Exception();
             }
 
-            $data = isset($data["form"]) ? $data["form"] : [];
+            $data = $data["form"] ?? [];
 
             if (!$this->validateData($data)) {
                 throw new Exception();
@@ -294,7 +347,15 @@ protectpublic function getForm()
     /**
      * @param array $data
      */
-   protected function validateData(array $data)
+    protected abstract function storeData(array $data)/* : void*/;
+
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    protected function validateData(array $data) : bool
     {
         return true;
     }

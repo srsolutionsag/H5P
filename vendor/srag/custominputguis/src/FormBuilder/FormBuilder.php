@@ -17,17 +17,17 @@ interface FormBuilder
     /**
      * @return Form
      */
-    public function getForm();
+    public function getForm() : Form;
 
 
     /**
      * @return string
      */
-    public function render();
+    public function render() : string;
 
 
     /**
      * @return bool
      */
-    public function storeForm();
+    public function storeForm() : bool;
 }

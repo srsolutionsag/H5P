@@ -28,7 +28,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class LibraryLanguage extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -129,7 +129,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -138,7 +138,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -147,7 +147,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -156,7 +156,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -165,7 +165,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @return string
      */
-    public function getLanguageCode()
+    public function getLanguageCode() : string
     {
         return $this->language_code;
     }
@@ -174,7 +174,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @param string $language_code
      */
-    public function setLanguageCode($language_code)
+    public function setLanguageCode(string $language_code)/* : void*/
     {
         $this->language_code = $language_code;
     }
@@ -183,7 +183,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @return string
      */
-    public function getTranslation()
+    public function getTranslation() : string
     {
         return $this->translation;
     }
@@ -192,7 +192,7 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @param string $translation
      */
-    public function setTranslation($translation)
+    public function setTranslation(string $translation)/* : void*/
     {
         $this->translation = $translation;
     }

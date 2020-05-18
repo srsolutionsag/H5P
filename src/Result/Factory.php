@@ -30,7 +30,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,7 +52,7 @@ final class Factory
     /**
      * @return Result
      */
-    public function newResultInstance()/*:Result*/
+    public function newResultInstance() : Result
     {
         $result = new Result();
 
@@ -66,7 +66,7 @@ final class Factory
      *
      * @return ResultsTableGUI
      */
-    public function newResultsTableInstance(ilObjH5PGUI $parent,/*string*/ $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS)/*:ResultsTableGUI*/
+    public function newResultsTableInstance(ilObjH5PGUI $parent, string $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS) : ResultsTableGUI
     {
         $table = new ResultsTableGUI($parent, $cmd);
 
@@ -77,7 +77,7 @@ final class Factory
     /**
      * @return SolveStatus
      */
-    public function newSolveStatusInstance()/*:SolveStatus*/
+    public function newSolveStatusInstance() : SolveStatus
     {
         $solve_status = new SolveStatus();
 

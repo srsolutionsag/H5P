@@ -25,7 +25,7 @@ class MultilangualTabsInputGUI
      *
      * @return array
      */
-    public static function generate(array $items, $default_language = false, $default_required = true)
+    public static function generate(array $items, bool $default_language = false, bool $default_required = true) : array
     {
         foreach (self::getLanguages($default_language) as $lang_key => $lang_title) {
             $tab_items = [];
@@ -60,7 +60,7 @@ class MultilangualTabsInputGUI
      * @param bool                $default_language
      * @param bool                $default_required
      */
-    public static function generateLegacy(TabsInputGUI $tabs, array $inputs, $default_language = false, $default_required = true)/*:void*/
+    public static function generateLegacy(TabsInputGUI $tabs, array $inputs, bool $default_language = false, bool $default_required = true)/*:void*/
     {
         foreach (self::getLanguages($default_language) as $lang_key => $lang_title) {
             $tab = new TabsInputGUITab($lang_title, $lang_key);
@@ -86,7 +86,7 @@ class MultilangualTabsInputGUI
      *
      * @return array
      */
-    public static function getLanguages($default = false)
+    public static function getLanguages(bool $default = false) : array
     {
         $lang_keys = self::dic()->language()->getInstalledLanguages();
 
@@ -106,7 +106,7 @@ class MultilangualTabsInputGUI
      *
      * @return mixed
      */
-    public static function getValueForLang(array $values,/*?*/ $lang_key = null, $sub_key = null, $use_default_if_not_set = true)
+    public static function getValueForLang(array $values,/*?*/ string $lang_key = null, string $sub_key = null, bool $use_default_if_not_set = true)
     {
         if (empty($lang_key)) {
             $lang_key = self::dic()->language()->getLangKey();
@@ -150,7 +150,7 @@ class MultilangualTabsInputGUI
      * @param string      $lang_key
      * @param string|null $sub_key
      */
-    public static function setValueForLang(array &$values, $value, $lang_key, $sub_key = null)/*:void*/
+    public static function setValueForLang(array &$values, $value, string $lang_key, string $sub_key = null)/*:void*/
     {
         if (!empty($sub_key)) {
             if (!is_array($values[$lang_key])) {

@@ -79,7 +79,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      * @param string $title
      * @param string $post_var
      */
-    public function __construct($title = "", $post_var = "")
+    public function __construct(string $title = "", string $post_var = "")
     {
         parent::__construct($title, $post_var);
 
@@ -91,7 +91,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      * @param string $key
      * @param mixed  $value
      */
-    public function addOption($key, $value)/*:void*/
+    public function addOption(string $key, $value)/*:void*/
     {
         $this->options[$key] = $value;
     }
@@ -100,7 +100,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @inheritDoc
      */
-    public function checkInput()
+    public function checkInput() : bool
     {
         $values = $_POST[$this->getPostVar()];
         if (!is_array($values)) {
@@ -146,10 +146,11 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      *
      * @return array
      */
-    protected function cleanValues(array $values)
+    protected function cleanValues(array $values) : array
     {
-        return array_values(array_filter($values, function ($value) {    return $value !== self::EMPTY_PLACEHOLDER;
-}));
+        return array_values(array_filter($values, function ($value) : bool {
+            return ($value !== self::EMPTY_PLACEHOLDER);
+        }));
     }
 
 
@@ -174,7 +175,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return int
      */
-    public function getMinimumInputLength()
+    public function getMinimumInputLength() : int
     {
         if ($this->minimum_input_length !== null) {
             return $this->minimum_input_length;
@@ -187,7 +188,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions() : array
     {
         return $this->options;
     }
@@ -196,7 +197,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @inheritDoc
      */
-    public function getTableFilterHTML()
+    public function getTableFilterHTML() : string
     {
         return $this->render();
     }
@@ -205,7 +206,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @inheritDoc
      */
-    public function getToolbarHTML()
+    public function getToolbarHTML() : string
     {
         return $this->render();
     }
@@ -214,7 +215,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return array
      */
-    public function getValue()
+    public function getValue() : array
     {
         return $this->value;
     }
@@ -236,7 +237,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return string
      */
-    public function render()
+    public function render() : string
     {
         $tpl = new Template(__DIR__ . "/templates/multi_select_search_new_input_gui.html");
 
@@ -297,7 +298,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param int|null $limit_count
      */
-    public function setLimitCount(/*?*/ $limit_count = null)/* : void*/
+    public function setLimitCount(/*?*/ int $limit_count = null)/* : void*/
     {
         $this->limit_count = $limit_count;
     }
@@ -306,7 +307,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param int|null $minimum_input_length
      */
-    public function setMinimumInputLength(/*?*/ $minimum_input_length = null)/*: void*/
+    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null)/*: void*/
     {
         $this->minimum_input_length = $minimum_input_length;
     }

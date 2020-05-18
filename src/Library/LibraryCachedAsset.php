@@ -28,7 +28,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -39,7 +39,7 @@ class LibraryCachedAsset extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -122,7 +122,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -131,7 +131,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -140,7 +140,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -149,7 +149,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -158,7 +158,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @return string
      */
-    public function getHash()
+    public function getHash() : string
     {
         return $this->hash;
     }
@@ -167,7 +167,7 @@ class LibraryCachedAsset extends ActiveRecord
     /**
      * @param string $hash
      */
-    public function setHash($hash)
+    public function setHash(string $hash)/* : void*/
     {
         $this->hash = $hash;
     }

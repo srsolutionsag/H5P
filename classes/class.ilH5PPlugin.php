@@ -28,7 +28,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @return self
      */
-    public static function getInstance()/*:self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -50,7 +50,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    public function getPluginName()/*:string*/
+    public function getPluginName() : string
     {
         return self::PLUGIN_NAME;
     }
@@ -59,7 +59,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    public function allowCopy()/*:bool*/
+    public function allowCopy() : bool
     {
         return true;
     }
@@ -68,7 +68,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/
+    public function updateLanguages(/*?array*/ $a_lang_keys = null)/* : void*/
     {
         parent::updateLanguages($a_lang_keys);
 
@@ -79,7 +79,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    protected function deleteData()/*: void*/
+    protected function deleteData()/* : void*/
     {
         self::h5p()->dropTables();
     }

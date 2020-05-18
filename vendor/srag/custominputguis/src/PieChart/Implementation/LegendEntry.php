@@ -48,7 +48,7 @@ class LegendEntry implements LegendEntryInterface
      * @param int    $numSections
      * @param int    $index
      */
-    public function __construct($title, $numSections, $index)
+    public function __construct(string $title, int $numSections, int $index)
     {
         $this->checkStringArg("title", $title);
         $this->checkIntArg("numSections", $numSections);
@@ -64,7 +64,7 @@ class LegendEntry implements LegendEntryInterface
      * @param int $numSections
      * @param int $index
      */
-    private function calcCoords($numSections, $index)/*: void*/
+    private function calcCoords(int $numSections, int $index)/*: void*/
     {
         // Max 1.0: 0%y to 100%y
         $range = 0.8;
@@ -78,7 +78,7 @@ class LegendEntry implements LegendEntryInterface
      * @param int    $numSections
      * @param string $title
      */
-    private function calcSizes($numSections, $title)/*: void*/
+    private function calcSizes(int $numSections, string $title)/*: void*/
     {
         if ($numSections >= 10) {
             $this->square_size = 1.5;
@@ -95,7 +95,7 @@ class LegendEntry implements LegendEntryInterface
     /**
      * @inheritDoc
      */
-    public function getYPercentage()
+    public function getYPercentage() : float
     {
         return $this->y_percentage;
     }
@@ -104,7 +104,7 @@ class LegendEntry implements LegendEntryInterface
     /**
      * @inheritDoc
      */
-    public function getTextYPercentage()
+    public function getTextYPercentage() : float
     {
         return $this->text_y_percentage;
     }
@@ -113,7 +113,7 @@ class LegendEntry implements LegendEntryInterface
     /**
      * @inheritDoc
      */
-    public function getSquareSize()
+    public function getSquareSize() : float
     {
         return $this->square_size;
     }
@@ -122,7 +122,7 @@ class LegendEntry implements LegendEntryInterface
     /**
      * @inheritDoc
      */
-    public function getTextSize()
+    public function getTextSize() : float
     {
         return $this->text_size;
     }
@@ -131,7 +131,7 @@ class LegendEntry implements LegendEntryInterface
     /**
      * @inheritDoc
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }

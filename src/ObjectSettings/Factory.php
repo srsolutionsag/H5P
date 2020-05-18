@@ -31,7 +31,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -53,7 +53,7 @@ final class Factory
     /**
      * @return ObjectSettings
      */
-    public function newInstance()/* : ObjectSettings*/
+    public function newInstance() : ObjectSettings
     {
         $object_settings = new ObjectSettings();
 
@@ -67,7 +67,7 @@ final class Factory
      *
      * @return ObjectSettingsFormGUI
      */
-    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object)/*:ObjectSettingsFormGUI*/
+    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object) : ObjectSettingsFormGUI
     {
         $form = new ObjectSettingsFormGUI($parent, $object);
 

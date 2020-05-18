@@ -59,7 +59,7 @@ class Config extends ActiveRecord
     /**
      * @return string
      */
-    public static function getTableName()
+    public static function getTableName() : string
     {
         if (empty(self::$table_name)) {
             throw new LogicException("table name is empty - please call repository earlier!");
@@ -72,7 +72,7 @@ class Config extends ActiveRecord
     /**
      * @param string $table_name
      */
-    public static function setTableName($table_name)/* : void*/
+    public static function setTableName(string $table_name)/* : void*/
     {
         self::$table_name = $table_name;
     }
@@ -81,7 +81,7 @@ class Config extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()
+    public function getConnectorContainerName() : string
     {
         return self::getTableName();
     }
@@ -92,7 +92,7 @@ class Config extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::getTableName();
     }
@@ -159,7 +159,7 @@ class Config extends ActiveRecord
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -168,7 +168,7 @@ class Config extends ActiveRecord
     /**
      * @param string $name
      */
-    public function setName($name)/*: void*/
+    public function setName(string $name)/*: void*/
     {
         $this->name = $name;
     }

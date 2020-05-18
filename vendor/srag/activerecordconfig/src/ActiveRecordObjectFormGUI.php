@@ -42,7 +42,7 @@ abstract class ActiveRecordObjectFormGUI extends ObjectPropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct(ActiveRecordConfigGUI $parent, $tab_id, $object = null, $object_auto_store = true)
+    public function __construct(ActiveRecordConfigGUI $parent, string $tab_id, $object = null, bool $object_auto_store = true)
     {
         $this->tab_id = $tab_id;
 
