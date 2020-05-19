@@ -282,7 +282,11 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      */
     public function setValue($value)/*: void*/
     {
-        $this->input = $this->input->withValue($value);
+        try {
+            $this->input = $this->input->withValue($value);
+        } catch (Throwable $ex) {
+
+        }
     }
 
 

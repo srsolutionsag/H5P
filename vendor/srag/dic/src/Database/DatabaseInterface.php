@@ -26,6 +26,14 @@ interface DatabaseInterface extends ilDBPdoInterface
 
 
     /**
+     * @param string $table_name
+     * @param array  $columns
+     * @param array  $primary_columns
+     */
+    public function createOrUpdateTable(string $table_name, array $columns, array $primary_columns)/*: void*/ ;
+
+
+    /**
      * Remove PostgreSQL native sequence table
      *
      * @param string $table_name
@@ -67,6 +75,14 @@ interface DatabaseInterface extends ilDBPdoInterface
      * @return object|null
      */
     public function fetchObjectClass(ilDBStatement $stm, string $class_name)/*:?object*/ ;
+
+
+    /**
+     * @param string $table_name
+     * @param array  $columns
+     * @param array  $values
+     */
+    public function multipleInsert(string $table_name, array $columns, array $values)/*:void*/ ;
 
 
     /**

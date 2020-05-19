@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.23.0]
+- `createOrUpdateTable`
+- `multipleInsert`
+
 ## [0.22.0]
 - `ilFavouritesDBRepository`
 

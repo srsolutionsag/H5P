@@ -251,6 +251,35 @@ public function fromDB(stdClass $data): x {
 
 ```
 
+### Create or update table
+Same thing like ILIAS `ActiveRecord`:
+If the table not exists, create it, otherwise add missing columns
+
+```php
+self::dic()->database()->createOrUpdateTable($table_name, $columns, $primary_columns)
+```
+
+### Multiple insert
+```php
+ self::dic()->database()->multipleInsert($table_name, ["column1", "column2", "column3"], [
+            [
+                ["value11", ilDBConstants::T_TEXT],
+                ["value12", ilDBConstants::T_INTEGER],
+                ["value13", ilDBConstants::T_TEXT]
+            ],
+            [
+                ["value21", ilDBConstants::T_TEXT],
+                ["value22", ilDBConstants::T_INTEGER],
+                ["value23", ilDBConstants::T_TEXT]
+            ],
+            [
+                ["value31", ilDBConstants::T_TEXT],
+                ["value32", ilDBConstants::T_INTEGER],
+                ["value33", ilDBConstants::T_TEXT]
+            ]
+        ])
+```
+
 ## Requirements
 * ILIAS 5.4 or ILIAS 6
 * PHP >=7.0
