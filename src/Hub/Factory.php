@@ -5,6 +5,7 @@ namespace srag\Plugins\H5P\Hub;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\Hub\Form\SettingsFormBuilder;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -98,5 +99,18 @@ final class Factory
         $job = new RefreshHubJob();
 
         return $job;
+    }
+
+
+    /**
+     * @param ilH5PConfigGUI $parent
+     *
+     * @return SettingsFormBuilder
+     */
+    public function newHubSettingsFormBuilderInstance(ilH5PConfigGUI $parent) : SettingsFormBuilder
+    {
+        $form = new SettingsFormBuilder($parent);
+
+        return $form;
     }
 }

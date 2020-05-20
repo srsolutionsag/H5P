@@ -4,7 +4,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
-use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -273,24 +272,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
 
     /**
-     * @return HubSettingsFormGUI
-     */
-    protected function getSettingsForm() : HubSettingsFormGUI
-    {
-        $form = new HubSettingsFormGUI($this);
-
-        return $form;
-    }
-
-
-    /**
      *
      */
     protected function editSettings()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
         self::output()->output($form);
     }
@@ -303,7 +291,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
         if (!$form->storeForm()) {
             self::output()->output($form);

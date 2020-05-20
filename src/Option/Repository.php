@@ -6,7 +6,7 @@ use ilH5PPlugin;
 use srag\ActiveRecordConfig\H5P\Config\AbstractFactory;
 use srag\ActiveRecordConfig\H5P\Config\AbstractRepository;
 use srag\ActiveRecordConfig\H5P\Config\Config;
-use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
+use srag\Plugins\H5P\Hub\Form\SettingsFormBuilder;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -76,9 +76,9 @@ final class Repository extends AbstractRepository
     protected function getFields() : array
     {
         return [
-            HubSettingsFormGUI::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
-            HubSettingsFormGUI::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
-            HubSettingsFormGUI::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
+            SettingsFormBuilder::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
+            SettingsFormBuilder::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
+            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
         ];
     }
 

@@ -6,6 +6,7 @@ use ilH5PPlugin;
 use ilObjH5P;
 use ilObjH5PGUI;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\ObjectSettings\Form\FormBuilder;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -65,11 +66,11 @@ final class Factory
      * @param ilObjH5PGUI $parent
      * @param ilObjH5P    $object
      *
-     * @return ObjectSettingsFormGUI
+     * @return FormBuilder
      */
-    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object) : ObjectSettingsFormGUI
+    public function newFormBuilderInstance(ilObjH5PGUI $parent, ilObjH5P $object) : FormBuilder
     {
-        $form = new ObjectSettingsFormGUI($parent, $object);
+        $form = new FormBuilder($parent, $object);
 
         return $form;
     }

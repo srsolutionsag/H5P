@@ -212,12 +212,12 @@ class ShowContent
 
         foreach ($this->js_files as $js_file) {
             if (strpos($js_file, "data:application/javascript;base64,") === 0) {
-                // Cause main template skip "not real" files, so add it direct to main template placeholder
-                if (self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
+                // Cause main template in ILIAS 5.4 skip "not real" files, so add it direct to main template placeholder - In ILIAS 6 "not real" files seems to be supported
+                if (!self::version()->is6() && self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
                     if (!isset($this->js_files_output[$js_file])) {
                         $this->js_files_output[$js_file] = true;
 
-                        self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
+                        self::dic()->ui()->mainTemplate()->addJavaScript("js_file");
                         self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
                         self::dic()->ui()->mainTemplate()->parseCurrentBlock();
                     }

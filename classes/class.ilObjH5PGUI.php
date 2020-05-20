@@ -611,7 +611,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = self::h5p()->objectSettings()->factory()->newFormInstance($this, $this->object);
+        $form = self::h5p()->objectSettings()->factory()->newFormBuilderInstance($this, $this->object);
 
         $this->show($form);
     }
@@ -624,7 +624,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = self::h5p()->objectSettings()->factory()->newFormInstance($this, $this->object);
+        $form = self::h5p()->objectSettings()->factory()->newFormBuilderInstance($this, $this->object);
 
         if (!$form->storeForm()) {
             $this->show($form);

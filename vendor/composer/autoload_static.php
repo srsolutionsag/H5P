@@ -26,8 +26,8 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
             'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
-            'srag\\CustomInputGUIs\\' => 21,
+            'srag\\DIC\\H5P\\' => 13,
+            'srag\\CustomInputGUIs\\H5P\\' => 25,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
     );
@@ -45,11 +45,11 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\' => 
+        'srag\\CustomInputGUIs\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -201,8 +201,8 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         'srag\\Plugins\\H5P\\Event\\Repository' => __DIR__ . '/../..' . '/src/Event/Repository.php',
         'srag\\Plugins\\H5P\\Framework\\Framework' => __DIR__ . '/../..' . '/src/Framework/Framework.php',
         'srag\\Plugins\\H5P\\Hub\\Factory' => __DIR__ . '/../..' . '/src/Hub/Factory.php',
+        'srag\\Plugins\\H5P\\Hub\\Form\\SettingsFormBuilder' => __DIR__ . '/../..' . '/src/Hub/Form/SettingsFormBuilder.php',
         'srag\\Plugins\\H5P\\Hub\\HubDetailsFormGUI' => __DIR__ . '/../..' . '/src/Hub/HubDetailsFormGUI.php',
-        'srag\\Plugins\\H5P\\Hub\\HubSettingsFormGUI' => __DIR__ . '/../..' . '/src/Hub/HubSettingsFormGUI.php',
         'srag\\Plugins\\H5P\\Hub\\HubTableGUI' => __DIR__ . '/../..' . '/src/Hub/HubTableGUI.php',
         'srag\\Plugins\\H5P\\Hub\\RefreshHubJob' => __DIR__ . '/../..' . '/src/Hub/RefreshHubJob.php',
         'srag\\Plugins\\H5P\\Hub\\Repository' => __DIR__ . '/../..' . '/src/Hub/Repository.php',
@@ -219,8 +219,8 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         'srag\\Plugins\\H5P\\Library\\LibraryLanguage' => __DIR__ . '/../..' . '/src/Library/LibraryLanguage.php',
         'srag\\Plugins\\H5P\\Library\\Repository' => __DIR__ . '/../..' . '/src/Library/Repository.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\Factory' => __DIR__ . '/../..' . '/src/ObjectSettings/Factory.php',
+        'srag\\Plugins\\H5P\\ObjectSettings\\Form\\FormBuilder' => __DIR__ . '/../..' . '/src/ObjectSettings/Form/FormBuilder.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\ObjectSettings' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettings.php',
-        'srag\\Plugins\\H5P\\ObjectSettings\\ObjectSettingsFormGUI' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettingsFormGUI.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\Repository' => __DIR__ . '/../..' . '/src/ObjectSettings/Repository.php',
         'srag\\Plugins\\H5P\\Options\\Factory' => __DIR__ . '/../..' . '/src/Option/Factory.php',
         'srag\\Plugins\\H5P\\Options\\Repository' => __DIR__ . '/../..' . '/src/Option/Repository.php',
