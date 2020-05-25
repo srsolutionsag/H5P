@@ -168,16 +168,16 @@
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.34.15",
+            "version": "v0.34.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "a745b4c4f34c180fbca38966fc01284d69fe054f"
+                "reference": "4d055034a9e55ba3e5968afcdf415201f8f07f5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/a745b4c4f34c180fbca38966fc01284d69fe054f",
-                "reference": "a745b4c4f34c180fbca38966fc01284d69fe054f",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/4d055034a9e55ba3e5968afcdf415201f8f07f5f",
+                "reference": "4d055034a9e55ba3e5968afcdf415201f8f07f5f",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "input",
                 "table"
             ],
-            "time": "2020-05-19T12:58:10+00:00"
+            "time": "2020-05-25T05:57:02+00:00"
         },
         {
             "name": "srag/dic",
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

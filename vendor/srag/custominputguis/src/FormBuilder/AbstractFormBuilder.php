@@ -32,6 +32,7 @@ abstract class AbstractFormBuilder implements FormBuilder
 {
 
     use DICTrait;
+
     const REPLACE_BUTTONS_REG_EXP = '/(<button\s+class\s*=\s*"btn btn-default"\s+data-action\s*=\s*"#?"(\s+id\s*=\s*"[a-z0-9_]+")?\s*>)(.+)(<\/button\s*>)/';
     /**
      * @var object
@@ -166,26 +167,25 @@ abstract class AbstractFormBuilder implements FormBuilder
      */
     protected function setButtonsToForm(string $html) : string
     {
-        $html = preg_replace_callback(self::REPLACE_BUTTONS_REG_EXP,
-            function (array $matches) : string {
-                $buttons = [];
+        $html = preg_replace_callback(self::REPLACE_BUTTONS_REG_EXP, function (array $matches) : string {
+            $buttons = [];
 
-                foreach ($this->getButtons() as $cmd => $label) {
-                    if (!empty($buttons)) {
-                        $buttons[] = "&nbsp;";
-                    }
-
-                    $button = ilSubmitButton::getInstance();
-
-                    $button->setCommand($cmd);
-
-                    $button->setCaption($label, false);
-
-                    $buttons[] = $button;
+            foreach ($this->getButtons() as $cmd => $label) {
+                if (!empty($buttons)) {
+                    $buttons[] = "&nbsp;";
                 }
 
-                return self::output()->getHTML($buttons);
-            }, $html);
+                $button = ilSubmitButton::getInstance();
+
+                $button->setCommand($cmd);
+
+                $button->setCaption($label, false);
+
+                $buttons[] = $button;
+            }
+
+            return self::output()->getHTML($buttons);
+        }, $html);
 
         return $html;
     }
