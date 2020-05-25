@@ -32,7 +32,7 @@ abstract class AbstractFormBuilder implements FormBuilder
 {
 
     use DICTrait;
-
+    const REPLACE_BUTTONS_REG_EXP = '/(<button\s+class\s*=\s*"btn btn-default"\s+data-action\s*=\s*"#?"(\s+id\s*=\s*"[a-z0-9_]+")?\s*>)(.+)(<\/button\s*>)/';
     /**
      * @var object
      */
@@ -166,7 +166,7 @@ abstract class AbstractFormBuilder implements FormBuilder
      */
     protected function setButtonsToForm(string $html) : string
     {
-        $html = preg_replace_callback('/(<button\s+class\s*=\s*"btn btn-default"\s+data-action\s*=\s*"#?"(\s+id\s*=\s*"[a-z0-9_]+")?\s*>)(.+)(<\/button\s*>)/',
+        $html = preg_replace_callback(self::REPLACE_BUTTONS_REG_EXP,
             function (array $matches) : string {
                 $buttons = [];
 
