@@ -33,6 +33,10 @@ use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
 use ILIAS\GlobalScreen\Services as GlobalScreenService;
 use ILIAS\Refinery\Factory as RefineryFactory;
+use ILIAS\UI\Implementation\Render\JavaScriptBinding;
+use ILIAS\UI\Implementation\Render\Loader;
+use ILIAS\UI\Implementation\Render\ResourceRegistry;
+use ILIAS\UI\Implementation\Render\TemplateFactory;
 use ilIniFile;
 use ilLanguage;
 use ilLearningHistoryService;
@@ -268,6 +272,12 @@ interface DICInterface
 
 
     /**
+     * @return JavaScriptBinding
+     */
+    public function javaScriptBinding() : JavaScriptBinding;
+
+
+    /**
      * @return ilLanguage
      */
     public function language() : ilLanguage;
@@ -417,9 +427,21 @@ interface DICInterface
 
 
     /**
+     * @return Loader
+     */
+    public function rendererLoader() : Loader;
+
+
+    /**
      * @return ilTree
      */
     public function repositoryTree() : ilTree;
+
+
+    /**
+     * @return ResourceRegistry
+     */
+    public function resourceRegistry() : ResourceRegistry;
 
 
     /**
@@ -454,6 +476,12 @@ interface DICInterface
      * @since ILIAS 6
      */
     public function task() : ilTaskService;
+
+
+    /**
+     * @return TemplateFactory
+     */
+    public function templateFactory() : TemplateFactory;
 
 
     /**

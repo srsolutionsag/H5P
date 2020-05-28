@@ -112,6 +112,8 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      */
     public function getValue() : array
     {
+        $this->processScreenshots();
+
         return $this->screenshots;
     }
 

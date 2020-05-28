@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0]
+- `rendererLoader`
+- `javaScriptBinding`
+- `templateFactory`
+- `resourceRegistry`
+- `AbstractLoaderDetector`
+
 ## [0.24.0]
 - `ilCertificateActiveValidator`
 - `ilObjUseBookDBRepository`

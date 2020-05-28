@@ -2,6 +2,7 @@
 
 namespace srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent;
 
+use ilHiddenInputGUI;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Component\Input\Field\Input as InputInterface;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
@@ -25,6 +26,10 @@ if (DICStatic::version()->is6()) {
          */
         public function render(Component $component, RendererInterface $default_renderer) : string
         {
+            if ($component->getInput() instanceof ilHiddenInputGUI) {
+                return "";
+            }
+
             $input_tpl = $this->getTemplate("input.html", true, true);
 
             $html = $this->renderInputFieldWithContext($default_renderer, $input_tpl, $component, null, null);
@@ -57,6 +62,10 @@ if (DICStatic::version()->is6()) {
          */
         protected function renderNoneGroupInput(InputInterface $input, RendererInterface $default_renderer) : string
         {
+            if ($input->getInput() instanceof ilHiddenInputGUI) {
+                return "";
+            }
+
             $input_tpl = $this->getTemplate("input.html", true, true);
 
             $html = $this->renderInputFieldWithContext($input_tpl, $input, null, null);

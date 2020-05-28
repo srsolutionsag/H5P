@@ -32,6 +32,10 @@ use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
 use ILIAS\GlobalScreen\Services as GlobalScreenService;
 use ILIAS\Refinery\Factory as RefineryFactory;
+use ILIAS\UI\Implementation\Render\JavaScriptBinding;
+use ILIAS\UI\Implementation\Render\Loader;
+use ILIAS\UI\Implementation\Render\ResourceRegistry;
+use ILIAS\UI\Implementation\Render\TemplateFactory;
 use ilIniFile;
 use ilLanguage;
 use ilLearningHistoryService;
@@ -311,6 +315,15 @@ final class ILIAS54DIC extends AbstractDIC
     /**
      * @inheritDoc
      */
+    public function javaScriptBinding() : JavaScriptBinding
+    {
+        return $this->dic["ui.javascript_binding"];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function language() : ilLanguage
     {
         return $this->dic->language();
@@ -517,9 +530,27 @@ final class ILIAS54DIC extends AbstractDIC
     /**
      * @inheritDoc
      */
+    public function rendererLoader() : Loader
+    {
+        return $this->dic["ui.component_renderer_loader"];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function repositoryTree() : ilTree
     {
         return $this->dic->repositoryTree();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function resourceRegistry() : ResourceRegistry
+    {
+        return $this->dic["ui.resource_registry"];
     }
 
 
@@ -565,6 +596,15 @@ final class ILIAS54DIC extends AbstractDIC
     public function task() : ilTaskService
     {
         throw new DICException("ilTaskService not exists in ILIAS 5.4 or below!");
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function templateFactory() : TemplateFactory
+    {
+        return $this->dic["ui.template_factory"];
     }
 
 

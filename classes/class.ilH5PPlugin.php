@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use ILIAS\DI\Container;
+use srag\CustomInputGUIs\H5P\Loader\CustomInputGUIsLoaderDetector;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 
@@ -82,5 +84,14 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     protected function deleteData()/* : void*/
     {
         self::h5p()->dropTables();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function exchangeUIRendererAfterInitialization(Container $dic) : Closure
+    {
+        return CustomInputGUIsLoaderDetector::exchangeUIRendererAfterInitialization();
     }
 }
