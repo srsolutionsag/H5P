@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.25.0]
+- `rendererLoader`
+- `javaScriptBinding`
+- `templateFactory`
+- `resourceRegistry`
+- `AbstractLoaderDetector`
+
+## [0.24.0]
+- `ilCertificateActiveValidator`
+- `ilObjUseBookDBRepository`
+- `ilBookingReservationDBRepositoryFactory`
+- `ilMMItemRepository`
+
+## [0.23.0]
+- `createOrUpdateTable`
+- `multipleInsert`
+
+## [0.22.0]
+- `ilFavouritesDBRepository`
+
+## [0.21.0]
+- Remove ILIAS 5.3 support
+- Deprecate `self::dic()->tree()` (> `self::dic()->repositoryTree()`)
+
+## [0.20.5]
+- Fix ILIAS 6
+
+## [0.20.4]
+- Fix
+
+## [0.20.3]
+- `rbac` changes
+
 ## [0.20.2]
 - Auto replace manually line breaks text in language files to real line breaks
 

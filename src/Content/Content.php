@@ -20,6 +20,7 @@ class Content extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
+
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const PARENT_TYPE_OBJECT = "object";
@@ -29,7 +30,7 @@ class Content extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -40,7 +41,7 @@ class Content extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -194,7 +195,7 @@ class Content extends ActiveRecord
      * @con_length       8
      * @con_is_notnull   true
      */
-    protected $obj_id = null;
+    protected $obj_id = 0;
     /**
      * @var string
      *
@@ -291,7 +292,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -300,7 +301,7 @@ class Content extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -309,7 +310,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -318,7 +319,7 @@ class Content extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }
@@ -327,7 +328,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt() : int
     {
         return $this->updated_at;
     }
@@ -336,7 +337,7 @@ class Content extends ActiveRecord
     /**
      * @param int $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt(int $updated_at)/* : void*/
     {
         $this->updated_at = $updated_at;
     }
@@ -345,7 +346,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentUserId()
+    public function getContentUserId() : int
     {
         return $this->content_user_id;
     }
@@ -354,7 +355,7 @@ class Content extends ActiveRecord
     /**
      * @param int $content_user_id
      */
-    public function setContentUserId($content_user_id)
+    public function setContentUserId(int $content_user_id)/* : void*/
     {
         $this->content_user_id = $content_user_id;
     }
@@ -363,7 +364,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }
@@ -372,7 +373,7 @@ class Content extends ActiveRecord
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)/* : void*/
     {
         $this->title = $title;
     }
@@ -381,7 +382,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -390,7 +391,7 @@ class Content extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -399,7 +400,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getParameters()
+    public function getParameters() : string
     {
         return $this->parameters;
     }
@@ -408,7 +409,7 @@ class Content extends ActiveRecord
     /**
      * @param string $parameters
      */
-    public function setParameters($parameters)
+    public function setParameters(string $parameters)/* : void*/
     {
         $this->parameters = $parameters;
     }
@@ -417,7 +418,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getFiltered()
+    public function getFiltered() : string
     {
         return $this->filtered;
     }
@@ -426,7 +427,7 @@ class Content extends ActiveRecord
     /**
      * @param string $filtered
      */
-    public function setFiltered($filtered)
+    public function setFiltered(string $filtered)/* : void*/
     {
         $this->filtered = $filtered;
     }
@@ -435,7 +436,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getSlug()
+    public function getSlug() : string
     {
         return $this->slug;
     }
@@ -444,7 +445,7 @@ class Content extends ActiveRecord
     /**
      * @param string $slug
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)/* : void*/
     {
         $this->slug = $slug;
     }
@@ -453,7 +454,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getEmbedType()
+    public function getEmbedType() : string
     {
         return $this->embed_type;
     }
@@ -462,7 +463,7 @@ class Content extends ActiveRecord
     /**
      * @param string $embed_type
      */
-    public function setEmbedType($embed_type)
+    public function setEmbedType(string $embed_type)/* : void*/
     {
         $this->embed_type = $embed_type;
     }
@@ -471,7 +472,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getDisable()
+    public function getDisable() : int
     {
         return $this->disable;
     }
@@ -480,7 +481,7 @@ class Content extends ActiveRecord
     /**
      * @param int $disable
      */
-    public function setDisable($disable)
+    public function setDisable(int $disable)/* : void*/
     {
         $this->disable = $disable;
     }
@@ -489,7 +490,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getContentType()
+    public function getContentType() : string
     {
         return $this->content_type;
     }
@@ -498,7 +499,7 @@ class Content extends ActiveRecord
     /**
      * @param string $content_type
      */
-    public function setContentType($content_type)
+    public function setContentType(string $content_type)/* : void*/
     {
         $this->content_type = $content_type;
     }
@@ -507,7 +508,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getAuthor()
+    public function getAuthor() : string
     {
         return $this->author;
     }
@@ -516,7 +517,7 @@ class Content extends ActiveRecord
     /**
      * @param string $author
      */
-    public function setAuthor($author)
+    public function setAuthor(string $author)/* : void*/
     {
         $this->author = $author;
     }
@@ -525,7 +526,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getLicense()
+    public function getLicense() : string
     {
         return $this->license;
     }
@@ -534,7 +535,7 @@ class Content extends ActiveRecord
     /**
      * @param string $license
      */
-    public function setLicense($license)
+    public function setLicense(string $license)/* : void*/
     {
         $this->license = $license;
     }
@@ -543,7 +544,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getKeywords()
+    public function getKeywords() : string
     {
         return $this->keywords;
     }
@@ -552,7 +553,7 @@ class Content extends ActiveRecord
     /**
      * @param string $keywords
      */
-    public function setKeywords($keywords)
+    public function setKeywords(string $keywords)/* : void*/
     {
         $this->keywords = $keywords;
     }
@@ -561,7 +562,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -570,7 +571,7 @@ class Content extends ActiveRecord
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description)/* : void*/
     {
         $this->description = $description;
     }
@@ -579,7 +580,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getObjId()
+    public function getObjId() : int
     {
         return $this->obj_id;
     }
@@ -588,7 +589,7 @@ class Content extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId($obj_id)
+    public function setObjId(int $obj_id)/* : void*/
     {
         $this->obj_id = $obj_id;
     }
@@ -597,7 +598,7 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getParentType()
+    public function getParentType() : string
     {
         return $this->parent_type;
     }
@@ -606,7 +607,7 @@ class Content extends ActiveRecord
     /**
      * @param string $parent_type
      */
-    public function setParentType($parent_type)
+    public function setParentType(string $parent_type)/* : void*/
     {
         $this->parent_type = $parent_type;
     }
@@ -615,7 +616,7 @@ class Content extends ActiveRecord
     /**
      * @return int
      */
-    public function getSort()
+    public function getSort() : int
     {
         return $this->sort;
     }
@@ -624,7 +625,7 @@ class Content extends ActiveRecord
     /**
      * @param int $sort
      */
-    public function setSort($sort)
+    public function setSort(int $sort)/* : void*/
     {
         $this->sort = $sort;
     }
@@ -633,7 +634,7 @@ class Content extends ActiveRecord
     /**
      * @return array
      */
-    public function getUploadedFiles()
+    public function getUploadedFiles() : array
     {
         return $this->uploaded_files;
     }
@@ -642,7 +643,7 @@ class Content extends ActiveRecord
     /**
      * @param string[] $uploaded_files
      */
-    public function setUploadedFiles(array $uploaded_files)
+    public function setUploadedFiles(array $uploaded_files)/* : void*/
     {
         $this->uploaded_files = $uploaded_files;
     }

@@ -19,7 +19,6 @@ class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem, ilTo
 
     use DICTrait;
 
-
     /**
      * @inheritDoc
      */

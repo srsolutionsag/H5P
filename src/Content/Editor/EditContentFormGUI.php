@@ -5,7 +5,9 @@ namespace srag\Plugins\H5P\Content\Editor;
 use H5PCore;
 use ilCustomInputGUI;
 use ilFileInputGUI;
+use ilH5PPageComponentPluginGUI;
 use ilH5PPlugin;
+use ilObjH5PGUI;
 use ilTextInputGUI;
 use ilUtil;
 use srag\CustomInputGUIs\H5P\HiddenInputGUI\HiddenInputGUI;
@@ -25,6 +27,7 @@ class EditContentFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var Content|null
@@ -63,13 +66,13 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * EditContentFormGUI constructor
      *
-     * @param object       $parent
-     * @param Content|null $h5p_content
-     * @param string       $cmd_create
-     * @param string       $cmd_update
-     * @param string       $cmd_cancel
+     * @param ilObjH5PGUI|ilH5PPageComponentPluginGUI $parent
+     * @param Content|null                            $h5p_content
+     * @param string                                  $cmd_create
+     * @param string                                  $cmd_update
+     * @param string                                  $cmd_cancel
      */
-    public function __construct($parent, /*?*/ Content $h5p_content = null, /*string*/ $cmd_create, /*string*/ $cmd_update, /*string*/ $cmd_cancel)
+    public function __construct($parent, /*?Content*/ $h5p_content = null, string $cmd_create, string $cmd_update, string $cmd_cancel)
     {
         $this->h5p_content = $h5p_content;
         $this->cmd_create = $cmd_create;
@@ -83,7 +86,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(/*string*/ $key)/*: void*/
+    protected function getValue(/*string*/ $key)
     {
         if ($this->h5p_content !== null) {
             switch ($key) {
@@ -103,7 +106,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
                 case "upload_file":
                     if (count($this->h5p_content->getUploadedFiles()) > 0) {
-                        return $this->txt("files") . '<ul>' . implode("", array_map(function ($uploaded_file) {
+                        return $this->txt("files") . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                                 return "<li>$uploaded_file</li>";
                             }, $this->h5p_content->getUploadedFiles()));
                     }
@@ -121,7 +124,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initAction()/*: void*/
+    protected function initAction()/* : void*/
     {
         if ($this->h5p_content !== null) {
             self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
@@ -134,7 +137,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands()/* : void*/
     {
         //$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
@@ -147,7 +150,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields()/* : void*/
     {
         $this->fields = [
             "title"       => [
@@ -182,7 +185,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
         $this->setId(ilH5PPlugin::PLUGIN_ID . "_edit_form");
     }
@@ -191,7 +194,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
     }
@@ -200,7 +203,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/* : void*/
     {
         switch ($key) {
             case "title":
@@ -229,7 +232,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    public function storeForm()/*: bool*/
+    public function storeForm() : bool
     {
         $_POST["library_h5p"] = $_POST["library"];
 
@@ -240,7 +243,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getHTML()/*: string*/
+    public function getHTML() : string
     {
         $html = parent::getHTML();
 
@@ -253,7 +256,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getH5PTitle()/*_: string*/
+    public function getH5PTitle() : string
     {
         return $this->h5p_title;
     }
@@ -262,7 +265,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getLibrary()/*_: string*/
+    public function getLibrary() : string
     {
         return $this->library;
     }
@@ -271,7 +274,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getParams()/*_: string*/
+    public function getParams() : string
     {
         return $this->params;
     }
@@ -280,7 +283,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @param Content $h5p_content
      */
-    public function setH5pContent(Content $h5p_content)/*: void*/
+    public function setH5pContent(Content $h5p_content)/* : void*/
     {
         $this->h5p_content = $h5p_content;
     }
@@ -289,7 +292,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      *
      */
-    public function handleFileUpload()/*: void*/
+    public function handleFileUpload()/* : void*/
     {
         if (strpos($this->library, "H5P.IFrameEmbed") !== 0) {
             return;
@@ -310,7 +313,7 @@ class EditContentFormGUI extends PropertyFormGUI
 
                 ilUtil::sendInfo(self::plugin()->translate("deleted_files", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
-                    ]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
+                    ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
                     }, $this->h5p_content->getUploadedFiles())) . '</ul>', true);
 
@@ -383,7 +386,7 @@ class EditContentFormGUI extends PropertyFormGUI
             if (count($uploaded_files) > 0) {
                 ilUtil::sendInfo(self::plugin()->translate("uploaded_files", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
-                    ]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
+                    ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
                     }, $uploaded_files)) . '</ul>', true);
             }
@@ -391,7 +394,7 @@ class EditContentFormGUI extends PropertyFormGUI
             if (count($uploaded_files_invalid) > 0) {
                 ilUtil::sendFailure(self::plugin()->translate("uploaded_files_failed", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
-                    ]) . '<ul>' . implode("", array_map(function ($uploaded_file) {
+                    ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
                     }, $uploaded_files_invalid)) . '</ul>', true);
             }

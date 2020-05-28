@@ -21,6 +21,7 @@ class DeleteOldEventsJob extends ilCronJob
 
     use DICTrait;
     use H5PTrait;
+
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -37,7 +38,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getId()/*: string*/
+    public function getId() : string
     {
         return self::CRON_JOB_ID;
     }
@@ -46,7 +47,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getTitle()/*: string*/
+    public function getTitle() : string
     {
         return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("delete_old_events");
     }
@@ -55,7 +56,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDescription()/*: string*/
+    public function getDescription() : string
     {
         return self::plugin()->translate("delete_old_events_description");
     }
@@ -64,7 +65,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasAutoActivation()/*: bool*/
+    public function hasAutoActivation() : bool
     {
         return true;
     }
@@ -73,7 +74,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasFlexibleSchedule()/*: bool*/
+    public function hasFlexibleSchedule() : bool
     {
         return true;
     }
@@ -82,7 +83,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleType()/*:int*/
+    public function getDefaultScheduleType() : int
     {
         return self::SCHEDULE_TYPE_DAILY;
     }
@@ -91,7 +92,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleValue()/*:?int*/
+    public function getDefaultScheduleValue()/* : ?int*/
     {
         return null;
     }
@@ -100,7 +101,7 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function run()/*: ilCronJobResult*/
+    public function run() : ilCronJobResult
     {
         $result = new ilCronJobResult();
 

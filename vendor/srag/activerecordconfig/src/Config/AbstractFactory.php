@@ -29,7 +29,7 @@ abstract class AbstractFactory
     /**
      * @return Config
      */
-    public function newInstance()
+    public function newInstance() : Config
     {
         $config = new Config();
 

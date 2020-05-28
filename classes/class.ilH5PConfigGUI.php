@@ -4,7 +4,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
-use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -19,6 +18,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_APPLY_FILTER = "applyFilter";
     const CMD_CONFIGURE = "configure";
@@ -48,7 +48,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      * @inheritDoc
      */
-    public function performCommand(/*string*/ $cmd)/*:void*/
+    public function performCommand(/*string*/ $cmd)/* : void*/
     {
         $this->setTabs();
 
@@ -89,7 +89,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function setTabs()/*: void*/
+    protected function setTabs()/* : void*/
     {
         self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
 
@@ -102,7 +102,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function configure()/*: void*/
+    protected function configure()/* : void*/
     {
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
@@ -111,7 +111,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function hub()/*: void*/
+    protected function hub()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
@@ -124,7 +124,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function applyFilter()/*: void*/
+    protected function applyFilter()/* : void*/
     {
         $table = self::h5p()->hub()->factory()->newHubTableInstance($this, self::CMD_APPLY_FILTER);
 
@@ -140,7 +140,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function resetFilter()/*: void*/
+    protected function resetFilter()/* : void*/
     {
         $table = self::h5p()->hub()->factory()->newHubTableInstance($this, self::CMD_RESET_FILTER);
 
@@ -156,7 +156,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function refreshHub()/*: void*/
+    protected function refreshHub()/* : void*/
     {
         self::h5p()->hub()->show()->refreshHub();
 
@@ -167,7 +167,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function uploadLibrary()/*: void*/
+    protected function uploadLibrary()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
@@ -192,7 +192,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function installLibrary()/*: void*/
+    protected function installLibrary()/* : void*/
     {
         $name = filter_input(INPUT_GET, "xhfp_library_name");
 
@@ -205,7 +205,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function libraryDetails()/*: void*/
+    protected function libraryDetails()/* : void*/
     {
         self::dic()->tabs()->clearTargets();
 
@@ -223,7 +223,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function deleteLibraryConfirm()/*: void*/
+    protected function deleteLibraryConfirm()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
@@ -261,7 +261,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function deleteLibrary()/*: void*/
+    protected function deleteLibrary()/* : void*/
     {
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
@@ -272,24 +272,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
 
     /**
-     * @return HubSettingsFormGUI
-     */
-    protected function getSettingsForm()/*:HubSettingsFormGUI*/
-    {
-        $form = new HubSettingsFormGUI($this);
-
-        return $form;
-    }
-
-
-    /**
      *
      */
-    protected function editSettings()/*: void*/
+    protected function editSettings()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
         self::output()->output($form);
     }
@@ -298,11 +287,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    protected function updateSettings()/*: void*/
+    protected function updateSettings()/* : void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
-        $form = $this->getSettingsForm();
+        $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
         if (!$form->storeForm()) {
             self::output()->output($form);

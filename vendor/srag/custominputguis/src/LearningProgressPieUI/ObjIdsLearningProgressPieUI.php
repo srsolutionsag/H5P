@@ -31,7 +31,7 @@ class ObjIdsLearningProgressPieUI extends AbstractLearningProgressPieUI
      *
      * @return self
      */
-    public function withObjIds(array $obj_ids)
+    public function withObjIds(array $obj_ids) : self
     {
         $this->obj_ids = $obj_ids;
 
@@ -44,7 +44,7 @@ class ObjIdsLearningProgressPieUI extends AbstractLearningProgressPieUI
      *
      * @return self
      */
-    public function withUsrId($usr_id)
+    public function withUsrId(int $usr_id) : self
     {
         $this->usr_id = $usr_id;
 
@@ -55,14 +55,20 @@ class ObjIdsLearningProgressPieUI extends AbstractLearningProgressPieUI
     /**
      * @inheritDoc
      */
-    protected function parseData()
+    protected function parseData() : array
     {
         if (count($this->obj_ids) > 0) {
-            return array_reduce($this->obj_ids, function (array $data, $obj_id) {    $status = $this->getStatus($obj_id);    if (!isset($data[$status])) {        $data[$status] = 0;
-    }
-    $data[$status]++;
-    return $data;
-}, []);
+            return array_reduce($this->obj_ids, function (array $data, int $obj_id) : array {
+                $status = $this->getStatus($obj_id);
+
+                if (!isset($data[$status])) {
+                    $data[$status] = 0;
+                }
+
+                $data[$status]++;
+
+                return $data;
+            }, []);
         } else {
             return [];
         }
@@ -72,7 +78,7 @@ class ObjIdsLearningProgressPieUI extends AbstractLearningProgressPieUI
     /**
      * @inheritDoc
      */
-    protected function getCount()
+    protected function getCount() : int
     {
         return count($this->obj_ids);
     }
@@ -83,7 +89,7 @@ class ObjIdsLearningProgressPieUI extends AbstractLearningProgressPieUI
      *
      * @return int
      */
-    private function getStatus($obj_id)
+    private function getStatus(int $obj_id) : int
     {
         // Avoid exit
         if (ilObjectLP::getInstance($obj_id)->getCurrentMode() != ilLPObjSettings::LP_MODE_UNDEFINED) {

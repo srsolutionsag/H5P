@@ -8,6 +8,7 @@ use ilObjLearningSequenceLearnerGUI;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
+use stdClass;
 
 /**
  * Class ShowContent
@@ -52,7 +53,7 @@ class ShowContent
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -74,7 +75,7 @@ class ShowContent
     /**
      *
      */
-    public function initCore()
+    public function initCore()/* : void*/
     {
         if ($this->core === null) {
             $this->core = [
@@ -120,7 +121,7 @@ class ShowContent
     /**
      *
      */
-    protected function initCoreForContents()
+    protected function initCoreForContents()/* : void*/
     {
         if ($this->core === null) {
             $this->initCore();
@@ -135,7 +136,7 @@ class ShowContent
     /**
      *
      */
-    public function initCoreToOutput()
+    public function initCoreToOutput()/* : void*/
     {
         if (!$this->core_output) {
             $this->core_output = true;
@@ -155,7 +156,7 @@ class ShowContent
      *
      * @return string
      */
-    public function getH5PContentStep(Content $h5p_content, $index, $count, $text = null)
+    public function getH5PContentStep(Content $h5p_content, int $index, int $count, /*?string*/ $text = null) : string
     {
         $h5p_tpl = self::plugin()->template("H5PContentStep.html");
 
@@ -178,7 +179,7 @@ class ShowContent
      *
      * @return string
      */
-    public function getH5PContent(Content $h5p_content, $title = true)
+    public function getH5PContent(Content $h5p_content, bool $title = true) : string
     {
         $this->initCoreForContents();
 
@@ -203,7 +204,7 @@ class ShowContent
     /**
      *
      */
-    public function outputHeader()
+    public function outputHeader()/* : void*/
     {
         foreach ($this->css_files as $css_file) {
             self::dic()->ui()->mainTemplate()->addCss($css_file);
@@ -211,8 +212,8 @@ class ShowContent
 
         foreach ($this->js_files as $js_file) {
             if (strpos($js_file, "data:application/javascript;base64,") === 0) {
-                // Cause main template skip "not real" files, so add it direct to main template placeholder
-                if (self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
+                // Cause main template in ILIAS 5.4 skip "not real" files, so add it direct to main template placeholder - In ILIAS 6 "not real" files seems to be supported
+                if (!self::version()->is6() && self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
                     if (!isset($this->js_files_output[$js_file])) {
                         $this->js_files_output[$js_file] = true;
 
@@ -236,7 +237,7 @@ class ShowContent
      *
      * @return array
      */
-    protected function initContent(Content $h5p_content)
+    protected function initContent(Content $h5p_content) : array
     {
         self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
@@ -273,10 +274,10 @@ class ShowContent
         $content_dependencies = self::h5p()->contents()->core()->loadContentDependencies($h5p_content->getContentId(), "preloaded");
 
         $files = self::h5p()->contents()->core()->getDependenciesFiles($content_dependencies, self::h5p()->objectSettings()->getH5PFolder());
-        $scripts = array_map(function ($file) {
+        $scripts = array_map(function (stdClass $file) : string {
             return $file->path;
         }, $files["scripts"]);
-        $styles = array_map(function ($file) {
+        $styles = array_map(function (stdClass $file) : string {
             return $file->path;
         }, $files["styles"]);
 
@@ -314,7 +315,7 @@ class ShowContent
      *
      * @return string
      */
-    protected function getH5PIntegration(array $content, $content_id, $title, $embed_type)
+    protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type) : string
     {
         $content_tpl = self::plugin()->template("H5PContent.min.js");
         $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
@@ -360,7 +361,7 @@ class ShowContent
      * @param int      $finished
      * @param int|null $time
      */
-    public function setFinished($content_id, $score, $max_score, $opened, $finished, $time = null)
+    public function setFinished(int $content_id, int $score, int $max_score, int $opened, int $finished, /*?int*/ $time = null)/* : void*/
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
@@ -415,7 +416,7 @@ class ShowContent
      *
      * @return string|null
      */
-    public function contentsUserData($content_id, $data_id, $sub_content_id, $data = null, $preload = false, $invalidate = false)
+    public function contentsUserData(int $content_id, string $data_id, int $sub_content_id, /*?string*/ $data = null, bool $preload = false, bool $invalidate = false)/* : ?string*/
     {
         $h5p_content = self::h5p()->contents()->getContentById($content_id);
         if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {

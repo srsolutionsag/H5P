@@ -27,6 +27,7 @@ class Framework implements H5PFrameworkInterface
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -37,7 +38,7 @@ class Framework implements H5PFrameworkInterface
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -112,7 +113,7 @@ class Framework implements H5PFrameworkInterface
             $curlConnection->init();
 
             // use a proxy, if configured by ILIAS
-            if (!self::version()->is60()) {
+            if (!self::version()->is6()) {
                 $proxy = ilProxySettings::_getInstance();
                 if ($proxy->isActive()) {
                     $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
@@ -568,14 +569,14 @@ class Framework implements H5PFrameworkInterface
         if ($new) {
             $h5p_library = self::h5p()->libraries()->factory()->newLibraryInstance();
 
-            $h5p_library->setLibraryId($library_data["libraryId"]);
+            $h5p_library->setLibraryId(intval($library_data["libraryId"]));
         } else {
             $h5p_library = self::h5p()->libraries()->getLibraryById($library_data["libraryId"]);
 
             if ($h5p_library === null) {
                 $h5p_library = self::h5p()->libraries()->factory()->newLibraryInstance();
 
-                $h5p_library->setLibraryId($library_data["libraryId"]);
+                $h5p_library->setLibraryId(intval($library_data["libraryId"]));
 
                 $new = true;
             }
@@ -715,7 +716,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function updateContent($content, $content_main_id = null)
     {
-        $h5p_content = self::h5p()->contents()->getContentById($content["id"]);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($content["id"]));
 
         if ($h5p_content !== null) {
             $new = false;
@@ -726,7 +727,7 @@ class Framework implements H5PFrameworkInterface
 
             $h5p_content->setEmbedType("div");
 
-            $h5p_content->setLibraryId($content["library"]["libraryId"]);
+            $h5p_content->setLibraryId(intval($content["library"]["libraryId"]));
         }
 
         $h5p_content->setTitle($content["title"]);
@@ -795,7 +796,7 @@ class Framework implements H5PFrameworkInterface
 
             $h5p_dependency = self::h5p()->libraries()->factory()->newLibraryDependenciesInstance();
 
-            $h5p_dependency->setLibraryId($library_id);
+            $h5p_dependency->setLibraryId(intval($library_id));
 
             $h5p_dependency->setRequiredLibraryId((($h5p_library !== null) ? $h5p_library->getLibraryId() : 0));
 
@@ -845,7 +846,7 @@ class Framework implements H5PFrameworkInterface
         self::h5p()->events()->factory()->newEventFrameworkInstance("content", "delete", $content_id, $content["title"], $content["libraryName"], ($content["libraryMajorVersion"]
             . "." . $content["libraryMinorVersion"]));
 
-        $h5p_content = self::h5p()->contents()->getContentById($content_id);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($content_id));
         if ($h5p_content !== null) {
             self::h5p()->contents()->deleteContent($h5p_content);
         }
@@ -911,7 +912,7 @@ class Framework implements H5PFrameworkInterface
 
             $h5p_content_library->setContentId($content_id);
 
-            $h5p_content_library->setLibraryId($library_in_use["library"]["libraryId"]);
+            $h5p_content_library->setLibraryId(intval($library_in_use["library"]["libraryId"]));
 
             $h5p_content_library->setDependencyType($library_in_use["type"]);
 
@@ -1171,7 +1172,7 @@ class Framework implements H5PFrameworkInterface
     {
         $content = [];
 
-        $h5p_content = self::h5p()->contents()->getContentById($id);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($id));
 
         if ($h5p_content !== null) {
             $content = [
@@ -1293,7 +1294,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function updateContentFields($id, $fields)
     {
-        $h5p_content = self::h5p()->contents()->getContentById($id);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($id));
 
         if ($h5p_content !== null) {
             $h5p_content->setFiltered($fields["filtered"]);
@@ -1314,7 +1315,7 @@ class Framework implements H5PFrameworkInterface
      */
     public function clearFilteredParameters($library_id)
     {
-        $h5p_contents = self::h5p()->contents()->getContentsByLibrary($library_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByLibrary(intval($library_id));
 
         foreach ($h5p_contents as $h5p_content) {
             $h5p_content->setFiltered("");
@@ -1349,7 +1350,7 @@ class Framework implements H5PFrameworkInterface
     public function getNumContent($library_id, $skip = null)
     {
         // TODO: $skip?
-        $h5p_contents = self::h5p()->contents()->getContentsByLibrary($library_id);
+        $h5p_contents = self::h5p()->contents()->getContentsByLibrary(intval($library_id));
 
         return count($h5p_contents);
     }
@@ -1417,7 +1418,7 @@ class Framework implements H5PFrameworkInterface
         foreach ($libraries as $library) {
             $h5p_cached_asset = self::h5p()->libraries()->factory()->newLibraryCachedAssetInstance();
 
-            $h5p_cached_asset->setLibraryId(isset($library["id"]) ? $library["id"] : $library["libraryId"]);
+            $h5p_cached_asset->setLibraryId(intval(isset($library["id"]) ? $library["id"] : $library["libraryId"]));
 
             $h5p_cached_asset->setHash($key);
 

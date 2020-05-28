@@ -38,7 +38,7 @@ abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct(ActiveRecordConfigGUI $parent, $tab_id)
+    public function __construct(ActiveRecordConfigGUI $parent, string $tab_id)
     {
         $this->tab_id = $tab_id;
 

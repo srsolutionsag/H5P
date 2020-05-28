@@ -6,6 +6,7 @@ use ilH5PPlugin;
 use ilObjH5P;
 use ilObjH5PGUI;
 use srag\DIC\H5P\DICTrait;
+use srag\Plugins\H5P\ObjectSettings\Form\FormBuilder;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -20,6 +21,7 @@ final class Factory
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -30,7 +32,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -52,7 +54,7 @@ final class Factory
     /**
      * @return ObjectSettings
      */
-    public function newInstance()/* : ObjectSettings*/
+    public function newInstance() : ObjectSettings
     {
         $object_settings = new ObjectSettings();
 
@@ -64,11 +66,11 @@ final class Factory
      * @param ilObjH5PGUI $parent
      * @param ilObjH5P    $object
      *
-     * @return ObjectSettingsFormGUI
+     * @return FormBuilder
      */
-    public function newFormInstance(ilObjH5PGUI $parent, ilObjH5P $object)/*:ObjectSettingsFormGUI*/
+    public function newFormBuilderInstance(ilObjH5PGUI $parent, ilObjH5P $object) : FormBuilder
     {
-        $form = new ObjectSettingsFormGUI($parent, $object);
+        $form = new FormBuilder($parent, $object);
 
         return $form;
     }

@@ -22,7 +22,15 @@ interface DatabaseInterface extends ilDBPdoInterface
      * @param string $table_name
      * @param string $field
      */
-    public function createAutoIncrement($table_name, $field)/*: void*/ ;
+    public function createAutoIncrement(string $table_name, string $field)/*: void*/ ;
+
+
+    /**
+     * @param string $table_name
+     * @param array  $columns
+     * @param array  $primary_columns
+     */
+    public function createOrUpdateTable(string $table_name, array $columns, array $primary_columns)/*: void*/ ;
 
 
     /**
@@ -30,7 +38,7 @@ interface DatabaseInterface extends ilDBPdoInterface
      *
      * @param string $table_name
      */
-    public function dropAutoIncrementTable($table_name)/*: void*/ ;
+    public function dropAutoIncrementTable(string $table_name)/*: void*/ ;
 
 
     /**
@@ -39,7 +47,7 @@ interface DatabaseInterface extends ilDBPdoInterface
      *
      * @return object[]
      */
-    public function fetchAllCallback(ilDBStatement $stm, callable $callback);
+    public function fetchAllCallback(ilDBStatement $stm, callable $callback) : array;
 
 
     /**
@@ -48,7 +56,7 @@ interface DatabaseInterface extends ilDBPdoInterface
      *
      * @return object[]
      */
-    public function fetchAllClass(ilDBStatement $stm, $class_name);
+    public function fetchAllClass(ilDBStatement $stm, string $class_name) : array;
 
 
     /**
@@ -66,7 +74,15 @@ interface DatabaseInterface extends ilDBPdoInterface
      *
      * @return object|null
      */
-    public function fetchObjectClass(ilDBStatement $stm, $class_name)/*:?object*/ ;
+    public function fetchObjectClass(ilDBStatement $stm, string $class_name)/*:?object*/ ;
+
+
+    /**
+     * @param string $table_name
+     * @param array  $columns
+     * @param array  $values
+     */
+    public function multipleInsert(string $table_name, array $columns, array $values)/*:void*/ ;
 
 
     /**
@@ -75,7 +91,7 @@ interface DatabaseInterface extends ilDBPdoInterface
      * @param string $table_name
      * @param string $field
      */
-    public function resetAutoIncrement($table_name, $field)/*: void*/ ;
+    public function resetAutoIncrement(string $table_name, string $field)/*: void*/ ;
 
 
     /**
@@ -86,5 +102,5 @@ interface DatabaseInterface extends ilDBPdoInterface
      *
      * @return int
      */
-    public function store($table_name, array $values, $primary_key_field, $primary_key_value = 0);
+    public function store(string $table_name, array $values, string $primary_key_field,/*?*/ int $primary_key_value = 0) : int;
 }

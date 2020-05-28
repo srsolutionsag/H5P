@@ -28,7 +28,7 @@ final class PdoContextHelper extends ilDBPdo
      *
      * @internal
      */
-    public static function getPdo(ilDBPdoInterface $db)
+    public static function getPdo(ilDBPdoInterface $db) : PDO
     {
         if (!($db instanceof ilDBPdo)) {
             throw new DICException("PdoContextHelper only supports ilDBPdo!");

@@ -52,7 +52,7 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
      * @param string $a_title
      * @param string $a_postvar
      */
-    public function __construct($a_title = "", $a_postvar = "")
+    public function __construct(string $a_title = "", string $a_postvar = "")
     {
         parent::__construct($a_title, $a_postvar);
 
@@ -65,7 +65,7 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
      *
      * @return string
      */
-    public function render($a_mode = "")
+    public function render(/*string*/ $a_mode = "") : string
     {
         $tpl = new Template(__DIR__ . "/templates/text_input_gui_with_modern_auto_complete.html", true, true);
         if (strlen($this->getValue())) {

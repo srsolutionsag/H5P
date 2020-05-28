@@ -19,6 +19,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
@@ -37,7 +38,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands()/* : void*/
     {
         $this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
     }
@@ -46,7 +47,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields()/* : void*/
     {
         $this->fields = [
             "xhfp_library" => [
@@ -62,7 +63,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -71,7 +72,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("upload_library"));
     }
@@ -80,7 +81,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value)/* : void*/
     {
         switch ($key) {
             default:

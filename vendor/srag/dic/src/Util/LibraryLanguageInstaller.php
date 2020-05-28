@@ -21,11 +21,10 @@ final class LibraryLanguageInstaller implements Pluginable
 
     use DICTrait;
 
-
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance() : self
     {
         return new self();
     }
@@ -53,7 +52,7 @@ final class LibraryLanguageInstaller implements Pluginable
     /**
      * @inheritDoc
      */
-    public function getPlugin()
+    public function getPlugin() : PluginInterface
     {
         return $this->plugin;
     }
@@ -62,7 +61,7 @@ final class LibraryLanguageInstaller implements Pluginable
     /**
      * @inheritDoc
      */
-    public function withPlugin(PluginInterface $plugin)
+    public function withPlugin(PluginInterface $plugin) : self
     {
         $this->plugin = $plugin;
 
@@ -75,7 +74,7 @@ final class LibraryLanguageInstaller implements Pluginable
      *
      * @return self
      */
-    public function withLibraryLanguageDirectory($library_language_directory)
+    public function withLibraryLanguageDirectory(string $library_language_directory) : self
     {
         $this->library_language_directory = $library_language_directory;
 
@@ -152,7 +151,7 @@ final class LibraryLanguageInstaller implements Pluginable
      *
      * @return array
      */
-    protected function getAvailableLangFiles()
+    protected function getAvailableLangFiles() : array
     {
         $langs = [];
 

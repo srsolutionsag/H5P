@@ -20,6 +20,7 @@ class LibraryHubCache extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
+
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -27,7 +28,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -38,7 +39,7 @@ class LibraryHubCache extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -303,7 +304,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -312,7 +313,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -321,7 +322,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getMachineName()
+    public function getMachineName() : string
     {
         return $this->machine_name;
     }
@@ -330,7 +331,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $machine_name
      */
-    public function setMachineName($machine_name)
+    public function setMachineName(string $machine_name)/* : void*/
     {
         $this->machine_name = $machine_name;
     }
@@ -339,7 +340,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getMajorVersion()
+    public function getMajorVersion() : int
     {
         return $this->major_version;
     }
@@ -348,7 +349,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $major_version
      */
-    public function setMajorVersion($major_version)
+    public function setMajorVersion(int $major_version)/* : void*/
     {
         $this->major_version = $major_version;
     }
@@ -357,7 +358,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getMinorVersion()
+    public function getMinorVersion() : int
     {
         return $this->minor_version;
     }
@@ -366,7 +367,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $minor_version
      */
-    public function setMinorVersion($minor_version)
+    public function setMinorVersion(int $minor_version)/* : void*/
     {
         $this->minor_version = $minor_version;
     }
@@ -375,7 +376,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getPatchVersion()
+    public function getPatchVersion() : int
     {
         return $this->patch_version;
     }
@@ -384,7 +385,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $patch_version
      */
-    public function setPatchVersion($patch_version)
+    public function setPatchVersion(int $patch_version)/* : void*/
     {
         $this->patch_version = $patch_version;
     }
@@ -393,7 +394,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getH5pMajorVersion()
+    public function getH5pMajorVersion() : int
     {
         return $this->h5p_major_version;
     }
@@ -402,7 +403,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $h5p_major_version
      */
-    public function setH5pMajorVersion($h5p_major_version)
+    public function setH5pMajorVersion(int $h5p_major_version)/* : void*/
     {
         $this->h5p_major_version = $h5p_major_version;
     }
@@ -411,7 +412,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getH5pMinorVersion()
+    public function getH5pMinorVersion() : int
     {
         return $this->h5p_minor_version;
     }
@@ -420,7 +421,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $h5p_minor_version
      */
-    public function setH5pMinorVersion($h5p_minor_version)
+    public function setH5pMinorVersion(int $h5p_minor_version)/* : void*/
     {
         $this->h5p_minor_version = $h5p_minor_version;
     }
@@ -429,7 +430,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }
@@ -438,7 +439,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)/* : void*/
     {
         $this->title = $title;
     }
@@ -447,7 +448,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getSummary()
+    public function getSummary() : string
     {
         return $this->summary;
     }
@@ -456,7 +457,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $summary
      */
-    public function setSummary($summary)
+    public function setSummary(string $summary)/* : void*/
     {
         $this->summary = $summary;
     }
@@ -465,7 +466,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -474,7 +475,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description)/* : void*/
     {
         $this->description = $description;
     }
@@ -483,7 +484,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getIcon()
+    public function getIcon() : string
     {
         return $this->icon;
     }
@@ -492,7 +493,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $icon
      */
-    public function setIcon($icon)
+    public function setIcon(string $icon)/* : void*/
     {
         $this->icon = $icon;
     }
@@ -501,7 +502,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -510,7 +511,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }
@@ -519,7 +520,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt() : int
     {
         return $this->updated_at;
     }
@@ -528,7 +529,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt(int $updated_at)/* : void*/
     {
         $this->updated_at = $updated_at;
     }
@@ -537,7 +538,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return bool
      */
-    public function isRecommended()
+    public function isRecommended() : bool
     {
         return $this->is_recommended;
     }
@@ -546,7 +547,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param bool $is_recommended
      */
-    public function setIsRecommended($is_recommended)
+    public function setIsRecommended(bool $is_recommended)/* : void*/
     {
         $this->is_recommended = $is_recommended;
     }
@@ -555,7 +556,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return int
      */
-    public function getPopularity()
+    public function getPopularity() : int
     {
         return $this->popularity;
     }
@@ -564,7 +565,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param int $popularity
      */
-    public function setPopularity($popularity)
+    public function setPopularity(int $popularity)/* : void*/
     {
         $this->popularity = $popularity;
     }
@@ -573,7 +574,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getScreenshots()
+    public function getScreenshots() : string
     {
         return $this->screenshots;
     }
@@ -582,7 +583,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $screenshots
      */
-    public function setScreenshots($screenshots)
+    public function setScreenshots(string $screenshots)/* : void*/
     {
         $this->screenshots = $screenshots;
     }
@@ -591,7 +592,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getLicense()
+    public function getLicense() : string
     {
         return $this->license;
     }
@@ -600,7 +601,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $license
      */
-    public function setLicense($license)
+    public function setLicense(string $license)/* : void*/
     {
         $this->license = $license;
     }
@@ -609,7 +610,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getExample()
+    public function getExample() : string
     {
         return $this->example;
     }
@@ -618,7 +619,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $example
      */
-    public function setExample($example)
+    public function setExample(string $example)/* : void*/
     {
         $this->example = $example;
     }
@@ -627,7 +628,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getTutorial()
+    public function getTutorial() : string
     {
         return $this->tutorial;
     }
@@ -636,7 +637,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $tutorial
      */
-    public function setTutorial($tutorial)
+    public function setTutorial(string $tutorial)/* : void*/
     {
         $this->tutorial = $tutorial;
     }
@@ -645,7 +646,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getKeywords()
+    public function getKeywords() : string
     {
         return $this->keywords;
     }
@@ -654,7 +655,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $keywords
      */
-    public function setKeywords($keywords)
+    public function setKeywords(string $keywords)/* : void*/
     {
         $this->keywords = $keywords;
     }
@@ -663,7 +664,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getCategories()
+    public function getCategories() : string
     {
         return $this->categories;
     }
@@ -672,7 +673,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $categories
      */
-    public function setCategories($categories)
+    public function setCategories(string $categories)/* : void*/
     {
         $this->categories = $categories;
     }
@@ -681,7 +682,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getOwner()
+    public function getOwner() : string
     {
         return $this->owner;
     }
@@ -690,7 +691,7 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @param string $owner
      */
-    public function setOwner($owner)
+    public function setOwner(string $owner)/* : void*/
     {
         $this->owner = $owner;
     }

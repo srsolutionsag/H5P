@@ -22,6 +22,7 @@ class HubTableGUI extends TableGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "hub_table_row.html";
     const LANG_MODULE = "";
@@ -33,7 +34,7 @@ class HubTableGUI extends TableGUI
      * @param ilH5PConfigGUI $parent
      * @param string         $parent_cmd
      */
-    public function __construct(ilH5PConfigGUI $parent, /*string*/ $parent_cmd)
+    public function __construct(ilH5PConfigGUI $parent, string $parent_cmd)
     {
         parent::__construct($parent, $parent_cmd);
     }
@@ -46,8 +47,7 @@ class HubTableGUI extends TableGUI
         $column, /*array*/
         $row, /*int*/
         $format = 0
-    )/*: string*/
-    {
+    ) : string {
         switch ($column) {
             default:
                 $column = htmlspecialchars($row[$column]);
@@ -61,7 +61,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    public function getSelectableColumns2()/*: array*/
+    public function getSelectableColumns2() : array
     {
         $columns = [];
 
@@ -72,7 +72,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/*: void*/
+    protected function initColumns()/* : void*/
     {
         $this->addColumn("");
         $this->addColumn(self::plugin()->translate("library"), "title");
@@ -90,7 +90,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/*: void*/
+    protected function initData()/* : void*/
     {
         $this->setDefaultOrderField("title");
         $this->setDefaultOrderDirection("asc");
@@ -111,7 +111,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -120,7 +120,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/*: void*/
+    protected function initFilterFields()/* : void*/
     {
         $this->filter_fields = [
             "title"         => [
@@ -152,7 +152,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("installed_libraries"));
     }
@@ -163,7 +163,7 @@ class HubTableGUI extends TableGUI
      */
     protected function fillRow(/*array*/
         $row
-    )/*: void*/
+    )/* : void*/
     {
         // Links
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);
@@ -245,7 +245,7 @@ class HubTableGUI extends TableGUI
     /**
      * @return string
      */
-    public function getHTML()
+    public function getHTML() : string
     {
         $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
 

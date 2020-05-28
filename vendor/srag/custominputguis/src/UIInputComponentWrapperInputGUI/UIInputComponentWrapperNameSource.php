@@ -25,7 +25,7 @@ class UIInputComponentWrapperNameSource implements NameSource
      *
      * @param string $post_var
      */
-    public function __construct($post_var)
+    public function __construct(string $post_var)
     {
         $this->post_var = $post_var;
     }
@@ -34,7 +34,7 @@ class UIInputComponentWrapperNameSource implements NameSource
     /**
      * @inheritDoc
      */
-    public function getNewName()
+    public function getNewName() : string
     {
         return $this->post_var;
     }

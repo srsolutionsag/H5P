@@ -22,6 +22,7 @@ class ResultsTableGUI extends TableGUI
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "results_table_row.html";
     /**
@@ -53,8 +54,7 @@ class ResultsTableGUI extends TableGUI
         $column, /*array*/
         $row, /*int*/
         $format = 0
-    )/*: string*/
-    {
+    ) : string {
         switch ($column) {
             default:
                 $column = htmlspecialchars($row[$column]);
@@ -68,7 +68,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    public function getSelectableColumns2()/*: array*/
+    public function getSelectableColumns2() : array
     {
         $columns = [];
 
@@ -79,7 +79,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/*: void*/
+    protected function initColumns()/* : void*/
     {
         $this->addColumn(self::plugin()->translate("user"));
 
@@ -95,7 +95,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/*: void*/
+    protected function initData()/* : void*/
     {
         $this->contents = self::h5p()->contents()->getContentsByObject($this->parent_obj->object->getId());
 
@@ -133,7 +133,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/*: void*/
+    protected function initFilterFields()/* : void*/
     {
 
     }
@@ -142,7 +142,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId()/* : void*/
     {
 
     }
@@ -151,7 +151,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("results"));
     }
@@ -162,7 +162,7 @@ class ResultsTableGUI extends TableGUI
      */
     protected function fillRow(/*array*/
         $row
-    )/*: void*/
+    )/* : void*/
     {
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
 

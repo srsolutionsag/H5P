@@ -20,6 +20,7 @@ class RefreshHubJob extends ilCronJob
 
     use DICTrait;
     use H5PTrait;
+
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -36,7 +37,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getId()/*: string*/
+    public function getId() : string
     {
         return self::CRON_JOB_ID;
     }
@@ -45,7 +46,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getTitle()/*: string*/
+    public function getTitle() : string
     {
         return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("refresh_hub");
     }
@@ -54,7 +55,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDescription()/*: string*/
+    public function getDescription() : string
     {
         return self::plugin()->translate("refresh_hub_description");
     }
@@ -63,7 +64,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasAutoActivation()/*: bool*/
+    public function hasAutoActivation() : bool
     {
         return true;
     }
@@ -72,7 +73,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasFlexibleSchedule()/*: bool*/
+    public function hasFlexibleSchedule() : bool
     {
         return true;
     }
@@ -81,7 +82,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleType()/*:int*/
+    public function getDefaultScheduleType() : int
     {
         return self::SCHEDULE_TYPE_DAILY;
     }
@@ -90,7 +91,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleValue()/*:?int*/
+    public function getDefaultScheduleValue()/* : ?int*/
     {
         return null;
     }
@@ -99,7 +100,7 @@ class RefreshHubJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function run()/*: ilCronJobResult*/
+    public function run() : ilCronJobResult
     {
         $result = new ilCronJobResult();
 

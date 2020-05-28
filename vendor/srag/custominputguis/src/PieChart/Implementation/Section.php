@@ -22,6 +22,7 @@ class Section implements SectionInterface
 {
 
     use ComponentHelper;
+
     /**
      * @var string
      */
@@ -65,7 +66,7 @@ class Section implements SectionInterface
      * @param int                   $index
      * @param float                 $offset
      */
-    public function __construct(PieChartItemInterface $item, $totalValue, $numSections, $index, $offset)
+    public function __construct(PieChartItemInterface $item, float $totalValue, int $numSections, int $index, float $offset)
     {
         $name = $item->getName();
         $value = $item->getValue();
@@ -96,7 +97,7 @@ class Section implements SectionInterface
      * @param float $totalValue
      * @param float $sectionValue
      */
-    private function calcPercentage($totalValue, $sectionValue)/*: void*/
+    private function calcPercentage(float $totalValue, float $sectionValue)/*: void*/
     {
         $this->percentage = $sectionValue / $totalValue * 100;
     }
@@ -114,7 +115,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -123,7 +124,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getValue()
+    public function getValue() : SectionValueInterface
     {
         return $this->value;
     }
@@ -132,7 +133,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getPercentage()
+    public function getPercentage() : float
     {
         return $this->percentage;
     }
@@ -141,7 +142,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getStrokeLength()
+    public function getStrokeLength() : float
     {
         return $this->stroke_length;
     }
@@ -150,7 +151,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getOffset()
+    public function getOffset() : float
     {
         return $this->offset;
     }
@@ -159,7 +160,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getColor()
+    public function getColor() : Color
     {
         return $this->color;
     }
@@ -168,7 +169,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function getLegendEntry()
+    public function getLegendEntry() : LegendEntryInterface
     {
         return $this->legend;
     }
@@ -177,7 +178,7 @@ class Section implements SectionInterface
     /**
      * @return Color
      */
-    public function getTextColor()
+    public function getTextColor() : Color
     {
         return $this->textColor;
     }
@@ -186,7 +187,7 @@ class Section implements SectionInterface
     /**
      * @inheritDoc
      */
-    public function withTextColor(Color $textColor)
+    public function withTextColor(Color $textColor) : SectionInterface
     {
         $clone = clone $this;
         $clone->textColor = $textColor;

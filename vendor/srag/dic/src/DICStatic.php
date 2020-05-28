@@ -5,7 +5,6 @@ namespace srag\DIC\H5P;
 use ilLogLevel;
 use ilPlugin;
 use srag\DIC\H5P\DIC\DICInterface;
-use srag\DIC\H5P\DIC\Implementation\ILIAS53DIC;
 use srag\DIC\H5P\DIC\Implementation\ILIAS54DIC;
 use srag\DIC\H5P\DIC\Implementation\ILIAS60DIC;
 use srag\DIC\H5P\Exception\DICException;
@@ -61,20 +60,15 @@ final class DICStatic implements DICStaticInterface
     /**
      * @inheritDoc
      */
-    public static function dic()
+    public static function dic() : DICInterface
     {
         if (self::$dic === null) {
             switch (true) {
-                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_3)):
+                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_4)):
                     throw new DICException("DIC not supports ILIAS " . self::version()->getILIASVersion() . " anymore!");
                     break;
 
-                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_4)):
-                    global $DIC;
-                    self::$dic = new ILIAS53DIC($DIC);
-                    break;
-
-                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_6_0)):
+                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_6)):
                     global $DIC;
                     self::$dic = new ILIAS54DIC($DIC);
                     break;
@@ -93,7 +87,7 @@ final class DICStatic implements DICStaticInterface
     /**
      * @inheritDoc
      */
-    public static function output()
+    public static function output() : OutputInterface
     {
         if (self::$output === null) {
             self::$output = new Output();
@@ -106,7 +100,7 @@ final class DICStatic implements DICStaticInterface
     /**
      * @inheritDoc
      */
-    public static function plugin($plugin_class_name)
+    public static function plugin(string $plugin_class_name) : PluginInterface
     {
         if (!isset(self::$plugins[$plugin_class_name])) {
             if (!class_exists($plugin_class_name)) {
@@ -135,7 +129,7 @@ final class DICStatic implements DICStaticInterface
     /**
      * @inheritDoc
      */
-    public static function version()
+    public static function version() : VersionInterface
     {
         if (self::$version === null) {
             self::$version = new Version();

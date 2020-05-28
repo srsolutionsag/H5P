@@ -20,6 +20,7 @@ class ObjectSettings extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
+
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_obj";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -27,7 +28,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*: string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -38,7 +39,7 @@ class ObjectSettings extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*: string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -126,7 +127,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @return int
      */
-    public function getObjId()/*: int*/
+    public function getObjId() : int
     {
         return $this->obj_id;
     }
@@ -135,7 +136,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId(/*int*/ $obj_id)/*: void*/
+    public function setObjId(int $obj_id)/* : void*/
     {
         $this->obj_id = $obj_id;
     }
@@ -144,7 +145,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @return bool
      */
-    public function isOnline()/*: bool*/
+    public function isOnline() : bool
     {
         return $this->is_online;
     }
@@ -153,7 +154,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @param bool $is_online
      */
-    public function setOnline(/*bool*/ $is_online = true)/*: void*/
+    public function setOnline(bool $is_online = true)/* : void*/
     {
         $this->is_online = $is_online;
     }
@@ -162,7 +163,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @return bool
      */
-    public function isSolveOnlyOnce()/*: bool*/
+    public function isSolveOnlyOnce() : bool
     {
         return $this->solve_only_once;
     }
@@ -171,7 +172,7 @@ class ObjectSettings extends ActiveRecord
     /**
      * @param bool $solve_only_once
      */
-    public function setSolveOnlyOnce(/*bool*/ $solve_only_once)/*: void*/
+    public function setSolveOnlyOnce(bool $solve_only_once)/* : void*/
     {
         $this->solve_only_once = $solve_only_once;
     }

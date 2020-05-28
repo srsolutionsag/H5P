@@ -2,86 +2,84 @@
 
 namespace srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent;
 
+use ilHiddenInputGUI;
+use ILIAS\UI\Component\Component;
 use ILIAS\UI\Component\Input\Field\Input as InputInterface;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
-use ILIAS\UI\Implementation\Component\Input\Field\Renderer as InputRenderer;
-use ILIAS\UI\Implementation\Render\ResourceRegistry;
 use ILIAS\UI\Implementation\Render\Template;
 use ILIAS\UI\Renderer as RendererInterface;
-use srag\DIC\H5P\DICTrait;
+use srag\DIC\H5P\DICStatic;
 
-/**
- * Class Renderer
- *
- * @package srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- */
-class Renderer extends InputRenderer
-{
-
-    use DICTrait;
-
-
+if (DICStatic::version()->is6()) {
     /**
-     * @inheritDoc
+     * Class Renderer
+     *
+     * @package srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent
+     *
+     * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
      */
-    protected function getComponentInterfaceName()
+    class Renderer extends AbstractRenderer
     {
-        return [
-            InputGUIWrapperUIInputComponent::class
-        ];
+
+        /**
+         * @inheritDoc
+         */
+        public function render(Component $component, RendererInterface $default_renderer) : string
+        {
+            if ($component->getInput() instanceof ilHiddenInputGUI) {
+                return "";
+            }
+
+            $input_tpl = $this->getTemplate("input.html", true, true);
+
+            $html = $this->renderInputFieldWithContext($default_renderer, $input_tpl, $component, null, null);
+
+            return $html;
+        }
+
+
+        /**
+         * @inheritDoc
+         */
+        protected function renderInputField(Template $tpl, Input $input, $id, RendererInterface $default_renderer) : string
+        {
+            return $this->renderInput($tpl, $input);
+        }
     }
-
-
+} else {
     /**
-     * @inheritDoc
+     * Class Renderer
+     *
+     * @package srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent
+     *
+     * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
      */
-    protected function renderNoneGroupInput(InputInterface $input, RendererInterface $default_renderer)
+    class Renderer extends AbstractRenderer
     {
-        $input_tpl = $this->getTemplate("input.html", true, true);
 
-        $html = $this->renderInputFieldWithContext($input_tpl, $input, null, null);
+        /**
+         * @inheritDoc
+         */
+        protected function renderNoneGroupInput(InputInterface $input, RendererInterface $default_renderer) : string
+        {
+            if ($input->getInput() instanceof ilHiddenInputGUI) {
+                return "";
+            }
 
-        return $html;
-    }
+            $input_tpl = $this->getTemplate("input.html", true, true);
 
+            $html = $this->renderInputFieldWithContext($input_tpl, $input, null, null);
 
-    /**
-     * @inheritDoc
-     */
-    protected function renderInputField(Template $tpl, Input $input, $id)
-    {
-        $tpl->setVariable("INPUT", self::output()->getHTML($input->getInput()));
-
-        return self::output()->getHTML($tpl);
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function registerResources(ResourceRegistry $registry)/*: void*/
-    {
-        parent::registerResources($registry);
-
-        $dir = __DIR__;
-        $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-        $registry->register($dir . "/css/InputGUIWrapperUIInputComponent.css");
-    }
+            return $html;
+        }
 
 
-    /**
-     * @inheritDoc
-     */
-    protected function getTemplatePath($name)
-    {
-        if ($name === "input.html") {
-            return __DIR__ . "/templates/" . $name;
-        } else {
-            // return parent::getTemplatePath($name);
-            return "src/UI/templates/default/Input/" . $name;
+        /**
+         * @inheritDoc
+         */
+        protected function renderInputField(Template $tpl, Input $input, $id) : string
+        {
+            return $this->renderInput($tpl, $input);
         }
     }
 }

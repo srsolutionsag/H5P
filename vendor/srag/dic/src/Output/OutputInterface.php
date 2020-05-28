@@ -27,7 +27,7 @@ interface OutputInterface
      * @throws DICException Class {get_class($value)} is not supported for output!
      * @throws ilTemplateException
      */
-    public function getHTML($value);
+    public function getHTML($value) : string;
 
 
     /**
@@ -40,7 +40,7 @@ interface OutputInterface
      * @throws DICException Class {get_class($value)} is not supported for output!
      * @throws ilTemplateException
      */
-    public function output($value, $show = false, $main_template = true)/*: void*/ ;
+    public function output($value, bool $show = false, bool $main_template = true)/*: void*/ ;
 
 
     /**

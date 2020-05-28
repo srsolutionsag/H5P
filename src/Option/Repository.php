@@ -3,9 +3,10 @@
 namespace srag\Plugins\H5P\Options;
 
 use ilH5PPlugin;
+use srag\ActiveRecordConfig\H5P\Config\AbstractFactory;
 use srag\ActiveRecordConfig\H5P\Config\AbstractRepository;
 use srag\ActiveRecordConfig\H5P\Config\Config;
-use srag\Plugins\H5P\Hub\HubSettingsFormGUI;
+use srag\Plugins\H5P\Hub\Form\SettingsFormBuilder;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -19,6 +20,7 @@ final class Repository extends AbstractRepository
 {
 
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -29,7 +31,7 @@ final class Repository extends AbstractRepository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -53,7 +55,7 @@ final class Repository extends AbstractRepository
      *
      * @return Factory
      */
-    public function factory()/* : AbstractFactory*/
+    public function factory() : AbstractFactory
     {
         return Factory::getInstance();
     }
@@ -62,7 +64,7 @@ final class Repository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    protected function getTableName()/* : string*/
+    protected function getTableName() : string
     {
         return "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_opt_n";
     }
@@ -71,12 +73,12 @@ final class Repository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    protected function getFields()/* : array*/
+    protected function getFields() : array
     {
         return [
-            HubSettingsFormGUI::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
-            HubSettingsFormGUI::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
-            HubSettingsFormGUI::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
+            SettingsFormBuilder::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
+            SettingsFormBuilder::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
+            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
         ];
     }
 
@@ -87,7 +89,7 @@ final class Repository extends AbstractRepository
      *
      * @return mixed
      */
-    public function getOption(/*string*/ $name, $default_value = null)
+    public function getOption(string $name, $default_value = null)
     {
         return $this->getJsonValue($name, false, $default_value);
     }
@@ -97,7 +99,7 @@ final class Repository extends AbstractRepository
      * @param string $name
      * @param mixed  $value
      */
-    public function setOption(/*string*/ $name, $value)/*:void*/
+    public function setOption(string $name, $value)/* : void*/
     {
         $this->setJsonValue($name, $value);
     }

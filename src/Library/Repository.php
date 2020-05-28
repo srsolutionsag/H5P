@@ -8,6 +8,7 @@ use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Utils\H5PTrait;
+use stdClass;
 
 /**
  * Class Repository
@@ -21,6 +22,7 @@ final class Repository
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -31,7 +33,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -53,7 +55,7 @@ final class Repository
     /**
      * @param Counter $counter
      */
-    public function deleteCounter(Counter $counter)/*:void*/
+    public function deleteCounter(Counter $counter)/* : void*/
     {
         $counter->delete();
     }
@@ -62,7 +64,7 @@ final class Repository
     /**
      * @param Library $library
      */
-    public function deleteLibrary(Library $library)/*:void*/
+    public function deleteLibrary(Library $library)/* : void*/
     {
         $library->delete();
     }
@@ -71,7 +73,7 @@ final class Repository
     /**
      * @param LibraryCachedAsset $library_cached_asset
      */
-    public function deleteLibraryCachedAsset(LibraryCachedAsset $library_cached_asset)/*:void*/
+    public function deleteLibraryCachedAsset(LibraryCachedAsset $library_cached_asset)/* : void*/
     {
         $library_cached_asset->delete();
     }
@@ -80,7 +82,7 @@ final class Repository
     /**
      * @param LibraryDependencies $library_dependencies
      */
-    public function deleteLibraryDependencies(LibraryDependencies $library_dependencies)/*:void*/
+    public function deleteLibraryDependencies(LibraryDependencies $library_dependencies)/* : void*/
     {
         $library_dependencies->delete();
     }
@@ -89,7 +91,7 @@ final class Repository
     /**
      * @param LibraryHubCache $library_hub_cache
      */
-    public function deleteLibraryHubCache(LibraryHubCache $library_hub_cache)/*:void*/
+    public function deleteLibraryHubCache(LibraryHubCache $library_hub_cache)/* : void*/
     {
         $library_hub_cache->delete();
     }
@@ -98,7 +100,7 @@ final class Repository
     /**
      * @param LibraryLanguage $library_language
      */
-    public function deleteLibraryLanguage(LibraryLanguage $library_language)/*:void*/
+    public function deleteLibraryLanguage(LibraryLanguage $library_language)/* : void*/
     {
         $library_language->delete();
     }
@@ -107,7 +109,7 @@ final class Repository
     /**
      * @internal
      */
-    public function dropTables()/*:void*/
+    public function dropTables()/* : void*/
     {
         self::dic()->database()->dropTable(Library::TABLE_NAME, false);
         self::dic()->database()->dropTable(LibraryCachedAsset::TABLE_NAME, false);
@@ -120,7 +122,7 @@ final class Repository
     /**
      * @return Factory
      */
-    public function factory()/* : Factory*/
+    public function factory() : Factory
     {
         return Factory::getInstance();
     }
@@ -129,7 +131,7 @@ final class Repository
     /**
      * @internal
      */
-    public function installTables()/*:void*/
+    public function installTables()/* : void*/
     {
         Counter::updateDB();
         Library::updateDB();
@@ -143,7 +145,7 @@ final class Repository
     /**
      * @param Counter $counter
      */
-    public function storeCounter(Counter $counter)/*:void*/
+    public function storeCounter(Counter $counter)/* : void*/
     {
         $counter->store();
     }
@@ -152,7 +154,7 @@ final class Repository
     /**
      * @param Library $library
      */
-    public function storeLibrary(Library $library)/*:void*/
+    public function storeLibrary(Library $library)/* : void*/
     {
         $time = time();
 
@@ -169,7 +171,7 @@ final class Repository
     /**
      * @param LibraryCachedAsset $library_cached_asset
      */
-    public function storeLibraryCachedAsset(LibraryCachedAsset $library_cached_asset)/*:void*/
+    public function storeLibraryCachedAsset(LibraryCachedAsset $library_cached_asset)/* : void*/
     {
         $library_cached_asset->store();
     }
@@ -178,7 +180,7 @@ final class Repository
     /**
      * @param LibraryDependencies $library_dependencies
      */
-    public function storeLibraryDependencies(LibraryDependencies $library_dependencies)/*:void*/
+    public function storeLibraryDependencies(LibraryDependencies $library_dependencies)/* : void*/
     {
         $library_dependencies->store();
     }
@@ -187,7 +189,7 @@ final class Repository
     /**
      * @param LibraryHubCache $library_hub_cache
      */
-    public function storeLibraryHubCache(LibraryHubCache $library_hub_cache)/*:void*/
+    public function storeLibraryHubCache(LibraryHubCache $library_hub_cache)/* : void*/
     {
         $library_hub_cache->store();
     }
@@ -196,7 +198,7 @@ final class Repository
     /**
      * @param LibraryLanguage $library_language
      */
-    public function storeLibraryLanguage(LibraryLanguage $library_language)/*:void*/
+    public function storeLibraryLanguage(LibraryLanguage $library_language)/* : void*/
     {
         $library_language->store();
     }
@@ -205,7 +207,7 @@ final class Repository
     /**
      *
      */
-    public function truncateLibraryHubCaches()/*:void*/
+    public function truncateLibraryHubCaches()/* : void*/
     {
         LibraryHubCache::truncateDB();
     }
@@ -216,7 +218,7 @@ final class Repository
      *
      * @return Counter[]
      */
-    public function getCountersByType($type)
+    public function getCountersByType(string $type) : array
     {
         /**
          * @var Counter[] $h5p_counters
@@ -233,11 +235,11 @@ final class Repository
     /**
      * @param string $type
      * @param string $library_name
-     * @param string $libray_version
+     * @param string $library_version
      *
      * @return Counter|null
      */
-    public function getCounterByLibrary($type, $library_name, $library_version)
+    public function getCounterByLibrary(string $type, string $library_name, string $library_version)/* : ?Counter*/
     {
         /**
          * @var Counter|null $h5p_counter
@@ -258,7 +260,7 @@ final class Repository
      *
      * @return Library|null
      */
-    public function getLibraryById($library_id)
+    public function getLibraryById(int $library_id)/* : ?Library*/
     {
         /**
          * @var Library|null $h5p_library
@@ -275,7 +277,7 @@ final class Repository
     /**
      * @return Library[]
      */
-    public function getLibraries()
+    public function getLibraries() : array
     {
         /**
          * @var Library[] $h5p_libraries
@@ -292,7 +294,7 @@ final class Repository
      *
      * @return Library[]
      */
-    public function getLibraryAllVersions($name)
+    public function getLibraryAllVersions(string $name) : array
     {
         /**
          * @var Library[] $h5p_libraries
@@ -313,7 +315,7 @@ final class Repository
      *
      * @return Library|null
      */
-    public function getLibraryByVersion($name, $major_version = null, $minor_version = null)
+    public function getLibraryByVersion(string $name, /*?int*/ $major_version = null, /*?int*/ $minor_version = null)/* : ?Library*/
     {
         /**
          * @var Library|null $h5p_library
@@ -343,7 +345,7 @@ final class Repository
      *
      * @return int
      */
-    public function getLibraryUsage($library_id)
+    public function getLibraryUsage(int $library_id) : int
     {
         $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . Library::TABLE_NAME . " AS l
@@ -360,7 +362,7 @@ final class Repository
     /**
      * @return Library[]
      */
-    public function getLatestLibraryVersions()
+    public function getLatestLibraryVersions() : array
     {
         /**
          * @var Library[] $h5p_libraries
@@ -377,7 +379,7 @@ final class Repository
     /**
      * @return Library[]
      */
-    public function getAddonsLibraries()
+    public function getAddonsLibraries() : array
     {
         /**
          * @var Library[] $h5p_libraries
@@ -394,7 +396,7 @@ final class Repository
     /**
      * @return Library|null
      */
-    public function getCurrentLibrary()
+    public function getCurrentLibrary()/* : ?Library*/
     {
         /**
          * @var Library|null $xhfp_library
@@ -415,7 +417,7 @@ final class Repository
      *
      * @return bool
      */
-    public function libraryHasUpgrade($name, $major_version, $minor_version)
+    public function libraryHasUpgrade(string $name, int $major_version, int $minor_version) : bool
     {
         $result = self::dic()->database()->queryF("SELECT id FROM " . Library::TABLE_NAME
             . " WHERE name=%s AND (major_version>%s OR (major_version=%s AND minor_version>%s))", [
@@ -434,7 +436,7 @@ final class Repository
      *
      * @return LibraryCachedAsset[]
      */
-    public function getCachedAssetsByLibrary($library_id)
+    public function getCachedAssetsByLibrary(int $library_id) : array
     {
         /**
          * @var LibraryCachedAsset[] $h5p_cached_assets
@@ -453,7 +455,7 @@ final class Repository
      *
      * @return LibraryDependencies[]
      */
-    public function getDependencies($library_id)
+    public function getDependencies(int $library_id) : array
     {
         /**
          * @var LibraryDependencies[] $h5p_library_dependencies
@@ -472,7 +474,7 @@ final class Repository
      *
      * @return int
      */
-    public function getLibraryDependenciesUsage($library_id)
+    public function getLibraryDependenciesUsage(int $library_id) : int
     {
         /**
          * @var LibraryDependencies[] $h5p_library_dependencies
@@ -491,7 +493,7 @@ final class Repository
      *
      * @return array[]
      */
-    public function getDependenciesJoin($library_id)
+    public function getDependenciesJoin(int $library_id) : array
     {
         /**
          * @var array[] $h5p_library_dependencies
@@ -510,7 +512,7 @@ final class Repository
      *
      * @return array
      */
-    public function getUsageJoin($library_id)
+    public function getUsageJoin(int $library_id) : array
     {
         /**
          * @var LibraryDependencies[] $h5p_library_usages
@@ -527,7 +529,7 @@ final class Repository
     /**
      * @return LibraryHubCache[]
      */
-    public function getHubLibraries()
+    public function getHubLibraries() : array
     {
         /**
          * @var LibraryHubCache[] $h5p_hub_libraries
@@ -544,7 +546,7 @@ final class Repository
      *
      * @return LibraryHubCache|null
      */
-    public function getLibraryByName($name)
+    public function getLibraryByName(string $name)/* : ?LibraryHubCache*/
     {
         /**
          * @var LibraryHubCache|null $h5p_hub_library
@@ -563,7 +565,7 @@ final class Repository
      *
      * @return object|array|null
      */
-    public function getContentTypeCache($name = null)
+    public function getContentTypeCache(/*?string*/ $name = null)
     {
         if ($name != null) {
             $library_hub_cache = LibraryHubCache::where([
@@ -576,7 +578,7 @@ final class Repository
                 return null;
             }
         } else {
-            return array_map(function ($library_hub_cache) {
+            return array_map(function (array $library_hub_cache) : stdClass {
                 return (object) $library_hub_cache;
             }, LibraryHubCache::getArray());
         }
@@ -588,7 +590,7 @@ final class Repository
      *
      * @return LibraryLanguage[]
      */
-    public function getLanguagesByLibrary($library_id)
+    public function getLanguagesByLibrary(int $library_id) : array
     {
         /**
          * @var LibraryLanguage[] $h5p_languages
@@ -610,7 +612,7 @@ final class Repository
      *
      * @return string|false
      */
-    public function getTranslationJson($name, $major_version, $minor_version, $language)
+    public function getTranslationJson(string $name, int $major_version, int $minor_version, string $language)
     {
         /**
          * @var LibraryLanguage $h5p_library_language
@@ -637,7 +639,7 @@ final class Repository
      *
      * @return array
      */
-    public function getAvailableLanguages($name, $major_version, $minor_version)
+    public function getAvailableLanguages(string $name, int $major_version, int $minor_version) : array
     {
         $h5p_library_languages = LibraryLanguage::innerjoin(Library::TABLE_NAME, "library_id", "library_id")->where([
             "name"          => $name,
@@ -661,7 +663,7 @@ final class Repository
      *
      * @return array
      */
-    public function getTranslations($libraries, $language_code)
+    public function getTranslations(array $libraries, string $language_code) : array
     {
         $h5p_library_languages = self::dic()->database()
             ->queryF("SELECT translation, CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version) AS lib FROM " . Library::TABLE_NAME

@@ -23,11 +23,10 @@ class Renderer extends AbstractComponentRenderer
 
     use DICTrait;
 
-
     /**
      * @inheritDoc
      */
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [PieChartInterface::class];
     }
@@ -36,7 +35,7 @@ class Renderer extends AbstractComponentRenderer
     /**
      * @inheritDoc
      */
-    public function render(Component $component, RendererInterface $default_renderer)
+    public function render(Component $component, RendererInterface $default_renderer) : string
     {
         $this->checkComponent($component);
 
@@ -50,7 +49,7 @@ class Renderer extends AbstractComponentRenderer
      *
      * @return string
      */
-    protected function renderStandard(PieChartInterface $component, RendererInterface $default_renderer)
+    protected function renderStandard(PieChartInterface $component, RendererInterface $default_renderer) : string
     {
         $tpl = $this->getTemplate("tpl.piechart.html", true, true);
 
@@ -121,7 +120,7 @@ class Renderer extends AbstractComponentRenderer
     /**
      * @inheritDoc
      */
-    protected function getTemplatePath($name)
+    protected function getTemplatePath(/*string*/ $name) : string
     {
         return __DIR__ . "/../templates/" . $name;
     }

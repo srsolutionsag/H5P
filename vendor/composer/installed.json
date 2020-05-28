@@ -119,17 +119,17 @@
     },
     {
         "name": "srag/activerecordconfig",
-        "version": "v0.19.5",
-        "version_normalized": "0.19.5.0",
+        "version": "v0.19.6",
+        "version_normalized": "0.19.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-            "reference": "cf747e69c22f1549d3c5d9be440ae92c7b3aed34"
+            "reference": "37c29f8f8f7e8972d5f42aabea133bff18388a18"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/cf747e69c22f1549d3c5d9be440ae92c7b3aed34",
-            "reference": "cf747e69c22f1549d3c5d9be440ae92c7b3aed34",
+            "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/37c29f8f8f7e8972d5f42aabea133bff18388a18",
+            "reference": "37c29f8f8f7e8972d5f42aabea133bff18388a18",
             "shasum": ""
         },
         "require": {
@@ -137,7 +137,7 @@
             "srag/custominputguis": ">=0.1.0",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2020-02-05T06:16:30+00:00",
+        "time": "2020-02-21T09:47:44+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -167,24 +167,24 @@
     },
     {
         "name": "srag/custominputguis",
-        "version": "v0.31.8",
-        "version_normalized": "0.31.8.0",
+        "version": "v0.35.1",
+        "version_normalized": "0.35.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-            "reference": "71fa066e505c4cce9492ca2242f3d3c87a9477d3"
+            "reference": "d14b23952543e4c172f2b79526acb2e8d8882f3d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/71fa066e505c4cce9492ca2242f3d3c87a9477d3",
-            "reference": "71fa066e505c4cce9492ca2242f3d3c87a9477d3",
+            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/d14b23952543e4c172f2b79526acb2e8d8882f3d",
+            "reference": "d14b23952543e4c172f2b79526acb2e8d8882f3d",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6",
+            "php": ">=7.0",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2020-02-10T11:31:05+00:00",
+        "time": "2020-05-28T06:50:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -216,23 +216,23 @@
     },
     {
         "name": "srag/dic",
-        "version": "v0.20.2",
-        "version_normalized": "0.20.2.0",
+        "version": "v0.25.0",
+        "version_normalized": "0.25.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "e5d3265eb83b722f95579c36ce1b59dca0f1316f"
+            "reference": "9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/e5d3265eb83b722f95579c36ce1b59dca0f1316f",
-            "reference": "e5d3265eb83b722f95579c36ce1b59dca0f1316f",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43",
+            "reference": "9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-02-13T07:39:21+00:00",
+        "time": "2020-05-28T05:38:40+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -263,23 +263,23 @@
     },
     {
         "name": "srag/librariesnamespacechanger",
-        "version": "v0.7.0",
-        "version_normalized": "0.7.0.0",
+        "version": "v0.8.6",
+        "version_normalized": "0.8.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "80afdd6f1d0690004e87edadcf120fb6d0740ebb"
+            "reference": "3cded4dd32c9ee09eeb782d84266fcf8ad01b4b1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/80afdd6f1d0690004e87edadcf120fb6d0740ebb",
-            "reference": "80afdd6f1d0690004e87edadcf120fb6d0740ebb",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/3cded4dd32c9ee09eeb782d84266fcf8ad01b4b1",
+            "reference": "3cded4dd32c9ee09eeb782d84266fcf8ad01b4b1",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6"
+            "php": ">=7.0"
         },
-        "time": "2019-12-11T08:38:08+00:00",
+        "time": "2020-03-19T13:25:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

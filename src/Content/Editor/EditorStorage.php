@@ -21,6 +21,7 @@ class EditorStorage implements H5peditorStorageInterface
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -31,7 +32,7 @@ class EditorStorage implements H5peditorStorageInterface
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();

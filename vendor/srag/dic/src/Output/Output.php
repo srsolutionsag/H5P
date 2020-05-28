@@ -3,7 +3,7 @@
 namespace srag\DIC\H5P\Output;
 
 use ILIAS\UI\Component\Component;
-use ILIAS\UI\Implementation\Render\ilTemplateWrapper;
+use ILIAS\UI\Implementation\Render\Template;
 use ilTable2GUI;
 use ilTemplate;
 use JsonSerializable;
@@ -23,7 +23,6 @@ final class Output implements OutputInterface
 
     use DICTrait;
 
-
     /**
      * Output constructor
      */
@@ -36,7 +35,7 @@ final class Output implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function getHTML($value)
+    public function getHTML($value) : string
     {
         if (is_array($value)) {
             $html = "";
@@ -71,7 +70,7 @@ final class Output implements OutputInterface
 
                 // Template instance
                 case ($value instanceof ilTemplate):
-                case ($value instanceof ilTemplateWrapper):
+                case ($value instanceof Template):
                     $html = $value->get();
                     break;
 
@@ -89,7 +88,7 @@ final class Output implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function output($value, $show = false, $main_template = true)/*: void*/
+    public function output($value, bool $show = false, bool $main_template = true)/*: void*/
     {
         $html = $this->getHTML($value);
 
@@ -99,7 +98,7 @@ final class Output implements OutputInterface
             exit;
         } else {
             if ($main_template) {
-                if (self::version()->is60()) {
+                if (self::version()->is6()) {
                     self::dic()->ui()->mainTemplate()->loadStandardTemplate();
                 } else {
                     self::dic()->ui()->mainTemplate()->getStandardTemplate();
@@ -108,10 +107,12 @@ final class Output implements OutputInterface
 
             self::dic()->ui()->mainTemplate()->setLocator();
 
-            self::dic()->ui()->mainTemplate()->setContent($html);
+            if (!empty($html)) {
+                self::dic()->ui()->mainTemplate()->setContent($html);
+            }
 
             if ($show) {
-                if (self::version()->is60()) {
+                if (self::version()->is6()) {
                     self::dic()->ui()->mainTemplate()->printToStdout();
                 } else {
                     self::dic()->ui()->mainTemplate()->show();

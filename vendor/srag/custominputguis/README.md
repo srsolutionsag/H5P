@@ -1,8 +1,10 @@
+# CustomInputGUIs Library for ILIAS Plugins
+
 Custom Input-GUI's
 
-### Usage
+## Usage
 
-#### Composer
+### Composer
 First add the following to your `composer.json` file:
 ```json
 "require": {
@@ -18,8 +20,11 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-### Input-GUI's
+## Input-GUI's
+* [AbstractFormBuilder](./src/FormBuilder/doc/AbstractFormBuilder.md)
+* [AjaxCheckbox](./src/AjaxCheckbox/doc/AjaxCheckbox.md)
 * [CheckboxInputGUI](./src/CheckboxInputGUI/doc/CheckboxInputGUI.md)
+* [ColorPickerInputGUI](./src/ColorPickerInputGUI/doc/ColorPickerInputGUI.md)
 * [DateDurationInputGUI](./src/DateDurationInputGUI/doc/DateDurationInputGUI.md)
 * [GlyphGUI](./src/GlyphGUI/doc/GlyphGUI.md)
 * [HiddenInputGUI](./src/HiddenInputGUI/doc/HiddenInputGUI.md)
@@ -48,11 +53,11 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 * [Waiter](./src/Waiter/doc/Waiter.md)
 * [WeekdayInputGUI](./src/WeekdayInputGUI/doc/WeekdayInputGUI.md)
 
-### Requirements
-* ILIAS 5.3 or ILIAS 5.4
-* PHP >=5.6
+## Requirements
+* ILIAS 5.4 or ILIAS 6
+* PHP >=7.0
 
-### Adjustment suggestions
+## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LINP
 * Adjustment suggestions by pull requests via github
 * Customer of studer + raimann ag: 

@@ -37,7 +37,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param bool $plugin
      */
-    public static function saveParameterByClass($plugin = true)/*: void*/
+    public static function saveParameterByClass(bool $plugin = true)/*: void*/
     {
         $ref_id = filter_input(INPUT_GET, "ref_id");
         self::dic()->ctrl()->setParameterByClass(ilObjComponentSettingsGUI::class, "ref_id", $ref_id);
@@ -79,7 +79,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param bool $uninstall_removes_data
      */
-    public static function setUninstallRemovesData($uninstall_removes_data)/*: void*/
+    public static function setUninstallRemovesData(bool $uninstall_removes_data)/*: void*/
     {
         ilSession::set(self::KEY_UNINSTALL_REMOVES_DATA, json_encode($uninstall_removes_data));
     }
@@ -174,7 +174,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param string $cmd
      */
-    protected function redirectToPlugins($cmd)/*: void*/
+    protected function redirectToPlugins(string $cmd)/*: void*/
     {
         self::saveParameterByClass($cmd !== "listPlugins");
 
@@ -234,7 +234,7 @@ class RemovePluginDataConfirmCtrl
      *
      * @return string
      */
-    protected function txt($key)
+    protected function txt(string $key) : string
     {
         $pname = filter_input(INPUT_GET, "pname");
 

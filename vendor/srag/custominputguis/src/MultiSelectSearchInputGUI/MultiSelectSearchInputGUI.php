@@ -25,6 +25,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 {
 
     use DICTrait;
+
     /**
      * @var string
      *

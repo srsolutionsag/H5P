@@ -20,6 +20,7 @@ class ContentLibrary extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
+
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont_lib";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -27,7 +28,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -38,7 +39,7 @@ class ContentLibrary extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -155,7 +156,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -164,7 +165,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)/* : void*/
     {
         $this->id = $id;
     }
@@ -173,7 +174,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return int
      */
-    public function getContentId()
+    public function getContentId() : int
     {
         return $this->content_id;
     }
@@ -182,7 +183,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param int $content_id
      */
-    public function setContentId($content_id)
+    public function setContentId(int $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
@@ -191,7 +192,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return int
      */
-    public function getLibraryId()
+    public function getLibraryId() : int
     {
         return $this->library_id;
     }
@@ -200,7 +201,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param int $library_id
      */
-    public function setLibraryId($library_id)
+    public function setLibraryId(int $library_id)/* : void*/
     {
         $this->library_id = $library_id;
     }
@@ -209,7 +210,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return string
      */
-    public function getDependencyType()
+    public function getDependencyType() : string
     {
         return $this->dependency_type;
     }
@@ -218,7 +219,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param string $dependency_type
      */
-    public function setDependencyType($dependency_type)
+    public function setDependencyType(string $dependency_type)/* : void*/
     {
         $this->dependency_type = $dependency_type;
     }
@@ -227,7 +228,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return int
      */
-    public function getWeight()
+    public function getWeight() : int
     {
         return $this->weight;
     }
@@ -236,7 +237,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param int $weight
      */
-    public function setWeight($weight)
+    public function setWeight(int $weight)/* : void*/
     {
         $this->weight = $weight;
     }
@@ -245,7 +246,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @return bool
      */
-    public function isDropCss()
+    public function isDropCss() : bool
     {
         return $this->drop_css;
     }
@@ -254,7 +255,7 @@ class ContentLibrary extends ActiveRecord
     /**
      * @param bool $drop_css
      */
-    public function setDropCss($drop_css)
+    public function setDropCss(bool $drop_css)/* : void*/
     {
         $this->drop_css = $drop_css;
     }

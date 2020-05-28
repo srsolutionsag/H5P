@@ -22,6 +22,7 @@ final class Repository
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -32,7 +33,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -62,7 +63,7 @@ final class Repository
      *
      * @return Content
      */
-    public function cloneContent(Content $content)/*:Content*/
+    public function cloneContent(Content $content) : Content
     {
         return $content->copy();
     }
@@ -73,7 +74,7 @@ final class Repository
      *
      * @return ContentLibrary
      */
-    public function cloneContentLibrary(ContentLibrary $content_library)/*:ContentLibrary*/
+    public function cloneContentLibrary(ContentLibrary $content_library) : ContentLibrary
     {
         return $content_library->copy();
     }
@@ -82,7 +83,7 @@ final class Repository
     /**
      * @return H5PCore
      */
-    public function core()/*:H5PCore*/
+    public function core() : H5PCore
     {
         if ($this->core === null) {
             $this->core = new H5PCore($this->framework(), self::h5p()->objectSettings()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder(), self::dic()->user()
@@ -96,7 +97,7 @@ final class Repository
     /**
      * @param Content $content
      */
-    public function deleteContent(Content $content)/*:void*/
+    public function deleteContent(Content $content)/* : void*/
     {
         $content->delete();
 
@@ -107,7 +108,7 @@ final class Repository
     /**
      * @param ContentLibrary $content_library
      */
-    public function deleteContentLibrary(ContentLibrary $content_library)/*:void*/
+    public function deleteContentLibrary(ContentLibrary $content_library)/* : void*/
     {
         $content_library->delete();
     }
@@ -116,7 +117,7 @@ final class Repository
     /**
      * @param ContentUserData $content_user_data
      */
-    public function deleteContentUserData(ContentUserData $content_user_data)/*:void*/
+    public function deleteContentUserData(ContentUserData $content_user_data)/* : void*/
     {
         $content_user_data->delete();
     }
@@ -125,7 +126,7 @@ final class Repository
     /**
      * @internal
      */
-    public function dropTables()/*:void*/
+    public function dropTables()/* : void*/
     {
         self::dic()->database()->dropTable(Counter::TABLE_NAME, false);
         self::dic()->database()->dropTable(Content::TABLE_NAME, false);
@@ -138,7 +139,7 @@ final class Repository
     /**
      * @return EditorRepository
      */
-    public function editor()/* : EditorRepository*/
+    public function editor() : EditorRepository
     {
         return EditorRepository::getInstance();
     }
@@ -147,7 +148,7 @@ final class Repository
     /**
      * @return Factory
      */
-    public function factory()/* : Factory*/
+    public function factory() : Factory
     {
         return Factory::getInstance();
     }
@@ -156,7 +157,7 @@ final class Repository
     /**
      * @return Framework
      */
-    public function framework()/*:Framework*/
+    public function framework() : Framework
     {
         return Framework::getInstance();
     }
@@ -165,7 +166,7 @@ final class Repository
     /**
      * @return string
      */
-    public function getCorePath()/*:string*/
+    public function getCorePath() : string
     {
         return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-core";
     }
@@ -174,7 +175,7 @@ final class Repository
     /**
      * @internal
      */
-    public function installTables()/*:void*/
+    public function installTables()/* : void*/
     {
         Content::updateDB();
         ContentLibrary::updateDB();
@@ -186,7 +187,7 @@ final class Repository
     /**
      * @return ShowContent
      */
-    public function show()/*:ShowContent*/
+    public function show() : ShowContent
     {
         return ShowContent::getInstance();
     }
@@ -195,7 +196,7 @@ final class Repository
     /**
      * @param Content $content
      */
-    public function storeContent(Content $content)/*:void*/
+    public function storeContent(Content $content)/* : void*/
     {
         $time = time();
 
@@ -204,7 +205,7 @@ final class Repository
 
             $content->setContentUserId(self::dic()->user()->getId());
 
-            if ($content->getObjId() === null) {
+            if (empty($content->getObjId())) {
                 $content->setObjId(intval(self::dic()->ctrl()->getContextObjId()));
             }
 
@@ -220,7 +221,7 @@ final class Repository
     /**
      * @param ContentLibrary $content_library
      */
-    public function storeContentLibrary(ContentLibrary $content_library)/*:void*/
+    public function storeContentLibrary(ContentLibrary $content_library)/* : void*/
     {
         $content_library->store();
     }
@@ -229,7 +230,7 @@ final class Repository
     /**
      * @param ContentUserData $content_user_data
      */
-    public function storeContentUserData(ContentUserData $content_user_data)/*:void*/
+    public function storeContentUserData(ContentUserData $content_user_data)/* : void*/
     {
         $time = time();
 
@@ -250,7 +251,7 @@ final class Repository
      *
      * @return Content|null
      */
-    public function getContentById($content_id)
+    public function getContentById(int $content_id)/* : ?Content*/
     {
         /**
          * @var Content|null $h5p_content
@@ -269,7 +270,7 @@ final class Repository
      *
      * @return Content[]
      */
-    public function getContentsByLibrary($library_id)
+    public function getContentsByLibrary(int $library_id) : array
     {
         /**
          * @var Content[] $h5p_contents
@@ -286,7 +287,7 @@ final class Repository
     /**
      * @return Content[]
      */
-    public function getContentsNotFiltered()
+    public function getContentsNotFiltered() : array
     {
         /**
          * @var Content[] $h5p_contents
@@ -305,7 +306,7 @@ final class Repository
      *
      * @return Content|null
      */
-    public function getContentsBySlug($slug)
+    public function getContentsBySlug(string $slug)/* : ?Content*/
     {
         /**
          * @var Content|null $h5p_content
@@ -322,7 +323,7 @@ final class Repository
     /**
      * @return int
      */
-    public function getNumAuthors()
+    public function getNumAuthors() : int
     {
         $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
           FROM " . Content::TABLE_NAME, [], []);
@@ -339,7 +340,7 @@ final class Repository
      *
      * @return Content[]
      */
-    public function getContentsByObject($obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
+    public function getContentsByObject(/*?int*/ $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
     {
         /**
          * @var Content[] $h5p_contents
@@ -365,7 +366,7 @@ final class Repository
      *
      * @return array
      */
-    public function getContentsByObjectArray($obj_id, $parent_type = Content::PARENT_TYPE_OBJECT)
+    public function getContentsByObjectArray(int $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
     {
         $h5p_contents = Content::where([
             "obj_id"      => $obj_id,
@@ -379,13 +380,13 @@ final class Repository
     /**
      * @return Content|null
      */
-    public function getCurrentContent()
+    public function getCurrentContent()/* : ?Content*/
     {
         /**
          * @var Content|null $h5p_content
          */
 
-        $content_id = filter_input(INPUT_GET, "xhfp_content", FILTER_SANITIZE_NUMBER_INT);
+        $content_id = intval(filter_input(INPUT_GET, "xhfp_content", FILTER_SANITIZE_NUMBER_INT));
 
         $h5p_content = $this->getContentById($content_id);
 
@@ -396,7 +397,7 @@ final class Repository
     /**
      * @param int $obj_id
      */
-    protected function reSort($obj_id)
+    protected function reSort(int $obj_id)/* : void*/
     {
         $h5p_contents = $this->getContentsByObject($obj_id);
 
@@ -415,7 +416,7 @@ final class Repository
      * @param int $content_id
      * @param int $obj_id
      */
-    public function moveContentUp($content_id, $obj_id)
+    public function moveContentUp(int $content_id, int $obj_id)/* : void*/
     {
         $h5p_content = $this->getContentById($content_id);
 
@@ -433,7 +434,7 @@ final class Repository
      * @param int $content_id
      * @param int $obj_id
      */
-    public function moveContentDown($content_id, $obj_id)
+    public function moveContentDown(int $content_id, int $obj_id)/* : void*/
     {
         $h5p_content = $this->getContentById($content_id);
 
@@ -453,7 +454,7 @@ final class Repository
      *
      * @return ContentLibrary[]
      */
-    public function getContentLibraries($content_id, $dependency_type = null)
+    public function getContentLibraries(int $content_id, /*?string*/ $dependency_type = null) : array
     {
         /**
          * @var ContentLibrary[] $h5p_content_libraries
@@ -478,7 +479,7 @@ final class Repository
      *
      * @return ContentUserData[]
      */
-    public function getUserDatasByContent($content_id)
+    public function getUserDatasByContent(int $content_id) : array
     {
         /**
          * @var ContentUserData[] $h5p_content_user_datas
@@ -500,7 +501,7 @@ final class Repository
      *
      * @return ContentUserData|null
      */
-    public function getUserData($content_id, $data_id, $user_id, $sub_content_id)
+    public function getUserData(int $content_id, int $data_id, int $user_id, int $sub_content_id)/* : ?ContentUserData*/
     {
         /**
          * @var ContentUserData|null $h5p_content_user_data
@@ -523,7 +524,7 @@ final class Repository
      *
      * @return ContentUserData[]
      */
-    public function getUserDatasByUser($user_id, $content_id)
+    public function getUserDatasByUser(int $user_id, int $content_id) : array
     {
         /**
          * @var ContentUserData[] $h5p_content_user_datas

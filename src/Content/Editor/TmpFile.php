@@ -20,6 +20,7 @@ class TmpFile extends ActiveRecord
 
     use DICTrait;
     use H5PTrait;
+
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
@@ -27,7 +28,7 @@ class TmpFile extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function getConnectorContainerName()/*:string*/
+    public function getConnectorContainerName() : string
     {
         return self::TABLE_NAME;
     }
@@ -38,7 +39,7 @@ class TmpFile extends ActiveRecord
      *
      * @deprecated
      */
-    public static function returnDbTableName()/*:string*/
+    public static function returnDbTableName() : string
     {
         return self::TABLE_NAME;
     }
@@ -124,7 +125,7 @@ class TmpFile extends ActiveRecord
     /**
      * @return int
      */
-    public function getTmpId()
+    public function getTmpId() : int
     {
         return $this->tmp_id;
     }
@@ -133,7 +134,7 @@ class TmpFile extends ActiveRecord
     /**
      * @param int $tmp_id
      */
-    public function setTmpId($tmp_id)
+    public function setTmpId(int $tmp_id)/* : void*/
     {
         $this->tmp_id = $tmp_id;
     }
@@ -142,7 +143,7 @@ class TmpFile extends ActiveRecord
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath() : string
     {
         return $this->path;
     }
@@ -151,7 +152,7 @@ class TmpFile extends ActiveRecord
     /**
      * @param string $path
      */
-    public function setPath($path)
+    public function setPath(string $path)/* : void*/
     {
         $this->path = $path;
     }
@@ -160,7 +161,7 @@ class TmpFile extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : int
     {
         return $this->created_at;
     }
@@ -169,7 +170,7 @@ class TmpFile extends ActiveRecord
     /**
      * @param int $created_at
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt(int $created_at)/* : void*/
     {
         $this->created_at = $created_at;
     }

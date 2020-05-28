@@ -42,7 +42,7 @@ final class DICException extends ilException
      * @param string $message
      * @param int    $code
      */
-    public function __construct($message, $code = self::CODE_NOT_SUPPORTED_ON_CURRENT_ILIAS_VERSION)
+    public function __construct(string $message, int $code = self::CODE_NOT_SUPPORTED_ON_CURRENT_ILIAS_VERSION)
     {
         parent::__construct($message, $code);
     }

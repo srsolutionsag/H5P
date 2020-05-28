@@ -1,5 +1,113 @@
 # Changelog
 
+## [0.35.1]
+- Fix
+
+## [0.35.0]
+- `CustomInputGUIsLoaderDetector`
+
+## [0.34.18]
+- Fix ILIAS 6
+
+## [0.34.17]
+- Fix ILIAS 6
+
+## [0.34.16]
+- Fix ILIAS 6
+
+## [0.34.15]
+- Fix ILIAS 6
+
+## [0.34.14]
+- Fix ILIAS 6
+
+## [0.34.13]
+- Fix ILIAS 6
+
+## [0.34.12]
+- Fix ILIAS 6
+
+## [0.34.11]
+- Fix ILIAS 6
+
+## [0.34.10]
+- Fix
+
+## [0.34.9]
+- Fix ILIAS 6
+
+## [0.34.8]
+- Fix ILIAS 6
+
+## [0.34.7]
+- Fix
+
+## [0.34.6]
+- Fix
+
+## [0.34.5]
+- Fix
+
+## [0.34.4]
+- Fix
+
+## [0.34.3]
+- Fix
+
+## [0.34.2]
+- Fix
+
+## [0.34.1]
+- Fix
+
+## [0.34.0]
+- `AbstractFormBuilder`
+- Deprecated `PropertyFormGUI`
+
+## [0.33.7]
+- Fix
+
+## [0.33.6]
+- Fix
+
+## [0.33.5]
+- Deprecated `TableGUI`
+
+## [0.33.4]
+- Fix `ilRepositorySelector2InputGUI`
+
+## [0.33.3]
+- `OrgUnitAjaxAutoCompleteCtrl`
+
+## [0.33.2]
+- Fix `MultiSelectSearchNewInputGUI` bottom in `MultiLineNewInputGUI`
+
+## [0.33.1]
+- Fix not merged `PieChart` in ILIAS 6
+
+## [0.33.0]
+- `AjaxCheckbox`
+
+## [0.32.5]
+- Fix
+
+## [0.32.4]
+- Fix
+
+## [0.32.3]
+- Fix
+
+## [0.32.2]
+- Fix
+
+## [0.32.1]
+- Fix
+
+## [0.32.0]
+- MultiSelectSearchNewInputGUI:
+    - New ajax auto complete concept (`AbstractAjaxAutoCompleteCtrl`)
+    - Show whole option text
+
 ## [0.31.8]
 - Fix
 

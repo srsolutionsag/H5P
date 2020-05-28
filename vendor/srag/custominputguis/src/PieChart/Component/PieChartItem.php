@@ -25,7 +25,7 @@ interface PieChartItem
      *
      * @return string
      */
-    public function getName();
+    public function getName() : string;
 
 
     /**
@@ -33,7 +33,7 @@ interface PieChartItem
      *
      * @return float
      */
-    public function getValue();
+    public function getValue() : float;
 
 
     /**
@@ -41,7 +41,7 @@ interface PieChartItem
      *
      * @return Color
      */
-    public function getColor();
+    public function getColor() : Color;
 
 
     /**
@@ -49,5 +49,5 @@ interface PieChartItem
      *
      * @return Color
      */
-    public function getTextColor();
+    public function getTextColor() : Color;
 }

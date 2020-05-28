@@ -22,6 +22,7 @@ final class Factory
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -32,7 +33,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -54,7 +55,7 @@ final class Factory
     /**
      * @return ilCronJob[]
      */
-    public function newInstances()/* : array*/
+    public function newInstances() : array
     {
         return [
             self::h5p()->hub()->factory()->newRefreshHubJobInstance(),
@@ -69,7 +70,7 @@ final class Factory
      *
      * @return ilCronJob|null
      */
-    public function newInstanceById(/*string*/ $job_id)/*: ?ilCronJob*/
+    public function newInstanceById(/*string*/ $job_id)/* : ?ilCronJob*/
     {
         switch ($job_id) {
             case RefreshHubJob::CRON_JOB_ID:

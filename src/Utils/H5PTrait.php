@@ -17,7 +17,7 @@ trait H5PTrait
     /**
      * @return Repository
      */
-    protected static function h5p()/*: Repository*/
+    protected static function h5p() : Repository
     {
         return Repository::getInstance();
     }

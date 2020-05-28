@@ -21,6 +21,7 @@ final class Factory
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
@@ -31,7 +32,7 @@ final class Factory
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -53,7 +54,7 @@ final class Factory
     /**
      * @return TmpFile
      */
-    public function newTmpFileInstance()/* : TmpFile*/
+    public function newTmpFileInstance() : TmpFile
     {
         $tmp_file = new TmpFile();
 
@@ -62,15 +63,15 @@ final class Factory
 
 
     /**
-     * @param object       $parent
-     * @param Content|null $h5p_content
-     * @param string       $cmd_create
-     * @param string       $cmd_update
-     * @param string       $cmd_cancel
+     * @param ilObjH5PGUI|ilH5PPageComponentPluginGUI $parent
+     * @param Content|null                            $h5p_content
+     * @param string                                  $cmd_create
+     * @param string                                  $cmd_update
+     * @param string                                  $cmd_cancel
      *
      * @return EditContentFormGUI
      */
-    public function newEditContentFormInstance($parent, Content $h5p_content = null,/*string*/ $cmd_create, /*string*/ $cmd_update, /*string*/ $cmd_cancel)/*:EditContentFormGUI*/
+    public function newEditContentFormInstance($parent, /*?Content*/ $h5p_content = null, string $cmd_create, string $cmd_update, string $cmd_cancel) : EditContentFormGUI
     {
         $form = new EditContentFormGUI($parent, $h5p_content, $cmd_create, $cmd_update, $cmd_cancel);
 
@@ -85,7 +86,7 @@ final class Factory
      *
      * @return ImportContentFormGUI
      */
-    public function newImportContentFormInstance($parent, /*string*/ $cmd_import,/*string*/ $cmd_cancel)/*:ImportContentFormGUI*/
+    public function newImportContentFormInstance($parent, string $cmd_import, string $cmd_cancel) : ImportContentFormGUI
     {
         $form = new ImportContentFormGUI($parent, $cmd_import, $cmd_cancel);
 
@@ -96,7 +97,7 @@ final class Factory
     /**
      * @return DeleteOldTmpFilesJob
      */
-    public function newDeleteOldTmpFilesJobInstance()/*:DeleteOldTmpFilesJob*/
+    public function newDeleteOldTmpFilesJobInstance() : DeleteOldTmpFilesJob
     {
         $job = new DeleteOldTmpFilesJob();
 

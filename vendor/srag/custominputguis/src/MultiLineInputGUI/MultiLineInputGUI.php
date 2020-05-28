@@ -31,6 +31,7 @@ class MultiLineInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, 
 {
 
     use DICTrait;
+
     /**
      * @var string
      *

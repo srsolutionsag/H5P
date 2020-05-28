@@ -41,7 +41,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct($parent, $object = null,/*bool*/ $object_auto_store = true)
+    public function __construct(/*object*/ $parent, $object = null,/*bool*/ $object_auto_store = true)
     {
         $this->object = $object;
         $this->object_auto_store = $object_auto_store;

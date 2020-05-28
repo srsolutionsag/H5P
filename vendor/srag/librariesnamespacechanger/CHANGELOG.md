@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.8.6]
+- Fix
+
+## [0.8.5]
+- Fix
+
+## [0.8.4]
+- Fix
+
+## [0.8.3]
+- Fix
+
+## [0.8.2]
+- Fix
+
+## [0.8.1]
+- Fix
+
+## [0.8.0]
+- Min. PHP 7.0
+- PHP72Backport
+
 ## [0.7.0]
 - Support all srag libraries
 

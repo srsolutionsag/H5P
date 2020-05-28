@@ -13,6 +13,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
@@ -30,7 +31,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     /**
      * @inheritDoc
      */
-    public function getGuiClass()/*: string*/
+    public function getGuiClass() : string
     {
         return ilObjH5PGUI::class;
     }
@@ -39,7 +40,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     /**
      * @inheritDoc
      */
-    public function initCommands()/*: array*/
+    public function initCommands() : array
     {
         $this->commands_enabled = true;
         $this->copy_enabled = true;
@@ -81,7 +82,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     /**
      * @inheritDoc
      */
-    public function getProperties()/*:array*/
+    public function getProperties() : array
     {
         $props = [];
 
@@ -100,7 +101,7 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     /**
      * @inheritDoc
      */
-    public function initType()/*:void*/
+    public function initType()/* : void*/
     {
         $this->setType(ilH5PPlugin::PLUGIN_ID);
     }

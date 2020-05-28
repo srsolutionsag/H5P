@@ -14,6 +14,7 @@ class ilObjH5P extends ilObjectPlugin
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var ObjectSettings
@@ -35,7 +36,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public final function initType()/*: void*/
+    public final function initType()/* : void*/
     {
         $this->setType(ilH5PPlugin::PLUGIN_ID);
     }
@@ -44,7 +45,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doCreate()/*: void*/
+    public function doCreate()/* : void*/
     {
         $this->object_settings = self::h5p()->objectSettings()->factory()->newInstance();
 
@@ -57,7 +58,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doRead()/*: void*/
+    public function doRead()/* : void*/
     {
         $this->object_settings = self::h5p()->objectSettings()->getObjectSettingsById(intval($this->id));
     }
@@ -66,7 +67,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doUpdate()/*: void*/
+    public function doUpdate()/* : void*/
     {
         self::h5p()->objectSettings()->storeObjectSettings($this->object_settings);
     }
@@ -75,7 +76,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doDelete()/*: void*/
+    public function doDelete()/* : void*/
     {
         if ($this->object_settings !== null) {
             self::h5p()->objectSettings()->deleteObjectSettings($this->object_settings);
@@ -99,7 +100,7 @@ class ilObjH5P extends ilObjectPlugin
      *
      * @param ilObjH5P $new_obj
      */
-    protected function doCloneObject(/*ilObjH5P*/ $new_obj, /*int*/ $a_target_id, /*?int*/ $a_copy_id = null)/*: void*/
+    protected function doCloneObject(/*ilObjH5P*/ $new_obj, /*int*/ $a_target_id, /*?int*/ $a_copy_id = null)/* : void*/
     {
         $new_obj->object_settings = self::h5p()->objectSettings()->cloneObjectSettings($this->object_settings);
 
@@ -124,7 +125,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @return bool
      */
-    public function isOnline()/*:bool*/
+    public function isOnline() : bool
     {
         return $this->object_settings->isOnline();
     }
@@ -133,7 +134,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @param bool $is_online
      */
-    public function setOnline(/*bool*/ $is_online = true)/*:void*/
+    public function setOnline(bool $is_online = true)/* : void*/
     {
         $this->object_settings->setOnline($is_online);
     }
@@ -142,7 +143,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @return bool
      */
-    public function isSolveOnlyOnce()/*:bool*/
+    public function isSolveOnlyOnce() : bool
     {
         return $this->object_settings->isSolveOnlyOnce();
     }
@@ -151,7 +152,7 @@ class ilObjH5P extends ilObjectPlugin
     /**
      * @param bool $solve_only_once
      */
-    public function setSolveOnlyOnce(/*bool*/ $solve_only_once)/*:void*/
+    public function setSolveOnlyOnce(bool $solve_only_once)/* : void*/
     {
         $this->object_settings->setSolveOnlyOnce($solve_only_once);
     }

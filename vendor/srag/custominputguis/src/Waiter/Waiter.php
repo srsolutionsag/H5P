@@ -15,6 +15,7 @@ final class Waiter
 {
 
     use DICTrait;
+
     /**
      * @var string
      */

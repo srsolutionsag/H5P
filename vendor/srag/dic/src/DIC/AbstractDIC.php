@@ -34,7 +34,7 @@ abstract class AbstractDIC implements DICInterface
     /**
      * @inheritDoc
      */
-    public function database()
+    public function database() : DatabaseInterface
     {
         return DatabaseDetector::getInstance($this->databaseCore());
     }

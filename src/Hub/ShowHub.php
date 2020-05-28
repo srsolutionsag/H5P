@@ -25,6 +25,7 @@ class ShowHub
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const STATUS_ALL = "all";
     const STATUS_INSTALLED = "installed";
@@ -39,7 +40,7 @@ class ShowHub
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -66,7 +67,7 @@ class ShowHub
      *
      * @return array
      */
-    public function getLibraries($title = "", $status = self::STATUS_ALL, $runnable = null, $not_used = null)
+    public function getLibraries(string $title = "", string $status = self::STATUS_ALL, /*?bool*/ $runnable = null, /*?bool*/ $not_used = null) : array
     {
         $libraries = [];
 
@@ -205,7 +206,7 @@ class ShowHub
      *
      * @return string
      */
-    public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, $table)
+    public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, string $table) : string
     {
         self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
             ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
@@ -228,7 +229,7 @@ class ShowHub
     /**
      *
      */
-    public function refreshHub()
+    public function refreshHub()/* : void*/
     {
         self::h5p()->contents()->core()->updateContentTypeCache();
     }
@@ -237,7 +238,7 @@ class ShowHub
     /**
      * @param string $name
      */
-    public function installLibrary($name)
+    public function installLibrary(string $name)/* : void*/
     {
         ob_start(); // prevent output from editor
 
@@ -253,7 +254,7 @@ class ShowHub
      * @param Library $h5p_library
      * @param bool    $message
      */
-    public function deleteLibrary(Library $h5p_library, $message = true)
+    public function deleteLibrary(Library $h5p_library, bool $message = true)/* : void*/
     {
         self::h5p()->contents()->core()->deleteLibrary((object) [
             "library_id"    => $h5p_library->getLibraryId(),
@@ -273,7 +274,7 @@ class ShowHub
      *
      * @return bool
      */
-    public function uploadLibrary(UploadLibraryFormGUI $form)
+    public function uploadLibrary(UploadLibraryFormGUI $form) : bool
     {
         $file_path = $form->getInput("xhfp_library")["tmp_name"];
 

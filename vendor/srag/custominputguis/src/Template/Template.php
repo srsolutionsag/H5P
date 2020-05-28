@@ -21,7 +21,7 @@ class Template extends ilTemplate
      * @param bool   $remove_unknown_variables
      * @param bool   $remove_empty_blocks
      */
-    public function __construct($template_file, $remove_unknown_variables = true, $remove_empty_blocks = true)
+    public function __construct(string $template_file, bool $remove_unknown_variables = true, bool $remove_empty_blocks = true)
     {
         parent::__construct($template_file, $remove_unknown_variables, $remove_empty_blocks);
     }
@@ -48,7 +48,7 @@ class Template extends ilTemplate
      * @param string $key
      * @param mixed  $value
      */
-    public function setVariableEscaped($key, $value)/*:void*/
+    public function setVariableEscaped(string $key, $value)/*:void*/
     {
         $this->setVariable($key, htmlspecialchars($value));
     }

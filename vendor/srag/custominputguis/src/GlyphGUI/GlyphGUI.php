@@ -20,7 +20,6 @@ class GlyphGUI extends ilGlyphGUI
 
     use DICTrait;
 
-
     /**
      * Get glyph html
      *

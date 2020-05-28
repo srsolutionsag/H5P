@@ -27,6 +27,7 @@ final class Repository
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string
@@ -43,7 +44,7 @@ final class Repository
     /**
      * @return self
      */
-    public static function getInstance()/* : self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -65,7 +66,7 @@ final class Repository
     /**
      * @return ContentsRepository
      */
-    public function contents()/* : ContentsRepository*/
+    public function contents() : ContentsRepository
     {
         return ContentsRepository::getInstance();
     }
@@ -74,7 +75,7 @@ final class Repository
     /**
      *
      */
-    public function dropTables()/*: void*/
+    public function dropTables()/* : void*/
     {
         $this->contents()->dropTables();
         $this->events()->dropTables();
@@ -90,7 +91,7 @@ final class Repository
     /**
      * @return EventsRepository
      */
-    public function events()/* : EventsRepository*/
+    public function events() : EventsRepository
     {
         return EventsRepository::getInstance();
     }
@@ -99,7 +100,7 @@ final class Repository
     /**
      * @return HubRepository
      */
-    public function hub()/* : HubRepository*/
+    public function hub() : HubRepository
     {
         return HubRepository::getInstance();
     }
@@ -108,7 +109,7 @@ final class Repository
     /**
      *
      */
-    public function installTables()/*: void*/
+    public function installTables()/* : void*/
     {
         $this->contents()->installTables();
         $this->events()->installTables();
@@ -124,7 +125,7 @@ final class Repository
     /**
      * @return JobsRepository
      */
-    public function jobs()/* : JobsRepository*/
+    public function jobs() : JobsRepository
     {
         return JobsRepository::getInstance();
     }
@@ -133,7 +134,7 @@ final class Repository
     /**
      * @return LibrariesRepository
      */
-    public function libraries()/* : LibrariesRepository*/
+    public function libraries() : LibrariesRepository
     {
         return LibrariesRepository::getInstance();
     }
@@ -142,7 +143,7 @@ final class Repository
     /**
      * @return ObjectSettingsRepository
      */
-    public function objectSettings()/* : ObjectSettingsRepository*/
+    public function objectSettings() : ObjectSettingsRepository
     {
         return ObjectSettingsRepository::getInstance();
     }
@@ -151,7 +152,7 @@ final class Repository
     /**
      * @return OptionsRepository
      */
-    public function options()/* : OptionsRepository*/
+    public function options() : OptionsRepository
     {
         return OptionsRepository::getInstance();
     }
@@ -160,7 +161,7 @@ final class Repository
     /**
      * @return ResultsRepository
      */
-    public function results()/* : ResultsRepository*/
+    public function results() : ResultsRepository
     {
         return ResultsRepository::getInstance();
     }
@@ -173,7 +174,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function splitCsv(/*:string*/ $csv)/*:array*/
+    public function splitCsv(string $csv) : array
     {
         return explode(self::CSV_SEPARATOR, $csv);
     }
@@ -186,7 +187,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function joinCsv(array $array)/*:string*/
+    public function joinCsv(array $array) : string
     {
         return implode(self::CSV_SEPARATOR, $array);
     }
@@ -199,7 +200,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function timestampToDbDate(/*:int*/ $timestamp)/*:string*/
+    public function timestampToDbDate(int $timestamp) : string
     {
         $date_time = new ilDateTime($timestamp, IL_CAL_UNIX);
 
@@ -216,7 +217,7 @@ final class Repository
      *
      * @deprecated
      */
-    public function dbDateToTimestamp(/*string*/ $formatted)/*:int*/
+    public function dbDateToTimestamp(string $formatted) : int
     {
         $date_time = new ilDateTime($formatted, IL_CAL_DATETIME);
 

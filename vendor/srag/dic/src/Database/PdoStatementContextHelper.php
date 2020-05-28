@@ -28,7 +28,7 @@ final class PdoStatementContextHelper extends ilPDOStatement
      *
      * @internal
      */
-    public static function getPdoStatement(ilDBStatement $stm)
+    public static function getPdoStatement(ilDBStatement $stm) : PDOStatement
     {
         if (!($stm instanceof ilPDOStatement)) {
             throw new DICException("PdoStatementContextHelper only supports ilPDOStatement!");
