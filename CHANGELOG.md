@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.3.0]
+## [2.6.0]
 - ILIAS 6 support
 - Min. PHP 7.0
 - Remove ILIAS 5.3 support
