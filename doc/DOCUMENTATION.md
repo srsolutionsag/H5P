@@ -1,3 +1,3 @@
 # H5P ILIAS Plugin Documentation
 
-Old Documentation: [doc/Documentation.pdf](./Documentation.pdf)
+Old Documentation: [Documentation_old.pdf](./Documentation_old.pdf)
