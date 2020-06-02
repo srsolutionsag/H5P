@@ -251,7 +251,7 @@ class Content extends ActiveRecord
                 return json_encode($field_value);
 
             default:
-                return null;
+                return parent::sleep($field_name);
         }
     }
 
@@ -277,14 +277,14 @@ class Content extends ActiveRecord
                 if ($field_value !== null) {
                     return intval($field_value);
                 } else {
-                    return null;
+                    return parent::wakeUp($field_name, $field_value);
                 }
 
             case "uploaded_files":
                 return json_decode($field_value);
 
             default:
-                return null;
+                return parent::wakeUp($field_name, $field_value);
         }
     }
 

@@ -118,7 +118,7 @@ class SolveStatus extends ActiveRecord
                 return ($field_value ? 1 : 0);
 
             default:
-                return null;
+                return parent::sleep($field_name);
         }
     }
 
@@ -138,14 +138,14 @@ class SolveStatus extends ActiveRecord
                 if ($field_value !== null) {
                     return intval($field_value);
                 } else {
-                    return null;
+                    return parent::wakeUp($field_name, $field_value);
                 }
 
             case "finished":
                 return boolval($field_value);
 
             default:
-                return null;
+                return parent::wakeUp($field_name, $field_value);
         }
     }
 

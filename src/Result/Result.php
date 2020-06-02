@@ -144,7 +144,7 @@ class Result extends ActiveRecord
                 return self::h5p()->timestampToDbDate($field_value);
 
             default:
-                return null;
+                return parent::sleep($field_name);
         }
     }
 
@@ -168,7 +168,7 @@ class Result extends ActiveRecord
                 return self::h5p()->dbDateToTimestamp($field_value);
 
             default:
-                return null;
+                return parent::wakeUp($field_name, $field_value);
         }
     }
 
