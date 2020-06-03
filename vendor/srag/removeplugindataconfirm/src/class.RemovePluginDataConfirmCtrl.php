@@ -25,6 +25,7 @@ class RemovePluginDataConfirmCtrl
 {
 
     use DICTrait;
+
     const CMD_CANCEL = "cancel";
     const CMD_CONFIRM_REMOVE_DATA = "confirmRemoveData";
     const CMD_DEACTIVATE = "deactivate";

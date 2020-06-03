@@ -14,7 +14,6 @@ trait RepositoryObjectPluginUninstallTrait
 
     use BasePluginUninstallTrait;
 
-
     /**
      * @return bool
      *

@@ -20,7 +20,6 @@ trait BasePluginUninstallTrait
 
     use DICTrait;
 
-
     /**
      * @param bool $remove_data
      *

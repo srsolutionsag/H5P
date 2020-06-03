@@ -308,24 +308,24 @@
     },
     {
         "name": "srag/removeplugindataconfirm",
-        "version": "v0.6.3",
-        "version_normalized": "0.6.3.0",
+        "version": "v0.6.4",
+        "version_normalized": "0.6.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-            "reference": "d3faed97ec4e5d9a20bf2c8a80cc395997caf591"
+            "reference": "fa45bd96920e5a28577810c3d28900dc8083fc6f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/d3faed97ec4e5d9a20bf2c8a80cc395997caf591",
-            "reference": "d3faed97ec4e5d9a20bf2c8a80cc395997caf591",
+            "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/fa45bd96920e5a28577810c3d28900dc8083fc6f",
+            "reference": "fa45bd96920e5a28577810c3d28900dc8083fc6f",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0",
             "srag/dic": ">=0.1.0"
         },
-        "time": "2020-01-21T08:23:18+00:00",
+        "time": "2020-06-02T12:52:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
