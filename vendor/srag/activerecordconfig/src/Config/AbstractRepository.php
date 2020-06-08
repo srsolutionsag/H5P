@@ -19,7 +19,6 @@ abstract class AbstractRepository
 
     use DICTrait;
 
-
     /**
      * AbstractRepository constructor
      */

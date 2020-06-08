@@ -20,6 +20,7 @@ abstract class ActiveRecordConfigGUI extends ilPluginConfigGUI
 {
 
     use DICTrait;
+
     /**
      * @var string
      *

@@ -233,7 +233,7 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl) /*: void*/
+    public function insert(ilTemplate $tpl)/*: void*/
     {
         $html = $this->render();
 
@@ -275,7 +275,7 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
                 $tpl->setVariable("HIDE_ADD_FIRST_LINE", self::output()->getHTML(new Template(__DIR__ . "/templates/multi_line_new_input_gui_hide.html", false, false)));
             }
 
-            $tpl->setVariable("ADD_FIRST_LINE", self::output()->getHTML($this->glyph_factory->add()->withAdditionalOnLoadCode(function (string $id) use ($counter): string {
+            $tpl->setVariable("ADD_FIRST_LINE", self::output()->getHTML($this->glyph_factory->add()->withAdditionalOnLoadCode(function (string $id) use ($counter) : string {
                 return 'il.MultiLineNewInputGUI.init(' . $counter . ', $("#' . $id . '").parent().parent().parent(), true)';
             })));
 
@@ -329,7 +329,7 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
     /**
      * @param ilFormPropertyGUI[] $inputs
      */
-    public function setInputs(array $inputs) /*: void*/
+    public function setInputs(array $inputs)/*: void*/
     {
         $this->inputs = $inputs;
         $this->inputs_generated = null;
@@ -368,10 +368,10 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
 
 
     /**
-     * @param array $value
+     * @param array $values
      */
-    public function setValueByArray(/*array*/ $value)/*: void*/
+    public function setValueByArray(/*array*/ $values)/*: void*/
     {
-        $this->setValue($value[$this->getPostVar()]);
+        $this->setValue($values[$this->getPostVar()]);
     }
 }

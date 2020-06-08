@@ -42,7 +42,7 @@ class ObjectChildrenAjaxAutoCompleteCtrl extends ObjectsAjaxAutoCompleteCtrl
         $org_units = [];
 
         foreach (
-            array_filter(self::dic()->repositoryTree()->getSubTree(self::dic()->repositoryTree()->getNodeData($this->parent_ref_id)), function (array $item) use ($search): bool {
+            array_filter(self::dic()->repositoryTree()->getSubTree(self::dic()->repositoryTree()->getNodeData($this->parent_ref_id)), function (array $item) use ($search) : bool {
                 return (stripos($item["title"], $search) !== false);
             }) as $item
         ) {

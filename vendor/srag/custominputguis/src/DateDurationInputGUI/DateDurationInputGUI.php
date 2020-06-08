@@ -21,11 +21,9 @@ class DateDurationInputGUI extends ilDateDurationInputGUI
     use DICTrait;
 
     /**
-     * Check input, strip slashes etc. set alert, if input is not ok.
-     *
-     * @return boolean Input ok, true/false
+     * @inheritDoc
      */
-    public function checkInput()/*: bool*/
+    public function checkInput() : bool
     {
         if ($this->getDisabled()) {
             return true;
@@ -113,9 +111,9 @@ class DateDurationInputGUI extends ilDateDurationInputGUI
 
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    public function getValue()/*: array*/
+    public function getValue() : array
     {
         $start = $this->getStart() ? $this->getStart()->get(IL_CAL_UNIX) : 0;
         $end = $this->getEnd() ? $this->getEnd()->get(IL_CAL_UNIX) : 0;

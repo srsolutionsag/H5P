@@ -23,15 +23,14 @@ class HiddenInputGUI extends ilHiddenInputGUI
      *
      * @param string $a_postvar
      */
-    public function __construct(/*string*/
-        $a_postvar = ""
-    ) {
+    public function __construct(string $a_postvar = "")
+    {
         parent::__construct($a_postvar);
     }
 
 
     /**
-     * @inheritDoc
+     * @return string
      */
     public function render() : string
     {

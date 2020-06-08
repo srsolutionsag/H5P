@@ -51,7 +51,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0) : string
+    protected function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string
     {
         switch ($column) {
             default:

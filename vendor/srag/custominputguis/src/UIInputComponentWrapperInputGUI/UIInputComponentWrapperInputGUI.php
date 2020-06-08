@@ -185,7 +185,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl) /*: void*/
+    public function insert(ilTemplate $tpl)/*: void*/
     {
         $html = $this->render();
 

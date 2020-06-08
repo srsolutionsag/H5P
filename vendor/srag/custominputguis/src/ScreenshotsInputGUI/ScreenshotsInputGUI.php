@@ -142,7 +142,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl) /*: void*/
+    public function insert(ilTemplate $tpl)/*: void*/
     {
         $html = $this->render();
 
@@ -172,7 +172,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
                 }, $uploads)));
 
                 $this->screenshots = array_values(array_filter(self::dic()->upload()
-                    ->getResults(), function (UploadResult $file) use (&$uploads): bool {
+                    ->getResults(), function (UploadResult $file) use (&$uploads) : bool {
                     $ext = pathinfo($file->getName(), PATHINFO_EXTENSION);
 
                     return ($file->getStatus()->getCode() === ProcessingStatus::OK && in_array($file->getPath(), $uploads)

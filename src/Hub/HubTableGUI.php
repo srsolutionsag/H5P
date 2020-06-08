@@ -43,11 +43,8 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function getColumnValue(/*string*/
-        $column, /*array*/
-        $row, /*int*/
-        $format = 0
-    ) : string {
+    protected function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string
+    {
         switch ($column) {
             default:
                 $column = htmlspecialchars($row[$column]);
@@ -161,9 +158,7 @@ class HubTableGUI extends TableGUI
     /**
      * @param array $row
      */
-    protected function fillRow(/*array*/
-        $row
-    )/* : void*/
+    protected function fillRow(/*array*/ $row)/* : void*/
     {
         // Links
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);

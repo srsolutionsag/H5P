@@ -72,10 +72,8 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function __construct(/*string*/
-        $title = "", /*string*/
-        $post_var = ""
-    ) {
+    public function __construct(string $title = "", string $post_var = "")
+    {
         if (substr($post_var, -2) != "[]") {
             $post_var = $post_var . "[]";
         }
@@ -95,13 +93,11 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
 
     /**
-     * Check input, strip slashes etc. set alert, if input is not ok.
-     *
-     * @return boolean Input ok, true/false
+     * @inheritDoc
      *
      * @deprecated
      */
-    public function checkInput()/*: bool*/
+    public function checkInput() : bool
     {
         if ($this->getRequired() && empty($this->getValue())) {
             $this->setAlert(self::dic()->language()->txt("msg_input_is_required"));
@@ -118,7 +114,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getSubItems()/*: array*/
+    public function getSubItems() : array
     {
         return array();
     }
@@ -129,7 +125,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function render()/*: string*/
+    public function render() : string
     {
         $tpl = $this->getInputTemplate();
         $values = $this->getValue();
@@ -195,9 +191,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setHeight(/*string*/
-        $height
-    )/*: void*/
+    public function setHeight(/*string*/ $height)/*: void*/
     {
         $this->height = $height;
     }
@@ -210,7 +204,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getHeight()/*: string*/
+    public function getHeight() : string
     {
         return $this->height;
     }
@@ -223,9 +217,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setWidth(/*string*/
-        $width
-    )/*: void*/
+    public function setWidth(/*string*/ $width)/*: void*/
     {
         $this->width = $width;
     }
@@ -238,7 +230,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getWidth()/*: string*/
+    public function getWidth() : string
     {
         return $this->width;
     }
@@ -249,9 +241,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setCssClass(/*string*/
-        $css_class
-    )/*: void*/
+    public function setCssClass(string $css_class)/*: void*/
     {
         $this->css_class = $css_class;
     }
@@ -262,7 +252,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getCssClass()/*: string*/
+    public function getCssClass() : string
     {
         return $this->css_class;
     }
@@ -273,7 +263,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setMinimumInputLength(/*?int*/ $minimum_input_length = null)/*: void*/
+    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null)/*: void*/
     {
         $this->minimum_input_length = $minimum_input_length;
     }
@@ -284,7 +274,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getMinimumInputLength()/*: int*/
+    public function getMinimumInputLength() : int
     {
         if ($this->minimum_input_length !== null) {
             return $this->minimum_input_length;
@@ -299,9 +289,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setAjaxLink(/*string*/
-        $ajax_link
-    )/*: void*/
+    public function setAjaxLink(string $ajax_link)/*: void*/
     {
         $this->ajax_link = $ajax_link;
     }
@@ -312,7 +300,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getAjaxLink()/*: string*/
+    public function getAjaxLink() : string
     {
         return $this->ajax_link;
     }
@@ -323,9 +311,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setInputTemplate(/*ilTemplate*/
-        $input_template
-    )/*: void*/
+    public function setInputTemplate(ilTemplate $input_template)/*: void*/
     {
         $this->input_template = $input_template;
     }
@@ -336,7 +322,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getInputTemplate()/*ilTemplate*/
+    public function getInputTemplate() : ilTemplate
     {
         return $this->input_template;
     }
@@ -349,7 +335,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    protected function searchPostVar()/*: string*/
+    protected function searchPostVar() : string
     {
         if (substr($this->getPostVar(), -2) == "[]") {
             return substr($this->getPostVar(), 0, -2);
@@ -360,15 +346,15 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
 
 
     /**
-     * @param array $array
+     * @param array $values
      *
      * @deprecated
      */
-    public function setValueByArray(/*array*/ $array)/*: void*/
+    public function setValueByArray(/*array*/ $values)/*: void*/
     {
         //		print_r($array);
 
-        $val = $array[$this->searchPostVar()];
+        $val = $values[$this->searchPostVar()];
         if (is_array($val)) {
             $val;
         } elseif (!$val) {
@@ -385,9 +371,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function setPostVar(/*string*/
-        $a_postvar
-    )/*: void*/
+    public function setPostVar(/*string*/ $a_postvar)/*: void*/
     {
         if (substr($a_postvar, -2) != "[]") {
             $a_postvar = $a_postvar . "[]";
@@ -401,7 +385,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getTableFilterHTML()/*: string*/
+    public function getTableFilterHTML() : string
     {
         return $this->render();
     }
@@ -412,7 +396,7 @@ class MultiSelectSearchInputGUI extends ilMultiSelectInputGUI implements ilTable
      *
      * @deprecated
      */
-    public function getToolbarHTML()/*: string*/
+    public function getToolbarHTML() : string
     {
         return $this->render();
     }

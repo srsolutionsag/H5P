@@ -1,8 +1,10 @@
+# LibrariesNamespaceChanger Library for ILIAS Plugins
+
 Change the namespace of the libraries on dump-autoload to a plugin specific namespace
 
-### Usage
+## Usage
 
-#### Composer
+### Composer
 First add the following to your `composer.json` file:
 ```json
 "require": {
@@ -31,7 +33,7 @@ So you can force to use your libraries classes in the `vendor` folder of your pl
 It support the follow libraries:
 * [srag libraries](https://packagist.org/packages/srag)
 
-### PHP72Backport
+## PHP72Backport
 If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, you can also add additionally the follow composer script:
 ```json
  "pre-autoload-dump": [
@@ -42,7 +44,7 @@ If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, y
 
 It works with RegExp and affects your whole plugin workspace (`classes`, `src`, `vendor`, ...)
 
-### php7backport
+## php7backport
 If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you can also add additionally the follow composer script:
 ```json
  "post-update-cmd": "srag\\LibrariesNamespaceChanger\\PHP7Backport::PHP7Backport"
@@ -50,10 +52,10 @@ If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you c
 
 It uses the https://github.com/ondrejbouda/php7backport.git repo, but provides it as a composer script and patches it, amongst other things, it fix interfaces
 
-### Requirements
+## Requirements
 * PHP >=7.0
 
-### Adjustment suggestions
+## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER
 * Adjustment suggestions by pull requests via github
 * Customer of studer + raimann ag: 

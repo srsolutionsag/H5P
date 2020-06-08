@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.36.0]
+- Remove ProgressMeter (For ILIAS 5.3, use from Core for >= ILIAS 5.4)
+- Refactored to PHP 7.0
+
 ## [0.35.1]
 - Fix
 
