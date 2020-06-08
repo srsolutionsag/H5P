@@ -2,6 +2,8 @@
 
 namespace srag\LibrariesNamespaceChanger;
 
+use Closure;
+use Composer\Config;
 use Composer\Script\Event;
 
 /**
@@ -32,6 +34,10 @@ final class PHP72Backport
             "md",
             "php"
         ];
+    /**
+     * @var string
+     */
+    private static $plugin_root = "";
 
 
     /**
@@ -56,6 +62,10 @@ final class PHP72Backport
      */
     public static function PHP72Backport(Event $event)/*: void*/
     {
+        self::$plugin_root = rtrim(Closure::bind(function () : string {
+            return $this->baseDir;
+        }, $event->getComposer()->getConfig(), Config::class)(), "/");
+
         self::getInstance($event)->doPHP72Backport();
     }
 
@@ -84,7 +94,7 @@ final class PHP72Backport
     {
         $files = [];
 
-        $this->getFiles(__DIR__ . "/../../../..", $files);
+        $this->getFiles(self::$plugin_root, $files);
 
         foreach ($files as $file) {
             $code = file_get_contents($file);

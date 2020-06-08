@@ -1,2 +1,4 @@
 .idea
+#plugin.php
+#plugin.xml
 #vendor
