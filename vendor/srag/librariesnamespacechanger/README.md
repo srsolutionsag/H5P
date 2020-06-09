@@ -79,6 +79,15 @@ Complete your `composer.json` with
 ...
 ```
 
+## UpdatePluginReadme
+Update ILIAS min./max. version and PHP versions in `README.md`
+```json
+ "pre-autoload-dump": [
+    ...,
+     "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
+    ]
+```
+
 ## Requirements
 * PHP >=7.0
 

@@ -116,6 +116,7 @@ return array(
     'srag\\LibrariesNamespaceChanger\\PHP72Backport' => $vendorDir . '/srag/librariesnamespacechanger/src/PHP72Backport.php',
     'srag\\LibrariesNamespaceChanger\\PHP7Backport' => $vendorDir . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
     'srag\\LibrariesNamespaceChanger\\RemovePHP72Backport' => $vendorDir . '/srag/librariesnamespacechanger/src/RemovePHP72Backport.php',
+    'srag\\LibrariesNamespaceChanger\\UpdatePluginReadme' => $vendorDir . '/srag/librariesnamespacechanger/src/UpdatePluginReadme.php',
     'srag\\Plugins\\H5P\\Action\\H5PActionGUI' => $baseDir . '/src/Action/class.H5PActionGUI.php',
     'srag\\Plugins\\H5P\\Content\\Content' => $baseDir . '/src/Content/Content.php',
     'srag\\Plugins\\H5P\\Content\\ContentLibrary' => $baseDir . '/src/Content/ContentLibrary.php',

@@ -260,16 +260,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.9.1",
+            "version": "v0.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "2eb5fb7e13d4f785667c13620d6764249517ec20"
+                "reference": "f1d8d9ce97723b1bc5850dcbb2031bca38fe6030"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/2eb5fb7e13d4f785667c13620d6764249517ec20",
-                "reference": "2eb5fb7e13d4f785667c13620d6764249517ec20",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/f1d8d9ce97723b1bc5850dcbb2031bca38fe6030",
+                "reference": "f1d8d9ce97723b1bc5850dcbb2031bca38fe6030",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-06-09T06:35:22+00:00"
+            "time": "2020-06-09T10:27:35+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",

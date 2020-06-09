@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.3]
+- Fix
+
+## [0.9.2]
+- `UpdatePluginReadme`
+
 ## [0.9.1]
 - Fix
 
