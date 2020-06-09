@@ -216,23 +216,23 @@
     },
     {
         "name": "srag/dic",
-        "version": "v0.25.0",
-        "version_normalized": "0.25.0.0",
+        "version": "v0.25.1",
+        "version_normalized": "0.25.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43"
+            "reference": "022cb0b92b003096380055a450597a5dbdbbe831"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43",
-            "reference": "9b2638c7e8e97a99e5b76cf6d3a7d4140369cf43",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/022cb0b92b003096380055a450597a5dbdbbe831",
+            "reference": "022cb0b92b003096380055a450597a5dbdbbe831",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-05-28T05:38:40+00:00",
+        "time": "2020-06-09T05:30:37+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -263,23 +263,23 @@
     },
     {
         "name": "srag/librariesnamespacechanger",
-        "version": "v0.8.7",
-        "version_normalized": "0.8.7.0",
+        "version": "v0.9.1",
+        "version_normalized": "0.9.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "47b6984e436ab5dfca4da42fdbe85a4ce653e7e2"
+            "reference": "2eb5fb7e13d4f785667c13620d6764249517ec20"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/47b6984e436ab5dfca4da42fdbe85a4ce653e7e2",
-            "reference": "47b6984e436ab5dfca4da42fdbe85a4ce653e7e2",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/2eb5fb7e13d4f785667c13620d6764249517ec20",
+            "reference": "2eb5fb7e13d4f785667c13620d6764249517ec20",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-06-08T06:55:31+00:00",
+        "time": "2020-06-09T06:35:22+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

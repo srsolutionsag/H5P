@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.1]
+- Fix
+
+## [0.9.0]
+- `GeneratePluginPhpAndXml`
+
 ## [0.8.7]
 - Fix
 
