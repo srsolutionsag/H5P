@@ -30,7 +30,6 @@ class H5PActionGUI
     use DICTrait;
     use H5PTrait;
 
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_H5P_ACTION = "h5pAction";
     const GET_PARAM_OBJ_ID = "obj_id";
     const H5P_ACTION_CONTENT_TYPE_CACHE = "contentTypeCache";
@@ -43,10 +42,20 @@ class H5PActionGUI
     const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
     const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
     const H5P_ACTION_SET_FINISHED = "setFinished";
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var ilObject
      */
     protected $object;
+
+
+    /**
+     * H5PActionGUI constructor
+     */
+    public function __construct()
+    {
+
+    }
 
 
     /**
@@ -63,15 +72,6 @@ class H5PActionGUI
         $url = self::dic()->ctrl()->getLinkTargetByClass([ilUIPluginRouterGUI::class, self::class], self::CMD_H5P_ACTION, "", true, false);
 
         return $url;
-    }
-
-
-    /**
-     * H5PActionGUI constructor
-     */
-    public function __construct()
-    {
-
     }
 
 
@@ -111,55 +111,6 @@ class H5PActionGUI
                         // Unknown commands
                         break;
                 }
-                break;
-        }
-    }
-
-
-    /**
-     *
-     */
-    protected function h5pAction()/* : void*/
-    {
-        $action = filter_input(INPUT_GET, H5PActionGUI::CMD_H5P_ACTION);
-
-        // Slashes to camelCase
-        $action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) : string {
-            return strtoupper($matches[0][1]);
-        }, $action);
-
-        switch ($action) {
-            case self::H5P_ACTION_CONTENT_USER_DATA:
-            case self::H5P_ACTION_SET_FINISHED:
-                // Read actions
-                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasReadAccess($this->object->getRefId())) {
-                    return;
-                }
-
-                $this->{$action}();
-                break;
-
-            case self::H5P_ACTION_CONTENT_TYPE_CACHE:
-            case self::H5P_ACTION_FILES:
-            case self::H5P_ACTION_GET_TUTORIAL:
-            case self::H5P_ACTION_LIBRARIES:
-            case self::H5P_ACTION_LIBRARY_INSTALL:
-            case self::H5P_ACTION_LIBRARY_UPLOAD:
-            case self::H5P_ACTION_REBUILD_CACHE:
-            case self::H5P_ACTION_RESTRICT_LIBRARY:
-                // Write actions
-                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasWriteAccess($this->object->getRefId())) {
-                    return;
-                }
-
-                $this->{$action}();
-
-                exit;
-
-                break;
-
-            default:
-                // Unknown action
                 break;
         }
     }
@@ -233,6 +184,55 @@ class H5PActionGUI
         }
 
         self::output()->outputJSON($output);
+    }
+
+
+    /**
+     *
+     */
+    protected function h5pAction()/* : void*/
+    {
+        $action = filter_input(INPUT_GET, H5PActionGUI::CMD_H5P_ACTION);
+
+        // Slashes to camelCase
+        $action = preg_replace_callback("/[-_][A-Z-a-z]/", function ($matches) : string {
+            return strtoupper($matches[0][1]);
+        }, $action);
+
+        switch ($action) {
+            case self::H5P_ACTION_CONTENT_USER_DATA:
+            case self::H5P_ACTION_SET_FINISHED:
+                // Read actions
+                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasReadAccess($this->object->getRefId())) {
+                    return;
+                }
+
+                $this->{$action}();
+                break;
+
+            case self::H5P_ACTION_CONTENT_TYPE_CACHE:
+            case self::H5P_ACTION_FILES:
+            case self::H5P_ACTION_GET_TUTORIAL:
+            case self::H5P_ACTION_LIBRARIES:
+            case self::H5P_ACTION_LIBRARY_INSTALL:
+            case self::H5P_ACTION_LIBRARY_UPLOAD:
+            case self::H5P_ACTION_REBUILD_CACHE:
+            case self::H5P_ACTION_RESTRICT_LIBRARY:
+                // Write actions
+                if (!($this->object instanceof ilObjPortfolio) && !ilObjH5PAccess::hasWriteAccess($this->object->getRefId())) {
+                    return;
+                }
+
+                $this->{$action}();
+
+                exit;
+
+                break;
+
+            default:
+                // Unknown action
+                break;
+        }
     }
 
 

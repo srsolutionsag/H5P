@@ -21,30 +21,35 @@ class ContentLibrary extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont_lib";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont_lib";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var int
      *
-     * @deprecated
+     * @con_has_field      true
+     * @con_fieldtype      integer
+     * @con_length         8
+     * @con_is_notnull     true
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $content_id;
+    /**
+     * @var string
+     *
+     * @con_has_field      true
+     * @con_fieldtype      text
+     * @con_length         31
+     * @con_is_notnull     true
+     */
+    protected $dependency_type = "";
+    /**
+     * @var bool
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       1
+     * @con_is_notnull   true
+     */
+    protected $drop_css = false;
     /**
      * @var int
      *
@@ -64,25 +69,7 @@ class ContentLibrary extends ActiveRecord
      * @con_length         8
      * @con_is_notnull     true
      */
-    protected $content_id;
-    /**
-     * @var int
-     *
-     * @con_has_field      true
-     * @con_fieldtype      integer
-     * @con_length         8
-     * @con_is_notnull     true
-     */
     protected $library_id;
-    /**
-     * @var string
-     *
-     * @con_has_field      true
-     * @con_fieldtype      text
-     * @con_length         31
-     * @con_is_notnull     true
-     */
-    protected $dependency_type = "";
     /**
      * @var int
      *
@@ -92,15 +79,6 @@ class ContentLibrary extends ActiveRecord
      * @con_is_notnull    true
      */
     protected $weight = 0;
-    /**
-     * @var bool
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       1
-     * @con_is_notnull   true
-     */
-    protected $drop_css = false;
 
 
     /**
@@ -112,6 +90,134 @@ class ContentLibrary extends ActiveRecord
     public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    public static function returnDbTableName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getConnectorContainerName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getContentId() : int
+    {
+        return $this->content_id;
+    }
+
+
+    /**
+     * @param int $content_id
+     */
+    public function setContentId(int $content_id)/* : void*/
+    {
+        $this->content_id = $content_id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getDependencyType() : string
+    {
+        return $this->dependency_type;
+    }
+
+
+    /**
+     * @param string $dependency_type
+     */
+    public function setDependencyType(string $dependency_type)/* : void*/
+    {
+        $this->dependency_type = $dependency_type;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)/* : void*/
+    {
+        $this->id = $id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getLibraryId() : int
+    {
+        return $this->library_id;
+    }
+
+
+    /**
+     * @param int $library_id
+     */
+    public function setLibraryId(int $library_id)/* : void*/
+    {
+        $this->library_id = $library_id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getWeight() : int
+    {
+        return $this->weight;
+    }
+
+
+    /**
+     * @param int $weight
+     */
+    public function setWeight(int $weight)/* : void*/
+    {
+        $this->weight = $weight;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isDropCss() : bool
+    {
+        return $this->drop_css;
+    }
+
+
+    /**
+     * @param bool $drop_css
+     */
+    public function setDropCss(bool $drop_css)/* : void*/
+    {
+        $this->drop_css = $drop_css;
     }
 
 
@@ -150,113 +256,5 @@ class ContentLibrary extends ActiveRecord
             default:
                 return parent::wakeUp($field_name, $field_value);
         }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getId() : int
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)/* : void*/
-    {
-        $this->id = $id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getContentId() : int
-    {
-        return $this->content_id;
-    }
-
-
-    /**
-     * @param int $content_id
-     */
-    public function setContentId(int $content_id)/* : void*/
-    {
-        $this->content_id = $content_id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getLibraryId() : int
-    {
-        return $this->library_id;
-    }
-
-
-    /**
-     * @param int $library_id
-     */
-    public function setLibraryId(int $library_id)/* : void*/
-    {
-        $this->library_id = $library_id;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getDependencyType() : string
-    {
-        return $this->dependency_type;
-    }
-
-
-    /**
-     * @param string $dependency_type
-     */
-    public function setDependencyType(string $dependency_type)/* : void*/
-    {
-        $this->dependency_type = $dependency_type;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getWeight() : int
-    {
-        return $this->weight;
-    }
-
-
-    /**
-     * @param int $weight
-     */
-    public function setWeight(int $weight)/* : void*/
-    {
-        $this->weight = $weight;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isDropCss() : bool
-    {
-        return $this->drop_css;
-    }
-
-
-    /**
-     * @param bool $drop_css
-     */
-    public function setDropCss(bool $drop_css)/* : void*/
-    {
-        $this->drop_css = $drop_css;
     }
 }

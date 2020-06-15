@@ -29,12 +29,21 @@ class ShowHub
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const STATUS_ALL = "all";
     const STATUS_INSTALLED = "installed";
-    const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
     const STATUS_NOT_INSTALLED = "not_installed";
+    const STATUS_UPGRADE_AVAILABLE = "upgrade_available";
     /**
      * @var self|null
      */
     protected static $instance = null;
+
+
+    /**
+     * ShowHub constructor
+     */
+    private function __construct()
+    {
+
+    }
 
 
     /**
@@ -51,11 +60,49 @@ class ShowHub
 
 
     /**
-     * ShowHub constructor
+     * @param Library $h5p_library
+     * @param bool    $message
      */
-    private function __construct()
+    public function deleteLibrary(Library $h5p_library, bool $message = true)/* : void*/
     {
+        self::h5p()->contents()->core()->deleteLibrary((object) [
+            "library_id"    => $h5p_library->getLibraryId(),
+            "name"          => $h5p_library->getName(),
+            "major_version" => $h5p_library->getMajorVersion(),
+            "minor_version" => $h5p_library->getMinorVersion()
+        ]);
 
+        if ($message) {
+            ilUtil::sendSuccess(self::plugin()->translate("deleted_library", "", [$h5p_library->getTitle()]), true);
+        }
+    }
+
+
+    /**
+     *
+     * @param UploadLibraryFormGUI $upload_form
+     * @param ilH5PConfigGUI       $gui
+     * @param string               $table
+     *
+     * @return string
+     */
+    public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, string $table) : string
+    {
+        self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
+            ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
+
+        $hub_last_refresh = self::h5p()->options()->getOption("content_type_cache_updated_at", "");
+        $hub_last_refresh = ilDatePresentation::formatDate(new ilDateTime($hub_last_refresh, IL_CAL_UNIX));
+
+        $h5p_tpl = self::plugin()->template("H5PHub.html");
+
+        $h5p_tpl->setVariable("H5P_HUB", $table);
+
+        $h5p_tpl->setVariableEscaped("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [$hub_last_refresh]));
+
+        $h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
+
+        return self::output()->getHTML($h5p_tpl);
     }
 
 
@@ -199,43 +246,6 @@ class ShowHub
 
 
     /**
-     *
-     * @param UploadLibraryFormGUI $upload_form
-     * @param ilH5PConfigGUI       $gui
-     * @param string               $table
-     *
-     * @return string
-     */
-    public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, string $table) : string
-    {
-        self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
-            ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
-
-        $hub_last_refresh = self::h5p()->options()->getOption("content_type_cache_updated_at", "");
-        $hub_last_refresh = ilDatePresentation::formatDate(new ilDateTime($hub_last_refresh, IL_CAL_UNIX));
-
-        $h5p_tpl = self::plugin()->template("H5PHub.html");
-
-        $h5p_tpl->setVariable("H5P_HUB", $table);
-
-        $h5p_tpl->setVariableEscaped("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [$hub_last_refresh]));
-
-        $h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
-
-        return self::output()->getHTML($h5p_tpl);
-    }
-
-
-    /**
-     *
-     */
-    public function refreshHub()/* : void*/
-    {
-        self::h5p()->contents()->core()->updateContentTypeCache();
-    }
-
-
-    /**
      * @param string $name
      */
     public function installLibrary(string $name)/* : void*/
@@ -251,21 +261,11 @@ class ShowHub
 
 
     /**
-     * @param Library $h5p_library
-     * @param bool    $message
+     *
      */
-    public function deleteLibrary(Library $h5p_library, bool $message = true)/* : void*/
+    public function refreshHub()/* : void*/
     {
-        self::h5p()->contents()->core()->deleteLibrary((object) [
-            "library_id"    => $h5p_library->getLibraryId(),
-            "name"          => $h5p_library->getName(),
-            "major_version" => $h5p_library->getMajorVersion(),
-            "minor_version" => $h5p_library->getMinorVersion()
-        ]);
-
-        if ($message) {
-            ilUtil::sendSuccess(self::plugin()->translate("deleted_library", "", [$h5p_library->getTitle()]), true);
-        }
+        self::h5p()->contents()->core()->updateContentTypeCache();
     }
 
 

@@ -21,16 +21,47 @@ class TmpFile extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
+     */
+    protected $created_at = 0;
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_length       255
+     * @con_is_notnull   true
+     */
+    protected $path = "";
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   true
+     * @con_is_primary   true
+     * @con_sequence     true
+     */
+    protected $tmp_id;
 
 
     /**
-     * @inheritDoc
+     * TmpFile constructor
+     *
+     * @param int              $primary_key_value
+     * @param arConnector|null $connector
      */
-    public function getConnectorContainerName() : string
+    public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
-        return self::TABLE_NAME;
+        parent::__construct($primary_key_value, $connector);
     }
 
 
@@ -46,44 +77,65 @@ class TmpFile extends ActiveRecord
 
 
     /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   true
-     * @con_is_primary   true
-     * @con_sequence     true
+     * @inheritDoc
      */
-    protected $tmp_id;
-    /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_length       255
-     * @con_is_notnull   true
-     */
-    protected $path = "";
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $created_at = 0;
-
-
-    /**
-     * TmpFile constructor
-     *
-     * @param int              $primary_key_value
-     * @param arConnector|null $connector
-     */
-    public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
+    public function getConnectorContainerName() : string
     {
-        parent::__construct($primary_key_value, $connector);
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getCreatedAt() : int
+    {
+        return $this->created_at;
+    }
+
+
+    /**
+     * @param int $created_at
+     */
+    public function setCreatedAt(int $created_at)/* : void*/
+    {
+        $this->created_at = $created_at;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getPath() : string
+    {
+        return $this->path;
+    }
+
+
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path)/* : void*/
+    {
+        $this->path = $path;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getTmpId() : int
+    {
+        return $this->tmp_id;
+    }
+
+
+    /**
+     * @param int $tmp_id
+     */
+    public function setTmpId(int $tmp_id)/* : void*/
+    {
+        $this->tmp_id = $tmp_id;
     }
 
 
@@ -119,59 +171,5 @@ class TmpFile extends ActiveRecord
             default:
                 return parent::wakeUp($field_name, $field_value);
         }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getTmpId() : int
-    {
-        return $this->tmp_id;
-    }
-
-
-    /**
-     * @param int $tmp_id
-     */
-    public function setTmpId(int $tmp_id)/* : void*/
-    {
-        $this->tmp_id = $tmp_id;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath() : string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * @param string $path
-     */
-    public function setPath(string $path)/* : void*/
-    {
-        $this->path = $path;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getCreatedAt() : int
-    {
-        return $this->created_at;
-    }
-
-
-    /**
-     * @param int $created_at
-     */
-    public function setCreatedAt(int $created_at)/* : void*/
-    {
-        $this->created_at = $created_at;
     }
 }

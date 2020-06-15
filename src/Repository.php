@@ -28,17 +28,26 @@ final class Repository
     use DICTrait;
     use H5PTrait;
 
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string
      *
      * @deprecated
      */
     const CSV_SEPARATOR = ", ";
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+
+
+    /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
 
 
     /**
@@ -55,20 +64,28 @@ final class Repository
 
 
     /**
-     * Repository constructor
-     */
-    private function __construct()
-    {
-
-    }
-
-
-    /**
      * @return ContentsRepository
      */
     public function contents() : ContentsRepository
     {
         return ContentsRepository::getInstance();
+    }
+
+
+    /**
+     * @param string $formatted
+     *
+     * @return int
+     *
+     * @deprecated
+     */
+    public function dbDateToTimestamp(string $formatted) : int
+    {
+        $date_time = new ilDateTime($formatted, IL_CAL_DATETIME);
+
+        $timestamp = $date_time->getUnixTime();
+
+        return $timestamp;
     }
 
 
@@ -132,6 +149,19 @@ final class Repository
 
 
     /**
+     * @param string[] $array
+     *
+     * @return string
+     *
+     * @deprecated
+     */
+    public function joinCsv(array $array) : string
+    {
+        return implode(self::CSV_SEPARATOR, $array);
+    }
+
+
+    /**
      * @return LibrariesRepository
      */
     public function libraries() : LibrariesRepository
@@ -181,19 +211,6 @@ final class Repository
 
 
     /**
-     * @param string[] $array
-     *
-     * @return string
-     *
-     * @deprecated
-     */
-    public function joinCsv(array $array) : string
-    {
-        return implode(self::CSV_SEPARATOR, $array);
-    }
-
-
-    /**
      * @param int $timestamp
      *
      * @return string
@@ -207,22 +224,5 @@ final class Repository
         $formated = $date_time->get(IL_CAL_DATETIME);
 
         return $formated;
-    }
-
-
-    /**
-     * @param string $formatted
-     *
-     * @return int
-     *
-     * @deprecated
-     */
-    public function dbDateToTimestamp(string $formatted) : int
-    {
-        $date_time = new ilDateTime($formatted, IL_CAL_DATETIME);
-
-        $timestamp = $date_time->getUnixTime();
-
-        return $timestamp;
     }
 }

@@ -21,30 +21,17 @@ class ObjectSettings extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_obj";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_obj";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var bool
      *
-     * @deprecated
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       1
+     * @con_is_notnull   true
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $is_online = false;
     /**
      * @var int
      *
@@ -55,15 +42,6 @@ class ObjectSettings extends ActiveRecord
      * @con_is_primary   true
      */
     protected $obj_id;
-    /**
-     * @var bool
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       1
-     * @con_is_notnull   true
-     */
-    protected $is_online = false;
     /**
      * @var bool
      *
@@ -84,6 +62,80 @@ class ObjectSettings extends ActiveRecord
     public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    public static function returnDbTableName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getConnectorContainerName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getObjId() : int
+    {
+        return $this->obj_id;
+    }
+
+
+    /**
+     * @param int $obj_id
+     */
+    public function setObjId(int $obj_id)/* : void*/
+    {
+        $this->obj_id = $obj_id;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOnline() : bool
+    {
+        return $this->is_online;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isSolveOnlyOnce() : bool
+    {
+        return $this->solve_only_once;
+    }
+
+
+    /**
+     * @param bool $solve_only_once
+     */
+    public function setSolveOnlyOnce(bool $solve_only_once)/* : void*/
+    {
+        $this->solve_only_once = $solve_only_once;
+    }
+
+
+    /**
+     * @param bool $is_online
+     */
+    public function setOnline(bool $is_online = true)/* : void*/
+    {
+        $this->is_online = $is_online;
     }
 
 
@@ -121,59 +173,5 @@ class ObjectSettings extends ActiveRecord
             default:
                 return parent::wakeUp($field_name, $field_value);
         }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getObjId() : int
-    {
-        return $this->obj_id;
-    }
-
-
-    /**
-     * @param int $obj_id
-     */
-    public function setObjId(int $obj_id)/* : void*/
-    {
-        $this->obj_id = $obj_id;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isOnline() : bool
-    {
-        return $this->is_online;
-    }
-
-
-    /**
-     * @param bool $is_online
-     */
-    public function setOnline(bool $is_online = true)/* : void*/
-    {
-        $this->is_online = $is_online;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isSolveOnlyOnce() : bool
-    {
-        return $this->solve_only_once;
-    }
-
-
-    /**
-     * @param bool $solve_only_once
-     */
-    public function setSolveOnlyOnce(bool $solve_only_once)/* : void*/
-    {
-        $this->solve_only_once = $solve_only_once;
     }
 }

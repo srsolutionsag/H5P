@@ -29,19 +29,6 @@ final class Factory
 
 
     /**
-     * @return self
-     */
-    public static function getInstance() : self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-
-    /**
      * Factory constructor
      */
     private function __construct()
@@ -51,29 +38,15 @@ final class Factory
 
 
     /**
-     * @param ilH5PConfigGUI $parent
-     * @param string         $cmd
-     *
-     * @return HubTableGUI
+     * @return self
      */
-    public function newHubTableInstance(ilH5PConfigGUI $parent, string $cmd = ilH5PConfigGUI::CMD_HUB) : HubTableGUI
+    public static function getInstance() : self
     {
-        $table = new HubTableGUI($parent, $cmd);
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
 
-        return $table;
-    }
-
-
-    /**
-     * @param ilH5PConfigGUI $parent
-     *
-     * @return UploadLibraryFormGUI
-     */
-    public function newUploadLibraryFormInstance(ilH5PConfigGUI $parent) : UploadLibraryFormGUI
-    {
-        $form = new UploadLibraryFormGUI($parent);
-
-        return $form;
+        return self::$instance;
     }
 
 
@@ -92,6 +65,33 @@ final class Factory
 
 
     /**
+     * @param ilH5PConfigGUI $parent
+     *
+     * @return SettingsFormBuilder
+     */
+    public function newHubSettingsFormBuilderInstance(ilH5PConfigGUI $parent) : SettingsFormBuilder
+    {
+        $form = new SettingsFormBuilder($parent);
+
+        return $form;
+    }
+
+
+    /**
+     * @param ilH5PConfigGUI $parent
+     * @param string         $cmd
+     *
+     * @return HubTableGUI
+     */
+    public function newHubTableInstance(ilH5PConfigGUI $parent, string $cmd = ilH5PConfigGUI::CMD_HUB) : HubTableGUI
+    {
+        $table = new HubTableGUI($parent, $cmd);
+
+        return $table;
+    }
+
+
+    /**
      * @return RefreshHubJob
      */
     public function newRefreshHubJobInstance() : RefreshHubJob
@@ -105,11 +105,11 @@ final class Factory
     /**
      * @param ilH5PConfigGUI $parent
      *
-     * @return SettingsFormBuilder
+     * @return UploadLibraryFormGUI
      */
-    public function newHubSettingsFormBuilderInstance(ilH5PConfigGUI $parent) : SettingsFormBuilder
+    public function newUploadLibraryFormInstance(ilH5PConfigGUI $parent) : UploadLibraryFormGUI
     {
-        $form = new SettingsFormBuilder($parent);
+        $form = new UploadLibraryFormGUI($parent);
 
         return $form;
     }

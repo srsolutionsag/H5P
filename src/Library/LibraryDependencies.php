@@ -21,30 +21,16 @@ class LibraryDependencies extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_dep";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_dep";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var string
      *
-     * @deprecated
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $dependency_type = "";
     /**
      * @var int
      *
@@ -76,14 +62,6 @@ class LibraryDependencies extends ActiveRecord
      * @__con_is_primary   true
      */
     protected $required_library_id;
-    /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_is_notnull   true
-     */
-    protected $dependency_type = "";
 
 
     /**
@@ -100,32 +78,39 @@ class LibraryDependencies extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            default:
-                return parent::sleep($field_name);
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "id":
-            case "library_id":
-            case "required_library_id":
-                return intval($field_value);
+        return self::TABLE_NAME;
+    }
 
-            default:
-                return parent::wakeUp($field_name, $field_value);
-        }
+
+    /**
+     * @return string
+     */
+    public function getDependencyType() : string
+    {
+        return $this->dependency_type;
+    }
+
+
+    /**
+     * @param string $dependency_type
+     */
+    public function setDependencyType(string $dependency_type)/* : void*/
+    {
+        $this->dependency_type = $dependency_type;
     }
 
 
@@ -184,19 +169,32 @@ class LibraryDependencies extends ActiveRecord
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getDependencyType() : string
+    public function sleep(/*string*/ $field_name)
     {
-        return $this->dependency_type;
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            default:
+                return parent::sleep($field_name);
+        }
     }
 
 
     /**
-     * @param string $dependency_type
+     * @inheritDoc
      */
-    public function setDependencyType(string $dependency_type)/* : void*/
+    public function wakeUp(/*string*/ $field_name, $field_value)
     {
-        $this->dependency_type = $dependency_type;
+        switch ($field_name) {
+            case "id":
+            case "library_id":
+            case "required_library_id":
+                return intval($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

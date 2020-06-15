@@ -30,6 +30,15 @@ class EditorStorage implements H5peditorStorageInterface
 
 
     /**
+     * EditorStorage constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -43,11 +52,102 @@ class EditorStorage implements H5peditorStorageInterface
 
 
     /**
-     * EditorStorage constructor
+     * Marks a file for later cleanup, useful when files are not instantly cleaned
+     * up. E.g. for files that are uploaded through the editor.
+     *
+     * @param H5peditorFile $file
+     * @param int|null      $content_id
      */
-    private function __construct()
+    public static function markFileForCleanup($file, $content_id = null)
+    {
+        $path = self::h5p()->objectSettings()->getH5PFolder();
+
+        if (empty($content_id)) {
+            $path .= "/editor/";
+        } else {
+            $path .= "/content/" . $content_id . "/";
+        }
+        $path .= $file->getType() . "s/" . $file->getName();
+
+        $h5p_tmp_file = self::h5p()->contents()->editor()->factory()->newTmpFileInstance();
+
+        $h5p_tmp_file->setPath($path);
+
+        self::h5p()->contents()->editor()->storeTmpFile($h5p_tmp_file);
+    }
+
+
+    /**
+     * Clean up temporary files
+     *
+     * @param string $file_path Path to file or directory
+     */
+    public static function removeTemporarilySavedFiles($file_path)
+    {
+        if (file_exists($file_path)) {
+            if (is_dir($file_path) && !is_link($file_path)) {
+                H5PCore::deleteFileTree($file_path);
+            } else {
+                unlink($file_path);
+            }
+        }
+    }
+
+
+    /**
+     * Saves a file or moves it temporarily. This is often necessary in order to
+     * validate and store uploaded or fetched H5Ps.
+     *
+     * @param string  $data      Uri of data that should be saved as a temporary file
+     * @param boolean $move_file Can be set to TRUE to move the data instead of saving it
+     *
+     * @return bool|object Returns false if saving failed or the path to the file
+     *  if saving succeeded
+     */
+    public static function saveFileTemporarily($data, $move_file)
+    {
+        $path = self::h5p()->contents()->framework()->getUploadedH5pPath();
+
+        if ($move_file) {
+            rename($data, $path);
+        } else {
+            file_put_contents($path, $data);
+        }
+
+        return (object) [
+            "dir"      => dirname($path),
+            "fileName" => basename($path)
+        ];
+    }
+
+
+    /**
+     * Alter styles and scripts
+     *
+     * @param array $files
+     *  List of files as objects with path and version as properties
+     * @param array $libraries
+     *  List of libraries indexed by machineName with objects as values. The objects
+     *  have majorVersion and minorVersion as properties.
+     */
+    public function alterLibraryFiles(&$files, $libraries)
     {
 
+    }
+
+
+    /**
+     * Load a list of available language codes from the database.
+     *
+     * @param string $machineName  The machine readable name of the library(content type)
+     * @param int    $majorVersion Major part of version number
+     * @param int    $minorVersion Minor part of version number
+     *
+     * @return array List of possible language codes
+     */
+    public function getAvailableLanguages($machineName, $majorVersion, $minorVersion)
+    {
+        return self::h5p()->libraries()->getAvailableLanguages($machineName, $majorVersion, $minorVersion);
     }
 
 
@@ -65,22 +165,6 @@ class EditorStorage implements H5peditorStorageInterface
     public function getLanguage($machine_name, $major_version, $minor_version, $language)
     {
         return self::h5p()->libraries()->getTranslationJson($machine_name, $major_version, $minor_version, $language);
-    }
-
-
-    /**
-     * "Callback" for mark the given file as a permanent file.
-     * Used when saving content that has new uploaded files.
-     *
-     * @param int $file_id
-     */
-    public function keepFile($file_id)
-    {
-        $h5p_tmp_files = self::h5p()->contents()->editor()->getFilesByPath($file_id);
-
-        foreach ($h5p_tmp_files as $h5p_tmp_file) {
-            self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
-        }
     }
 
 
@@ -154,101 +238,17 @@ class EditorStorage implements H5peditorStorageInterface
 
 
     /**
-     * Alter styles and scripts
+     * "Callback" for mark the given file as a permanent file.
+     * Used when saving content that has new uploaded files.
      *
-     * @param array $files
-     *  List of files as objects with path and version as properties
-     * @param array $libraries
-     *  List of libraries indexed by machineName with objects as values. The objects
-     *  have majorVersion and minorVersion as properties.
+     * @param int $file_id
      */
-    public function alterLibraryFiles(&$files, $libraries)
+    public function keepFile($file_id)
     {
+        $h5p_tmp_files = self::h5p()->contents()->editor()->getFilesByPath($file_id);
 
-    }
-
-
-    /**
-     * Saves a file or moves it temporarily. This is often necessary in order to
-     * validate and store uploaded or fetched H5Ps.
-     *
-     * @param string  $data      Uri of data that should be saved as a temporary file
-     * @param boolean $move_file Can be set to TRUE to move the data instead of saving it
-     *
-     * @return bool|object Returns false if saving failed or the path to the file
-     *  if saving succeeded
-     */
-    public static function saveFileTemporarily($data, $move_file)
-    {
-        $path = self::h5p()->contents()->framework()->getUploadedH5pPath();
-
-        if ($move_file) {
-            rename($data, $path);
-        } else {
-            file_put_contents($path, $data);
+        foreach ($h5p_tmp_files as $h5p_tmp_file) {
+            self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
         }
-
-        return (object) [
-            "dir"      => dirname($path),
-            "fileName" => basename($path)
-        ];
-    }
-
-
-    /**
-     * Marks a file for later cleanup, useful when files are not instantly cleaned
-     * up. E.g. for files that are uploaded through the editor.
-     *
-     * @param H5peditorFile $file
-     * @param int|null      $content_id
-     */
-    public static function markFileForCleanup($file, $content_id = null)
-    {
-        $path = self::h5p()->objectSettings()->getH5PFolder();
-
-        if (empty($content_id)) {
-            $path .= "/editor/";
-        } else {
-            $path .= "/content/" . $content_id . "/";
-        }
-        $path .= $file->getType() . "s/" . $file->getName();
-
-        $h5p_tmp_file = self::h5p()->contents()->editor()->factory()->newTmpFileInstance();
-
-        $h5p_tmp_file->setPath($path);
-
-        self::h5p()->contents()->editor()->storeTmpFile($h5p_tmp_file);
-    }
-
-
-    /**
-     * Clean up temporary files
-     *
-     * @param string $file_path Path to file or directory
-     */
-    public static function removeTemporarilySavedFiles($file_path)
-    {
-        if (file_exists($file_path)) {
-            if (is_dir($file_path) && !is_link($file_path)) {
-                H5PCore::deleteFileTree($file_path);
-            } else {
-                unlink($file_path);
-            }
-        }
-    }
-
-
-    /**
-     * Load a list of available language codes from the database.
-     *
-     * @param string $machineName  The machine readable name of the library(content type)
-     * @param int    $majorVersion Major part of version number
-     * @param int    $minorVersion Minor part of version number
-     *
-     * @return array List of possible language codes
-     */
-    public function getAvailableLanguages($machineName, $majorVersion, $minorVersion)
-    {
-        return self::h5p()->libraries()->getAvailableLanguages($machineName, $majorVersion, $minorVersion);
     }
 }

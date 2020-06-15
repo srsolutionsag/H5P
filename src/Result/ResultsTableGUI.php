@@ -50,6 +50,60 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
+    public function getSelectableColumns2() : array
+    {
+        $columns = [];
+
+        return $columns;
+    }
+
+
+    /**
+     * @param array $row
+     */
+    protected function fillRow(/*array*/ $row)/* : void*/
+    {
+        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
+
+        try {
+            $user = new ilObjUser($row["user_id"]);
+        } catch (Exception $ex) {
+            // User not exists anymore
+            $user = null;
+        }
+        $this->tpl->setVariableEscaped("USER", $user !== null ? $user->getFullname() : "");
+
+        $this->tpl->setCurrentBlock("contentBlock");
+        foreach ($this->contents as $h5p_content) {
+            $content_key = "content_" . $h5p_content->getContentId();
+
+            if ($row[$content_key] !== null) {
+                $this->tpl->setVariableEscaped("POINTS", $row[$content_key]);
+            } else {
+                $this->tpl->setVariableEscaped("POINTS", self::plugin()->translate("no_result"));
+            }
+            $this->tpl->parseCurrentBlock();
+        }
+
+        $actions = [];
+
+        if (ilObjH5PAccess::hasWriteAccess()) {
+            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
+                ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
+        }
+
+        $this->tpl->setVariableEscaped("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
+
+        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+            ->withLabel($this->txt("actions"))));
+
+        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", null);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     protected function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string
     {
         switch ($column) {
@@ -59,17 +113,6 @@ class ResultsTableGUI extends TableGUI
         }
 
         return strval($column);
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getSelectableColumns2() : array
-    {
-        $columns = [];
-
-        return $columns;
     }
 
 
@@ -151,48 +194,5 @@ class ResultsTableGUI extends TableGUI
     protected function initTitle()/* : void*/
     {
         $this->setTitle(self::plugin()->translate("results"));
-    }
-
-
-    /**
-     * @param array $row
-     */
-    protected function fillRow(/*array*/ $row)/* : void*/
-    {
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
-
-        try {
-            $user = new ilObjUser($row["user_id"]);
-        } catch (Exception $ex) {
-            // User not exists anymore
-            $user = null;
-        }
-        $this->tpl->setVariableEscaped("USER", $user !== null ? $user->getFullname() : "");
-
-        $this->tpl->setCurrentBlock("contentBlock");
-        foreach ($this->contents as $h5p_content) {
-            $content_key = "content_" . $h5p_content->getContentId();
-
-            if ($row[$content_key] !== null) {
-                $this->tpl->setVariableEscaped("POINTS", $row[$content_key]);
-            } else {
-                $this->tpl->setVariableEscaped("POINTS", self::plugin()->translate("no_result"));
-            }
-            $this->tpl->parseCurrentBlock();
-        }
-
-        $actions = [];
-
-        if (ilObjH5PAccess::hasWriteAccess()) {
-            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
-                ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
-        }
-
-        $this->tpl->setVariableEscaped("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
-
-        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
-            ->withLabel($this->txt("actions"))));
-
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", null);
     }
 }

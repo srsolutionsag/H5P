@@ -27,6 +27,15 @@ final class Factory
 
 
     /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -40,22 +49,13 @@ final class Factory
 
 
     /**
-     * Factory constructor
+     * @return DeleteOldEventsJob
      */
-    private function __construct()
+    public function newDeleteOldEventsJobInstance() : DeleteOldEventsJob
     {
+        $job = new DeleteOldEventsJob();
 
-    }
-
-
-    /**
-     * @return Event
-     */
-    public function newEventInstance() : Event
-    {
-        $event = new Event();
-
-        return $event;
+        return $job;
     }
 
 
@@ -84,12 +84,12 @@ final class Factory
 
 
     /**
-     * @return DeleteOldEventsJob
+     * @return Event
      */
-    public function newDeleteOldEventsJobInstance() : DeleteOldEventsJob
+    public function newEventInstance() : Event
     {
-        $job = new DeleteOldEventsJob();
+        $event = new Event();
 
-        return $job;
+        return $event;
     }
 }

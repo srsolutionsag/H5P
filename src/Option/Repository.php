@@ -29,6 +29,15 @@ final class Repository extends AbstractRepository
 
 
     /**
+     * Repository constructor
+     */
+    protected function __construct()
+    {
+        parent::__construct();
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -42,15 +51,6 @@ final class Repository extends AbstractRepository
 
 
     /**
-     * Repository constructor
-     */
-    protected function __construct()
-    {
-        parent::__construct();
-    }
-
-
-    /**
      * @inheritDoc
      *
      * @return Factory
@@ -58,28 +58,6 @@ final class Repository extends AbstractRepository
     public function factory() : AbstractFactory
     {
         return Factory::getInstance();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTableName() : string
-    {
-        return "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_opt_n";
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function getFields() : array
-    {
-        return [
-            SettingsFormBuilder::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
-            SettingsFormBuilder::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
-            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
-        ];
     }
 
 
@@ -102,5 +80,27 @@ final class Repository extends AbstractRepository
     public function setOption(string $name, $value)/* : void*/
     {
         $this->setJsonValue($name, $value);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getFields() : array
+    {
+        return [
+            SettingsFormBuilder::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
+            SettingsFormBuilder::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
+            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
+        ];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTableName() : string
+    {
+        return "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_opt_n";
     }
 }

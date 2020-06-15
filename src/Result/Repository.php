@@ -28,6 +28,15 @@ final class Repository
 
 
     /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -37,15 +46,6 @@ final class Repository
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * Repository constructor
-     */
-    private function __construct()
-    {
-
     }
 
 
@@ -87,38 +87,62 @@ final class Repository
 
 
     /**
-     * @internal
+     * @param int $obj_id
+     *
+     * @return SolveStatus[]
      */
-    public function installTables()/* : void*/
+    public function getByObject(int $obj_id) : array
     {
-        Result::updateDB();
-        SolveStatus::updateDB();
+        /**
+         * @var SolveStatus[] $h5p_solve_statuses
+         */
+
+        $h5p_solve_statuses = SolveStatus::where([
+            "obj_id" => $obj_id
+        ])->get();
+
+        return $h5p_solve_statuses;
     }
 
 
     /**
-     * @param Result $result
+     * @param int $obj_id
+     * @param int $user_id
+     *
+     * @return SolveStatus|null
      */
-    public function storeResult(Result $result)/* : void*/
+    public function getByUser(int $obj_id, int $user_id)/* : ?SolveStatus*/
     {
-        if (empty($result->getId())) {
-            $result->setUserId(self::dic()->user()->getId());
-        }
+        /**
+         * @var SolveStatus|null $h5p_solve_status
+         */
 
-        $result->store();
+        $h5p_solve_status = SolveStatus::where([
+            "obj_id"  => $obj_id,
+            "user_id" => $user_id
+        ])->first();
+
+        return $h5p_solve_status;
     }
 
 
     /**
-     * @param SolveStatus $solve_status
+     * @param int $obj_id
+     * @param int $user_id
+     *
+     * @return Content|null
      */
-    public function storeSolveStatus(SolveStatus $solve_status)/* : void*/
+    public function getContentByUser(int $obj_id, int $user_id)/* : ?Content*/
     {
-        if (empty($solve_status->getId())) {
-            $solve_status->setUserId(self::dic()->user()->getId());
+        $h5p_solve_status = $this->getByUser($obj_id, $user_id);
+
+        if ($h5p_solve_status === null) {
+            return null;
         }
 
-        $solve_status->store();
+        $h5p_content = self::h5p()->contents()->getContentById($h5p_solve_status->getContentId());
+
+        return $h5p_content;
     }
 
 
@@ -208,17 +232,6 @@ final class Repository
 
 
     /**
-     * @param int obj_id
-     *
-     * @return bool
-     */
-    public function hasObjectResults(int $obj_id) : bool
-    {
-        return (count($this->getResultsByObject($obj_id)) > 0 || count($this->getByObject($obj_id)) > 0);
-    }
-
-
-    /**
      * @param int $content_id
      *
      * @return bool
@@ -230,62 +243,45 @@ final class Repository
 
 
     /**
+     * @param int obj_id
+     *
+     * @return bool
+     */
+    public function hasObjectResults(int $obj_id) : bool
+    {
+        return (count($this->getResultsByObject($obj_id)) > 0 || count($this->getByObject($obj_id)) > 0);
+    }
+
+
+    /**
+     * @internal
+     */
+    public function installTables()/* : void*/
+    {
+        Result::updateDB();
+        SolveStatus::updateDB();
+    }
+
+
+    /**
      * @param int $obj_id
      * @param int $user_id
      *
-     * @return SolveStatus|null
+     * @return bool
      */
-    public function getByUser(int $obj_id, int $user_id)/* : ?SolveStatus*/
+    public function isUserFinished(int $obj_id, int $user_id) : bool
     {
         /**
          * @var SolveStatus|null $h5p_solve_status
          */
 
-        $h5p_solve_status = SolveStatus::where([
-            "obj_id"  => $obj_id,
-            "user_id" => $user_id
-        ])->first();
-
-        return $h5p_solve_status;
-    }
-
-
-    /**
-     * @param int $obj_id
-     *
-     * @return SolveStatus[]
-     */
-    public function getByObject(int $obj_id) : array
-    {
-        /**
-         * @var SolveStatus[] $h5p_solve_statuses
-         */
-
-        $h5p_solve_statuses = SolveStatus::where([
-            "obj_id" => $obj_id
-        ])->get();
-
-        return $h5p_solve_statuses;
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
-     *
-     * @return Content|null
-     */
-    public function getContentByUser(int $obj_id, int $user_id)/* : ?Content*/
-    {
         $h5p_solve_status = $this->getByUser($obj_id, $user_id);
 
-        if ($h5p_solve_status === null) {
-            return null;
+        if ($h5p_solve_status !== null) {
+            return $h5p_solve_status->isFinished();
+        } else {
+            return false;
         }
-
-        $h5p_content = self::h5p()->contents()->getContentById($h5p_solve_status->getContentId());
-
-        return $h5p_content;
     }
 
 
@@ -321,28 +317,6 @@ final class Repository
     /**
      * @param int $obj_id
      * @param int $user_id
-     *
-     * @return bool
-     */
-    public function isUserFinished(int $obj_id, int $user_id) : bool
-    {
-        /**
-         * @var SolveStatus|null $h5p_solve_status
-         */
-
-        $h5p_solve_status = $this->getByUser($obj_id, $user_id);
-
-        if ($h5p_solve_status !== null) {
-            return $h5p_solve_status->isFinished();
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * @param int $obj_id
-     * @param int $user_id
      */
     public function setUserFinished(int $obj_id, int $user_id)/* : void*/
     {
@@ -369,5 +343,31 @@ final class Repository
         }
 
         $this->storeSolveStatus($h5p_solve_status);
+    }
+
+
+    /**
+     * @param Result $result
+     */
+    public function storeResult(Result $result)/* : void*/
+    {
+        if (empty($result->getId())) {
+            $result->setUserId(self::dic()->user()->getId());
+        }
+
+        $result->store();
+    }
+
+
+    /**
+     * @param SolveStatus $solve_status
+     */
+    public function storeSolveStatus(SolveStatus $solve_status)/* : void*/
+    {
+        if (empty($solve_status->getId())) {
+            $solve_status->setUserId(self::dic()->user()->getId());
+        }
+
+        $solve_status->store();
     }
 }

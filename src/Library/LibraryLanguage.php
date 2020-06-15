@@ -21,30 +21,8 @@ class LibraryLanguage extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_lng";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_lng";
     /**
      * @var int
      *
@@ -57,15 +35,6 @@ class LibraryLanguage extends ActiveRecord
      */
     protected $id;
     /**
-     * @var int
-     *
-     * @con_has_field      true
-     * @con_fieldtype      integer
-     * @con_length         8
-     * @con_is_notnull     true
-     */
-    protected $library_id;
-    /**
      * @var string
      *
      * @con_has_field      true
@@ -74,6 +43,15 @@ class LibraryLanguage extends ActiveRecord
      * @con_is_notnull     true
      */
     protected $language_code = "";
+    /**
+     * @var int
+     *
+     * @con_has_field      true
+     * @con_fieldtype      integer
+     * @con_length         8
+     * @con_is_notnull     true
+     */
+    protected $library_id;
     /**
      * @var string
      *
@@ -93,6 +71,98 @@ class LibraryLanguage extends ActiveRecord
     public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    public static function returnDbTableName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getConnectorContainerName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)/* : void*/
+    {
+        $this->id = $id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLanguageCode() : string
+    {
+        return $this->language_code;
+    }
+
+
+    /**
+     * @param string $language_code
+     */
+    public function setLanguageCode(string $language_code)/* : void*/
+    {
+        $this->language_code = $language_code;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getLibraryId() : int
+    {
+        return $this->library_id;
+    }
+
+
+    /**
+     * @param int $library_id
+     */
+    public function setLibraryId(int $library_id)/* : void*/
+    {
+        $this->library_id = $library_id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getTranslation() : string
+    {
+        return $this->translation;
+    }
+
+
+    /**
+     * @param string $translation
+     */
+    public function setTranslation(string $translation)/* : void*/
+    {
+        $this->translation = $translation;
     }
 
 
@@ -123,77 +193,5 @@ class LibraryLanguage extends ActiveRecord
             default:
                 return parent::wakeUp($field_name, $field_value);
         }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getId() : int
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)/* : void*/
-    {
-        $this->id = $id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getLibraryId() : int
-    {
-        return $this->library_id;
-    }
-
-
-    /**
-     * @param int $library_id
-     */
-    public function setLibraryId(int $library_id)/* : void*/
-    {
-        $this->library_id = $library_id;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getLanguageCode() : string
-    {
-        return $this->language_code;
-    }
-
-
-    /**
-     * @param string $language_code
-     */
-    public function setLanguageCode(string $language_code)/* : void*/
-    {
-        $this->language_code = $language_code;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getTranslation() : string
-    {
-        return $this->translation;
-    }
-
-
-    /**
-     * @param string $translation
-     */
-    public function setTranslation(string $translation)/* : void*/
-    {
-        $this->translation = $translation;
     }
 }

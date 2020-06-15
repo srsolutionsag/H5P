@@ -25,17 +25,13 @@ class ShowContent
 
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
+     * @var self|null
+     */
+    protected static $instance = null;
+    /**
      * @var array|null
      */
     public $core = null;
-    /**
-     * @var bool
-     */
-    protected $core_output = false;
-    /**
-     * @var array
-     */
-    public $js_files = [];
     /**
      * @var array
      */
@@ -43,11 +39,24 @@ class ShowContent
     /**
      * @var array
      */
-    protected $js_files_output = [];
+    public $js_files = [];
     /**
-     * @var self|null
+     * @var bool
      */
-    protected static $instance = null;
+    protected $core_output = false;
+    /**
+     * @var array
+     */
+    protected $js_files_output = [];
+
+
+    /**
+     * ShowContent constructor
+     */
+    private function __construct()
+    {
+
+    }
 
 
     /**
@@ -64,11 +73,115 @@ class ShowContent
 
 
     /**
-     * ShowContent constructor
+     * @param int         $content_id
+     * @param string      $data_id
+     * @param int         $sub_content_id
+     * @param string|null $data
+     * @param bool        $preload
+     * @param bool        $invalidate
+     *
+     * @return string|null
      */
-    private function __construct()
+    public function contentsUserData(int $content_id, string $data_id, int $sub_content_id, /*?string*/ $data = null, bool $preload = false, bool $invalidate = false)/* : ?string*/
     {
+        $h5p_content = self::h5p()->contents()->getContentById($content_id);
+        if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
+            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
+        } else {
+            $object_settings = null;
+        }
 
+        $user_id = self::dic()->user()->getId();
+
+        $h5p_content_user_data = self::h5p()->contents()->getUserData($content_id, $data_id, $user_id, $sub_content_id);
+
+        if ($data !== null) {
+            if ($data === "0") {
+                if ($h5p_content_user_data !== null) {
+                    self::h5p()->contents()->deleteContentUserData($h5p_content_user_data);
+                }
+            } else {
+                if ($h5p_content_user_data === null) {
+                    $h5p_content_user_data = self::h5p()->contents()->factory()->newContentUserDataInstance();
+
+                    $h5p_content_user_data->setContentId($content_id);
+
+                    $h5p_content_user_data->setSubContentId($sub_content_id);
+
+                    $h5p_content_user_data->setDataId($data_id);
+                } else {
+                    // Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
+                    if ($object_settings !== null && $object_settings->isSolveOnlyOnce() && self::h5p()->results()->hasContentResults($h5p_content->getContentId())) {
+                        return null;
+                    }
+                }
+
+                $h5p_content_user_data->setData($data);
+
+                $h5p_content_user_data->setPreload($preload);
+
+                $h5p_content_user_data->setInvalidate($invalidate);
+
+                self::h5p()->contents()->storeContentUserData($h5p_content_user_data);
+            }
+
+            return null;
+        } else {
+            return ($h5p_content_user_data !== null ? $h5p_content_user_data->getData() : null);
+        }
+    }
+
+
+    /**
+     * @param Content $h5p_content
+     * @param bool    $title
+     *
+     * @return string
+     */
+    public function getH5PContent(Content $h5p_content, bool $title = true) : string
+    {
+        $this->initCoreForContents();
+
+        $content_integration = $this->initContent($h5p_content);
+
+        $this->initCoreToOutput();
+
+        if ($title) {
+            $title = $h5p_content->getTitle();
+        } else {
+            $title = null;
+        }
+
+        $output = $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
+
+        $this->outputHeader();
+
+        return $output;
+    }
+
+
+    /**
+     * @param Content     $h5p_content
+     * @param int         $index
+     * @param int         $count
+     * @param string|null $text
+     *
+     * @return string
+     */
+    public function getH5PContentStep(Content $h5p_content, int $index, int $count, /*?string*/ $text = null) : string
+    {
+        $h5p_tpl = self::plugin()->template("H5PContentStep.html");
+
+        if ($text === null) {
+            $h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContent($h5p_content, false));
+        } else {
+            $h5p_tpl->setVariableEscaped("H5P_CONTENT", $text);
+        }
+
+        $h5p_tpl->setVariableEscaped("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [($index + 1), $count]) . " - "
+            . $h5p_content->getTitle());
+
+        return self::output()->getHTML([$h5p_tpl, self::dic()->toolbar()]);
     }
 
 
@@ -121,21 +234,6 @@ class ShowContent
     /**
      *
      */
-    protected function initCoreForContents()/* : void*/
-    {
-        if ($this->core === null) {
-            $this->initCore();
-
-            $this->core["contents"] = [];
-
-            $this->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js";
-        }
-    }
-
-
-    /**
-     *
-     */
     public function initCoreToOutput()/* : void*/
     {
         if (!$this->core_output) {
@@ -145,59 +243,6 @@ class ShowContent
             $core_tpl->setVariableEscaped("H5P_CORE", base64_encode(json_encode($this->core)));
             $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($core_tpl));
         }
-    }
-
-
-    /**
-     * @param Content     $h5p_content
-     * @param int         $index
-     * @param int         $count
-     * @param string|null $text
-     *
-     * @return string
-     */
-    public function getH5PContentStep(Content $h5p_content, int $index, int $count, /*?string*/ $text = null) : string
-    {
-        $h5p_tpl = self::plugin()->template("H5PContentStep.html");
-
-        if ($text === null) {
-            $h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContent($h5p_content, false));
-        } else {
-            $h5p_tpl->setVariableEscaped("H5P_CONTENT", $text);
-        }
-
-        $h5p_tpl->setVariableEscaped("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [($index + 1), $count]) . " - "
-            . $h5p_content->getTitle());
-
-        return self::output()->getHTML([$h5p_tpl, self::dic()->toolbar()]);
-    }
-
-
-    /**
-     * @param Content $h5p_content
-     * @param bool    $title
-     *
-     * @return string
-     */
-    public function getH5PContent(Content $h5p_content, bool $title = true) : string
-    {
-        $this->initCoreForContents();
-
-        $content_integration = $this->initContent($h5p_content);
-
-        $this->initCoreToOutput();
-
-        if ($title) {
-            $title = $h5p_content->getTitle();
-        } else {
-            $title = null;
-        }
-
-        $output = $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
-
-        $this->outputHeader();
-
-        return $output;
     }
 
 
@@ -229,6 +274,105 @@ class ShowContent
                 self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
             }
         }
+    }
+
+
+    /**
+     * @param int      $content_id
+     * @param int      $score
+     * @param int      $max_score
+     * @param int      $opened
+     * @param int      $finished
+     * @param int|null $time
+     */
+    public function setFinished(int $content_id, int $score, int $max_score, int $opened, int $finished, /*?int*/ $time = null)/* : void*/
+    {
+        $h5p_content = self::h5p()->contents()->getContentById($content_id);
+        if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
+            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
+        } else {
+            $object_settings = null;
+        }
+
+        $user_id = self::dic()->user()->getId();
+
+        $h5p_result = self::h5p()->results()->getResultByUserContent($user_id, $content_id);
+
+        if ($h5p_result === null) {
+            $h5p_result = self::h5p()->results()->factory()->newResultInstance();
+
+            $h5p_result->setContentId($content_id);
+        } else {
+            // Prevent update result on a repository object with "Solve only once"
+            if ($object_settings !== null && $object_settings->isSolveOnlyOnce()) {
+                return;
+            }
+        }
+
+        $h5p_result->setScore($score);
+
+        $h5p_result->setMaxScore($max_score);
+
+        $h5p_result->setOpened($opened);
+
+        $h5p_result->setFinished($finished);
+
+        if ($time !== null) {
+            $h5p_result->setTime($time);
+        }
+
+        self::h5p()->results()->storeResult($h5p_result);
+
+        if ($object_settings !== null) {
+            // Store solve status because user may not scroll to contents
+            self::h5p()->results()->setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
+        }
+    }
+
+
+    /**
+     * @param array       $content
+     * @param int         $content_id
+     * @param string|null $title
+     * @param string      $embed_type
+     *
+     * @return string
+     */
+    protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type) : string
+    {
+        $content_tpl = self::plugin()->template("H5PContent.min.js");
+        $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
+        $content_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
+        $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
+
+        $h5p_tpl = self::plugin()->template("H5PContent.html");
+
+        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
+
+        if ($title !== null) {
+            $h5p_tpl->setCurrentBlock("titleBlock");
+
+            $h5p_tpl->setVariableEscaped("H5P_TITLE", $title);
+        }
+
+        switch ($embed_type) {
+            case "div":
+                $h5p_tpl->setCurrentBlock("contentDivBlock");
+                break;
+
+            case "iframe":
+                $h5p_tpl->setCurrentBlock("contentFrameBlock");
+                break;
+
+            default:
+                break;
+        }
+
+        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
+
+        $h5p_tpl->parseCurrentBlock();
+
+        return self::output()->getHTML($h5p_tpl);
     }
 
 
@@ -308,160 +452,16 @@ class ShowContent
 
 
     /**
-     * @param array       $content
-     * @param int         $content_id
-     * @param string|null $title
-     * @param string      $embed_type
      *
-     * @return string
      */
-    protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type) : string
+    protected function initCoreForContents()/* : void*/
     {
-        $content_tpl = self::plugin()->template("H5PContent.min.js");
-        $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
-        $content_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
-        $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
+        if ($this->core === null) {
+            $this->initCore();
 
-        $h5p_tpl = self::plugin()->template("H5PContent.html");
+            $this->core["contents"] = [];
 
-        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
-
-        if ($title !== null) {
-            $h5p_tpl->setCurrentBlock("titleBlock");
-
-            $h5p_tpl->setVariableEscaped("H5P_TITLE", $title);
-        }
-
-        switch ($embed_type) {
-            case "div":
-                $h5p_tpl->setCurrentBlock("contentDivBlock");
-                break;
-
-            case "iframe":
-                $h5p_tpl->setCurrentBlock("contentFrameBlock");
-                break;
-
-            default:
-                break;
-        }
-
-        $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
-
-        $h5p_tpl->parseCurrentBlock();
-
-        return self::output()->getHTML($h5p_tpl);
-    }
-
-
-    /**
-     * @param int      $content_id
-     * @param int      $score
-     * @param int      $max_score
-     * @param int      $opened
-     * @param int      $finished
-     * @param int|null $time
-     */
-    public function setFinished(int $content_id, int $score, int $max_score, int $opened, int $finished, /*?int*/ $time = null)/* : void*/
-    {
-        $h5p_content = self::h5p()->contents()->getContentById($content_id);
-        if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
-        } else {
-            $object_settings = null;
-        }
-
-        $user_id = self::dic()->user()->getId();
-
-        $h5p_result = self::h5p()->results()->getResultByUserContent($user_id, $content_id);
-
-        if ($h5p_result === null) {
-            $h5p_result = self::h5p()->results()->factory()->newResultInstance();
-
-            $h5p_result->setContentId($content_id);
-        } else {
-            // Prevent update result on a repository object with "Solve only once"
-            if ($object_settings !== null && $object_settings->isSolveOnlyOnce()) {
-                return;
-            }
-        }
-
-        $h5p_result->setScore($score);
-
-        $h5p_result->setMaxScore($max_score);
-
-        $h5p_result->setOpened($opened);
-
-        $h5p_result->setFinished($finished);
-
-        if ($time !== null) {
-            $h5p_result->setTime($time);
-        }
-
-        self::h5p()->results()->storeResult($h5p_result);
-
-        if ($object_settings !== null) {
-            // Store solve status because user may not scroll to contents
-            self::h5p()->results()->setContentByUser($h5p_content->getObjId(), $user_id, $h5p_content->getContentId());
-        }
-    }
-
-
-    /**
-     * @param int         $content_id
-     * @param string      $data_id
-     * @param int         $sub_content_id
-     * @param string|null $data
-     * @param bool        $preload
-     * @param bool        $invalidate
-     *
-     * @return string|null
-     */
-    public function contentsUserData(int $content_id, string $data_id, int $sub_content_id, /*?string*/ $data = null, bool $preload = false, bool $invalidate = false)/* : ?string*/
-    {
-        $h5p_content = self::h5p()->contents()->getContentById($content_id);
-        if ($h5p_content !== null && $h5p_content->getParentType() === Content::PARENT_TYPE_OBJECT) {
-            $object_settings = self::h5p()->objectSettings()->getObjectSettingsById($h5p_content->getObjId());
-        } else {
-            $object_settings = null;
-        }
-
-        $user_id = self::dic()->user()->getId();
-
-        $h5p_content_user_data = self::h5p()->contents()->getUserData($content_id, $data_id, $user_id, $sub_content_id);
-
-        if ($data !== null) {
-            if ($data === "0") {
-                if ($h5p_content_user_data !== null) {
-                    self::h5p()->contents()->deleteContentUserData($h5p_content_user_data);
-                }
-            } else {
-                if ($h5p_content_user_data === null) {
-                    $h5p_content_user_data = self::h5p()->contents()->factory()->newContentUserDataInstance();
-
-                    $h5p_content_user_data->setContentId($content_id);
-
-                    $h5p_content_user_data->setSubContentId($sub_content_id);
-
-                    $h5p_content_user_data->setDataId($data_id);
-                } else {
-                    // Prevent update user data on a repository object with "Solve only once". But some contents may store date with editor so check has results
-                    if ($object_settings !== null && $object_settings->isSolveOnlyOnce() && self::h5p()->results()->hasContentResults($h5p_content->getContentId())) {
-                        return null;
-                    }
-                }
-
-                $h5p_content_user_data->setData($data);
-
-                $h5p_content_user_data->setPreload($preload);
-
-                $h5p_content_user_data->setInvalidate($invalidate);
-
-                self::h5p()->contents()->storeContentUserData($h5p_content_user_data);
-            }
-
-            return null;
-        } else {
-            return ($h5p_content_user_data !== null ? $h5p_content_user_data->getData() : null);
+            $this->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js";
         }
     }
 }

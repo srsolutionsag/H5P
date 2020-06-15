@@ -26,6 +26,15 @@ final class Factory extends AbstractFactory
 
 
     /**
+     * Factory constructor
+     */
+    protected function __construct()
+    {
+        parent::__construct();
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -35,14 +44,5 @@ final class Factory extends AbstractFactory
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * Factory constructor
-     */
-    protected function __construct()
-    {
-        parent::__construct();
     }
 }

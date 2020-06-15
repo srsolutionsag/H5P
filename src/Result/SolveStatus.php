@@ -21,30 +21,26 @@ class SolveStatus extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_solv";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_solv";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var int
      *
-     * @deprecated
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   false
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $content_id = null;
+    /**
+     * @var bool
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       1
+     * @con_is_notnull   true
+     */
+    protected $finished = false;
     /**
      * @var int
      *
@@ -74,24 +70,6 @@ class SolveStatus extends ActiveRecord
      * @con_is_notnull   true
      */
     protected $user_id;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   false
-     */
-    protected $content_id = null;
-    /**
-     * @var bool
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       1
-     * @con_is_notnull   true
-     */
-    protected $finished = false;
 
 
     /**
@@ -108,45 +86,39 @@ class SolveStatus extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            case "finished":
-                return ($field_value ? 1 : 0);
-
-            default:
-                return parent::sleep($field_name);
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "id":
-            case "obj_id":
-            case "user_id":
-                return intval($field_value);
+        return self::TABLE_NAME;
+    }
 
-            case "content_id":
-                if ($field_value !== null) {
-                    return intval($field_value);
-                } else {
-                    return parent::wakeUp($field_name, $field_value);
-                }
 
-            case "finished":
-                return boolval($field_value);
+    /**
+     * @return int
+     */
+    public function getContentId() : int
+    {
+        return $this->content_id;
+    }
 
-            default:
-                return parent::wakeUp($field_name, $field_value);
-        }
+
+    /**
+     * @param int $content_id
+     */
+    public function setContentId(int $content_id)/* : void*/
+    {
+        $this->content_id = $content_id;
     }
 
 
@@ -205,24 +177,6 @@ class SolveStatus extends ActiveRecord
 
 
     /**
-     * @return int
-     */
-    public function getContentId() : int
-    {
-        return $this->content_id;
-    }
-
-
-    /**
-     * @param int $content_id
-     */
-    public function setContentId(int $content_id)/* : void*/
-    {
-        $this->content_id = $content_id;
-    }
-
-
-    /**
      * @return bool
      */
     public function isFinished() : bool
@@ -237,5 +191,49 @@ class SolveStatus extends ActiveRecord
     public function setFinished(bool $finished)/* : void*/
     {
         $this->finished = $finished;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "finished":
+                return ($field_value ? 1 : 0);
+
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "id":
+            case "obj_id":
+            case "user_id":
+                return intval($field_value);
+
+            case "content_id":
+                if ($field_value !== null) {
+                    return intval($field_value);
+                } else {
+                    return parent::wakeUp($field_name, $field_value);
+                }
+
+            case "finished":
+                return boolval($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

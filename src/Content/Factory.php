@@ -28,6 +28,15 @@ final class Factory
 
 
     /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -41,15 +50,6 @@ final class Factory
 
 
     /**
-     * Factory constructor
-     */
-    private function __construct()
-    {
-
-    }
-
-
-    /**
      * @return Content
      */
     public function newContentInstance() : Content
@@ -57,20 +57,6 @@ final class Factory
         $content = new Content();
 
         return $content;
-    }
-
-
-    /**
-     * @param ilObjH5PGUI $parent
-     * @param string      $cmd
-     *
-     * @return ContentsTableGUI
-     */
-    public function newContentsTableInstance(ilObjH5PGUI $parent, string $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS) : ContentsTableGUI
-    {
-        $table = new ContentsTableGUI($parent, $cmd);
-
-        return $table;
     }
 
 
@@ -93,5 +79,19 @@ final class Factory
         $content_user_data = new ContentUserData();
 
         return $content_user_data;
+    }
+
+
+    /**
+     * @param ilObjH5PGUI $parent
+     * @param string      $cmd
+     *
+     * @return ContentsTableGUI
+     */
+    public function newContentsTableInstance(ilObjH5PGUI $parent, string $cmd = ilObjH5PGUI::CMD_MANAGE_CONTENTS) : ContentsTableGUI
+    {
+        $table = new ContentsTableGUI($parent, $cmd);
+
+        return $table;
     }
 }
