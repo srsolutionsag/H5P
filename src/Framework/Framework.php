@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Framework;
 
-use Exception;
 use H5PCore;
 use H5PFrameworkInterface;
 use H5PPermission;
@@ -14,6 +13,7 @@ use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
+use Throwable;
 
 /**
  * Class Framework
@@ -290,7 +290,6 @@ class Framework implements H5PFrameworkInterface
 
             $curlConnection->init();
 
-            // use a proxy, if configured by ILIAS
             if (!self::version()->is6()) {
                 $proxy = ilProxySettings::_getInstance();
                 if ($proxy->isActive()) {
@@ -306,7 +305,18 @@ class Framework implements H5PFrameworkInterface
                 }
             }
 
+            $headers = [
+                "User-Agent" => "ILIAS " . self::version()->getILIASVersion()
+            ];
+            $curlConnection->setOpt(CURLOPT_HTTPHEADER, array_map(function (string $key, string $value) : string {
+                return ($key . ": " . $value);
+            }, array_keys($headers), $headers));
+
+            $curlConnection->setOpt(CURLOPT_FOLLOWLOCATION, true);
+
             $curlConnection->setOpt(CURLOPT_RETURNTRANSFER, true);
+
+            $curlConnection->setOpt(CURLOPT_VERBOSE, false/*$this->isInDevMode()*/);
 
             $curlConnection->setOpt(CURLOPT_TIMEOUT, ($blocking) ? 30 : 0.1);
 
@@ -323,7 +333,7 @@ class Framework implements H5PFrameworkInterface
             if ($stream !== null) {
                 file_put_contents($stream, $content);
             }
-        } catch (Exception $ex) {
+        } catch (Throwable $ex) {
             $content = null;
         } finally {
             if ($curlConnection !== null) {

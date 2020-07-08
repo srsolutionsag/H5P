@@ -308,7 +308,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         try {
             $user = new ilObjUser($user_id);
-        } catch (Exception $ex) {
+        } catch (Throwable $ex) {
             // User not exists anymore
             $user = null;
         }
@@ -335,7 +335,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         try {
             $user = new ilObjUser($user_id);
-        } catch (Exception $ex) {
+        } catch (Throwable $ex) {
             // User not exists anymore
             $user = null;
         }

@@ -2,7 +2,6 @@
 
 namespace srag\Plugins\H5P\Result;
 
-use Exception;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilObjH5PGUI;
@@ -10,6 +9,7 @@ use ilObjUser;
 use srag\CustomInputGUIs\H5P\TableGUI\TableGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
+use Throwable;
 
 /**
  * Class ResultsTableGUI
@@ -67,7 +67,7 @@ class ResultsTableGUI extends TableGUI
 
         try {
             $user = new ilObjUser($row["user_id"]);
-        } catch (Exception $ex) {
+        } catch (Throwable $ex) {
             // User not exists anymore
             $user = null;
         }
