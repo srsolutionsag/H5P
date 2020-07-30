@@ -17,7 +17,7 @@ final class PHPVersionChecker
     /**
      * @var string
      */
-    const ERROR_MESSAGE = 'The plugin %1$s could not be used! Because it\'s needed at least PHP version %2$s, but you have only PHP version %3$s<br>Please upgrade your PHP version or delete the plugin directory %4$s';
+    const ERROR_MESSAGE = 'The plugin %1$s could not be used! Because it\'s needed at least PHP version %2$s, but you have only PHP version %3$s<br>Please upgrade your PHP version or delete the plugin directory %4$s for continue';
     /**
      * @var string
      */

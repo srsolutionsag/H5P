@@ -28,21 +28,6 @@ final class Repository
      * @var self|null
      */
     protected static $instance = null;
-
-
-    /**
-     * @return self
-     */
-    public static function getInstance() : self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-
     /**
      * @var H5PCore
      */
@@ -55,6 +40,19 @@ final class Repository
     private function __construct()
     {
 
+    }
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 
@@ -164,11 +162,250 @@ final class Repository
 
 
     /**
+     * @param int $content_id
+     *
+     * @return Content|null
+     */
+    public function getContentById(int $content_id)/* : ?Content*/
+    {
+        /**
+         * @var Content|null $h5p_content
+         */
+
+        $h5p_content = Content::where([
+            "content_id" => $content_id
+        ])->first();
+
+        return $h5p_content;
+    }
+
+
+    /**
+     * @param int         $content_id
+     * @param string|null $dependency_type
+     *
+     * @return ContentLibrary[]
+     */
+    public function getContentLibraries(int $content_id, /*?string*/ $dependency_type = null) : array
+    {
+        /**
+         * @var ContentLibrary[] $h5p_content_libraries
+         */
+
+        $where = [
+            "content_id" => $content_id
+        ];
+
+        if ($dependency_type !== null) {
+            $where["dependency_type"] = $dependency_type;
+        }
+
+        $h5p_content_libraries = ContentLibrary::where($where)->orderBy("weight", "asc")->get();
+
+        return $h5p_content_libraries;
+    }
+
+
+    /**
+     * @param int $library_id
+     *
+     * @return Content[]
+     */
+    public function getContentsByLibrary(int $library_id) : array
+    {
+        /**
+         * @var Content[] $h5p_contents
+         */
+
+        $h5p_contents = Content::where([
+            "library_id" => $library_id
+        ])->get();
+
+        return $h5p_contents;
+    }
+
+
+    /**
+     * @param int|null $obj_id
+     * @param string   $parent_type
+     *
+     * @return Content[]
+     */
+    public function getContentsByObject(/*?int*/ $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
+    {
+        /**
+         * @var Content[] $h5p_contents
+         */
+
+        $where = [
+            "parent_type" => $parent_type
+        ];
+        if ($obj_id !== null) {
+            $where["obj_id"] = $obj_id;
+        }
+
+        $h5p_contents = Content::where($where)->orderBy("sort", "asc")->get();
+
+        // Fix index with array_values
+        return array_values($h5p_contents);
+    }
+
+
+    /**
+     * @param int    $obj_id
+     * @param string $parent_type
+     *
+     * @return array
+     */
+    public function getContentsByObjectArray(int $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
+    {
+        $h5p_contents = Content::where([
+            "obj_id"      => $obj_id,
+            "parent_type" => $parent_type
+        ])->orderBy("sort", "asc")->getArray();
+
+        return $h5p_contents;
+    }
+
+
+    /**
+     * @param string $slug
+     *
+     * @return Content|null
+     */
+    public function getContentsBySlug(string $slug)/* : ?Content*/
+    {
+        /**
+         * @var Content|null $h5p_content
+         */
+
+        $h5p_content = Content::where([
+            "slug" => $slug
+        ])->first();
+
+        return $h5p_content;
+    }
+
+
+    /**
+     * @return Content[]
+     */
+    public function getContentsNotFiltered() : array
+    {
+        /**
+         * @var Content[] $h5p_contents
+         */
+
+        $h5p_contents = Content::where([
+            "filtered" => ""
+        ])->get();
+
+        return $h5p_contents;
+    }
+
+
+    /**
      * @return string
      */
     public function getCorePath() : string
     {
         return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-core";
+    }
+
+
+    /**
+     * @return Content|null
+     */
+    public function getCurrentContent()/* : ?Content*/
+    {
+        /**
+         * @var Content|null $h5p_content
+         */
+
+        $content_id = intval(filter_input(INPUT_GET, "xhfp_content", FILTER_SANITIZE_NUMBER_INT));
+
+        $h5p_content = $this->getContentById($content_id);
+
+        return $h5p_content;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getNumAuthors() : int
+    {
+        $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
+          FROM " . Content::TABLE_NAME, [], []);
+
+        $count = $result->fetchAssoc()["count"];
+
+        return $count;
+    }
+
+
+    /**
+     * @param int $content_id
+     * @param int $data_id
+     * @param int $user_id
+     * @param int $sub_content_id
+     *
+     * @return ContentUserData|null
+     */
+    public function getUserData(int $content_id, int $data_id, int $user_id, int $sub_content_id)/* : ?ContentUserData*/
+    {
+        /**
+         * @var ContentUserData|null $h5p_content_user_data
+         */
+
+        $h5p_content_user_data = ContentUserData::where([
+            "content_id"     => $content_id,
+            "data_id"        => $data_id,
+            "user_id"        => $user_id,
+            "sub_content_id" => $sub_content_id
+        ])->first();
+
+        return $h5p_content_user_data;
+    }
+
+
+    /**
+     * @param int $content_id
+     *
+     * @return ContentUserData[]
+     */
+    public function getUserDatasByContent(int $content_id) : array
+    {
+        /**
+         * @var ContentUserData[] $h5p_content_user_datas
+         */
+
+        $h5p_content_user_datas = ContentUserData::where([
+            "content_id" => $content_id
+        ])->get();
+
+        return $h5p_content_user_datas;
+    }
+
+
+    /**
+     * @param int $user_id
+     * @param int $content_id
+     *
+     * @return ContentUserData[]
+     */
+    public function getUserDatasByUser(int $user_id, int $content_id) : array
+    {
+        /**
+         * @var ContentUserData[] $h5p_content_user_datas
+         */
+
+        $h5p_content_user_datas = ContentUserData::where([
+            "user_id"    => $user_id,
+            "content_id" => $content_id
+        ])->get();
+
+        return $h5p_content_user_datas;
     }
 
 
@@ -181,6 +418,42 @@ final class Repository
         ContentLibrary::updateDB();
         ContentUserData::updateDB();
         $this->editor()->installTables();
+    }
+
+
+    /**
+     * @param int $content_id
+     * @param int $obj_id
+     */
+    public function moveContentDown(int $content_id, int $obj_id)/* : void*/
+    {
+        $h5p_content = $this->getContentById($content_id);
+
+        if ($h5p_content !== null) {
+            $h5p_content->setSort($h5p_content->getSort() + 15);
+
+            $this->storeContent($h5p_content);
+
+            $this->reSort($obj_id);
+        }
+    }
+
+
+    /**
+     * @param int $content_id
+     * @param int $obj_id
+     */
+    public function moveContentUp(int $content_id, int $obj_id)/* : void*/
+    {
+        $h5p_content = $this->getContentById($content_id);
+
+        if ($h5p_content !== null) {
+            $h5p_content->setSort($h5p_content->getSort() - 15);
+
+            $this->storeContent($h5p_content);
+
+            $this->reSort($obj_id);
+        }
     }
 
 
@@ -247,154 +520,6 @@ final class Repository
 
 
     /**
-     * @param int $content_id
-     *
-     * @return Content|null
-     */
-    public function getContentById(int $content_id)/* : ?Content*/
-    {
-        /**
-         * @var Content|null $h5p_content
-         */
-
-        $h5p_content = Content::where([
-            "content_id" => $content_id
-        ])->first();
-
-        return $h5p_content;
-    }
-
-
-    /**
-     * @param int $library_id
-     *
-     * @return Content[]
-     */
-    public function getContentsByLibrary(int $library_id) : array
-    {
-        /**
-         * @var Content[] $h5p_contents
-         */
-
-        $h5p_contents = Content::where([
-            "library_id" => $library_id
-        ])->get();
-
-        return $h5p_contents;
-    }
-
-
-    /**
-     * @return Content[]
-     */
-    public function getContentsNotFiltered() : array
-    {
-        /**
-         * @var Content[] $h5p_contents
-         */
-
-        $h5p_contents = Content::where([
-            "filtered" => ""
-        ])->get();
-
-        return $h5p_contents;
-    }
-
-
-    /**
-     * @param string $slug
-     *
-     * @return Content|null
-     */
-    public function getContentsBySlug(string $slug)/* : ?Content*/
-    {
-        /**
-         * @var Content|null $h5p_content
-         */
-
-        $h5p_content = Content::where([
-            "slug" => $slug
-        ])->first();
-
-        return $h5p_content;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getNumAuthors() : int
-    {
-        $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
-          FROM " . Content::TABLE_NAME, [], []);
-
-        $count = $result->fetchAssoc()["count"];
-
-        return $count;
-    }
-
-
-    /**
-     * @param int|null $obj_id
-     * @param string   $parent_type
-     *
-     * @return Content[]
-     */
-    public function getContentsByObject(/*?int*/ $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
-    {
-        /**
-         * @var Content[] $h5p_contents
-         */
-
-        $where = [
-            "parent_type" => $parent_type
-        ];
-        if ($obj_id !== null) {
-            $where["obj_id"] = $obj_id;
-        }
-
-        $h5p_contents = Content::where($where)->orderBy("sort", "asc")->get();
-
-        // Fix index with array_values
-        return array_values($h5p_contents);
-    }
-
-
-    /**
-     * @param int    $obj_id
-     * @param string $parent_type
-     *
-     * @return array
-     */
-    public function getContentsByObjectArray(int $obj_id, string $parent_type = Content::PARENT_TYPE_OBJECT) : array
-    {
-        $h5p_contents = Content::where([
-            "obj_id"      => $obj_id,
-            "parent_type" => $parent_type
-        ])->orderBy("sort", "asc")->getArray();
-
-        return $h5p_contents;
-    }
-
-
-    /**
-     * @return Content|null
-     */
-    public function getCurrentContent()/* : ?Content*/
-    {
-        /**
-         * @var Content|null $h5p_content
-         */
-
-        $content_id = intval(filter_input(INPUT_GET, "xhfp_content", FILTER_SANITIZE_NUMBER_INT));
-
-        $h5p_content = $this->getContentById($content_id);
-
-        return $h5p_content;
-    }
-
-
-    /**
      * @param int $obj_id
      */
     protected function reSort(int $obj_id)/* : void*/
@@ -409,132 +534,5 @@ final class Repository
 
             $i++;
         }
-    }
-
-
-    /**
-     * @param int $content_id
-     * @param int $obj_id
-     */
-    public function moveContentUp(int $content_id, int $obj_id)/* : void*/
-    {
-        $h5p_content = $this->getContentById($content_id);
-
-        if ($h5p_content !== null) {
-            $h5p_content->setSort($h5p_content->getSort() - 15);
-
-            $this->storeContent($h5p_content);
-
-            $this->reSort($obj_id);
-        }
-    }
-
-
-    /**
-     * @param int $content_id
-     * @param int $obj_id
-     */
-    public function moveContentDown(int $content_id, int $obj_id)/* : void*/
-    {
-        $h5p_content = $this->getContentById($content_id);
-
-        if ($h5p_content !== null) {
-            $h5p_content->setSort($h5p_content->getSort() + 15);
-
-            $this->storeContent($h5p_content);
-
-            $this->reSort($obj_id);
-        }
-    }
-
-
-    /**
-     * @param int         $content_id
-     * @param string|null $dependency_type
-     *
-     * @return ContentLibrary[]
-     */
-    public function getContentLibraries(int $content_id, /*?string*/ $dependency_type = null) : array
-    {
-        /**
-         * @var ContentLibrary[] $h5p_content_libraries
-         */
-
-        $where = [
-            "content_id" => $content_id
-        ];
-
-        if ($dependency_type !== null) {
-            $where["dependency_type"] = $dependency_type;
-        }
-
-        $h5p_content_libraries = ContentLibrary::where($where)->orderBy("weight", "asc")->get();
-
-        return $h5p_content_libraries;
-    }
-
-
-    /**
-     * @param int $content_id
-     *
-     * @return ContentUserData[]
-     */
-    public function getUserDatasByContent(int $content_id) : array
-    {
-        /**
-         * @var ContentUserData[] $h5p_content_user_datas
-         */
-
-        $h5p_content_user_datas = ContentUserData::where([
-            "content_id" => $content_id
-        ])->get();
-
-        return $h5p_content_user_datas;
-    }
-
-
-    /**
-     * @param int $content_id
-     * @param int $data_id
-     * @param int $user_id
-     * @param int $sub_content_id
-     *
-     * @return ContentUserData|null
-     */
-    public function getUserData(int $content_id, int $data_id, int $user_id, int $sub_content_id)/* : ?ContentUserData*/
-    {
-        /**
-         * @var ContentUserData|null $h5p_content_user_data
-         */
-
-        $h5p_content_user_data = ContentUserData::where([
-            "content_id"     => $content_id,
-            "data_id"        => $data_id,
-            "user_id"        => $user_id,
-            "sub_content_id" => $sub_content_id
-        ])->first();
-
-        return $h5p_content_user_data;
-    }
-
-
-    /**
-     * @param int $user_id
-     * @param int $content_id
-     *
-     * @return ContentUserData[]
-     */
-    public function getUserDatasByUser(int $user_id, int $content_id) : array
-    {
-        /**
-         * @var ContentUserData[] $h5p_content_user_datas
-         */
-
-        $h5p_content_user_datas = ContentUserData::where([
-            "user_id"    => $user_id,
-            "content_id" => $content_id
-        ])->get();
-
-        return $h5p_content_user_datas;
     }
 }

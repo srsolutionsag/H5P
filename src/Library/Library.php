@@ -21,30 +21,59 @@ class Library extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var string|null
      *
-     * @deprecated
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_is_notnull false
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $add_to = null;
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
+     */
+    protected $created_at = 0;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_is_notnull true
+     */
+    protected $drop_library_css = "";
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     255
+     * @con_is_notnull true
+     */
+    protected $embed_types = "";
+    /**
+     * @var bool
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     * @con_is_notnull true
+     */
+    protected $fullscreen = false;
+    /**
+     * @var bool
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     * @con_is_notnull true
+     */
+    protected $has_icon = false;
     /**
      * @var int
      *
@@ -56,40 +85,6 @@ class Library extends ActiveRecord
      * @con_sequence   true
      */
     protected $library_id;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $created_at = 0;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $updated_at = 0;
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_length     127
-     * @con_is_notnull true
-     */
-    protected $name = "";
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_length     255
-     * @con_is_notnull true
-     */
-    protected $title = "";
     /**
      * @var int
      *
@@ -109,6 +104,15 @@ class Library extends ActiveRecord
      */
     protected $minor_version = 0;
     /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     127
+     * @con_is_notnull true
+     */
+    protected $name = "";
+    /**
      * @var int
      *
      * @con_has_field  true
@@ -118,14 +122,21 @@ class Library extends ActiveRecord
      */
     protected $patch_version = 0;
     /**
-     * @var bool
+     * @var string
      *
      * @con_has_field  true
-     * @con_fieldtype  integer
-     * @con_length     1
+     * @con_fieldtype  text
      * @con_is_notnull true
      */
-    protected $runnable = false;
+    protected $preloaded_css = "";
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_is_notnull true
+     */
+    protected $preloaded_js = "";
     /**
      * @var bool
      *
@@ -143,40 +154,7 @@ class Library extends ActiveRecord
      * @con_length     1
      * @con_is_notnull true
      */
-    protected $fullscreen = false;
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_length     255
-     * @con_is_notnull true
-     */
-    protected $embed_types = "";
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_is_notnull true
-     */
-    protected $preloaded_js = "";
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_is_notnull true
-     */
-    protected $preloaded_css = "";
-    /**
-     * @var string
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_is_notnull true
-     */
-    protected $drop_library_css = "";
+    protected $runnable = false;
     /**
      * @var string
      *
@@ -190,27 +168,27 @@ class Library extends ActiveRecord
      *
      * @con_has_field  true
      * @con_fieldtype  text
+     * @con_length     255
+     * @con_is_notnull true
+     */
+    protected $title = "";
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
      * @con_length     1023
      * @con_is_notnull true
      */
     protected $tutorial_url = "";
     /**
-     * @var bool
+     * @var int
      *
-     * @con_has_field  true
-     * @con_fieldtype  integer
-     * @con_length     1
-     * @con_is_notnull true
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
      */
-    protected $has_icon = false;
-    /**
-     * @var string|null
-     *
-     * @con_has_field  true
-     * @con_fieldtype  text
-     * @con_is_notnull false
-     */
-    protected $add_to = null;
+    protected $updated_at = 0;
 
 
     /**
@@ -227,71 +205,48 @@ class Library extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
+        return self::TABLE_NAME;
+    }
 
-        switch ($field_name) {
-            case "runnable":
-            case "restricted":
-            case "fullscreen":
-            case "has_icon":
-                return ($field_value ? 1 : 0);
 
-            case "created_at":
-            case "updated_at":
-                return self::h5p()->timestampToDbDate($field_value);
+    /**
+     * @return bool
+     */
+    public function canRunnable() : bool
+    {
+        return $this->runnable;
+    }
 
-            default:
-                return null;
-        }
+
+    /**
+     * @return string|null
+     */
+    public function getAddTo()/* : ?string*/
+    {
+        return $this->add_to;
+    }
+
+
+    /**
+     * @param string|null $add_to
+     */
+    public function setAddTo(/*?string*/ $add_to = null)/* : void*/
+    {
+        $this->add_to = $add_to;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "library_id":
-            case "major_version":
-            case "minor_version":
-            case "patch_version":
-                return intval($field_value);
-
-            case "runnable":
-            case "restricted":
-            case "fullscreen":
-            case "has_icon":
-                return boolval($field_value);
-
-            case "created_at":
-            case "updated_at":
-                return self::h5p()->dbDateToTimestamp($field_value);
-
-            default:
-                return null;
-        }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getLibraryId() : int
-    {
-        return $this->library_id;
-    }
-
-
-    /**
-     * @param int $library_id
-     */
-    public function setLibraryId(int $library_id)/* : void*/
-    {
-        $this->library_id = $library_id;
+        return self::TABLE_NAME;
     }
 
 
@@ -314,56 +269,56 @@ class Library extends ActiveRecord
 
 
     /**
+     * @return string
+     */
+    public function getDropLibraryCss() : string
+    {
+        return $this->drop_library_css;
+    }
+
+
+    /**
+     * @param string $drop_library_css
+     */
+    public function setDropLibraryCss(string $drop_library_css)/* : void*/
+    {
+        $this->drop_library_css = $drop_library_css;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getEmbedTypes() : string
+    {
+        return $this->embed_types;
+    }
+
+
+    /**
+     * @param string $embed_types
+     */
+    public function setEmbedTypes(string $embed_types)/* : void*/
+    {
+        $this->embed_types = $embed_types;
+    }
+
+
+    /**
      * @return int
      */
-    public function getUpdatedAt() : int
+    public function getLibraryId() : int
     {
-        return $this->updated_at;
+        return $this->library_id;
     }
 
 
     /**
-     * @param int $updated_at
+     * @param int $library_id
      */
-    public function setUpdatedAt(int $updated_at)/* : void*/
+    public function setLibraryId(int $library_id)/* : void*/
     {
-        $this->updated_at = $updated_at;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getName() : string
-    {
-        return $this->name;
-    }
-
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)/* : void*/
-    {
-        $this->name = $name;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getTitle() : string
-    {
-        return $this->title;
-    }
-
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title)/* : void*/
-    {
-        $this->title = $title;
+        $this->library_id = $library_id;
     }
 
 
@@ -404,6 +359,24 @@ class Library extends ActiveRecord
 
 
     /**
+     * @return string
+     */
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)/* : void*/
+    {
+        $this->name = $name;
+    }
+
+
+    /**
      * @return int
      */
     public function getPatchVersion() : int
@@ -418,96 +391,6 @@ class Library extends ActiveRecord
     public function setPatchVersion(int $patch_version)/* : void*/
     {
         $this->patch_version = $patch_version;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function canRunnable() : bool
-    {
-        return $this->runnable;
-    }
-
-
-    /**
-     * @param bool $runnable
-     */
-    public function setRunnable(bool $runnable)/* : void*/
-    {
-        $this->runnable = $runnable;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isRestricted() : bool
-    {
-        return $this->restricted;
-    }
-
-
-    /**
-     * @param bool $restricted
-     */
-    public function setRestricted(bool $restricted)/* : void*/
-    {
-        $this->restricted = $restricted;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isFullscreen() : bool
-    {
-        return $this->fullscreen;
-    }
-
-
-    /**
-     * @param bool $fullscreen
-     */
-    public function setFullscreen(bool $fullscreen)/* : void*/
-    {
-        $this->fullscreen = $fullscreen;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getEmbedTypes() : string
-    {
-        return $this->embed_types;
-    }
-
-
-    /**
-     * @param string $embed_types
-     */
-    public function setEmbedTypes(string $embed_types)/* : void*/
-    {
-        $this->embed_types = $embed_types;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPreloadedJs() : string
-    {
-        return $this->preloaded_js;
-    }
-
-
-    /**
-     * @param string $preloaded_js
-     */
-    public function setPreloadedJs(string $preloaded_js)/* : void*/
-    {
-        $this->preloaded_js = $preloaded_js;
     }
 
 
@@ -532,18 +415,18 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
-    public function getDropLibraryCss() : string
+    public function getPreloadedJs() : string
     {
-        return $this->drop_library_css;
+        return $this->preloaded_js;
     }
 
 
     /**
-     * @param string $drop_library_css
+     * @param string $preloaded_js
      */
-    public function setDropLibraryCss(string $drop_library_css)/* : void*/
+    public function setPreloadedJs(string $preloaded_js)/* : void*/
     {
-        $this->drop_library_css = $drop_library_css;
+        $this->preloaded_js = $preloaded_js;
     }
 
 
@@ -568,6 +451,24 @@ class Library extends ActiveRecord
     /**
      * @return string
      */
+    public function getTitle() : string
+    {
+        return $this->title;
+    }
+
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title)/* : void*/
+    {
+        $this->title = $title;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getTutorialUrl() : string
     {
         return $this->tutorial_url;
@@ -584,11 +485,65 @@ class Library extends ActiveRecord
 
 
     /**
+     * @return int
+     */
+    public function getUpdatedAt() : int
+    {
+        return $this->updated_at;
+    }
+
+
+    /**
+     * @param int $updated_at
+     */
+    public function setUpdatedAt(int $updated_at)/* : void*/
+    {
+        $this->updated_at = $updated_at;
+    }
+
+
+    /**
      * @return bool
      */
     public function hasIcon() : bool
     {
         return $this->has_icon;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isFullscreen() : bool
+    {
+        return $this->fullscreen;
+    }
+
+
+    /**
+     * @param bool $fullscreen
+     */
+    public function setFullscreen(bool $fullscreen)/* : void*/
+    {
+        $this->fullscreen = $fullscreen;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isRestricted() : bool
+    {
+        return $this->restricted;
+    }
+
+
+    /**
+     * @param bool $restricted
+     */
+    public function setRestricted(bool $restricted)/* : void*/
+    {
+        $this->restricted = $restricted;
     }
 
 
@@ -602,19 +557,62 @@ class Library extends ActiveRecord
 
 
     /**
-     * @return string|null
+     * @param bool $runnable
      */
-    public function getAddTo()/* : ?string*/
+    public function setRunnable(bool $runnable)/* : void*/
     {
-        return $this->add_to;
+        $this->runnable = $runnable;
     }
 
 
     /**
-     * @param string|null $add_to
+     * @inheritDoc
      */
-    public function setAddTo(/*?string*/ $add_to = null)/* : void*/
+    public function sleep(/*string*/ $field_name)
     {
-        $this->add_to = $add_to;
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "runnable":
+            case "restricted":
+            case "fullscreen":
+            case "has_icon":
+                return ($field_value ? 1 : 0);
+
+            case "created_at":
+            case "updated_at":
+                return self::h5p()->timestampToDbDate($field_value);
+
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "library_id":
+            case "major_version":
+            case "minor_version":
+            case "patch_version":
+                return intval($field_value);
+
+            case "runnable":
+            case "restricted":
+            case "fullscreen":
+            case "has_icon":
+                return boolval($field_value);
+
+            case "created_at":
+            case "updated_at":
+                return self::h5p()->dbDateToTimestamp($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

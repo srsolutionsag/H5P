@@ -30,9 +30,9 @@ class EditContentFormGUI extends PropertyFormGUI
 
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
-     * @var Content|null
+     * @var string
      */
-    protected $h5p_content;
+    protected $cmd_cancel;
     /**
      * @var string
      */
@@ -42,9 +42,9 @@ class EditContentFormGUI extends PropertyFormGUI
      */
     protected $cmd_update;
     /**
-     * @var string
+     * @var Content|null
      */
-    protected $cmd_cancel;
+    protected $h5p_content;
     /**
      * @var string|null
      */
@@ -84,159 +84,11 @@ class EditContentFormGUI extends PropertyFormGUI
 
 
     /**
-     * @inheritDoc
+     * @return string
      */
-    protected function getValue(/*string*/ $key)
+    public function getH5PTitle() : string
     {
-        if ($this->h5p_content !== null) {
-            switch ($key) {
-                case "title":
-                    return $this->h5p_content->getTitle();
-
-                case "library":
-                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
-
-                    return H5PCore::libraryToString($content["library"]);
-
-                case "params":
-                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
-                    $params = self::h5p()->contents()->core()->filterParameters($content);
-
-                    return $params;
-
-                case "upload_file":
-                    if (count($this->h5p_content->getUploadedFiles()) > 0) {
-                        return $this->txt("files") . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
-                                return "<li>$uploaded_file</li>";
-                            }, $this->h5p_content->getUploadedFiles()));
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initAction()/* : void*/
-    {
-        if ($this->h5p_content !== null) {
-            self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
-        }
-
-        parent::initAction();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initCommands()/* : void*/
-    {
-        //$this->setPreventDoubleSubmission(false); // Handle in JavaScript
-
-        $this->addCommandButton($this->h5p_content !== null ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
-        !== null ? "save" : "add"), "xhfp_edit_form_submit");
-        $this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initFields()/* : void*/
-    {
-        $this->fields = [
-            "title"       => [
-                PropertyFormGUI::PROPERTY_CLASS    => ilTextInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => true
-            ],
-            "library"     => [
-                PropertyFormGUI::PROPERTY_CLASS    => HiddenInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => true
-            ],
-            "library_h5p" => [
-                PropertyFormGUI::PROPERTY_CLASS    => ilCustomInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => true,
-                "setHTML"                          => self::h5p()->contents()->editor()->show()->getEditor($this->h5p_content),
-                "setTitle"                         => $this->txt("library")
-            ],
-            "params"      => [
-                PropertyFormGUI::PROPERTY_CLASS    => HiddenInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => true
-            ],
-            "upload_file" => [
-                PropertyFormGUI::PROPERTY_CLASS    => ilFileInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => false,
-                "setSuffixes"                      => [["html", "zip"]],
-                "setInfo"                          => nl2br($this->txt("upload_file_info"), false),
-                "setAllowDeletion"                 => true
-            ]
-        ];
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initId()/* : void*/
-    {
-        $this->setId(ilH5PPlugin::PLUGIN_ID . "_edit_form");
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTitle()/* : void*/
-    {
-        $this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function storeValue(/*string*/ $key, $value)/* : void*/
-    {
-        switch ($key) {
-            case "title":
-                $this->h5p_title = strval($value);
-                break;
-
-            case "library":
-                $this->library = strval($value);
-                break;
-
-            case "params":
-                $this->params = strval($value);
-                break;
-
-            case "upload_file":
-                // Stupid ilFileInputGUI!!!
-                $this->upload_file = $this->getInput($key);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function storeForm() : bool
-    {
-        $_POST["library_h5p"] = $_POST["library"];
-
-        return parent::storeForm();
+        return $this->h5p_title;
     }
 
 
@@ -256,15 +108,6 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @return string
      */
-    public function getH5PTitle() : string
-    {
-        return $this->h5p_title;
-    }
-
-
-    /**
-     * @return string
-     */
     public function getLibrary() : string
     {
         return $this->library;
@@ -277,15 +120,6 @@ class EditContentFormGUI extends PropertyFormGUI
     public function getParams() : string
     {
         return $this->params;
-    }
-
-
-    /**
-     * @param Content $h5p_content
-     */
-    public function setH5pContent(Content $h5p_content)/* : void*/
-    {
-        $this->h5p_content = $h5p_content;
     }
 
 
@@ -402,6 +236,172 @@ class EditContentFormGUI extends PropertyFormGUI
             $this->h5p_content->setUploadedFiles($uploaded_files);
 
             self::h5p()->contents()->storeContent($this->h5p_content);
+        }
+    }
+
+
+    /**
+     * @param Content $h5p_content
+     */
+    public function setH5pContent(Content $h5p_content)/* : void*/
+    {
+        $this->h5p_content = $h5p_content;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function storeForm() : bool
+    {
+        $_POST["library_h5p"] = $_POST["library"];
+
+        return parent::storeForm();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getValue(string $key)
+    {
+        if ($this->h5p_content !== null) {
+            switch ($key) {
+                case "title":
+                    return $this->h5p_content->getTitle();
+
+                case "library":
+                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
+
+                    return H5PCore::libraryToString($content["library"]);
+
+                case "params":
+                    $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
+                    $params = self::h5p()->contents()->core()->filterParameters($content);
+
+                    return $params;
+
+                case "upload_file":
+                    if (count($this->h5p_content->getUploadedFiles()) > 0) {
+                        return $this->txt("files") . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
+                                return "<li>$uploaded_file</li>";
+                            }, $this->h5p_content->getUploadedFiles()));
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initAction()/* : void*/
+    {
+        if ($this->h5p_content !== null) {
+            self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
+        }
+
+        parent::initAction();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initCommands()/* : void*/
+    {
+        //$this->setPreventDoubleSubmission(false); // Handle in JavaScript
+
+        $this->addCommandButton($this->h5p_content !== null ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
+        !== null ? "save" : "add"), "xhfp_edit_form_submit");
+        $this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initFields()/* : void*/
+    {
+        $this->fields = [
+            "title"       => [
+                PropertyFormGUI::PROPERTY_CLASS    => ilTextInputGUI::class,
+                PropertyFormGUI::PROPERTY_REQUIRED => true
+            ],
+            "library"     => [
+                PropertyFormGUI::PROPERTY_CLASS    => HiddenInputGUI::class,
+                PropertyFormGUI::PROPERTY_REQUIRED => true
+            ],
+            "library_h5p" => [
+                PropertyFormGUI::PROPERTY_CLASS    => ilCustomInputGUI::class,
+                PropertyFormGUI::PROPERTY_REQUIRED => true,
+                "setHTML"                          => self::h5p()->contents()->editor()->show()->getEditor($this->h5p_content),
+                "setTitle"                         => $this->txt("library")
+            ],
+            "params"      => [
+                PropertyFormGUI::PROPERTY_CLASS    => HiddenInputGUI::class,
+                PropertyFormGUI::PROPERTY_REQUIRED => true
+            ],
+            "upload_file" => [
+                PropertyFormGUI::PROPERTY_CLASS    => ilFileInputGUI::class,
+                PropertyFormGUI::PROPERTY_REQUIRED => false,
+                "setSuffixes"                      => [["html", "zip"]],
+                "setInfo"                          => nl2br($this->txt("upload_file_info"), false),
+                "setAllowDeletion"                 => true
+            ]
+        ];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initId()/* : void*/
+    {
+        $this->setId(ilH5PPlugin::PLUGIN_ID . "_edit_form");
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTitle()/* : void*/
+    {
+        $this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function storeValue(string $key, $value)/* : void*/
+    {
+        switch ($key) {
+            case "title":
+                $this->h5p_title = strval($value);
+                break;
+
+            case "library":
+                $this->library = strval($value);
+                break;
+
+            case "params":
+                $this->params = strval($value);
+                break;
+
+            case "upload_file":
+                // Stupid ilFileInputGUI!!!
+                $this->upload_file = $this->getInput($key);
+                break;
+
+            default:
+                break;
         }
     }
 }

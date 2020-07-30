@@ -61,9 +61,7 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
 
 
     /**
-     * @param string $a_mode
-     *
-     * @return string
+     * @inheritDoc
      */
     public function render(/*string*/ $a_mode = "") : string
     {

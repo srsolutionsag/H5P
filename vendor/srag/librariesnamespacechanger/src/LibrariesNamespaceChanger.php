@@ -2,6 +2,8 @@
 
 namespace srag\LibrariesNamespaceChanger;
 
+use Closure;
+use Composer\Config;
 use Composer\Script\Event;
 
 /**
@@ -36,6 +38,10 @@ final class LibrariesNamespaceChanger
      * @internal
      */
     const PLUGIN_NAME_REG_EXP = "/\/([A-Za-z0-9_]+)\/vendor\//";
+    /**
+     * @var string
+     */
+    private static $plugin_root = "";
 
 
     /**
@@ -60,6 +66,10 @@ final class LibrariesNamespaceChanger
      */
     public static function rewriteLibrariesNamespaces(Event $event)/*: void*/
     {
+        self::$plugin_root = rtrim(Closure::bind(function () : string {
+            return $this->baseDir;
+        }, $event->getComposer()->getConfig(), Config::class)(), "/");
+
         self::getInstance($event)->doRewriteLibrariesNamespaces();
     }
 
@@ -94,11 +104,11 @@ final class LibrariesNamespaceChanger
 
         $libraries = [];
         foreach (
-            array_filter(scandir(__DIR__ . "/../../"), function (string $folder) : bool {
+            array_filter(scandir(self::$plugin_root . "/vendor/srag"), function (string $folder) : bool {
                 return (!in_array($folder, [".", "..", "librariesnamespacechanger"]));
             }) as $folder
         ) {
-            $folder = __DIR__ . "/../../" . $folder;
+            $folder = self::$plugin_root . "/vendor/srag/" . $folder;
 
             $composer_json = json_decode(file_get_contents($folder . "/composer.json"), true);
 
@@ -127,7 +137,7 @@ final class LibrariesNamespaceChanger
         foreach (array_keys($libraries) as $folder) {
             $this->getFiles($folder, $files);
         }
-        $this->getFiles(__DIR__ . "/../../../composer", $files);
+        $this->getFiles(self::$plugin_root . "/vendor/composer", $files);
 
         foreach ($libraries as $folder => $namespaces) {
 

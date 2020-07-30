@@ -21,76 +21,8 @@ class Event extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_ev";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   true
-     * @con_is_primary   true
-     * @con_sequence     true
-     */
-    protected $event_id;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   true
-     */
-    protected $user_id;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $created_at = 0;
-    /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_length       63
-     * @con_is_notnull   true
-     */
-    protected $type = "";
-    /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_length       63
-     * @con_is_notnull   true
-     */
-    protected $sub_type = "";
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_ev";
     /**
      * @var int
      *
@@ -110,6 +42,25 @@ class Event extends ActiveRecord
      */
     protected $content_title = "";
     /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
+     */
+    protected $created_at = 0;
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   true
+     * @con_is_primary   true
+     * @con_sequence     true
+     */
+    protected $event_id;
+    /**
      * @var string
      *
      * @con_has_field    true
@@ -127,6 +78,33 @@ class Event extends ActiveRecord
      * @con_is_notnull   true
      */
     protected $library_version = "";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_length       63
+     * @con_is_notnull   true
+     */
+    protected $sub_type = "";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_length       63
+     * @con_is_notnull   true
+     */
+    protected $type = "";
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   true
+     */
+    protected $user_id;
 
 
     /**
@@ -143,134 +121,21 @@ class Event extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            case "created_at":
-                return self::h5p()->timestampToDbDate($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "event_id":
-            case "user_id":
-                return intval($field_value);
-
-            case "created_at":
-                return self::h5p()->dbDateToTimestamp($field_value);
-
-            case "content_id":
-                if ($field_value !== null) {
-                    return intval($field_value);
-                } else {
-                    return null;
-                }
-
-            default:
-                return null;
-        }
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getEventId() : int
-    {
-        return $this->event_id;
-    }
-
-
-    /**
-     * @param int $event_id
-     */
-    public function setEventId(int $event_id)/* : void*/
-    {
-        $this->event_id = $event_id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getUserId() : int
-    {
-        return $this->user_id;
-    }
-
-
-    /**
-     * @param int $user_id
-     */
-    public function setUserId(int $user_id)/* : void*/
-    {
-        $this->user_id = $user_id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getCreatedAt() : int
-    {
-        return $this->created_at;
-    }
-
-
-    /**
-     * @param int $created_at
-     */
-    public function setCreatedAt(int $created_at)/* : void*/
-    {
-        $this->created_at = $created_at;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getType() : string
-    {
-        return $this->type;
-    }
-
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)/* : void*/
-    {
-        $this->type = $type;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getSubType() : string
-    {
-        return $this->sub_type;
-    }
-
-
-    /**
-     * @param string $sub_type
-     */
-    public function setSubType(string $sub_type)/* : void*/
-    {
-        $this->sub_type = $sub_type;
+        return self::TABLE_NAME;
     }
 
 
@@ -311,6 +176,42 @@ class Event extends ActiveRecord
 
 
     /**
+     * @return int
+     */
+    public function getCreatedAt() : int
+    {
+        return $this->created_at;
+    }
+
+
+    /**
+     * @param int $created_at
+     */
+    public function setCreatedAt(int $created_at)/* : void*/
+    {
+        $this->created_at = $created_at;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getEventId() : int
+    {
+        return $this->event_id;
+    }
+
+
+    /**
+     * @param int $event_id
+     */
+    public function setEventId(int $event_id)/* : void*/
+    {
+        $this->event_id = $event_id;
+    }
+
+
+    /**
      * @return string
      */
     public function getLibraryName() : string
@@ -343,5 +244,102 @@ class Event extends ActiveRecord
     public function setLibraryVersion(string $library_version)/* : void*/
     {
         $this->library_version = $library_version;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSubType() : string
+    {
+        return $this->sub_type;
+    }
+
+
+    /**
+     * @param string $sub_type
+     */
+    public function setSubType(string $sub_type)/* : void*/
+    {
+        $this->sub_type = $sub_type;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getType() : string
+    {
+        return $this->type;
+    }
+
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)/* : void*/
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getUserId() : int
+    {
+        return $this->user_id;
+    }
+
+
+    /**
+     * @param int $user_id
+     */
+    public function setUserId(int $user_id)/* : void*/
+    {
+        $this->user_id = $user_id;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "created_at":
+                return self::h5p()->timestampToDbDate($field_value);
+
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "event_id":
+            case "user_id":
+                return intval($field_value);
+
+            case "created_at":
+                return self::h5p()->dbDateToTimestamp($field_value);
+
+            case "content_id":
+                if ($field_value !== null) {
+                    return intval($field_value);
+                } else {
+                    return parent::wakeUp($field_name, $field_value);
+                }
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

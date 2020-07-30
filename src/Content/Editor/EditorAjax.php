@@ -28,6 +28,15 @@ class EditorAjax implements H5PEditorAjaxInterface
 
 
     /**
+     * EditorAjax constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -41,11 +50,28 @@ class EditorAjax implements H5PEditorAjaxInterface
 
 
     /**
-     * EditorAjax constructor
+     * Gets recently used libraries for the current author
+     *
+     * @return array machine names. The first element in the array is the
+     * most recently used.
      */
-    private function __construct()
+    public function getAuthorsRecentlyUsedLibraries()
     {
+        return self::h5p()->events()->getAuthorsRecentlyUsedLibraries();
+    }
 
+
+    /**
+     * Get locally stored Content Type Cache. If machine name is provided
+     * it will only get the given content type from the cache
+     *
+     * @param string|null $machine_name
+     *
+     * @return array|object|null Returns results from querying the database
+     */
+    public function getContentTypeCache($machine_name = null)
+    {
+        return self::h5p()->libraries()->getContentTypeCache($machine_name);
     }
 
 
@@ -78,28 +104,16 @@ class EditorAjax implements H5PEditorAjaxInterface
 
 
     /**
-     * Get locally stored Content Type Cache. If machine name is provided
-     * it will only get the given content type from the cache
+     * Get translations for a language for a list of libraries
      *
-     * @param string|null $machine_name
+     * @param array  $libraries An array of libraries, in the form "<machineName> <majorVersion>.<minorVersion>
+     * @param string $language_code
      *
-     * @return array|object|null Returns results from querying the database
+     * @return array
      */
-    public function getContentTypeCache($machine_name = null)
+    public function getTranslations($libraries, $language_code)
     {
-        return self::h5p()->libraries()->getContentTypeCache($machine_name);
-    }
-
-
-    /**
-     * Gets recently used libraries for the current author
-     *
-     * @return array machine names. The first element in the array is the
-     * most recently used.
-     */
-    public function getAuthorsRecentlyUsedLibraries()
-    {
-        return self::h5p()->events()->getAuthorsRecentlyUsedLibraries();
+        return self::h5p()->libraries()->getTranslations($libraries, $language_code);
     }
 
 
@@ -113,19 +127,5 @@ class EditorAjax implements H5PEditorAjaxInterface
     public function validateEditorToken($token)
     {
         return true;
-    }
-
-
-    /**
-     * Get translations for a language for a list of libraries
-     *
-     * @param array  $libraries An array of libraries, in the form "<machineName> <majorVersion>.<minorVersion>
-     * @param string $language_code
-     *
-     * @return array
-     */
-    public function getTranslations($libraries, $language_code)
-    {
-        return self::h5p()->libraries()->getTranslations($libraries, $language_code);
     }
 }

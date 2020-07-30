@@ -25,11 +25,11 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @var string
      */
-    protected $cmd_import;
+    protected $cmd_cancel;
     /**
      * @var string
      */
-    protected $cmd_cancel;
+    protected $cmd_import;
 
 
     /**
@@ -51,7 +51,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(/*string*/ $key)/* : void*/
+    protected function getValue(string $key)/* : void*/
     {
 
     }
@@ -104,7 +104,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/* : void*/
+    protected function storeValue(string $key, $value)/* : void*/
     {
 
     }

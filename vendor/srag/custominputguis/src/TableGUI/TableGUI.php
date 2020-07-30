@@ -81,7 +81,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    public function __construct(/*object*/ $parent, /*string*/ $parent_cmd)
+    public function __construct(/*object*/ $parent, string $parent_cmd)
     {
         $this->parent_obj = $parent;
         $this->parent_cmd = $parent_cmd;
@@ -99,7 +99,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected final function getFilterValues()/*: array*/
+    protected final function getFilterValues() : array
     {
         return array_map(function ($item) {
             return Items::getValueFromItem($item);
@@ -108,13 +108,15 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @return array
      *
      * @deprecated
      */
-    public final function getSelectableColumns()/*: array*/
+    public final function getSelectableColumns() : array
     {
-        return array_map(function (array &$column)/*: array*/ {
+        return array_map(function (array &$column) : array {
             if (!isset($column["txt"])) {
                 $column["txt"] = $this->txt($column["id"]);
             }
@@ -131,7 +133,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected final function hasSessionValue(/*string*/ $field_id)/*: bool*/
+    protected final function hasSessionValue(string $field_id) : bool
     {
         // Not set (null) on first visit, false on reset filter, string if is set
         return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId()][$field_id] !== false);
@@ -139,6 +141,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @throws TableGUIException $filters needs to be an array!
      * @throws TableGUIException $field needs to be an array!
      *
@@ -235,7 +239,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    public function txt(/*string*/ $key,/*?string*/ $default = null)/*: string*/
+    public function txt(string $key,/*?*/ string $default = null) : string
     {
         if ($default !== null) {
             return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
@@ -250,13 +254,15 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    private final function checkRowTemplateConst()/*: bool*/
+    private final function checkRowTemplateConst() : bool
     {
         return (defined("static::ROW_TEMPLATE") && !empty(static::ROW_TEMPLATE));
     }
 
 
     /**
+     * @inheritDoc
+     *
      * @deprecated
      */
     public function fillHeader()/*: void*/
@@ -266,6 +272,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param array|object $row
      *
      * @deprecated
@@ -291,6 +299,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @deprecated
      */
     public function fillFooter()/*: void*/
@@ -300,6 +310,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param array $formats
      *
      * @deprecated
@@ -319,6 +331,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param int  $format
      * @param bool $send
      *
@@ -339,6 +353,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilCSVWriter $csv
      *
      * @deprecated
@@ -356,6 +372,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilCSVWriter  $csv
      * @param array|object $row
      *
@@ -374,6 +392,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilExcel $excel
      * @param int     $row
      *
@@ -397,6 +417,8 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param ilExcel      $excel
      * @param int          $row
      * @param array|object $result
@@ -420,7 +442,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected function exportPDF(/*bool*/ $send = false)/*: void*/
+    protected function exportPDF(bool $send = false)/*: void*/
     {
 
         $css = file_get_contents(__DIR__ . "/css/table_pdf_export.css");
@@ -465,7 +487,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected function fillHeaderPDF()/*: array*/
+    protected function fillHeaderPDF() : array
     {
         $columns = [];
 
@@ -486,7 +508,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected function fillRowPDF(/*array*/ $row)/*: array*/
+    protected function fillRowPDF(/*array*/ $row) : array
     {
         $strings = [];
 
@@ -509,7 +531,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected abstract function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = self::DEFAULT_FORMAT)/*: string*/ ;
+    protected abstract function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string;
 
 
     /**
@@ -517,7 +539,7 @@ abstract class TableGUI extends ilTable2GUI
      *
      * @deprecated
      */
-    protected abstract function getSelectableColumns2()/*: array*/ ;
+    protected abstract function getSelectableColumns2() : array;
 
 
     /**
@@ -561,13 +583,15 @@ abstract class TableGUI extends ilTable2GUI
 
 
     /**
+     * @inheritDoc
+     *
      * @param string $col
      *
      * @return bool
      *
      * @deprecated
      */
-    public function isColumnSelected(/*string*/ $col)/*: bool*/
+    public function isColumnSelected(/*string*/ $col) : bool
     {
         return parent::isColumnSelected($col);
     }

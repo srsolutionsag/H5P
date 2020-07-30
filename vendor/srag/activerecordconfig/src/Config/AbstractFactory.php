@@ -16,7 +16,6 @@ abstract class AbstractFactory
 
     use DICTrait;
 
-
     /**
      * AbstractFactory constructor
      */

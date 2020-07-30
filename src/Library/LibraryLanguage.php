@@ -21,30 +21,8 @@ class LibraryLanguage extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_lng";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_lng";
     /**
      * @var int
      *
@@ -57,15 +35,6 @@ class LibraryLanguage extends ActiveRecord
      */
     protected $id;
     /**
-     * @var int
-     *
-     * @con_has_field      true
-     * @con_fieldtype      integer
-     * @con_length         8
-     * @con_is_notnull     true
-     */
-    protected $library_id;
-    /**
      * @var string
      *
      * @con_has_field      true
@@ -74,6 +43,15 @@ class LibraryLanguage extends ActiveRecord
      * @con_is_notnull     true
      */
     protected $language_code = "";
+    /**
+     * @var int
+     *
+     * @con_has_field      true
+     * @con_fieldtype      integer
+     * @con_length         8
+     * @con_is_notnull     true
+     */
+    protected $library_id;
     /**
      * @var string
      *
@@ -98,31 +76,21 @@ class LibraryLanguage extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "id":
-            case "library_id":
-                return intval($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
@@ -141,6 +109,24 @@ class LibraryLanguage extends ActiveRecord
     public function setId(int $id)/* : void*/
     {
         $this->id = $id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLanguageCode() : string
+    {
+        return $this->language_code;
+    }
+
+
+    /**
+     * @param string $language_code
+     */
+    public function setLanguageCode(string $language_code)/* : void*/
+    {
+        $this->language_code = $language_code;
     }
 
 
@@ -165,24 +151,6 @@ class LibraryLanguage extends ActiveRecord
     /**
      * @return string
      */
-    public function getLanguageCode() : string
-    {
-        return $this->language_code;
-    }
-
-
-    /**
-     * @param string $language_code
-     */
-    public function setLanguageCode(string $language_code)/* : void*/
-    {
-        $this->language_code = $language_code;
-    }
-
-
-    /**
-     * @return string
-     */
     public function getTranslation() : string
     {
         return $this->translation;
@@ -195,5 +163,35 @@ class LibraryLanguage extends ActiveRecord
     public function setTranslation(string $translation)/* : void*/
     {
         $this->translation = $translation;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "id":
+            case "library_id":
+                return intval($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

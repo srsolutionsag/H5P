@@ -21,30 +21,17 @@ class ObjectSettings extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_obj";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_obj";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var bool
      *
-     * @deprecated
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       1
+     * @con_is_notnull   true
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $is_online = false;
     /**
      * @var int
      *
@@ -55,15 +42,6 @@ class ObjectSettings extends ActiveRecord
      * @con_is_primary   true
      */
     protected $obj_id;
-    /**
-     * @var bool
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       1
-     * @con_is_notnull   true
-     */
-    protected $is_online = false;
     /**
      * @var bool
      *
@@ -89,38 +67,21 @@ class ObjectSettings extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            case "is_online":
-            case "solve_only_once":
-                return ($field_value ? 1 : 0);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "obj_id":
-                return intval($field_value);
-
-            case "is_online":
-            case "solve_only_once":
-                return boolval($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
@@ -152,15 +113,6 @@ class ObjectSettings extends ActiveRecord
 
 
     /**
-     * @param bool $is_online
-     */
-    public function setOnline(bool $is_online = true)/* : void*/
-    {
-        $this->is_online = $is_online;
-    }
-
-
-    /**
      * @return bool
      */
     public function isSolveOnlyOnce() : bool
@@ -175,5 +127,51 @@ class ObjectSettings extends ActiveRecord
     public function setSolveOnlyOnce(bool $solve_only_once)/* : void*/
     {
         $this->solve_only_once = $solve_only_once;
+    }
+
+
+    /**
+     * @param bool $is_online
+     */
+    public function setOnline(bool $is_online = true)/* : void*/
+    {
+        $this->is_online = $is_online;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "is_online":
+            case "solve_only_once":
+                return ($field_value ? 1 : 0);
+
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "obj_id":
+                return intval($field_value);
+
+            case "is_online":
+            case "solve_only_once":
+                return boolval($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

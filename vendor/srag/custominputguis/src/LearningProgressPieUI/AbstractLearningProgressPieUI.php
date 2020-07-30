@@ -108,7 +108,7 @@ abstract class AbstractLearningProgressPieUI
 
             $data = $this->parseData();
 
-            $data = array_map(function (int $status) use ($data): array {
+            $data = array_map(function (int $status) use ($data) : array {
                 return [
                     "color" => self::LP_STATUS_COLOR[$status],
                     "title" => $this->getText($status),

@@ -234,7 +234,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
      *
      * @deprecated
      */
-    protected final function storeFormCheck()/*: bool*/
+    protected final function storeFormCheck() : bool
     {
         $this->setValuesByPost();
 
@@ -283,7 +283,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
      *
      * @deprecated
      */
-    public function txt(/*string*/ $key,/*?string*/ $default = null)/*: string*/
+    public function txt(string $key,/*?*/ string $default = null) : string
     {
         if ($default !== null) {
             return self::plugin()->translate($key, static::LANG_MODULE, [], true, "", $default);
@@ -294,11 +294,11 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
 
 
     /**
-     * @return bool
+     * @inheritDoc
      *
      * @deprecated
      */
-    public function checkInput()/*: bool*/
+    public function checkInput() : bool
     {
         return parent::checkInput();
     }
@@ -318,7 +318,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
      *
      * @deprecated
      */
-    public function storeForm()/*: bool*/
+    public function storeForm() : bool
     {
         if (!$this->storeFormCheck()) {
             return false;
@@ -337,7 +337,7 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
      *
      * @deprecated
      */
-    protected abstract function getValue(/*string*/ $key);
+    protected abstract function getValue(string $key);
 
 
     /**
@@ -370,5 +370,5 @@ abstract class PropertyFormGUI extends ilPropertyFormGUI
      *
      * @deprecated
      */
-    protected abstract function storeValue(/*string*/ $key, $value)/*: void*/ ;
+    protected abstract function storeValue(string $key, $value)/*: void*/ ;
 }

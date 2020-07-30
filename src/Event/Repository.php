@@ -28,6 +28,15 @@ final class Repository
 
 
     /**
+     * Repository constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -37,15 +46,6 @@ final class Repository
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * Repository constructor
-     */
-    private function __construct()
-    {
-
     }
 
 
@@ -73,30 +73,6 @@ final class Repository
     public function factory() : Factory
     {
         return Factory::getInstance();
-    }
-
-
-    /**
-     * @internal
-     */
-    public function installTables()/* : void*/
-    {
-        Event::updateDB();
-    }
-
-
-    /**
-     * @param Event $event
-     */
-    public function storeEvent(Event $event)/* : void*/
-    {
-        if (empty($event->getEventId())) {
-            $event->setCreatedAt(time());
-
-            $event->setUserId(self::dic()->user()->getId());
-        }
-
-        $event->store();
     }
 
 
@@ -139,5 +115,29 @@ final class Repository
         ], "<")->get();
 
         return $h5p_events;
+    }
+
+
+    /**
+     * @internal
+     */
+    public function installTables()/* : void*/
+    {
+        Event::updateDB();
+    }
+
+
+    /**
+     * @param Event $event
+     */
+    public function storeEvent(Event $event)/* : void*/
+    {
+        if (empty($event->getEventId())) {
+            $event->setCreatedAt(time());
+
+            $event->setUserId(self::dic()->user()->getId());
+        }
+
+        $event->store();
     }
 }

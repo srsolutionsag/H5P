@@ -18,13 +18,22 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     use RepositoryObjectPluginUninstallTrait;
     use H5PTrait;
 
+    const PLUGIN_CLASS_NAME = self::class;
     const PLUGIN_ID = "xhfp";
     const PLUGIN_NAME = "H5P";
-    const PLUGIN_CLASS_NAME = self::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+
+
+    /**
+     * ilH5PPlugin constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
 
     /**
@@ -41,11 +50,20 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
 
 
     /**
-     * ilH5PPlugin constructor
+     * @inheritDoc
      */
-    public function __construct()
+    public function allowCopy() : bool
     {
-        parent::__construct();
+        return true;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function exchangeUIRendererAfterInitialization(Container $dic) : Closure
+    {
+        return CustomInputGUIsLoaderDetector::exchangeUIRendererAfterInitialization();
     }
 
 
@@ -55,15 +73,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     public function getPluginName() : string
     {
         return self::PLUGIN_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function allowCopy() : bool
-    {
-        return true;
     }
 
 
@@ -90,8 +99,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    public function exchangeUIRendererAfterInitialization(Container $dic) : Closure
+    protected function shouldUseOneUpdateStepOnly() : bool
     {
-        return CustomInputGUIsLoaderDetector::exchangeUIRendererAfterInitialization();
+        return true;
     }
 }

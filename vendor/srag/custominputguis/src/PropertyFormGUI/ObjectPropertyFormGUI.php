@@ -41,7 +41,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct(/*object*/ $parent, $object = null,/*bool*/ $object_auto_store = true)
+    public function __construct(/*object*/ $parent, $object = null, bool $object_auto_store = true)
     {
         $this->object = $object;
         $this->object_auto_store = $object_auto_store;
@@ -55,7 +55,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    protected function getValue(/*string*/ $key)
+    protected function getValue(string $key)
     {
         if ($this->object !== null) {
             switch ($key) {
@@ -74,7 +74,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(string $key, $value)/*: void*/
     {
         switch ($key) {
             default:
@@ -89,7 +89,7 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    public function storeForm()/*: bool*/
+    public function storeForm() : bool
     {
         if ($this->object === null) {
             // TODO:

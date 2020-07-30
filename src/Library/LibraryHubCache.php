@@ -21,30 +21,68 @@ class LibraryHubCache extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_hub";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_hub";
     /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
+     * @var string
      *
-     * @deprecated
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_is_notnull  true
      */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    protected $categories = "[]";
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
+     */
+    protected $created_at = 0;
+    /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_is_notnull  true
+     */
+    protected $description = "";
+    /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_length      511
+     * @con_is_notnull  true
+     */
+    protected $example = "";
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   true
+     */
+    protected $h5p_major_version = 0;
+    /**
+     * @var int
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       8
+     * @con_is_notnull   true
+     */
+    protected $h5p_minor_version = 0;
+    /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_length      511
+     * @con_is_notnull  true
+     */
+    protected $icon = "";
     /**
      * @var int
      *
@@ -56,6 +94,31 @@ class LibraryHubCache extends ActiveRecord
      * @con_sequence     true
      */
     protected $id;
+    /**
+     * @var bool
+     *
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_length       1
+     * @con_is_notnull   true
+     */
+    protected $is_recommended = false;
+    /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_is_notnull  true
+     */
+    protected $keywords = "[]";
+    /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_is_notnull  true
+     */
+    protected $license = "{}";
     /**
      * @var string
      *
@@ -84,6 +147,15 @@ class LibraryHubCache extends ActiveRecord
      */
     protected $minor_version = 0;
     /**
+     * @var string
+     *
+     * @con_has_field   true
+     * @con_fieldtype   text
+     * @con_length      511
+     * @con_is_notnull  true
+     */
+    protected $owner = "";
+    /**
      * @var int
      *
      * @con_has_field    true
@@ -92,83 +164,6 @@ class LibraryHubCache extends ActiveRecord
      * @con_is_notnull   true
      */
     protected $patch_version = 0;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   true
-     */
-    protected $h5p_major_version = 0;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
-     * @con_is_notnull   true
-     */
-    protected $h5p_minor_version = 0;
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_length      255
-     * @con_is_notnull  true
-     */
-    protected $title = "";
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_is_notnull  true
-     */
-    protected $summary = "";
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_is_notnull  true
-     */
-    protected $description = "";
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_length      511
-     * @con_is_notnull  true
-     */
-    protected $icon = "";
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $created_at = 0;
-    /**
-     * @var int
-     *
-     * @con_has_field    true
-     * @con_fieldtype    timestamp
-     * @con_is_notnull   true
-     */
-    protected $updated_at = 0;
-    /**
-     * @var bool
-     *
-     * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       1
-     * @con_is_notnull   true
-     */
-    protected $is_recommended = false;
     /**
      * @var int
      *
@@ -193,16 +188,16 @@ class LibraryHubCache extends ActiveRecord
      * @con_fieldtype   text
      * @con_is_notnull  true
      */
-    protected $license = "{}";
+    protected $summary = "";
     /**
      * @var string
      *
      * @con_has_field   true
      * @con_fieldtype   text
-     * @con_length      511
+     * @con_length      255
      * @con_is_notnull  true
      */
-    protected $example = "";
+    protected $title = "";
     /**
      * @var string
      *
@@ -213,30 +208,13 @@ class LibraryHubCache extends ActiveRecord
      */
     protected $tutorial = "";
     /**
-     * @var string
+     * @var int
      *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_is_notnull  true
+     * @con_has_field    true
+     * @con_fieldtype    timestamp
+     * @con_is_notnull   true
      */
-    protected $keywords = "[]";
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_is_notnull  true
-     */
-    protected $categories = "[]";
-    /**
-     * @var string
-     *
-     * @con_has_field   true
-     * @con_fieldtype   text
-     * @con_length      511
-     * @con_is_notnull  true
-     */
-    protected $owner = "";
+    protected $updated_at = 0;
 
 
     /**
@@ -253,51 +231,147 @@ class LibraryHubCache extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
+        return self::TABLE_NAME;
+    }
 
-        switch ($field_name) {
-            case "is_recommended":
-                return ($field_value ? 1 : 0);
 
-            case "created_at":
-            case "updated_at":
-                return self::h5p()->timestampToDbDate($field_value);
+    /**
+     * @return string
+     */
+    public function getCategories() : string
+    {
+        return $this->categories;
+    }
 
-            default:
-                return null;
-        }
+
+    /**
+     * @param string $categories
+     */
+    public function setCategories(string $categories)/* : void*/
+    {
+        $this->categories = $categories;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "id":
-            case "major_version":
-            case "minor_version":
-            case "patch_version":
-            case "h5p_major_version":
-            case "h5p_minor_version":
-            case "h5p_patch_version":
-            case "popularity":
-                return intval($field_value);
+        return self::TABLE_NAME;
+    }
 
-            case "is_recommended":
-                return boolval($field_value);
 
-            case "created_at":
-            case "updated_at":
-                return self::h5p()->dbDateToTimestamp($field_value);
+    /**
+     * @return int
+     */
+    public function getCreatedAt() : int
+    {
+        return $this->created_at;
+    }
 
-            default:
-                return null;
-        }
+
+    /**
+     * @param int $created_at
+     */
+    public function setCreatedAt(int $created_at)/* : void*/
+    {
+        $this->created_at = $created_at;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getDescription() : string
+    {
+        return $this->description;
+    }
+
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description)/* : void*/
+    {
+        $this->description = $description;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getExample() : string
+    {
+        return $this->example;
+    }
+
+
+    /**
+     * @param string $example
+     */
+    public function setExample(string $example)/* : void*/
+    {
+        $this->example = $example;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getH5pMajorVersion() : int
+    {
+        return $this->h5p_major_version;
+    }
+
+
+    /**
+     * @param int $h5p_major_version
+     */
+    public function setH5pMajorVersion(int $h5p_major_version)/* : void*/
+    {
+        $this->h5p_major_version = $h5p_major_version;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getH5pMinorVersion() : int
+    {
+        return $this->h5p_minor_version;
+    }
+
+
+    /**
+     * @param int $h5p_minor_version
+     */
+    public function setH5pMinorVersion(int $h5p_minor_version)/* : void*/
+    {
+        $this->h5p_minor_version = $h5p_minor_version;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getIcon() : string
+    {
+        return $this->icon;
+    }
+
+
+    /**
+     * @param string $icon
+     */
+    public function setIcon(string $icon)/* : void*/
+    {
+        $this->icon = $icon;
     }
 
 
@@ -316,6 +390,42 @@ class LibraryHubCache extends ActiveRecord
     public function setId(int $id)/* : void*/
     {
         $this->id = $id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getKeywords() : string
+    {
+        return $this->keywords;
+    }
+
+
+    /**
+     * @param string $keywords
+     */
+    public function setKeywords(string $keywords)/* : void*/
+    {
+        $this->keywords = $keywords;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLicense() : string
+    {
+        return $this->license;
+    }
+
+
+    /**
+     * @param string $license
+     */
+    public function setLicense(string $license)/* : void*/
+    {
+        $this->license = $license;
     }
 
 
@@ -374,6 +484,24 @@ class LibraryHubCache extends ActiveRecord
 
 
     /**
+     * @return string
+     */
+    public function getOwner() : string
+    {
+        return $this->owner;
+    }
+
+
+    /**
+     * @param string $owner
+     */
+    public function setOwner(string $owner)/* : void*/
+    {
+        $this->owner = $owner;
+    }
+
+
+    /**
      * @return int
      */
     public function getPatchVersion() : int
@@ -388,168 +516,6 @@ class LibraryHubCache extends ActiveRecord
     public function setPatchVersion(int $patch_version)/* : void*/
     {
         $this->patch_version = $patch_version;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getH5pMajorVersion() : int
-    {
-        return $this->h5p_major_version;
-    }
-
-
-    /**
-     * @param int $h5p_major_version
-     */
-    public function setH5pMajorVersion(int $h5p_major_version)/* : void*/
-    {
-        $this->h5p_major_version = $h5p_major_version;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getH5pMinorVersion() : int
-    {
-        return $this->h5p_minor_version;
-    }
-
-
-    /**
-     * @param int $h5p_minor_version
-     */
-    public function setH5pMinorVersion(int $h5p_minor_version)/* : void*/
-    {
-        $this->h5p_minor_version = $h5p_minor_version;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getTitle() : string
-    {
-        return $this->title;
-    }
-
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title)/* : void*/
-    {
-        $this->title = $title;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getSummary() : string
-    {
-        return $this->summary;
-    }
-
-
-    /**
-     * @param string $summary
-     */
-    public function setSummary(string $summary)/* : void*/
-    {
-        $this->summary = $summary;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getDescription() : string
-    {
-        return $this->description;
-    }
-
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description)/* : void*/
-    {
-        $this->description = $description;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getIcon() : string
-    {
-        return $this->icon;
-    }
-
-
-    /**
-     * @param string $icon
-     */
-    public function setIcon(string $icon)/* : void*/
-    {
-        $this->icon = $icon;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getCreatedAt() : int
-    {
-        return $this->created_at;
-    }
-
-
-    /**
-     * @param int $created_at
-     */
-    public function setCreatedAt(int $created_at)/* : void*/
-    {
-        $this->created_at = $created_at;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getUpdatedAt() : int
-    {
-        return $this->updated_at;
-    }
-
-
-    /**
-     * @param int $updated_at
-     */
-    public function setUpdatedAt(int $updated_at)/* : void*/
-    {
-        $this->updated_at = $updated_at;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isRecommended() : bool
-    {
-        return $this->is_recommended;
-    }
-
-
-    /**
-     * @param bool $is_recommended
-     */
-    public function setIsRecommended(bool $is_recommended)/* : void*/
-    {
-        $this->is_recommended = $is_recommended;
     }
 
 
@@ -592,36 +558,36 @@ class LibraryHubCache extends ActiveRecord
     /**
      * @return string
      */
-    public function getLicense() : string
+    public function getSummary() : string
     {
-        return $this->license;
+        return $this->summary;
     }
 
 
     /**
-     * @param string $license
+     * @param string $summary
      */
-    public function setLicense(string $license)/* : void*/
+    public function setSummary(string $summary)/* : void*/
     {
-        $this->license = $license;
+        $this->summary = $summary;
     }
 
 
     /**
      * @return string
      */
-    public function getExample() : string
+    public function getTitle() : string
     {
-        return $this->example;
+        return $this->title;
     }
 
 
     /**
-     * @param string $example
+     * @param string $title
      */
-    public function setExample(string $example)/* : void*/
+    public function setTitle(string $title)/* : void*/
     {
-        $this->example = $example;
+        $this->title = $title;
     }
 
 
@@ -644,55 +610,87 @@ class LibraryHubCache extends ActiveRecord
 
 
     /**
-     * @return string
+     * @return int
      */
-    public function getKeywords() : string
+    public function getUpdatedAt() : int
     {
-        return $this->keywords;
+        return $this->updated_at;
     }
 
 
     /**
-     * @param string $keywords
+     * @param int $updated_at
      */
-    public function setKeywords(string $keywords)/* : void*/
+    public function setUpdatedAt(int $updated_at)/* : void*/
     {
-        $this->keywords = $keywords;
+        $this->updated_at = $updated_at;
     }
 
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getCategories() : string
+    public function isRecommended() : bool
     {
-        return $this->categories;
+        return $this->is_recommended;
     }
 
 
     /**
-     * @param string $categories
+     * @param bool $is_recommended
      */
-    public function setCategories(string $categories)/* : void*/
+    public function setIsRecommended(bool $is_recommended)/* : void*/
     {
-        $this->categories = $categories;
+        $this->is_recommended = $is_recommended;
     }
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getOwner() : string
+    public function sleep(/*string*/ $field_name)
     {
-        return $this->owner;
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "is_recommended":
+                return ($field_value ? 1 : 0);
+
+            case "created_at":
+            case "updated_at":
+                return self::h5p()->timestampToDbDate($field_value);
+
+            default:
+                return parent::sleep($field_name);
+        }
     }
 
 
     /**
-     * @param string $owner
+     * @inheritDoc
      */
-    public function setOwner(string $owner)/* : void*/
+    public function wakeUp(/*string*/ $field_name, $field_value)
     {
-        $this->owner = $owner;
+        switch ($field_name) {
+            case "id":
+            case "major_version":
+            case "minor_version":
+            case "patch_version":
+            case "h5p_major_version":
+            case "h5p_minor_version":
+            case "h5p_patch_version":
+            case "popularity":
+                return intval($field_value);
+
+            case "is_recommended":
+                return boolval($field_value);
+
+            case "created_at":
+            case "updated_at":
+                return self::h5p()->dbDateToTimestamp($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

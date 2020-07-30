@@ -27,6 +27,15 @@ final class Factory
 
 
     /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -40,15 +49,6 @@ final class Factory
 
 
     /**
-     * Factory constructor
-     */
-    private function __construct()
-    {
-
-    }
-
-
-    /**
      * @return Counter
      */
     public function newCounterInstance() : Counter
@@ -56,17 +56,6 @@ final class Factory
         $counter = new Counter();
 
         return $counter;
-    }
-
-
-    /**
-     * @return Library
-     */
-    public function newLibraryInstance() : Library
-    {
-        $library = new Library();
-
-        return $library;
     }
 
 
@@ -100,6 +89,17 @@ final class Factory
         $library_hub_cache = new LibraryHubCache();
 
         return $library_hub_cache;
+    }
+
+
+    /**
+     * @return Library
+     */
+    public function newLibraryInstance() : Library
+    {
+        $library = new Library();
+
+        return $library;
     }
 
 

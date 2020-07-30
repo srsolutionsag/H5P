@@ -18,6 +18,7 @@ class Config extends ActiveRecord
 {
 
     use DICTrait;
+
     /**
      * @var string
      */
@@ -139,7 +140,7 @@ class Config extends ActiveRecord
 
         switch ($field_name) {
             default:
-                return null;
+                return parent::sleep($field_name);
         }
     }
 
@@ -151,7 +152,7 @@ class Config extends ActiveRecord
     {
         switch ($field_name) {
             default:
-                return null;
+                return parent::wakeUp($field_name, $field_value);
         }
     }
 

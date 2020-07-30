@@ -45,69 +45,6 @@ class HubDetailsFormGUI extends PropertyFormGUI
 
 
     /**
-     * @inheritDoc
-     */
-    protected function getValue(/*string*/ $key)/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initCommands()/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initFields()/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initId()/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTitle()/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function storeForm() : bool
-    {
-        return false;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function storeValue(/*string*/ $key, $value)/* : void*/
-    {
-
-    }
-
-
-    /**
      * @return string
      */
     public function getHTML() : string
@@ -307,5 +244,68 @@ class HubDetailsFormGUI extends PropertyFormGUI
         }
 
         return self::output()->getHTML($h5p_tpl);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function storeForm() : bool
+    {
+        return false;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getValue(string $key)/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initCommands()/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initFields()/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initId()/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTitle()/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function storeValue(string $key, $value)/* : void*/
+    {
+
     }
 }

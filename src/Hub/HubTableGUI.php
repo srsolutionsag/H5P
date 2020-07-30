@@ -23,9 +23,9 @@ class HubTableGUI extends TableGUI
 
     use H5PTrait;
 
+    const LANG_MODULE = "";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "hub_table_row.html";
-    const LANG_MODULE = "";
 
 
     /**
@@ -41,20 +41,15 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritDoc
+     * @return string
      */
-    protected function getColumnValue(/*string*/
-        $column, /*array*/
-        $row, /*int*/
-        $format = 0
-    ) : string {
-        switch ($column) {
-            default:
-                $column = htmlspecialchars($row[$column]);
-                break;
-        }
+    public function getHTML() : string
+    {
+        $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
 
-        return strval($column);
+        $hub = self::h5p()->hub()->show()->getHub($form, $this->parent_obj, parent::getHTML());
+
+        return $hub;
     }
 
 
@@ -70,100 +65,9 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @inheritDoc
-     */
-    protected function initColumns()/* : void*/
-    {
-        $this->addColumn("");
-        $this->addColumn(self::plugin()->translate("library"), "title");
-        $this->addColumn(self::plugin()->translate("status"), "status");
-        $this->addColumn(self::plugin()->translate("installed_version"));
-        $this->addColumn(self::plugin()->translate("latest_version"));
-        $this->addColumn(self::plugin()->translate("runnable"), "runnable");
-        $this->addColumn(self::plugin()->translate("contents"));
-        $this->addColumn(self::plugin()->translate("usage_contents"));
-        $this->addColumn(self::plugin()->translate("usage_libraries"));
-        $this->addColumn(self::plugin()->translate("actions"));
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initData()/* : void*/
-    {
-        $this->setDefaultOrderField("title");
-        $this->setDefaultOrderDirection("asc");
-
-        $filter = $this->getFilterValues();
-
-        $title = $filter["title"];
-        $status = $filter["status"];
-        $runnable = ($filter["only_runnable"] ? true : null);
-        $not_used = ($filter["only_not_used"] ? true : null);
-
-        $libraries = self::h5p()->hub()->show()->getLibraries($title, $status, $runnable, $not_used);
-
-        $this->setData($libraries);
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initId()/* : void*/
-    {
-
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initFilterFields()/* : void*/
-    {
-        $this->filter_fields = [
-            "title"         => [
-                PropertyFormGUI::PROPERTY_CLASS => ilTextInputGUI::class
-            ],
-            "status"        => [
-                PropertyFormGUI::PROPERTY_CLASS   => ilSelectInputGUI::class,
-                PropertyFormGUI::PROPERTY_OPTIONS => [
-                    ShowHub::STATUS_ALL               => self::plugin()->translate("all"),
-                    ShowHub::STATUS_INSTALLED         => self::plugin()->translate("installed"),
-                    ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("upgrade_available"),
-                    ShowHub::STATUS_NOT_INSTALLED     => self::plugin()->translate("not_installed")
-                ]
-            ],
-            "only_runnable" => [
-                PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
-            ],
-            "only_not_used" => [
-                PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
-            ]
-        ];
-
-        if (!$this->hasSessionValue("only_runnable")) { // Stupid checkbox
-            $this->filter_fields["only_runnable"][PropertyFormGUI::PROPERTY_VALUE] = true;
-        }
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTitle()/* : void*/
-    {
-        $this->setTitle(self::plugin()->translate("installed_libraries"));
-    }
-
-
-    /**
      * @param array $row
      */
-    protected function fillRow(/*array*/
-        $row
-    )/* : void*/
+    protected function fillRow(/*array*/ $row)/* : void*/
     {
         // Links
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);
@@ -243,14 +147,105 @@ class HubTableGUI extends TableGUI
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getHTML() : string
+    protected function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string
     {
-        $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this->parent_obj);
+        switch ($column) {
+            default:
+                $column = htmlspecialchars($row[$column]);
+                break;
+        }
 
-        $hub = self::h5p()->hub()->show()->getHub($form, $this->parent_obj, parent::getHTML());
+        return strval($column);
+    }
 
-        return $hub;
+
+    /**
+     * @inheritDoc
+     */
+    protected function initColumns()/* : void*/
+    {
+        $this->addColumn("");
+        $this->addColumn(self::plugin()->translate("library"), "title");
+        $this->addColumn(self::plugin()->translate("status"), "status");
+        $this->addColumn(self::plugin()->translate("installed_version"));
+        $this->addColumn(self::plugin()->translate("latest_version"));
+        $this->addColumn(self::plugin()->translate("runnable"), "runnable");
+        $this->addColumn(self::plugin()->translate("contents"));
+        $this->addColumn(self::plugin()->translate("usage_contents"));
+        $this->addColumn(self::plugin()->translate("usage_libraries"));
+        $this->addColumn(self::plugin()->translate("actions"));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initData()/* : void*/
+    {
+        $this->setDefaultOrderField("title");
+        $this->setDefaultOrderDirection("asc");
+
+        $filter = $this->getFilterValues();
+
+        $title = $filter["title"];
+        $status = $filter["status"];
+        $runnable = ($filter["only_runnable"] ? true : null);
+        $not_used = ($filter["only_not_used"] ? true : null);
+
+        $libraries = self::h5p()->hub()->show()->getLibraries($title, $status, $runnable, $not_used);
+
+        $this->setData($libraries);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initFilterFields()/* : void*/
+    {
+        $this->filter_fields = [
+            "title"         => [
+                PropertyFormGUI::PROPERTY_CLASS => ilTextInputGUI::class
+            ],
+            "status"        => [
+                PropertyFormGUI::PROPERTY_CLASS   => ilSelectInputGUI::class,
+                PropertyFormGUI::PROPERTY_OPTIONS => [
+                    ShowHub::STATUS_ALL               => self::plugin()->translate("all"),
+                    ShowHub::STATUS_INSTALLED         => self::plugin()->translate("installed"),
+                    ShowHub::STATUS_UPGRADE_AVAILABLE => self::plugin()->translate("upgrade_available"),
+                    ShowHub::STATUS_NOT_INSTALLED     => self::plugin()->translate("not_installed")
+                ]
+            ],
+            "only_runnable" => [
+                PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
+            ],
+            "only_not_used" => [
+                PropertyFormGUI::PROPERTY_CLASS => ilCheckboxInputGUI::class
+            ]
+        ];
+
+        if (!$this->hasSessionValue("only_runnable")) { // Stupid checkbox
+            $this->filter_fields["only_runnable"][PropertyFormGUI::PROPERTY_VALUE] = true;
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initId()/* : void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTitle()/* : void*/
+    {
+        $this->setTitle(self::plugin()->translate("installed_libraries"));
     }
 }

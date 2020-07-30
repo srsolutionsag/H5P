@@ -1,8 +1,10 @@
+# ActiveRecordConfig Library for ILIAS Plugins
+
 Simple ActiveRecord config for ILIAS plugins
 
-### Usage
+## Usage
 
-#### Composer
+### Composer
 First add the following to your `composer.json` file:
 ```json
 "require": {
@@ -18,7 +20,7 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-#### Config ActiveRecord
+## Config ActiveRecord
 First you need to init the active record class with your own table name and fields with your own repository and factory. Please call it very early in your plugin code
 ```php
 ...
@@ -29,7 +31,7 @@ final class Repository extends AbstractRepository
 {
     ...
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 
@@ -95,7 +97,7 @@ final class Factory extends AbstractFactory
 {
     ...
     /**
-     * @var self
+     * @var self|null
      */
     protected static $instance = null;
 
@@ -170,11 +172,11 @@ It exists the follow datatypes:
 | TYPE_DATETIME  | ilDateTime |
 | TYPE_JSON      | mixed      |
 
-### Requirements
+## Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=7.0
 
-### Adjustment suggestions
+## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_ACCONF
 * Adjustment suggestions by pull requests via github
 * Customer of studer + raimann ag: 

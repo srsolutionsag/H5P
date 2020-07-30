@@ -30,6 +30,15 @@ final class Factory
 
 
     /**
+     * Factory constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -43,22 +52,13 @@ final class Factory
 
 
     /**
-     * Factory constructor
+     * @return DeleteOldTmpFilesJob
      */
-    private function __construct()
+    public function newDeleteOldTmpFilesJobInstance() : DeleteOldTmpFilesJob
     {
+        $job = new DeleteOldTmpFilesJob();
 
-    }
-
-
-    /**
-     * @return TmpFile
-     */
-    public function newTmpFileInstance() : TmpFile
-    {
-        $tmp_file = new TmpFile();
-
-        return $tmp_file;
+        return $job;
     }
 
 
@@ -95,12 +95,12 @@ final class Factory
 
 
     /**
-     * @return DeleteOldTmpFilesJob
+     * @return TmpFile
      */
-    public function newDeleteOldTmpFilesJobInstance() : DeleteOldTmpFilesJob
+    public function newTmpFileInstance() : TmpFile
     {
-        $job = new DeleteOldTmpFilesJob();
+        $tmp_file = new TmpFile();
 
-        return $job;
+        return $tmp_file;
     }
 }

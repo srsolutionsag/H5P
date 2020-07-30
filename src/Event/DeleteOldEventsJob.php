@@ -38,6 +38,33 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
+    public function getDefaultScheduleType() : int
+    {
+        return self::SCHEDULE_TYPE_DAILY;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getDefaultScheduleValue()/* : ?int*/
+    {
+        return null;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription() : string
+    {
+        return self::plugin()->translate("delete_old_events_description");
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function getId() : string
     {
         return self::CRON_JOB_ID;
@@ -56,15 +83,6 @@ class DeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDescription() : string
-    {
-        return self::plugin()->translate("delete_old_events_description");
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function hasAutoActivation() : bool
     {
         return true;
@@ -77,24 +95,6 @@ class DeleteOldEventsJob extends ilCronJob
     public function hasFlexibleSchedule() : bool
     {
         return true;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getDefaultScheduleType() : int
-    {
-        return self::SCHEDULE_TYPE_DAILY;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getDefaultScheduleValue()/* : ?int*/
-    {
-        return null;
     }
 
 

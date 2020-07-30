@@ -29,21 +29,6 @@ final class Repository
      * @var self|null
      */
     protected static $instance = null;
-
-
-    /**
-     * @return self
-     */
-    public static function getInstance() : self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-
     /**
      * @var H5PContentValidator
      */
@@ -72,6 +57,19 @@ final class Repository
     private function __construct()
     {
 
+    }
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 
@@ -160,6 +158,44 @@ final class Repository
 
 
     /**
+     * @param string $path
+     *
+     * @return TmpFile[]
+     */
+    public function getFilesByPath(string $path) : array
+    {
+        /**
+         * @var TmpFile[] $h5p_tmp_files
+         */
+
+        $h5p_tmp_files = TmpFile::where([
+            "path" => $path
+        ])->get();
+
+        return $h5p_tmp_files;
+    }
+
+
+    /**
+     * @param int $older_than
+     *
+     * @return TmpFile[]
+     */
+    public function getOldTmpFiles(int $older_than) : array
+    {
+        /**
+         * @var TmpFile[] $h5p_tmp_files
+         */
+
+        $h5p_tmp_files = TmpFile::where([
+            "created_at" => $older_than
+        ], "<")->get();
+
+        return $h5p_tmp_files;
+    }
+
+
+    /**
      * @internal
      */
     public function installTables()/* : void*/
@@ -200,19 +236,6 @@ final class Repository
 
 
     /**
-     * @return H5PValidator
-     */
-    public function validatorCore() : H5PValidator
-    {
-        if ($this->validator_core === null) {
-            $this->validator_core = new H5PValidator(self::h5p()->contents()->framework(), self::h5p()->contents()->core());
-        }
-
-        return $this->validator_core;
-    }
-
-
-    /**
      * @param TmpFile $tmp_file
      */
     public function storeTmpFile(TmpFile $tmp_file)/* : void*/
@@ -226,39 +249,14 @@ final class Repository
 
 
     /**
-     * @param string $path
-     *
-     * @return TmpFile[]
+     * @return H5PValidator
      */
-    public function getFilesByPath(string $path) : array
+    public function validatorCore() : H5PValidator
     {
-        /**
-         * @var TmpFile[] $h5p_tmp_files
-         */
+        if ($this->validator_core === null) {
+            $this->validator_core = new H5PValidator(self::h5p()->contents()->framework(), self::h5p()->contents()->core());
+        }
 
-        $h5p_tmp_files = TmpFile::where([
-            "path" => $path
-        ])->get();
-
-        return $h5p_tmp_files;
-    }
-
-
-    /**
-     * @param int $older_than
-     *
-     * @return TmpFile[]
-     */
-    public function getOldTmpFiles(int $older_than) : array
-    {
-        /**
-         * @var TmpFile[] $h5p_tmp_files
-         */
-
-        $h5p_tmp_files = TmpFile::where([
-            "created_at" => $older_than
-        ], "<")->get();
-
-        return $h5p_tmp_files;
+        return $this->validator_core;
     }
 }

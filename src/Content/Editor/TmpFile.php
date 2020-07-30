@@ -21,41 +21,16 @@ class TmpFile extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
     /**
      * @var int
      *
      * @con_has_field    true
-     * @con_fieldtype    integer
-     * @con_length       8
+     * @con_fieldtype    timestamp
      * @con_is_notnull   true
-     * @con_is_primary   true
-     * @con_sequence     true
      */
-    protected $tmp_id;
+    protected $created_at = 0;
     /**
      * @var string
      *
@@ -69,10 +44,13 @@ class TmpFile extends ActiveRecord
      * @var int
      *
      * @con_has_field    true
-     * @con_fieldtype    timestamp
+     * @con_fieldtype    integer
+     * @con_length       8
      * @con_is_notnull   true
+     * @con_is_primary   true
+     * @con_sequence     true
      */
-    protected $created_at = 0;
+    protected $tmp_id;
 
 
     /**
@@ -89,54 +67,39 @@ class TmpFile extends ActiveRecord
 
     /**
      * @inheritDoc
+     *
+     * @deprecated
      */
-    public function sleep(/*string*/ $field_name)
+    public static function returnDbTableName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            case "created_at":
-                return self::h5p()->timestampToDbDate($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function wakeUp(/*string*/ $field_name, $field_value)
+    public function getConnectorContainerName() : string
     {
-        switch ($field_name) {
-            case "tmp_id":
-                return intval($field_value);
-
-            case "created_at":
-                return self::h5p()->dbDateToTimestamp($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
     /**
      * @return int
      */
-    public function getTmpId() : int
+    public function getCreatedAt() : int
     {
-        return $this->tmp_id;
+        return $this->created_at;
     }
 
 
     /**
-     * @param int $tmp_id
+     * @param int $created_at
      */
-    public function setTmpId(int $tmp_id)/* : void*/
+    public function setCreatedAt(int $created_at)/* : void*/
     {
-        $this->tmp_id = $tmp_id;
+        $this->created_at = $created_at;
     }
 
 
@@ -161,17 +124,52 @@ class TmpFile extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreatedAt() : int
+    public function getTmpId() : int
     {
-        return $this->created_at;
+        return $this->tmp_id;
     }
 
 
     /**
-     * @param int $created_at
+     * @param int $tmp_id
      */
-    public function setCreatedAt(int $created_at)/* : void*/
+    public function setTmpId(int $tmp_id)/* : void*/
     {
-        $this->created_at = $created_at;
+        $this->tmp_id = $tmp_id;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            case "created_at":
+                return self::h5p()->timestampToDbDate($field_value);
+
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "tmp_id":
+                return intval($field_value);
+
+            case "created_at":
+                return self::h5p()->dbDateToTimestamp($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }

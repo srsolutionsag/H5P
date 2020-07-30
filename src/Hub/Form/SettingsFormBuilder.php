@@ -19,10 +19,10 @@ class SettingsFormBuilder extends AbstractFormBuilder
 
     use H5PTrait;
 
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const KEY_CONTENT_TYPES = "content_types";
     const KEY_ENABLE_LRS_CONTENT_TYPES = "enable_lrs_content_types";
     const KEY_SEND_USAGE_STATISTICS = "send_usage_statistics";
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 
 
     /**

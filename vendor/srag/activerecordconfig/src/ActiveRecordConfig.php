@@ -161,7 +161,7 @@ final class ActiveRecordConfigRepository extends AbstractRepository
 {
 
     /**
-     * @var self
+     * @var self|null
      *
      * @deprecated
      */
@@ -265,7 +265,7 @@ final class ActiveRecordConfigFactory extends AbstractFactory
 {
 
     /**
-     * @var self
+     * @var self|null
      *
      * @deprecated
      */

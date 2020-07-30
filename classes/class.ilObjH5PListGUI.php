@@ -40,6 +40,25 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     /**
      * @inheritDoc
      */
+    public function getProperties() : array
+    {
+        $props = [];
+
+        if (ilObjH5PAccess::_isOffline($this->obj_id)) {
+            $props[] = [
+                "alert"    => true,
+                "property" => self::plugin()->translate("status"),
+                "value"    => self::plugin()->translate("offline")
+            ];
+        }
+
+        return $props;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function initCommands() : array
     {
         $this->commands_enabled = true;
@@ -76,25 +95,6 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
         ];
 
         return $commands;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getProperties() : array
-    {
-        $props = [];
-
-        if (ilObjH5PAccess::_isOffline($this->obj_id)) {
-            $props[] = [
-                "alert"    => true,
-                "property" => self::plugin()->translate("status"),
-                "value"    => self::plugin()->translate("offline")
-            ];
-        }
-
-        return $props;
     }
 
 

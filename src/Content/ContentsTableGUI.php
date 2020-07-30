@@ -51,7 +51,64 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function getColumnValue(/*string*/ $column, /*array*/ $row, /*int*/ $format = 0) : string
+    public function getSelectableColumns2() : array
+    {
+        $columns = [];
+
+        return $columns;
+    }
+
+
+    /**
+     * @param array $row
+     */
+    protected function fillRow(/*array*/ $row)/* : void*/
+    {
+        $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
+        $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);
+
+        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
+
+        if (!$this->hasResults()) {
+            $this->tpl->setCurrentBlock("upDownBlock");
+            $this->tpl->setVariableEscaped("IMG_ARROW_UP", ilUtil::getImagePath("arrow_up.svg"));
+            $this->tpl->setVariableEscaped("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
+        }
+
+        $this->tpl->setVariableEscaped("ID", $row["content_id"]);
+
+        $this->tpl->setVariableEscaped("TITLE", $row["title"]);
+
+        $this->tpl->setVariableEscaped("LIBRARY", ($h5p_library !== null ? $h5p_library->getTitle() : ""));
+
+        $this->tpl->setVariableEscaped("RESULTS", count($h5p_results));
+
+        $actions = [];
+
+        if (ilObjH5PAccess::hasWriteAccess()) {
+            if (!$this->hasResults()) {
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("edit"), self::dic()->ctrl()
+                    ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
+
+                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
+                    ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
+            }
+
+            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("export"), self::dic()->ctrl()
+                ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EXPORT_CONTENT));
+        }
+
+        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+            ->withLabel($this->txt("actions"))));
+
+        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", null);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getColumnValue(string $column, /*array*/ $row, int $format = self::DEFAULT_FORMAT) : string
     {
         switch ($column) {
             default:
@@ -64,13 +121,11 @@ class ContentsTableGUI extends TableGUI
 
 
     /**
-     * @inheritDoc
+     * @return bool
      */
-    public function getSelectableColumns2() : array
+    protected function hasResults() : bool
     {
-        $columns = [];
-
-        return $columns;
+        return self::h5p()->results()->hasObjectResults($this->obj_id);
     }
 
 
@@ -133,60 +188,5 @@ class ContentsTableGUI extends TableGUI
         self::dic()->ui()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
         self::dic()->ui()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
             . '");');
-    }
-
-
-    /**
-     * @return bool
-     */
-    protected function hasResults() : bool
-    {
-        return self::h5p()->results()->hasObjectResults($this->obj_id);
-    }
-
-
-    /**
-     * @param array $row
-     */
-    protected function fillRow(/*array*/ $row)/* : void*/
-    {
-        $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
-        $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);
-
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
-
-        if (!$this->hasResults()) {
-            $this->tpl->setCurrentBlock("upDownBlock");
-            $this->tpl->setVariableEscaped("IMG_ARROW_UP", ilUtil::getImagePath("arrow_up.svg"));
-            $this->tpl->setVariableEscaped("IMG_ARROW_DOWN", ilUtil::getImagePath("arrow_down.svg"));
-        }
-
-        $this->tpl->setVariableEscaped("ID", $row["content_id"]);
-
-        $this->tpl->setVariableEscaped("TITLE", $row["title"]);
-
-        $this->tpl->setVariableEscaped("LIBRARY", ($h5p_library !== null ? $h5p_library->getTitle() : ""));
-
-        $this->tpl->setVariableEscaped("RESULTS", count($h5p_results));
-
-        $actions = [];
-
-        if (ilObjH5PAccess::hasWriteAccess()) {
-            if (!$this->hasResults()) {
-                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("edit"), self::dic()->ctrl()
-                    ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
-
-                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
-                    ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
-            }
-
-            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("export"), self::dic()->ctrl()
-                ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EXPORT_CONTENT));
-        }
-
-        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
-            ->withLabel($this->txt("actions"))));
-
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", null);
     }
 }

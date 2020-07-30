@@ -21,30 +21,8 @@ class Counter extends ActiveRecord
     use DICTrait;
     use H5PTrait;
 
-    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cnt";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getConnectorContainerName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function returnDbTableName() : string
-    {
-        return self::TABLE_NAME;
-    }
-
-
+    const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cnt";
     /**
      * @var int
      *
@@ -56,15 +34,6 @@ class Counter extends ActiveRecord
      * @con_sequence     true
      */
     protected $id;
-    /**
-     * @var string
-     *
-     * @con_has_field      true
-     * @con_fieldtype      text
-     * @con_length         63
-     * @con_is_notnull     true
-     */
-    protected $type = "";
     /**
      * @var string
      *
@@ -92,6 +61,15 @@ class Counter extends ActiveRecord
      * @con_is_notnull     true
      */
     protected $num = 0;
+    /**
+     * @var string
+     *
+     * @con_has_field      true
+     * @con_fieldtype      text
+     * @con_length         63
+     * @con_is_notnull     true
+     */
+    protected $type = "";
 
 
     /**
@@ -107,6 +85,17 @@ class Counter extends ActiveRecord
 
 
     /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    public static function returnDbTableName() : string
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
      *
      */
     public function addNum()/* : void*/
@@ -118,30 +107,9 @@ class Counter extends ActiveRecord
     /**
      * @inheritDoc
      */
-    public function sleep(/*string*/ $field_name)
+    public function getConnectorContainerName() : string
     {
-        $field_value = $this->{$field_name};
-
-        switch ($field_name) {
-            default:
-                return null;
-        }
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function wakeUp(/*string*/ $field_name, $field_value)
-    {
-        switch ($field_name) {
-            case "id":
-            case "num":
-                return intval($field_value);
-
-            default:
-                return null;
-        }
+        return self::TABLE_NAME;
     }
 
 
@@ -160,24 +128,6 @@ class Counter extends ActiveRecord
     public function setId(int $id)/* : void*/
     {
         $this->id = $id;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getType() : string
-    {
-        return $this->type;
-    }
-
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)/* : void*/
-    {
-        $this->type = $type;
     }
 
 
@@ -232,5 +182,53 @@ class Counter extends ActiveRecord
     public function setNum(int $num)/* : void*/
     {
         $this->num = $num;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getType() : string
+    {
+        return $this->type;
+    }
+
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)/* : void*/
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function sleep(/*string*/ $field_name)
+    {
+        $field_value = $this->{$field_name};
+
+        switch ($field_name) {
+            default:
+                return parent::sleep($field_name);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function wakeUp(/*string*/ $field_name, $field_value)
+    {
+        switch ($field_name) {
+            case "id":
+            case "num":
+                return intval($field_value);
+
+            default:
+                return parent::wakeUp($field_name, $field_value);
+        }
     }
 }
