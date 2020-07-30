@@ -263,7 +263,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(/*string*/ $key)
+    protected function getValue(string $key)
     {
         if ($this->h5p_content !== null) {
             switch ($key) {

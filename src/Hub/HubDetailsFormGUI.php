@@ -259,7 +259,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(/*string*/ $key)/* : void*/
+    protected function getValue(string $key)/* : void*/
     {
 
     }
