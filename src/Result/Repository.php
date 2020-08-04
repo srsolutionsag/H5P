@@ -224,7 +224,7 @@ final class Repository
         $h5p_results = Result::innerjoin(Content::TABLE_NAME, "content_id", "content_id")->where([
             Content::TABLE_NAME . ".obj_id"      => $obj_id,
             Content::TABLE_NAME . ".parent_type" => $parent_type,
-            Result::TABLE_NAME . ".user_id"      => $user_id,
+            Result::TABLE_NAME . ".user_id"      => $user_id
         ])->get();
 
         return $h5p_results;
