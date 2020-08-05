@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.10.2]
+- Remove repository object check
+
 ## [0.10.1]
 - Add plugin name to `composer.json`
 
