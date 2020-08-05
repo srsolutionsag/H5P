@@ -19,6 +19,15 @@ class MultilangualTabsInputGUI
     use DICTrait;
 
     /**
+     * MultilangualTabsInputGUI constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @param array $items
      * @param bool  $default_language
      * @param bool  $default_required
@@ -160,15 +169,6 @@ class MultilangualTabsInputGUI
         } else {
             $values[$lang_key] = $value;
         }
-    }
-
-
-    /**
-     * MultilangualTabsInputGUI constructor
-     */
-    private function __construct()
-    {
-
     }
 }
 

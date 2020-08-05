@@ -46,6 +46,52 @@ class ViewControlModeUI
 
 
     /**
+     * @return string
+     */
+    public function getActiveId() : string
+    {
+        $active_id = ilSession::get(self::CMD_HANDLE_BUTTONS . "_" . $this->id);
+
+        if ($active_id === null || !isset($this->buttons[$active_id])) {
+            return $active_id = $this->default_active_id;
+        }
+
+        return $active_id;
+    }
+
+
+    /**
+     *
+     */
+    public function handleButtons()/*: void*/
+    {
+        $active_id = filter_input(INPUT_GET, self::CMD_HANDLE_BUTTONS);
+
+        ilSession::set(self::CMD_HANDLE_BUTTONS . "_" . $this->id, $active_id);
+
+        self::dic()->ctrl()->redirectToURL(ilSession::get(self::CMD_HANDLE_BUTTONS . "_" . $this->id . "_url"));
+    }
+
+
+    /**
+     * @return string
+     */
+    public function render() : string
+    {
+        ilSession::set(self::CMD_HANDLE_BUTTONS . "_" . $this->id . "_url", $_SERVER["REQUEST_URI"]);
+
+        $actions = [];
+
+        foreach ($this->buttons as $id => $txt) {
+            $actions[$txt] = $this->link . "&" . self::CMD_HANDLE_BUTTONS . "=" . $id;
+        }
+
+        return self::output()->getHTML(self::dic()->ui()->factory()->viewControl()->mode($actions, "")
+            ->withActive($this->buttons[$this->getActiveId()]));
+    }
+
+
+    /**
      * @param array $buttons
      *
      * @return self
@@ -94,51 +140,5 @@ class ViewControlModeUI
         $this->link = $link;
 
         return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function render() : string
-    {
-        ilSession::set(self::CMD_HANDLE_BUTTONS . "_" . $this->id . "_url", $_SERVER["REQUEST_URI"]);
-
-        $actions = [];
-
-        foreach ($this->buttons as $id => $txt) {
-            $actions[$txt] = $this->link . "&" . self::CMD_HANDLE_BUTTONS . "=" . $id;
-        }
-
-        return self::output()->getHTML(self::dic()->ui()->factory()->viewControl()->mode($actions, "")
-            ->withActive($this->buttons[$this->getActiveId()]));
-    }
-
-
-    /**
-     *
-     */
-    public function handleButtons()/*: void*/
-    {
-        $active_id = filter_input(INPUT_GET, self::CMD_HANDLE_BUTTONS);
-
-        ilSession::set(self::CMD_HANDLE_BUTTONS . "_" . $this->id, $active_id);
-
-        self::dic()->ctrl()->redirectToURL(ilSession::get(self::CMD_HANDLE_BUTTONS . "_" . $this->id . "_url"));
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getActiveId() : string
-    {
-        $active_id = ilSession::get(self::CMD_HANDLE_BUTTONS . "_" . $this->id);
-
-        if ($active_id === null || !isset($this->buttons[$active_id])) {
-            return $active_id = $this->default_active_id;
-        }
-
-        return $active_id;
     }
 }

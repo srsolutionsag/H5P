@@ -73,6 +73,15 @@ class WeekdayInputGUI extends ilFormPropertyGUI implements ilTableFilterItem
 
 
     /**
+     * @param array $value
+     */
+    public function setValue(/*array*/ $value)/*: void*/
+    {
+        $this->value = $value;
+    }
+
+
+    /**
      * @param ilTemplate $tpl
      */
     public function insert(ilTemplate $tpl)/*: void*/
@@ -108,15 +117,6 @@ class WeekdayInputGUI extends ilFormPropertyGUI implements ilTableFilterItem
         }
 
         return self::output()->getHTML($tpl);
-    }
-
-
-    /**
-     * @param array $value
-     */
-    public function setValue(/*array*/ $value)/*: void*/
-    {
-        $this->value = $value;
     }
 
 

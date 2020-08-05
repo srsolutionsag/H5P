@@ -18,14 +18,10 @@ use Composer\Script\Event;
 final class PHP72Backport
 {
 
-    const REGEXP_EXPRESSION = "[A-Za-z0-9_\":\s\[\]]+";
+    const REGEXP_EXPRESSION = "[A-Za-z0-9_\":\s\[\]\(\)]+";
     const REGEXP_FUNCTION = "function\s*(" . self::REGEXP_NAME . ")?\s*\((" . self::REGEXP_PARAM . ")?(," . self::REGEXP_PARAM . ")*\)(\s*(\/\*)?\s*:\s*\??" . self::REGEXP_NAME . "\s*(\*\/)?)?";
-    const REGEXP_NAME = "[A-Za-z_][A-Za-z0-9_]*";
-    const REGEXP_PARAM = "\s*(\/\*)?\s*\??\s*(" . self::REGEXP_NAME . ")?\s*(\*\/)?\s*\\$" . self::REGEXP_NAME . "(\s*=\s*" . self::REGEXP_EXPRESSION . ")?\s*";
-    /**
-     * @var self|null
-     */
-    private static $instance = null;
+    const REGEXP_NAME = "\\\\?[A-Za-z_][A-Za-z0-9_\\\\]*";
+    const REGEXP_PARAM = "\s*(\/\*)?\s*\??\s*(\*\/)?\s*(" . self::REGEXP_NAME . ")?\s*(\*\/)?\s*&?\s*?\\$" . self::REGEXP_NAME . "(\s*=\s*" . self::REGEXP_EXPRESSION . ")?\s*";
     /**
      * @var array
      */
@@ -35,23 +31,27 @@ final class PHP72Backport
             "php"
         ];
     /**
+     * @var self|null
+     */
+    private static $instance = null;
+    /**
      * @var string
      */
     private static $plugin_root = "";
+    /**
+     * @var Event
+     */
+    private $event;
 
 
     /**
-     * @param Event $event
+     * PHP72Backport constructor
      *
-     * @return self
+     * @param Event $event
      */
-    private static function getInstance(Event $event) : self
+    private function __construct(Event $event)
     {
-        if (self::$instance === null) {
-            self::$instance = new self($event);
-        }
-
-        return self::$instance;
+        $this->event = $event;
     }
 
 
@@ -71,38 +71,17 @@ final class PHP72Backport
 
 
     /**
-     * @var Event
-     */
-    private $event;
-
-
-    /**
-     * PHP72Backport constructor
-     *
      * @param Event $event
-     */
-    private function __construct(Event $event)
-    {
-        $this->event = $event;
-    }
-
-
-    /**
      *
+     * @return self
      */
-    private function doPHP72Backport()/*: void*/
+    private static function getInstance(Event $event) : self
     {
-        $files = [];
-
-        $this->getFiles(self::$plugin_root, $files);
-
-        foreach ($files as $file) {
-            $code = file_get_contents($file);
-
-            $code = $this->convertPHP72To70($code);
-
-            file_put_contents($file, $code);
+        if (self::$instance === null) {
+            self::$instance = new self($event);
         }
+
+        return self::$instance;
     }
 
 
@@ -145,6 +124,25 @@ final class PHP72Backport
 
 
     /**
+     *
+     */
+    private function doPHP72Backport()/*: void*/
+    {
+        $files = [];
+
+        $this->getFiles(self::$plugin_root, $files);
+
+        foreach ($files as $file) {
+            $code = file_get_contents($file);
+
+            $code = $this->convertPHP72To70($code);
+
+            file_put_contents($file, $code);
+        }
+    }
+
+
+    /**
      * @param string $folder
      * @param array  $files
      */
@@ -157,6 +155,10 @@ final class PHP72Backport
                 $path = $folder . "/" . $file;
 
                 if (is_dir($path)) {
+                    if (in_array($file, ["templates"])) {
+                        continue;
+                    }
+
                     $this->getFiles($path, $files);
                 } else {
                     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));

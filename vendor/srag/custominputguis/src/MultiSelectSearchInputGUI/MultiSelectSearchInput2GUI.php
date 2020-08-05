@@ -26,20 +26,35 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
 
     /**
-     * @return array
+     * @return string
      *
      * @deprecated
      */
-    public function getValue() : array
+    public function getContainerType() : string
     {
-        $val = parent::getValue();
-        if (is_array($val)) {
-            return $val;
-        } elseif (!$val) {
-            return array();
-        } else {
-            return explode(',', $val);
-        }
+        return 'crs';
+    }
+
+
+    /**
+     * @return string
+     *
+     * @deprecated
+     */
+    public function getPlaceholder() : string
+    {
+        return $this->placeholder;
+    }
+
+
+    /**
+     * @param string $placeholder
+     *
+     * @deprecated
+     */
+    public function setPlaceholder(string $placeholder)/*: void*/
+    {
+        $this->placeholder = $placeholder;
     }
 
 
@@ -55,13 +70,20 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
 
     /**
-     * @return string
+     * @return array
      *
      * @deprecated
      */
-    public function getContainerType() : string
+    public function getValue() : array
     {
-        return 'crs';
+        $val = parent::getValue();
+        if (is_array($val)) {
+            return $val;
+        } elseif (!$val) {
+            return array();
+        } else {
+            return explode(',', $val);
+        }
     }
 
 
@@ -124,17 +146,6 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
 
 
     /**
-     * @return string
-     *
-     * @deprecated
-     */
-    protected function getValueAsJson() : string
-    {
-        return json_encode(array());
-    }
-
-
-    /**
      * @param string $postVar
      *
      * @return string
@@ -148,6 +159,17 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
         $postVar = str_replace("]", '\\\\]', $postVar);
 
         return $postVar;
+    }
+
+
+    /**
+     * @return string
+     *
+     * @deprecated
+     */
+    protected function getValueAsJson() : string
+    {
+        return json_encode(array());
     }
 
 
@@ -167,27 +189,5 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI
         }
 
         return $text;
-    }
-
-
-    /**
-     * @return string
-     *
-     * @deprecated
-     */
-    public function getPlaceholder() : string
-    {
-        return $this->placeholder;
-    }
-
-
-    /**
-     * @param string $placeholder
-     *
-     * @deprecated
-     */
-    public function setPlaceholder(string $placeholder)/*: void*/
-    {
-        $this->placeholder = $placeholder;
     }
 }

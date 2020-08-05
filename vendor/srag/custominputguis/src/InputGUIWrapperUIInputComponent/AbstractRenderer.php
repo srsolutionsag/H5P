@@ -22,31 +22,6 @@ abstract class AbstractRenderer extends Renderer
     /**
      * @inheritDoc
      */
-    protected function getComponentInterfaceName() : array
-    {
-        return [
-            InputGUIWrapperUIInputComponent::class
-        ];
-    }
-
-
-    /**
-     * @param Template                        $tpl
-     * @param InputGUIWrapperUIInputComponent $input
-     *
-     * @return string
-     */
-    protected function renderInput(Template $tpl, InputGUIWrapperUIInputComponent $input) : string
-    {
-        $tpl->setVariable("INPUT", self::output()->getHTML($input->getInput()));
-
-        return self::output()->getHTML($tpl);
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function registerResources(ResourceRegistry $registry)/*: void*/
     {
         parent::registerResources($registry);
@@ -61,6 +36,17 @@ abstract class AbstractRenderer extends Renderer
     /**
      * @inheritDoc
      */
+    protected function getComponentInterfaceName() : array
+    {
+        return [
+            InputGUIWrapperUIInputComponent::class
+        ];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     protected function getTemplatePath(/*string*/ $name) : string
     {
         if ($name === "input.html") {
@@ -69,5 +55,19 @@ abstract class AbstractRenderer extends Renderer
             // return parent::getTemplatePath($name);
             return "src/UI/templates/default/Input/" . $name;
         }
+    }
+
+
+    /**
+     * @param Template                        $tpl
+     * @param InputGUIWrapperUIInputComponent $input
+     *
+     * @return string
+     */
+    protected function renderInput(Template $tpl, InputGUIWrapperUIInputComponent $input) : string
+    {
+        $tpl->setVariable("INPUT", self::output()->getHTML($input->getInput()));
+
+        return self::output()->getHTML($tpl);
     }
 }

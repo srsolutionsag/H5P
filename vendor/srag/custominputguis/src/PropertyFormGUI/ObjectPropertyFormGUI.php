@@ -51,36 +51,13 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
 
 
     /**
-     * @inheritDoc
+     * @return ilObject|ActiveRecord|object
      *
      * @deprecated
      */
-    protected function getValue(string $key)
+    public final function getObject()
     {
-        if ($this->object !== null) {
-            switch ($key) {
-                default:
-                    return Items::getter($this->object, $key);
-                    break;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @deprecated
-     */
-    protected function storeValue(string $key, $value)/*: void*/
-    {
-        switch ($key) {
-            default:
-                Items::setter($this->object, $key, $value);
-                break;
-        }
+        return $this->object;
     }
 
 
@@ -127,12 +104,35 @@ abstract class ObjectPropertyFormGUI extends PropertyFormGUI
 
 
     /**
-     * @return ilObject|ActiveRecord|object
+     * @inheritDoc
      *
      * @deprecated
      */
-    public final function getObject()
+    protected function getValue(string $key)
     {
-        return $this->object;
+        if ($this->object !== null) {
+            switch ($key) {
+                default:
+                    return Items::getter($this->object, $key);
+                    break;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    protected function storeValue(string $key, $value)/*: void*/
+    {
+        switch ($key) {
+            default:
+                Items::setter($this->object, $key, $value);
+                break;
+        }
     }
 }

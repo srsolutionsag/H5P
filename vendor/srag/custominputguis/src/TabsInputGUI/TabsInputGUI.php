@@ -22,31 +22,13 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
 
     use DICTrait;
 
-    const SHOW_INPUT_LABEL_NONE = 1;
-    const SHOW_INPUT_LABEL_AUTO = 2;
     const SHOW_INPUT_LABEL_ALWAYS = 3;
+    const SHOW_INPUT_LABEL_AUTO = 2;
+    const SHOW_INPUT_LABEL_NONE = 1;
     /**
      * @var bool
      */
     protected static $init = false;
-
-
-    /**
-     *
-     */
-    public static function init()/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/tabs_input_gui.css");
-        }
-    }
-
-
     /**
      * @var int
      */
@@ -72,6 +54,33 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
         parent::__construct($title, $post_var);
 
         self::init();
+    }
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/tabs_input_gui.css");
+        }
+    }
+
+
+    /**
+     *
+     */
+    public function __clone()/*:void*/
+    {
+        $this->tabs = array_map(function (TabsInputGUITab $tab) : TabsInputGUITab {
+            return clone $tab;
+        }, $this->tabs);
     }
 
 
@@ -129,11 +138,11 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
 
 
     /**
-     * @return TabsInputGUITab[]
+     * @param int $show_input_label
      */
-    public function getTabs() : array
+    public function setShowInputLabel(int $show_input_label)/* : void*/
     {
-        return $this->tabs;
+        $this->show_input_label = $show_input_label;
     }
 
 
@@ -143,6 +152,24 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     public function getTableFilterHTML() : string
     {
         return $this->render();
+    }
+
+
+    /**
+     * @return TabsInputGUITab[]
+     */
+    public function getTabs() : array
+    {
+        return $this->tabs;
+    }
+
+
+    /**
+     * @param TabsInputGUITab[] $tabs
+     */
+    public function setTabs(array $tabs)/*: void*/
+    {
+        $this->tabs = $tabs;
     }
 
 
@@ -161,6 +188,19 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     public function getValue() : array
     {
         return $this->value;
+    }
+
+
+    /**
+     * @param array $value
+     */
+    public function setValue(/*array*/ $value)/*: void*/
+    {
+        if (is_array($value)) {
+            $this->value = $value;
+        } else {
+            $this->value = [];
+        }
     }
 
 
@@ -237,52 +277,10 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
 
 
     /**
-     * @param int $show_input_label
-     */
-    public function setShowInputLabel(int $show_input_label)/* : void*/
-    {
-        $this->show_input_label = $show_input_label;
-    }
-
-
-    /**
-     * @param TabsInputGUITab[] $tabs
-     */
-    public function setTabs(array $tabs)/*: void*/
-    {
-        $this->tabs = $tabs;
-    }
-
-
-    /**
-     * @param array $value
-     */
-    public function setValue(/*array*/ $value)/*: void*/
-    {
-        if (is_array($value)) {
-            $this->value = $value;
-        } else {
-            $this->value = [];
-        }
-    }
-
-
-    /**
      * @param array $values
      */
     public function setValueByArray(/*array*/ $values)/*: void*/
     {
         $this->setValue($values[$this->getPostVar()]);
-    }
-
-
-    /**
-     *
-     */
-    public function __clone()/*:void*/
-    {
-        $this->tabs = array_map(function (TabsInputGUITab $tab) : TabsInputGUITab {
-            return clone $tab;
-        }, $this->tabs);
     }
 }

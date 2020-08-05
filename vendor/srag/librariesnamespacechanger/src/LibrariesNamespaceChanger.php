@@ -19,9 +19,11 @@ final class LibrariesNamespaceChanger
 {
 
     /**
-     * @var self|null
+     * @var string
+     *
+     * @internal
      */
-    private static $instance = null;
+    const PLUGIN_NAME_REG_EXP = "/\/([A-Za-z0-9_]+)\/vendor\//";
     /**
      * @var array
      */
@@ -33,29 +35,27 @@ final class LibrariesNamespaceChanger
             "xml"
         ];
     /**
-     * @var string
-     *
-     * @internal
+     * @var self|null
      */
-    const PLUGIN_NAME_REG_EXP = "/\/([A-Za-z0-9_]+)\/vendor\//";
+    private static $instance = null;
     /**
      * @var string
      */
     private static $plugin_root = "";
+    /**
+     * @var Event
+     */
+    private $event;
 
 
     /**
-     * @param Event $event
+     * LibrariesNamespaceChanger constructor
      *
-     * @return self
+     * @param Event $event
      */
-    private static function getInstance(Event $event) : self
+    private function __construct(Event $event)
     {
-        if (self::$instance === null) {
-            self::$instance = new self($event);
-        }
-
-        return self::$instance;
+        $this->event = $event;
     }
 
 
@@ -75,19 +75,17 @@ final class LibrariesNamespaceChanger
 
 
     /**
-     * @var Event
-     */
-    private $event;
-
-
-    /**
-     * LibrariesNamespaceChanger constructor
-     *
      * @param Event $event
+     *
+     * @return self
      */
-    private function __construct(Event $event)
+    private static function getInstance(Event $event) : self
     {
-        $this->event = $event;
+        if (self::$instance === null) {
+            self::$instance = new self($event);
+        }
+
+        return self::$instance;
     }
 
 
@@ -165,24 +163,6 @@ final class LibrariesNamespaceChanger
 
 
     /**
-     * @return string
-     */
-    private function getPluginName() : string
-    {
-        $matches = [];
-        preg_match(self::PLUGIN_NAME_REG_EXP, __DIR__, $matches);
-
-        if (is_array($matches) && count($matches) >= 2) {
-            $plugin_name = $matches[1];
-
-            return $plugin_name;
-        } else {
-            return "";
-        }
-    }
-
-
-    /**
      * @param string $folder
      * @param array  $files
      */
@@ -203,6 +183,24 @@ final class LibrariesNamespaceChanger
                     }
                 }
             }
+        }
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getPluginName() : string
+    {
+        $matches = [];
+        preg_match(self::PLUGIN_NAME_REG_EXP, __DIR__, $matches);
+
+        if (is_array($matches) && count($matches) >= 2) {
+            $plugin_name = $matches[1];
+
+            return $plugin_name;
+        } else {
+            return "";
         }
     }
 }

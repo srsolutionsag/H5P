@@ -5,6 +5,7 @@ namespace srag\LibrariesNamespaceChanger;
 use Closure;
 use Composer\Config;
 use Composer\Script\Event;
+use stdClass;
 
 /**
  * Class UpdatePluginReadme
@@ -28,20 +29,28 @@ final class UpdatePluginReadme
      * @var string
      */
     private static $plugin_root = "";
+    /**
+     * @var Event
+     */
+    private $event;
+    /**
+     * @var stdClass
+     */
+    private $plugin_composer_json;
+    /**
+     * @var string
+     */
+    private $readme;
 
 
     /**
-     * @param Event $event
+     * UpdatePluginReadme constructor
      *
-     * @return self
+     * @param Event $event
      */
-    private static function getInstance(Event $event) : self
+    private function __construct(Event $event)
     {
-        if (self::$instance === null) {
-            self::$instance = new self($event);
-        }
-
-        return self::$instance;
+        $this->event = $event;
     }
 
 
@@ -61,19 +70,17 @@ final class UpdatePluginReadme
 
 
     /**
-     * @var Event
-     */
-    private $event;
-
-
-    /**
-     * UpdatePluginReadme constructor
-     *
      * @param Event $event
+     *
+     * @return self
      */
-    private function __construct(Event $event)
+    private static function getInstance(Event $event) : self
     {
-        $this->event = $event;
+        if (self::$instance === null) {
+            self::$instance = new self($event);
+        }
+
+        return self::$instance;
     }
 
 
@@ -82,17 +89,65 @@ final class UpdatePluginReadme
      */
     private function doUpdatePluginReadme()/*: void*/
     {
-        $plugin_composer_json = json_decode(file_get_contents(self::$plugin_root . "/" . self::PLUGIN_COMPOSER_JSON));
+        $this->plugin_composer_json = json_decode(file_get_contents(self::$plugin_root . "/" . self::PLUGIN_COMPOSER_JSON));
 
-        $readme = file_get_contents(self::$plugin_root . "/" . self::PLUGIN_README);
+        $this->readme = file_get_contents(self::$plugin_root . "/" . self::PLUGIN_README);
 
-        $readme = preg_replace("/[*\-]\s*ILIAS\s*[0-9.\- ]+\s*-\s*[0-9.]+/",
-            "* ILIAS " . $plugin_composer_json->ilias_plugin->ilias_min_version . " - " . $plugin_composer_json->ilias_plugin->ilias_max_version,
-            $readme);
+        $old_readme = $this->readme;
 
-        $readme = preg_replace("/[*\-]\s*PHP\s*[0-9.\- <=>]+/", "* PHP " . $plugin_composer_json->require->php,
-            $readme);
+        $this->updateMinMaxIliasVersions();
 
-        file_put_contents(self::$plugin_root . "/" . self::PLUGIN_README, $readme);
+        $this->updateMinPhpVersion();
+
+        $this->updateSlotPath();
+
+        if ($old_readme !== $this->readme) {
+            echo "Store changes in " . self::PLUGIN_README . "
+";
+
+            file_put_contents(self::$plugin_root . "/" . self::PLUGIN_README, $this->readme);
+        } else {
+            echo "No changes in " . self::PLUGIN_README . "
+";
+        }
+    }
+
+
+    /**
+     *
+     */
+    private function updateMinMaxIliasVersions()/* : void*/
+    {
+        echo "Update ILIAS min./max. version in " . self::PLUGIN_README . "
+";
+
+        $this->readme = preg_replace("/[*\-]\s*ILIAS\s*[0-9.\- ]+\s*-\s*[0-9.]+/",
+            "* ILIAS " . $this->plugin_composer_json->ilias_plugin->ilias_min_version . " - " . $this->plugin_composer_json->ilias_plugin->ilias_max_version,
+            $this->readme);
+    }
+
+
+    /**
+     *
+     */
+    private function updateMinPhpVersion()/* : void*/
+    {
+        echo "Update min. PHP version in " . self::PLUGIN_README . "
+";
+
+        $this->readme = preg_replace("/[*\-]\s*PHP\s*[0-9.\- <=>]+/", "* PHP " . $this->plugin_composer_json->require->php,
+            $this->readme);
+    }
+
+
+    /**
+     *
+     */
+    private function updateSlotPath()/* : void*/
+    {
+        echo "Update slot path in " . self::PLUGIN_README . "
+";
+
+        $this->readme = preg_replace("/Customizing\/global\/plugins\/[A-Za-z]+\/[A-Za-z]+\/[A-Za-z]+/", "Customizing/global/plugins/" . $this->plugin_composer_json->ilias_plugin->slot, $this->readme);
     }
 }

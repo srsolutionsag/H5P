@@ -26,6 +26,21 @@ class OrgUnitAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
     /**
      * @inheritDoc
      */
+    public function fillOptions(array $ids) : array
+    {
+        if (!empty($ids)) {
+            return ilOrgUnitPathStorage::where([
+                "ref_id" => $ids
+            ])->getArray("ref_id", "path");
+        } else {
+            return [];
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function searchOptions(string $search = null) : array
     {
         if (!empty($search)) {
@@ -37,20 +52,5 @@ class OrgUnitAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
         }
 
         return $where->orderBy("path")->getArray("ref_id", "path");
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function fillOptions(array $ids) : array
-    {
-        if (!empty($ids)) {
-            return ilOrgUnitPathStorage::where([
-                "ref_id" => $ids
-            ])->getArray("ref_id", "path");
-        } else {
-            return [];
-        }
     }
 }

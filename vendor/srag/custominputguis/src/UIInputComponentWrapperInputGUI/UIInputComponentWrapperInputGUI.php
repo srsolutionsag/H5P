@@ -29,24 +29,6 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      * @var bool
      */
     protected static $init = false;
-
-
-    /**
-     *
-     */
-    public static function init()/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/UIInputComponentWrapperInputGUI.css");
-        }
-    }
-
-
     /**
      * @var Input
      */
@@ -68,6 +50,22 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
         //parent::__construct($title, $post_var);
 
         self::init();
+    }
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/UIInputComponentWrapperInputGUI.css");
+        }
     }
 
 
@@ -125,6 +123,15 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     public function getInput() : Input
     {
         return $this->input;
+    }
+
+
+    /**
+     * @param Input $input
+     */
+    public function setInput(Input $input)/*: void*/
+    {
+        $this->input = $input;
     }
 
 
@@ -238,15 +245,6 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     public function setInfo(/*string*/ $info)/*: void*/
     {
         $this->input = $this->input->withByline($info);
-    }
-
-
-    /**
-     * @param Input $input
-     */
-    public function setInput(Input $input)/*: void*/
-    {
-        $this->input = $input;
     }
 
 

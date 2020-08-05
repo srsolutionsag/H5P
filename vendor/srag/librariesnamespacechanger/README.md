@@ -53,7 +53,7 @@ If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you c
 It uses the https://github.com/ondrejbouda/php7backport.git repo, but provides it as a composer script and patches it, amongst other things, it fix interfaces
 
 ## GeneratePluginPhpAndXml
-Generate `plugin.php` and `plugin.xml` for ILIAS plugins from `composer.json`
+Generate `plugin.php` and `plugin.xml` and `LuceneObjectDefinition.xml` for ILIAS plugins from `composer.json`
 ```json
  "pre-autoload-dump": [
     ...,
@@ -63,24 +63,38 @@ Generate `plugin.php` and `plugin.xml` for ILIAS plugins from `composer.json`
 
 Complete your `composer.json` with
 ```json
-...
+  ...
   "version": "x.y.z",
+  ...
   "ilias_plugin": {
     "id": "x",
     "ilias_min_version": "x.y.z",
     "ilias_max_version": "x.y.z",
+    "learning_progress": true,
+    "lucene_search": true,
+    "supports_export": true,
+    "slot": "x/y/z"
     "events": [
       {
         "id": "X/Y",
         "type": "listen|raise"
       }
     ]
-  }
-...
+  },
+  ...
+  "authors": [
+    {
+      "name": "...",
+      "email": "...",
+      "homepage": "...",
+      "role": "Developer"
+    }
+  ],
+  ...
 ```
 
 ## UpdatePluginReadme
-Update ILIAS min./max. version and PHP versions in `README.md`
+Update ILIAS min./max. versions and min. PHP version and slot path in `README.md`
 ```json
  "pre-autoload-dump": [
     ...,
