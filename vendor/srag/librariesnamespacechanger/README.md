@@ -68,6 +68,7 @@ Complete your `composer.json` with
   ...
   "ilias_plugin": {
     "id": "x",
+    "name" => "X",
     "ilias_min_version": "x.y.z",
     "ilias_max_version": "x.y.z",
     "learning_progress": true,

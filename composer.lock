@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -260,16 +260,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.10.0",
+            "version": "v0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "35efb3557ea2d58ae3ea6133c2d89b3e41cc8564"
+                "reference": "f9e9e85a503ce81d75dbeb29344ded132505714e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/35efb3557ea2d58ae3ea6133c2d89b3e41cc8564",
-                "reference": "35efb3557ea2d58ae3ea6133c2d89b3e41cc8564",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/f9e9e85a503ce81d75dbeb29344ded132505714e",
+                "reference": "f9e9e85a503ce81d75dbeb29344ded132505714e",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-08-05T09:26:53+00:00"
+            "time": "2020-08-05T09:58:29+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",

@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.10.1]
+- Add plugin name to `composer.json`
+
 ## [0.10.0]
 - Auto update `LuceneObjectDefinition.xml` for repository objects
 - Auto update slot path in `README.md`

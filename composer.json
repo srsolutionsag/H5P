@@ -4,6 +4,7 @@
   "version": "2.6.1",
   "ilias_plugin": {
     "id": "xhfp",
+    "name": "H5P",
     "ilias_min_version": "5.4.0",
     "ilias_max_version": "6.999",
     "lucene_search": true,

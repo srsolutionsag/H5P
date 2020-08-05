@@ -244,6 +244,17 @@ require_once __DIR__ . "/vendor/autoload.php";
             $updated_composer_json = true;
         }
 
+        $name = basename(self::$plugin_root);
+        if (empty($this->plugin_composer_json->ilias_plugin->name)) {
+            echo "Update missing " . self::PLUGIN_COMPOSER_JSON . " > ilias_plugin > name (" . ($this->plugin_composer_json->ilias_plugin->name ?? null) . ") from current folder ("
+                . $name . ")
+";
+
+            $this->plugin_composer_json->ilias_plugin->name = $name;
+
+            $updated_composer_json = true;
+        }
+
         $old_ilias_min_version = $this->getOldPluginVar("ilias_min_version");
         if (empty($this->plugin_composer_json->ilias_plugin->ilias_min_version)
             || (!empty($old_ilias_min_version)
@@ -275,7 +286,7 @@ require_once __DIR__ . "/vendor/autoload.php";
         }
 
         if (empty($this->plugin_composer_json->ilias_plugin->slot)) {
-            $plugin_class = "classes/class.il" . basename(self::$plugin_root) . "Plugin.php";
+            $plugin_class = "classes/class.il" . $this->plugin_composer_json->ilias_plugin->name . "Plugin.php";
 
             $plugin_class_code = file_get_contents(self::$plugin_root . "/" . $plugin_class);
 
