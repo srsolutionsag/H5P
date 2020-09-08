@@ -1,11 +1,14 @@
 {
   "name": "srag/plugins/h5p",
   "description": "",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "ilias_plugin": {
     "id": "xhfp",
+    "name": "H5P",
     "ilias_min_version": "5.4.0",
-    "ilias_max_version": "6.999"
+    "ilias_max_version": "6.999",
+    "lucene_search": true,
+    "slot": "Services/Repository/RepositoryObject"
   },
   "type": "project",
   "keywords": [

@@ -23,37 +23,17 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
 
     use DICTrait;
 
+    const SHOW_INPUT_LABEL_ALWAYS = 3;
     const SHOW_INPUT_LABEL_NONE = 1;
     const SHOW_INPUT_LABEL_ONCE = 2;
-    const SHOW_INPUT_LABEL_ALWAYS = 3;
-    /**
-     * @var bool
-     */
-    protected static $init = false;
     /**
      * @var int
      */
     protected static $counter = 0;
-
-
     /**
-     *
+     * @var bool
      */
-    public static function init()/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_line_new_input_gui.css");
-
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/multi_line_new_input_gui.min.js");
-        }
-    }
-
-
+    protected static $init = false;
     /**
      * @var GlyphFactory|GlyphFactory54
      */
@@ -96,6 +76,24 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
             $this->glyph_factory = self::dic()->ui()->factory()->symbol()->glyph();
         } else {
             $this->glyph_factory = self::dic()->ui()->factory()->glyph();
+        }
+    }
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_line_new_input_gui.css");
+
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/multi_line_new_input_gui.min.js");
         }
     }
 
@@ -187,11 +185,30 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
 
 
     /**
+     * @param ilFormPropertyGUI[] $inputs
+     */
+    public function setInputs(array $inputs)/*: void*/
+    {
+        $this->inputs = $inputs;
+        $this->inputs_generated = null;
+    }
+
+
+    /**
      * @return int
      */
     public function getShowInputLabel() : int
     {
         return $this->show_input_label;
+    }
+
+
+    /**
+     * @param int $show_input_label
+     */
+    public function setShowInputLabel(int $show_input_label)/* : void*/
+    {
+        $this->show_input_label = $show_input_label;
     }
 
 
@@ -231,6 +248,19 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
 
 
     /**
+     * @param array $value
+     */
+    public function setValue(/*array*/ $value)/*: void*/
+    {
+        if (is_array($value)) {
+            $this->value = $value;
+        } else {
+            $this->value = [];
+        }
+    }
+
+
+    /**
      * @param ilTemplate $tpl
      */
     public function insert(ilTemplate $tpl)/*: void*/
@@ -249,6 +279,15 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
     public function isShowSort() : bool
     {
         return $this->show_sort;
+    }
+
+
+    /**
+     * @param bool $show_sort
+     */
+    public function setShowSort(bool $show_sort)/* : void*/
+    {
+        $this->show_sort = $show_sort;
     }
 
 
@@ -323,47 +362,6 @@ class MultiLineNewInputGUI extends ilFormPropertyGUI implements ilTableFilterIte
         }
 
         return self::output()->getHTML($tpl);
-    }
-
-
-    /**
-     * @param ilFormPropertyGUI[] $inputs
-     */
-    public function setInputs(array $inputs)/*: void*/
-    {
-        $this->inputs = $inputs;
-        $this->inputs_generated = null;
-    }
-
-
-    /**
-     * @param int $show_input_label
-     */
-    public function setShowInputLabel(int $show_input_label)/* : void*/
-    {
-        $this->show_input_label = $show_input_label;
-    }
-
-
-    /**
-     * @param bool $show_sort
-     */
-    public function setShowSort(bool $show_sort)/* : void*/
-    {
-        $this->show_sort = $show_sort;
-    }
-
-
-    /**
-     * @param array $value
-     */
-    public function setValue(/*array*/ $value)/*: void*/
-    {
-        if (is_array($value)) {
-            $this->value = $value;
-        } else {
-            $this->value = [];
-        }
     }
 
 

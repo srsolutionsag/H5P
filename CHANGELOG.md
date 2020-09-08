@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.2]
+- Fix PHP 7.0
+
 ## [2.6.1]
 - Fix PHP 7.0
 

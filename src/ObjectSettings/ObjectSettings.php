@@ -59,7 +59,7 @@ class ObjectSettings extends ActiveRecord
      * @param int              $primary_key_value
      * @param arConnector|null $connector
      */
-    public function __construct(/*int*/ $primary_key_value = 0, arConnector $connector = null)
+    public function __construct(/*int*/ $primary_key_value = 0, /*?*/ arConnector $connector = null)
     {
         parent::__construct($primary_key_value, $connector);
     }

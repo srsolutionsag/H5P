@@ -829,7 +829,7 @@ class Framework implements H5PFrameworkInterface
                 "embedType" => $h5p_content->getEmbedType(),
                 "disable"   => $h5p_content->getDisable(),
                 "language"  => self::dic()->user()->getLanguage(),
-                "libraryId" => $h5p_content->getLibraryId(),
+                "libraryId" => $h5p_content->getLibraryId()
             ];
 
             $h5p_library = self::h5p()->libraries()->getLibraryById($h5p_content->getLibraryId());
@@ -1005,7 +1005,7 @@ class Framework implements H5PFrameworkInterface
                 $library[$h5p_dependency["dependency_type"] . "Dependencies"][] = [
                     "machineName"  => $h5p_dependency["name"],
                     "majorVersion" => $h5p_dependency["major_version"],
-                    "minorVersion" => $h5p_dependency["minor_version"],
+                    "minorVersion" => $h5p_dependency["minor_version"]
                 ];
             }
 

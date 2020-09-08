@@ -78,7 +78,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      *
      * @param ilObjH5P $a_new_object
      */
-    public function afterSave(/*ilObjH5P*/ ilObject $a_new_object) : void
+    public function afterSave(/*ilObjH5P*/ ilObject $a_new_object)/* : void*/
     {
         parent::afterSave($a_new_object);
     }

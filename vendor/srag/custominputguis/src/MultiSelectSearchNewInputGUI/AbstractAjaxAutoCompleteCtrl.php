@@ -53,6 +53,33 @@ abstract class AbstractAjaxAutoCompleteCtrl
 
 
     /**
+     * @param array $ids
+     *
+     * @return array
+     */
+    public abstract function fillOptions(array $ids) : array;
+
+
+    /**
+     * @param string|null $search
+     *
+     * @return array
+     */
+    public abstract function searchOptions(/*?*/ string $search = null) : array;
+
+
+    /**
+     * @param array $ids
+     *
+     * @return bool
+     */
+    public function validateOptions(array $ids) : bool
+    {
+        return (count($ids) === count($this->fillOptions($ids)));
+    }
+
+
+    /**
      *
      */
     protected function ajaxAutoComplete()/*:void*/
@@ -70,31 +97,4 @@ abstract class AbstractAjaxAutoCompleteCtrl
 
         self::output()->outputJSON(["results" => $options]);
     }
-
-
-    /**
-     * @param array $ids
-     *
-     * @return bool
-     */
-    public function validateOptions(array $ids) : bool
-    {
-        return (count($ids) === count($this->fillOptions($ids)));
-    }
-
-
-    /**
-     * @param string|null $search
-     *
-     * @return array
-     */
-    public abstract function searchOptions(/*?*/ string $search = null) : array;
-
-
-    /**
-     * @param array $ids
-     *
-     * @return array
-     */
-    public abstract function fillOptions(array $ids) : array;
 }

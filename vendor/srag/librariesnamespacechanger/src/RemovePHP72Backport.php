@@ -17,10 +17,6 @@ final class RemovePHP72Backport
 {
 
     /**
-     * @var self|null
-     */
-    private static $instance = null;
-    /**
      * @var array
      */
     private static $exts
@@ -28,34 +24,10 @@ final class RemovePHP72Backport
             "md",
             "php"
         ];
-
-
     /**
-     * @param Event $event
-     *
-     * @return self
+     * @var self|null
      */
-    private static function getInstance(Event $event) : self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self($event);
-        }
-
-        return self::$instance;
-    }
-
-
-    /**
-     * @param Event $event
-     *
-     * @internal
-     */
-    public static function RemovePHP72Backport(Event $event)/*: void*/
-    {
-        self::getInstance($event)->doRemovePHP72Backport();
-    }
-
-
+    private static $instance = null;
     /**
      * @var Event
      */
@@ -74,21 +46,28 @@ final class RemovePHP72Backport
 
 
     /**
+     * @param Event $event
      *
+     * @internal
      */
-    private function doRemovePHP72Backport()/*: void*/
+    public static function removePHP72Backport(Event $event)/*: void*/
     {
-        $files = [];
+        self::getInstance($event)->doRemovePHP72Backport();
+    }
 
-        $this->getFiles(__DIR__ . "/../../../..", $files);
 
-        foreach ($files as $file) {
-            $code = file_get_contents($file);
-
-            $code = $this->removeConvertPHP72To70($code);
-
-            file_put_contents($file, $code);
+    /**
+     * @param Event $event
+     *
+     * @return self
+     */
+    private static function getInstance(Event $event) : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self($event);
         }
+
+        return self::$instance;
     }
 
 
@@ -131,6 +110,25 @@ final class RemovePHP72Backport
 
 
     /**
+     *
+     */
+    private function doRemovePHP72Backport()/*: void*/
+    {
+        $files = [];
+
+        $this->getFiles(__DIR__ . "/../../../..", $files);
+
+        foreach ($files as $file) {
+            $code = file_get_contents($file);
+
+            $code = $this->removeConvertPHP72To70($code);
+
+            file_put_contents($file, $code);
+        }
+    }
+
+
+    /**
      * @param string $folder
      * @param array  $files
      */
@@ -143,6 +141,10 @@ final class RemovePHP72Backport
                 $path = $folder . "/" . $file;
 
                 if (is_dir($path)) {
+                    if (in_array($file, ["templates", "vendor"])) {
+                        continue;
+                    }
+
                     $this->getFiles($path, $files);
                 } else {
                     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));

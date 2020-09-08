@@ -26,31 +26,6 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      * @var bool
      */
     protected static $init = false;
-
-
-    /**
-     *
-     */
-    public static function init()/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_select_search_new_input_gui.css");
-
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
-
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
-                . ".js");
-        }
-    }
-
-
     /**
      * @var AbstractAjaxAutoCompleteCtrl|null
      */
@@ -84,6 +59,29 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
         parent::__construct($title, $post_var);
 
         self::init();
+    }
+
+
+    /**
+     *
+     */
+    public static function init()/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
+
+            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_select_search_new_input_gui.css");
+
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
+
+            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
+                . ".js");
+        }
     }
 
 
@@ -142,19 +140,6 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     * @param array $values
-     *
-     * @return array
-     */
-    protected function cleanValues(array $values) : array
-    {
-        return array_values(array_filter($values, function ($value) : bool {
-            return ($value !== self::EMPTY_PLACEHOLDER);
-        }));
-    }
-
-
-    /**
      * @return AbstractAjaxAutoCompleteCtrl|null
      */
     public function getAjaxAutoCompleteCtrl()/*: ?AbstractAjaxAutoCompleteCtrl*/
@@ -164,11 +149,29 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
+     * @param AbstractAjaxAutoCompleteCtrl|null $ajax_auto_complete_ctrl
+     */
+    public function setAjaxAutoCompleteCtrl(/*?*/ AbstractAjaxAutoCompleteCtrl $ajax_auto_complete_ctrl = null)/*: void*/
+    {
+        $this->ajax_auto_complete_ctrl = $ajax_auto_complete_ctrl;
+    }
+
+
+    /**
      * @return int|null
      */
     public function getLimitCount()/* : ?int*/
     {
         return $this->limit_count;
+    }
+
+
+    /**
+     * @param int|null $limit_count
+     */
+    public function setLimitCount(/*?*/ int $limit_count = null)/* : void*/
+    {
+        $this->limit_count = $limit_count;
     }
 
 
@@ -186,11 +189,29 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
+     * @param int|null $minimum_input_length
+     */
+    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null)/*: void*/
+    {
+        $this->minimum_input_length = $minimum_input_length;
+    }
+
+
+    /**
      * @return array
      */
     public function getOptions() : array
     {
         return $this->options;
+    }
+
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options)/* : void*/
+    {
+        $this->options = $options;
     }
 
 
@@ -218,6 +239,19 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     public function getValue() : array
     {
         return $this->value;
+    }
+
+
+    /**
+     * @param array $value
+     */
+    public function setValue(/*array*/ $value)/*: void*/
+    {
+        if (is_array($value)) {
+            $this->value = $this->cleanValues($value);
+        } else {
+            $this->value = [];
+        }
     }
 
 
@@ -287,59 +321,23 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     * @param AbstractAjaxAutoCompleteCtrl|null $ajax_auto_complete_ctrl
-     */
-    public function setAjaxAutoCompleteCtrl(/*?*/ AbstractAjaxAutoCompleteCtrl $ajax_auto_complete_ctrl = null)/*: void*/
-    {
-        $this->ajax_auto_complete_ctrl = $ajax_auto_complete_ctrl;
-    }
-
-
-    /**
-     * @param int|null $limit_count
-     */
-    public function setLimitCount(/*?*/ int $limit_count = null)/* : void*/
-    {
-        $this->limit_count = $limit_count;
-    }
-
-
-    /**
-     * @param int|null $minimum_input_length
-     */
-    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null)/*: void*/
-    {
-        $this->minimum_input_length = $minimum_input_length;
-    }
-
-
-    /**
-     * @param array $options
-     */
-    public function setOptions(array $options)/* : void*/
-    {
-        $this->options = $options;
-    }
-
-
-    /**
-     * @param array $value
-     */
-    public function setValue(/*array*/ $value)/*: void*/
-    {
-        if (is_array($value)) {
-            $this->value = $this->cleanValues($value);
-        } else {
-            $this->value = [];
-        }
-    }
-
-
-    /**
      * @param array $values
      */
     public function setValueByArray(/*array*/ $values)/*: void*/
     {
         $this->setValue($values[$this->getPostVar()]);
+    }
+
+
+    /**
+     * @param array $values
+     *
+     * @return array
+     */
+    protected function cleanValues(array $values) : array
+    {
+        return array_values(array_filter($values, function ($value) : bool {
+            return ($value !== self::EMPTY_PLACEHOLDER);
+        }));
     }
 }

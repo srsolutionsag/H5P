@@ -23,6 +23,23 @@ class AjaxCheckbox
      * @var bool
      */
     protected static $init = false;
+    /**
+     * @var string
+     */
+    protected $ajax_change_link = "";
+    /**
+     * @var bool
+     */
+    protected $checked = false;
+
+
+    /**
+     * AjaxCheckbox constructor
+     */
+    public function __construct()
+    {
+        self::init();
+    }
 
 
     /**
@@ -40,25 +57,6 @@ class AjaxCheckbox
 
             self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/ajax_checkbox.min.js");
         }
-    }
-
-
-    /**
-     * @var string
-     */
-    protected $ajax_change_link = "";
-    /**
-     * @var bool
-     */
-    protected $checked = false;
-
-
-    /**
-     * AjaxCheckbox constructor
-     */
-    public function __construct()
-    {
-        self::init();
     }
 
 

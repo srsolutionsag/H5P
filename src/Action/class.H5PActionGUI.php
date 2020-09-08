@@ -289,12 +289,12 @@ class H5PActionGUI
     {
         $start = microtime(true);
 
-        $h5P_contents = self::h5p()->contents()->getContentsNotFiltered();
+        $h5p_contents = self::h5p()->contents()->getContentsNotFiltered();
 
         $done = 0;
 
-        foreach ($h5P_contents as $h5P_content) {
-            $content = self::h5p()->contents()->core()->loadContent($h5P_content->getContentId());
+        foreach ($h5p_contents as $h5p_content) {
+            $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
             self::h5p()->contents()->core()->filterParameters($content);
 
@@ -305,7 +305,7 @@ class H5PActionGUI
             }
         }
 
-        self::output()->outputJSON((count($h5P_contents) - $done));
+        self::output()->outputJSON((count($h5p_contents) - $done));
     }
 
 

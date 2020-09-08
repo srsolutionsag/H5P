@@ -23,6 +23,20 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
 
 
     /**
+     * TextInputGUIWithModernAutoComplete constructor
+     *
+     * @param string $a_title
+     * @param string $a_postvar
+     */
+    public function __construct(string $a_title = "", string $a_postvar = "")
+    {
+        parent::__construct($a_title, $a_postvar);
+
+        self::init();
+    }
+
+
+    /**
      *
      */
     public static function init()/*: void*/
@@ -43,20 +57,6 @@ class TextInputGUIWithModernAutoComplete extends TextInputGUI
             self::dic()->ui()->mainTemplate()->addOnLoadCode("il.textinput_more_txt = " . json_encode(self::dic()->language()->txt('autocomplete_more')
                     . ";") . ";");
         }
-    }
-
-
-    /**
-     * TextInputGUIWithModernAutoComplete constructor
-     *
-     * @param string $a_title
-     * @param string $a_postvar
-     */
-    public function __construct(string $a_title = "", string $a_postvar = "")
-    {
-        parent::__construct($a_title, $a_postvar);
-
-        self::init();
     }
 
 

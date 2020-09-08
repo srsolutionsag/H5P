@@ -173,7 +173,7 @@ class ShowHub
             $icon = self::h5p()->contents()->framework()->getLibraryFileUrl(H5PCore::libraryToString([
                 "machineName"  => $name,
                 "majorVersion" => $installed_library->getMajorVersion(),
-                "minorVersion" => $installed_library->getMinorVersion(),
+                "minorVersion" => $installed_library->getMinorVersion()
             ], true), "icon.svg");
             $icon = substr($icon, 1);
             if (!file_exists($icon)) {

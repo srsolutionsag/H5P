@@ -49,18 +49,22 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
     /**
      * @return string
      */
-    protected function getDataUrl() : string
+    public function getHtml() : string
     {
-        return "data:text/html;charset=UTF-8;base64," . base64_encode($this->html);
+        return $this->html;
     }
 
 
     /**
-     * @return string
+     * @param string $html
+     *
+     * @return self
      */
-    public function getHtml() : string
+    public function setHtml(string $html) : self
     {
-        return $this->html;
+        $this->html = $html;
+
+        return $this;
     }
 
 
@@ -100,19 +104,6 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
 
 
     /**
-     * @param string $html
-     *
-     * @return self
-     */
-    public function setHtml(string $html) : self
-    {
-        $this->html = $html;
-
-        return $this;
-    }
-
-
-    /**
      * @param string $title
      *
      * @return self
@@ -144,5 +135,14 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
     public function setValueByArray(/*array*/ $values)/*: void*/
     {
         //throw new ilFormException("StaticHTMLPresentationInputGUI does not support set screenshots!");
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getDataUrl() : string
+    {
+        return "data:text/html;charset=UTF-8;base64," . base64_encode($this->html);
     }
 }

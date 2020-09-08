@@ -15,13 +15,13 @@ class ObjectsAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
 {
 
     /**
-     * @var string
-     */
-    protected $type;
-    /**
      * @var bool
      */
     protected $ref_id;
+    /**
+     * @var string
+     */
+    protected $type;
 
 
     /**
@@ -42,25 +42,6 @@ class ObjectsAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
     /**
      * @inheritDoc
      */
-    public function searchOptions(string $search = null) : array
-    {
-        $result = self::dic()->database()->queryF('
-SELECT ' . ($this->ref_id ? 'object_reference.ref_id' : 'object_data.obj_id') . ', title
-FROM object_data
-INNER JOIN object_reference ON object_data.obj_id=object_reference.obj_id
-WHERE type=%s
-AND object_reference.deleted IS NULL
-' . (!empty($search) ? ' AND ' . self::dic()
-                    ->database()
-                    ->like("title", ilDBConstants::T_TEXT, '%%' . $search . '%%') : '') . ' ORDER BY title ASC', [ilDBConstants::T_TEXT], [$this->type]);
-
-        return $this->formatObjects(self::dic()->database()->fetchAll($result));
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function fillOptions(array $ids) : array
     {
         $result = self::dic()->database()->queryF('
@@ -72,6 +53,25 @@ AND object_reference.deleted IS NULL
 AND ' . self::dic()
                 ->database()
                 ->in(($this->ref_id ? 'object_reference.ref_id' : 'object_data.obj_id'), $ids, false, ilDBConstants::T_INTEGER) . ' ORDER BY title ASC', [ilDBConstants::T_TEXT], [$this->type]);
+
+        return $this->formatObjects(self::dic()->database()->fetchAll($result));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function searchOptions(string $search = null) : array
+    {
+        $result = self::dic()->database()->queryF('
+SELECT ' . ($this->ref_id ? 'object_reference.ref_id' : 'object_data.obj_id') . ', title
+FROM object_data
+INNER JOIN object_reference ON object_data.obj_id=object_reference.obj_id
+WHERE type=%s
+AND object_reference.deleted IS NULL
+' . (!empty($search) ? ' AND ' . self::dic()
+                    ->database()
+                    ->like("title", ilDBConstants::T_TEXT, '%%' . $search . '%%') : '') . ' ORDER BY title ASC', [ilDBConstants::T_TEXT], [$this->type]);
 
         return $this->formatObjects(self::dic()->database()->fetchAll($result));
     }

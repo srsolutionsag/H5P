@@ -27,15 +27,6 @@ class UsersAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
     /**
      * @inheritDoc
      */
-    public function searchOptions(string $search = null) : array
-    {
-        return $this->formatUsers(ilObjUser::searchUsers($search));
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function fillOptions(array $ids) : array
     {
         return $this->formatUsers(self::dic()->database()->fetchAll(self::dic()->database()->queryF('
@@ -46,6 +37,15 @@ AND usr_id!=%s
 AND ' . self::dic()
                 ->database()
                 ->in("usr_id", $ids, false, ilDBConstants::T_INTEGER), [ilDBConstants::T_INTEGER], [ANONYMOUS_USER_ID])));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function searchOptions(string $search = null) : array
+    {
+        return $this->formatUsers(ilObjUser::searchUsers($search));
     }
 
 
