@@ -1,7 +1,7 @@
 {
   "name": "srag/plugins/h5p",
   "description": "",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "ilias_plugin": {
     "id": "xhfp",
     "name": "H5P",
