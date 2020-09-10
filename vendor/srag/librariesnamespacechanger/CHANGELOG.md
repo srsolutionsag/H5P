@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.10.3]
+- PHP72Backport fix `&`
+
 ## [0.10.2]
 - Remove repository object check
 

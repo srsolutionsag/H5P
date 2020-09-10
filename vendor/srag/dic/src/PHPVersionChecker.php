@@ -41,6 +41,15 @@ final class PHPVersionChecker
 
 
     /**
+     * PHPVersionChecker constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      *
      */
     public static function checkPHPVersionOutput()/*: void*/
@@ -133,15 +142,6 @@ final class PHPVersionChecker
 
             return preg_replace("/\/+/", "/", "$a/$b");
         }, "/");
-    }
-
-
-    /**
-     * PHPVersionChecker constructor
-     */
-    private function __construct()
-    {
-
     }
 }
 

@@ -23,12 +23,14 @@ class ObjectChildrenAjaxAutoCompleteCtrl extends ObjectsAjaxAutoCompleteCtrl
     /**
      * ObjectChildrenAjaxAutoCompleteCtrl constructor
      *
-     * @param string   $type
-     * @param int|null $parent_ref_id
+     * @param string     $type
+     * @param int|null   $parent_ref_id
+     *
+     * @param array|null $skip_ids
      */
-    public function __construct(string $type,/*?*/ int $parent_ref_id = null)
+    public function __construct(string $type,/*?*/ int $parent_ref_id = null,/*?*/ array $skip_ids = null)
     {
-        parent::__construct($type, ($type === "orgu"));
+        parent::__construct($type, ($type === "orgu"), $skip_ids);
 
         $this->parent_ref_id = $parent_ref_id ?? ($type === "orgu" ? ilObjOrgUnit::getRootOrgRefId() : 1);
     }
@@ -37,7 +39,7 @@ class ObjectChildrenAjaxAutoCompleteCtrl extends ObjectsAjaxAutoCompleteCtrl
     /**
      * @inheritDoc
      */
-    public function searchOptions(string $search = null) : array
+    public function searchOptions(/*?*/ string $search = null) : array
     {
         $org_units = [];
 
@@ -49,6 +51,6 @@ class ObjectChildrenAjaxAutoCompleteCtrl extends ObjectsAjaxAutoCompleteCtrl
             $org_units[$item["child"]] = $item["title"];
         }
 
-        return $org_units;
+        return $this->skipIds($org_units);
     }
 }

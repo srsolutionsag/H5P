@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\H5P\DevTools\DevToolsCtrl;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -9,9 +10,10 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 /**
  * Class ilH5PConfigGUI
  *
- * @author       studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
- * @ilCtrl_Calls ilH5PConfigGUI: srag\Plugins\H5P\Action\H5PActionGUI
+ * @ilCtrl_Calls      ilH5PConfigGUI: srag\Plugins\H5P\Action\H5PActionGUI
+ * @ilCtrl_isCalledBy srag\DIC\H5P\DevTools\DevToolsCtrl: ilH5PConfigGUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI
 {
@@ -55,6 +57,10 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
         switch (strtolower($next_class)) {
+            case strtolower(DevToolsCtrl::class):
+                self::dic()->ctrl()->forwardCommand(new DevToolsCtrl($this, self::plugin()));
+                break;
+
             case strtolower(H5PActionGUI::class):
                 self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
                 break;
@@ -254,6 +260,8 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
         self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
 
         self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("settings"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_SETTINGS));
+
+        DevToolsCtrl::addTabs(self::plugin());
 
         self::dic()->locator()->addItem(ilH5PPlugin::PLUGIN_NAME, self::dic()->ctrl()->getLinkTarget($this, self::CMD_CONFIGURE));
     }

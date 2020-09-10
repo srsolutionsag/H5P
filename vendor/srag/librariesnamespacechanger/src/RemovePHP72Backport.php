@@ -95,7 +95,7 @@ final class RemovePHP72Backport
             $function = preg_replace("/([(,]\s*)\/\*(\s*object\s*)\*\/(\s*\\$" . PHP72Backport::REGEXP_NAME . ")/", '$1$2$3', $function);
 
             // ?type $param
-            $function = preg_replace("/([(,]\s*)\/\*(\s*\?\s*" . PHP72Backport::REGEXP_NAME . "\s*)\*\/(\s*\\$" . PHP72Backport::REGEXP_NAME . ")/", '$1$2$3', $function);
+            $function = preg_replace("/([(,]\s*)\/\*(\s*\?\s*" . PHP72Backport::REGEXP_NAME . "\s*)\*\/(\s*&?\s*?\\$" . PHP72Backport::REGEXP_NAME . ")/", '$1$2$3', $function);
 
             return $function;
         }, $code);

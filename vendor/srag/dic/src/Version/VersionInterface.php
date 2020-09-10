@@ -23,6 +23,18 @@ interface VersionInterface
 
 
     /**
+     * @return bool
+     */
+    public function is54() : bool;
+
+
+    /**
+     * @return bool
+     */
+    public function is6() : bool;
+
+
+    /**
      * @param string $version
      *
      * @return bool
@@ -60,16 +72,4 @@ interface VersionInterface
      * @return bool
      */
     public function isMinVersion(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function is54() : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function is6() : bool;
 }

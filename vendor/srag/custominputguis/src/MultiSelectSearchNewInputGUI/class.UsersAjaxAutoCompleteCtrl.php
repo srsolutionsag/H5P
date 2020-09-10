@@ -17,10 +17,12 @@ class UsersAjaxAutoCompleteCtrl extends AbstractAjaxAutoCompleteCtrl
 
     /**
      * UsersAjaxAutoCompleteCtrl constructor
+     *
+     * @param array|null $skip_ids
      */
-    public function __construct()
+    public function __construct(/*?*/ array $skip_ids = null)
     {
-        parent::__construct();
+        parent::__construct($skip_ids);
     }
 
 
@@ -43,7 +45,7 @@ AND ' . self::dic()
     /**
      * @inheritDoc
      */
-    public function searchOptions(string $search = null) : array
+    public function searchOptions(/*?*/ string $search = null) : array
     {
         return $this->formatUsers(ilObjUser::searchUsers($search));
     }
@@ -62,6 +64,6 @@ AND ' . self::dic()
             $formatted_users[$user["usr_id"]] = $user["firstname"] . " " . $user["lastname"] . " (" . $user["login"] . ")";
         }
 
-        return $formatted_users;
+        return $this->skipIds($formatted_users);
     }
 }
