@@ -109,7 +109,7 @@ final class PHP72Backport
             $function = preg_replace("/([(,]\s*)(object)(\s*\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);
 
             // ?type $param
-            $function = preg_replace("/([(,]\s*)(\?\s*" . self::REGEXP_NAME . ")(\s*\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);
+            $function = preg_replace("/([(,]\s*)(\?\s*" . self::REGEXP_NAME . ")(\s*&?\s*?\\$" . self::REGEXP_NAME . ")/", '$1/*$2*/$3', $function);
 
             return $function;
         }, $code);

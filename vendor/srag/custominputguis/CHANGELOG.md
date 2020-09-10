@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.39.0]
+- Support `MultiLineNewInputGUI` in `TableGUI`
+
+## [0.38.0]
+- `AjaxAutoCompleteCtrl` skip ids
+
 ## [0.37.0]
 - Move `PieChart` and `LearningProgressPieUI` to seperate libraries
 

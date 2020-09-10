@@ -42,7 +42,7 @@ class TextAreaInputGUI extends ilTextAreaInputGUI
             'p',
             'br',
             'b',
-            'span',
+            'span'
         ));
         $this->usePurifier(true);
         $this->disableButtons(array(
@@ -59,7 +59,7 @@ class TextAreaInputGUI extends ilTextAreaInputGUI
             'copy',
             'paste',
             'pastetext',
-            'formatselect',
+            'formatselect'
         ));
     }
 

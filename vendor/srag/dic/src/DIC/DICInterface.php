@@ -204,6 +204,12 @@ interface DICInterface
 
 
     /**
+     * @return Container
+     */
+    public function &dic() : Container;
+
+
+    /**
      * @return ilErrorHandling
      */
     public function error() : ilErrorHandling;
@@ -336,15 +342,15 @@ interface DICInterface
     /**
      * @return ilMMItemRepository
      */
-    public function mainMenuItem() : ilMMItemRepository;
-
+    public function mainMenuItem() : ilMMItemRepository;/*: ilGlobalTemplateInterface*/
 
     /**
      * @return ilTemplate|ilGlobalTemplateInterface
      *
      * @deprecated Please use `self::dic()->ui()->mainTemplate()`
      */
-    public function mainTemplate();/*: ilGlobalTemplateInterface*/
+    public function mainTemplate();
+
 
     /**
      * @return ilNewsService
@@ -371,6 +377,12 @@ interface DICInterface
 
 
     /**
+     * @return ilPluginAdmin
+     */
+    public function pluginAdmin() : ilPluginAdmin;
+
+
+    /**
      * @return ilAsqFactory
      *
      * @throws DICException ilAsqFactory not exists in ILIAS 5.4 or below!
@@ -378,12 +390,6 @@ interface DICInterface
      * @since ILIAS 6
      */
     public function question() : ilAsqFactory;
-
-
-    /**
-     * @return ilPluginAdmin
-     */
-    public function pluginAdmin() : ilPluginAdmin;
 
 
     /**
@@ -526,10 +532,4 @@ interface DICInterface
      * @return ilObjUser
      */
     public function user() : ilObjUser;
-
-
-    /**
-     * @return Container
-     */
-    public function &dic() : Container;
 }

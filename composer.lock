@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4e6873e3c47ba7f0311d51ea9fee070",
+    "content-hash": "8aa827d3939e67693b3ab25d39759afa",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -168,16 +168,16 @@
         },
         {
             "name": "srag/custominputguis",
-            "version": "v0.37.0",
+            "version": "v0.39.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "0a0819d962d126f940b083c59a8ad99646a358af"
+                "reference": "ed5104c739424334a27d14d0fa8ffb765051444b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/0a0819d962d126f940b083c59a8ad99646a358af",
-                "reference": "0a0819d962d126f940b083c59a8ad99646a358af",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/ed5104c739424334a27d14d0fa8ffb765051444b",
+                "reference": "ed5104c739424334a27d14d0fa8ffb765051444b",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\H5P\\": "src/"
+                    "srag\\CustomInputGUIs\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -211,20 +211,20 @@
                 "input",
                 "table"
             ],
-            "time": "2020-07-22T13:00:47+00:00"
+            "time": "2020-09-02T06:57:44+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "v0.25.1",
+            "version": "v0.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "022cb0b92b003096380055a450597a5dbdbbe831"
+                "reference": "51afc373d1c9c8ee0fd26c381ed1a81e295afb3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/022cb0b92b003096380055a450597a5dbdbbe831",
-                "reference": "022cb0b92b003096380055a450597a5dbdbbe831",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/51afc373d1c9c8ee0fd26c381ed1a81e295afb3f",
+                "reference": "51afc373d1c9c8ee0fd26c381ed1a81e295afb3f",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\H5P\\": "src/"
+                    "srag\\DIC\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -256,20 +256,20 @@
                 "globals",
                 "trait"
             ],
-            "time": "2020-06-09T05:30:37+00:00"
+            "time": "2020-09-10T10:49:18+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.10.2",
+            "version": "v0.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "8356263f5cb8d73ec05afa88712794fb0781711d"
+                "reference": "d0bf77414b86c2e830e1592f73f37a03406f3266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/8356263f5cb8d73ec05afa88712794fb0781711d",
-                "reference": "8356263f5cb8d73ec05afa88712794fb0781711d",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/d0bf77414b86c2e830e1592f73f37a03406f3266",
+                "reference": "d0bf77414b86c2e830e1592f73f37a03406f3266",
                 "shasum": ""
             },
             "require": {
@@ -299,20 +299,20 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-08-05T12:50:30+00:00"
+            "time": "2020-09-03T12:54:11+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "v0.6.4",
+            "version": "v0.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "fa45bd96920e5a28577810c3d28900dc8083fc6f"
+                "reference": "2e07afde4d42c73a8d66b5dcff9b45e517a93e24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/fa45bd96920e5a28577810c3d28900dc8083fc6f",
-                "reference": "fa45bd96920e5a28577810c3d28900dc8083fc6f",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/2e07afde4d42c73a8d66b5dcff9b45e517a93e24",
+                "reference": "2e07afde4d42c73a8d66b5dcff9b45e517a93e24",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -346,7 +346,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2020-06-02T12:52:50+00:00"
+            "time": "2020-09-10T07:00:17+00:00"
         }
     ],
     "packages-dev": [],

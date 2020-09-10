@@ -40,17 +40,17 @@ abstract class AbstractLoaderDetector implements Loader
     /**
      * @inheritDoc
      */
-    public function getRendererFor(Component $component, array $contexts) : ComponentRenderer
+    public function getRendererFactoryFor(Component $component) : RendererFactory
     {
-        return $this->loader->getRendererFor($component, $contexts);
+        return $this->loader->getRendererFactoryFor($component);
     }
 
 
     /**
      * @inheritDoc
      */
-    public function getRendererFactoryFor(Component $component) : RendererFactory
+    public function getRendererFor(Component $component, array $contexts) : ComponentRenderer
     {
-        return $this->loader->getRendererFactoryFor($component);
+        return $this->loader->getRendererFor($component, $contexts);
     }
 }

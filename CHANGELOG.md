@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.6.3]
+- Fix update plugin may not work complete
+- Dev tools
+
 ## [2.6.2]
 - Fix PHP 7.0
 

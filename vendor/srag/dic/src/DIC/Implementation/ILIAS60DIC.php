@@ -224,6 +224,15 @@ final class ILIAS60DIC extends AbstractDIC
     /**
      * @inheritDoc
      */
+    public function &dic() : Container
+    {
+        return $this->dic;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function error() : ilErrorHandling
     {
         return $this->dic["ilErr"];
@@ -660,14 +669,5 @@ final class ILIAS60DIC extends AbstractDIC
     public function user() : ilObjUser
     {
         return $this->dic->user();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function &dic() : Container
-    {
-        return $this->dic;
     }
 }

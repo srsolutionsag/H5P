@@ -20,6 +20,19 @@ final class PdoStatementContextHelper extends ilPDOStatement
 {
 
     /**
+     * PdoStatementContextHelper constructor
+     *
+     * @throws DICException
+     */
+    public function __construct()
+    {
+        throw new DICException("");
+
+        parent::__construct(self::getPdoStatement($this));
+    }
+
+
+    /**
      * @param ilDBStatement $stm
      *
      * @return PDOStatement
@@ -35,18 +48,5 @@ final class PdoStatementContextHelper extends ilPDOStatement
         }
 
         return $stm->pdo_statement;
-    }
-
-
-    /**
-     * PdoStatementContextHelper constructor
-     *
-     * @throws DICException
-     */
-    public function __construct()
-    {
-        throw new DICException("");
-
-        parent::__construct(self::getPdoStatement($this));
     }
 }

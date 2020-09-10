@@ -22,22 +22,13 @@ final class LibraryLanguageInstaller implements Pluginable
     use DICTrait;
 
     /**
-     * @return self
+     * @var string
      */
-    public static function getInstance() : self
-    {
-        return new self();
-    }
-
-
+    protected $library_language_directory = "";
     /**
      * @var PluginInterface|null
      */
     protected $plugin = null;
-    /**
-     * @var string
-     */
-    protected $library_language_directory = "";
 
 
     /**
@@ -50,35 +41,20 @@ final class LibraryLanguageInstaller implements Pluginable
 
 
     /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        return new self();
+    }
+
+
+    /**
      * @inheritDoc
      */
     public function getPlugin() : PluginInterface
     {
         return $this->plugin;
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function withPlugin(PluginInterface $plugin) : self
-    {
-        $this->plugin = $plugin;
-
-        return $this;
-    }
-
-
-    /**
-     * @param string $library_language_directory
-     *
-     * @return self
-     */
-    public function withLibraryLanguageDirectory(string $library_language_directory) : self
-    {
-        $this->library_language_directory = $library_language_directory;
-
-        return $this;
     }
 
 
@@ -143,6 +119,30 @@ final class LibraryLanguageInstaller implements Pluginable
 
             ilObjLanguage::replaceLangModule($lang["key"], $prefix, $lang_array);
         }
+    }
+
+
+    /**
+     * @param string $library_language_directory
+     *
+     * @return self
+     */
+    public function withLibraryLanguageDirectory(string $library_language_directory) : self
+    {
+        $this->library_language_directory = $library_language_directory;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function withPlugin(PluginInterface $plugin) : self
+    {
+        $this->plugin = $plugin;
+
+        return $this;
     }
 
 

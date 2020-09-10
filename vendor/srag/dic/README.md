@@ -280,6 +280,65 @@ self::dic()->database()->createOrUpdateTable($table_name, $columns, $primary_col
         ])
 ```
 
+## DevToolsCtrl
+
+Add to your plugin class
+
+```php
+...
+use srag\DIC\H5P\x\DevTools\DevToolsCtrl;
+...
+    /**
+     * @inheritDoc
+     */
+    public function updateLanguages(/*?array*/ $a_lang_keys = null)/* : void*/
+    {
+        parent::updateLanguages($a_lang_keys);
+        ...
+        DevToolsCtrl::installLanguages(self::plugin());
+    }
+...
+```
+
+Add to your plugin config class
+```php
+...
+use srag\DIC\H5P\x\DevTools\DevToolsCtrl;
+...
+/**
+ * ...
+ * @ilCtrl_isCalledBy srag\DIC\H5P\x\DevTools\DevToolsCtrl: ilXConfigGUI
+ */
+class ...
+...
+    /**
+     * @inheritDoc
+     */
+    public function performCommand(/*string*/ $cmd)/*:void*/
+    {
+        ...
+        switch (strtolower($next_class)) {
+            ...
+            case strtolower(DevToolsCtrl::class):
+                self::dic()->ctrl()->forwardCommand(new DevToolsCtrl($this, self::plugin()));
+                break;
+            ...
+        }
+        ...
+    }
+...
+    /**
+     *
+     */
+    protected function setTabs()/*: void*/
+    {
+        ...
+        DevToolsCtrl::addTabs(self::plugin());
+        ...
+    }
+...
+```
+
 ## Requirements
 * ILIAS 5.4 or ILIAS 6
 * PHP >=7.0

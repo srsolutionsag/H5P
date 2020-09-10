@@ -84,6 +84,7 @@ return array(
     'srag\\DIC\\H5P\\Database\\DatabaseInterface' => $vendorDir . '/srag/dic/src/Database/DatabaseInterface.php',
     'srag\\DIC\\H5P\\Database\\PdoContextHelper' => $vendorDir . '/srag/dic/src/Database/PdoContextHelper.php',
     'srag\\DIC\\H5P\\Database\\PdoStatementContextHelper' => $vendorDir . '/srag/dic/src/Database/PdoStatementContextHelper.php',
+    'srag\\DIC\\H5P\\DevTools\\DevToolsCtrl' => $vendorDir . '/srag/dic/src/DevTools/class.DevToolsCtrl.php',
     'srag\\DIC\\H5P\\Exception\\DICException' => $vendorDir . '/srag/dic/src/Exception/DICException.php',
     'srag\\DIC\\H5P\\Loader\\AbstractLoaderDetector' => $vendorDir . '/srag/dic/src/Loader/AbstractLoaderDetector.php',
     'srag\\DIC\\H5P\\Output\\Output' => $vendorDir . '/srag/dic/src/Output/Output.php',

@@ -44,6 +44,15 @@ final class DICStatic implements DICStaticInterface
 
 
     /**
+     * DICStatic constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @inheritDoc
      *
      * @deprecated
@@ -136,14 +145,5 @@ final class DICStatic implements DICStaticInterface
         }
 
         return self::$version;
-    }
-
-
-    /**
-     * DICStatic constructor
-     */
-    private function __construct()
-    {
-
     }
 }

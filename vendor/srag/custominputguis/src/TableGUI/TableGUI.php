@@ -7,6 +7,7 @@ use ilExcel;
 use ilFormPropertyGUI;
 use ilHtmlToPdfTransformerFactory;
 use ilTable2GUI;
+use srag\CustomInputGUIs\H5P\MultiLineNewInputGUI\MultiLineNewInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
 use srag\CustomInputGUIs\H5P\TableGUI\Exception\TableGUIException;
@@ -189,6 +190,24 @@ abstract class TableGUI extends ilTable2GUI
             /*if (!($item instanceof ilTableFilterItem)) {
                 throw new TableGUIException("\$item must be an instance of ilTableFilterItem!", TableGUIException::CODE_INVALID_FIELD);
             }*/
+
+            if ($item instanceof MultiLineNewInputGUI) {
+                if (is_array($field[PropertyFormGUI::PROPERTY_SUBITEMS])) {
+                    foreach ($field[PropertyFormGUI::PROPERTY_SUBITEMS] as $child_key => $child_field) {
+                        if (!is_array($child_field)) {
+                            throw new TableGUIException("\$fields needs to be an array!", TableGUIException::CODE_INVALID_FIELD);
+                        }
+
+                        if ($child_field[PropertyFormGUI::PROPERTY_NOT_ADD]) {
+                            continue;
+                        }
+
+                        $child_item = Items::getItem($child_key, $child_field, $item, $this);
+
+                        $item->addInput($child_item);
+                    }
+                }
+            }
 
             $this->filter_cache[$key] = $item;
 

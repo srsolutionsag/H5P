@@ -4,6 +4,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use ILIAS\DI\Container;
 use srag\CustomInputGUIs\H5P\Loader\CustomInputGUIsLoaderDetector;
+use srag\DIC\H5P\DevTools\DevToolsCtrl;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 
@@ -84,6 +85,8 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
         parent::updateLanguages($a_lang_keys);
 
         $this->installRemovePluginDataConfirmLanguages();
+
+        DevToolsCtrl::installLanguages(self::plugin());
     }
 
 
