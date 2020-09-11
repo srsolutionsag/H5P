@@ -193,7 +193,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 
         $text = [];
 
-        preg_match('/\\$' . $variable . '\\s*=\\s*["\']?(.+)["\']?\\s*;/', $plugin_php, $text);
+        preg_match('/\\$' . $variable . '\\s*=\\s*["\']?([^"\']+)["\']?\\s*;/', $plugin_php, $text);
 
         if (is_array($text) && count($text) > 1) {
             $text = $text[1];
