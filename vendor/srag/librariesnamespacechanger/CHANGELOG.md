@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.10.4]
+- Fix `getOldPluginVar` may contains `"`
+
 ## [0.10.3]
 - PHP72Backport fix `&`
 

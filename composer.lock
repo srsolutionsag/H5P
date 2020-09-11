@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8aa827d3939e67693b3ab25d39759afa",
+    "content-hash": "f5eb42a8f3c4573343a1e12ab8db2146",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -260,16 +260,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.10.3",
+            "version": "v0.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "d0bf77414b86c2e830e1592f73f37a03406f3266"
+                "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/d0bf77414b86c2e830e1592f73f37a03406f3266",
-                "reference": "d0bf77414b86c2e830e1592f73f37a03406f3266",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf71c18cd46491444f1bd3daefb0aace41bc790f",
+                "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-09-03T12:54:11+00:00"
+            "time": "2020-09-11T10:39:59+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
