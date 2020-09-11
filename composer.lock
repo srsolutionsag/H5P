@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8aa827d3939e67693b3ab25d39759afa",
+    "content-hash": "f5eb42a8f3c4573343a1e12ab8db2146",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
