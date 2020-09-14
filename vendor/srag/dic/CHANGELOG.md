@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.27.0]
+- `Ilias7PreWarn`
+
 ## [0.26.0]
 - `DevToolsCtrl`
 
