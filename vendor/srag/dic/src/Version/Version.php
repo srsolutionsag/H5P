@@ -51,6 +51,15 @@ final class Version implements VersionInterface
     /**
      * @inheritDoc
      */
+    public function is7() : bool
+    {
+        return $this->isMinVersion(self::ILIAS_VERSION_7);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function isEqual(string $version) : bool
     {
         return (version_compare($this->getILIASVersion(), $version) === 0);

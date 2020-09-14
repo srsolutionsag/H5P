@@ -1,7 +1,7 @@
 {
   "name": "srag/plugins/h5p",
   "description": "",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "ilias_plugin": {
     "id": "xhfp",
     "name": "H5P",
@@ -47,7 +47,8 @@
       "classes/"
     ],
     "files": [
-      "vendor/srag/dic/src/PHPVersionChecker.php"
+      "vendor/srag/dic/src/PHPVersionChecker.php",
+      "vendor/srag/dic/src/Ilias7PreWarn.php"
     ]
   },
   "config": {

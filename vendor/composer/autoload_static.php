@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
+class ComposerStaticInit88baa161189e04dba39b37c134f2f644
 {
     public static $files = array (
         '0c6f877f03a67a7485a2a748706e2f2f' => __DIR__ . '/..' . '/h5p/h5p-core/h5p.classes.php',
@@ -19,22 +19,23 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         '920009c17c818a2668db044d76f129b9' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-storage.interface.php',
         '101279c1523ab77899b4b6921c749836' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
         '2f3eb78b1f5e6431663d5e8ab8aaf348' => __DIR__ . '/..' . '/srag/dic/src/PHPVersionChecker.php',
+        'd23f514274e4f99d3dd9ac0b3e068b38' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
+            'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\H5P\\' => 13,
-            'srag\\CustomInputGUIs\\H5P\\' => 25,
-            'srag\\ActiveRecordConfig\\H5P\\' => 28,
+            'srag\\DIC\\' => 9,
+            'srag\\CustomInputGUIs\\' => 21,
+            'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\H5P\\' => 
+        'srag\\RemovePluginDataConfirm\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -46,15 +47,15 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\H5P\\' => 
+        'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\H5P\\' => 
+        'srag\\CustomInputGUIs\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
-        'srag\\ActiveRecordConfig\\H5P\\' => 
+        'srag\\ActiveRecordConfig\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
@@ -141,6 +142,7 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
         'srag\\DIC\\H5P\\Database\\PdoStatementContextHelper' => __DIR__ . '/..' . '/srag/dic/src/Database/PdoStatementContextHelper.php',
         'srag\\DIC\\H5P\\DevTools\\DevToolsCtrl' => __DIR__ . '/..' . '/srag/dic/src/DevTools/class.DevToolsCtrl.php',
         'srag\\DIC\\H5P\\Exception\\DICException' => __DIR__ . '/..' . '/srag/dic/src/Exception/DICException.php',
+        'srag\\DIC\\H5P\\Ilias7PreWarn' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
         'srag\\DIC\\H5P\\Loader\\AbstractLoaderDetector' => __DIR__ . '/..' . '/srag/dic/src/Loader/AbstractLoaderDetector.php',
         'srag\\DIC\\H5P\\Output\\Output' => __DIR__ . '/..' . '/srag/dic/src/Output/Output.php',
         'srag\\DIC\\H5P\\Output\\OutputInterface' => __DIR__ . '/..' . '/srag/dic/src/Output/OutputInterface.php',
@@ -220,9 +222,9 @@ class ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf383888c8d2425b8f2c37ccff0a84479::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit88baa161189e04dba39b37c134f2f644::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit88baa161189e04dba39b37c134f2f644::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit88baa161189e04dba39b37c134f2f644::$classMap;
 
         }, null, ClassLoader::class);
     }

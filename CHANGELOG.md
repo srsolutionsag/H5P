@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.4]
+- `Ilias7PreWarn`
+
 ## [2.6.3]
 - Fix update plugin may not work complete
 - Dev tools
