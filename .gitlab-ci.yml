@@ -1,5 +1,6 @@
 include:
-  remote: https://git.studer-raimann.ch/gitlab-ci/templates/review_apps.yml
+  - https://git.studer-raimann.ch/gitlab-ci/templates/review_apps.yml
+  - /vendor/srag/librariesnamespacechanger/auto_version_tag_ci/auto_version_tag_ci.yml
 
 variables:
   REVIEW_APP_IMAGE: sturai/ilias-dev:latest

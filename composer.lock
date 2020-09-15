@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e81ace444d98b0a252566afcf8ca912",
+    "content-hash": "d7779b75e5883971d39fe3f59042329c",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -142,7 +142,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\": "src/"
+                    "srag\\ActiveRecordConfig\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -233,7 +233,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -260,16 +260,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.10.4",
+            "version": "v0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f"
+                "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf71c18cd46491444f1bd3daefb0aace41bc790f",
-                "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
+                "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-09-11T10:39:59+00:00"
+            "time": "2020-09-15T12:04:39+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
@@ -322,7 +322,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
