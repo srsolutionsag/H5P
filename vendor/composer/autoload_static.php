@@ -25,17 +25,17 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\' => 29,
+            'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
-            'srag\\CustomInputGUIs\\' => 21,
-            'srag\\ActiveRecordConfig\\' => 24,
+            'srag\\DIC\\H5P\\' => 13,
+            'srag\\CustomInputGUIs\\H5P\\' => 25,
+            'srag\\ActiveRecordConfig\\H5P\\' => 28,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\' => 
+        'srag\\RemovePluginDataConfirm\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -47,15 +47,15 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\' => 
+        'srag\\CustomInputGUIs\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
-        'srag\\ActiveRecordConfig\\' => 
+        'srag\\ActiveRecordConfig\\H5P\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
@@ -204,8 +204,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\Plugins\\H5P\\ObjectSettings\\Form\\FormBuilder' => __DIR__ . '/../..' . '/src/ObjectSettings/Form/FormBuilder.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\ObjectSettings' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettings.php',
         'srag\\Plugins\\H5P\\ObjectSettings\\Repository' => __DIR__ . '/../..' . '/src/ObjectSettings/Repository.php',
-        'srag\\Plugins\\H5P\\Options\\Factory' => __DIR__ . '/../..' . '/src/Option/Factory.php',
-        'srag\\Plugins\\H5P\\Options\\Repository' => __DIR__ . '/../..' . '/src/Option/Repository.php',
+        'srag\\Plugins\\H5P\\Options\\Factory' => __DIR__ . '/../..' . '/src/Options/Factory.php',
+        'srag\\Plugins\\H5P\\Options\\Repository' => __DIR__ . '/../..' . '/src/Options/Repository.php',
         'srag\\Plugins\\H5P\\Repository' => __DIR__ . '/../..' . '/src/Repository.php',
         'srag\\Plugins\\H5P\\Result\\Factory' => __DIR__ . '/../..' . '/src/Result/Factory.php',
         'srag\\Plugins\\H5P\\Result\\Repository' => __DIR__ . '/../..' . '/src/Result/Repository.php',
