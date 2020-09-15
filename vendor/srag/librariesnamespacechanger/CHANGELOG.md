@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.11.0]
+- auto_version_tag_ci
+
 ## [0.10.4]
 - Fix `getOldPluginVar` may contains `"`
 

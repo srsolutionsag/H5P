@@ -1,0 +1,7 @@
+auto_version_tag_ci:
+  stage: deploy
+  image: composer:1
+  script:
+    - php vendor/srag/librariesnamespacechanger/auto_version_tag_ci/auto_version_tag_ci.php
+  only:
+    - /^master$/

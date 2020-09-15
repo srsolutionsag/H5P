@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.5]
+- Auto tag new releases
+
 ## [2.6.4]
 - `Ilias7PreWarn`
 
