@@ -263,23 +263,23 @@
     },
     {
         "name": "srag/librariesnamespacechanger",
-        "version": "v0.11.0",
-        "version_normalized": "0.11.0.0",
+        "version": "0.11.1",
+        "version_normalized": "0.11.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2"
+            "reference": "09e5b6ecbe503e6bb04f6742ce2a076e0236a3fa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
-            "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/09e5b6ecbe503e6bb04f6742ce2a076e0236a3fa",
+            "reference": "09e5b6ecbe503e6bb04f6742ce2a076e0236a3fa",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-09-15T12:04:39+00:00",
+        "time": "2020-09-16T06:32:24+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
