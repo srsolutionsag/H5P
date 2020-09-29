@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.11.2]
+- auto_version_tag_ci
+
+## [0.11.1]
+- auto_version_tag_ci
+
 ## [0.11.0]
 - auto_version_tag_ci
 

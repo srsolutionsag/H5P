@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.6]
+- Fix H5P contents in accordions
+
 ## [2.6.5]
 - Auto tag new releases
 

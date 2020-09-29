@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7779b75e5883971d39fe3f59042329c",
+    "content-hash": "14b5b029ea451d4e97b9862ca3a79ae8",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -260,16 +260,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.11.0",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2"
+                "reference": "bdb217950c262ab9110c18794241351dac7f4447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
-                "reference": "8e2e40124793a4ff1ad2dbb1abcd28a10fd45ab2",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/bdb217950c262ab9110c18794241351dac7f4447",
+                "reference": "bdb217950c262ab9110c18794241351dac7f4447",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-09-15T12:04:39+00:00"
+            "time": "2020-09-21T06:20:37+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",

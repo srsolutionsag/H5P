@@ -1,0 +1,5 @@
+include:
+  - /auto_version_tag_ci/auto_version_tag_ci.yml
+
+variables:
+  AUTO_VERSION_TAG_BASE_PATH: ""
