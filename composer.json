@@ -2,13 +2,15 @@
   "name": "srag/plugins/h5p",
   "description": "",
   "version": "2.6.6",
-  "ilias_plugin": {
-    "id": "xhfp",
-    "name": "H5P",
-    "ilias_min_version": "5.4.0",
-    "ilias_max_version": "6.999",
-    "lucene_search": true,
-    "slot": "Services/Repository/RepositoryObject"
+  "extra": {
+    "ilias_plugin": {
+      "id": "xhfp",
+      "name": "H5P",
+      "ilias_min_version": "5.4.0",
+      "ilias_max_version": "6.999",
+      "lucene_search": true,
+      "slot": "Services/Repository/RepositoryObject"
+    }
   },
   "type": "project",
   "keywords": [
@@ -61,7 +63,7 @@
       "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
       "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
       "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
-      "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
+      "srag\\LibrariesNamespaceChanger\\GeneratePluginReadme::generatePluginReadme"
     ]
   }
 }

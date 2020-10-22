@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.28.0]
+- `DataFactory`
+
 ## [0.27.0]
 - `Ilias7PreWarn`
 

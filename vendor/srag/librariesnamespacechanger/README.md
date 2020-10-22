@@ -36,7 +36,7 @@ It support the follow libraries:
 ## PHP72Backport
 If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, you can also add additionally the follow composer script:
 ```json
- "pre-autoload-dump": [
+  "pre-autoload-dump": [
     ...,
       "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport"
     ]
@@ -55,7 +55,7 @@ It uses the https://github.com/ondrejbouda/php7backport.git repo, but provides i
 ## GeneratePluginPhpAndXml
 Generate `plugin.php` and `plugin.xml` and `LuceneObjectDefinition.xml` for ILIAS plugins from `composer.json`
 ```json
- "pre-autoload-dump": [
+  "pre-autoload-dump": [
     ...,
       "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml"
     ]
@@ -66,21 +66,23 @@ Complete your `composer.json` with
   ...
   "version": "x.y.z",
   ...
-  "ilias_plugin": {
-    "id": "x",
-    "name" => "X",
-    "ilias_min_version": "x.y.z",
-    "ilias_max_version": "x.y.z",
-    "learning_progress": true,
-    "lucene_search": true,
-    "supports_export": true,
-    "slot": "x/y/z"
-    "events": [
-      {
-        "id": "X/Y",
-        "type": "listen|raise"
-      }
-    ]
+  "extra": {
+    "ilias_plugin": {
+      "id": "x",
+      "name" => "X",
+      "ilias_min_version": "x.y.z",
+      "ilias_max_version": "x.y.z",
+      "learning_progress": true | false,
+      "lucene_search": true | false,
+      "supports_export": true | false,
+      "slot": "x/y/z"
+      "events": [
+        {
+          "id": "X/Y",
+          "type": "listen|raise"
+        }
+      ]
+    }
   },
   ...
   "authors": [
@@ -94,10 +96,29 @@ Complete your `composer.json` with
   ...
 ```
 
-## UpdatePluginReadme
+## GeneratePluginReadme
+Auto generate `README.md`
+```json
+  "pre-autoload-dump": [
+    ...,
+     "srag\\LibrariesNamespaceChanger\\GeneratePluginReadme::generatePluginReadme"
+    ]
+```
+There is a default template, but you can create your own plugin template and use it instead
+```json
+  ...
+  "extra": {
+    ...
+    "GeneratePluginReadme": "..."
+    ...
+  }
+  ...
+```
+
+## UpdatePluginReadme (Deprecated)
 Update ILIAS min./max. versions and min. PHP version and slot path in `README.md`
 ```json
- "pre-autoload-dump": [
+  "pre-autoload-dump": [
     ...,
      "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
     ]

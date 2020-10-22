@@ -27,12 +27,31 @@ class CustomInputGUIsLoaderDetector extends AbstractLoaderDetector
      * @var bool
      */
     protected static $has_fix_ctrl_namespace_current_url = false;
+    /**
+     * @var callable[]|null
+     */
+    protected $get_renderer_for_hooks;
 
 
     /**
+     * @inheritDoc
+     *
+     * @param callable[]|null $get_renderer_for_hooks
+     */
+    public function __construct(Loader $loader,/*?*/ array $get_renderer_for_hooks = null)
+    {
+        parent::__construct($loader);
+
+        $this->get_renderer_for_hooks = $get_renderer_for_hooks;
+    }
+
+
+    /**
+     * @param callable[]|null $get_renderer_for_hooks
+     *
      * @return callable
      */
-    public static function exchangeUIRendererAfterInitialization() : callable
+    public static function exchangeUIRendererAfterInitialization(/*?*/ array $get_renderer_for_hooks = null) : callable
     {
         self::fixCtrlNamespaceCurrentUrl();
 
@@ -40,7 +59,7 @@ class CustomInputGUIsLoaderDetector extends AbstractLoaderDetector
             return $this->raw("ui.renderer");
         }, self::dic()->dic(), Container::class)();
 
-        return function () use ($previous_renderer) : Renderer {
+        return function () use ($previous_renderer, $get_renderer_for_hooks) : Renderer {
             $previous_renderer = $previous_renderer(self::dic()->dic());
 
             if ($previous_renderer instanceof DefaultRenderer) {
@@ -51,7 +70,7 @@ class CustomInputGUIsLoaderDetector extends AbstractLoaderDetector
                 $previous_renderer_loader = null; // TODO:
             }
 
-            return new DefaultRenderer(new self($previous_renderer_loader));
+            return new DefaultRenderer(new self($previous_renderer_loader, $get_renderer_for_hooks));
         };
     }
 
@@ -75,15 +94,31 @@ class CustomInputGUIsLoaderDetector extends AbstractLoaderDetector
      */
     public function getRendererFor(Component $component, array $contexts) : ComponentRenderer
     {
-        if ($component instanceof InputGUIWrapperUIInputComponent) {
-            if (self::version()->is6()) {
-                return new InputGUIWrapperUIInputComponentRenderer(self::dic()->ui()->factory(), self::dic()->templateFactory(), self::dic()->language(), self::dic()->javaScriptBinding(),
-                    self::dic()->refinery());
-            } else {
-                return new InputGUIWrapperUIInputComponentRenderer(self::dic()->ui()->factory(), self::dic()->templateFactory(), self::dic()->language(), self::dic()->javaScriptBinding());
+        $renderer = null;
+
+        if (!empty($this->get_renderer_for_hooks)) {
+            foreach ($this->get_renderer_for_hooks as $get_renderer_for_hook) {
+                $renderer = $get_renderer_for_hook($component, $contexts);
+                if ($renderer !== null) {
+                    break;
+                }
             }
         }
 
-        return parent::getRendererFor($component, $contexts);
+        if ($renderer === null) {
+            if ($component instanceof InputGUIWrapperUIInputComponent) {
+                if (self::version()->is6()) {
+                    $renderer = new InputGUIWrapperUIInputComponentRenderer(self::dic()->ui()->factory(), self::dic()->templateFactory(), self::dic()->language(),
+                        self::dic()->javaScriptBinding(), self::dic()->refinery());
+                } else {
+                    $renderer = new InputGUIWrapperUIInputComponentRenderer(self::dic()->ui()->factory(), self::dic()->templateFactory(), self::dic()->language(),
+                        self::dic()->javaScriptBinding());
+                }
+            } else {
+                $renderer = parent::getRendererFor($component, $contexts);
+            }
+        }
+
+        return $renderer;
     }
 }
