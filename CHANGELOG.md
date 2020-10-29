@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.7]
+- Footer permanent link
+
 ## [2.6.6]
 - Fix H5P contents in accordions
 
