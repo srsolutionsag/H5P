@@ -23,6 +23,7 @@ use ilFavouritesDBRepository;
 use ilGlobalTemplateInterface;
 use ilHelpGUI;
 use ILIAS;
+use ILIAS\Data\Factory as DataFactory;
 use ILIAS\DI\BackgroundTaskServices;
 use ILIAS\DI\Container;
 use ILIAS\DI\HTTPServices;
@@ -209,6 +210,15 @@ final class ILIAS60DIC extends AbstractDIC
     public function ctrlStructureReader() : ilCtrlStructureReader
     {
         return $this->dic["ilCtrlStructureReader"];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function data() : DataFactory
+    {
+        return new DataFactory();
     }
 
 

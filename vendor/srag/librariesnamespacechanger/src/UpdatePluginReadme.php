@@ -15,30 +15,52 @@ use stdClass;
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
  * @internal
+ *
+ * @depracated
  */
 final class UpdatePluginReadme
 {
 
+    /**
+     * @var string
+     *
+     * @depracated
+     */
     const PLUGIN_COMPOSER_JSON = "composer.json";
+    /**
+     * @var string
+     *
+     * @depracated
+     */
     const PLUGIN_README = "README.md";
     /**
      * @var self|null
+     *
+     * @depracated
      */
     private static $instance = null;
     /**
      * @var string
+     *
+     * @depracated
      */
     private static $plugin_root = "";
     /**
      * @var Event
+     *
+     * @depracated
      */
     private $event;
     /**
      * @var stdClass
+     *
+     * @depracated
      */
     private $plugin_composer_json;
     /**
      * @var string
+     *
+     * @depracated
      */
     private $readme;
 
@@ -47,6 +69,8 @@ final class UpdatePluginReadme
      * UpdatePluginReadme constructor
      *
      * @param Event $event
+     *
+     * @depracated
      */
     private function __construct(Event $event)
     {
@@ -58,6 +82,8 @@ final class UpdatePluginReadme
      * @param Event $event
      *
      * @internal
+     *
+     * @depracated
      */
     public static function updatePluginReadme(Event $event)/*: void*/
     {
@@ -73,6 +99,8 @@ final class UpdatePluginReadme
      * @param Event $event
      *
      * @return self
+     *
+     * @depracated
      */
     private static function getInstance(Event $event) : self
     {
@@ -85,10 +113,13 @@ final class UpdatePluginReadme
 
 
     /**
-     *
+     * @depracated
      */
     private function doUpdatePluginReadme()/*: void*/
     {
+        echo "UpdatePluginReadme IS DEPRACATED - TRY TO SWITCH TO GeneratePluginReadme
+";
+
         $this->plugin_composer_json = json_decode(file_get_contents(self::$plugin_root . "/" . self::PLUGIN_COMPOSER_JSON));
 
         $this->readme = file_get_contents(self::$plugin_root . "/" . self::PLUGIN_README);
@@ -114,7 +145,7 @@ final class UpdatePluginReadme
 
 
     /**
-     *
+     * @depracated
      */
     private function updateMinMaxIliasVersions()/* : void*/
     {
@@ -122,13 +153,13 @@ final class UpdatePluginReadme
 ";
 
         $this->readme = preg_replace("/[*\-]\s*ILIAS\s*[0-9.\- ]+\s*-\s*[0-9.]+/",
-            "* ILIAS " . $this->plugin_composer_json->ilias_plugin->ilias_min_version . " - " . $this->plugin_composer_json->ilias_plugin->ilias_max_version,
+            "* ILIAS " . strval($this->plugin_composer_json->extra->ilias_plugin->ilias_min_version) . " - " . strval($this->plugin_composer_json->extra->ilias_plugin->ilias_max_version),
             $this->readme);
     }
 
 
     /**
-     *
+     * @depracated
      */
     private function updateMinPhpVersion()/* : void*/
     {
@@ -141,13 +172,14 @@ final class UpdatePluginReadme
 
 
     /**
-     *
+     * @depracated
      */
     private function updateSlotPath()/* : void*/
     {
         echo "Update slot path in " . self::PLUGIN_README . "
 ";
 
-        $this->readme = preg_replace("/Customizing\/global\/plugins\/[A-Za-z]+\/[A-Za-z]+\/[A-Za-z]+/", "Customizing/global/plugins/" . $this->plugin_composer_json->ilias_plugin->slot, $this->readme);
+        $this->readme = preg_replace("/Customizing\/global\/plugins\/[A-Za-z]+\/[A-Za-z]+\/[A-Za-z]+/", "Customizing/global/plugins/" . strval($this->plugin_composer_json->extra->ilias_plugin->slot),
+            $this->readme);
     }
 }

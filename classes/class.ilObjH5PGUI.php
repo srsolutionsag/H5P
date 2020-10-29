@@ -137,6 +137,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     public function performCommand(string $cmd)/* : void*/
     {
         self::dic()->help()->setScreenIdComponent(ilH5PPlugin::PLUGIN_ID);
+        self::dic()->ui()->mainTemplate()->setPermanentLink(ilH5PPlugin::PLUGIN_ID, $this->object->getRefId());
 
         $next_class = self::dic()->ctrl()->getNextClass($this);
 

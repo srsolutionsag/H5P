@@ -23,6 +23,7 @@ use ilFavouritesDBRepository;
 use ilGlobalTemplateInterface;
 use ilHelpGUI;
 use ILIAS;
+use ILIAS\Data\Factory as DataFactory;
 use ILIAS\DI\BackgroundTaskServices;
 use ILIAS\DI\Container;
 use ILIAS\DI\HTTPServices;
@@ -187,6 +188,12 @@ interface DICInterface
      * @return ilCtrlStructureReader
      */
     public function ctrlStructureReader() : ilCtrlStructureReader;
+
+
+    /**
+     * @return DataFactory
+     */
+    public function data() : DataFactory;
 
 
     /**

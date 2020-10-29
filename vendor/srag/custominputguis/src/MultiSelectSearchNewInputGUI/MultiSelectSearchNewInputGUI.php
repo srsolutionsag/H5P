@@ -63,6 +63,19 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
+     * @param array $values
+     *
+     * @return array
+     */
+    public static function cleanValues(array $values) : array
+    {
+        return array_values(array_filter($values, function ($value) : bool {
+            return ($value !== self::EMPTY_PLACEHOLDER);
+        }));
+    }
+
+
+    /**
      *
      */
     public static function init()/*: void*/
@@ -105,7 +118,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
             $values = [];
         }
 
-        $values = $this->cleanValues($values);
+        $values = self::cleanValues($values);
 
         if ($this->getRequired() && empty($values)) {
             $this->setAlert(self::dic()->language()->txt("msg_input_is_required"));
@@ -248,7 +261,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     public function setValue(/*array*/ $value)/*: void*/
     {
         if (is_array($value)) {
-            $this->value = $this->cleanValues($value);
+            $this->value = self::cleanValues($value);
         } else {
             $this->value = [];
         }
@@ -326,18 +339,5 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     public function setValueByArray(/*array*/ $values)/*: void*/
     {
         $this->setValue($values[$this->getPostVar()]);
-    }
-
-
-    /**
-     * @param array $values
-     *
-     * @return array
-     */
-    protected function cleanValues(array $values) : array
-    {
-        return array_values(array_filter($values, function ($value) : bool {
-            return ($value !== self::EMPTY_PLACEHOLDER);
-        }));
     }
 }
