@@ -28,6 +28,7 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
             'srag\\RemovePluginDataConfirm\\H5P\\' => 33,
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibrariesNamespaceChanger\\' => 31,
+            'srag\\DevTools\\' => 14,
             'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\H5P\\' => 25,
             'srag\\ActiveRecordConfig\\H5P\\' => 28,
@@ -46,6 +47,10 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\LibrariesNamespaceChanger\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
+        ),
+        'srag\\DevTools\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/devtools/src',
         ),
         'srag\\DIC\\H5P\\' => 
         array (
@@ -153,6 +158,7 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\DIC\\H5P\\Util\\LibraryLanguageInstaller' => __DIR__ . '/..' . '/srag/dic/src/Util/LibraryLanguageInstaller.php',
         'srag\\DIC\\H5P\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
         'srag\\DIC\\H5P\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
+        'srag\\DevTools\\H5P\\DevToolsCtrl' => __DIR__ . '/..' . '/srag/devtools/src/class.DevToolsCtrl.php',
         'srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/GeneratePluginPhpAndXml.php',
         'srag\\LibrariesNamespaceChanger\\GeneratePluginReadme' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/GeneratePluginReadme.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',

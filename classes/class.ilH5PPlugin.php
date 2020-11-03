@@ -4,7 +4,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use ILIAS\DI\Container;
 use srag\CustomInputGUIs\H5P\Loader\CustomInputGUIsLoaderDetector;
-use srag\DIC\H5P\DevTools\DevToolsCtrl;
+use srag\DevTools\H5P\DevToolsCtrl;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\H5P\RepositoryObjectPluginUninstallTrait;
 

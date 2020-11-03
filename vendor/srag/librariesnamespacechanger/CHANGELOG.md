@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.12.2]
+- Auto migrate `ilias_plugin` to `extra`
+
+## [0.12.1]
+- Auto migrate `ilias_plugin` to `extra`
+
 ## [0.12.0]
 - `GeneratePluginReadme`
 - Move `composer.json` > `ilias_plugin` to `composer.json` > `extra` > `ilias_plugin` for match composer shema

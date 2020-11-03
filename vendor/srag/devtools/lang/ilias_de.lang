@@ -1,0 +1,10 @@
+dev_tools_dev_tools#:#Dev-Tools
+dev_tools_no_dev_mode#:#Plugin-Dev-Tools sind nur bei aktiviertem ILIAS-Core-Dev-Mode verfügbar
+dev_tools_reload_ctrl_structure#:#Ctrl-Struktur neu laden
+dev_tools_reload_database#:#Datenbank neu laden
+dev_tools_reload_languages#:#Sprachen neu laden
+dev_tools_reload_plugin_xml#:#plugin.xml neu laden
+dev_tools_reloaded_ctrl_structure#:#Ctrl-Struktur neu geladen
+dev_tools_reloaded_database#:#Datenbank neu geladen
+dev_tools_reloaded_languages#:#Sprachen neu geladen
+dev_tools_reloaded_plugin_xml#:#plugin.xml neu geladen

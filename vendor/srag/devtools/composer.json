@@ -1,13 +1,15 @@
 {
-  "name": "srag/librariesnamespacechanger",
-  "description": "Change namespace of libraries to plugin namespace",
-  "version": "0.12.2",
+  "name": "srag/devtools",
+  "description": "Add some dev tools to ILIAS plugin config, if core dev mode is enabled, like reload ctrl structure",
+  "version": "1.0.0",
   "type": "library",
   "keywords": [
     "ILIAS",
-    "Libraries"
+    "Dev",
+    "Plugin",
+    "Tools"
   ],
-  "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+  "homepage": "https://github.com/studer-raimann/DevTools",
   "license": "GPL-3.0-only",
   "authors": [
     {
@@ -18,14 +20,15 @@
     }
   ],
   "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER"
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDEVTOOLS"
   },
   "require": {
-    "php": ">=7.0"
+    "php": ">=7.0",
+    "srag/dic": ">=0.1.0"
   },
   "autoload": {
     "psr-4": {
-      "srag\\LibrariesNamespaceChanger\\": "src/"
+      "srag\\DevTools\\H5P\\": "src/"
     }
   },
   "config": {

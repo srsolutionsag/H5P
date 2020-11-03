@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\H5P\DevTools\DevToolsCtrl;
+use srag\DevTools\H5P\DevToolsCtrl;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -13,7 +13,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  *
  * @ilCtrl_Calls      ilH5PConfigGUI: srag\Plugins\H5P\Action\H5PActionGUI
- * @ilCtrl_isCalledBy srag\DIC\H5P\DevTools\DevToolsCtrl: ilH5PConfigGUI
+ * @ilCtrl_isCalledBy srag\DevTools\H5P\DevToolsCtrl: ilH5PConfigGUI
  */
 class ilH5PConfigGUI extends ilPluginConfigGUI
 {

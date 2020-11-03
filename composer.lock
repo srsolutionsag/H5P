@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fc8646fa305e0861636f525c49fb5b9",
+    "content-hash": "2edeed06a6f6fe5f1ac675cc2bb2b2c2",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -187,7 +187,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -214,6 +214,52 @@
             "time": "2020-10-21T13:05:12+00:00"
         },
         {
+            "name": "srag/devtools",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/DevTools.git",
+                "reference": "927d98ff4a3f731b2232f0d3fa81d94dc4a4a29e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/DevTools/zipball/927d98ff4a3f731b2232f0d3fa81d94dc4a4a29e",
+                "reference": "927d98ff4a3f731b2232f0d3fa81d94dc4a4a29e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "srag/dic": ">=0.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "srag\\DevTools\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Add some dev tools to ILIAS plugin config, if core dev mode is enabled, like reload ctrl structure",
+            "homepage": "https://github.com/studer-raimann/DevTools",
+            "keywords": [
+                "ILIAS",
+                "dev",
+                "plugin",
+                "tools"
+            ],
+            "time": "2020-11-03T09:11:04+00:00"
+        },
+        {
             "name": "srag/dic",
             "version": "v0.28.0",
             "source": {
@@ -233,7 +279,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -260,16 +306,16 @@
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.12.0",
+            "version": "0.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "2e8e968888aef1fc9cb0480c61f87180a6ec5f38"
+                "reference": "49e5e4be5645899fac5fc8088b2db9023d4c2bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/2e8e968888aef1fc9cb0480c61f87180a6ec5f38",
-                "reference": "2e8e968888aef1fc9cb0480c61f87180a6ec5f38",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/49e5e4be5645899fac5fc8088b2db9023d4c2bea",
+                "reference": "49e5e4be5645899fac5fc8088b2db9023d4c2bea",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +345,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-10-22T12:53:54+00:00"
+            "time": "2020-10-22T13:35:21+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
