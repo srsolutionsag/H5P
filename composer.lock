@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2edeed06a6f6fe5f1ac675cc2bb2b2c2",
+    "content-hash": "868368df6b13e0e638b35cf8b981c5f2",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -234,7 +234,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\DevTools\\": "src/"
+                    "srag\\DevTools\\H5P\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -303,6 +303,51 @@
                 "trait"
             ],
             "time": "2020-10-16T08:38:17+00:00"
+        },
+        {
+            "name": "srag/generateplugininfoshelper",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
+                "reference": "e01f92d111045a39fa2504d78e67505ea3663238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/e01f92d111045a39fa2504d78e67505ea3663238",
+                "reference": "e01f92d111045a39fa2504d78e67505ea3663238",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "srag\\GeneratePluginInfosHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate plugin infos helper",
+            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
+            "keywords": [
+                "Infos",
+                "generate",
+                "helper",
+                "plugin"
+            ],
+            "time": "2020-11-05T07:11:14+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",

@@ -310,6 +310,53 @@
         ]
     },
     {
+        "name": "srag/generateplugininfoshelper",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
+            "reference": "e01f92d111045a39fa2504d78e67505ea3663238"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/e01f92d111045a39fa2504d78e67505ea3663238",
+            "reference": "e01f92d111045a39fa2504d78e67505ea3663238",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2020-11-05T07:11:14+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "srag\\GeneratePluginInfosHelper\\H5P\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-only"
+        ],
+        "authors": [
+            {
+                "name": "studer + raimann ag - Team Custom 1",
+                "email": "support-custom1@studer-raimann.ch",
+                "homepage": "https://studer-raimann.ch",
+                "role": "Developer"
+            }
+        ],
+        "description": "Generate plugin infos helper",
+        "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
+        "keywords": [
+            "Infos",
+            "generate",
+            "helper",
+            "plugin"
+        ]
+    },
+    {
         "name": "srag/librariesnamespacechanger",
         "version": "0.12.2",
         "version_normalized": "0.12.2.0",
