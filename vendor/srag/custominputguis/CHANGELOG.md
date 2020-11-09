@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.41.1]
+- Generate readme
+
+## [0.41.0]
+- Generate readme
+
 ## [0.40.0]
 - Custom hooks for `CustomInputGUIsLoaderDetector::getRendererFor`
 

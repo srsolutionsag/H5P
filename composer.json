@@ -10,7 +10,8 @@
       "ilias_max_version": "6.999",
       "lucene_search": true,
       "slot": "Services/Repository/RepositoryObject"
-    }
+    },
+    "generate_plugin_readme_template": "SRAG_ILIAS_PLUGIN"
   },
   "type": "project",
   "keywords": [

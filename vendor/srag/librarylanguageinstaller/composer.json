@@ -1,7 +1,14 @@
 {
   "name": "srag/librarylanguageinstaller",
   "description": "Install additional and external lang files for a plugin",
-  "version": "1.0.1",
+  "version": "1.1.1",
+  "extra": {
+    "ilias_plugin": {
+      "ilias_min_version": "5.4.0",
+      "ilias_max_version": "6.999"
+    },
+    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+  },
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -26,6 +33,9 @@
     "php": ">=7.0",
     "srag/dic": ">=0.1.0"
   },
+  "require-dev": {
+    "srag/generateplugininfoshelper": ">=0.1.0"
+  },
   "autoload": {
     "psr-4": {
       "srag\\LibraryLanguageInstaller\\H5P\\": "src/"
@@ -35,5 +45,10 @@
     "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "scripts": {
+    "generate-plugin-readme": [
+      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+    ]
   }
 }

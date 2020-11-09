@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "868368df6b13e0e638b35cf8b981c5f2",
+    "content-hash": "248e53188bbc382d93536a811490859c",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -122,16 +122,16 @@
         },
         {
             "name": "srag/activerecordconfig",
-            "version": "0.19.8",
+            "version": "0.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/ActiveRecordConfig.git",
-                "reference": "2863288ce5aebcc44aa4db1ad6aae36cc36176a4"
+                "reference": "85b61d8cd79f2b61edb9d49840fcbc1a14bfa430"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/2863288ce5aebcc44aa4db1ad6aae36cc36176a4",
-                "reference": "2863288ce5aebcc44aa4db1ad6aae36cc36176a4",
+                "url": "https://api.github.com/repos/studer-raimann/ActiveRecordConfig/zipball/85b61d8cd79f2b61edb9d49840fcbc1a14bfa430",
+                "reference": "85b61d8cd79f2b61edb9d49840fcbc1a14bfa430",
                 "shasum": ""
             },
             "require": {
@@ -139,10 +139,20 @@
                 "srag/custominputguis": ">=0.1.0",
                 "srag/dic": ">=0.1.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\H5P\\": "src/"
+                    "srag\\ActiveRecordConfig\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -164,30 +174,40 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2020-11-04T11:21:50+00:00"
+            "time": "2020-11-09T13:32:38+00:00"
         },
         {
             "name": "srag/custominputguis",
-            "version": "0.40.0",
+            "version": "0.41.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "385d95f7a0b4a9f58202beb3bb9e259d2babe07a"
+                "reference": "1a759b643386eb58c521be7f8395f659580c656c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/385d95f7a0b4a9f58202beb3bb9e259d2babe07a",
-                "reference": "385d95f7a0b4a9f58202beb3bb9e259d2babe07a",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/1a759b643386eb58c521be7f8395f659580c656c",
+                "reference": "1a759b643386eb58c521be7f8395f659580c656c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
                 "srag/dic": ">=0.1.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\H5P\\": "src/"
+                    "srag\\CustomInputGUIs\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -211,20 +231,20 @@
                 "input",
                 "table"
             ],
-            "time": "2020-10-21T13:05:12+00:00"
+            "time": "2020-11-09T13:32:13+00:00"
         },
         {
             "name": "srag/devtools",
-            "version": "1.1.1",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DevTools.git",
-                "reference": "88210d608877023bcb12e47627cb50846572a4ef"
+                "reference": "8d64a661b2e4d7ffa49936da3c323f7786ea3b4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DevTools/zipball/88210d608877023bcb12e47627cb50846572a4ef",
-                "reference": "88210d608877023bcb12e47627cb50846572a4ef",
+                "url": "https://api.github.com/repos/studer-raimann/DevTools/zipball/8d64a661b2e4d7ffa49936da3c323f7786ea3b4a",
+                "reference": "8d64a661b2e4d7ffa49936da3c323f7786ea3b4a",
                 "shasum": ""
             },
             "require": {
@@ -232,10 +252,20 @@
                 "srag/dic": ">=0.1.0",
                 "srag/librarylanguageinstaller": ">=0.1.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\DevTools\\H5P\\": "src/"
+                    "srag\\DevTools\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -258,26 +288,36 @@
                 "plugin",
                 "tools"
             ],
-            "time": "2020-11-04T10:59:24+00:00"
+            "time": "2020-11-09T13:30:56+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "0.29.0",
+            "version": "0.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "563e5ea61fb82d842facbcbb2ae0de57f45228df"
+                "reference": "ddb882447bc750bfb8c10052efae702d07400d68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/563e5ea61fb82d842facbcbb2ae0de57f45228df",
-                "reference": "563e5ea61fb82d842facbcbb2ae0de57f45228df",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/ddb882447bc750bfb8c10052efae702d07400d68",
+                "reference": "ddb882447bc750bfb8c10052efae702d07400d68",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
                     "srag\\DIC\\": "src/"
@@ -303,29 +343,32 @@
                 "globals",
                 "trait"
             ],
-            "time": "2020-11-09T07:20:54+00:00"
+            "time": "2020-11-09T13:30:15+00:00"
         },
         {
             "name": "srag/generateplugininfoshelper",
-            "version": "2.0.0",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "5898746c4fd04b74083f127ad81b57ee3416ca3b"
+                "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/5898746c4fd04b74083f127ad81b57ee3416ca3b",
-                "reference": "5898746c4fd04b74083f127ad81b57ee3416ca3b",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/5de665d2803355843ffb44d8c66d96b049ec1edd",
+                "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0"
             },
             "type": "library",
+            "extra": {
+                "generate_plugin_readme_template": "SRAG_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\H5P\\": "src/"
+                    "srag\\GeneratePluginInfosHelper\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -348,26 +391,32 @@
                 "helper",
                 "plugin"
             ],
-            "time": "2020-11-09T06:58:35+00:00"
+            "time": "2020-11-09T13:17:14+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.13.0",
+            "version": "0.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d"
+                "reference": "814a2542d5d5c1a66a44b5eb73b07dec64f71dd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d",
-                "reference": "f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/814a2542d5d5c1a66a44b5eb73b07dec64f71dd8",
+                "reference": "814a2542d5d5c1a66a44b5eb73b07dec64f71dd8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "generate_plugin_readme_template": "SRAG_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
                     "srag\\LibrariesNamespaceChanger\\": "src/"
@@ -392,30 +441,40 @@
                 "libraries",
                 "namespace"
             ],
-            "time": "2020-11-09T07:19:37+00:00"
+            "time": "2020-11-09T13:34:04+00:00"
         },
         {
             "name": "srag/librarylanguageinstaller",
-            "version": "1.0.1",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibraryLanguageInstaller.git",
-                "reference": "25af437843cb5285ada356fbd77d54b01f3a6e39"
+                "reference": "4544af88056845ba4fe7b16af24319c95ffe0ccf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibraryLanguageInstaller/zipball/25af437843cb5285ada356fbd77d54b01f3a6e39",
-                "reference": "25af437843cb5285ada356fbd77d54b01f3a6e39",
+                "url": "https://api.github.com/repos/studer-raimann/LibraryLanguageInstaller/zipball/4544af88056845ba4fe7b16af24319c95ffe0ccf",
+                "reference": "4544af88056845ba4fe7b16af24319c95ffe0ccf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
                 "srag/dic": ">=0.1.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\LibraryLanguageInstaller\\H5P\\": "src/"
+                    "srag\\LibraryLanguageInstaller\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -438,20 +497,20 @@
                 "language",
                 "library"
             ],
-            "time": "2020-11-04T10:31:29+00:00"
+            "time": "2020-11-09T13:33:58+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "0.6.6",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/RemovePluginDataConfirm.git",
-                "reference": "8e1897236424973da04ef810ca5ec0597756785d"
+                "reference": "aed1fcad36e77d5108d8ca4c13ae0ccf3e08bcb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/8e1897236424973da04ef810ca5ec0597756785d",
-                "reference": "8e1897236424973da04ef810ca5ec0597756785d",
+                "url": "https://api.github.com/repos/studer-raimann/RemovePluginDataConfirm/zipball/aed1fcad36e77d5108d8ca4c13ae0ccf3e08bcb7",
+                "reference": "aed1fcad36e77d5108d8ca4c13ae0ccf3e08bcb7",
                 "shasum": ""
             },
             "require": {
@@ -459,10 +518,20 @@
                 "srag/dic": ">=0.1.0",
                 "srag/librarylanguageinstaller": ">=0.1.0"
             },
+            "require-dev": {
+                "srag/generateplugininfoshelper": ">=0.1.0"
+            },
             "type": "library",
+            "extra": {
+                "ilias_plugin": {
+                    "ilias_min_version": "5.4.0",
+                    "ilias_max_version": "6.999"
+                },
+                "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            },
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -486,7 +555,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2020-11-04T11:14:16+00:00"
+            "time": "2020-11-09T13:33:49+00:00"
         }
     ],
     "packages-dev": [],

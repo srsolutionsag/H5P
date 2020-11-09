@@ -1,7 +1,10 @@
 {
   "name": "srag/generateplugininfoshelper",
   "description": "Generate plugin infos helper",
-  "version": "2.0.0",
+  "version": "2.3.2",
+  "extra": {
+    "generate_plugin_readme_template": "SRAG_LIBRARY"
+  },
   "type": "library",
   "keywords": [
     "Generate",
@@ -34,5 +37,10 @@
     "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "scripts": {
+    "generate-plugin-readme": [
+      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+    ]
   }
 }
