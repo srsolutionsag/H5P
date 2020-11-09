@@ -1,11 +1,12 @@
 {
   "name": "srag/librariesnamespacechanger",
   "description": "Change namespace of libraries to plugin namespace",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "type": "library",
   "keywords": [
-    "ILIAS",
-    "Libraries"
+    "Changer",
+    "Libraries",
+    "Namespace"
   ],
   "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
   "license": "GPL-3.0-only",

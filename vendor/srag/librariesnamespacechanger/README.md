@@ -1,4 +1,4 @@
-# LibrariesNamespaceChanger Library for ILIAS Plugins
+# LibrariesNamespaceChanger Library
 
 Change the namespace of the libraries on dump-autoload to a plugin specific namespace
 
@@ -51,78 +51,6 @@ If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you c
 ```
 
 It uses the https://github.com/ondrejbouda/php7backport.git repo, but provides it as a composer script and patches it, amongst other things, it fix interfaces
-
-## GeneratePluginPhpAndXml
-Generate `plugin.php` and `plugin.xml` and `LuceneObjectDefinition.xml` for ILIAS plugins from `composer.json`
-```json
-  "pre-autoload-dump": [
-    ...,
-      "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml"
-    ]
-```
-
-Complete your `composer.json` with
-```json
-  ...
-  "version": "x.y.z",
-  ...
-  "extra": {
-    "ilias_plugin": {
-      "id": "x",
-      "name" => "X",
-      "ilias_min_version": "x.y.z",
-      "ilias_max_version": "x.y.z",
-      "learning_progress": true | false,
-      "lucene_search": true | false,
-      "supports_export": true | false,
-      "slot": "x/y/z"
-      "events": [
-        {
-          "id": "X/Y",
-          "type": "listen|raise"
-        }
-      ]
-    }
-  },
-  ...
-  "authors": [
-    {
-      "name": "...",
-      "email": "...",
-      "homepage": "...",
-      "role": "Developer"
-    }
-  ],
-  ...
-```
-
-## GeneratePluginReadme
-Auto generate `README.md`
-```json
-  "pre-autoload-dump": [
-    ...,
-     "srag\\LibrariesNamespaceChanger\\GeneratePluginReadme::generatePluginReadme"
-    ]
-```
-There is a default template, but you can create your own plugin template and use it instead
-```json
-  ...
-  "extra": {
-    ...
-    "GeneratePluginReadme": "..."
-    ...
-  }
-  ...
-```
-
-## UpdatePluginReadme (Deprecated)
-Update ILIAS min./max. versions and min. PHP version and slot path in `README.md`
-```json
-  "pre-autoload-dump": [
-    ...,
-     "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
-    ]
-```
 
 ## Requirements
 * PHP >=7.0

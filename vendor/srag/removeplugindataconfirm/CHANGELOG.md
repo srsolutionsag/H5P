@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.6.6]
+- Move LibraryLanguageInstaller to separate package
+
 ## [0.6.5]
 - `shouldUseOneUpdateStepOnly` also for repository plugins
 

@@ -1,15 +1,15 @@
 {
-  "name": "srag/devtools",
-  "description": "Add some dev tools to ILIAS plugin config, if core dev mode is enabled, like reload ctrl structure",
-  "version": "1.1.1",
+  "name": "srag/librarylanguageinstaller",
+  "description": "Install additional and external lang files for a plugin",
+  "version": "1.0.1",
   "type": "library",
   "keywords": [
     "ILIAS",
-    "Dev",
-    "Plugin",
-    "Tools"
+    "Installer",
+    "Language",
+    "Library"
   ],
-  "homepage": "https://github.com/studer-raimann/DevTools",
+  "homepage": "https://github.com/studer-raimann/LibraryLanguageInstaller",
   "license": "GPL-3.0-only",
   "authors": [
     {
@@ -20,16 +20,15 @@
     }
   ],
   "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDEVTOOLS"
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LLANGINST"
   },
   "require": {
     "php": ">=7.0",
-    "srag/dic": ">=0.1.0",
-    "srag/librarylanguageinstaller": ">=0.1.0"
+    "srag/dic": ">=0.1.0"
   },
   "autoload": {
     "psr-4": {
-      "srag\\DevTools\\H5P\\": "src/"
+      "srag\\LibraryLanguageInstaller\\H5P\\": "src/"
     }
   },
   "config": {

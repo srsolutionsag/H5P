@@ -1,6 +1,7 @@
 {
   "name": "srag/dic",
   "description": "Use all ILIAS globals in your class",
+  "version": "0.29.0",
   "type": "library",
   "keywords": [
     "ILIAS",

@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\DIC\H5P\Util;
+namespace srag\LibraryLanguageInstaller\H5P;
 
 use ilDBConstants;
 use ilGlobalCache;
@@ -12,7 +12,7 @@ use srag\DIC\H5P\Plugin\PluginInterface;
 /**
  * Class LibraryLanguageInstaller
  *
- * @package srag\DIC\H5P\Util
+ * @package srag\LibraryLanguageInstaller\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

@@ -189,17 +189,19 @@ require_once __DIR__ . "/vendor/autoload.php";
      */
     private function getOldPluginVar(string $variable) : string
     {
-        $plugin_php = file_get_contents(self::$plugin_root . "/" . self::PLUGIN_PHP);
+        if (file_exists(self::$plugin_root . "/" . self::PLUGIN_PHP)) {
+            $plugin_php = file_get_contents(self::$plugin_root . "/" . self::PLUGIN_PHP);
 
-        $text = [];
+            $text = [];
 
-        preg_match('/\\$' . $variable . '\\s*=\\s*["\']?([^"\']+)["\']?\\s*;/', $plugin_php, $text);
+            preg_match('/\\$' . $variable . '\\s*=\\s*["\']?([^"\']+)["\']?\\s*;/', $plugin_php, $text);
 
-        if (is_array($text) && count($text) > 1) {
-            $text = $text[1];
+            if (is_array($text) && count($text) > 1) {
+                $text = $text[1];
 
-            if (is_string($text) && !empty($text)) {
-                return $text;
+                if (is_string($text) && !empty($text)) {
+                    return $text;
+                }
             }
         }
 

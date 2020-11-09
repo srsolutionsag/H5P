@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.29.0]
+- Move DevTools to separate package
+- Move LibraryLanguageInstaller to separate package
+
 ## [0.28.0]
 - `DataFactory`
 

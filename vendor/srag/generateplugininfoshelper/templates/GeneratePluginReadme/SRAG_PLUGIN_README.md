@@ -2,34 +2,42 @@
 
 # __ILIAS_PLUGIN_NAME__ ILIAS Plugin
 
+__SHORT_DESCRIPTION__
+
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 
-## Description
-See in [doc/DESCRIPTION.md](./doc/DESCRIPTION.md)
-
-## Documentation
-See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
+This project is licensed under the __LICENSE__ license
 
 ## Installation
+
 Start at your ILIAS root directory
+
 ```bash
 mkdir -p __ILIAS_PLUGIN_BASE_SLOT_PATH__
 cd __ILIAS_PLUGIN_BASE_SLOT_PATH__
 git clone __GITHUB_REPO__ __ILIAS_PLUGIN_NAME__
 ```
+
 Update, activate and config the plugin in the ILIAS Plugin Administration
 
+## Description
+
+__LONG_DESCRIPTION__
+
 ## Requirements
+
 * ILIAS __ILIAS_PLUGIN_MIN_ILIAS_VERSION__ - __ILIAS_PLUGIN_MAX_ILIAS_VERSION__
 * PHP __PHP_VERSION__
 
 ## Adjustment suggestions
+
 * External users can report suggestions and bugs at __SUPPORT_LINK__
 * Adjustment suggestions by pull requests via github
 
 ## ILIAS Plugin SLA
-Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
 
-Setzen Sie eines unserer Plugins professionell ein? Sichern Sie sich mittels SLA die termingerechte Verfügbarkeit dieses Plugins auch für die kommenden ILIAS Versionen. Informieren Sie sich hierzu unter https://studer-raimann.ch/produkte/ilias-plugins/plugin-sla.
+We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or on our own account, are publicly available free of charge to all interested parties at https://github.com/studer-raimann.
 
-Bitte beachten Sie, dass wir nur Institutionen, welche ein SLA abschliessen Unterstützung und Release-Pflege garantieren.
+Do you use one of our plugins professionally? Secure the timely availability of this plugin for the upcoming ILIAS versions via SLA. Please inform yourself under https://studer-raimann.ch/produkte/ilias-plugins/plugin-sla.
+
+Please note that we only guarantee support and release maintenance for institutions that sign a SLA.

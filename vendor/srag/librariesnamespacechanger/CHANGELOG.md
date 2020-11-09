@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.13.0]
+- Move GeneratePluginInfosHelper to separate package
+
 ## [0.12.2]
 - Auto migrate `ilias_plugin` to `extra`
 

@@ -4,7 +4,7 @@ namespace srag\RemovePluginDataConfirm\H5P;
 
 use ilUIPluginRouterGUI;
 use srag\DIC\H5P\DICTrait;
-use srag\DIC\H5P\Util\LibraryLanguageInstaller;
+use srag\LibraryLanguageInstaller\H5P\LibraryLanguageInstaller;
 
 /**
  * Trait BasePluginUninstallTrait

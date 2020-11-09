@@ -185,22 +185,6 @@ If you really need DICTrait outside a class (For instance in `dbupdate.php`), us
 You can now remove all usages of ILIAS globals in your class and replace it with this library.
 Please avoid to store in variables or class variables.
 
-## LibraryLanguageInstaller
-Expand you plugin class for installing languages of a library to your plugin
-```php
-...
-	/**
-     * @inheritDoc
-     */
-    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/ {
-		parent::updateLanguages($a_lang_keys);
-
-		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/x/lang")
-			->updateLanguages($a_lang_keys);
-	}
-...
-```
-
 ## Database
 This library delivers also a custom `ilDB` decorator class with spec. functions, restricted to `PDO` (Because to make access more core functions), access via `self:.dic()->database()`
 
@@ -278,65 +262,6 @@ self::dic()->database()->createOrUpdateTable($table_name, $columns, $primary_col
                 ["value33", ilDBConstants::T_TEXT]
             ]
         ])
-```
-
-## DevToolsCtrl
-
-Add to your plugin class
-
-```php
-...
-use srag\DIC\H5P\x\DevTools\DevToolsCtrl;
-...
-    /**
-     * @inheritDoc
-     */
-    public function updateLanguages(/*?array*/ $a_lang_keys = null)/* : void*/
-    {
-        parent::updateLanguages($a_lang_keys);
-        ...
-        DevToolsCtrl::installLanguages(self::plugin());
-    }
-...
-```
-
-Add to your plugin config class
-```php
-...
-use srag\DIC\H5P\x\DevTools\DevToolsCtrl;
-...
-/**
- * ...
- * @ilCtrl_isCalledBy srag\DIC\H5P\x\DevTools\DevToolsCtrl: ilXConfigGUI
- */
-class ...
-...
-    /**
-     * @inheritDoc
-     */
-    public function performCommand(/*string*/ $cmd)/*:void*/
-    {
-        ...
-        switch (strtolower($next_class)) {
-            ...
-            case strtolower(DevToolsCtrl::class):
-                self::dic()->ctrl()->forwardCommand(new DevToolsCtrl($this, self::plugin()));
-                break;
-            ...
-        }
-        ...
-    }
-...
-    /**
-     *
-     */
-    protected function setTabs()/*: void*/
-    {
-        ...
-        DevToolsCtrl::addTabs(self::plugin());
-        ...
-    }
-...
 ```
 
 ## Requirements

@@ -21,6 +21,12 @@ final class ActiveRecordConfigException extends ilException
      *
      * @deprecated
      */
+    const CODE_INVALID_CONFIG_GUI_CLASS = 3;
+    /**
+     * @var int
+     *
+     * @deprecated
+     */
     const CODE_INVALID_FIELD = 1;
     /**
      * @var int
@@ -28,12 +34,6 @@ final class ActiveRecordConfigException extends ilException
      * @deprecated
      */
     const CODE_UNKOWN_COMMAND = 2;
-    /**
-     * @var int
-     *
-     * @deprecated
-     */
-    const CODE_INVALID_CONFIG_GUI_CLASS = 3;
 
 
     /**
