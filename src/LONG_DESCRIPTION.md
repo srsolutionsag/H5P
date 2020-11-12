@@ -7,4 +7,4 @@ When users work through these contents, the plugin stores their results and make
 
 Also have a look to [H5PPageComponent](https://github.com/studer-raimann/H5PPageComponent) or [H5PCron](https://github.com/studer-raimann/H5PCron).
 
-Old Documentation: [Documentation_old.pdf](./Documentation_old.pdf)
+Old Documentation: [Documentation_old.pdf](../doc/Documentation_old.pdf)
