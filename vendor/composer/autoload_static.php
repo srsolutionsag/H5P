@@ -18,8 +18,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         '138126db212e09ea471720e87b638b63' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-ajax.class.php',
         '920009c17c818a2668db044d76f129b9' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-storage.interface.php',
         '101279c1523ab77899b4b6921c749836' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
-        '2f3eb78b1f5e6431663d5e8ab8aaf348' => __DIR__ . '/..' . '/srag/dic/src/PHPVersionChecker.php',
-        'd23f514274e4f99d3dd9ac0b3e068b38' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
+        'e9da0687bf61d492ff6049163121c6a2' => __DIR__ . '/..' . '/srag/dic/src/PHPVersionChecker.php',
+        'c5081a21dce64711aad77d7ecf0d7dc2' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -94,7 +94,7 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\ActiveRecordConfig\\H5P\\Config\\AbstractRepository' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Config/AbstractRepository.php',
         'srag\\ActiveRecordConfig\\H5P\\Config\\Config' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Config/Config.php',
         'srag\\ActiveRecordConfig\\H5P\\Exception\\ActiveRecordConfigException' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Exception/ActiveRecordConfigException.php',
-        'srag\\CustomInputGUIs\\H5P\\CheckboxInputGUI\\AjaxCheckbox' => __DIR__ . '/..' . '/srag/custominputguis/src/AjaxCheckbox/AjaxCheckbox.php',
+        'srag\\CustomInputGUIs\\H5P\\AjaxCheckbox\\AjaxCheckbox' => __DIR__ . '/..' . '/srag/custominputguis/src/AjaxCheckbox/AjaxCheckbox.php',
         'srag\\CustomInputGUIs\\H5P\\CheckboxInputGUI\\CheckboxInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/CheckboxInputGUI/CheckboxInputGUI.php',
         'srag\\CustomInputGUIs\\H5P\\ColorPickerInputGUI\\ColorPickerInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/ColorPickerInputGUI/ColorPickerInputGUI.php',
         'srag\\CustomInputGUIs\\H5P\\CustomInputGUIs' => __DIR__ . '/..' . '/srag/custominputguis/src/CustomInputGUIs.php',

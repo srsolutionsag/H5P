@@ -1,7 +1,7 @@
 {
   "name": "srag/removeplugindataconfirm",
   "description": "Demand if plugin data should be removed on uninstall",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",
@@ -41,7 +41,10 @@
   "autoload": {
     "psr-4": {
       "srag\\RemovePluginDataConfirm\\H5P\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/class.RemovePluginDataConfirmCtrl.php"
+    ]
   },
   "config": {
     "classmap-authoritative": true,

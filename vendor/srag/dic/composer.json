@@ -1,7 +1,7 @@
 {
   "name": "srag/dic",
   "description": "Use all ILIAS globals in your class",
-  "version": "0.30.1",
+  "version": "0.30.2",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",

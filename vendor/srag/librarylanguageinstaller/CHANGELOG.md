@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.2]
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
 ## [1.1.1]
 - Generate readme
 

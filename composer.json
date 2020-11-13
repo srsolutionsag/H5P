@@ -1,5 +1,5 @@
 {
-  "name": "srag/plugins/h5p",
+  "name": "srag/h5p",
   "description": "",
   "version": "2.6.7",
   "extra": {
@@ -49,7 +49,8 @@
       "srag\\Plugins\\H5P\\": "src/"
     },
     "classmap": [
-      "classes/"
+      "classes/",
+      "src/Action/class.H5PActionGUI.php"
     ],
     "files": [
       "vendor/srag/dic/src/PHPVersionChecker.php",

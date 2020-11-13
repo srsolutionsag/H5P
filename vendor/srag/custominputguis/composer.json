@@ -1,7 +1,7 @@
 {
   "name": "srag/custominputguis",
   "description": "Custom Input-GUI's",
-  "version": "0.41.1",
+  "version": "0.41.2",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",
@@ -40,7 +40,13 @@
   "autoload": {
     "psr-4": {
       "srag\\CustomInputGUIs\\H5P\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/MultiSelectSearchNewInputGUI/class.ObjectChildrenAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.ObjectsAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.OrgUnitAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.UsersAjaxAutoCompleteCtrl.php"
+    ]
   },
   "config": {
     "classmap-authoritative": true,
