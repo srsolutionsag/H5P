@@ -4,7 +4,7 @@
 require_once __DIR__ . "/vendor/autoload.php";
 
 $id = "xhfp";
-$version = "2.6.7";
+$version = "2.6.8";
 $ilias_min_version = "5.4.0";
 $ilias_max_version = "6.999";
 $responsible = "studer + raimann ag - Team Custom 1";

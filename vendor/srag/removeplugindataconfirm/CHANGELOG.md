@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.2]
+- Fix composer 2
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.7.1]
+- Generate readme
+
+## [0.7.0]
+- Generate readme
+
+## [0.6.6]
+- Move LibraryLanguageInstaller to separate package
+
 ## [0.6.5]
 - `shouldUseOneUpdateStepOnly` also for repository plugins
 

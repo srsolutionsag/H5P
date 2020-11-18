@@ -1,7 +1,7 @@
 {
-  "name": "srag/plugins/h5p",
+  "name": "srag/h5p",
   "description": "",
-  "version": "2.6.7",
+  "version": "2.6.8",
   "extra": {
     "ilias_plugin": {
       "id": "xhfp",
@@ -10,7 +10,8 @@
       "ilias_max_version": "6.999",
       "lucene_search": true,
       "slot": "Services/Repository/RepositoryObject"
-    }
+    },
+    "generate_plugin_readme_template": "SRAG_ILIAS_PLUGIN"
   },
   "type": "project",
   "keywords": [
@@ -37,7 +38,9 @@
     "h5p/h5p-editor": "1.24.1",
     "srag/activerecordconfig": ">=0.1.0",
     "srag/custominputguis": ">=0.1.0",
+    "srag/devtools": ">=0.1.0",
     "srag/dic": ">=0.1.0",
+    "srag/generateplugininfoshelper": ">=0.1.0",
     "srag/librariesnamespacechanger": ">=0.1.0",
     "srag/removeplugindataconfirm": ">=0.1.0"
   },
@@ -46,7 +49,8 @@
       "srag\\Plugins\\H5P\\": "src/"
     },
     "classmap": [
-      "classes/"
+      "classes/",
+      "src/Action/class.H5PActionGUI.php"
     ],
     "files": [
       "vendor/srag/dic/src/PHPVersionChecker.php",
@@ -62,8 +66,8 @@
     "pre-autoload-dump": [
       "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
       "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
-      "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
-      "srag\\LibrariesNamespaceChanger\\GeneratePluginReadme::generatePluginReadme"
+      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
+      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
     ]
   }
 }

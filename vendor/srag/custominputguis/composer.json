@@ -1,7 +1,14 @@
 {
   "name": "srag/custominputguis",
   "description": "Custom Input-GUI's",
-  "version": "0.40.0",
+  "version": "0.41.2",
+  "extra": {
+    "ilias_plugin": {
+      "ilias_min_version": "5.4.0",
+      "ilias_max_version": "6.999"
+    },
+    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+  },
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -27,14 +34,28 @@
     "php": ">=7.0",
     "srag/dic": ">=0.1.0"
   },
+  "require-dev": {
+    "srag/generateplugininfoshelper": ">=0.1.0"
+  },
   "autoload": {
     "psr-4": {
       "srag\\CustomInputGUIs\\H5P\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/MultiSelectSearchNewInputGUI/class.ObjectChildrenAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.ObjectsAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.OrgUnitAjaxAutoCompleteCtrl.php",
+      "src/MultiSelectSearchNewInputGUI/class.UsersAjaxAutoCompleteCtrl.php"
+    ]
   },
   "config": {
     "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "scripts": {
+    "generate-plugin-readme": [
+      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+    ]
   }
 }

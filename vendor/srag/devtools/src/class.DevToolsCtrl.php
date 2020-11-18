@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\DIC\H5P\DevTools;
+namespace srag\DevTools\H5P;
 
 use ilAdministrationGUI;
 use ilDBConstants;
@@ -9,12 +9,12 @@ use ilPluginConfigGUI;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
 use srag\DIC\H5P\Plugin\PluginInterface;
-use srag\DIC\H5P\Util\LibraryLanguageInstaller;
+use srag\LibraryLanguageInstaller\H5P\LibraryLanguageInstaller;
 
 /**
  * Class DevToolsCtrl
  *
- * @package srag\DIC\H5P\DevTools
+ * @package srag\DevTools\H5P
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -69,7 +69,7 @@ class DevToolsCtrl
      */
     public static function installLanguages(PluginInterface $plugin)/*:void*/
     {
-        LibraryLanguageInstaller::getInstance()->withPlugin($plugin)->withLibraryLanguageDirectory(__DIR__ . "/lang")->updateLanguages();
+        LibraryLanguageInstaller::getInstance()->withPlugin($plugin)->withLibraryLanguageDirectory(__DIR__ . "/../lang")->updateLanguages();
     }
 
 

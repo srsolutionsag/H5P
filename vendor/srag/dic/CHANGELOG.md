@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.30.2]
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.30.1]
+- Generate readme
+
+## [0.30.0]
+- Generate readme
+
+## [0.29.0]
+- Move DevTools to separate package
+- Move LibraryLanguageInstaller to separate package
+
 ## [0.28.0]
 - `DataFactory`
 

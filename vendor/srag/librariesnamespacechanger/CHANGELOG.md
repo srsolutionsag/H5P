@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.14.2]
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.14.1]
+- Generate readme
+
+## [0.14.0]
+- Generate readme
+
+## [0.13.0]
+- Move GeneratePluginInfosHelper to separate package
+
+## [0.12.2]
+- Auto migrate `ilias_plugin` to `extra`
+
+## [0.12.1]
+- Auto migrate `ilias_plugin` to `extra`
+
 ## [0.12.0]
 - `GeneratePluginReadme`
 - Move `composer.json` > `ilias_plugin` to `composer.json` > `extra` > `ilias_plugin` for match composer shema

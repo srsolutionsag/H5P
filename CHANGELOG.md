@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.6.8]
+- Ping after each object for not ILIAS auto set inactive cron job if during longer
+
 ## [2.6.7]
 - Footer permanent link
 

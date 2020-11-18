@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.20.2]
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.20.1]
+- Generate readme
+
+## [0.20.0]
+- Generate readme
+
+## [0.19.8]
+- Fix
+
 ## [0.19.7]
 - Fix
 

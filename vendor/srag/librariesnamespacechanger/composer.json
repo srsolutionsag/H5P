@@ -1,11 +1,15 @@
 {
   "name": "srag/librariesnamespacechanger",
   "description": "Change namespace of libraries to plugin namespace",
-  "version": "0.12.0",
+  "version": "0.14.2",
+  "extra": {
+    "generate_plugin_readme_template": "SRAG_LIBRARY"
+  },
   "type": "library",
   "keywords": [
-    "ILIAS",
-    "Libraries"
+    "Changer",
+    "Libraries",
+    "Namespace"
   ],
   "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
   "license": "GPL-3.0-only",
@@ -23,6 +27,9 @@
   "require": {
     "php": ">=7.0"
   },
+  "require-dev": {
+    "srag/generateplugininfoshelper": ">=0.1.0"
+  },
   "autoload": {
     "psr-4": {
       "srag\\LibrariesNamespaceChanger\\": "src/"
@@ -32,5 +39,10 @@
     "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "scripts": {
+    "generate-plugin-readme": [
+      "srag\\GeneratePluginInfosHelper\\GeneratePluginReadme::generatePluginReadme"
+    ]
   }
 }
