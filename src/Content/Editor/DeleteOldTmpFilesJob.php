@@ -4,6 +4,7 @@ namespace srag\Plugins\H5P\Content\Editor;
 
 use ilCronJob;
 use ilCronJobResult;
+use ilCronManager;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -114,6 +115,8 @@ class DeleteOldTmpFilesJob extends ilCronJob
             }
 
             self::h5p()->contents()->editor()->deleteTmpFile($h5p_tmp_file);
+
+            ilCronManager::ping($this->getId());
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

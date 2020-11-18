@@ -5,6 +5,7 @@ namespace srag\Plugins\H5P\Event;
 use H5PEventBase;
 use ilCronJob;
 use ilCronJobResult;
+use ilCronManager;
 use ilH5PPlugin;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -111,6 +112,8 @@ class DeleteOldEventsJob extends ilCronJob
 
         foreach ($h5p_events as $h5p_event) {
             self::h5p()->events()->deleteEvent($h5p_event);
+
+            ilCronManager::ping($this->getId());
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);
