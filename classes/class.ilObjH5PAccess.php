@@ -36,6 +36,10 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function _isOffline(/*int*/ $a_obj_id) : bool
     {
+        if (self::dic()->objDataCache()->lookupType($a_obj_id) !== ilH5PPlugin::PLUGIN_ID) {
+            return boolval(ilObjectFactory::getInstanceByObjId($a_obj_id, false)->getOfflineStatus());
+        }
+
         $object_settings = self::h5p()->objectSettings()->getObjectSettingsById(intval($a_obj_id));
 
         if ($object_settings !== null) {
@@ -110,7 +114,9 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function hasWriteAccess(/*?int*/ $ref_id = null) : bool
     {
-        return self::checkAccess("write", "write", $ref_id);
+        $permission = (self::dic()->objDataCache()->lookupType(self::dic()->objDataCache()->lookupObjId($ref_id)) === "wiki" ? "edit_content" : "write");
+
+        return self::checkAccess($permission, $permission, $ref_id);
     }
 
 

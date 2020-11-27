@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.6.9]
+- Fix access permissions in page component editor in wikis
+- Update readme
+
 ## [2.6.8]
 - Ping after each object for not ILIAS auto set inactive cron job if during longer
 
