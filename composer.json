@@ -1,7 +1,7 @@
 {
   "name": "srag/h5p",
-  "description": "",
-  "version": "2.6.8",
+  "description": "Add H5P contents in repository objects",
+  "version": "2.6.9",
   "extra": {
     "ilias_plugin": {
       "id": "xhfp",
