@@ -1,7 +1,7 @@
 {
   "name": "srag/generateplugininfoshelper",
-  "description": "Generate plugin infos helper",
-  "version": "2.4.5",
+  "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
+  "version": "2.6.2",
   "extra": {
     "generate_plugin_readme_template": "SRAG_LIBRARY"
   },

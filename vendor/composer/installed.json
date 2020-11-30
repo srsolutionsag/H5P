@@ -304,17 +304,17 @@
     },
     {
         "name": "srag/dic",
-        "version": "0.30.2",
-        "version_normalized": "0.30.2.0",
+        "version": "0.31.0",
+        "version_normalized": "0.31.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "314c0a13a9e9970a012ca727148aa0ac148d50dd"
+            "reference": "de8dd1ff734ba8dc42178180dcdaee20058c10aa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/314c0a13a9e9970a012ca727148aa0ac148d50dd",
-            "reference": "314c0a13a9e9970a012ca727148aa0ac148d50dd",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/de8dd1ff734ba8dc42178180dcdaee20058c10aa",
+            "reference": "de8dd1ff734ba8dc42178180dcdaee20058c10aa",
             "shasum": ""
         },
         "require": {
@@ -323,7 +323,7 @@
         "require-dev": {
             "srag/generateplugininfoshelper": ">=0.1.0"
         },
-        "time": "2020-11-13T09:09:28+00:00",
+        "time": "2020-11-25T11:02:47+00:00",
         "type": "library",
         "extra": {
             "ilias_plugin": {
@@ -361,23 +361,23 @@
     },
     {
         "name": "srag/generateplugininfoshelper",
-        "version": "2.4.5",
-        "version_normalized": "2.4.5.0",
+        "version": "2.6.2",
+        "version_normalized": "2.6.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-            "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85"
+            "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/cb928c61cd60d1d62afe71c368bfed06833bfa85",
-            "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85",
+            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/c27b765782c9533f6f6f67e2b1a705f52df377a1",
+            "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-11-12T14:15:19+00:00",
+        "time": "2020-11-30T14:15:16+00:00",
         "type": "library",
         "extra": {
             "generate_plugin_readme_template": "SRAG_LIBRARY"
@@ -400,7 +400,7 @@
                 "role": "Developer"
             }
         ],
-        "description": "Generate plugin infos helper",
+        "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
         "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
         "keywords": [
             "Infos",
