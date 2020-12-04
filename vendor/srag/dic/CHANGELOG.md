@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.31.0]
+- `FixUITemplateInCronContext`
+
 ## [0.30.2]
 - Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
 

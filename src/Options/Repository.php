@@ -69,7 +69,11 @@ final class Repository extends AbstractRepository
      */
     public function getOption(string $name, $default_value = null)
     {
-        return $this->getJsonValue($name, false, $default_value);
+        if (isset($this->getFields()[$name])) {
+            return $this->getValue($name);
+        } else {
+            return $this->getJsonValue($name, false, $default_value);
+        }
     }
 
 
@@ -79,7 +83,11 @@ final class Repository extends AbstractRepository
      */
     public function setOption(string $name, $value)/* : void*/
     {
-        $this->setJsonValue($name, $value);
+        if (isset($this->getFields()[$name])) {
+            $this->setValue($name, $value);
+        } else {
+            $this->setJsonValue($name, $value);
+        }
     }
 
 
@@ -91,7 +99,7 @@ final class Repository extends AbstractRepository
         return [
             SettingsFormBuilder::KEY_CONTENT_TYPES            => [Config::TYPE_JSON, "", false],
             SettingsFormBuilder::KEY_ENABLE_LRS_CONTENT_TYPES => [Config::TYPE_JSON, false, false],
-            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, true, false]
+            SettingsFormBuilder::KEY_SEND_USAGE_STATISTICS    => [Config::TYPE_JSON, false, false]
         ];
     }
 

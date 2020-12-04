@@ -14,5 +14,6 @@ __LONG_DESCRIPTION__
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at __SUPPORT_LINK__
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at __SUPPORT_LINK__
+
+There is no guarantee this can be fixed or implemented
