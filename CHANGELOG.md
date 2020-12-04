@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.6.10]
+- Fix get default options
+- Disable 'Automatically contribute usage statistics' by default
+
 ## [2.6.9]
 - Fix access permissions in page component editor in wikis
 - Update readme
