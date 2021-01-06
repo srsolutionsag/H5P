@@ -197,6 +197,7 @@ class EditorStorage implements H5peditorStorageInterface
                     $library->title = $h5p_library->getTitle();
                     $library->runnable = $h5p_library->canRunnable();
                     $library->restricted = ($super_user ? false : $h5p_library->isRestricted());
+                    $library->metadataSettings = $h5p_library->getMetadataSettings();
                     $librariesWithDetails[] = $library;
                 }
             }
@@ -209,12 +210,13 @@ class EditorStorage implements H5peditorStorageInterface
 
             foreach ($h5p_libraries as $h5p_library) {
                 $library = (object) [
-                    "name"         => $h5p_library->getName(),
-                    "title"        => $h5p_library->getTitle(),
-                    "majorVersion" => $h5p_library->getMajorVersion(),
-                    "minorVersion" => $h5p_library->getMinorVersion(),
-                    "tutorialUrl"  => $h5p_library->getTutorialUrl(),
-                    "restricted"   => ($super_user ? false : $h5p_library->isRestricted())
+                    "name"             => $h5p_library->getName(),
+                    "title"            => $h5p_library->getTitle(),
+                    "majorVersion"     => $h5p_library->getMajorVersion(),
+                    "minorVersion"     => $h5p_library->getMinorVersion(),
+                    "tutorialUrl"      => $h5p_library->getTutorialUrl(),
+                    "restricted"       => ($super_user ? false : $h5p_library->isRestricted()),
+                    "metadataSettings" => $h5p_library->getMetadataSettings()
                 ];
 
                 foreach ($libraries as $key => $existingLibrary) {

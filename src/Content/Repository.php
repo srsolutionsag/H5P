@@ -418,6 +418,16 @@ final class Repository
         ContentLibrary::updateDB();
         ContentUserData::updateDB();
         $this->editor()->installTables();
+
+        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "author")) {
+            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "author");
+        }
+        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "description")) {
+            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "description");
+        }
+        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "keywords")) {
+            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "keywords");
+        }
     }
 
 

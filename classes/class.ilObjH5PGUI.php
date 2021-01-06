@@ -245,7 +245,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             return;
         }
 
-        self::h5p()->contents()->editor()->show()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->createContent($form->getLibrary(), $form->getParams(), $form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -755,7 +755,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getParams(), $form);
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }

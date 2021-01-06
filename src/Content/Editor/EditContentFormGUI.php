@@ -8,7 +8,6 @@ use ilFileInputGUI;
 use ilH5PPageComponentPluginGUI;
 use ilH5PPlugin;
 use ilObjH5PGUI;
-use ilTextInputGUI;
 use ilUtil;
 use srag\CustomInputGUIs\H5P\HiddenInputGUI\HiddenInputGUI;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\PropertyFormGUI;
@@ -48,10 +47,6 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @var string|null
      */
-    protected $h5p_title = null;
-    /**
-     * @var string|null
-     */
     protected $library = null;
     /**
      * @var string|null
@@ -80,15 +75,6 @@ class EditContentFormGUI extends PropertyFormGUI
         $this->cmd_cancel = $cmd_cancel;
 
         parent::__construct($parent);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getH5PTitle() : string
-    {
-        return $this->h5p_title;
     }
 
 
@@ -267,9 +253,6 @@ class EditContentFormGUI extends PropertyFormGUI
     {
         if ($this->h5p_content !== null) {
             switch ($key) {
-                case "title":
-                    return $this->h5p_content->getTitle();
-
                 case "library":
                     $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
 
@@ -277,9 +260,11 @@ class EditContentFormGUI extends PropertyFormGUI
 
                 case "params":
                     $content = self::h5p()->contents()->core()->loadContent($this->h5p_content->getContentId());
-                    $params = self::h5p()->contents()->core()->filterParameters($content);
 
-                    return $params;
+                    return json_encode([
+                        "params"   => json_decode(self::h5p()->contents()->core()->filterParameters($content)),
+                        "metadata" => $content["metadata"]
+                    ]);
 
                 case "upload_file":
                     if (count($this->h5p_content->getUploadedFiles()) > 0) {
@@ -330,10 +315,6 @@ class EditContentFormGUI extends PropertyFormGUI
     protected function initFields()/* : void*/
     {
         $this->fields = [
-            "title"       => [
-                PropertyFormGUI::PROPERTY_CLASS    => ilTextInputGUI::class,
-                PropertyFormGUI::PROPERTY_REQUIRED => true
-            ],
             "library"     => [
                 PropertyFormGUI::PROPERTY_CLASS    => HiddenInputGUI::class,
                 PropertyFormGUI::PROPERTY_REQUIRED => true
@@ -383,10 +364,6 @@ class EditContentFormGUI extends PropertyFormGUI
     protected function storeValue(string $key, $value)/* : void*/
     {
         switch ($key) {
-            case "title":
-                $this->h5p_title = strval($value);
-                break;
-
             case "library":
                 $this->library = strval($value);
                 break;

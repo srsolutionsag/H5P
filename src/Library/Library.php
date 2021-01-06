@@ -95,6 +95,14 @@ class Library extends ActiveRecord
      */
     protected $major_version = 0;
     /**
+     * @var array
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $metadata_settings = [];
+    /**
      * @var int
      *
      * @con_has_field  true
@@ -341,6 +349,24 @@ class Library extends ActiveRecord
 
 
     /**
+     * @return array
+     */
+    public function getMetadataSettings() : array
+    {
+        return $this->metadata_settings;
+    }
+
+
+    /**
+     * @param array $metadata_settings
+     */
+    public function setMetadataSettings(array $metadata_settings)/* : void*/
+    {
+        $this->metadata_settings = $metadata_settings;
+    }
+
+
+    /**
      * @return int
      */
     public function getMinorVersion() : int
@@ -583,6 +609,9 @@ class Library extends ActiveRecord
             case "updated_at":
                 return self::h5p()->timestampToDbDate($field_value);
 
+            case "metadata_settings":
+                return json_encode($field_value);
+
             default:
                 return parent::sleep($field_name);
         }
@@ -610,6 +639,9 @@ class Library extends ActiveRecord
             case "created_at":
             case "updated_at":
                 return self::h5p()->dbDateToTimestamp($field_value);
+
+            case "metadata_settings":
+                return (array) json_decode($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);

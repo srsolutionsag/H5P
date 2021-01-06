@@ -30,10 +30,25 @@ class Content extends ActiveRecord
      *
      * @con_has_field    true
      * @con_fieldtype    text
-     * @con_length       127
      * @con_is_notnull   true
      */
-    protected $author = "";
+    protected $author_comments = "";
+    /**
+     * @var array
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $authors = [];
+    /**
+     * @var array
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $changes = [];
     /**
      * @var int
      *
@@ -78,7 +93,7 @@ class Content extends ActiveRecord
      * @con_fieldtype    text
      * @con_is_notnull   true
      */
-    protected $description = "";
+    protected $default_language = "";
     /**
      * @var int
      *
@@ -106,14 +121,6 @@ class Content extends ActiveRecord
      */
     protected $filtered = "";
     /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_is_notnull   true
-     */
-    protected $keywords = "[]";
-    /**
      * @var int
      *
      * @con_has_field    true
@@ -127,10 +134,25 @@ class Content extends ActiveRecord
      *
      * @con_has_field    true
      * @con_fieldtype    text
-     * @con_length       7
      * @con_is_notnull   true
      */
     protected $license = "";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $license_extras = "";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $license_version = "";
     /**
      * @var int
      *
@@ -179,7 +201,14 @@ class Content extends ActiveRecord
      *
      * @con_has_field    true
      * @con_fieldtype    text
-     * @con_length       255
+     * @con_is_notnull   true
+     */
+    protected $source = "";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
      * @con_is_notnull   true
      */
     protected $title = "";
@@ -199,6 +228,24 @@ class Content extends ActiveRecord
      * @con_is_notnull   true
      */
     protected $uploaded_files = [];
+    /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     8
+     * @con_is_notnull true
+     */
+    protected $year_from = 0;
+    /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     8
+     * @con_is_notnull true
+     */
+    protected $year_to = 0;
 
 
     /**
@@ -227,18 +274,54 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getAuthor() : string
+    public function getAuthorComments() : string
     {
-        return $this->author;
+        return $this->author_comments;
     }
 
 
     /**
-     * @param string $author
+     * @param string $author_comments
      */
-    public function setAuthor(string $author)/* : void*/
+    public function setAuthorComments(string $author_comments)/* : void*/
     {
-        $this->author = $author;
+        $this->author_comments = $author_comments;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getAuthors() : array
+    {
+        return $this->authors;
+    }
+
+
+    /**
+     * @param array $authors
+     */
+    public function setAuthors(array $authors)/* : void*/
+    {
+        $this->authors = $authors;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getChanges() : array
+    {
+        return $this->changes;
+    }
+
+
+    /**
+     * @param array $changes
+     */
+    public function setChanges(array $changes)/* : void*/
+    {
+        $this->changes = $changes;
     }
 
 
@@ -326,18 +409,18 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
-    public function getDescription() : string
+    public function getDefaultLanguage() : string
     {
-        return $this->description;
+        return $this->default_language;
     }
 
 
     /**
-     * @param string $description
+     * @param string $default_language
      */
-    public function setDescription(string $description)/* : void*/
+    public function setDefaultLanguage(string $default_language)/* : void*/
     {
-        $this->description = $description;
+        $this->default_language = $default_language;
     }
 
 
@@ -396,24 +479,6 @@ class Content extends ActiveRecord
 
 
     /**
-     * @return string
-     */
-    public function getKeywords() : string
-    {
-        return $this->keywords;
-    }
-
-
-    /**
-     * @param string $keywords
-     */
-    public function setKeywords(string $keywords)/* : void*/
-    {
-        $this->keywords = $keywords;
-    }
-
-
-    /**
      * @return int
      */
     public function getLibraryId() : int
@@ -446,6 +511,42 @@ class Content extends ActiveRecord
     public function setLicense(string $license)/* : void*/
     {
         $this->license = $license;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLicenseExtras() : string
+    {
+        return $this->license_extras;
+    }
+
+
+    /**
+     * @param string $license_extras
+     */
+    public function setLicenseExtras(string $license_extras)/* : void*/
+    {
+        $this->license_extras = $license_extras;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLicenseVersion() : string
+    {
+        return $this->license_version;
+    }
+
+
+    /**
+     * @param string $license_version
+     */
+    public function setLicenseVersion(string $license_version)/* : void*/
+    {
+        $this->license_version = $license_version;
     }
 
 
@@ -542,6 +643,24 @@ class Content extends ActiveRecord
     /**
      * @return string
      */
+    public function getSource() : string
+    {
+        return $this->source;
+    }
+
+
+    /**
+     * @param string $source
+     */
+    public function setSource(string $source)/* : void*/
+    {
+        $this->source = $source;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getTitle() : string
     {
         return $this->title;
@@ -576,7 +695,7 @@ class Content extends ActiveRecord
 
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getUploadedFiles() : array
     {
@@ -594,6 +713,42 @@ class Content extends ActiveRecord
 
 
     /**
+     * @return int
+     */
+    public function getYearFrom() : int
+    {
+        return $this->year_from;
+    }
+
+
+    /**
+     * @param int $year_from
+     */
+    public function setYearFrom(int $year_from)/* : void*/
+    {
+        $this->year_from = $year_from;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getYearTo() : int
+    {
+        return $this->year_to;
+    }
+
+
+    /**
+     * @param int $year_to
+     */
+    public function setYearTo(int $year_to)/* : void*/
+    {
+        $this->year_to = $year_to;
+    }
+
+
+    /**
      * @inheritDoc
      */
     public function sleep(/*string*/ $field_name)
@@ -605,6 +760,8 @@ class Content extends ActiveRecord
             case "updated_at":
                 return self::h5p()->timestampToDbDate($field_value);
 
+            case "authors":
+            case "changes":
             case "uploaded_files":
                 return json_encode($field_value);
 
@@ -625,6 +782,8 @@ class Content extends ActiveRecord
             case "library_id":
             case "disable":
             case "sort":
+            case "year_from":
+            case "year_to":
                 return intval($field_value);
 
             case "created_at":
@@ -638,8 +797,10 @@ class Content extends ActiveRecord
                     return parent::wakeUp($field_name, $field_value);
                 }
 
+            case "authors":
+            case "changes":
             case "uploaded_files":
-                return json_decode($field_value);
+                return (array) json_decode($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);
