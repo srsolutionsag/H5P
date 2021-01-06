@@ -57,7 +57,6 @@ class ShowEditor
 
 
     /**
-     * @param string                  $title
      * @param string                  $library
      * @param string                  $params
      * @param EditContentFormGUI|null $form
@@ -65,13 +64,12 @@ class ShowEditor
      *
      * @return Content
      */
-    public function createContent(string $title, string $library, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true) : Content
+    public function createContent(string $library, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true) : Content
     {
         $library_id = H5PCore::libraryFromString($library);
         $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
 
         $content = [
-            "title"   => $title,
             "library" => [
                 "libraryId"    => $h5p_library->getLibraryId(),
                 "name"         => $h5p_library->getName(),
@@ -81,6 +79,7 @@ class ShowEditor
         ];
         $params = json_decode($params);
         $content["params"] = json_encode($params->params);
+        $content["metadata"] = $params->metadata;
 
         $content["id"] = self::h5p()->contents()->core()->saveContent($content);
 
@@ -196,7 +195,19 @@ class ShowEditor
         }
 
         self::h5p()->contents()->editor()->storageCore()->savePackage([
-            "title" => $title
+            "metadata" => [
+                "authors"         => self::h5p()->contents()->core()->mainJsonData["authors"],
+                "authorComments"  => self::h5p()->contents()->core()->mainJsonData["authorComments"],
+                "changes"         => self::h5p()->contents()->core()->mainJsonData["changes"],
+                "defaultLanguage" => self::h5p()->contents()->core()->mainJsonData["defaultLanguage"],
+                "license"         => self::h5p()->contents()->core()->mainJsonData["license"],
+                "licenseExtras"   => self::h5p()->contents()->core()->mainJsonData["licenseExtras"],
+                "licenseVersion"  => self::h5p()->contents()->core()->mainJsonData["licenseVersion"],
+                "source"          => self::h5p()->contents()->core()->mainJsonData["source"],
+                "title"           => (self::h5p()->contents()->core()->mainJsonData["title"] ?: $title),
+                "yearFrom"        => self::h5p()->contents()->core()->mainJsonData["yearFrom"],
+                "yearTo"          => self::h5p()->contents()->core()->mainJsonData["yearTo"]
+            ]
         ]);
 
         self::h5p()->contents()->editor()->storageFramework()->removeTemporarilySavedFiles(self::h5p()->contents()->framework()->getUploadedH5pFolderPath());
@@ -215,20 +226,18 @@ class ShowEditor
 
     /**
      * @param Content                 $h5p_content
-     * @param string                  $title
      * @param string                  $params
      * @param EditContentFormGUI|null $form
      * @param bool                    $message
      */
-    public function updateContent(Content $h5p_content, string $title, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true)/* : void*/
+    public function updateContent(Content $h5p_content, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true)/* : void*/
     {
         $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
-
-        $content["title"] = $title;
 
         $oldParams = json_decode($content["params"]);
         $params = json_decode($params);
         $content["params"] = json_encode($params->params);
+        $content["metadata"] = $params->metadata;
 
         self::h5p()->contents()->core()->saveContent($content);
 

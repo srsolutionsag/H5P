@@ -17,9 +17,9 @@ class ilObjH5P extends ilObjectPlugin
 
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
-     * @var ObjectSettings
+     * @var ObjectSettings|null
      */
-    protected $object_settings;
+    protected $object_settings = null;
 
 
     /**

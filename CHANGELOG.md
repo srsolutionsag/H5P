@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.7.0]
+- Add support for metadata fields
+- Remove the standalone title field and use the metadata title field
+
 ## [2.6.10]
 - Fix get default options
 - Disable 'Automatically contribute usage statistics' by default

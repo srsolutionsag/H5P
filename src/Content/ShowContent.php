@@ -400,6 +400,7 @@ class ShowContent
             "resizeCode"      => "",
             "url"             => "",
             "title"           => $h5p_content->getTitle(),
+            "metadata"        => $content["metadata"],
             "displayOptions"  => [
                 "frame"     => true,
                 "export"    => false,

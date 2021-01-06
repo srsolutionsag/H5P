@@ -829,7 +829,20 @@ class Framework implements H5PFrameworkInterface
                 "embedType" => $h5p_content->getEmbedType(),
                 "disable"   => $h5p_content->getDisable(),
                 "language"  => self::dic()->user()->getLanguage(),
-                "libraryId" => $h5p_content->getLibraryId()
+                "libraryId" => $h5p_content->getLibraryId(),
+                "metadata"  => array_filter([
+                    "authors"         => $h5p_content->getAuthors(),
+                    "authorComments"  => $h5p_content->getAuthorComments(),
+                    "changes"         => $h5p_content->getChanges(),
+                    "defaultLanguage" => $h5p_content->getDefaultLanguage(),
+                    "license"         => $h5p_content->getLicense(),
+                    "licenseExtras"   => $h5p_content->getLicenseExtras(),
+                    "licenseVersion"  => $h5p_content->getLicenseVersion(),
+                    "source"          => $h5p_content->getSource(),
+                    "title"           => $h5p_content->getTitle(),
+                    "yearFrom"        => $h5p_content->getYearFrom(),
+                    "yearTo"          => $h5p_content->getYearTo()
+                ])
             ];
 
             $h5p_library = self::h5p()->libraries()->getLibraryById($h5p_content->getLibraryId());
@@ -1283,6 +1296,8 @@ class Framework implements H5PFrameworkInterface
             $h5p_library->setAddTo(null);
         }
 
+        $h5p_library->setMetadataSettings(json_decode($library_data["metadataSettings"], true) ?: []);
+
         self::h5p()->libraries()->storeLibrary($h5p_library);
 
         if ($new) {
@@ -1586,7 +1601,9 @@ class Framework implements H5PFrameworkInterface
             $h5p_content->setLibraryId(intval($content["library"]["libraryId"]));
         }
 
-        $h5p_content->setTitle($content["title"]);
+        $metadata = (array) $content["metadata"];
+
+        $h5p_content->setTitle($metadata["title"] ?: "");
 
         $h5p_content->setParameters($content["params"]);
 
@@ -1597,6 +1614,26 @@ class Framework implements H5PFrameworkInterface
         } else {
             $h5p_content->setDisable(0);
         }
+
+        $h5p_content->setAuthors($metadata["authors"] ?: []);
+
+        $h5p_content->setAuthorComments($metadata["authorComments"] ?: "");
+
+        $h5p_content->setChanges($metadata["changes"] ?: []);
+
+        $h5p_content->setDefaultLanguage($metadata["defaultLanguage"] ?: "");
+
+        $h5p_content->setLicense($metadata["license"] ?: "");
+
+        $h5p_content->setLicenseExtras($metadata["licenseExtras"] ?: "");
+
+        $h5p_content->setLicenseVersion($metadata["licenseVersion"] ?: "");
+
+        $h5p_content->setSource($metadata["source"] ?: "");
+
+        $h5p_content->setYearFrom($metadata["yearFrom"] ?: 0);
+
+        $h5p_content->setYearTo($metadata["yearTo"] ?: 0);
 
         self::h5p()->contents()->storeContent($h5p_content);
 
