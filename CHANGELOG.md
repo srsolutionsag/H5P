@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.7.1]
+- Update keywords
+
 ## [2.7.0]
 - Add support for metadata fields
 - Remove the standalone title field and use the metadata title field
