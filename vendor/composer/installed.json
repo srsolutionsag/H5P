@@ -177,17 +177,17 @@
     },
     {
         "name": "srag/custominputguis",
-        "version": "0.41.3",
-        "version_normalized": "0.41.3.0",
+        "version": "0.41.4",
+        "version_normalized": "0.41.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-            "reference": "26384f04d1a0ae72c53e0598c6e3580dcfedd88c"
+            "reference": "b0c186f51a65bbd1b59ac14acb349c2a5e477ae7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/26384f04d1a0ae72c53e0598c6e3580dcfedd88c",
-            "reference": "26384f04d1a0ae72c53e0598c6e3580dcfedd88c",
+            "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/b0c186f51a65bbd1b59ac14acb349c2a5e477ae7",
+            "reference": "b0c186f51a65bbd1b59ac14acb349c2a5e477ae7",
             "shasum": ""
         },
         "require": {
@@ -197,14 +197,15 @@
         "require-dev": {
             "srag/generateplugininfoshelper": ">=0.1.0"
         },
-        "time": "2021-01-20T06:25:40+00:00",
+        "time": "2021-01-29T13:57:19+00:00",
         "type": "library",
         "extra": {
             "ilias_plugin": {
                 "ilias_min_version": "5.4.0",
                 "ilias_max_version": "6.999"
             },
-            "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+            "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY",
+            "long_description_template": "src/LONG_DESCRIPTION.md"
         },
         "installation-source": "dist",
         "autoload": {
@@ -242,17 +243,17 @@
     },
     {
         "name": "srag/devtools",
-        "version": "1.2.4",
-        "version_normalized": "1.2.4.0",
+        "version": "1.2.5",
+        "version_normalized": "1.2.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DevTools.git",
-            "reference": "8d10dc999437d8831dee3d4498870ea5fcc2e79c"
+            "reference": "c053a7772c5a591127610158c0b3ad8c355485f7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DevTools/zipball/8d10dc999437d8831dee3d4498870ea5fcc2e79c",
-            "reference": "8d10dc999437d8831dee3d4498870ea5fcc2e79c",
+            "url": "https://api.github.com/repos/studer-raimann/DevTools/zipball/c053a7772c5a591127610158c0b3ad8c355485f7",
+            "reference": "c053a7772c5a591127610158c0b3ad8c355485f7",
             "shasum": ""
         },
         "require": {
@@ -263,7 +264,7 @@
         "require-dev": {
             "srag/generateplugininfoshelper": ">=0.1.0"
         },
-        "time": "2021-01-21T13:41:08+00:00",
+        "time": "2021-01-29T13:58:23+00:00",
         "type": "library",
         "extra": {
             "ilias_plugin": {

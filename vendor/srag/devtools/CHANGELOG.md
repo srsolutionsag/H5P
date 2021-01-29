@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.5]
+- Add require compose in ctrl entry classes
+
 ## [1.2.4]
 - Fix `message` property in `ilPlugin` will be declared as `protected` (Before it was not defined = `public`)
 

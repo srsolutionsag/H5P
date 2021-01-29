@@ -1,7 +1,7 @@
 {
   "name": "srag/devtools",
   "description": "Add some dev tools to ILIAS plugin config, if core dev mode is enabled, like reload ctrl structure",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",

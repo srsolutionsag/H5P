@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.41.4]
+- Add require compose in ctrl entry classes
+
 ## [0.41.3]
 - Load `form` lang module
 
