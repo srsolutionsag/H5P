@@ -41,7 +41,19 @@ So you can force to use your libraries classes in the `vendor` folder of your pl
 It support the follow libraries:
 * [srag libraries](https://packagist.org/packages/srag)
 
+### In code
+
+```php
+...
+use srag\LibrariesNamespaceChanger\x\LibrariesNamespaceChanger; 
+...
+LibrariesNamespaceChanger::getInstance()->doRewriteLibrariesNamespaces(string $project_root);
+...
+```
+
 ## PHP72Backport
+
+PHP72Backport is deprecated and will be removed!
 
 If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, you can also add additionally the follow composer script:
 
@@ -55,6 +67,8 @@ If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, y
 It works with RegExp and affects your whole plugin workspace (`classes`, `src`, `vendor`, ...)
 
 ## php7backport
+
+PHP7Backport is deprecated and will be removed!
 
 If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you can also add additionally the follow composer script:
 
@@ -70,5 +84,6 @@ It uses the https://github.com/ondrejbouda/php7backport.git repo, but provides i
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER
+
+There is no guarantee this can be fixed or implemented

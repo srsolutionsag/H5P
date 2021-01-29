@@ -1,15 +1,16 @@
 {
   "name": "srag/librariesnamespacechanger",
   "description": "Change namespace of libraries to plugin namespace",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "extra": {
-    "generate_plugin_readme_template": "SRAG_LIBRARY"
+    "generate_plugin_readme_template": "SRAG_LIBRARY",
+    "long_description_template": "src/LONG_DESCRIPTION.md"
   },
   "type": "library",
   "keywords": [
-    "Changer",
-    "Libraries",
-    "Namespace"
+    "changer",
+    "libraries",
+    "namespace"
   ],
   "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
   "license": "GPL-3.0-only",

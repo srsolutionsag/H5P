@@ -38,24 +38,27 @@ final class LibrariesNamespaceChanger
      * @var self|null
      */
     private static $instance = null;
-    /**
-     * @var string
-     */
-    private static $plugin_root = "";
-    /**
-     * @var Event
-     */
-    private $event;
 
 
     /**
      * LibrariesNamespaceChanger constructor
-     *
-     * @param Event $event
      */
-    private function __construct(Event $event)
+    private function __construct()
     {
-        $this->event = $event;
+
+    }
+
+
+    /**
+     * @return self
+     */
+    public static function getInstance() : self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 
@@ -66,33 +69,18 @@ final class LibrariesNamespaceChanger
      */
     public static function rewriteLibrariesNamespaces(Event $event)/*: void*/
     {
-        self::$plugin_root = rtrim(Closure::bind(function () : string {
+        $project_root = rtrim(Closure::bind(function () : string {
             return $this->baseDir;
         }, $event->getComposer()->getConfig(), Config::class)(), "/");
 
-        self::getInstance($event)->doRewriteLibrariesNamespaces();
+        self::getInstance()->doRewriteLibrariesNamespaces($project_root);
     }
 
 
     /**
-     * @param Event $event
-     *
-     * @return self
+     * @param string $project_root
      */
-    private static function getInstance(Event $event) : self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self($event);
-        }
-
-        return self::$instance;
-    }
-
-
-    /**
-     *
-     */
-    private function doRewriteLibrariesNamespaces()/*: void*/
+    public function doRewriteLibrariesNamespaces(string $project_root)/*: void*/
     {
         $plugin_name = $this->getPluginName();
 
@@ -102,11 +90,11 @@ final class LibrariesNamespaceChanger
 
         $libraries = [];
         foreach (
-            array_filter(scandir(self::$plugin_root . "/vendor/srag"), function (string $folder) : bool {
+            array_filter(scandir($project_root . "/vendor/srag"), function (string $folder) : bool {
                 return (!in_array($folder, [".", "..", "librariesnamespacechanger"]));
             }) as $folder
         ) {
-            $folder = self::$plugin_root . "/vendor/srag/" . $folder;
+            $folder = $project_root . "/vendor/srag/" . $folder;
 
             $composer_json = json_decode(file_get_contents($folder . "/composer.json"), true);
 
@@ -116,7 +104,7 @@ final class LibrariesNamespaceChanger
                 continue;
             }
 
-            $namespaces = array_map(function (string $namespace) use ($plugin_name): string {
+            $namespaces = array_map(function (string $namespace) use ($plugin_name) : string {
                 if (substr($namespace, -1) === "\\") {
                     $namespace = substr($namespace, 0, -1);
                 }
@@ -135,7 +123,7 @@ final class LibrariesNamespaceChanger
         foreach (array_keys($libraries) as $folder) {
             $this->getFiles($folder, $files);
         }
-        $this->getFiles(self::$plugin_root . "/vendor/composer", $files);
+        $this->getFiles($project_root . "/vendor/composer", $files);
 
         foreach ($libraries as $folder => $namespaces) {
 

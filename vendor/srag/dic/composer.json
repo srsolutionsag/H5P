@@ -1,20 +1,21 @@
 {
   "name": "srag/dic",
   "description": "Use all ILIAS globals in your class",
-  "version": "0.31.0",
+  "version": "0.31.4",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",
       "ilias_max_version": "6.999"
     },
-    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY",
+    "long_description_template": "src/LONG_DESCRIPTION.md"
   },
   "type": "library",
   "keywords": [
-    "ILIAS",
-    "DIC",
-    "Trait",
-    "globals"
+    "dic",
+    "globals",
+    "ilias",
+    "trait"
   ],
   "homepage": "https://github.com/studer-raimann/DIC",
   "license": "GPL-3.0-only",

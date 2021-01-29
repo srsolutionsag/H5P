@@ -148,6 +148,8 @@ abstract class AbstractFormBuilder implements FormBuilder
      */
     protected function buildForm() : Form
     {
+        self::dic()->language()->loadLanguageModule("form");
+
         $form = self::dic()->ui()->factory()->input()->container()->form()->standard($this->getAction(), [
             "form" => self::dic()->ui()->factory()->input()->field()->section($this->getFields(), $this->getTitle())
         ]);

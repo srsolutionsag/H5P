@@ -66,5 +66,6 @@ So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/pac
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LINP
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LINP
+
+There is no guarantee this can be fixed or implemented

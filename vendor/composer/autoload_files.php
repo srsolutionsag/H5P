@@ -18,5 +18,4 @@ return array(
     '920009c17c818a2668db044d76f129b9' => $vendorDir . '/h5p/h5p-editor/h5peditor-storage.interface.php',
     '101279c1523ab77899b4b6921c749836' => $vendorDir . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
     'e9da0687bf61d492ff6049163121c6a2' => $vendorDir . '/srag/dic/src/PHPVersionChecker.php',
-    'c5081a21dce64711aad77d7ecf0d7dc2' => $vendorDir . '/srag/dic/src/Ilias7PreWarn.php',
 );

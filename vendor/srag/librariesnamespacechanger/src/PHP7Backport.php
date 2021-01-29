@@ -13,7 +13,7 @@ use Composer\Script\Event;
  *
  * @internal
  *
- * @deprecated Will be removed with the end of ILIAS 5.3 support
+ * @deprecated
  */
 final class PHP7Backport
 {
@@ -104,6 +104,8 @@ final class PHP7Backport
      */
     private function doPHP7Backport()/*: void*/
     {
+        echo "PHP7Backport is deprecated and will be removed!\n";
+
         // First clone or pull the repo
         if (file_exists(self::TEMP_FOLDER_PHP7BACKPORT)) {
             exec("rm -rfd " . escapeshellarg(self::TEMP_FOLDER_PHP7BACKPORT));

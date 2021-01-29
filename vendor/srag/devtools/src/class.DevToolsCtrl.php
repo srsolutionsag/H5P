@@ -2,9 +2,11 @@
 
 namespace srag\DevTools\H5P;
 
+use Closure;
 use ilAdministrationGUI;
 use ilDBConstants;
 use ilObjComponentSettingsGUI;
+use ilPlugin;
 use ilPluginConfigGUI;
 use ilUtil;
 use srag\DIC\H5P\DICTrait;
@@ -154,7 +156,12 @@ class DevToolsCtrl
         ilUtil::sendSuccess($this->plugin->translate("reloaded_ctrl_structure", self::LANG_MODULE), true);
 
         //self::dic()->ctrl()->redirect($this);
-        self::dic()->ctrl()->redirectToURL(self::dic()->ctrl()->getTargetScript() . "?ref_id=" . (31) . "&admin_mode=settings&ctype=" . $this->plugin->getPluginObject()->getComponentType()
+        self::dic()->ctrl()->redirectToURL(self::dic()->ctrl()->getTargetScript() . "?ref_id=" . self::dic()
+                                                                                                     ->database()
+                                                                                                     ->queryF('SELECT ref_id FROM object_data INNER JOIN object_reference ON object_data.obj_id=object_reference.obj_id WHERE type=%s',
+                                                                                                         [ilDBConstants::T_TEXT], ["cmps"])
+                                                                                                     ->fetchAssoc()["ref_id"] . "&admin_mode=settings&ctype=" . $this->plugin->getPluginObject()
+                ->getComponentType()
             . "&cname=" . $this->plugin->getPluginObject()->getComponentName()
             . "&slot_id=" . $this->plugin->getPluginObject()->getSlotId() . "&pname=" . $this->plugin->getPluginObject()->getPluginName() . "&cmdClass="
             . static::class . "&cmdNode=" . implode(":", array_map([$this, "reloadCtrlStructureGetNewNodeId"], [
@@ -173,7 +180,9 @@ class DevToolsCtrl
     {
         $this->plugin->reloadDatabase();
 
-        ilUtil::sendSuccess($this->plugin->translate("reloaded_database", self::LANG_MODULE) . "<br><br>" . $this->plugin->getPluginObject()->message, true);
+        ilUtil::sendSuccess($this->plugin->translate("reloaded_database", self::LANG_MODULE) . "<br><br>" . Closure::bind(function () : string {
+                return $this->message;
+            }, $this->plugin->getPluginObject(), ilPlugin::class)(), true);
 
         self::dic()->ctrl()->redirect($this);
     }

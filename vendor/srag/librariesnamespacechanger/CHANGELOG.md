@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.15.0]
+- Possibility to run without composer script
+- Deprecate `PHP72Backport`
+
 ## [0.14.2]
 - Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
 

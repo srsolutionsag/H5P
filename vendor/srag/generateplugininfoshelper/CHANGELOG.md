@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.8.0]
+- Add `supports_cli_setup` support
+
+## [2.7.0]
+- `long_description_template` config
+
 ## [2.6.2]
 - Fix generate `plugin.xml`
 
