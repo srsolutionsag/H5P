@@ -9,7 +9,8 @@
       "ilias_min_version": "5.4.0",
       "ilias_max_version": "6.999",
       "lucene_search": true,
-      "slot": "Services/Repository/RepositoryObject"
+      "slot": "Services/Repository/RepositoryObject",
+      "supports_cli_setup": true
     },
     "generate_plugin_readme_template": "SRAG_ILIAS_PLUGIN",
     "long_description_template": "src/LONG_DESCRIPTION.md"
