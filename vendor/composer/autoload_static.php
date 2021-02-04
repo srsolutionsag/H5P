@@ -19,7 +19,6 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         '920009c17c818a2668db044d76f129b9' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-storage.interface.php',
         '101279c1523ab77899b4b6921c749836' => __DIR__ . '/..' . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
         'e9da0687bf61d492ff6049163121c6a2' => __DIR__ . '/..' . '/srag/dic/src/PHPVersionChecker.php',
-        'c5081a21dce64711aad77d7ecf0d7dc2' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -29,7 +28,6 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
             'srag\\Plugins\\H5P\\' => 17,
             'srag\\LibraryLanguageInstaller\\H5P\\' => 34,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\GeneratePluginInfosHelper\\H5P\\' => 35,
             'srag\\DevTools\\H5P\\' => 18,
             'srag\\DIC\\H5P\\' => 13,
             'srag\\CustomInputGUIs\\H5P\\' => 25,
@@ -53,10 +51,6 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\LibrariesNamespaceChanger\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
-        ),
-        'srag\\GeneratePluginInfosHelper\\H5P\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src',
         ),
         'srag\\DevTools\\H5P\\' => 
         array (
@@ -157,7 +151,6 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\DIC\\H5P\\Database\\PdoContextHelper' => __DIR__ . '/..' . '/srag/dic/src/Database/PdoContextHelper.php',
         'srag\\DIC\\H5P\\Database\\PdoStatementContextHelper' => __DIR__ . '/..' . '/srag/dic/src/Database/PdoStatementContextHelper.php',
         'srag\\DIC\\H5P\\Exception\\DICException' => __DIR__ . '/..' . '/srag/dic/src/Exception/DICException.php',
-        'srag\\DIC\\H5P\\Ilias7PreWarn' => __DIR__ . '/..' . '/srag/dic/src/Ilias7PreWarn.php',
         'srag\\DIC\\H5P\\Loader\\AbstractLoaderDetector' => __DIR__ . '/..' . '/srag/dic/src/Loader/AbstractLoaderDetector.php',
         'srag\\DIC\\H5P\\Output\\Output' => __DIR__ . '/..' . '/srag/dic/src/Output/Output.php',
         'srag\\DIC\\H5P\\Output\\OutputInterface' => __DIR__ . '/..' . '/srag/dic/src/Output/OutputInterface.php',
@@ -168,8 +161,6 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\DIC\\H5P\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
         'srag\\DIC\\H5P\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
         'srag\\DevTools\\H5P\\DevToolsCtrl' => __DIR__ . '/..' . '/srag/devtools/src/class.DevToolsCtrl.php',
-        'srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginPhpAndXml' => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src/GeneratePluginPhpAndXml.php',
-        'srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme' => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src/GeneratePluginReadme.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
         'srag\\LibrariesNamespaceChanger\\PHP72Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP72Backport.php',
         'srag\\LibrariesNamespaceChanger\\PHP7Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP7Backport.php',

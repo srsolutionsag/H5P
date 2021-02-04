@@ -1,21 +1,22 @@
 {
   "name": "srag/custominputguis",
   "description": "Custom Input-GUI's",
-  "version": "0.41.2",
+  "version": "0.41.4",
   "extra": {
     "ilias_plugin": {
       "ilias_min_version": "5.4.0",
       "ilias_max_version": "6.999"
     },
-    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY"
+    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY",
+    "long_description_template": "src/LONG_DESCRIPTION.md"
   },
   "type": "library",
   "keywords": [
-    "ILIAS",
-    "PropertyForm",
-    "Table",
-    "Input",
-    "GUI"
+    "gui",
+    "ilias",
+    "input",
+    "propertyform",
+    "table"
   ],
   "homepage": "https://github.com/studer-raimann/CustomInputGUIs",
   "license": "GPL-3.0-only",

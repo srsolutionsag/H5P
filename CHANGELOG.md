@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.7.2]
+- Remove generate readme and auto_version_tag_ci
+
 ## [2.7.1]
 - Update keywords
 

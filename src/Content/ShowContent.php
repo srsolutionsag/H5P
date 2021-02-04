@@ -198,7 +198,7 @@ class ShowContent
                 "ajax"               => [
                     H5PActionGUI::H5P_ACTION_SET_FINISHED      => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_SET_FINISHED),
                     H5PActionGUI::H5P_ACTION_CONTENT_USER_DATA => H5PActionGUI::getUrl(H5PActionGUI::H5P_ACTION_CONTENT_USER_DATA)
-                        . "&content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId",
+                        . "&content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
                 ],
                 "saveFreq"           => false,
                 "user"               => [

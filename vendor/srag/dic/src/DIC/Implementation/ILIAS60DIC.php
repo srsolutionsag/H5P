@@ -79,6 +79,12 @@ final class ILIAS60DIC extends AbstractDIC
 {
 
     /**
+     * @var ilMMItemRepository|null
+     */
+    protected $main_menu_item = null;
+
+
+    /**
      * @inheritDoc
      */
     public function access() : ilAccessHandler
@@ -425,7 +431,11 @@ final class ILIAS60DIC extends AbstractDIC
      */
     public function mainMenuItem() : ilMMItemRepository
     {
-        return new ilMMItemRepository();
+        if ($this->main_menu_item === null) {
+            $this->main_menu_item = new ilMMItemRepository();
+        }
+
+        return $this->main_menu_item;
     }
 
 

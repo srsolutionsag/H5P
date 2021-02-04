@@ -349,7 +349,8 @@ interface DICInterface
     /**
      * @return ilMMItemRepository
      */
-    public function mainMenuItem() : ilMMItemRepository;/*: ilGlobalTemplateInterface*/
+    public function mainMenuItem() : ilMMItemRepository;
+
 
     /**
      * @return ilTemplate|ilGlobalTemplateInterface

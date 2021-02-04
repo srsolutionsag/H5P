@@ -29,9 +29,22 @@ So you have to adjust it's namespaces in your code such in `classes` or `src` fo
 So you can force to use your libraries classes in the `vendor` folder of your plugin and come not in conflict to other plugins with different library versions and you don't need to adjust your plugins to newer library versions until you run `composer update` on your plugin.
 
 It support the follow libraries:
+
 * [srag libraries](https://packagist.org/packages/srag)
 
+### In code
+
+```php
+...
+use srag\LibrariesNamespaceChanger\x\LibrariesNamespaceChanger; 
+...
+LibrariesNamespaceChanger::getInstance()->doRewriteLibrariesNamespaces(string $project_root);
+...
+```
+
 ## PHP72Backport
+
+PHP72Backport is deprecated and will be removed!
 
 If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, you can also add additionally the follow composer script:
 
@@ -45,6 +58,8 @@ If your plugin needs a PHP 7.0 compatible of version of a PHP 7.2/7.1 library, y
 It works with RegExp and affects your whole plugin workspace (`classes`, `src`, `vendor`, ...)
 
 ## php7backport
+
+PHP7Backport is deprecated and will be removed!
 
 If your plugin needs a PHP 5.6 compatible of version of a PHP 7.0 library, you can also add additionally the follow composer script:
 

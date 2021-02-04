@@ -306,5 +306,6 @@ self::dic()->database()->createOrUpdateTable($table_name, $columns, $primary_col
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDIC
+
+There is no guarantee this can be fixed or implemented

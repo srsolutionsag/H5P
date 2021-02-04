@@ -97,7 +97,7 @@ For output HTML or GUI use:
  *
  * @throws DICException
  */
-self::output()->output($value, bool $show = false, bool $main_template = true)/*: void*/;
+self::output()->output($value, bool $show = false, bool $main_template = true)/*: void*/
 ```
 
 For output JSON:
@@ -167,6 +167,7 @@ self::plugin()->translate(string $key, string $module = "", array $placeholders 
 ```
 
 Hints:
+
 - Please use not more manually `sprintf` or `vsprintf`, use the `$placeholders` parameter. Otherwise you will get an appropriate DICException thrown. This because `translate` use always `vsprintf` and if you pass to few palceholders, `vsprintf` will throw an Exception.
 - Because `translate` use `vsprintf`, you need to escape `%` with `%%` in your language strings if it is no placeholder!
 
@@ -198,8 +199,7 @@ If you really need DICTrait outside a class (For instance in `dbupdate.php`), us
 
 ## Clean up
 
-You can now remove all usages of ILIAS globals in your class and replace it with this library.
-Please avoid to store in variables or class variables.
+You can now remove all usages of ILIAS globals in your class and replace it with this library. Please avoid to store in variables or class variables.
 
 ## Database
 
@@ -212,7 +212,7 @@ If you realy need to access to original ILIAS `ilDB` instance, use `self:.dic()-
 Use auto increment on a spec. field (in `dbupdate.php`):
 
 ```php
-\srag\DIC\H5P\x\DICStatic::dic()->database()->createAutoIncrement(\srag\Plugins\x\x\x::TABLE_NAME, "id");
+use srag\DIC\H5P\x\DICStatic;use srag\Plugins\x\x\x;DICStatic::dic()->database()->createAutoIncrement(x::TABLE_NAME, "id");
 ```
 
 Reset auto increment:
