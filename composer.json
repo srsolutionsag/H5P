@@ -1,20 +1,6 @@
 {
   "name": "srag/h5p",
   "description": "Add H5P contents in repository objects",
-  "version": "2.7.1",
-  "extra": {
-    "ilias_plugin": {
-      "id": "xhfp",
-      "name": "H5P",
-      "ilias_min_version": "5.4.0",
-      "ilias_max_version": "6.999",
-      "lucene_search": true,
-      "slot": "Services/Repository/RepositoryObject",
-      "supports_cli_setup": true
-    },
-    "generate_plugin_readme_template": "SRAG_ILIAS_PLUGIN",
-    "long_description_template": "src/LONG_DESCRIPTION.md"
-  },
   "type": "project",
   "keywords": [
     "h5p",
@@ -44,7 +30,6 @@
     "srag/custominputguis": ">=0.1.0",
     "srag/devtools": ">=0.1.0",
     "srag/dic": ">=0.1.0",
-    "srag/generateplugininfoshelper": ">=0.1.0",
     "srag/librariesnamespacechanger": ">=0.1.0",
     "srag/removeplugindataconfirm": ">=0.1.0"
   },
@@ -68,9 +53,7 @@
   "scripts": {
     "pre-autoload-dump": [
       "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
-      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
-      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
-      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport"
     ]
   }
 }

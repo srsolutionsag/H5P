@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88406e6c5da9853b410e6f130003066c",
+    "content-hash": "cc77d238cd0ce39a50eb1b28b4971160",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -208,7 +208,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\H5P\\": "src/"
                 },
                 "classmap": [
                     "src/MultiSelectSearchNewInputGUI/class.ObjectChildrenAjaxAutoCompleteCtrl.php",
@@ -273,7 +273,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\DevTools\\": "src/"
+                    "srag\\DevTools\\H5P\\": "src/"
                 },
                 "classmap": [
                     "src/class.DevToolsCtrl.php"
@@ -356,55 +356,6 @@
                 "trait"
             ],
             "time": "2021-01-29T11:32:02+00:00"
-        },
-        {
-            "name": "srag/generateplugininfoshelper",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY",
-                "long_description_template": "src/LONG_DESCRIPTION.md"
-            },
-            "autoload": {
-                "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\H5P\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "studer + raimann ag - Team Custom 1",
-                    "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
-            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
-            "keywords": [
-                "Infos",
-                "generate",
-                "helper",
-                "plugin"
-            ],
-            "time": "2021-01-25T06:24:01+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
