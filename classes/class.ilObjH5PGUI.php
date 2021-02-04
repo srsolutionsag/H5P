@@ -589,7 +589,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function setTabs()/* : void*/
     {
-        self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("contents()->shows"), self::dic()->ctrl()
+        self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS, self::plugin()->translate("show_contents"), self::dic()->ctrl()
             ->getLinkTarget($this, self::CMD_SHOW_CONTENTS));
 
         if (ilObjH5PAccess::hasWriteAccess()) {
