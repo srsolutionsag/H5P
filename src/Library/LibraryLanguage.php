@@ -56,7 +56,7 @@ class LibraryLanguage extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $translation = "{}";

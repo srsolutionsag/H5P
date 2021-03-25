@@ -27,7 +27,7 @@ class Library extends ActiveRecord
      * @var string|null
      *
      * @con_has_field  true
-     * @con_fieldtype  text
+     * @con_fieldtype  clob
      * @con_is_notnull false
      */
     protected $add_to = null;
@@ -43,7 +43,7 @@ class Library extends ActiveRecord
      * @var string
      *
      * @con_has_field  true
-     * @con_fieldtype  text
+     * @con_fieldtype  clob
      * @con_is_notnull true
      */
     protected $drop_library_css = "";
@@ -98,7 +98,7 @@ class Library extends ActiveRecord
      * @var array
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $metadata_settings = [];
@@ -133,7 +133,7 @@ class Library extends ActiveRecord
      * @var string
      *
      * @con_has_field  true
-     * @con_fieldtype  text
+     * @con_fieldtype  clob
      * @con_is_notnull true
      */
     protected $preloaded_css = "";
@@ -141,7 +141,7 @@ class Library extends ActiveRecord
      * @var string
      *
      * @con_has_field  true
-     * @con_fieldtype  text
+     * @con_fieldtype  clob
      * @con_is_notnull true
      */
     protected $preloaded_js = "";
@@ -167,7 +167,7 @@ class Library extends ActiveRecord
      * @var string
      *
      * @con_has_field  true
-     * @con_fieldtype  text
+     * @con_fieldtype  clob
      * @con_is_notnull true
      */
     protected $semantics = "";
