@@ -105,18 +105,18 @@ class SolveStatus extends ActiveRecord
 
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getContentId() : int
+    public function getContentId() /*: int*/
     {
         return $this->content_id;
     }
 
 
     /**
-     * @param int $content_id
+     * @param null|int $content_id
      */
-    public function setContentId(int $content_id)/* : void*/
+    public function setContentId(/*int*/ $content_id)/* : void*/
     {
         $this->content_id = $content_id;
     }
