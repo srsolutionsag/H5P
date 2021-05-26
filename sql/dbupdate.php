@@ -114,3 +114,70 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
     }
 }
 ?>
+<#6>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'author_comments')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'author_comments', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'authors', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'changes')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'changes', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'default_language')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'default_language', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'license')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'license', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'license_extras')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'license_extras', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'license_version')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'license_version', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'source')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'source', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'title')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'title', array(
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'uploaded_files')) {
+        $ilDB->modifyTableColumn('rep_robj_xhfp_cont', 'uploaded_files', array(
+            'type' => 'clob',
+        ));
+    }
+}
+?>

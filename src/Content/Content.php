@@ -29,7 +29,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $author_comments = "";
@@ -37,7 +37,7 @@ class Content extends ActiveRecord
      * @var array
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $authors = [];
@@ -45,7 +45,7 @@ class Content extends ActiveRecord
      * @var array
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $changes = [];
@@ -90,7 +90,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $default_language = "";
@@ -133,7 +133,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $license = "";
@@ -141,7 +141,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $license_extras = "";
@@ -149,7 +149,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $license_version = "";
@@ -200,7 +200,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $source = "";
@@ -208,7 +208,7 @@ class Content extends ActiveRecord
      * @var string
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $title = "";
@@ -224,7 +224,7 @@ class Content extends ActiveRecord
      * @var string[]
      *
      * @con_has_field    true
-     * @con_fieldtype    text
+     * @con_fieldtype    clob
      * @con_is_notnull   true
      */
     protected $uploaded_files = [];
