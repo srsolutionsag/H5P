@@ -135,10 +135,11 @@ class ShowContent
     /**
      * @param Content $h5p_content
      * @param bool    $title
+     * @param bool    $for_editor
      *
      * @return string
      */
-    public function getH5PContent(Content $h5p_content, bool $title = true) : string
+    public function getH5PContent(Content $h5p_content, bool $title = true, bool $for_editor = false) : string
     {
         $this->initCoreForContents();
 
@@ -152,7 +153,7 @@ class ShowContent
             $title = null;
         }
 
-        $output = $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"]);
+        $output = $this->getH5PIntegration($content_integration, $h5p_content->getContentId(), $title, $content_integration["embedType"], $for_editor);
 
         $this->outputHeader();
 
@@ -335,10 +336,11 @@ class ShowContent
      * @param int         $content_id
      * @param string|null $title
      * @param string      $embed_type
+     * @param bool        $is_editor
      *
      * @return string
      */
-    protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type) : string
+    protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type, bool $is_editor = false) : string
     {
         $content_tpl = self::plugin()->template("H5PContent.min.js");
         $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
@@ -362,6 +364,15 @@ class ShowContent
 
             case "iframe":
                 $h5p_tpl->setCurrentBlock("contentFrameBlock");
+
+                #SUPPORT-8871 fix
+                if ($is_editor) {
+                    // H5P content that lies within an iframe, has an issue where
+                    // the page-element cannot be edited again because there is no
+                    // area to click on. This adds a buffer to enable a clickable
+                    // area above the H5P content when editing a page.
+                    $h5p_tpl->setVariable("EDITOR_BUFFER", '<div style="min-height: 20px; padding-top: 20px"></div>');
+                }
                 break;
 
             default:
