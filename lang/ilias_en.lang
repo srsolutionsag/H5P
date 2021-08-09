@@ -2,9 +2,15 @@ obj_xhfp#:#H5P
 obj_xhfp_duplicate#:#Copy H5P
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#Copy H5P's
+grp_create_xhfp#:#Create H5P
+crs_create_xhfp#:#Create H5P
+cat_create_xhfp#:#Create H5P
+root_create_xhfp#:#Create H5P
+fold_create_xhfp#:#Create H5P
 rbac_create_xhfp#:#Create H5P
 rep_robj_xhfp_obj_xhfp#:#H5P
 xhfp_add#:#Add
+xhfp_copy#:#Copy
 xhfp_delete#:#Delete
 xhfp_edit_permission#:#Edit permission
 xhfp_new#:#Create H5P
