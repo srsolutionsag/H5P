@@ -104,6 +104,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
      */
     protected function shouldUseOneUpdateStepOnly() : bool
     {
-        return true;
+        return false;
     }
 }
