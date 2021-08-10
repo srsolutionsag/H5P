@@ -2,9 +2,15 @@ obj_xhfp#:#H5P
 obj_xhfp_duplicate#:#H5P kopieren
 objs_xhfp#:#H5P's
 objs_xhfp_duplicate#:#H5P's kopieren
+grp_create_xhfp#:#H5P anlegen
+crs_create_xhfp#:#H5P anlegen
+cat_create_xhfp#:#H5P anlegen
+root_create_xhfp#:#H5P anlegen
+fold_create_xhfp#:#H5P anlegen
 rbac_create_xhfp#:#H5P anlegen
 rep_robj_xhfp_obj_xhfp#:#H5P
 xhfp_add#:#Hinzufügen
+xhfp_copy#:#H5P kopieren
 xhfp_delete#:#Löschen
 xhfp_edit_permission#:#Rechte bearbeiten
 xhfp_new#:#H5P anlegen
