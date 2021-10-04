@@ -1,0 +1,160 @@
+obj_xhfp#:#H5P
+obj_xhfp_duplicate#:#Copia H5P
+objs_xhfp#:#di H5P
+objs_xhfp_duplicate#:#Copia di H5P
+grp_create_xhfp#:#Crea H5P
+crs_create_xhfp#:#Crea H5P
+cat_create_xhfp#:#Crea H5P
+root_create_xhfp#:#Crea H5P
+fold_create_xhfp#:#Crea H5P
+rbac_create_xhfp#:#Crea H5P
+rep_robj_xhfp_obj_xhfp#:#H5P
+xhfp_add#:#Aggiungi
+xhfp_copy#:#Copia
+xhfp_delete#:#Cancella
+xhfp_edit_permission#:#Modifica permessi
+xhfp_new#:#Nuovo H5P
+xhfp_read#:#Leggi
+xhfp_visible#:#Visibile
+xhfp_write#:#Modifica
+actions#:#Azioni
+add#:#Aggiungi
+add_content#:#Aggiungi contenuto
+added_library#:#Aggiunta %%new nuova libreria H5P.
+added_libraries#:#Aggiunte %%new nuove librerie H5P.
+added_library_updated_library#:#Aggiunta %%new nuova libreria H5P e aggiornata %%old quella vecchia.
+added_library_updated_libraries#:#Aggiunta %%new nuova libreria H5P e aggiornate %%old quelle vecchie.
+added_libraries_updated_library#:#Aggiunte %%new nuove librerie H5P e aggiornata %%old quella vecchia.
+added_libraries_updated_libraries#:#Aggiunte %%new nuove librerie H5P e aggiornate %%old quelle vecchie.
+all#:#Tutti
+author#:#Autore
+by#:#di
+cancel#:#Cancella
+categories#:#Categorie
+close#:#Chiudi
+confirm#:#Conferma
+confirm_action#:#Conferma azione
+confirm_action_text#:#Conferma di voler procedere. Questa azione non è reversibile.
+content#:#Contenuto
+content_changed#:#Questo contenuto è cambiato dall'ultima volta che lo hai utilizzato.
+content_count#:#Contenuto %1$d di %2$d
+content_not_exists#:#Questo contenuto H5P non esiste più
+content_types#:#Tipi di contenuto
+contents#:#Contenuti
+delete#:#Cancella
+delete_content#:#Cancella contenuto
+delete_content_confirm#:#Vuoi davvero eliminare il contenuto: %s ?
+delete_library_confirm#:#Vuoi davvero eliminare questa libreria: %s ?
+delete_library_in_use#:#La libreria è in uso
+delete_results_confirm#:#Vuoi davvero eliminare i risultati di %s?
+deleted_content#:#Contenuto %s cancellato
+deleted_files#:#Il seguente file è stato eliminato in %s:
+deleted_library#:#Libreria %s cancellata
+deleted_results#:#Risultati di %s cancellati
+description#:#Descrizione
+details#:#Dettagli
+disable_fullscreen#:#Disattiva il fullscreen
+download#:#Scarica
+download_content#:#Scarica questo contenuto come file H5P.
+edit#:#Modifica
+edit_content#:#modifica contenuto
+edit_permission#:#Modifica permesso
+embed#:#Incorporato
+embed_include_script#:#Includi questo script nel tuo sito web se desideri il ridimensionamento dinamico del contenuto incorporato:
+enable_lrs_content_types#:#Abilita i tipi di contenuto dipendenti da LRS.
+enable_lrs_content_types_info#:#Rendi possibile utilizzare i tipi di contenuto che si basano su un archivio di record di apprendimento per funzionare correttamente, come il tipo di contenuto Questionario.
+example#:#Esempio
+export#:#Esporta
+export_content#:#Esporta contenuto
+files#:#Files:
+finish#:#Finire
+finished#:#Finito
+fullscreen#:#Fullscreen
+hide_advanced#:#Nascondi avanzate
+hub_last_refresh#:#Ultimo aggiornamento HUB: %s
+hub_refresh#:#Aggiorna HUB
+hub_refreshed#:#HUB è stato aggiornato correttamente
+import#:#Importa
+import_content#:#Importa contenuto
+incomplete_content#:#Il contenuto H5P è incompleto. Si prega di controllare tutti gli input e i campi obbligatori
+install#:#Installa
+installed#:#Installato
+installed_libraries#:#Librerie installate
+installed_version#:#Versione installata
+keywords#:#Parole chiave
+latest_version#:#Ultima versione
+library#:#Libreria
+libraries#:#Librerie
+license#:#Licenza
+manage_contents#:#Modifica
+msg_content_not_editable#:#I contenuti non possono essere modificati, poiché ci sono già dei risultati.
+next_content#:#Contenuto successivo
+no#:#No
+not_available#:#Non disponibile
+no_content_copyright#:#Nessuna informazione di copyright disponibile per questo contenuto.
+no_result#:#Nessun risultato
+not_installed#:#Non installato
+offline#:#Offline
+online#:#Online
+only_not_used#:#Solo non utilizzato
+only_runnable#:#Solo eseguibile
+permission_denied#:#Permesso negato
+previous_content#:#Contenuto precedente
+read#:#Letto
+required_libraries#:#Librerie richieste
+results#:#Risultati
+rights_of_use#:#Diritti di utilizzo
+runnable#:#Eseguibile
+save#:#Salva
+saved_content#:#%s salvato
+send_usage_statistics#:#Contribuisci automaticamente alle statistiche sull'utilizzo
+send_usage_statistics_info#:#I numeri delle statistiche di utilizzo verranno riportati automaticamente per aiutare gli sviluppatori a capire meglio come viene utilizzato H5P e per determinare potenziali aree di miglioramento. Ulteriori informazioni sui dati raccolti su %s.
+settings#:#Impostazioni
+settings_saved#:#Impostazioni salvate
+show#:#Mostra
+show_advanced#:#Mostra avanzato
+show_contents#:#Mostra contenuti
+show_less#:#Mostra meno
+show_more#:#Mostra di più
+size#:#Dimensione
+solve_only_once#:#Risolvi i contenuti solo una volta
+solve_only_once_info#:#Nota: Per alcuni contenuti potrebbe essere necessario disattivare il pulsante soluzione / riprova
+solved_all_contents#:#Hai già risolto tutti i contenuti.
+solved_content#:#Hai già risolto questo contenuto.
+source#:#Fonte
+start_over#:#Ricomincerai da capo.
+status#:#Stato
+sublevel#:#Sottolivello
+summary#:#Sommario
+thumbnail#:#Miniatura
+title#:#Titolo
+tutorial#:#Tutorial
+updated_library#:#Aggiornata la libreria H5P %%old 
+updated_libraries#:#Aggiornate le librerie H5P %%old 
+upgrade#:#Aggiornamento
+upgrade_available#:#Aggiornamento disponibile
+upload#:#Carica
+upload_file#:#Caricare un file
+upload_file_info#:#Carica un file\nI file zip vengono estratti automaticamente\nInserisci il file iniziale in "Fonte"
+upload_library#:#Carica libreria
+uploaded_files#:#I seguenti file(s) sono stati caricati su %s:
+uploaded_files_failed#:#I seguenti file(s) non sono stati accettati perché hanno un'estensione dannosa:
+usage_contents#:#Contenuti che lo utilizzano
+usage_libraries#:#Librerie che lo utilizzano
+usage_statistics#:#Statistiche di utilizzo
+user#:#Utente
+version#:#Versione
+view_content_copyright#:#Visualizza le informazioni sul copyright per questo contenuto.
+view_embed_code#:#Visualizza il codice di incorporamento per questo contenuto.
+visible#:#Visibile
+write#:#Scrivi
+year#:#Anno
+yes#:#Sì
+hub#:#HUB
+delete_old_events#:#Cancella i vecchi registri degli eventi
+delete_old_events_description#:#Cancella i vecchi registri degli eventi generati da H5P
+delete_old_tmp_files#:#Cancella i vecchi file temporanei
+delete_old_tmp_files_description#:#Cancella i vecchi file temporanei generati da H5P
+refresh_hub#:#Aggiorna elenco hub
+refresh_hub_description#:#Ricarica l'elenco degli hub
+
