@@ -11,8 +11,6 @@ use srag\DIC\H5P\DICTrait;
  * Class Config
  *
  * @package srag\ActiveRecordConfig\H5P\Config
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class Config extends ActiveRecord
 {
@@ -69,7 +67,7 @@ class Config extends ActiveRecord
      * @var mixed
      *
      * @con_has_field   true
-     * @con_fieldtype   clob
+     * @con_fieldtype   text
      * @con_is_notnull  false
      */
     protected $value = null;
@@ -103,7 +101,7 @@ class Config extends ActiveRecord
     /**
      * @param string $table_name
      */
-    public static function setTableName(string $table_name)/* : void*/
+    public static function setTableName(string $table_name) : void
     {
         self::$table_name = $table_name;
     }
@@ -141,7 +139,7 @@ class Config extends ActiveRecord
     /**
      * @param string $name
      */
-    public function setName(string $name)/*: void*/
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
@@ -159,7 +157,7 @@ class Config extends ActiveRecord
     /**
      * @param mixed $value
      */
-    public function setValue($value)/*: void*/
+    public function setValue($value) : void
     {
         $this->value = $value;
     }

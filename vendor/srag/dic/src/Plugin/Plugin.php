@@ -16,8 +16,6 @@ use srag\DIC\H5P\Exception\DICException;
  * Class Plugin
  *
  * @package srag\DIC\H5P\Plugin
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class Plugin implements PluginInterface
 {
@@ -81,13 +79,8 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function reloadCtrlStructure()/* : void*/
+    public function reloadCtrlStructure() : void
     {
-        if (!self::version()->is6()) {
-            // Stupid core, why not in autoload too?!
-            require_once "./setup/classes/class.ilCtrlStructureReader.php";
-        }
-
         // https://github.com/ILIAS-eLearning/ILIAS/blob/release_6/Services/Component/classes/class.ilPlugin.php#L1078-L1091
         $structure_reader = new ilCtrlStructureReader();
         $structure_reader->readStructure(
@@ -114,7 +107,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function reloadDatabase()/* : void*/
+    public function reloadDatabase() : void
     {
         $this->plugin_object->updateDatabase();
     }
@@ -123,7 +116,7 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function reloadLanguages()/* : void*/
+    public function reloadLanguages() : void
     {
         $this->plugin_object->updateLanguages();
     }
@@ -132,9 +125,9 @@ final class Plugin implements PluginInterface
     /**
      * @inheritDoc
      */
-    public function reloadPluginXml()/* : void*/
+    public function reloadPluginXml() : void
     {
-        Closure::bind(function ()/* : void*/ {
+        Closure::bind(function () : void {
             $this->readEventListening();
         }, $this->plugin_object, ilPlugin::class)();
     }

@@ -1,32 +1,25 @@
 {
   "name": "srag/librariesnamespacechanger",
   "description": "Change namespace of libraries to plugin namespace",
-  "version": "0.15.0",
-  "extra": {
-    "generate_plugin_readme_template": "SRAG_LIBRARY",
-    "long_description_template": "src/LONG_DESCRIPTION.md"
-  },
+  "version": "0.16.1",
   "type": "library",
   "keywords": [
     "changer",
     "libraries",
     "namespace"
   ],
-  "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+  "homepage": "https://github.com/fluxapps/LibrariesNamespaceChanger",
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Custom 1",
-      "email": "support-custom1@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
+      "name": "fluxlabs",
+      "email": "support@fluxlabs.ch",
+      "homepage": "https://fluxlabs.ch",
       "role": "Developer"
     }
   ],
-  "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER"
-  },
   "require": {
-    "php": ">=7.0"
+    "php": ">=7.2"
   },
   "require-dev": {
     "srag/generateplugininfoshelper": ">=0.1.0"
@@ -42,8 +35,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "generate-plugin-readme": [
-      "srag\\GeneratePluginInfosHelper\\GeneratePluginReadme::generatePluginReadme"
+    "update-version": [
+      "srag\\GeneratePluginInfosHelper\\UpdateVersion::updateVersion"
     ]
   }
 }

@@ -8,13 +8,13 @@ use ilTemplate;
 use ilToolbarItem;
 use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
+use srag\DIC\H5P\Plugin\PluginInterface;
+use srag\DIC\H5P\Version\PluginVersionParameter;
 
 /**
  * Class MultiSelectSearchNewInputGUI
  *
  * @package srag\CustomInputGUIs\H5P\MultiSelectSearchNewInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToolbarItem
 {
@@ -58,7 +58,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     {
         parent::__construct($title, $post_var);
 
-        self::init();
+        self::init(); // TODO: Pass $plugin
     }
 
 
@@ -76,24 +76,29 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
 
 
     /**
-     *
+     * @param PluginInterface|null $plugin
      */
-    public static function init()/*: void*/
+    public static function init(/*?*/ PluginInterface $plugin = null) : void
     {
         if (self::$init === false) {
             self::$init = true;
 
+            $version_parameter = PluginVersionParameter::getInstance();
+            if ($plugin !== null) {
+                $version_parameter = $version_parameter->withPlugin($plugin);
+            }
+
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/../../node_modules/select2/dist/css/select2.min.css");
+            self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/../../node_modules/select2/dist/css/select2.min.css"));
 
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/multi_select_search_new_input_gui.css");
+            self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/css/multi_select_search_new_input_gui.css"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/select2.full.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/select2/dist/js/select2.full.min.js"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
-                . ".js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/select2/dist/js/i18n/" . self::dic()->user()->getCurrentLanguage()
+                . ".js"));
         }
     }
 
@@ -102,7 +107,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
      * @param string $key
      * @param mixed  $value
      */
-    public function addOption(string $key, $value)/*:void*/
+    public function addOption(string $key, $value) : void
     {
         $this->options[$key] = $value;
     }
@@ -155,7 +160,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return AbstractAjaxAutoCompleteCtrl|null
      */
-    public function getAjaxAutoCompleteCtrl()/*: ?AbstractAjaxAutoCompleteCtrl*/
+    public function getAjaxAutoCompleteCtrl(): ?AbstractAjaxAutoCompleteCtrl
     {
         return $this->ajax_auto_complete_ctrl;
     }
@@ -164,7 +169,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param AbstractAjaxAutoCompleteCtrl|null $ajax_auto_complete_ctrl
      */
-    public function setAjaxAutoCompleteCtrl(/*?*/ AbstractAjaxAutoCompleteCtrl $ajax_auto_complete_ctrl = null)/*: void*/
+    public function setAjaxAutoCompleteCtrl(/*?*/ AbstractAjaxAutoCompleteCtrl $ajax_auto_complete_ctrl = null) : void
     {
         $this->ajax_auto_complete_ctrl = $ajax_auto_complete_ctrl;
     }
@@ -173,7 +178,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @return int|null
      */
-    public function getLimitCount()/* : ?int*/
+    public function getLimitCount() : ?int
     {
         return $this->limit_count;
     }
@@ -182,7 +187,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param int|null $limit_count
      */
-    public function setLimitCount(/*?*/ int $limit_count = null)/* : void*/
+    public function setLimitCount(/*?*/ int $limit_count = null) : void
     {
         $this->limit_count = $limit_count;
     }
@@ -204,7 +209,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param int|null $minimum_input_length
      */
-    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null)/*: void*/
+    public function setMinimumInputLength(/*?*/ int $minimum_input_length = null) : void
     {
         $this->minimum_input_length = $minimum_input_length;
     }
@@ -222,7 +227,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param array $options
      */
-    public function setOptions(array $options)/* : void*/
+    public function setOptions(array $options) : void
     {
         $this->options = $options;
     }
@@ -258,7 +263,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param array $value
      */
-    public function setValue(/*array*/ $value)/*: void*/
+    public function setValue(/*array*/ $value) : void
     {
         if (is_array($value)) {
             $this->value = self::cleanValues($value);
@@ -271,7 +276,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl)/*: void*/
+    public function insert(ilTemplate $tpl) : void
     {
         $html = $this->render();
 
@@ -336,7 +341,7 @@ class MultiSelectSearchNewInputGUI extends ilFormPropertyGUI implements ilTableF
     /**
      * @param array $values
      */
-    public function setValueByArray(/*array*/ $values)/*: void*/
+    public function setValueByArray(/*array*/ $values) : void
     {
         $this->setValue($values[$this->getPostVar()]);
     }

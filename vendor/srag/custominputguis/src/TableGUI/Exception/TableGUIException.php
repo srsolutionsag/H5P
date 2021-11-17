@@ -9,8 +9,6 @@ use ilException;
  *
  * @package srag\CustomInputGUIs\H5P\TableGUI\Exception
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
  * @deprecated
  */
 final class TableGUIException extends ilException

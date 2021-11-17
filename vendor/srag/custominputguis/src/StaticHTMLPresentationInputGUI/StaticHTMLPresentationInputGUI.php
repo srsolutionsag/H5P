@@ -12,8 +12,6 @@ use srag\DIC\H5P\DICTrait;
  * Class StaticHTMLPresentationInputGUI
  *
  * @package srag\CustomInputGUIs\H5P\StaticHTMLPresentationInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
 {
@@ -80,7 +78,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl)/*: void*/
+    public function insert(ilTemplate $tpl) : void
     {
         $html = $this->render();
 
@@ -121,7 +119,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
      *
      * @throws ilFormException
      */
-    public function setValue(/*string*/ $value)/*: void*/
+    public function setValue(/*string*/ $value) : void
     {
         //throw new ilFormException("StaticHTMLPresentationInputGUI does not support set screenshots!");
     }
@@ -132,7 +130,7 @@ class StaticHTMLPresentationInputGUI extends ilFormPropertyGUI
      *
      * @throws ilFormException
      */
-    public function setValueByArray(/*array*/ $values)/*: void*/
+    public function setValueByArray(/*array*/ $values) : void
     {
         //throw new ilFormException("StaticHTMLPresentationInputGUI does not support set screenshots!");
     }

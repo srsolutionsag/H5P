@@ -8,8 +8,6 @@ use ilException;
  * Class DICException
  *
  * @package srag\DIC\H5P\Exception
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class DICException extends ilException
 {

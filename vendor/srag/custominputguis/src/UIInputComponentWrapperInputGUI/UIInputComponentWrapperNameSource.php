@@ -8,8 +8,6 @@ use ILIAS\UI\Implementation\Component\Input\NameSource;
  * Class UIInputComponentWrapperNameSource
  *
  * @package srag\CustomInputGUIs\H5P\UIInputComponentWrapperInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class UIInputComponentWrapperNameSource implements NameSource
 {

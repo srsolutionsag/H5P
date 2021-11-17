@@ -9,8 +9,6 @@ use ilFormException;
  *
  * @package srag\CustomInputGUIs\H5P\PropertyFormGUI\Exception
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
  * @deprecated
  */
 final class PropertyFormGUIException extends ilFormException

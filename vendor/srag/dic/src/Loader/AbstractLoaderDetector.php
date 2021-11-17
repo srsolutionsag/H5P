@@ -12,8 +12,6 @@ use srag\DIC\H5P\DICTrait;
  * Class AbstractLoaderDetector
  *
  * @package srag\DIC\H5P\Loader
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 abstract class AbstractLoaderDetector implements Loader
 {

@@ -67,7 +67,7 @@ class HubTableGUI extends TableGUI
     /**
      * @param array $row
      */
-    protected function fillRow(/*array*/ $row)/* : void*/
+    protected function fillRow(/*array*/ $row) : void
     {
         // Links
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_library_name", $row["name"]);
@@ -164,7 +164,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/* : void*/
+    protected function initColumns() : void
     {
         $this->addColumn("");
         $this->addColumn(self::plugin()->translate("library"), "title");
@@ -182,7 +182,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/* : void*/
+    protected function initData() : void
     {
         $this->setDefaultOrderField("title");
         $this->setDefaultOrderDirection("asc");
@@ -203,7 +203,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/* : void*/
+    protected function initFilterFields() : void
     {
         $this->filter_fields = [
             "title"         => [
@@ -235,7 +235,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
 
     }
@@ -244,7 +244,7 @@ class HubTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
         $this->setTitle(self::plugin()->translate("installed_libraries"));
     }

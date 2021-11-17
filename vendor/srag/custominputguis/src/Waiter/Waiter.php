@@ -2,14 +2,16 @@
 
 namespace srag\CustomInputGUIs\H5P\Waiter;
 
+use ilGlobalTemplateInterface;
+use ilTemplate;
 use srag\DIC\H5P\DICTrait;
+use srag\DIC\H5P\Plugin\PluginInterface;
+use srag\DIC\H5P\Version\PluginVersionParameter;
 
 /**
  * Class Waiter
  *
  * @package srag\CustomInputGUIs\H5P\Waiter
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class Waiter
 {
@@ -40,21 +42,30 @@ final class Waiter
 
 
     /**
-     * @param string $type
+     * @param string                                    $type
+     * @param ilTemplate|ilGlobalTemplateInterface|null $tpl
+     * @param PluginInterface|null                      $plugin
      */
-    public static final function init(string $type)/*: void*/
+    public static final function init(string $type, /*?ilGlobalTemplateInterface*/ $tpl = null,/*?*/ PluginInterface $plugin = null) : void
     {
+        $tpl = $tpl ?? self::dic()->ui()->mainTemplate();
+
         if (self::$init === false) {
             self::$init = true;
+
+            $version_parameter = PluginVersionParameter::getInstance();
+            if ($plugin !== null) {
+                $version_parameter = $version_parameter->withPlugin($plugin);
+            }
 
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/waiter.css");
+            $tpl->addCss($version_parameter->appendToUrl($dir . "/css/waiter.css"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/waiter.min.js");
+            $tpl->addJavaScript($version_parameter->appendToUrl($dir . "/js/waiter.min.js", $dir . "/js/waiter.js"));
         }
 
-        self::dic()->ui()->mainTemplate()->addOnLoadCode('il.waiter.init("' . $type . '");');
+        $tpl->addOnLoadCode('il.waiter.init("' . $type . '");');
     }
 }

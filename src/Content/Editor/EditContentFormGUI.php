@@ -112,7 +112,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      *
      */
-    public function handleFileUpload()/* : void*/
+    public function handleFileUpload() : void
     {
         if (strpos($this->library, "H5P.IFrameEmbed") !== 0) {
             return;
@@ -229,7 +229,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @param Content $h5p_content
      */
-    public function setH5pContent(Content $h5p_content)/* : void*/
+    public function setH5pContent(Content $h5p_content) : void
     {
         $this->h5p_content = $h5p_content;
     }
@@ -286,7 +286,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initAction()/* : void*/
+    protected function initAction() : void
     {
         if ($this->h5p_content !== null) {
             self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
@@ -299,7 +299,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/* : void*/
+    protected function initCommands() : void
     {
         //$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
@@ -312,7 +312,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/* : void*/
+    protected function initFields() : void
     {
         $this->fields = [
             "library"     => [
@@ -343,7 +343,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
         $this->setId(ilH5PPlugin::PLUGIN_ID . "_edit_form");
     }
@@ -352,7 +352,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
         $this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
     }
@@ -361,7 +361,7 @@ class EditContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(string $key, $value)/* : void*/
+    protected function storeValue(string $key, $value) : void
     {
         switch ($key) {
             case "library":

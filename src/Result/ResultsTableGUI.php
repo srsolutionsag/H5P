@@ -61,7 +61,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @param array $row
      */
-    protected function fillRow(/*array*/ $row)/* : void*/
+    protected function fillRow(/*array*/ $row) : void
     {
         self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
 
@@ -119,7 +119,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/* : void*/
+    protected function initColumns() : void
     {
         $this->addColumn(self::plugin()->translate("user"));
 
@@ -135,7 +135,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/* : void*/
+    protected function initData() : void
     {
         $this->contents = self::h5p()->contents()->getContentsByObject($this->parent_obj->object->getId());
 
@@ -173,7 +173,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/* : void*/
+    protected function initFilterFields() : void
     {
 
     }
@@ -182,7 +182,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
 
     }
@@ -191,7 +191,7 @@ class ResultsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
         $this->setTitle(self::plugin()->translate("results"));
     }

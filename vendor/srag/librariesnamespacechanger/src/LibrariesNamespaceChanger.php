@@ -11,8 +11,6 @@ use Composer\Script\Event;
  *
  * @package srag\LibrariesNamespaceChanger
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
  * @internal
  */
 final class LibrariesNamespaceChanger
@@ -67,7 +65,7 @@ final class LibrariesNamespaceChanger
      *
      * @internal
      */
-    public static function rewriteLibrariesNamespaces(Event $event)/*: void*/
+    public static function rewriteLibrariesNamespaces(Event $event) : void
     {
         $project_root = rtrim(Closure::bind(function () : string {
             return $this->baseDir;
@@ -80,7 +78,7 @@ final class LibrariesNamespaceChanger
     /**
      * @param string $project_root
      */
-    public function doRewriteLibrariesNamespaces(string $project_root)/*: void*/
+    public function doRewriteLibrariesNamespaces(string $project_root) : void
     {
         $plugin_name = $this->getPluginName();
 
@@ -154,7 +152,7 @@ final class LibrariesNamespaceChanger
      * @param string $folder
      * @param array  $files
      */
-    private function getFiles(string $folder, array &$files = [])/*: void*/
+    private function getFiles(string $folder, array &$files = []) : void
     {
         $paths = scandir($folder);
 

@@ -11,8 +11,6 @@ use srag\DIC\H5P\Exception\DICException;
  * Interface PluginInterface
  *
  * @package srag\DIC\H5P\Plugin
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 interface PluginInterface
 {
@@ -38,25 +36,25 @@ interface PluginInterface
     /**
      *
      */
-    public function reloadCtrlStructure()/* : void*/ ;
+    public function reloadCtrlStructure() : void;
 
 
     /**
      *
      */
-    public function reloadDatabase()/* : void*/ ;
+    public function reloadDatabase() : void;
 
 
     /**
      *
      */
-    public function reloadLanguages()/* : void*/ ;
+    public function reloadLanguages() : void;
 
 
     /**
      *
      */
-    public function reloadPluginXml()/* : void*/ ;
+    public function reloadPluginXml() : void;
 
 
     /**

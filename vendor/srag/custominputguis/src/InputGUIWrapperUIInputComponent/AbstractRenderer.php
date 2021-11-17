@@ -11,8 +11,6 @@ use srag\DIC\H5P\DICTrait;
  * Class AbstractRenderer
  *
  * @package srag\CustomInputGUIs\H5P\InputGUIWrapperUIInputComponent
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 abstract class AbstractRenderer extends Renderer
 {
@@ -22,7 +20,7 @@ abstract class AbstractRenderer extends Renderer
     /**
      * @inheritDoc
      */
-    public function registerResources(ResourceRegistry $registry)/*: void*/
+    public function registerResources(ResourceRegistry $registry) : void
     {
         parent::registerResources($registry);
 

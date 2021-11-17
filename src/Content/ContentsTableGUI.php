@@ -62,7 +62,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @param array $row
      */
-    protected function fillRow(/*array*/ $row)/* : void*/
+    protected function fillRow(/*array*/ $row) : void
     {
         $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
         $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);
@@ -132,7 +132,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initColumns()/* : void*/
+    protected function initColumns() : void
     {
         $this->addColumn("");
         $this->addColumn(self::plugin()->translate("title"));
@@ -145,7 +145,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initData()/* : void*/
+    protected function initData() : void
     {
         $this->setData(self::h5p()->contents()->getContentsByObjectArray($this->parent_obj->object->getId()));
     }
@@ -154,7 +154,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initFilterFields()/* : void*/
+    protected function initFilterFields() : void
     {
 
     }
@@ -163,7 +163,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
 
     }
@@ -172,7 +172,7 @@ class ContentsTableGUI extends TableGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
         $this->setTitle(self::plugin()->translate("contents"));
     }
@@ -181,7 +181,7 @@ class ContentsTableGUI extends TableGUI
     /**
      *
      */
-    protected function initUpDown()/* : void*/
+    protected function initUpDown() : void
     {
         Waiter::init(Waiter::TYPE_WAITER);
 

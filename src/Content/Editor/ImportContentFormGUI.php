@@ -51,7 +51,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(string $key)/* : void*/
+    protected function getValue(string $key) : void
     {
 
     }
@@ -60,7 +60,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/* : void*/
+    protected function initCommands() : void
     {
         $this->addCommandButton($this->cmd_import, self::plugin()->translate("import"));
         $this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
@@ -70,7 +70,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/* : void*/
+    protected function initFields() : void
     {
         $this->fields = [
             "xhfp_content" => [
@@ -86,7 +86,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
 
     }
@@ -95,7 +95,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
         $this->setTitle(self::plugin()->translate("import_content"));
     }
@@ -104,7 +104,7 @@ class ImportContentFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(string $key, $value)/* : void*/
+    protected function storeValue(string $key, $value) : void
     {
 
     }

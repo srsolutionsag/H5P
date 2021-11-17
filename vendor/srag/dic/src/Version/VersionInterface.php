@@ -6,27 +6,19 @@ namespace srag\DIC\H5P\Version;
  * Interface VersionInterface
  *
  * @package srag\DIC\H5P\Version
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 interface VersionInterface
 {
 
-    const ILIAS_VERSION_5_4 = "5.4.0";
     const ILIAS_VERSION_6 = "6.0";
     const ILIAS_VERSION_7 = "7.0";
+    const ILIAS_VERSION_8 = "8.0";
 
 
     /**
      * @return string
      */
     public function getILIASVersion() : string;
-
-
-    /**
-     * @return bool
-     */
-    public function is54() : bool;
 
 
     /**
@@ -39,6 +31,12 @@ interface VersionInterface
      * @return bool
      */
     public function is7() : bool;
+
+
+    /**
+     * @return bool
+     */
+    public function is8() : bool;
 
 
     /**

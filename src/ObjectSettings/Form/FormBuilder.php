@@ -103,7 +103,7 @@ class FormBuilder extends AbstractFormBuilder
     /**
      * @inheritDoc
      */
-    protected function storeData(array $data)/* : void*/
+    protected function storeData(array $data) : void
     {
         $this->object->setTitle(strval($data["title"]));
         $this->object->setDescription(strval($data["description"]));

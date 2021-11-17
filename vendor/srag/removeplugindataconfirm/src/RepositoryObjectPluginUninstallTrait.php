@@ -6,8 +6,6 @@ namespace srag\RemovePluginDataConfirm\H5P;
  * Trait RepositoryObjectPluginUninstallTrait
  *
  * @package srag\RemovePluginDataConfirm\H5P
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait RepositoryObjectPluginUninstallTrait
 {
@@ -17,7 +15,7 @@ trait RepositoryObjectPluginUninstallTrait
     /**
      * @internal
      */
-    protected final function afterUninstall()/*: void*/
+    protected final function afterUninstall() : void
     {
 
     }
@@ -37,7 +35,7 @@ trait RepositoryObjectPluginUninstallTrait
     /**
      * @internal
      */
-    protected final function uninstallCustom()/*: void*/
+    protected final function uninstallCustom() : void
     {
         $uninstall_removes_data = RemovePluginDataConfirmCtrl::getUninstallRemovesData();
 

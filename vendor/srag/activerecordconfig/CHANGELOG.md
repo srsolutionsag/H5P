@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.21.1]
+- Not use GeneratePluginReadme
+
+## [0.21.0]
+- ILIAS 7 support
+- Remove ILIAS 5.4 support
+- Min PHP 7.2
+- Remove deprecated ActiveRecordConfig
+- Remove deprecated ActiveRecordConfigException
+- Remove deprecated ActiveRecordConfigFormGUI
+- Remove deprecated ActiveRecordConfigGUI
+- Remove deprecated ActiveRecordConfigTableGUI
+- Remove deprecated ActiveRecordObjectFormGUI
+
+## [0.20.7]
+- Change utils url
+
+## [0.20.6]
+- Test
+
+## [0.20.5]
+- Update urls
+
+## [0.20.4]
+- Update readme
+
+## [0.20.3]
+- Update project url
+
 ## [0.20.2]
 - Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
 

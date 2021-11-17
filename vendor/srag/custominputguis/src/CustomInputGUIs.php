@@ -9,8 +9,6 @@ use srag\DIC\H5P\DICTrait;
  * Class CustomInputGUIs
  *
  * @package srag\CustomInputGUIs\H5P
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class CustomInputGUIs
 {
