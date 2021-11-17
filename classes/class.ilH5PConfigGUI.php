@@ -124,7 +124,9 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
-        self::h5p()->hub()->show()->deleteLibrary($h5p_library);
+        if (null !== $h5p_library) {
+            self::h5p()->hub()->show()->deleteLibrary($h5p_library);
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_HUB);
     }
@@ -138,6 +140,14 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
         self::dic()->tabs()->activateTab(self::TAB_HUB);
 
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
+
+        if (null === $h5p_library) {
+            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
+                self::plugin()->translate('object_not_found')
+            ));
+
+            return;
+        }
 
         $contents_count = self::h5p()->contents()->framework()->getNumContent($h5p_library->getLibraryId());
         $usage = self::h5p()->contents()->framework()->getLibraryUsage($h5p_library->getLibraryId());

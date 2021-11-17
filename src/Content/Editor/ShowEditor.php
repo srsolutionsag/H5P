@@ -66,8 +66,16 @@ class ShowEditor
      */
     public function createContent(string $library, string $params, /*?EditContentFormGUI*/ $form = null, bool $message = true) : Content
     {
+        $empty_content = self::h5p()->contents()->factory()->newContentInstance();
         $library_id = H5PCore::libraryFromString($library);
+        if (false === $library_id) {
+            return $empty_content;
+        }
+
         $h5p_library = self::h5p()->libraries()->getLibraryByVersion($library_id["machineName"], $library_id["majorVersion"], $library_id["minorVersion"]);
+        if (null === $h5p_library) {
+            return $empty_content;
+        }
 
         $content = [
             "library" => [
@@ -85,7 +93,10 @@ class ShowEditor
 
         self::h5p()->contents()->editor()->core()->processParameters($content["id"], $content["library"], $params->params, null, null);
 
-        $h5p_content = self::h5p()->contents()->getContentById(intval($content["id"]));
+        $h5p_content = self::h5p()->contents()->getContentById((int) ($content["id"]));
+        if (null === $h5p_content) {
+            return $empty_content;
+        }
 
         if ($form !== null) {
             $form->setH5pContent($h5p_content);

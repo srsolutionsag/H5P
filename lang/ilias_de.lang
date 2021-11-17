@@ -157,3 +157,4 @@ delete_old_tmp_files#:#Alte Temp-Dateien löschen
 delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
 refresh_hub#:#Hub-Liste aktualisieren
 refresh_hub_description#:#Lädt die Hub-Liste neu
+object_not_found#:#Das angefragte H5P Objekt wurde nicht gefunden.
