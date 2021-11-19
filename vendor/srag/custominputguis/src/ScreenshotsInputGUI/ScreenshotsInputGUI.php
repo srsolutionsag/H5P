@@ -11,13 +11,12 @@ use ilTemplate;
 use srag\DIC\H5P\DICTrait;
 use srag\DIC\H5P\Plugin\Pluginable;
 use srag\DIC\H5P\Plugin\PluginInterface;
+use srag\DIC\H5P\Version\PluginVersionParameter;
 
 /**
  * Class ScreenshotsInputGUI
  *
  * @package srag\CustomInputGUIs\H5P\ScreenshotsInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 {
@@ -134,19 +133,21 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      *
      */
-    public function init()/*: void*/
+    public function init() : void
     {
         if (self::$init === false) {
             self::$init = true;
 
+            $version_parameter = PluginVersionParameter::getInstance()->withPlugin($this->getPlugin());
+
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js");
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js");
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js"));
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js"));
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/ScreenshotsInputGUI.min.js", false);
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/js/ScreenshotsInputGUI.min.js", $dir . "/js/ScreenshotsInputGUI.js"), false);
             self::dic()->ui()->mainTemplate()->addOnLoadCode($this->getJSOnLoadCode());
         }
     }
@@ -155,7 +156,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl)/*: void*/
+    public function insert(ilTemplate $tpl) : void
     {
         $html = $this->render();
 
@@ -217,7 +218,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      *
      * @throws ilFormException
      */
-    public function setValue(/*array*/ $screenshots)/*: void*/
+    public function setValue(/*array*/ $screenshots) : void
     {
         //throw new ilFormException("ScreenshotsInputGUI does not support set screenshots!");
     }
@@ -228,7 +229,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      *
      * @throws ilFormException
      */
-    public function setValueByArray(/*array*/ $values)/*: void*/
+    public function setValueByArray(/*array*/ $values) : void
     {
         //throw new ilFormException("ScreenshotsInputGUI does not support set screenshots!");
     }
@@ -248,7 +249,7 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      *
      */
-    protected function processScreenshots()/*: void*/
+    protected function processScreenshots() : void
     {
         $this->screenshots = [];
 

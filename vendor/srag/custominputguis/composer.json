@@ -1,14 +1,12 @@
 {
   "name": "srag/custominputguis",
   "description": "Custom Input-GUI's",
-  "version": "0.41.4",
+  "version": "0.43.2",
   "extra": {
     "ilias_plugin": {
-      "ilias_min_version": "5.4.0",
-      "ilias_max_version": "6.999"
-    },
-    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY",
-    "long_description_template": "src/LONG_DESCRIPTION.md"
+      "ilias_min_version": "6.0",
+      "ilias_max_version": "7.999"
+    }
   },
   "type": "library",
   "keywords": [
@@ -18,21 +16,18 @@
     "propertyform",
     "table"
   ],
-  "homepage": "https://github.com/studer-raimann/CustomInputGUIs",
+  "homepage": "https://github.com/fluxapps/CustomInputGUIs",
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Custom 1",
-      "email": "support-custom1@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
+      "name": "fluxlabs",
+      "email": "support@fluxlabs.ch",
+      "homepage": "https://fluxlabs.ch",
       "role": "Developer"
     }
   ],
-  "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LINP"
-  },
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.2",
     "srag/dic": ">=0.1.0"
   },
   "require-dev": {
@@ -55,8 +50,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "generate-plugin-readme": [
-      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+    "update-version": [
+      "srag\\GeneratePluginInfosHelper\\UpdateVersion::updateVersion"
     ]
   }
 }

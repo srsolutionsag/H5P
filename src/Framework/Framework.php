@@ -292,7 +292,7 @@ class Framework implements H5PFrameworkInterface
 
             if (!self::version()->is6()) {
                 $proxy = ilProxySettings::_getInstance();
-                if ($proxy->isActive()) {
+                if (null !== $proxy && $proxy->isActive()) {
                     $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
 
                     if (!empty($proxy->getHost())) {

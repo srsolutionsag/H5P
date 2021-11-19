@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.43.2]
+- Update html2canvas
+
+## [0.43.1]
+- Not use GeneratePluginReadme
+
+## [0.43.0]
+- ILIAS 7 support
+- Remove ILIAS 5.4 support
+- Min PHP 7.2
+- Remove deprecated MultiLineInputGUI
+- Remove deprecated MultiSelectSearchInputGUI
+- Remove deprecated GlyphGUI
+- Remove deprecated ConfigPropertyFormGUI
+- Remove deprecated ObjectPropertyFormGUI
+
+## [0.42.9]
+- Hide HiddenInputGUI in MultiLineNewInputGUI
+
+## [0.42.8]
+- Change utils url
+
+## [0.42.7]
+- Update urls
+
+## [0.42.6]
+- Ignore not supported languages
+
+## [0.42.5]
+- Ignore not supported languages
+
+## [0.42.4]
+- Update readme
+
+## [0.42.3]
+- Use `PluginVersionParameter`
+
+## [0.42.2]
+- Use `PluginVersionParameter`
+- Fix waiter decimals
+
+## [0.42.1]
+- Fix Waiter on ILIAS 6
+- Update project url
+
+## [0.42.0]
+- Add `Waiter.setBytes`
+- Add possibility to pass own tpl to `Waiter.init`
+
 ## [0.41.4]
 - Add require compose in ctrl entry classes
 

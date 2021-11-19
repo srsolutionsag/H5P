@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.3.1]
+- Not use GeneratePluginReadme
+
+## [1.3.0]
+- ILIAS 7 support
+- Remove ILIAS 5.4 support
+- Min PHP 7.2
+
+## [1.2.11]
+- Change utils url
+
+## [1.2.10]
+- Update urls
+
+## [1.2.9]
+- Ignore not supported languages
+
+## [1.2.8]
+- Ignore not supported languages
+
+## [1.2.7]
+- Update readme
+
+## [1.2.6]
+- Update project url
+
 ## [1.2.5]
 - Add require compose in ctrl entry classes
 

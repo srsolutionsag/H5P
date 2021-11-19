@@ -318,9 +318,11 @@ class H5PActionGUI
 
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
-        $h5p_library->setRestricted($restricted);
+        if (null !== $h5p_library) {
+            $h5p_library->setRestricted($restricted);
 
-        self::h5p()->libraries()->storeLibrary($h5p_library);
+            self::h5p()->libraries()->storeLibrary($h5p_library);
+        }
 
         self::dic()->ctrl()->saveParameter($this, "xhfp_library");
 

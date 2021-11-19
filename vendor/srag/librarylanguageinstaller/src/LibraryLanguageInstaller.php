@@ -13,8 +13,6 @@ use srag\DIC\H5P\Plugin\PluginInterface;
  * Class LibraryLanguageInstaller
  *
  * @package srag\LibraryLanguageInstaller\H5P
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class LibraryLanguageInstaller implements Pluginable
 {
@@ -61,7 +59,7 @@ final class LibraryLanguageInstaller implements Pluginable
     /**
      * https://github.com/ILIAS-eLearning/ILIAS/blob/da3a38a7c9f2ae0169cb88b485f986deb1c24aaf/Services/Component/classes/class.ilPlugin.php#L409
      */
-    public function updateLanguages()/*: void*/
+    public function updateLanguages() : void
     {
         ilGlobalCache::flushAll();
 

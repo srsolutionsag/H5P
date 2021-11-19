@@ -259,7 +259,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function getValue(string $key)/* : void*/
+    protected function getValue(string $key) : void
     {
 
     }
@@ -268,7 +268,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/* : void*/
+    protected function initCommands() : void
     {
 
     }
@@ -277,7 +277,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/* : void*/
+    protected function initFields() : void
     {
 
     }
@@ -286,7 +286,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/* : void*/
+    protected function initId() : void
     {
 
     }
@@ -295,7 +295,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/* : void*/
+    protected function initTitle() : void
     {
 
     }
@@ -304,7 +304,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(string $key, $value)/* : void*/
+    protected function storeValue(string $key, $value) : void
     {
 
     }

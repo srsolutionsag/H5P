@@ -9,13 +9,13 @@ use ilToolbarItem;
 use srag\CustomInputGUIs\H5P\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\H5P\Template\Template;
 use srag\DIC\H5P\DICTrait;
+use srag\DIC\H5P\Plugin\PluginInterface;
+use srag\DIC\H5P\Version\PluginVersionParameter;
 
 /**
  * Class TabsInputGUI
  *
  * @package srag\CustomInputGUIs\H5P\TabsInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToolbarItem
 {
@@ -53,22 +53,27 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     {
         parent::__construct($title, $post_var);
 
-        self::init();
+        self::init(); // TODO: Pass $plugin
     }
 
 
     /**
-     *
+     * @param PluginInterface|null $plugin
      */
-    public static function init()/*: void*/
+    public static function init(/*?*/ PluginInterface $plugin = null) : void
     {
         if (self::$init === false) {
             self::$init = true;
 
+            $version_parameter = PluginVersionParameter::getInstance();
+            if ($plugin !== null) {
+                $version_parameter = $version_parameter->withPlugin($plugin);
+            }
+
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/tabs_input_gui.css");
+            self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/css/tabs_input_gui.css"));
         }
     }
 
@@ -76,7 +81,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      *
      */
-    public function __clone()/*:void*/
+    public function __clone()
     {
         $this->tabs = array_map(function (TabsInputGUITab $tab) : TabsInputGUITab {
             return clone $tab;
@@ -87,7 +92,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param TabsInputGUITab $tab
      */
-    public function addTab(TabsInputGUITab $tab)/*: void*/
+    public function addTab(TabsInputGUITab $tab) : void
     {
         $this->tabs[] = $tab;
     }
@@ -140,7 +145,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param int $show_input_label
      */
-    public function setShowInputLabel(int $show_input_label)/* : void*/
+    public function setShowInputLabel(int $show_input_label) : void
     {
         $this->show_input_label = $show_input_label;
     }
@@ -167,7 +172,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param TabsInputGUITab[] $tabs
      */
-    public function setTabs(array $tabs)/*: void*/
+    public function setTabs(array $tabs) : void
     {
         $this->tabs = $tabs;
     }
@@ -194,7 +199,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param array $value
      */
-    public function setValue(/*array*/ $value)/*: void*/
+    public function setValue(/*array*/ $value) : void
     {
         if (is_array($value)) {
             $this->value = $value;
@@ -207,7 +212,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl)/*: void*/
+    public function insert(ilTemplate $tpl) : void
     {
         $html = $this->render();
 
@@ -279,7 +284,7 @@ class TabsInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToo
     /**
      * @param array $values
      */
-    public function setValueByArray(/*array*/ $values)/*: void*/
+    public function setValueByArray(/*array*/ $values) : void
     {
         $this->setValue($values[$this->getPostVar()]);
     }

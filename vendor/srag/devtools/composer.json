@@ -1,14 +1,12 @@
 {
   "name": "srag/devtools",
   "description": "Add some dev tools to ILIAS plugin config, if core dev mode is enabled, like reload ctrl structure",
-  "version": "1.2.5",
+  "version": "1.3.1",
   "extra": {
     "ilias_plugin": {
-      "ilias_min_version": "5.4.0",
-      "ilias_max_version": "6.999"
-    },
-    "generate_plugin_readme_template": "SRAG_ILIAS_LIBRARY",
-    "long_description_template": "src/LONG_DESCRIPTION.md"
+      "ilias_min_version": "6.0",
+      "ilias_max_version": "7.999"
+    }
   },
   "type": "library",
   "keywords": [
@@ -17,21 +15,18 @@
     "plugin",
     "tools"
   ],
-  "homepage": "https://github.com/studer-raimann/DevTools",
+  "homepage": "https://github.com/fluxapps/DevTools",
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Custom 1",
-      "email": "support-custom1@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
+      "name": "fluxlabs",
+      "email": "support@fluxlabs.ch",
+      "homepage": "https://fluxlabs.ch",
       "role": "Developer"
     }
   ],
-  "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LDEVTOOLS"
-  },
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.2",
     "srag/dic": ">=0.1.0",
     "srag/librarylanguageinstaller": ">=0.1.0"
   },
@@ -52,8 +47,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "generate-plugin-readme": [
-      "srag\\GeneratePluginInfosHelper\\H5P\\GeneratePluginReadme::generatePluginReadme"
+    "update-version": [
+      "srag\\GeneratePluginInfosHelper\\UpdateVersion::updateVersion"
     ]
   }
 }

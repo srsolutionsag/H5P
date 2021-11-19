@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.16.1]
+- Not use GeneratePluginReadme
+
+## [0.16.0]
+- Min PHP 7.2
+- Remove deprecated PHP7Backport
+- Remove deprecated PHP72Backport
+
+## [0.15.4]
+- Change utils url
+
+## [0.15.3]
+- Update urls
+
+## [0.15.2]
+- Update readme
+
+## [0.15.1]
+- Update project url
+
 ## [0.15.0]
 - Possibility to run without composer script
 - Deprecate `PHP72Backport`

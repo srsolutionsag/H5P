@@ -97,7 +97,7 @@ class SettingsFormBuilder extends AbstractFormBuilder
     /**
      * @inheritDoc
      */
-    protected function storeData(array $data)/* : void*/
+    protected function storeData(array $data) : void
     {
         self::h5p()->options()->setOption(self::KEY_ENABLE_LRS_CONTENT_TYPES, $data[self::KEY_CONTENT_TYPES][self::KEY_ENABLE_LRS_CONTENT_TYPES]);
         self::h5p()->options()->setOption(self::KEY_SEND_USAGE_STATISTICS, $data[self::KEY_CONTENT_TYPES][self::KEY_SEND_USAGE_STATISTICS]);

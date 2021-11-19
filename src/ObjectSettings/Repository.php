@@ -85,7 +85,10 @@ final class Repository
     {
         self::dic()->database()->dropTable(ObjectSettings::TABLE_NAME, false);
 
-        ilWACSecurePath::find(self::DATA_FOLDER)->delete();
+        $data_folder = ilWACSecurePath::find(self::DATA_FOLDER);
+        if (null !== $data_folder) {
+            $data_folder->delete();
+        }
 
         H5PCore::deleteFileTree($this->getH5PFolder());
     }

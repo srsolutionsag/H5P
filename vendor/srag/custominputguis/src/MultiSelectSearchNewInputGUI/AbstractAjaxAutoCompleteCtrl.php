@@ -8,8 +8,6 @@ use srag\DIC\H5P\DICTrait;
  * Class AbstractAjaxAutoCompleteCtrl
  *
  * @package srag\CustomInputGUIs\H5P\MultiSelectSearchNewInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 abstract class AbstractAjaxAutoCompleteCtrl
 {
@@ -37,7 +35,7 @@ abstract class AbstractAjaxAutoCompleteCtrl
     /**
      *
      */
-    public function executeCommand()/*:void*/
+    public function executeCommand() : void
     {
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
@@ -88,7 +86,7 @@ abstract class AbstractAjaxAutoCompleteCtrl
     /**
      *
      */
-    protected function ajaxAutoComplete()/*:void*/
+    protected function ajaxAutoComplete() : void
     {
         $search = strval(filter_input(INPUT_GET, "term"));
 

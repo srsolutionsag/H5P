@@ -8,8 +8,6 @@ use ilTemplate;
  * Trait FixUITemplateInCronContext
  *
  * @package srag\DIC\H5P\Cron
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait FixUITemplateInCronContext
 {
@@ -17,7 +15,7 @@ trait FixUITemplateInCronContext
     /**
      *
      */
-    protected static function fixUITemplateInCronContext()/*:void*/
+    protected static function fixUITemplateInCronContext() : void
     {
         // Fix missing tpl ui in cron context used in some core object constructor
         if (self::dic()->dic()->offsetExists("tpl")) {

@@ -17,8 +17,6 @@ use srag\DIC\H5P\DICTrait;
  *
  * @package           srag\RemovePluginDataConfirm\H5P
  *
- * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
  * @ilCtrl_isCalledBy srag\RemovePluginDataConfirm\H5P\RemovePluginDataConfirmCtrl: ilUIPluginRouterGUI
  */
 class RemovePluginDataConfirmCtrl
@@ -47,7 +45,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @return bool|null
      */
-    public static function getUninstallRemovesData()/*: ?bool*/
+    public static function getUninstallRemovesData() : ?bool
     {
         return json_decode(ilSession::get(self::KEY_UNINSTALL_REMOVES_DATA));
     }
@@ -56,7 +54,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    public static function removeUninstallRemovesData()/*: void*/
+    public static function removeUninstallRemovesData() : void
     {
         ilSession::clear(self::KEY_UNINSTALL_REMOVES_DATA);
     }
@@ -65,7 +63,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param bool $plugin
      */
-    public static function saveParameterByClass(bool $plugin = true)/*: void*/
+    public static function saveParameterByClass(bool $plugin = true) : void
     {
         $ref_id = filter_input(INPUT_GET, "ref_id");
         self::dic()->ctrl()->setParameterByClass(ilObjComponentSettingsGUI::class, "ref_id", $ref_id);
@@ -98,7 +96,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param bool $uninstall_removes_data
      */
-    public static function setUninstallRemovesData(bool $uninstall_removes_data)/*: void*/
+    public static function setUninstallRemovesData(bool $uninstall_removes_data) : void
     {
         ilSession::set(self::KEY_UNINSTALL_REMOVES_DATA, json_encode($uninstall_removes_data));
     }
@@ -107,7 +105,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    public function executeCommand()/*: void*/
+    public function executeCommand() : void
     {
         $ref_id = filter_input(INPUT_GET, "ref_id");
         if (!self::dic()->access()->checkAccess("write", "", $ref_id)) {
@@ -142,7 +140,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function cancel()/*: void*/
+    protected function cancel() : void
     {
         $this->redirectToPlugins("listPlugins");
     }
@@ -151,7 +149,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function confirmRemoveData()/*: void*/
+    protected function confirmRemoveData() : void
     {
         self::saveParameterByClass();
 
@@ -175,7 +173,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function deactivate()/*: void*/
+    protected function deactivate() : void
     {
         $this->redirectToPlugins("deactivatePlugin");
     }
@@ -184,7 +182,7 @@ class RemovePluginDataConfirmCtrl
     /**
      * @param string $cmd
      */
-    protected function redirectToPlugins(string $cmd)/*: void*/
+    protected function redirectToPlugins(string $cmd) : void
     {
         self::saveParameterByClass($cmd !== "listPlugins");
 
@@ -198,7 +196,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function setKeepData()/*: void*/
+    protected function setKeepData() : void
     {
         self::setUninstallRemovesData(false);
 
@@ -211,7 +209,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function setRemoveData()/*: void*/
+    protected function setRemoveData() : void
     {
         self::setUninstallRemovesData(true);
 
@@ -224,7 +222,7 @@ class RemovePluginDataConfirmCtrl
     /**
      *
      */
-    protected function setTabs()/*:void*/
+    protected function setTabs() : void
     {
 
     }

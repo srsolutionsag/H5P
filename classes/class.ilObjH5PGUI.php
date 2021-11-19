@@ -260,7 +260,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
+        if (null !== $h5p_content) {
+            self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }
@@ -274,6 +276,14 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
 
         $h5p_content = self::h5p()->contents()->getCurrentContent();
+
+        if (null === $h5p_content) {
+            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
+                self::plugin()->translate('object_not_found')
+            ));
+
+            return;
+        }
 
         self::dic()->ctrl()->saveParameter($this, "xhfp_content");
 
@@ -375,7 +385,13 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
+        if (null === $h5p_content) {
+            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
+                self::plugin()->translate('object_not_found')
+            ));
+        } else {
+            self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
+        }
     }
 
 
@@ -757,7 +773,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getParams(), $form);
+        if (null !== $h5p_content) {
+            self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getParams(), $form);
+        }
 
         self::dic()->ctrl()->redirect($this, self::CMD_MANAGE_CONTENTS);
     }

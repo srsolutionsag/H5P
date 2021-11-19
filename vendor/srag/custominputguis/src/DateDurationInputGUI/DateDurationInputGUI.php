@@ -11,9 +11,6 @@ use srag\DIC\H5P\DICTrait;
  * Class DateDurationInputGUI
  *
  * @package srag\CustomInputGUIs\H5P\DateDurationInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class DateDurationInputGUI extends ilDateDurationInputGUI
 {
