@@ -142,10 +142,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
         if (null === $h5p_library) {
-            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
-                self::plugin()->translate('object_not_found')
-            ));
-
+            ilUtil::sendFailure(self::plugin()->translate("object_not_found"));
             return;
         }
 
