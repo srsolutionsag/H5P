@@ -278,10 +278,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
         if (null === $h5p_content) {
-            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
-                self::plugin()->translate('object_not_found')
-            ));
-
+            ilUtil::sendFailure(self::plugin()->translate("object_not_found"));
             return;
         }
 
@@ -385,11 +382,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     {
         $h5p_content = self::h5p()->contents()->getCurrentContent();
 
-        if (null === $h5p_content) {
-            self::output()->output(self::dic()->ui()->factory()->messageBox()->failure(
-                self::plugin()->translate('object_not_found')
-            ));
-        } else {
+        if (null !== $h5p_content) {
             self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
         }
     }
