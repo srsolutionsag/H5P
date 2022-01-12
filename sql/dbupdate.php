@@ -187,7 +187,6 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
  * @var $ilDB ilDBInterface
  */
 if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
-
     if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')) {
         $ilDB->addTableColumn('rep_robj_xhfp_cont', 'authors', array(
             'notnull' => '1',
@@ -277,13 +276,26 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
 /**
  * @var $ilDB ilDBInterface
  */
-if ($ilDB->tableExists('rep_robj_xhfp_lib')) {
-
-    if (!$ilDB->tableColumnExists('rep_robj_xhfp_lib', 'metadata_settings')) {
-        $ilDB->addTableColumn('rep_robj_xhfp_lib', 'metadata_settings', array(
-            'notnull' => '1',
-            'type' => 'clob',
-        ));
-    }
+if ($ilDB->tableExists('rep_robj_xhfp_lib') &&
+    !$ilDB->tableColumnExists('rep_robj_xhfp_lib', 'metadata_settings')
+) {
+    $ilDB->addTableColumn('rep_robj_xhfp_lib', 'metadata_settings', array(
+        'notnull' => '1',
+        'type' => 'clob',
+    ));
+}
+?>
+<#9>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_cont') &&
+    $ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')
+) {
+    // fixes #PLH5P-155 where empty authors lead to an empty string
+    // entry in the encoded json array instead of an entirely empty
+    // json array.
+    $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = JSON_ARRAY() WHERE authors = JSON_ARRAY('');");
 }
 ?>
