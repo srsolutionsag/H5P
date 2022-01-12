@@ -181,3 +181,121 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
     }
 }
 ?>
+<#7>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'authors', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'author') &&
+        $ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')
+    ) {
+        // migrate author content to new column decode it to a json array.
+        $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = JSON_ARRAY(author);");
+
+        // drop the old author column.
+        $ilDB->dropTableColumn('rep_robj_xhfp_cont', 'author');
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'description')) {
+        $ilDB->dropTableColumn('rep_robj_xhfp_cont', 'description');
+    }
+
+    if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'keywords')) {
+        $ilDB->dropTableColumn('rep_robj_xhfp_cont', 'keywords');
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'author_comments')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'author_comments', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'changes')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'changes', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'default_language')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'default_language', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'license_extras')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'license_extras', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'license_version')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'license_version', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'source')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'source', array(
+            'notnull' => '1',
+            'type' => 'clob',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'year_from')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'year_from', array(
+            'notnull' => '1',
+            'type' => 'integer',
+            'length' => '8',
+        ));
+    }
+
+    if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'year_to')) {
+        $ilDB->addTableColumn('rep_robj_xhfp_cont', 'year_to', array(
+            'notnull' => '1',
+            'type' => 'integer',
+            'length' => '8',
+        ));
+    }
+}
+?>
+<#8>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_lib') &&
+    !$ilDB->tableColumnExists('rep_robj_xhfp_lib', 'metadata_settings')
+) {
+    $ilDB->addTableColumn('rep_robj_xhfp_lib', 'metadata_settings', array(
+        'notnull' => '1',
+        'type' => 'clob',
+    ));
+}
+?>
+<#9>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_cont') &&
+    $ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')
+) {
+    // fixes #PLH5P-155 where empty authors lead to an empty string
+    // entry in the encoded json array instead of an entirely empty
+    // json array.
+    $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = JSON_ARRAY() WHERE authors = JSON_ARRAY('');");
+}
+?>
