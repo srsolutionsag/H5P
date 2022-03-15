@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ilH5PConfigGUI' => $baseDir . '/classes/class.ilH5PConfigGUI.php',
+    'ilH5PExporter' => $baseDir . '/classes/class.ilH5PExporter.php',
+    'ilH5PImporter' => $baseDir . '/classes/class.ilH5PImporter.php',
     'ilH5PPlugin' => $baseDir . '/classes/class.ilH5PPlugin.php',
     'ilObjH5P' => $baseDir . '/classes/class.ilObjH5P.php',
     'ilObjH5PAccess' => $baseDir . '/classes/class.ilObjH5PAccess.php',

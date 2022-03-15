@@ -72,6 +72,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
 
     public static $classMap = array (
         'ilH5PConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PConfigGUI.php',
+        'ilH5PExporter' => __DIR__ . '/../..' . '/classes/class.ilH5PExporter.php',
+        'ilH5PImporter' => __DIR__ . '/../..' . '/classes/class.ilH5PImporter.php',
         'ilH5PPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPlugin.php',
         'ilObjH5P' => __DIR__ . '/../..' . '/classes/class.ilObjH5P.php',
         'ilObjH5PAccess' => __DIR__ . '/../..' . '/classes/class.ilObjH5PAccess.php',
