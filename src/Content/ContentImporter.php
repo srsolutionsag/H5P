@@ -119,9 +119,9 @@ class ContentImporter
         }
 
         $data = [];
-        foreach ($file_paths as $index => $path) {
+        foreach ($file_paths[0] as $index => $path) {
             $data[] = [
-                self::KEY_CONTENT_TITLE => $content_titles[$index] ?? '',
+                self::KEY_CONTENT_TITLE => $content_titles[0][$index] ?? '',
                 self::KEY_FILE_PATH => $path,
             ];
         }
