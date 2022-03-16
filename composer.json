@@ -9,18 +9,18 @@
     "plugin",
     "repository"
   ],
-  "homepage": "https://github.com/studer-raimann/H5P",
+  "homepage": "https://github.com/srsolutionsag/H5P",
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Custom 1",
-      "email": "support-custom1@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
+      "name": "sr solutions ag",
+      "email": "support@sr.solutions",
+      "homepage": "https://sr.solutions",
       "role": "Developer"
     }
   ],
   "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P"
+    "issues": "https://plugins.sr.solutions/goto.php?target=uihk_srsu_PLH5P"
   },
   "require": {
     "php": ">=7.0",

@@ -72,6 +72,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
 
     public static $classMap = array (
         'ilH5PConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PConfigGUI.php',
+        'ilH5PExporter' => __DIR__ . '/../..' . '/classes/class.ilH5PExporter.php',
+        'ilH5PImporter' => __DIR__ . '/../..' . '/classes/class.ilH5PImporter.php',
         'ilH5PPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPlugin.php',
         'ilObjH5P' => __DIR__ . '/../..' . '/classes/class.ilObjH5P.php',
         'ilObjH5PAccess' => __DIR__ . '/../..' . '/classes/class.ilObjH5PAccess.php',
@@ -168,6 +170,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\LibraryLanguageInstaller\\H5P\\LibraryLanguageInstaller' => __DIR__ . '/..' . '/srag/librarylanguageinstaller/src/LibraryLanguageInstaller.php',
         'srag\\Plugins\\H5P\\Action\\H5PActionGUI' => __DIR__ . '/../..' . '/src/Action/class.H5PActionGUI.php',
         'srag\\Plugins\\H5P\\Content\\Content' => __DIR__ . '/../..' . '/src/Content/Content.php',
+        'srag\\Plugins\\H5P\\Content\\ContentExporter' => __DIR__ . '/../..' . '/src/Content/ContentExporter.php',
+        'srag\\Plugins\\H5P\\Content\\ContentImporter' => __DIR__ . '/../..' . '/src/Content/ContentImporter.php',
         'srag\\Plugins\\H5P\\Content\\ContentLibrary' => __DIR__ . '/../..' . '/src/Content/ContentLibrary.php',
         'srag\\Plugins\\H5P\\Content\\ContentUserData' => __DIR__ . '/../..' . '/src/Content/ContentUserData.php',
         'srag\\Plugins\\H5P\\Content\\ContentsTableGUI' => __DIR__ . '/../..' . '/src/Content/ContentsTableGUI.php',
