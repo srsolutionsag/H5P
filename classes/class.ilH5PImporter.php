@@ -35,13 +35,14 @@ class ilH5PImporter extends ilXmlImporter
             return;
         }
 
+        $imported_xhfp_obj_id = $a_mapping->getMapping('Services/Container', 'objs', $a_id);
+
         foreach ($file_paths[0] as $index => $relative_file_path) {
             $absolute_file_path = "$working_dir/$relative_file_path";
 
             self::h5p()->contents()->editor()->storageFramework()->saveFileTemporarily($absolute_file_path, true);
 
             if (!self::h5p()->contents()->editor()->validatorCore()->isValidPackage()) {
-                $x = 1;
                 continue;
             }
 
@@ -57,17 +58,12 @@ class ilH5PImporter extends ilXmlImporter
                     "source"          => self::h5p()->contents()->core()->mainJsonData["source"],
                     "title"           => (self::h5p()->contents()->core()->mainJsonData["title"] ?: ($content_titles[$index] ?? '')),
                     "yearFrom"        => self::h5p()->contents()->core()->mainJsonData["yearFrom"],
-                    "yearTo"          => self::h5p()->contents()->core()->mainJsonData["yearTo"]
+                    "yearTo"          => self::h5p()->contents()->core()->mainJsonData["yearTo"],
+                    "obj_id"          => $imported_xhfp_obj_id,
                 ]
             ]);
 
             self::h5p()->contents()->editor()->storageFramework()->removeTemporarilySavedFiles(self::h5p()->contents()->framework()->getUploadedH5pFolderPath());
-
-            $h5p_content = self::h5p()->contents()->getContentById((int) self::h5p()->contents()->editor()->storageCore()->contentId);
-
-            if (null === $h5p_content) {
-                $x = 1;
-            }
         }
     }
 }
