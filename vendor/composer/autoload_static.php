@@ -153,6 +153,8 @@ class ComposerStaticInit88baa161189e04dba39b37c134f2f644
         'srag\\LibraryLanguageInstaller\\H5P\\LibraryLanguageInstaller' => __DIR__ . '/..' . '/srag/librarylanguageinstaller/src/LibraryLanguageInstaller.php',
         'srag\\Plugins\\H5P\\Action\\H5PActionGUI' => __DIR__ . '/../..' . '/src/Action/class.H5PActionGUI.php',
         'srag\\Plugins\\H5P\\Content\\Content' => __DIR__ . '/../..' . '/src/Content/Content.php',
+        'srag\\Plugins\\H5P\\Content\\ContentExporter' => __DIR__ . '/../..' . '/src/Content/ContentExporter.php',
+        'srag\\Plugins\\H5P\\Content\\ContentImporter' => __DIR__ . '/../..' . '/src/Content/ContentImporter.php',
         'srag\\Plugins\\H5P\\Content\\ContentLibrary' => __DIR__ . '/../..' . '/src/Content/ContentLibrary.php',
         'srag\\Plugins\\H5P\\Content\\ContentUserData' => __DIR__ . '/../..' . '/src/Content/ContentUserData.php',
         'srag\\Plugins\\H5P\\Content\\ContentsTableGUI' => __DIR__ . '/../..' . '/src/Content/ContentsTableGUI.php',

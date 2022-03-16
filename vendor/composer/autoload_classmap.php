@@ -88,6 +88,8 @@ return array(
     'srag\\LibraryLanguageInstaller\\H5P\\LibraryLanguageInstaller' => $vendorDir . '/srag/librarylanguageinstaller/src/LibraryLanguageInstaller.php',
     'srag\\Plugins\\H5P\\Action\\H5PActionGUI' => $baseDir . '/src/Action/class.H5PActionGUI.php',
     'srag\\Plugins\\H5P\\Content\\Content' => $baseDir . '/src/Content/Content.php',
+    'srag\\Plugins\\H5P\\Content\\ContentExporter' => $baseDir . '/src/Content/ContentExporter.php',
+    'srag\\Plugins\\H5P\\Content\\ContentImporter' => $baseDir . '/src/Content/ContentImporter.php',
     'srag\\Plugins\\H5P\\Content\\ContentLibrary' => $baseDir . '/src/Content/ContentLibrary.php',
     'srag\\Plugins\\H5P\\Content\\ContentUserData' => $baseDir . '/src/Content/ContentUserData.php',
     'srag\\Plugins\\H5P\\Content\\ContentsTableGUI' => $baseDir . '/src/Content/ContentsTableGUI.php',

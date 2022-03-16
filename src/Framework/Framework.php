@@ -1639,6 +1639,10 @@ class Framework implements H5PFrameworkInterface
             $h5p_content->setObjId((int) $metadata['obj_id']);
         }
 
+        if (isset($metadata['parent_type'])) {
+            $h5p_content->setParentType((string) $metadata['obj_id']);
+        }
+
         self::h5p()->contents()->storeContent($h5p_content);
 
         if ($new) {
