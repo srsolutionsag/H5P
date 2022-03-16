@@ -292,7 +292,7 @@ class Framework implements H5PFrameworkInterface
 
             if (!self::version()->is6()) {
                 $proxy = ilProxySettings::_getInstance();
-                if ($proxy->isActive()) {
+                if (null !== $proxy && $proxy->isActive()) {
                     $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
 
                     if (!empty($proxy->getHost())) {
@@ -1634,6 +1634,14 @@ class Framework implements H5PFrameworkInterface
         $h5p_content->setYearFrom($metadata["yearFrom"] ?: 0);
 
         $h5p_content->setYearTo($metadata["yearTo"] ?: 0);
+
+        if (isset($metadata['obj_id'])) {
+            $h5p_content->setObjId((int) $metadata['obj_id']);
+        }
+
+        if (isset($metadata['parent_type'])) {
+            $h5p_content->setParentType((string) $metadata['parent_type']);
+        }
 
         self::h5p()->contents()->storeContent($h5p_content);
 
