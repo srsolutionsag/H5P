@@ -197,8 +197,22 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
     if ($ilDB->tableColumnExists('rep_robj_xhfp_cont', 'author') &&
         $ilDB->tableColumnExists('rep_robj_xhfp_cont', 'authors')
     ) {
+        $authors = $ilDB->fetchAll($ilDB->query("SELECT content_id, author FROM rep_robj_xhfp_cont;"));
+
         // migrate author content to new column decode it to a json array.
-        $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = JSON_ARRAY(author);");
+        // due to #PLH5P-159, SQLs JSON_ARRAY function cannot be used for
+        // this operation because ILIAS supports versions from 5.6.
+        foreach ($authors as $entry) {
+            $author_json_string = json_encode([$entry['author']]);
+            $ilDB->manipulateF(
+                "UPDATE rep_robj_xhfp_cont SET authors = %s WHERE content_id = %s;",
+                ['text', 'integer'],
+                [
+                    $author_json_string,
+                    (int) $entry['content_id'],
+                ]
+            );
+        }
 
         // drop the old author column.
         $ilDB->dropTableColumn('rep_robj_xhfp_cont', 'author');
@@ -295,7 +309,10 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont') &&
 ) {
     // fixes #PLH5P-155 where empty authors lead to an empty string
     // entry in the encoded json array instead of an entirely empty
-    // json array.
-    $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = JSON_ARRAY() WHERE authors = JSON_ARRAY('');");
+    // json array. due to #PLH5P-159, SQLs JSON_ARRAY function cannot
+    // be used for this operation as well because ILIAS supports
+    // versions from 5.6.
+    $escaped_where_clause = '\'[""]\'';
+    $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = '[]' WHERE authors = $escaped_where_clause");
 }
 ?>
