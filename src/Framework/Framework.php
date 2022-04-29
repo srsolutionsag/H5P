@@ -1635,6 +1635,14 @@ class Framework implements H5PFrameworkInterface
 
         $h5p_content->setYearTo($metadata["yearTo"] ?: 0);
 
+        if (isset($metadata['obj_id'])) {
+            $h5p_content->setObjId((int) $metadata['obj_id']);
+        }
+
+        if (isset($metadata['parent_type'])) {
+            $h5p_content->setParentType((string) $metadata['parent_type']);
+        }
+
         self::h5p()->contents()->storeContent($h5p_content);
 
         if ($new) {
