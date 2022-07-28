@@ -1,0 +1,15 @@
+{
+  "commit-msg": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Regex",
+        "options": {
+          "regex": "#^\\[(FIX|FEATURE|RELEASE|PATCH)\\] .*#i",
+          "error": "Error, the commit message is invalid. Please ensure that it begins with either [FIX], [FEATURE] [RELEASE] or [PATCH].\n",
+          "success": "Success, the commit message is valid."
+        }
+      }
+    ]
+  }
+}
