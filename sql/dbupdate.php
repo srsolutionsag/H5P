@@ -1075,3 +1075,16 @@ if ($ilDB->tableExists('rep_robj_xhfp_cont') &&
     $ilDB->manipulate("UPDATE rep_robj_xhfp_cont SET authors = '[]' WHERE authors = $escaped_where_clause");
 }
 ?>
+<#10>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if (!$ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'machine_name')) {
+    $ilDB->addTableColumn('rep_robj_xhfp_lib_hub', 'machine_name', [
+        'type' => 'text',
+        'length' => '127',
+        'notnull' => '1',
+    ]);
+}
+?>
