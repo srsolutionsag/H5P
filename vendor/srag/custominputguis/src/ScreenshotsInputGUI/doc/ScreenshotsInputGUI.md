@@ -1,3 +1,0 @@
-### ScreenshotsInputGUI
-
-TODO: 

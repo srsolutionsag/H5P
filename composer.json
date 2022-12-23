@@ -2,58 +2,30 @@
   "name": "srag/h5p",
   "description": "Add H5P contents in repository objects",
   "type": "project",
-  "keywords": [
-    "h5p",
-    "ilias",
-    "object",
-    "plugin",
-    "repository"
-  ],
-  "homepage": "https://github.com/srsolutionsag/H5P",
   "license": "GPL-3.0-only",
   "authors": [
     {
       "name": "sr solutions ag",
       "email": "support@sr.solutions",
-      "homepage": "https://sr.solutions",
-      "role": "Developer"
+      "homepage": "https://sr.solutions"
     }
   ],
-  "support": {
-    "issues": "https://plugins.sr.solutions/goto.php?target=uihk_srsu_PLH5P"
-  },
   "require": {
     "php": ">=7.2",
-    "h5p/h5p-core": "1.24.3",
-    "h5p/h5p-editor": "1.24.3",
-    "srag/activerecordconfig": ">=0.1.0",
-    "srag/custominputguis": ">=0.1.0",
-    "srag/devtools": ">=0.1.0",
-    "srag/dic": ">=0.1.0",
-    "srag/librariesnamespacechanger": ">=0.1.0",
-    "srag/removeplugindataconfirm": ">=0.1.0"
+    "h5p/h5p-core": ">=1.24.4",
+    "h5p/h5p-editor": ">=1.25.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "rector/rector": ">=0.15.1"
   },
   "autoload": {
     "psr-4": {
+      "srag\\Plugins\\H5P\\CI\\": "CI/",
       "srag\\Plugins\\H5P\\": "src/"
     },
     "classmap": [
-      "classes/",
-      "src/Action/class.H5PActionGUI.php"
-    ],
-    "files": [
-      "vendor/srag/dic/src/PHPVersionChecker.php"
-    ]
-  },
-  "config": {
-    "classmap-authoritative": true,
-    "optimize-autoloader": true,
-    "sort-packages": true
-  },
-  "scripts": {
-    "pre-autoload-dump": [
-      "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
-      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport"
+      "classes/"
     ]
   }
 }

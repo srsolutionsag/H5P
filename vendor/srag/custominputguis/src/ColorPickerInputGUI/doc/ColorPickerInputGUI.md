@@ -1,3 +1,0 @@
-### ColorPickerInputGUI.php
-
-TODO: 

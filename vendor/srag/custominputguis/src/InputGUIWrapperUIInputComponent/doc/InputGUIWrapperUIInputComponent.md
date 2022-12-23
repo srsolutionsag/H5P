@@ -1,3 +1,0 @@
-### InputGUIWrapperUIInputComponent
-
-TODO: 

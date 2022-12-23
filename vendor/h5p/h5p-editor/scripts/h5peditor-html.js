@@ -25,6 +25,16 @@ ns.Html.prototype.inTags = function (value) {
   return (ns.$.inArray(value.toLowerCase(), this.tags) >= 0);
 };
 
+/**
+ * Check if the provided button is enabled by config.
+ *
+ * @param {string} value
+ * @return {boolean}
+ */
+ns.Html.prototype.inButtons = function (button) {
+  return (H5PIntegration.editor !== undefined && H5PIntegration.editor.wysiwygButtons !== undefined && H5PIntegration.editor.wysiwygButtons.indexOf(button) !== -1);
+};
+
 ns.Html.prototype.createToolbar = function () {
   var basicstyles = [];
   var paragraph = [];
@@ -104,6 +114,14 @@ ns.Html.prototype.createToolbar = function () {
     ns.$.merge(this.tags, ["tr", "td", "th", "colgroup", "thead", "tbody", "tfoot"]);
   }
   if (this.inTags("hr")) inserts.push("HorizontalRule");
+  if (this.inTags('code')) {
+    if (this.inButtons('inlineCode')) {
+      inserts.push('Code');
+    }
+    if (this.inTags('pre') && this.inButtons('codeSnippet')) {
+      inserts.push('CodeSnippet');
+    }
+  }
   if (inserts.length > 0) {
     toolbar.push({
       name: "insert",
@@ -294,7 +312,9 @@ ns.Html.prototype.appendTo = function ($wrapper) {
     startupFocus: true,
     enterMode: CKEDITOR.ENTER_DIV,
     allowedContent: true, // Disables the ckeditor content filter, might consider using it later... Must make sure it doesn't remove math...
-    protectedSource: []
+    protectedSource: [],
+    contentsCss: ns.basePath + 'styles/css/cke-contents.css', // We want to customize the CSS inside the editor
+    codeSnippet_codeClass: 'h5p-hl'
   };
   ns.$.extend(ckConfig, this.createToolbar());
 
@@ -331,6 +351,41 @@ ns.Html.prototype.appendTo = function ($wrapper) {
       // Have to attach to an element that does not get hidden or removed, since an internal "calculator" element
       // inside CKeditor relies on this element to always exist and not be hidden.
       return new CKEDITOR.dom.element(window.document.body);
+    };
+
+    // Override convertToPx to make sure the calculator is always visible so it can make the measurements and is
+    // removed after the measurements are done, adapted from:
+    // https://github.com/ckeditor/ckeditor4/blob/cae20318d46745cc46c811da4e7d68b38ca32449/core/tools.js#L899-L929
+    CKEDITOR.tools.convertToPx = function (cssLength) {
+        const calculator = CKEDITOR.dom.element.createFromHtml( '<div style="position:absolute;left:-9999px;' +
+          'top:-9999px;margin:0px;padding:0px;border:0px;"' +
+          '></div>', CKEDITOR.document );
+        CKEDITOR.document.getBody().append(calculator);
+
+        if ( !( /%$/ ).test( cssLength ) ) {
+          var isNegative = parseFloat( cssLength ) < 0,
+            ret;
+
+          if ( isNegative ) {
+            cssLength = cssLength.replace( '-', '' );
+          }
+
+          calculator.setStyle( 'width', cssLength );
+          ret = calculator.$.clientWidth;
+
+          if (calculator.$ && calculator.$.parentNode) {
+            calculator.$.parentNode.removeChild(calculator.$);
+          }
+          if ( isNegative ) {
+            return -ret;
+          }
+          return ret;
+        }
+
+        if (calculator.$ && calculator.$.parentNode) {
+          calculator.$.parentNode.removeChild(calculator.$);
+        }
+        return cssLength;
     };
 
     ns.Html.current = that;

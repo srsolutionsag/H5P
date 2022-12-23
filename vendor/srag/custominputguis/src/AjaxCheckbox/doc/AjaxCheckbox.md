@@ -1,3 +1,0 @@
-### AjaxCheckbox.php
-
-TODO: 

@@ -1,3 +1,0 @@
-### UIInputComponentWrapperInputGUI
-
-TODO: 

@@ -1,6 +1,0 @@
-.idea
-composer.lock
-**/lang/*
-!**/lang/ilias_de.lang
-!**/lang/ilias_en.lang
-vendor
