@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Content;
 
 use ilH5PPlugin;
 use ilObjH5PGUI;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -17,10 +16,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Factory
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */

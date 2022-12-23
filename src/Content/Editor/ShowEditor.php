@@ -9,7 +9,6 @@ use ilH5PPlugin;
 use ilLinkButton;
 use ilToolbarGUI;
 use ilUtil;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -24,14 +23,14 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ShowEditor
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+    protected $plugin;
+    protected $output_renderer;
+    protected $user;
 
 
     /**
@@ -39,7 +38,10 @@ class ShowEditor
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
+        $this->user = $DIC->user()
     }
 
 
@@ -104,7 +106,7 @@ class ShowEditor
         }
 
         if ($message) {
-            ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [$h5p_content->getTitle()]), true);
+            ilUtil::sendSuccess($this->plugin->txt("saved_content", "", [$h5p_content->getTitle()]), true);
         }
 
         return $h5p_content;
@@ -123,7 +125,7 @@ class ShowEditor
         ]);
 
         if ($message) {
-            ilUtil::sendSuccess(self::plugin()->translate("deleted_content", "", [$h5p_content->getTitle()]), true);
+            ilUtil::sendSuccess($this->plugin->txt("deleted_content", "", [$h5p_content->getTitle()]), true);
         }
     }
 
@@ -164,28 +166,28 @@ class ShowEditor
 
         //$tutorial_toolbar->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("tutorial"), ""));
         $tutorial = ilLinkButton::getInstance();
-        $tutorial->setCaption(self::plugin()->translate("tutorial"), false);
+        $tutorial->setCaption($this->plugin->txt("tutorial"), false);
         $tutorial->setTarget("_blank");
         $tutorial->setId("xhfp_edit_toolbar_tutorial");
         $tutorial_toolbar->addButtonInstance($tutorial);
 
         //$tutorial_toolbar->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("example"), ""));
         $example = ilLinkButton::getInstance();
-        $example->setCaption(self::plugin()->translate("example"), false);
+        $example->setCaption($this->plugin->txt("example"), false);
         $example->setTarget("_blank");
         $example->setId("xhfp_edit_toolbar_example");
         $tutorial_toolbar->addButtonInstance($example);
 
-        $h5p_tpl = self::plugin()->template("H5PEditor.html");
+        $h5p_tpl = $this->plugin->template("H5PEditor.html");
 
         $h5p_tpl->setCurrentBlock("tutorialBlock");
-        $h5p_tpl->setVariable("TUTORIAL", self::output()->getHTML($tutorial_toolbar));
+        $h5p_tpl->setVariable("TUTORIAL", $this->output_renderer->getHTML($tutorial_toolbar));
 
         /*$h5p_tpl->setCurrentBlock("errorBlock");
         $h5p_tpl->setVariable("IMG_ALERT", ilUtil::getImagePath("icon_alert.svg"));
         $h5p_tpl->setVariableEscaped("TXT_ALERT", self::plugin()->translate("incomplete_content"));*/
 
-        return self::output()->getHTML($h5p_tpl);
+        return $this->output_renderer->getHTML($h5p_tpl);
     }
 
 
@@ -229,7 +231,7 @@ class ShowEditor
             return null;
         }
 
-        ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [$h5p_content->getTitle()]), true);
+        ilUtil::sendSuccess($this->plugin->txt("saved_content", "", [$h5p_content->getTitle()]), true);
 
         return $h5p_content;
     }
@@ -259,7 +261,7 @@ class ShowEditor
         }
 
         if ($message) {
-            ilUtil::sendSuccess(self::plugin()->translate("saved_content", "", [$h5p_content->getTitle()]), true);
+            ilUtil::sendSuccess($this->plugin->txt("saved_content", "", [$h5p_content->getTitle()]), true);
         }
     }
 
@@ -307,7 +309,7 @@ class ShowEditor
             "apiVersion"         => H5PCore::$coreApi
         ];
 
-        $language = self::dic()->user()->getLanguage();
+        $language = $this->user->getLanguage();
         $language_path = self::h5p()->contents()->editor()->getCorePath() . "/language/";
         $language_script = $language_path . $language . ".js";
         if (!file_exists($language_script)) {
@@ -315,6 +317,6 @@ class ShowEditor
         }
         self::h5p()->contents()->show()->js_files[] = $language_script;
 
-        self::h5p()->contents()->show()->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PEditor.min.js";
+        self::h5p()->contents()->show()->js_files[] = substr($this->plugin->directory(), 2) . "/js/H5PEditor.min.js";
     }
 }

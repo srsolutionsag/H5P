@@ -8,7 +8,6 @@ use H5PFileStorage;
 use H5PStorage;
 use H5PValidator;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -21,10 +20,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -49,6 +45,8 @@ final class Repository
      * @var H5PValidator
      */
     protected $validator_core = null;
+    protected $database;
+    protected $plugin;
 
 
     /**
@@ -56,7 +54,9 @@ final class Repository
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->database = $DIC->database()
+        $this->plugin = \ilH5PPlugin::getInstance()
     }
 
 
@@ -122,7 +122,7 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(TmpFile::TABLE_NAME, false);
+        $this->database->dropTable(TmpFile::TABLE_NAME, false);
     }
 
 
@@ -153,7 +153,7 @@ final class Repository
      */
     public function getCorePath() : string
     {
-        return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-editor";
+        return substr($this->plugin->directory(), 2) . "/vendor/h5p/h5p-editor";
     }
 
 

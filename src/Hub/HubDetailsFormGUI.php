@@ -22,12 +22,14 @@ class HubDetailsFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string
      */
     protected $key;
+    protected $plugin;
+    protected $ctrl;
+    protected $toolbar;
+    protected $output_renderer;
 
 
     /**
@@ -38,9 +40,14 @@ class HubDetailsFormGUI extends PropertyFormGUI
      */
     public function __construct(ilH5PConfigGUI $parent, string $key)
     {
+        global $DIC;
         $this->key = $key;
 
         parent::__construct($parent);
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->ctrl = $DIC->ctrl();
+        $this->toolbar = $DIC->toolbar();
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl());
     }
 
 
@@ -55,58 +62,58 @@ class HubDetailsFormGUI extends PropertyFormGUI
         $library["usages"] = self::h5p()->libraries()->getUsageJoin(intval($library["installed_id"]));
         $library["dependencies"] = self::h5p()->libraries()->getDependenciesJoin(intval($library["installed_id"]));
 
-        $h5p_tpl = self::plugin()->template("H5PLibraryDetails.html");
+        $h5p_tpl = $this->plugin->template("H5PLibraryDetails.html");
 
         // Links
-        self::dic()->ctrl()->setParameter($this->parent, "xhfp_library_name", $library["name"]);
-        $install_link = self::dic()->ctrl()->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
-        self::dic()->ctrl()->setParameter($this->parent, "xhfp_library_name", null);
+        $this->ctrl->setParameter($this->parent, "xhfp_library_name", $library["name"]);
+        $install_link = $this->ctrl->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_INSTALL_LIBRARY);
+        $this->ctrl->setParameter($this->parent, "xhfp_library_name", null);
 
-        self::dic()->ctrl()->setParameter($this->parent, "xhfp_library", $library["installed_id"]);
-        $delete_link = self::dic()->ctrl()->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
-        self::dic()->ctrl()->setParameter($this->parent, "xhfp_library", null);
+        $this->ctrl->setParameter($this->parent, "xhfp_library", $library["installed_id"]);
+        $delete_link = $this->ctrl->getLinkTarget($this->parent, ilH5PConfigGUI::CMD_DELETE_LIBRARY_CONFIRM);
+        $this->ctrl->setParameter($this->parent, "xhfp_library", null);
 
         // Buttons
         if ($library["tutorial_url"] !== "") {
             //self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("tutorial"), $library["tutorial_url"]));
             $tutorial = ilLinkButton::getInstance();
-            $tutorial->setCaption(self::plugin()->translate("tutorial"), false);
+            $tutorial->setCaption($this->plugin->txt("tutorial"), false);
             $tutorial->setUrl($library["tutorial_url"]);
             $tutorial->setTarget("_blank");
-            self::dic()->toolbar()->addButtonInstance($tutorial);
+            $this->toolbar->addButtonInstance($tutorial);
         }
 
         if ($library["example_url"] !== "") {
             //self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("example"), $library["example_url"]));
             $example = ilLinkButton::getInstance();
-            $example->setCaption(self::plugin()->translate("example"), false);
+            $example->setCaption($this->plugin->txt("example"), false);
             $example->setUrl($library["example_url"]);
             $example->setTarget("_blank");
-            self::dic()->toolbar()->addButtonInstance($example);
+            $this->toolbar->addButtonInstance($example);
         }
 
         if ($library["status"] === ShowHub::STATUS_NOT_INSTALLED) {
             //self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("install"), $install_link));
             $install = ilLinkButton::getInstance();
-            $install->setCaption(self::plugin()->translate("install"), false);
+            $install->setCaption($this->plugin->txt("install"), false);
             $install->setUrl($install_link);
-            self::dic()->toolbar()->addButtonInstance($install);
+            $this->toolbar->addButtonInstance($install);
         }
 
         if ($library["status"] === ShowHub::STATUS_UPGRADE_AVAILABLE) {
             //self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("upgrade"), $install_link));
             $upgrade = ilLinkButton::getInstance();
-            $upgrade->setCaption(self::plugin()->translate("upgrade"), false);
+            $upgrade->setCaption($this->plugin->txt("upgrade"), false);
             $upgrade->setUrl($install_link);
-            self::dic()->toolbar()->addButtonInstance($upgrade);
+            $this->toolbar->addButtonInstance($upgrade);
         }
 
         if ($library["status"] !== ShowHub::STATUS_NOT_INSTALLED) {
             //self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("delete"), $delete_link));
             $delete = ilLinkButton::getInstance();
-            $delete->setCaption(self::plugin()->translate("delete"), false);
+            $delete->setCaption($this->plugin->txt("delete"), false);
             $delete->setUrl($delete_link);
-            self::dic()->toolbar()->addButtonInstance($delete);
+            $this->toolbar->addButtonInstance($delete);
         }
 
         // Icon
@@ -119,68 +126,68 @@ class HubDetailsFormGUI extends PropertyFormGUI
         }
 
         // Details
-        $this->setTitle(self::plugin()->translate("details"));
+        $this->setTitle($this->plugin->txt("details"));
 
-        $title = new ilNonEditableValueGUI(self::plugin()->translate("title"));
+        $title = new ilNonEditableValueGUI($this->plugin->txt("title"));
         $title->setValue($library["title"]);
         $this->addItem($title);
 
-        $summary = new ilNonEditableValueGUI(self::plugin()->translate("summary"));
+        $summary = new ilNonEditableValueGUI($this->plugin->txt("summary"));
         $summary->setValue($library["summary"]);
         $this->addItem($summary);
 
-        $description = new ilNonEditableValueGUI(self::plugin()->translate("description"));
+        $description = new ilNonEditableValueGUI($this->plugin->txt("description"));
         $description->setValue($library["description"]);
         $this->addItem($description);
 
-        $keywords = new ilNonEditableValueGUI(self::plugin()->translate("keywords"));
+        $keywords = new ilNonEditableValueGUI($this->plugin->txt("keywords"));
         $keywords->setValue(implode(", ", $library["keywords"]));
         $this->addItem($keywords);
 
-        $categories = new ilNonEditableValueGUI(self::plugin()->translate("categories"));
+        $categories = new ilNonEditableValueGUI($this->plugin->txt("categories"));
         $categories->setValue(implode(", ", $library["categories"]));
         $this->addItem($categories);
 
-        $author = new ilNonEditableValueGUI(self::plugin()->translate("author"));
+        $author = new ilNonEditableValueGUI($this->plugin->txt("author"));
         $author->setValue($library["author"]);
         $this->addItem($author);
 
         if (is_object($library["license"])) {
-            $license = new ilNonEditableValueGUI(self::plugin()->translate("license"));
+            $license = new ilNonEditableValueGUI($this->plugin->txt("license"));
             $license->setValue($library["license"]->id);
             $this->addItem($license);
         }
 
-        $runnable = new ilNonEditableValueGUI(self::plugin()->translate("runnable"));
-        $runnable->setValue(self::plugin()->translate($library["runnable"] ? "yes" : "no"));
+        $runnable = new ilNonEditableValueGUI($this->plugin->txt("runnable"));
+        $runnable->setValue($this->plugin->txt($library["runnable"] ? "yes" : "no"));
         $this->addItem($runnable);
 
-        $latest_version = new ilNonEditableValueGUI(self::plugin()->translate("latest_version"));
+        $latest_version = new ilNonEditableValueGUI($this->plugin->txt("latest_version"));
         if (isset($library["latest_version"])) {
             $latest_version->setValue($library["latest_version"]);
         } else {
             // Library is not available on the hub
-            $latest_version->setValue(self::plugin()->translate("not_available"));
+            $latest_version->setValue($this->plugin->txt("not_available"));
         }
         $this->addItem($latest_version);
 
         // Status
         $status_title = new ilFormSectionHeaderGUI();
-        $status_title->setTitle(self::plugin()->translate("status"));
+        $status_title->setTitle($this->plugin->txt("status"));
         $this->addItem($status_title);
 
-        $status = new ilNonEditableValueGUI(self::plugin()->translate("status"));
+        $status = new ilNonEditableValueGUI($this->plugin->txt("status"));
         switch ($library["status"]) {
             case ShowHub::STATUS_INSTALLED:
-                $status->setValue(self::plugin()->translate("installed"));
+                $status->setValue($this->plugin->txt("installed"));
                 break;
 
             case ShowHub::STATUS_UPGRADE_AVAILABLE:
-                $status->setValue(self::plugin()->translate("upgrade_available"));
+                $status->setValue($this->plugin->txt("upgrade_available"));
                 break;
 
             case ShowHub::STATUS_NOT_INSTALLED:
-                $status->setValue(self::plugin()->translate("not_installed"));
+                $status->setValue($this->plugin->txt("not_installed"));
                 break;
 
             default:
@@ -189,7 +196,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
         $this->addItem($status);
 
         if ($library["status"] !== ShowHub::STATUS_NOT_INSTALLED) {
-            $installed_version = new ilNonEditableValueGUI(self::plugin()->translate("installed_version"));
+            $installed_version = new ilNonEditableValueGUI($this->plugin->txt("installed_version"));
             if (isset($library["installed_version"])) {
                 $installed_version->setValue($library["installed_version"]);
             } else {
@@ -197,27 +204,27 @@ class HubDetailsFormGUI extends PropertyFormGUI
             }
             $this->addItem($installed_version);
 
-            $contents_count = new ilNonEditableValueGUI(self::plugin()->translate("contents"));
+            $contents_count = new ilNonEditableValueGUI($this->plugin->txt("contents"));
             $contents_count->setValue($library["contents_count"]);
             $this->addItem($contents_count);
 
-            $usage_contents = new ilNonEditableValueGUI(self::plugin()->translate("usage_contents"));
+            $usage_contents = new ilNonEditableValueGUI($this->plugin->txt("usage_contents"));
             $usage_contents->setValue($library["usage_contents"]);
             $this->addItem($usage_contents);
 
-            $usage_libraries = new ilNonEditableValueGUI(self::plugin()->translate("usage_libraries"));
+            $usage_libraries = new ilNonEditableValueGUI($this->plugin->txt("usage_libraries"));
             $usage_libraries->setValue($library["usage_libraries"]);
             $usage_libraries->setInfo(nl2br(implode("\n", array_map(function (array $usage) : string {
-                return $usage["title"] . " " . $usage["major_version"] . "." . $usage["minor_version"] . ($usage["runnable"] ? " (" . self::plugin()
-                            ->translate("runnable") . ")" : "");
+                return $usage["title"] . " " . $usage["major_version"] . "." . $usage["minor_version"] . ($usage["runnable"] ? " (" . $this->plugin
+                            ->txt("runnable") . ")" : "");
             }, $library["usages"])), false));
             $this->addItem($usage_libraries);
 
-            $required_libraries = new ilNonEditableValueGUI(self::plugin()->translate("required_libraries"));
+            $required_libraries = new ilNonEditableValueGUI($this->plugin->txt("required_libraries"));
             $required_libraries->setValue(count($library["dependencies"]));
             $required_libraries->setInfo(nl2br(implode("\n", array_map(function (array $dependency) : string {
                 return $dependency["title"] . " " . $dependency["major_version"] . "." . $dependency["minor_version"]
-                    . ($dependency["runnable"] ? " (" . self::plugin()->translate("runnable") . ")" : "");
+                    . ($dependency["runnable"] ? " (" . $this->plugin->txt("runnable") . ")" : "");
             }, $library["dependencies"])), false));
             $this->addItem($required_libraries);
         }
@@ -243,7 +250,7 @@ class HubDetailsFormGUI extends PropertyFormGUI
             $h5p_tpl->parseCurrentBlock();
         }
 
-        return self::output()->getHTML($h5p_tpl);
+        return $this->output_renderer->getHTML($h5p_tpl);
     }
 
 

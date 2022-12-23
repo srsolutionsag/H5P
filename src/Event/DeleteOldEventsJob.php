@@ -7,7 +7,6 @@ use ilCronJob;
 use ilCronJobResult;
 use ilCronManager;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -20,11 +19,10 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class DeleteOldEventsJob extends ilCronJob
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    protected $plugin;
 
 
     /**
@@ -32,7 +30,8 @@ class DeleteOldEventsJob extends ilCronJob
      */
     public function __construct()
     {
-
+        global $DIC;
+        $this->plugin = \ilH5PPlugin::getInstance()
     }
 
 
@@ -59,7 +58,7 @@ class DeleteOldEventsJob extends ilCronJob
      */
     public function getDescription() : string
     {
-        return self::plugin()->translate("delete_old_events_description");
+        return $this->plugin->txt("delete_old_events_description");
     }
 
 
@@ -77,7 +76,7 @@ class DeleteOldEventsJob extends ilCronJob
      */
     public function getTitle() : string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("delete_old_events");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->plugin->txt("delete_old_events");
     }
 
 

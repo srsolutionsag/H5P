@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Content;
 
 use H5PCore;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Editor\Repository as EditorRepository;
 use srag\Plugins\H5P\Framework\Framework;
 use srag\Plugins\H5P\Library\Counter;
@@ -20,10 +19,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -32,6 +28,10 @@ final class Repository
      * @var H5PCore
      */
     protected $core = null;
+    protected $user;
+    protected $database;
+    protected $plugin;
+    protected $ctrl;
 
 
     /**
@@ -39,7 +39,11 @@ final class Repository
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->user = $DIC->user()
+        $this->database = $DIC->database()
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->ctrl = $DIC->ctrl()
     }
 
 
@@ -84,7 +88,7 @@ final class Repository
     public function core() : H5PCore
     {
         if ($this->core === null) {
-            $this->core = new H5PCore($this->framework(), self::h5p()->objectSettings()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder(), self::dic()->user()
+            $this->core = new H5PCore($this->framework(), self::h5p()->objectSettings()->getH5PFolder(), ILIAS_HTTP_PATH . "/" . self::h5p()->objectSettings()->getH5PFolder(), $this->user
                 ->getLanguage(), true);
         }
 
@@ -126,10 +130,10 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(Counter::TABLE_NAME, false);
-        self::dic()->database()->dropTable(Content::TABLE_NAME, false);
-        self::dic()->database()->dropTable(ContentLibrary::TABLE_NAME, false);
-        self::dic()->database()->dropTable(ContentUserData::TABLE_NAME, false);
+        $this->database->dropTable(Counter::TABLE_NAME, false);
+        $this->database->dropTable(Content::TABLE_NAME, false);
+        $this->database->dropTable(ContentLibrary::TABLE_NAME, false);
+        $this->database->dropTable(ContentUserData::TABLE_NAME, false);
         $this->editor()->dropTables();
     }
 
@@ -309,7 +313,7 @@ final class Repository
      */
     public function getCorePath() : string
     {
-        return substr(self::plugin()->directory(), 2) . "/vendor/h5p/h5p-core";
+        return substr($this->plugin->directory(), 2) . "/vendor/h5p/h5p-core";
     }
 
 
@@ -335,7 +339,7 @@ final class Repository
      */
     public function getNumAuthors() : int
     {
-        $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
+        $result = $this->database->queryF("SELECT COUNT(DISTINCT content_user_id) AS count
           FROM " . Content::TABLE_NAME, [], []);
 
         $count = $result->fetchAssoc()["count"];
@@ -419,14 +423,14 @@ final class Repository
         ContentUserData::updateDB();
         $this->editor()->installTables();
 
-        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "author")) {
-            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "author");
+        if ($this->database->tableColumnExists(Content::TABLE_NAME, "author")) {
+            $this->database->dropTableColumn(Content::TABLE_NAME, "author");
         }
-        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "description")) {
-            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "description");
+        if ($this->database->tableColumnExists(Content::TABLE_NAME, "description")) {
+            $this->database->dropTableColumn(Content::TABLE_NAME, "description");
         }
-        if (self::dic()->database()->tableColumnExists(Content::TABLE_NAME, "keywords")) {
-            self::dic()->database()->dropTableColumn(Content::TABLE_NAME, "keywords");
+        if ($this->database->tableColumnExists(Content::TABLE_NAME, "keywords")) {
+            $this->database->dropTableColumn(Content::TABLE_NAME, "keywords");
         }
     }
 
@@ -486,10 +490,10 @@ final class Repository
         if (empty($content->getContentId())) {
             $content->setCreatedAt($time);
 
-            $content->setContentUserId(self::dic()->user()->getId());
+            $content->setContentUserId($this->user->getId());
 
             if (empty($content->getObjId())) {
-                $content->setObjId(intval(self::dic()->ctrl()->getContextObjId()));
+                $content->setObjId(intval($this->ctrl->getContextObjId()));
             }
 
             $content->setSort((count($this->getContentsByObject($content->getObjId())) + 1) * 10);
@@ -520,7 +524,7 @@ final class Repository
         if (empty($content_user_data->getId())) {
             $content_user_data->setCreatedAt($time);
 
-            $content_user_data->setUserId(self::dic()->user()->getId());
+            $content_user_data->setUserId($this->user->getId());
         }
 
         $content_user_data->setUpdatedAt($time);

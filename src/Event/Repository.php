@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Event;
 
 use ilDBConstants;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -17,14 +16,12 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+    protected $user;
 
 
     /**
@@ -63,7 +60,7 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(Event::TABLE_NAME, false);
+        $this->database->dropTable(Event::TABLE_NAME, false);
     }
 
 
@@ -81,9 +78,9 @@ final class Repository
      */
     public function getAuthorsRecentlyUsedLibraries() : array
     {
-        $user_id = self::dic()->user()->getId();
+        $user_id = $this->user->getId();
 
-        $result = self::dic()->database()->queryF("SELECT library_name, MAX(created_at) AS max_created_at
+        $result = $this->database->queryF("SELECT library_name, MAX(created_at) AS max_created_at
             FROM " . Event::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
             GROUP BY library_name
@@ -135,7 +132,7 @@ final class Repository
         if (empty($event->getEventId())) {
             $event->setCreatedAt(time());
 
-            $event->setUserId(self::dic()->user()->getId());
+            $event->setUserId($this->user->getId());
         }
 
         $event->store();

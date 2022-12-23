@@ -6,7 +6,6 @@ use H5PCore;
 use H5peditorFile;
 use H5peditorStorage as H5peditorStorageInterface;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -19,10 +18,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class EditorStorage implements H5peditorStorageInterface
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */

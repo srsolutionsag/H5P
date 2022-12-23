@@ -5,7 +5,6 @@ namespace srag\Plugins\H5P\Content;
 use ActiveRecord;
 use arConnector;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,12 +17,10 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class Content extends ActiveRecord
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const PARENT_TYPE_OBJECT = "object";
     const PARENT_TYPE_PAGE = "page";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont";
     /**
      * @var string

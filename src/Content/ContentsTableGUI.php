@@ -21,13 +21,15 @@ class ContentsTableGUI extends TableGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "contents_table_row.html";
     /**
      * @var int
      */
     protected $obj_id;
+    protected $ctrl;
+    protected $ui;
+    protected $plugin;
+    protected $output_renderer;
 
 
     /**
@@ -38,6 +40,7 @@ class ContentsTableGUI extends TableGUI
      */
     public function __construct(ilObjH5PGUI $parent, string $parent_cmd)
     {
+        global $DIC;
         $this->obj_id = $parent->obj_id;
 
         parent::__construct($parent, $parent_cmd);
@@ -45,6 +48,10 @@ class ContentsTableGUI extends TableGUI
         if (!$this->hasResults()) {
             $this->initUpDown();
         }
+        $this->ctrl = $DIC->ctrl();
+        $this->ui = $DIC->ui();
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl());
     }
 
 
@@ -67,7 +74,7 @@ class ContentsTableGUI extends TableGUI
         $h5p_library = self::h5p()->libraries()->getLibraryById($row["library_id"]);
         $h5p_results = self::h5p()->results()->getResultsByContent($row["content_id"]);
 
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
+        $this->ctrl->setParameter($this->parent_obj, "xhfp_content", $row["content_id"]);
 
         if (!$this->hasResults()) {
             $this->tpl->setCurrentBlock("upDownBlock");
@@ -87,21 +94,21 @@ class ContentsTableGUI extends TableGUI
 
         if (ilObjH5PAccess::hasWriteAccess()) {
             if (!$this->hasResults()) {
-                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("edit"), self::dic()->ctrl()
+                $actions[] = $this->ui->factory()->link()->standard($this->plugin->txt("edit"), $this->ctrl
                     ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EDIT_CONTENT));
 
-                $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
+                $actions[] = $this->ui->factory()->link()->standard($this->plugin->txt("delete"), $this->ctrl
                     ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_CONTENT_CONFIRM));
             }
 
-            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("export"), self::dic()->ctrl()
+            $actions[] = $this->ui->factory()->link()->standard($this->plugin->txt("export"), $this->ctrl
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_EXPORT_CONTENT));
         }
 
-        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+        $this->tpl->setVariable("ACTIONS", $this->output_renderer->getHTML($this->ui->factory()->dropdown()->standard($actions)
             ->withLabel($this->txt("actions"))));
 
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_content", null);
+        $this->ctrl->setParameter($this->parent_obj, "xhfp_content", null);
     }
 
 
@@ -135,10 +142,10 @@ class ContentsTableGUI extends TableGUI
     protected function initColumns() : void
     {
         $this->addColumn("");
-        $this->addColumn(self::plugin()->translate("title"));
-        $this->addColumn(self::plugin()->translate("library"));
-        $this->addColumn(self::plugin()->translate("results"));
-        $this->addColumn(self::plugin()->translate("actions"));
+        $this->addColumn($this->plugin->txt("title"));
+        $this->addColumn($this->plugin->txt("library"));
+        $this->addColumn($this->plugin->txt("results"));
+        $this->addColumn($this->plugin->txt("actions"));
     }
 
 
@@ -174,7 +181,7 @@ class ContentsTableGUI extends TableGUI
      */
     protected function initTitle() : void
     {
-        $this->setTitle(self::plugin()->translate("contents"));
+        $this->setTitle($this->plugin->txt("contents"));
     }
 
 
@@ -185,8 +192,8 @@ class ContentsTableGUI extends TableGUI
     {
         Waiter::init(Waiter::TYPE_WAITER);
 
-        self::dic()->ui()->mainTemplate()->addJavaScript(substr(self::plugin()->directory(), 2) . "/js/H5PContentsTable.min.js");
-        self::dic()->ui()->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . self::dic()->ctrl()->getLinkTarget($this->parent_obj, "", "", true)
+        $this->ui->mainTemplate()->addJavaScript(substr($this->plugin->directory(), 2) . "/js/H5PContentsTable.min.js");
+        $this->ui->mainTemplate()->addOnLoadCode('H5PContentsTable.init("' . $this->ctrl->getLinkTarget($this->parent_obj, "", "", true)
             . '");');
     }
 }

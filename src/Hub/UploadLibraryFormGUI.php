@@ -19,8 +19,12 @@ class UploadLibraryFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    protected $plugin;
+    public function __construct()
+    {
+        global $DIC;
+        $this->plugin = \ilH5PPlugin::getInstance()
+    }
 
 
     /**
@@ -40,7 +44,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
      */
     protected function initCommands() : void
     {
-        $this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, self::plugin()->translate("upload"));
+        $this->addCommandButton(ilH5PConfigGUI::CMD_UPLOAD_LIBRARY, $this->plugin->txt("upload"));
     }
 
 
@@ -54,7 +58,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
                 self::PROPERTY_CLASS    => ilFileInputGUI::class,
                 self::PROPERTY_REQUIRED => true,
                 "setSuffixes"           => [["h5p"]],
-                "setTitle"              => self::plugin()->translate("library")
+                "setTitle"              => $this->plugin->txt("library")
             ]
         ];
     }
@@ -74,7 +78,7 @@ class UploadLibraryFormGUI extends PropertyFormGUI
      */
     protected function initTitle() : void
     {
-        $this->setTitle(self::plugin()->translate("upload_library"));
+        $this->setTitle($this->plugin->txt("upload_library"));
     }
 
 

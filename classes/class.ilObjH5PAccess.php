@@ -1,8 +1,6 @@
 <?php
 
 require_once __DIR__ . "/../vendor/autoload.php";
-
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -14,14 +12,14 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+    protected $obj_data_cache;
+    protected $user;
+    protected $access;
 
 
     /**
@@ -29,7 +27,11 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public function __construct()
     {
+        global $DIC;
         parent::__construct();
+        $this->obj_data_cache = $DIC['ilObjDataCache'];
+        $this->user = $DIC->user();
+        $this->access = $DIC->access();
     }
 
 
@@ -38,7 +40,8 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function _isOffline(/*int*/ $a_obj_id) : bool
     {
-        if (self::dic()->objDataCache()->lookupType($a_obj_id) !== ilH5PPlugin::PLUGIN_ID) {
+        global $DIC;
+        if ($DIC['ilObjDataCache']->lookupType($a_obj_id) !== ilH5PPlugin::PLUGIN_ID) {
             return boolval(ilObjectFactory::getInstanceByObjId($a_obj_id, false)->getOfflineStatus());
         }
 
@@ -116,7 +119,8 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function hasWriteAccess(/*?int*/ $ref_id = null) : bool
     {
-        $permission = (self::dic()->objDataCache()->lookupType(self::dic()->objDataCache()->lookupObjId($ref_id)) === "wiki" ? "edit_content" : "write");
+        global $DIC;
+        $permission = ($DIC['ilObjDataCache']->lookupType($DIC['ilObjDataCache']->lookupObjId($ref_id)) === "wiki" ? "edit_content" : "write");
 
         return self::checkAccess($permission, $permission, $ref_id);
     }
@@ -128,14 +132,16 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
      */
     public static function redirectNonAccess($class, string $cmd = "")/* : void*/
     {
-        ilUtil::sendFailure(self::plugin()->translate("permission_denied"), true);
+        $plugin = \ilH5PPlugin::getInstance();
+        global $DIC;
+        ilUtil::sendFailure($plugin->translate("permission_denied"), true);
 
         if (is_object($class)) {
-            self::dic()->ctrl()->clearParameters($class);
-            self::dic()->ctrl()->redirect($class, $cmd);
+            $DIC->ctrl()->clearParameters($class);
+            $DIC->ctrl()->redirect($class, $cmd);
         } else {
-            self::dic()->ctrl()->clearParametersByClass($class);
-            self::dic()->ctrl()->redirectByClass($class, $cmd);
+            $DIC->ctrl()->clearParametersByClass($class);
+            $DIC->ctrl()->redirectByClass($class, $cmd);
         }
     }
 
@@ -165,27 +171,27 @@ class ilObjH5PAccess extends ilObjectPluginAccess implements ilWACCheckingClass
         }
 
         if ($a_obj_id === null) {
-            $a_obj_id = self::dic()->objDataCache()->lookupObjId($a_ref_id);
+            $a_obj_id = $this->obj_data_cache->lookupObjId($a_ref_id);
         }
 
         if ($a_user_id == null) {
-            $a_user_id = self::dic()->user()->getId();
+            $a_user_id = $this->user->getId();
         }
 
         switch ($a_permission) {
             case "visible":
             case "read":
-                return boolval((self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
-                    || self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+                return boolval(($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id))
+                    || $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
             case "delete":
-                return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
-                    || self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
+                return boolval($this->access->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
+                    || $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
 
             case "write":
             case "edit_permission":
             default:
-                return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id));
+                return boolval($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id));
         }
     }
 

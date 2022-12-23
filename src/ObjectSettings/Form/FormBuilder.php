@@ -21,12 +21,13 @@ class FormBuilder extends AbstractFormBuilder
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var ilObjH5P
      */
     protected $object;
+    protected $plugin;
+    protected $ui;
+    protected $version_comparator;
 
 
     /**
@@ -37,9 +38,13 @@ class FormBuilder extends AbstractFormBuilder
      */
     public function __construct(ilObjH5PGUI $parent, ilObjH5P $object)
     {
+        global $DIC;
         $this->object = $object;
 
         parent::__construct($parent);
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->ui = $DIC->ui();
+        $this->version_comparator = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator();
     }
 
 
@@ -49,8 +54,8 @@ class FormBuilder extends AbstractFormBuilder
     protected function getButtons() : array
     {
         $buttons = [
-            ilObjH5PGUI::CMD_SETTINGS_STORE  => self::plugin()->translate("save"),
-            ilObjH5PGUI::CMD_MANAGE_CONTENTS => self::plugin()->translate("cancel")
+            ilObjH5PGUI::CMD_SETTINGS_STORE  => $this->plugin->txt("save"),
+            ilObjH5PGUI::CMD_MANAGE_CONTENTS => $this->plugin->txt("cancel")
         ];
 
         return $buttons;
@@ -79,11 +84,11 @@ class FormBuilder extends AbstractFormBuilder
     protected function getFields() : array
     {
         $fields = [
-            "title"           => self::dic()->ui()->factory()->input()->field()->text(self::plugin()->translate("title"))->withRequired(true),
-            "description"     => self::dic()->ui()->factory()->input()->field()->textarea(self::plugin()->translate("description")),
-            "online"          => self::dic()->ui()->factory()->input()->field()->checkbox(self::plugin()->translate("online")),
-            "solve_only_once" => (self::version()->is6() ? self::dic()->ui()->factory()->input()->field()->checkbox(self::plugin()->translate("solve_only_once"))
-                : new InputGUIWrapperUIInputComponent(new ilCheckboxInputGUI(self::plugin()->translate("solve_only_once"))))->withByline(self::plugin()->translate("solve_only_once_info"))
+            "title"           => $this->ui->factory()->input()->field()->text($this->plugin->txt("title"))->withRequired(true),
+            "description"     => $this->ui->factory()->input()->field()->textarea($this->plugin->txt("description")),
+            "online"          => $this->ui->factory()->input()->field()->checkbox($this->plugin->txt("online")),
+            "solve_only_once" => ($this->version_comparator->is6() ? $this->ui->factory()->input()->field()->checkbox($this->plugin->txt("solve_only_once"))
+                : new InputGUIWrapperUIInputComponent(new ilCheckboxInputGUI($this->plugin->txt("solve_only_once"))))->withByline($this->plugin->txt("solve_only_once_info"))
                 ->withDisabled($this->parent->hasResults())
         ];
 
@@ -96,7 +101,7 @@ class FormBuilder extends AbstractFormBuilder
      */
     protected function getTitle() : string
     {
-        return self::plugin()->translate("settings");
+        return $this->plugin->txt("settings");
     }
 
 

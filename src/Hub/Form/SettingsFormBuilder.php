@@ -22,7 +22,8 @@ class SettingsFormBuilder extends AbstractFormBuilder
     const KEY_CONTENT_TYPES = "content_types";
     const KEY_ENABLE_LRS_CONTENT_TYPES = "enable_lrs_content_types";
     const KEY_SEND_USAGE_STATISTICS = "send_usage_statistics";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    protected $plugin;
+    protected $ui;
 
 
     /**
@@ -32,7 +33,10 @@ class SettingsFormBuilder extends AbstractFormBuilder
      */
     public function __construct(ilH5PConfigGUI $parent)
     {
+        global $DIC;
         parent::__construct($parent);
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->ui = $DIC->ui();
     }
 
 
@@ -42,7 +46,7 @@ class SettingsFormBuilder extends AbstractFormBuilder
     protected function getButtons() : array
     {
         $buttons = [
-            ilH5PConfigGUI::CMD_UPDATE_SETTINGS => self::plugin()->translate("save")
+            ilH5PConfigGUI::CMD_UPDATE_SETTINGS => $this->plugin->txt("save")
         ];
 
         return $buttons;
@@ -71,14 +75,14 @@ class SettingsFormBuilder extends AbstractFormBuilder
     protected function getFields() : array
     {
         $fields = [
-            self::KEY_CONTENT_TYPES => self::dic()->ui()->factory()->input()->field()->section([
-                self::KEY_ENABLE_LRS_CONTENT_TYPES => self::dic()->ui()->factory()->input()->field()->checkbox(self::plugin()->translate(self::KEY_ENABLE_LRS_CONTENT_TYPES),
-                    self::plugin()->translate(self::KEY_ENABLE_LRS_CONTENT_TYPES . "_info")),
-                self::KEY_SEND_USAGE_STATISTICS    => self::dic()->ui()->factory()->input()->field()->checkbox(self::plugin()->translate(self::KEY_SEND_USAGE_STATISTICS),
-                    self::plugin()->translate("send_usage_statistics_info", "", [
+            self::KEY_CONTENT_TYPES => $this->ui->factory()->input()->field()->section([
+                self::KEY_ENABLE_LRS_CONTENT_TYPES => $this->ui->factory()->input()->field()->checkbox($this->plugin->txt(self::KEY_ENABLE_LRS_CONTENT_TYPES),
+                    $this->plugin->txt(self::KEY_ENABLE_LRS_CONTENT_TYPES . "_info")),
+                self::KEY_SEND_USAGE_STATISTICS    => $this->ui->factory()->input()->field()->checkbox($this->plugin->txt(self::KEY_SEND_USAGE_STATISTICS),
+                    $this->plugin->txt("send_usage_statistics_info", "", [
                         file_get_contents(__DIR__ . "/../../../templates/send_usage_statistics_info_link.html")
                     ]))
-            ], self::plugin()->translate(self::KEY_CONTENT_TYPES))
+            ], $this->plugin->txt(self::KEY_CONTENT_TYPES))
         ];
 
         return $fields;
@@ -90,7 +94,7 @@ class SettingsFormBuilder extends AbstractFormBuilder
      */
     protected function getTitle() : string
     {
-        return self::plugin()->translate("settings");
+        return $this->plugin->txt("settings");
     }
 
 

@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P\Library;
 
 use ilDBConstants;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\ContentLibrary;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -20,10 +19,7 @@ use stdClass;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -111,11 +107,11 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(Library::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryCachedAsset::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryDependencies::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryHubCache::TABLE_NAME, false);
-        self::dic()->database()->dropTable(LibraryLanguage::TABLE_NAME, false);
+        $this->database->dropTable(Library::TABLE_NAME, false);
+        $this->database->dropTable(LibraryCachedAsset::TABLE_NAME, false);
+        $this->database->dropTable(LibraryDependencies::TABLE_NAME, false);
+        $this->database->dropTable(LibraryHubCache::TABLE_NAME, false);
+        $this->database->dropTable(LibraryLanguage::TABLE_NAME, false);
     }
 
 
@@ -492,7 +488,7 @@ final class Repository
      */
     public function getLibraryUsage(int $library_id) : int
     {
-        $result = self::dic()->database()->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
+        $result = $this->database->queryF("SELECT COUNT(DISTINCT c.content_id) AS count
           FROM " . Library::TABLE_NAME . " AS l
           JOIN " . ContentLibrary::TABLE_NAME . " AS cl ON l.library_id = cl.library_id
           JOIN " . Content::TABLE_NAME . " AS c ON cl.content_id = c.content_id
@@ -540,10 +536,10 @@ final class Repository
      */
     public function getTranslations(array $libraries, string $language_code) : array
     {
-        $h5p_library_languages = self::dic()->database()
+        $h5p_library_languages = $this->database
             ->queryF("SELECT translation, CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version) AS lib FROM " . Library::TABLE_NAME
                 . " INNER JOIN " . LibraryLanguage::TABLE_NAME . " ON " . Library::TABLE_NAME . ".library_id = " . LibraryLanguage::TABLE_NAME
-                . ".library_id WHERE language_code=%s AND " . self::dic()->database()
+                . ".library_id WHERE language_code=%s AND " . $this->database
                     ->in("CONCAT(hl.name, ' ', hl.major_version, '.', hl.minor_version)", $libraries, false, ilDBConstants::T_TEXT), [ilDBConstants::T_TEXT], [$language_code]);
 
         $languages = [];
@@ -598,7 +594,7 @@ final class Repository
      */
     public function libraryHasUpgrade(string $name, int $major_version, int $minor_version) : bool
     {
-        $result = self::dic()->database()->queryF("SELECT id FROM " . Library::TABLE_NAME
+        $result = $this->database->queryF("SELECT id FROM " . Library::TABLE_NAME
             . " WHERE name=%s AND (major_version>%s OR (major_version=%s AND minor_version>%s))", [
             ilDBConstants::T_TEXT,
             ilDBConstants::T_INTEGER,

@@ -5,7 +5,6 @@ namespace srag\Plugins\H5P\Content;
 use H5PCore;
 use ilH5PPlugin;
 use ilObjLearningSequenceLearnerGUI;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
@@ -20,10 +19,7 @@ use stdClass;
 class ShowContent
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -48,6 +44,12 @@ class ShowContent
      * @var array
      */
     protected $js_files_output = [];
+    protected $user;
+    protected $plugin;
+    protected $output_renderer;
+    protected $ui;
+    protected $version_comparator;
+    protected $ctrl;
 
 
     /**
@@ -55,7 +57,13 @@ class ShowContent
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->user = $DIC->user()
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
+        $this->ui = $DIC->ui()
+        $this->version_comparator = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator()
+        $this->ctrl = $DIC->ctrl()
     }
 
 
@@ -91,7 +99,7 @@ class ShowContent
             $object_settings = null;
         }
 
-        $user_id = self::dic()->user()->getId();
+        $user_id = $this->user->getId();
 
         $h5p_content_user_data = self::h5p()->contents()->getUserData($content_id, $data_id, $user_id, $sub_content_id);
 
@@ -171,7 +179,7 @@ class ShowContent
      */
     public function getH5PContentStep(Content $h5p_content, int $index, int $count, /*?string*/ $text = null) : string
     {
-        $h5p_tpl = self::plugin()->template("H5PContentStep.html");
+        $h5p_tpl = $this->plugin->template("H5PContentStep.html");
 
         if ($text === null) {
             $h5p_tpl->setVariable("H5P_CONTENT", $this->getH5PContent($h5p_content, false));
@@ -179,10 +187,10 @@ class ShowContent
             $h5p_tpl->setVariableEscaped("H5P_CONTENT", $text);
         }
 
-        $h5p_tpl->setVariableEscaped("H5P_TITLE", $count_text = self::plugin()->translate("content_count", "", [($index + 1), $count]) . " - "
+        $h5p_tpl->setVariableEscaped("H5P_TITLE", $count_text = $this->plugin->txt("content_count", "", [($index + 1), $count]) . " - "
             . $h5p_content->getTitle());
 
-        return self::output()->getHTML([$h5p_tpl, self::dic()->toolbar()]);
+        return $this->output_renderer->getHTML([$h5p_tpl, self::dic()->toolbar()]);
     }
 
 
@@ -203,8 +211,8 @@ class ShowContent
                 ],
                 "saveFreq"           => false,
                 "user"               => [
-                    "name" => self::dic()->user()->getFullname(),
-                    "mail" => self::dic()->user()->getEmail()
+                    "name" => $this->user->getFullname(),
+                    "mail" => $this->user->getEmail()
                 ],
                 "siteUrl"            => $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"],
                 "l10n"               => [
@@ -240,9 +248,9 @@ class ShowContent
         if (!$this->core_output) {
             $this->core_output = true;
 
-            $core_tpl = self::plugin()->template("H5PCore.min.js");
+            $core_tpl = $this->plugin->template("H5PCore.min.js");
             $core_tpl->setVariableEscaped("H5P_CORE", base64_encode(json_encode($this->core)));
-            $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($core_tpl));
+            $this->js_files[] = "data:application/javascript;base64," . base64_encode($this->output_renderer->getHTML($core_tpl));
         }
     }
 
@@ -253,26 +261,26 @@ class ShowContent
     public function outputHeader()/* : void*/
     {
         foreach ($this->css_files as $css_file) {
-            self::dic()->ui()->mainTemplate()->addCss($css_file);
+            $this->ui->mainTemplate()->addCss($css_file);
         }
 
         foreach ($this->js_files as $js_file) {
             if (strpos($js_file, "data:application/javascript;base64,") === 0) {
                 // Cause main template in ILIAS 5.4 skip "not real" files, so add it direct to main template placeholder - In ILIAS 6 "not real" files seems to be supported
-                if (!self::version()->is6() && self::dic()->ctrl()->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
+                if (!$this->version_comparator->is6() && $this->ctrl->getCmdClass() !== strtolower(ilObjLearningSequenceLearnerGUI::class)) {
                     if (!isset($this->js_files_output[$js_file])) {
                         $this->js_files_output[$js_file] = true;
 
-                        self::dic()->ui()->mainTemplate()->setCurrentBlock("js_file");
-                        self::dic()->ui()->mainTemplate()->setVariable("JS_FILE", $js_file);
-                        self::dic()->ui()->mainTemplate()->parseCurrentBlock();
+                        $this->ui->mainTemplate()->setCurrentBlock("js_file");
+                        $this->ui->mainTemplate()->setVariable("JS_FILE", $js_file);
+                        $this->ui->mainTemplate()->parseCurrentBlock();
                     }
                 } else {
                     // But learning sequences use an own kiosk template and merge files from main template and add it to its JS_FILE placeholder without check, but JS_FILE placeholder from main template is not used - but on this case add as regular files will work, because not check
-                    self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
+                    $this->ui->mainTemplate()->addJavaScript($js_file);
                 }
             } else {
-                self::dic()->ui()->mainTemplate()->addJavaScript($js_file);
+                $this->ui->mainTemplate()->addJavaScript($js_file);
             }
         }
     }
@@ -295,7 +303,7 @@ class ShowContent
             $object_settings = null;
         }
 
-        $user_id = self::dic()->user()->getId();
+        $user_id = $this->user->getId();
 
         $h5p_result = self::h5p()->results()->getResultByUserContent($user_id, $content_id);
 
@@ -342,12 +350,12 @@ class ShowContent
      */
     protected function getH5PIntegration(array $content, int $content_id, /*?string*/ $title, string $embed_type, bool $is_editor = false) : string
     {
-        $content_tpl = self::plugin()->template("H5PContent.min.js");
+        $content_tpl = $this->plugin->template("H5PContent.min.js");
         $content_tpl->setVariableEscaped("H5P_CONTENT", base64_encode(json_encode($content)));
         $content_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
-        $this->js_files[] = "data:application/javascript;base64," . base64_encode(self::output()->getHTML($content_tpl));
+        $this->js_files[] = "data:application/javascript;base64," . base64_encode($this->output_renderer->getHTML($content_tpl));
 
-        $h5p_tpl = self::plugin()->template("H5PContent.html");
+        $h5p_tpl = $this->plugin->template("H5PContent.html");
 
         $h5p_tpl->setVariableEscaped("H5P_CONTENT_ID", $content_id);
 
@@ -383,7 +391,7 @@ class ShowContent
 
         $h5p_tpl->parseCurrentBlock();
 
-        return self::output()->getHTML($h5p_tpl);
+        return $this->output_renderer->getHTML($h5p_tpl);
     }
 
 
@@ -394,13 +402,13 @@ class ShowContent
      */
     protected function initContent(Content $h5p_content) : array
     {
-        self::dic()->ctrl()->setParameter($this, "xhfp_content", $h5p_content->getContentId());
+        $this->ctrl->setParameter($this, "xhfp_content", $h5p_content->getContentId());
 
         $content = self::h5p()->contents()->core()->loadContent($h5p_content->getContentId());
 
         $safe_parameters = self::h5p()->contents()->core()->filterParameters($content);
 
-        $user_id = self::dic()->user()->getId();
+        $user_id = $this->user->getId();
 
         $content_integration = [
             "library"         => H5PCore::libraryToString($content["library"]),
@@ -473,7 +481,7 @@ class ShowContent
 
             $this->core["contents"] = [];
 
-            $this->js_files[] = substr(self::plugin()->directory(), 2) . "/js/H5PContents.min.js";
+            $this->js_files[] = substr($this->plugin->directory(), 2) . "/js/H5PContents.min.js";
         }
     }
 }

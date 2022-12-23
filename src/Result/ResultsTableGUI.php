@@ -22,8 +22,6 @@ class ResultsTableGUI extends TableGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const ROW_TEMPLATE = "results_table_row.html";
     /**
      * @var Content[]
@@ -33,6 +31,10 @@ class ResultsTableGUI extends TableGUI
      * @var array
      */
     protected $results;
+    protected $ctrl;
+    protected $plugin;
+    protected $ui;
+    protected $output_renderer;
 
 
     /**
@@ -43,7 +45,12 @@ class ResultsTableGUI extends TableGUI
      */
     public function __construct(ilObjH5PGUI $parent, $parent_cmd)
     {
+        global $DIC;
         parent::__construct($parent, $parent_cmd);
+        $this->ctrl = $DIC->ctrl();
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->ui = $DIC->ui();
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl());
     }
 
 
@@ -63,7 +70,7 @@ class ResultsTableGUI extends TableGUI
      */
     protected function fillRow(/*array*/ $row) : void
     {
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
+        $this->ctrl->setParameter($this->parent_obj, "xhfp_user", $row["user_id"]);
 
         try {
             $user = new ilObjUser($row["user_id"]);
@@ -80,7 +87,7 @@ class ResultsTableGUI extends TableGUI
             if ($row[$content_key] !== null) {
                 $this->tpl->setVariableEscaped("POINTS", $row[$content_key]);
             } else {
-                $this->tpl->setVariableEscaped("POINTS", self::plugin()->translate("no_result"));
+                $this->tpl->setVariableEscaped("POINTS", $this->plugin->txt("no_result"));
             }
             $this->tpl->parseCurrentBlock();
         }
@@ -88,16 +95,16 @@ class ResultsTableGUI extends TableGUI
         $actions = [];
 
         if (ilObjH5PAccess::hasWriteAccess()) {
-            $actions[] = self::dic()->ui()->factory()->link()->standard(self::plugin()->translate("delete"), self::dic()->ctrl()
+            $actions[] = $this->ui->factory()->link()->standard($this->plugin->txt("delete"), $this->ctrl
                 ->getLinkTarget($this->parent_obj, ilObjH5PGUI::CMD_DELETE_RESULTS_CONFIRM));
         }
 
-        $this->tpl->setVariableEscaped("FINISHED", self::plugin()->translate($row["finished"] ? "yes" : "no"));
+        $this->tpl->setVariableEscaped("FINISHED", $this->plugin->txt($row["finished"] ? "yes" : "no"));
 
-        $this->tpl->setVariable("ACTIONS", self::output()->getHTML(self::dic()->ui()->factory()->dropdown()->standard($actions)
+        $this->tpl->setVariable("ACTIONS", $this->output_renderer->getHTML($this->ui->factory()->dropdown()->standard($actions)
             ->withLabel($this->txt("actions"))));
 
-        self::dic()->ctrl()->setParameter($this->parent_obj, "xhfp_user", null);
+        $this->ctrl->setParameter($this->parent_obj, "xhfp_user", null);
     }
 
 
@@ -121,14 +128,14 @@ class ResultsTableGUI extends TableGUI
      */
     protected function initColumns() : void
     {
-        $this->addColumn(self::plugin()->translate("user"));
+        $this->addColumn($this->plugin->txt("user"));
 
         foreach ($this->contents as $h5p_content) {
             $this->addColumn($h5p_content->getTitle());
         }
 
-        $this->addColumn(self::plugin()->translate("finished"));
-        $this->addColumn(self::plugin()->translate("actions"));
+        $this->addColumn($this->plugin->txt("finished"));
+        $this->addColumn($this->plugin->txt("actions"));
     }
 
 
@@ -193,6 +200,6 @@ class ResultsTableGUI extends TableGUI
      */
     protected function initTitle() : void
     {
-        $this->setTitle(self::plugin()->translate("results"));
+        $this->setTitle($this->plugin->txt("results"));
     }
 }

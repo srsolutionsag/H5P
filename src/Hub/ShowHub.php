@@ -9,7 +9,6 @@ use ilDateTime;
 use ilH5PConfigGUI;
 use ilH5PPlugin;
 use ilUtil;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Library\Library;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -23,10 +22,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ShowHub
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const STATUS_ALL = "all";
     const STATUS_INSTALLED = "installed";
     const STATUS_NOT_INSTALLED = "not_installed";
@@ -35,6 +31,11 @@ class ShowHub
      * @var self|null
      */
     protected static $instance = null;
+    protected $plugin;
+    protected $toolbar;
+    protected $ui;
+    protected $ctrl;
+    protected $output_renderer;
 
 
     /**
@@ -42,7 +43,12 @@ class ShowHub
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->toolbar = $DIC->toolbar()
+        $this->ui = $DIC->ui()
+        $this->ctrl = $DIC->ctrl()
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
     }
 
 
@@ -73,7 +79,7 @@ class ShowHub
         ]);
 
         if ($message) {
-            ilUtil::sendSuccess(self::plugin()->translate("deleted_library", "", [$h5p_library->getTitle()]), true);
+            ilUtil::sendSuccess($this->plugin->txt("deleted_library", "", [$h5p_library->getTitle()]), true);
         }
     }
 
@@ -88,21 +94,20 @@ class ShowHub
      */
     public function getHub(UploadLibraryFormGUI $upload_form, ilH5PConfigGUI $gui, string $table) : string
     {
-        self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()->translate("hub_refresh"), self::dic()
-            ->ctrl()->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
+        $this->toolbar->addComponent($this->ui->factory()->button()->standard($this->plugin->txt("hub_refresh"), $this->ctrl->getFormActionByClass(ilH5PConfigGUI::class, ilH5PConfigGUI::CMD_REFRESH_HUB)));
 
         $hub_last_refresh = self::h5p()->options()->getOption("content_type_cache_updated_at", "");
         $hub_last_refresh = ilDatePresentation::formatDate(new ilDateTime($hub_last_refresh, IL_CAL_UNIX));
 
-        $h5p_tpl = self::plugin()->template("H5PHub.html");
+        $h5p_tpl = $this->plugin->template("H5PHub.html");
 
         $h5p_tpl->setVariable("H5P_HUB", $table);
 
-        $h5p_tpl->setVariableEscaped("H5P_HUB_LAST_REFRESH", self::plugin()->translate("hub_last_refresh", "", [$hub_last_refresh]));
+        $h5p_tpl->setVariableEscaped("H5P_HUB_LAST_REFRESH", $this->plugin->txt("hub_last_refresh", "", [$hub_last_refresh]));
 
         $h5p_tpl->setVariable("UPLOAD_LIBRARY", $upload_form->getHTML());
 
-        return self::output()->getHTML($h5p_tpl);
+        return $this->output_renderer->getHTML($h5p_tpl);
     }
 
 

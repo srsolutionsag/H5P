@@ -26,8 +26,6 @@ class EditContentFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string
      */
@@ -56,6 +54,8 @@ class EditContentFormGUI extends PropertyFormGUI
      * @var array|null
      */
     protected $upload_file = null;
+    protected $plugin;
+    protected $ctrl;
 
 
     /**
@@ -69,12 +69,15 @@ class EditContentFormGUI extends PropertyFormGUI
      */
     public function __construct($parent, /*?Content*/ $h5p_content = null, string $cmd_create, string $cmd_update, string $cmd_cancel)
     {
+        global $DIC;
         $this->h5p_content = $h5p_content;
         $this->cmd_create = $cmd_create;
         $this->cmd_update = $cmd_update;
         $this->cmd_cancel = $cmd_cancel;
 
         parent::__construct($parent);
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->ctrl = $DIC->ctrl();
     }
 
 
@@ -131,7 +134,7 @@ class EditContentFormGUI extends PropertyFormGUI
                     }
                 }
 
-                ilUtil::sendInfo(self::plugin()->translate("deleted_files", self::LANG_MODULE, [
+                ilUtil::sendInfo($this->plugin->txt("deleted_files", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
                     ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
@@ -204,7 +207,7 @@ class EditContentFormGUI extends PropertyFormGUI
             }
 
             if (count($uploaded_files) > 0) {
-                ilUtil::sendInfo(self::plugin()->translate("uploaded_files", self::LANG_MODULE, [
+                ilUtil::sendInfo($this->plugin->txt("uploaded_files", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
                     ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
@@ -212,7 +215,7 @@ class EditContentFormGUI extends PropertyFormGUI
             }
 
             if (count($uploaded_files_invalid) > 0) {
-                ilUtil::sendFailure(self::plugin()->translate("uploaded_files_failed", self::LANG_MODULE, [
+                ilUtil::sendFailure($this->plugin->txt("uploaded_files_failed", self::LANG_MODULE, [
                         "content/" . $this->h5p_content->getContentId()
                     ]) . '<ul>' . implode("", array_map(function (string $uploaded_file) : string {
                         return "<li>$uploaded_file</li>";
@@ -289,7 +292,7 @@ class EditContentFormGUI extends PropertyFormGUI
     protected function initAction() : void
     {
         if ($this->h5p_content !== null) {
-            self::dic()->ctrl()->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
+            $this->ctrl->setParameter($this->parent, "xhfp_content", $this->h5p_content->getContentId());
         }
 
         parent::initAction();
@@ -303,9 +306,9 @@ class EditContentFormGUI extends PropertyFormGUI
     {
         //$this->setPreventDoubleSubmission(false); // Handle in JavaScript
 
-        $this->addCommandButton($this->h5p_content !== null ? $this->cmd_update : $this->cmd_create, self::plugin()->translate($this->h5p_content
+        $this->addCommandButton($this->h5p_content !== null ? $this->cmd_update : $this->cmd_create, $this->plugin->txt($this->h5p_content
         !== null ? "save" : "add"), "xhfp_edit_form_submit");
-        $this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
+        $this->addCommandButton($this->cmd_cancel, $this->plugin->txt("cancel"));
     }
 
 
@@ -354,7 +357,7 @@ class EditContentFormGUI extends PropertyFormGUI
      */
     protected function initTitle() : void
     {
-        $this->setTitle(self::plugin()->translate($this->h5p_content !== null ? "edit_content" : "add_content"));
+        $this->setTitle($this->plugin->txt($this->h5p_content !== null ? "edit_content" : "add_content"));
     }
 
 

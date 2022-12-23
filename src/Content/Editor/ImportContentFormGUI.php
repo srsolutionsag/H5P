@@ -20,8 +20,6 @@ class ImportContentFormGUI extends PropertyFormGUI
 {
 
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var string
      */
@@ -30,6 +28,7 @@ class ImportContentFormGUI extends PropertyFormGUI
      * @var string
      */
     protected $cmd_import;
+    protected $plugin;
 
 
     /**
@@ -41,10 +40,12 @@ class ImportContentFormGUI extends PropertyFormGUI
      */
     public function __construct($parent, string $cmd_import, string $cmd_cancel)
     {
+        global $DIC;
         $this->cmd_import = $cmd_import;
         $this->cmd_cancel = $cmd_cancel;
 
         parent::__construct($parent);
+        $this->plugin = \ilH5PPlugin::getInstance();
     }
 
 
@@ -62,8 +63,8 @@ class ImportContentFormGUI extends PropertyFormGUI
      */
     protected function initCommands() : void
     {
-        $this->addCommandButton($this->cmd_import, self::plugin()->translate("import"));
-        $this->addCommandButton($this->cmd_cancel, self::plugin()->translate("cancel"));
+        $this->addCommandButton($this->cmd_import, $this->plugin->txt("import"));
+        $this->addCommandButton($this->cmd_cancel, $this->plugin->txt("cancel"));
     }
 
 
@@ -77,7 +78,7 @@ class ImportContentFormGUI extends PropertyFormGUI
                 self::PROPERTY_CLASS    => ilFileInputGUI::class,
                 self::PROPERTY_REQUIRED => true,
                 "setSuffixes"           => [["h5p"]],
-                "setTitle"              => self::plugin()->translate("content")
+                "setTitle"              => $this->plugin->txt("content")
             ]
         ];
     }
@@ -97,7 +98,7 @@ class ImportContentFormGUI extends PropertyFormGUI
      */
     protected function initTitle() : void
     {
-        $this->setTitle(self::plugin()->translate("import_content"));
+        $this->setTitle($this->plugin->txt("import_content"));
     }
 
 

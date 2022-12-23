@@ -3,7 +3,6 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DevTools\H5P\DevToolsCtrl;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -18,7 +17,6 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ilH5PConfigGUI extends ilPluginConfigGUI
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const CMD_APPLY_FILTER = "applyFilter";
@@ -33,9 +31,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     const CMD_RESET_FILTER = "resetFilter";
     const CMD_UPDATE_SETTINGS = "updateSettings";
     const CMD_UPLOAD_LIBRARY = "uploadLibrary";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const TAB_HUB = "hub";
     const TAB_SETTINGS = "settings";
+    protected $ctrl;
+    protected $tabs;
+    protected $plugin;
+    protected $output_renderer;
+    protected $locator;
 
 
     /**
@@ -43,7 +45,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     public function __construct()
     {
-
+        global $DIC;
+        $this->ctrl = $DIC->ctrl()
+        $this->tabs = $DIC->tabs()
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
+        $this->locator = $DIC['ilLocator']
     }
 
 
@@ -54,19 +61,19 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         $this->setTabs();
 
-        $next_class = self::dic()->ctrl()->getNextClass($this);
+        $next_class = $this->ctrl->getNextClass($this);
 
         switch (strtolower($next_class)) {
             case strtolower(DevToolsCtrl::class):
-                self::dic()->ctrl()->forwardCommand(new DevToolsCtrl($this, self::plugin()));
+                $this->ctrl->forwardCommand(new DevToolsCtrl($this, self::plugin()));
                 break;
 
             case strtolower(H5PActionGUI::class):
-                self::dic()->ctrl()->forwardCommand(new H5PActionGUI());
+                $this->ctrl->forwardCommand(new H5PActionGUI());
                 break;
 
             default:
-                $cmd = self::dic()->ctrl()->getCmd();
+                $cmd = $this->ctrl->getCmd();
 
                 switch ($cmd) {
                     case self::CMD_APPLY_FILTER:
@@ -113,7 +120,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function configure()/* : void*/
     {
-        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
+        $this->ctrl->redirect($this, self::CMD_HUB);
     }
 
 
@@ -128,7 +135,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
             self::h5p()->hub()->show()->deleteLibrary($h5p_library);
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
+        $this->ctrl->redirect($this, self::CMD_HUB);
     }
 
 
@@ -137,12 +144,12 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function deleteLibraryConfirm()/* : void*/
     {
-        self::dic()->tabs()->activateTab(self::TAB_HUB);
+        $this->tabs->activateTab(self::TAB_HUB);
 
         $h5p_library = self::h5p()->libraries()->getCurrentLibrary();
 
         if (null === $h5p_library) {
-            ilUtil::sendFailure(self::plugin()->translate("object_not_found"));
+            ilUtil::sendFailure($this->plugin->txt("object_not_found"));
             return;
         }
 
@@ -151,27 +158,27 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
         $not_in_use = ($contents_count == 0 && $usage["content"] == 0 && $usage["libraries"] == 0);
         if (!$not_in_use) {
-            ilUtil::sendFailure(self::plugin()->translate("delete_library_in_use") . "<br><br>" . implode("<br>", [
-                    self::plugin()->translate("contents") . " : " . $contents_count,
-                    self::plugin()->translate("usage_contents") . " : " . $usage["content"],
-                    self::plugin()->translate("usage_libraries") . " : " . $usage["libraries"]
+            ilUtil::sendFailure($this->plugin->txt("delete_library_in_use") . "<br><br>" . implode("<br>", [
+                    $this->plugin->txt("contents") . " : " . $contents_count,
+                    $this->plugin->txt("usage_contents") . " : " . $usage["content"],
+                    $this->plugin->txt("usage_libraries") . " : " . $usage["libraries"]
                 ]));
         }
 
-        self::dic()->ctrl()->saveParameter($this, "xhfp_library");
+        $this->ctrl->saveParameter($this, "xhfp_library");
 
         $confirmation = new ilConfirmationGUI();
 
-        $confirmation->setFormAction(self::dic()->ctrl()->getFormAction($this));
+        $confirmation->setFormAction($this->ctrl->getFormAction($this));
 
-        $confirmation->setHeaderText(self::plugin()->translate("delete_library_confirm", "", [$h5p_library->getTitle()]));
+        $confirmation->setHeaderText($this->plugin->txt("delete_library_confirm", "", [$h5p_library->getTitle()]));
 
         $confirmation->addItem("xhfp_library", $h5p_library->getLibraryId(), $h5p_library->getTitle());
 
-        $confirmation->setConfirm(self::plugin()->translate("delete"), self::CMD_DELETE_LIBRARY);
-        $confirmation->setCancel(self::plugin()->translate("cancel"), self::CMD_HUB);
+        $confirmation->setConfirm($this->plugin->txt("delete"), self::CMD_DELETE_LIBRARY);
+        $confirmation->setCancel($this->plugin->txt("cancel"), self::CMD_HUB);
 
-        self::output()->output($confirmation);
+        $this->output_renderer->output($confirmation);
     }
 
 
@@ -180,11 +187,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function editSettings()/* : void*/
     {
-        self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
+        $this->tabs->activateTab(self::TAB_SETTINGS);
 
         $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
-        self::output()->output($form);
+        $this->output_renderer->output($form);
     }
 
 
@@ -193,11 +200,11 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function hub()/* : void*/
     {
-        self::dic()->tabs()->activateTab(self::TAB_HUB);
+        $this->tabs->activateTab(self::TAB_HUB);
 
         $table = self::h5p()->hub()->factory()->newHubTableInstance($this);
 
-        self::output()->output($table);
+        $this->output_renderer->output($table);
     }
 
 
@@ -210,7 +217,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
 
         self::h5p()->hub()->show()->installLibrary($name);
 
-        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
+        $this->ctrl->redirect($this, self::CMD_HUB);
     }
 
 
@@ -219,16 +226,16 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function libraryDetails()/* : void*/
     {
-        self::dic()->tabs()->clearTargets();
+        $this->tabs->clearTargets();
 
-        self::dic()->tabs()->setBackTarget(self::plugin()->translate("hub"), self::dic()->ctrl()
+        $this->tabs->setBackTarget($this->plugin->txt("hub"), $this->ctrl
             ->getLinkTarget($this, self::CMD_HUB));
 
         $key = filter_input(INPUT_GET, "xhfp_library_key");
 
         $details = self::h5p()->hub()->factory()->newHubDetailsFormInstance($this, $key);
 
-        self::output()->output($details);
+        $this->output_renderer->output($details);
     }
 
 
@@ -239,7 +246,7 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
     {
         self::h5p()->hub()->show()->refreshHub();
 
-        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
+        $this->ctrl->redirect($this, self::CMD_HUB);
     }
 
 
@@ -264,13 +271,13 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function setTabs()/* : void*/
     {
-        self::dic()->tabs()->addTab(self::TAB_HUB, self::plugin()->translate("hub"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_HUB));
+        $this->tabs->addTab(self::TAB_HUB, $this->plugin->txt("hub"), $this->ctrl->getLinkTarget($this, self::CMD_HUB));
 
-        self::dic()->tabs()->addTab(self::TAB_SETTINGS, self::plugin()->translate("settings"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EDIT_SETTINGS));
+        $this->tabs->addTab(self::TAB_SETTINGS, $this->plugin->txt("settings"), $this->ctrl->getLinkTarget($this, self::CMD_EDIT_SETTINGS));
 
         DevToolsCtrl::addTabs(self::plugin());
 
-        self::dic()->locator()->addItem(ilH5PPlugin::PLUGIN_NAME, self::dic()->ctrl()->getLinkTarget($this, self::CMD_CONFIGURE));
+        $this->locator->addItem(ilH5PPlugin::PLUGIN_NAME, $this->ctrl->getLinkTarget($this, self::CMD_CONFIGURE));
     }
 
 
@@ -279,19 +286,19 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function updateSettings()/* : void*/
     {
-        self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
+        $this->tabs->activateTab(self::TAB_SETTINGS);
 
         $form = self::h5p()->hub()->factory()->newHubSettingsFormBuilderInstance($this);
 
         if (!$form->storeForm()) {
-            self::output()->output($form);
+            $this->output_renderer->output($form);
 
             return;
         }
 
-        ilUtil::sendSuccess(self::plugin()->translate("settings_saved"), true);
+        ilUtil::sendSuccess($this->plugin->txt("settings_saved"), true);
 
-        self::dic()->ctrl()->redirect($this, self::CMD_EDIT_SETTINGS);
+        $this->ctrl->redirect($this, self::CMD_EDIT_SETTINGS);
     }
 
 
@@ -300,22 +307,22 @@ class ilH5PConfigGUI extends ilPluginConfigGUI
      */
     protected function uploadLibrary()/* : void*/
     {
-        self::dic()->tabs()->activateTab(self::TAB_HUB);
+        $this->tabs->activateTab(self::TAB_HUB);
 
         $form = self::h5p()->hub()->factory()->newUploadLibraryFormInstance($this);
 
         if (!$form->storeForm()) {
-            self::output()->output(self::h5p()->hub()->factory()->newHubTableInstance($this));
+            $this->output_renderer->output(self::h5p()->hub()->factory()->newHubTableInstance($this));
 
             return;
         }
 
         if (!self::h5p()->hub()->show()->uploadLibrary($form)) {
-            self::output()->output(self::h5p()->hub()->factory()->newHubTableInstance($this));
+            $this->output_renderer->output(self::h5p()->hub()->factory()->newHubTableInstance($this));
 
             return;
         }
 
-        self::dic()->ctrl()->redirect($this, self::CMD_HUB);
+        $this->ctrl->redirect($this, self::CMD_HUB);
     }
 }

@@ -4,7 +4,6 @@ namespace srag\Plugins\H5P;
 
 use ilDateTime;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Repository as ContentsRepository;
 use srag\Plugins\H5P\Event\Repository as EventsRepository;
 use srag\Plugins\H5P\Hub\Repository as HubRepository;
@@ -25,7 +24,6 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
 
     /**
@@ -34,7 +32,6 @@ final class Repository
      * @deprecated
      */
     const CSV_SEPARATOR = ", ";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */

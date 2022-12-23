@@ -10,7 +10,6 @@ use ilCurlConnection;
 use ilH5PPlugin;
 use ilProxySettings;
 use ilUtil;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use stdClass;
 use Throwable;
@@ -25,10 +24,7 @@ use Throwable;
 class Framework implements H5PFrameworkInterface
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -49,6 +45,10 @@ class Framework implements H5PFrameworkInterface
             "error" => [],
             "info"  => []
         ];
+    protected $version_comparator;
+    protected $plugin;
+    protected $user;
+    protected $ctrl;
 
 
     /**
@@ -56,7 +56,11 @@ class Framework implements H5PFrameworkInterface
      */
     private function __construct()
     {
-
+        global $DIC;
+        $this->version_comparator = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator()
+        $this->plugin = \ilH5PPlugin::getInstance()
+        $this->user = $DIC->user()
+        $this->ctrl = $DIC->ctrl()
     }
 
 
@@ -290,7 +294,7 @@ class Framework implements H5PFrameworkInterface
 
             $curlConnection->init();
 
-            if (!self::version()->is6()) {
+            if (!$this->version_comparator->is6()) {
                 $proxy = ilProxySettings::_getInstance();
                 if (null !== $proxy && $proxy->isActive()) {
                     $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
@@ -306,7 +310,7 @@ class Framework implements H5PFrameworkInterface
             }
 
             $headers = [
-                "User-Agent" => "ILIAS " . self::version()->getILIASVersion()
+                "User-Agent" => "ILIAS " . $this->version_comparator->getILIASVersion()
             ];
             $curlConnection->setOpt(CURLOPT_HTTPHEADER, array_map(function (string $key, string $value) : string {
                 return ($key . ": " . $value);
@@ -577,8 +581,8 @@ class Framework implements H5PFrameworkInterface
     {
         return [
             "name"       => "ILIAS",
-            "version"    => self::version()->getILIASVersion(),
-            "h5pVersion" => self::plugin()->getPluginObject()->getVersion()
+            "version"    => $this->version_comparator->getILIASVersion(),
+            "h5pVersion" => $this->plugin->getPluginObject()->getVersion()
         ];
     }
 
@@ -828,7 +832,7 @@ class Framework implements H5PFrameworkInterface
                 "user_id"   => $h5p_content->getContentUserId(),
                 "embedType" => $h5p_content->getEmbedType(),
                 "disable"   => $h5p_content->getDisable(),
-                "language"  => self::dic()->user()->getLanguage(),
+                "language"  => $this->user->getLanguage(),
                 "libraryId" => $h5p_content->getLibraryId(),
                 "metadata"  => array_filter([
                     "authors"         => $h5p_content->getAuthors(),
@@ -1421,7 +1425,7 @@ class Framework implements H5PFrameworkInterface
             "code"    => $code
         ];
 
-        if (ilContext::getType() === ilContext::CONTEXT_WEB && !self::dic()->ctrl()->isAsynch()) {
+        if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
             ilUtil::sendFailure($message, true);
         }
     }
@@ -1437,7 +1441,7 @@ class Framework implements H5PFrameworkInterface
     {
         $this->messages["info"][] = $message;
 
-        if (ilContext::getType() === ilContext::CONTEXT_WEB && !self::dic()->ctrl()->isAsynch()) {
+        if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
             ilUtil::sendInfo($message, true);
         }
     }
@@ -1538,7 +1542,7 @@ class Framework implements H5PFrameworkInterface
             "You'll be starting over."                                                                => "start_over"
         ];
         if (isset($messages_map[$message])) {
-            $message = self::plugin()->translate($messages_map[$message]);
+            $message = $this->plugin->txt($messages_map[$message]);
         }
 
         // Replace placeholders

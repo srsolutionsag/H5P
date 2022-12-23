@@ -5,7 +5,6 @@ namespace srag\Plugins\H5P\Hub;
 use ilCronJob;
 use ilCronJobResult;
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -18,11 +17,10 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class RefreshHubJob extends ilCronJob
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    protected $plugin;
 
 
     /**
@@ -30,7 +28,8 @@ class RefreshHubJob extends ilCronJob
      */
     public function __construct()
     {
-
+        global $DIC;
+        $this->plugin = \ilH5PPlugin::getInstance()
     }
 
 
@@ -57,7 +56,7 @@ class RefreshHubJob extends ilCronJob
      */
     public function getDescription() : string
     {
-        return self::plugin()->translate("refresh_hub_description");
+        return $this->plugin->txt("refresh_hub_description");
     }
 
 
@@ -75,7 +74,7 @@ class RefreshHubJob extends ilCronJob
      */
     public function getTitle() : string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("refresh_hub");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->plugin->txt("refresh_hub");
     }
 
 

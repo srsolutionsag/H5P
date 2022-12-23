@@ -6,7 +6,6 @@ use H5PCore;
 use ilH5PPlugin;
 use ilObjH5PAccess;
 use ilWACSecurePath;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -19,11 +18,9 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const DATA_FOLDER = "h5p";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -83,7 +80,7 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(ObjectSettings::TABLE_NAME, false);
+        $this->database->dropTable(ObjectSettings::TABLE_NAME, false);
 
         $data_folder = ilWACSecurePath::find(self::DATA_FOLDER);
         if (null !== $data_folder) {
@@ -147,7 +144,7 @@ final class Repository
 
         $path->setInSecFolder(false);
 
-        $path->setComponentDirectory(self::plugin()->directory());
+        $path->setComponentDirectory($this->plugin->directory());
 
         $path->store();
     }

@@ -12,7 +12,6 @@ use ilObjectFactory;
 use ilObjH5PAccess;
 use ilObjPortfolio;
 use ilUIPluginRouterGUI;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -27,7 +26,6 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class H5PActionGUI
 {
 
-    use DICTrait;
     use H5PTrait;
 
     const CMD_H5P_ACTION = "h5pAction";
@@ -42,11 +40,13 @@ class H5PActionGUI
     const H5P_ACTION_REBUILD_CACHE = "rebuildCache";
     const H5P_ACTION_RESTRICT_LIBRARY = "restrictLibrary";
     const H5P_ACTION_SET_FINISHED = "setFinished";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var ilObject
      */
     protected $object;
+    protected $ctrl;
+    protected $output_renderer;
+    protected $user;
 
 
     /**
@@ -54,7 +54,10 @@ class H5PActionGUI
      */
     public function __construct()
     {
-
+        global $DIC;
+        $this->ctrl = $DIC->ctrl()
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
+        $this->user = $DIC->user()
     }
 
 
@@ -65,11 +68,12 @@ class H5PActionGUI
      */
     public static function getUrl(/*string*/ $action) : string
     {
-        self::dic()->ctrl()->setParameterByClass(self::class, self::GET_PARAM_OBJ_ID, self::dic()->ctrl()->getContextObjId());
+        global $DIC;
+        $DIC->ctrl()->setParameterByClass(self::class, self::GET_PARAM_OBJ_ID, $DIC->ctrl()->getContextObjId());
 
-        self::dic()->ctrl()->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
+        $DIC->ctrl()->setParameterByClass(self::class, self::CMD_H5P_ACTION, $action);
 
-        $url = self::dic()->ctrl()->getLinkTargetByClass([ilUIPluginRouterGUI::class, self::class], self::CMD_H5P_ACTION, "", true, false);
+        $url = $DIC->ctrl()->getLinkTargetByClass([ilUIPluginRouterGUI::class, self::class], self::CMD_H5P_ACTION, "", true, false);
 
         return $url;
     }
@@ -90,11 +94,11 @@ class H5PActionGUI
             die();
         }
 
-        $next_class = self::dic()->ctrl()->getNextClass($this);
+        $next_class = $this->ctrl->getNextClass($this);
 
         switch (strtolower($next_class)) {
             default:
-                $cmd = self::dic()->ctrl()->getCmd();
+                $cmd = $this->ctrl->getCmd();
 
                 switch ($cmd) {
                     case self::CMD_H5P_ACTION:
@@ -183,7 +187,7 @@ class H5PActionGUI
             }
         }
 
-        self::output()->outputJSON($output);
+        $this->output_renderer->outputJSON($output);
     }
 
 
@@ -246,7 +250,7 @@ class H5PActionGUI
         $minor_version = filter_input(INPUT_GET, "minorVersion", FILTER_SANITIZE_NUMBER_INT);
 
         if (!empty($name)) {
-            self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, self::dic()->user()
+            self::h5p()->contents()->editor()->core()->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $name, $major_version, $minor_version, $this->user
                 ->getLanguage(), "", self::h5p()->objectSettings()->getH5PFolder(), "");
             //self::h5p()->events()->factory()->newEventFrameworkInstance('library', NULL, NULL, NULL, $name, $major_version . '.' . $minor_version);
         } else {
@@ -305,7 +309,7 @@ class H5PActionGUI
             }
         }
 
-        self::output()->outputJSON((count($h5p_contents) - $done));
+        $this->output_renderer->outputJSON((count($h5p_contents) - $done));
     }
 
 
@@ -324,11 +328,11 @@ class H5PActionGUI
             self::h5p()->libraries()->storeLibrary($h5p_library);
         }
 
-        self::dic()->ctrl()->saveParameter($this, "xhfp_library");
+        $this->ctrl->saveParameter($this, "xhfp_library");
 
-        self::dic()->ctrl()->setParameter($this, "restrict", (!$restricted));
+        $this->ctrl->setParameter($this, "restrict", (!$restricted));
 
-        self::output()->outputJSON([
+        $this->output_renderer->outputJSON([
             "url" => self::getUrl(self::H5P_ACTION_RESTRICT_LIBRARY)
         ]);
     }

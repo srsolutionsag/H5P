@@ -1,8 +1,6 @@
 <?php
 
 require_once __DIR__ . "/../vendor/autoload.php";
-
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -13,10 +11,9 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ilObjH5PListGUI extends ilObjectPluginListGUI
 {
 
-    use DICTrait;
     use H5PTrait;
 
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
+    protected $plugin;
 
 
     /**
@@ -26,7 +23,9 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
      */
     public function __construct(/*int*/ $a_context = self::CONTEXT_REPOSITORY)
     {
+        global $DIC;
         parent::__construct($a_context);
+        $this->plugin = \ilH5PPlugin::getInstance();
     }
 
 
@@ -49,8 +48,8 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
         if (ilObjH5PAccess::_isOffline($this->obj_id)) {
             $props[] = [
                 "alert"    => true,
-                "property" => self::plugin()->translate("status"),
-                "value"    => self::plugin()->translate("offline")
+                "property" => $this->plugin->txt("status"),
+                "value"    => $this->plugin->txt("offline")
             ];
         }
 

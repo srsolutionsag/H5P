@@ -3,7 +3,6 @@
 namespace srag\Plugins\H5P\Result;
 
 use ilH5PPlugin;
-use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -17,10 +16,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 final class Repository
 {
 
-    use DICTrait;
     use H5PTrait;
-
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
@@ -72,8 +68,8 @@ final class Repository
      */
     public function dropTables()/* : void*/
     {
-        self::dic()->database()->dropTable(Result::TABLE_NAME, false);
-        self::dic()->database()->dropTable(SolveStatus::TABLE_NAME, false);
+        $this->database->dropTable(Result::TABLE_NAME, false);
+        $this->database->dropTable(SolveStatus::TABLE_NAME, false);
     }
 
 
@@ -352,7 +348,7 @@ final class Repository
     public function storeResult(Result $result)/* : void*/
     {
         if (empty($result->getId())) {
-            $result->setUserId(self::dic()->user()->getId());
+            $result->setUserId($this->user->getId());
         }
 
         $result->store();
@@ -365,7 +361,7 @@ final class Repository
     public function storeSolveStatus(SolveStatus $solve_status)/* : void*/
     {
         if (empty($solve_status->getId())) {
-            $solve_status->setUserId(self::dic()->user()->getId());
+            $solve_status->setUserId($this->user->getId());
         }
 
         $solve_status->store();
