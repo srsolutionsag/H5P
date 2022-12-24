@@ -58,12 +58,12 @@ class ShowContent
     private function __construct()
     {
         global $DIC;
-        $this->user = $DIC->user()
-        $this->plugin = \ilH5PPlugin::getInstance()
-        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
-        $this->ui = $DIC->ui()
-        $this->version_comparator = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator()
-        $this->ctrl = $DIC->ctrl()
+        $this->user = $DIC->user();
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl());
+        $this->ui = $DIC->ui();
+        $this->version_comparator = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator();
+        $this->ctrl = $DIC->ctrl();
     }
 
 

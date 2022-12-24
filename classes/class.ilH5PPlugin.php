@@ -15,6 +15,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin
 {
     use H5PTrait;
 
+    public const PLUGIN_DIR = "./Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/";
     public const PLUGIN_NAME = "H5P";
     public const PLUGIN_ID = "xhfp";
 

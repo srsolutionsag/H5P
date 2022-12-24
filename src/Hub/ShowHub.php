@@ -44,11 +44,11 @@ class ShowHub
     private function __construct()
     {
         global $DIC;
-        $this->plugin = \ilH5PPlugin::getInstance()
-        $this->toolbar = $DIC->toolbar()
-        $this->ui = $DIC->ui()
-        $this->ctrl = $DIC->ctrl()
-        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl())
+        $this->plugin = \ilH5PPlugin::getInstance();
+        $this->toolbar = $DIC->toolbar();
+        $this->ui = $DIC->ui();
+        $this->ctrl = $DIC->ctrl();
+        $this->output_renderer = new \srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\OutputRenderer($DIC->ui()->renderer(), $DIC->ui()->mainTemplate(), $DIC->http(), $DIC->ctrl());
     }
 
 
