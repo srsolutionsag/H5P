@@ -158,3 +158,4 @@ delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert 
 refresh_hub#:#Hub-Liste aktualisieren
 refresh_hub_description#:#Lädt die Hub-Liste neu
 object_not_found#:#Das angefragte H5P Objekt wurde nicht gefunden.
+missing_parameter#:#Fehler, Parameter %s wurde nicht gefunden.

@@ -158,3 +158,4 @@ delete_old_tmp_files_description#:#Cancella i vecchi file temporanei generati da
 refresh_hub#:#Aggiorna elenco hub
 refresh_hub_description#:#Ricarica l'elenco degli hub
 object_not_found#:#L'oggetto non è stato trovato
+missing_parameter#:#Failure, parameter %s wasn't provided.

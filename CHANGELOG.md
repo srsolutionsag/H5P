@@ -2,6 +2,8 @@
 
 ## 3.2.0
 
+- Replaced all `filter_input` calls by ILIAS>=8 request wrappers. To maintain ILIAS<8 compatibility the implementation
+  has been copied and can easily be replaced in the future.
 - Uninstalled all remaining legacy (fluxlabs) composer packages.
 - Implemented PHP-Rectors which automatically remove the `DICTrait` without breaking the existing implementation.
 - Fixed `dbupdate.sql` script so it performs static queries instead of calling `ActiveRecord::installDB()`.
@@ -161,7 +163,7 @@
 
 - Upgrade to latest H5P library which fixes and fallback to english language if current language not should supports
 - Fix hub settings tab on PHP 5
-Improve Iframe Embedder upload files:
+  Improve Iframe Embedder upload files:
 - Hint to set start file
 - Display not absolute client path
 
