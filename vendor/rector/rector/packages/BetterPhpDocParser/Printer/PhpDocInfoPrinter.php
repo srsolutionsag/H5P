@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\BetterPhpDocParser\Printer;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PhpParser\Node\Stmt\InlineHTML;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
@@ -143,7 +143,7 @@ final class PhpDocInfoPrinter
         // hotfix of extra space with callable ()
         return Strings::replace($phpDocString, self::CALLABLE_REGEX, 'callable(');
     }
-    public function getCurrentPhpDocInfo() : PhpDocInfo
+    private function getCurrentPhpDocInfo() : PhpDocInfo
     {
         if ($this->phpDocInfo === null) {
             throw new ShouldNotHappenException();

@@ -2,36 +2,12 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\Utils\H5PTrait;
-
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI
 {
-    use H5PTrait;
-
-    /**
-     * @var ilH5PPlugin
-     */
-    protected $plugin;
-
-    /**
-     * ilObjH5PListGUI constructor
-     *
-     * @param int $a_context
-     *
-     * @inheritDoc
-     */
-    public function __construct($a_context = self::CONTEXT_REPOSITORY)
-    {
-        global $DIC;
-        parent::__construct($a_context);
-
-        $this->plugin = ilH5PPlugin::getInstance();
-    }
-
     /**
      * @inheritDoc
      */
@@ -47,9 +23,11 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     {
         if (ilObjH5PAccess::_isOffline($this->obj_id)) {
             return [
-                "property" => $this->plugin->txt("status"),
-                "value" => $this->plugin->txt("offline"),
-                "alert" => true,
+                [
+                    "property" => $this->plugin->txt("status"),
+                    "value" => $this->plugin->txt("offline"),
+                    "alert" => true,
+                ],
             ];
         }
 
@@ -97,10 +75,29 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     }
 
     /**
+     * Overwrites the command link generation for all commands returned by
+     * this classes initCommands().
+     *
+     * @inheritDoc
+     */
+    public function getCommandLink($a_cmd): string
+    {
+        if (ilObjH5PGUI::getStartCmd() === $a_cmd) {
+            return $this->ctrl->getLinkTargetByClass(
+                [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PContentGUI::class],
+                $a_cmd
+            );
+        }
+
+        return parent::getCommandLink($a_cmd);
+    }
+
+    /**
      * @inheritDoc
      */
     public function initType(): void
     {
+        // cannot use $this->plugin here because it is initialized afterwards.
         $this->setType(ilH5PPlugin::PLUGIN_ID);
     }
 }

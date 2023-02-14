@@ -1,1 +1,0 @@
-H5PIntegration.contents["cid-{H5P_CONTENT_ID}"] = JSON.parse(atob("{H5P_CONTENT}"));

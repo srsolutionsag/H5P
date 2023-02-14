@@ -1,6 +1,6 @@
 {
   "name": "srag/h5p",
-  "description": "Add H5P contents in repository objects",
+  "description": "Add H5P contents in ILIAS repository objects.",
   "type": "project",
   "license": "GPL-3.0-only",
   "authors": [
@@ -12,8 +12,8 @@
   ],
   "require": {
     "php": ">=7.2",
-    "h5p/h5p-core": ">=1.24.4",
-    "h5p/h5p-editor": ">=1.25.0"
+    "h5p/h5p-core": "dev-master",
+    "h5p/h5p-editor": "1.25.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
@@ -22,6 +22,7 @@
   "autoload": {
     "psr-4": {
       "srag\\Plugins\\H5P\\CI\\": "CI/",
+      "srag\\Plugins\\H5P\\Test\\": "tests/",
       "srag\\Plugins\\H5P\\": "src/"
     },
     "classmap": [

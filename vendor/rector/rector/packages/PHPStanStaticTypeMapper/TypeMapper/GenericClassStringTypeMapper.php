@@ -5,7 +5,7 @@ namespace Rector\PHPStanStaticTypeMapper\TypeMapper;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Name;
+use PhpParser\Node\Identifier;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
@@ -16,7 +16,7 @@ use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\PHPStanStaticTypeMapper\Contract\TypeMapperInterface;
 use Rector\PHPStanStaticTypeMapper\PHPStanStaticTypeMapper;
-use RectorPrefix202212\Symfony\Contracts\Service\Attribute\Required;
+use RectorPrefix202302\Symfony\Contracts\Service\Attribute\Required;
 /**
  * @implements TypeMapperInterface<GenericClassStringType>
  */
@@ -67,7 +67,7 @@ final class GenericClassStringTypeMapper implements TypeMapperInterface
         if (!$this->phpVersionProvider->isAtLeastPhpVersion(PhpVersionFeature::SCALAR_TYPES)) {
             return null;
         }
-        return new Name('string');
+        return new Identifier('string');
     }
     /**
      * @return \PHPStan\Type\ObjectType|\PHPStan\Type\Type

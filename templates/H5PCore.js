@@ -1,1 +1,0 @@
-var H5PIntegration = JSON.parse(atob("{H5P_CORE}"));

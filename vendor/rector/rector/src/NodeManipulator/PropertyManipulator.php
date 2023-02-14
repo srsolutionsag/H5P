@@ -3,8 +3,8 @@
 declare (strict_types=1);
 namespace Rector\Core\NodeManipulator;
 
-use RectorPrefix202212\Doctrine\ORM\Mapping\ManyToMany;
-use RectorPrefix202212\Doctrine\ORM\Mapping\Table;
+use RectorPrefix202302\Doctrine\ORM\Mapping\ManyToMany;
+use RectorPrefix202302\Doctrine\ORM\Mapping\Table;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
@@ -155,16 +155,6 @@ final class PropertyManipulator
     /**
      * @param \PhpParser\Node\Stmt\Property|\PhpParser\Node\Param $propertyOrPromotedParam
      */
-    public function isAllowedReadOnly($propertyOrPromotedParam, PhpDocInfo $phpDocInfo) : bool
-    {
-        if ($phpDocInfo->hasByAnnotationClasses(self::ALLOWED_READONLY_ANNOTATION_CLASS_OR_ATTRIBUTES)) {
-            return \true;
-        }
-        return $this->phpAttributeAnalyzer->hasPhpAttributes($propertyOrPromotedParam, self::ALLOWED_READONLY_ANNOTATION_CLASS_OR_ATTRIBUTES);
-    }
-    /**
-     * @param \PhpParser\Node\Stmt\Property|\PhpParser\Node\Param $propertyOrPromotedParam
-     */
     public function isPropertyUsedInReadContext(Class_ $class, $propertyOrPromotedParam) : bool
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($propertyOrPromotedParam);
@@ -274,6 +264,16 @@ final class PropertyManipulator
             }
         }
         return \false;
+    }
+    /**
+     * @param \PhpParser\Node\Stmt\Property|\PhpParser\Node\Param $propertyOrPromotedParam
+     */
+    private function isAllowedReadOnly($propertyOrPromotedParam, PhpDocInfo $phpDocInfo) : bool
+    {
+        if ($phpDocInfo->hasByAnnotationClasses(self::ALLOWED_READONLY_ANNOTATION_CLASS_OR_ATTRIBUTES)) {
+            return \true;
+        }
+        return $this->phpAttributeAnalyzer->hasPhpAttributes($propertyOrPromotedParam, self::ALLOWED_READONLY_ANNOTATION_CLASS_OR_ATTRIBUTES);
     }
     private function isPropertyAssignedOnlyInConstructor(Class_ $class, string $propertyName, ?ClassMethod $classMethod) : bool
     {

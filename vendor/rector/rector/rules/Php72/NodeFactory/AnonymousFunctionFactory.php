@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Php72\NodeFactory;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr;
@@ -263,7 +263,7 @@ final class AnonymousFunctionFactory
         return $params;
     }
     /**
-     * @return \PhpParser\Node\Name|\PhpParser\Node\ComplexType|null
+     * @return \PhpParser\Node\Name|\PhpParser\Node\ComplexType|\PhpParser\Node\Identifier|null
      */
     private function resolveParamType(ParameterReflection $parameterReflection)
     {

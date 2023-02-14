@@ -120,6 +120,7 @@ final class ValueResolver
         return null;
     }
     /**
+     * @api symfony
      * @param mixed[] $expectedValues
      */
     public function isValues(Expr $expr, array $expectedValues) : bool
@@ -271,6 +272,10 @@ final class ValueResolver
         }
         $classReflection = $this->reflectionProvider->getClass($class);
         if (!$classReflection->hasConstant($constant)) {
+            // fallback to constant reference itself, to avoid fatal error
+            return $classConstantReference;
+        }
+        if ($classReflection->isEnum()) {
             // fallback to constant reference itself, to avoid fatal error
             return $classConstantReference;
         }

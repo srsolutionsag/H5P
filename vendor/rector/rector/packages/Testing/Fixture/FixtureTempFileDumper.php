@@ -3,10 +3,11 @@
 declare (strict_types=1);
 namespace Rector\Testing\Fixture;
 
-use RectorPrefix202212\Nette\Utils\FileSystem;
+use RectorPrefix202302\Nette\Utils\FileSystem;
 final class FixtureTempFileDumper
 {
     /**
+     * @api
      * @var string
      */
     public const TEMP_FIXTURE_DIRECTORY = '/rector/tests_fixture_';
@@ -17,6 +18,9 @@ final class FixtureTempFileDumper
         FileSystem::write($temporaryFileName, $fileContents);
         return $temporaryFileName;
     }
+    /**
+     * @api
+     */
     public static function getTempDirectory() : string
     {
         return \sys_get_temp_dir() . self::TEMP_FIXTURE_DIRECTORY;

@@ -1,12 +1,12 @@
 <?php
 
 declare (strict_types=1);
-namespace RectorPrefix202212;
+namespace RectorPrefix202302;
 
-use RectorPrefix202212\Composer\Semver\VersionParser;
-use RectorPrefix202212\Doctrine\Inflector\Inflector;
-use RectorPrefix202212\Doctrine\Inflector\Rules\English\InflectorFactory;
-use RectorPrefix202212\OndraM\CiDetector\CiDetector;
+use RectorPrefix202302\Composer\Semver\VersionParser;
+use RectorPrefix202302\Doctrine\Inflector\Inflector;
+use RectorPrefix202302\Doctrine\Inflector\Rules\English\InflectorFactory;
+use RectorPrefix202302\OndraM\CiDetector\CiDetector;
 use PhpParser\BuilderFactory;
 use PhpParser\ConstExprEvaluator;
 use PhpParser\Lexer;
@@ -45,12 +45,11 @@ use Rector\PhpDocParser\PhpParser\SmartPhpParserFactory;
 use Rector\PSR4\Composer\PSR4NamespaceMatcher;
 use Rector\PSR4\Contract\PSR4AutoloadNamespaceMatcherInterface;
 use Rector\Utils\Command\MissingInSetCommand;
-use RectorPrefix202212\SebastianBergmann\Diff\Differ;
-use RectorPrefix202212\Symfony\Component\Console\Application;
-use RectorPrefix202212\Symfony\Component\Console\Style\SymfonyStyle;
-use function RectorPrefix202212\Symfony\Component\DependencyInjection\Loader\Configurator\service;
-use RectorPrefix202212\Symfony\Component\Filesystem\Filesystem;
-use RectorPrefix202212\Symplify\EasyParallel\ValueObject\EasyParallelConfig;
+use RectorPrefix202302\Symfony\Component\Console\Application;
+use RectorPrefix202302\Symfony\Component\Console\Style\SymfonyStyle;
+use function RectorPrefix202302\Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use RectorPrefix202302\Symfony\Component\Filesystem\Filesystem;
+use RectorPrefix202302\Symplify\EasyParallel\ValueObject\EasyParallelConfig;
 return static function (RectorConfig $rectorConfig) : void {
     // make use of https://github.com/symplify/easy-parallel
     $rectorConfig->import(EasyParallelConfig::FILE_PATH);
@@ -144,6 +143,4 @@ return static function (RectorConfig $rectorConfig) : void {
     $services->set(\PHPStan\PhpDocParser\Lexer\Lexer::class);
     $services->set(TypeParser::class);
     $services->set(ConstExprParser::class);
-    // console color diff
-    $services->set(Differ::class);
 };

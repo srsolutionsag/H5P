@@ -8,26 +8,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202212\Symfony\Component\Console\Command;
+namespace RectorPrefix202302\Symfony\Component\Console\Command;
 
-use RectorPrefix202212\Symfony\Component\Console\Attribute\AsCommand;
-use RectorPrefix202212\Symfony\Component\Console\Completion\CompletionInput;
-use RectorPrefix202212\Symfony\Component\Console\Completion\CompletionSuggestions;
-use RectorPrefix202212\Symfony\Component\Console\Completion\Output\BashCompletionOutput;
-use RectorPrefix202212\Symfony\Component\Console\Completion\Output\CompletionOutputInterface;
-use RectorPrefix202212\Symfony\Component\Console\Completion\Output\FishCompletionOutput;
-use RectorPrefix202212\Symfony\Component\Console\Completion\Output\ZshCompletionOutput;
-use RectorPrefix202212\Symfony\Component\Console\Exception\CommandNotFoundException;
-use RectorPrefix202212\Symfony\Component\Console\Exception\ExceptionInterface;
-use RectorPrefix202212\Symfony\Component\Console\Input\InputInterface;
-use RectorPrefix202212\Symfony\Component\Console\Input\InputOption;
-use RectorPrefix202212\Symfony\Component\Console\Output\OutputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Attribute\AsCommand;
+use RectorPrefix202302\Symfony\Component\Console\Completion\CompletionInput;
+use RectorPrefix202302\Symfony\Component\Console\Completion\CompletionSuggestions;
+use RectorPrefix202302\Symfony\Component\Console\Completion\Output\BashCompletionOutput;
+use RectorPrefix202302\Symfony\Component\Console\Completion\Output\CompletionOutputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Completion\Output\FishCompletionOutput;
+use RectorPrefix202302\Symfony\Component\Console\Completion\Output\ZshCompletionOutput;
+use RectorPrefix202302\Symfony\Component\Console\Exception\CommandNotFoundException;
+use RectorPrefix202302\Symfony\Component\Console\Exception\ExceptionInterface;
+use RectorPrefix202302\Symfony\Component\Console\Input\InputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Input\InputOption;
+use RectorPrefix202302\Symfony\Component\Console\Output\OutputInterface;
 /**
  * Responsible for providing the values to the shell completion.
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */
-#[\Symfony\Component\Console\Attribute\AsCommand(name: '|_complete', description: 'Internal command to provide shell completion suggestions')]
 final class CompleteCommand extends Command
 {
     public const COMPLETION_API_VERSION = '1';

@@ -7,7 +7,7 @@ use Rector\ChangesReporting\Output\ConsoleOutputFormatter;
 use Rector\Core\Configuration\Parameter\ParameterProvider;
 use Rector\Core\Contract\Console\OutputStyleInterface;
 use Rector\Core\ValueObject\Configuration;
-use RectorPrefix202212\Symfony\Component\Console\Input\InputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Input\InputInterface;
 final class ConfigurationFactory
 {
     /**
@@ -26,6 +26,7 @@ final class ConfigurationFactory
         $this->rectorOutputStyle = $rectorOutputStyle;
     }
     /**
+     * @api used in tests
      * @param string[] $paths
      */
     public function createForTests(array $paths) : Configuration

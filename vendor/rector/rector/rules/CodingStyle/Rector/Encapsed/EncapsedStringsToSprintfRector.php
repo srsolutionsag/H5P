@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\CodingStyle\Rector\Encapsed;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use const PHP_EOL;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
@@ -95,7 +95,7 @@ CODE_SAMPLE
                 return \true;
             }
         }
-        return \false;
+        return $encapsed->hasAttribute(AttributeKey::DOC_LABEL);
     }
     private function collectEncapsedStringPart(EncapsedStringPart $encapsedStringPart) : void
     {

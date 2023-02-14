@@ -6,6 +6,7 @@ namespace PHPStan\PhpDocParser\Parser;
 use LogicException;
 use PHPStan\PhpDocParser\Ast;
 use PHPStan\PhpDocParser\Lexer\Lexer;
+use function in_array;
 use function strpos;
 use function trim;
 class TypeParser
@@ -96,8 +97,8 @@ class TypeParser
                     $type = $this->tryParseCallable($tokens, $type);
                 } elseif ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
                     $type = $this->tryParseArrayOrOffsetAccess($tokens, $type);
-                } elseif ($type->name === 'array' && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
-                    $type = $this->parseArrayShape($tokens, $type);
+                } elseif (in_array($type->name, ['array', 'list'], \true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
+                    $type = $this->parseArrayShape($tokens, $type, $type->name);
                     if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
                         $type = $this->tryParseArrayOrOffsetAccess($tokens, $type);
                     }
@@ -325,8 +326,8 @@ class TypeParser
             $tokens->consumeTokenType(Lexer::TOKEN_IDENTIFIER);
             if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_ANGLE_BRACKET)) {
                 $type = $this->parseGeneric($tokens, $type);
-            } elseif ($type->name === 'array' && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
-                $type = $this->parseArrayShape($tokens, $type);
+            } elseif (in_array($type->name, ['array', 'list'], \true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
+                $type = $this->parseArrayShape($tokens, $type, $type->name);
             }
         }
         if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
@@ -371,28 +372,31 @@ class TypeParser
         }
         return $type;
     }
-    /** @phpstan-impure */
-    private function parseArrayShape(\PHPStan\PhpDocParser\Parser\TokenIterator $tokens, Ast\Type\TypeNode $type) : Ast\Type\ArrayShapeNode
+    /**
+     * @phpstan-impure
+     * @param Ast\Type\ArrayShapeNode::KIND_* $kind
+     */
+    private function parseArrayShape(\PHPStan\PhpDocParser\Parser\TokenIterator $tokens, Ast\Type\TypeNode $type, string $kind) : Ast\Type\ArrayShapeNode
     {
         $tokens->consumeTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET);
-        if ($tokens->tryConsumeTokenType(Lexer::TOKEN_CLOSE_CURLY_BRACKET)) {
-            return new Ast\Type\ArrayShapeNode([]);
-        }
-        $tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-        $items = [$this->parseArrayShapeItem($tokens)];
-        $tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-        while ($tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA)) {
+        $items = [];
+        $sealed = \true;
+        do {
             $tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
             if ($tokens->tryConsumeTokenType(Lexer::TOKEN_CLOSE_CURLY_BRACKET)) {
-                // trailing comma case
                 return new Ast\Type\ArrayShapeNode($items);
+            }
+            if ($tokens->tryConsumeTokenType(Lexer::TOKEN_VARIADIC)) {
+                $sealed = \false;
+                $tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA);
+                break;
             }
             $items[] = $this->parseArrayShapeItem($tokens);
             $tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-        }
+        } while ($tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA));
         $tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
         $tokens->consumeTokenType(Lexer::TOKEN_CLOSE_CURLY_BRACKET);
-        return new Ast\Type\ArrayShapeNode($items);
+        return new Ast\Type\ArrayShapeNode($items, $sealed, $kind);
     }
     /** @phpstan-impure */
     private function parseArrayShapeItem(\PHPStan\PhpDocParser\Parser\TokenIterator $tokens) : Ast\Type\ArrayShapeItemNode

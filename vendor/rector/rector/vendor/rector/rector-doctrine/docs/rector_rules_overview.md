@@ -1,4 +1,4 @@
-# 23 Rules Overview
+# 24 Rules Overview
 
 ## AddEntityIdByConditionRector
 
@@ -66,6 +66,29 @@ Change database type "bigint" for @var/type declaration to string
       * @ORM\Column(type="bigint", nullable=true)
       */
      private $bigNumber;
+ }
+```
+
+<br>
+
+## ChangeCompositeExpressionAddMultipleWithWithRector
+
+Change CompositeExpression ->addMultiple($parts) to ->with(...$parts)
+
+- class: [`Rector\Doctrine\Rector\MethodCall\ChangeCompositeExpressionAddMultipleWithWithRector`](../src/Rector/MethodCall/ChangeCompositeExpressionAddMultipleWithWithRector.php)
+
+```diff
+ use Doctrine\ORM\EntityRepository;
+ use Doctrine\DBAL\Query\Expression\CompositeExpression;
+
+ class SomeRepository extends EntityRepository
+ {
+     public function getSomething($parts)
+     {
+         $compositeExpression = CompositeExpression::and('', ...$parts);
+-        $compositeExpression->addMultiple($parts);
++        $compositeExpression->with(...$parts);
+     }
  }
 ```
 

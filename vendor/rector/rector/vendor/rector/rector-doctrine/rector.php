@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace RectorPrefix202212;
+namespace RectorPrefix202302;
 
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
@@ -17,6 +17,6 @@ return static function (RectorConfig $rectorConfig) : void {
         '*/Source/*',
         '*/Fixture/*',
     ]);
-    $rectorConfig->sets([LevelSetList::UP_TO_PHP_81, SetList::DEAD_CODE, SetList::CODE_QUALITY, SetList::NAMING, SetList::TYPE_DECLARATION, SetList::TYPE_DECLARATION_STRICT, SetList::PRIVATIZATION]);
+    $rectorConfig->sets([LevelSetList::UP_TO_PHP_81, SetList::DEAD_CODE, SetList::CODE_QUALITY, SetList::NAMING, SetList::TYPE_DECLARATION, SetList::PRIVATIZATION]);
     $rectorConfig->ruleWithConfiguration(StringClassNameToClassConstantRector::class, ['Doctrine\\*', 'Gedmo\\*', 'Knp\\*', 'DateTime', 'DateTimeInterface']);
 };

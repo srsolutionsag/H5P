@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Core\PhpParser\Parser;
 
-use RectorPrefix202212\Nette\Utils\FileSystem;
+use RectorPrefix202302\Nette\Utils\FileSystem;
 use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NodeConnectingVisitor;
@@ -22,6 +22,7 @@ final class SimplePhpParser
         $this->phpParser = $parserFactory->create(ParserFactory::PREFER_PHP7);
     }
     /**
+     * @api tests
      * @return Stmt[]
      */
     public function parseFile(string $filePath) : array

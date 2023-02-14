@@ -10,7 +10,7 @@ use Rector\Core\Contract\Rector\ScopeAwarePhpRectorInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\NodeAnalyzer\ScopeAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use RectorPrefix202212\Symfony\Contracts\Service\Attribute\Required;
+use RectorPrefix202302\Symfony\Contracts\Service\Attribute\Required;
 abstract class AbstractScopeAwareRector extends \Rector\Core\Rector\AbstractRector implements ScopeAwarePhpRectorInterface
 {
     /**
@@ -30,15 +30,17 @@ abstract class AbstractScopeAwareRector extends \Rector\Core\Rector\AbstractRect
      */
     public function refactor(Node $node)
     {
-        /** @var MutatingScope|null $scope */
-        $scope = $node->getAttribute(AttributeKey::SCOPE);
-        if (!$scope instanceof MutatingScope) {
-            $scope = $this->scopeAnalyzer->resolveScope($node, $this->file->getFilePath());
-            if ($scope instanceof MutatingScope) {
-                $this->changedNodeScopeRefresher->refresh($node, $scope, $this->file->getFilePath());
+        $originalNode = $node->getAttribute(AttributeKey::ORIGINAL_NODE);
+        $originalNode = $originalNode ?? $node;
+        /** @var MutatingScope|null $currentScope */
+        $currentScope = $originalNode->getAttribute(AttributeKey::SCOPE);
+        if (!$currentScope instanceof MutatingScope) {
+            $currentScope = $this->scopeAnalyzer->resolveScope($node, $this->file->getFilePath());
+            if ($currentScope instanceof MutatingScope) {
+                $this->changedNodeScopeRefresher->refresh($node, $currentScope, $this->file->getFilePath());
             }
         }
-        if (!$scope instanceof Scope) {
+        if (!$currentScope instanceof Scope) {
             /**
              * @var Node $parentNode
              *
@@ -52,6 +54,6 @@ abstract class AbstractScopeAwareRector extends \Rector\Core\Rector\AbstractRect
             $errorMessage = \sprintf('Scope not available on "%s" node with parent node of "%s", but is required by a refactorWithScope() method of "%s" rule. Fix scope refresh on changed nodes first', \get_class($node), \get_class($parentNode), static::class);
             throw new ShouldNotHappenException($errorMessage);
         }
-        return $this->refactorWithScope($node, $scope);
+        return $this->refactorWithScope($node, $currentScope);
     }
 }

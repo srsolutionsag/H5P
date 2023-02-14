@@ -4,11 +4,11 @@ declare (strict_types=1);
 namespace Rector\Testing\PHPUnit;
 
 use Iterator;
-use RectorPrefix202212\Nette\Utils\FileSystem;
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\FileSystem;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PHPStan\Analyser\NodeScopeResolver;
 use PHPUnit\Framework\ExpectationFailedException;
-use RectorPrefix202212\Psr\Container\ContainerInterface;
+use RectorPrefix202302\Psr\Container\ContainerInterface;
 use Rector\Core\Application\ApplicationFileProcessor;
 use Rector\Core\Application\FileSystem\RemovedAndAddedFilesCollector;
 use Rector\Core\Autoloading\AdditionalAutoloader;
@@ -80,7 +80,7 @@ abstract class AbstractRectorTestCase extends \Rector\Testing\PHPUnit\AbstractTe
     /**
      * @return Iterator<<string>>
      */
-    protected function yieldFilesFromDirectory(string $directory, string $suffix = '*.php.inc') : Iterator
+    protected static function yieldFilesFromDirectory(string $directory, string $suffix = '*.php.inc') : Iterator
     {
         return FixtureFileFinder::yieldDirectory($directory, $suffix);
     }
@@ -105,7 +105,7 @@ abstract class AbstractRectorTestCase extends \Rector\Testing\PHPUnit\AbstractTe
         $this->originalTempFilePath = $inputFilePath;
         $this->doTestFileMatchesExpectedContent($inputFilePath, $expectedFilePath, $fixtureFilePath);
     }
-    protected function getFixtureTempDirectory() : string
+    protected static function getFixtureTempDirectory() : string
     {
         return FixtureTempFileDumper::getTempDirectory();
     }

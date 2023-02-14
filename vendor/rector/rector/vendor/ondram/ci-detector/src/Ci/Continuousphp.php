@@ -1,11 +1,11 @@
 <?php
 
 declare (strict_types=1);
-namespace RectorPrefix202212\OndraM\CiDetector\Ci;
+namespace RectorPrefix202302\OndraM\CiDetector\Ci;
 
-use RectorPrefix202212\OndraM\CiDetector\CiDetector;
-use RectorPrefix202212\OndraM\CiDetector\Env;
-use RectorPrefix202212\OndraM\CiDetector\TrinaryLogic;
+use RectorPrefix202302\OndraM\CiDetector\CiDetector;
+use RectorPrefix202302\OndraM\CiDetector\Env;
+use RectorPrefix202302\OndraM\CiDetector\TrinaryLogic;
 class Continuousphp extends AbstractCi
 {
     public static function isDetected(Env $env) : bool

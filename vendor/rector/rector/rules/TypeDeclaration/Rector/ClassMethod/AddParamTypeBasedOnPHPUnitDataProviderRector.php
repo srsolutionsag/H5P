@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\TypeDeclaration\Rector\ClassMethod;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
@@ -69,7 +69,7 @@ final class SomeTest extends TestCase
     {
     }
 
-    public function provideData()
+    public static function provideData()
     {
         yield ['name'];
     }
@@ -87,7 +87,7 @@ final class SomeTest extends TestCase
     {
     }
 
-    public function provideData()
+    public static function provideData()
     {
         yield ['name'];
     }

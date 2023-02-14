@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\Content\ContentImporter;
-use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Content\IContent;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -18,9 +17,17 @@ class ilH5PImporter extends ilXmlImporter
     {
         $imported_xhfp_obj_id = (int) $a_mapping->getMapping('Services/Container', 'objs', $a_id);
 
-        (new ContentImporter(
+        $container = ilH5PPlugin::getInstance()->getContainer();
+
+        // has to be initialized here because getImportDirectory() will
+        // be initialized after the object is constructed.
+        (new ilH5PContentImporter(
+            $container->getKernelFramework(),
+            $container->getKernelValidator(),
+            $container->getKernelStorage(),
+            $container->getKernel(),
             $this->getImportDirectory(),
-            Content::PARENT_TYPE_OBJECT
+            IContent::PARENT_TYPE_OBJECT
         ))->import($a_xml, $imported_xhfp_obj_id);
     }
 }

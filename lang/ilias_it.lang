@@ -20,12 +20,12 @@ xhfp_write#:#Modifica
 actions#:#Azioni
 add#:#Aggiungi
 add_content#:#Aggiungi contenuto
-added_library#:#Aggiunta %%new nuova libreria H5P.
-added_libraries#:#Aggiunte %%new nuove librerie H5P.
-added_library_updated_library#:#Aggiunta %%new nuova libreria H5P e aggiornata %%old quella vecchia.
-added_library_updated_libraries#:#Aggiunta %%new nuova libreria H5P e aggiornate %%old quelle vecchie.
-added_libraries_updated_library#:#Aggiunte %%new nuove librerie H5P e aggiornata %%old quella vecchia.
-added_libraries_updated_libraries#:#Aggiunte %%new nuove librerie H5P e aggiornate %%old quelle vecchie.
+added_library#:#Added %d new H5P library.
+added_libraries#:#Added %d new H5P libraries.
+added_library_updated_library#:#Added %d new H5P library and updated %d old one.
+added_library_updated_libraries#:#Added %d new H5P library and updated %d old ones.
+added_libraries_updated_library#:#Added %d new H5P libraries and updated %d old one.
+added_libraries_updated_libraries#:#Added %d new H5P libraries and updated %d old ones.
 all#:#Tutti
 author#:#Autore
 by#:#di
@@ -45,7 +45,7 @@ delete#:#Cancella
 delete_content#:#Cancella contenuto
 delete_content_confirm#:#Vuoi davvero eliminare il contenuto: %s ?
 delete_library_confirm#:#Vuoi davvero eliminare questa libreria: %s ?
-delete_library_in_use#:#La libreria è in uso
+delete_library_in_use#:#You cannot delete this library because there are still H5P libraries or contents depending on it.
 delete_results_confirm#:#Vuoi davvero eliminare i risultati di %s?
 deleted_content#:#Contenuto %s cancellato
 deleted_files#:#Il seguente file è stato eliminato in %s:
@@ -71,9 +71,9 @@ finish#:#Finire
 finished#:#Finito
 fullscreen#:#Fullscreen
 hide_advanced#:#Nascondi avanzate
-hub_last_refresh#:#Ultimo aggiornamento HUB: %s
-hub_refresh#:#Aggiorna HUB
-hub_refreshed#:#HUB è stato aggiornato correttamente
+libraries_last_refresh#:#Ultimo aggiornamento Librerias: %s
+libraries_refresh#:#Aggiorna Librerias
+libraries_refreshed#:#Librerias è stato aggiornato correttamente.
 import#:#Importa
 import_content#:#Importa contenuto
 incomplete_content#:#Il contenuto H5P è incompleto. Si prega di controllare tutti gli input e i campi obbligatori
@@ -129,8 +129,8 @@ summary#:#Sommario
 thumbnail#:#Miniatura
 title#:#Titolo
 tutorial#:#Tutorial
-updated_library#:#Aggiornata la libreria H5P %%old 
-updated_libraries#:#Aggiornate le librerie H5P %%old 
+updated_library#:#Aggiornata la libreria H5P %d old 
+updated_libraries#:#Aggiornate le librerie H5P %d old 
 upgrade#:#Aggiornamento
 upgrade_available#:#Aggiornamento disponibile
 upload#:#Carica
@@ -150,12 +150,41 @@ visible#:#Visibile
 write#:#Scrivi
 year#:#Anno
 yes#:#Sì
-hub#:#HUB
 delete_old_events#:#Cancella i vecchi registri degli eventi
 delete_old_events_description#:#Cancella i vecchi registri degli eventi generati da H5P
 delete_old_tmp_files#:#Cancella i vecchi file temporanei
 delete_old_tmp_files_description#:#Cancella i vecchi file temporanei generati da H5P
-refresh_hub#:#Aggiorna elenco hub
-refresh_hub_description#:#Ricarica l'elenco degli hub
 object_not_found#:#L'oggetto non è stato trovato
 missing_parameter#:#Failure, parameter %s wasn't provided.
+msg_invalid_ref_ids#:#The submitted ref-ids are invalid.
+msg_invalid_ref_id#:#The submitted ref-id is invalid.
+msg_invalid_email#:#The submitted email address is invalid.
+msg_number_less_than#:#The submitted number must be less or equal to %d.
+back#:#Back
+no_content#:#There is no content yet.
+other#:#Other
+library_not_found#:#Could not find requested library.
+library_update_available#:#A new version of this library is available, click %s to update it now.
+here#:#here
+more#:#More
+screenshots#:#Screenshots
+screenshot_x_of_y#:#Screenshot %d of %d
+show_screenshots#:#Show
+perm_settings#:#Permissions
+dependencies#:#Dependencies
+move_up#:#Move up
+move_down#:#Move down
+result_count#:#Amount
+avg_score#:#Avg Score
+delete_results#:#Delete results
+score#:#Score
+score_total#:#Total score
+overview#:#Overview
+no_results#:#There are no results yet.
+cant_reset#:#Cannot reset data because contents may only be solved once.
+reset#:#Reset
+result_count_missmatch#:#There are not as many results as there are contents (yet).
+content_loading#:#Please wait while the content is loading...
+truncate_results_confirm#:#Are you sure you want to delete ALL results of this object?
+truncate_results#:#Truncate results
+user_not_found#:#The requested user could not be found.

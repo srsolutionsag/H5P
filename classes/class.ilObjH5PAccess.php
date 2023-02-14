@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\H5P\Content\IContentRepository;
+use srag\Plugins\H5P\Content\IContent;
 use Psr\Http\Message\ServerRequestInterface;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\ArrayBasedRequestWrapper;
+use ILIAS\Refinery\Factory as Refinery;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -12,12 +14,15 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class ilObjH5PAccess extends ilObjectPluginAccess
 {
-    use H5PTrait;
-
     /**
      * @var self|null
      */
-    protected static $instance = null;
+    protected static $instance;
+
+    /**
+     * @var IContentRepository
+     */
+    protected $content_repository;
 
     /**
      * @var ilObjectDataCache
@@ -25,23 +30,15 @@ class ilObjH5PAccess extends ilObjectPluginAccess
     protected $obj_data_cache;
 
     /**
-     * @var ilObjUser
+     * @var ArrayBasedRequestWrapper
      */
-    protected $user;
+    protected $get_request;
 
     /**
-     * @var ilAccessHandler
+     * @var Refinery
      */
-    protected $access;
+    protected $refinery;
 
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
-     * ilObjH5PAccess constructor
-     */
     public function __construct()
     {
         global $DIC;
@@ -49,34 +46,22 @@ class ilObjH5PAccess extends ilObjectPluginAccess
 
         $this->user = $DIC->user();
         $this->access = $DIC->access();
-        $this->request = $DIC->http()->request();
+        $this->refinery = $DIC->refinery();
         $this->obj_data_cache = $DIC['ilObjDataCache'];
+
+        $this->content_repository = new ilH5PContentRepository(
+            $DIC->ctrl(),
+            $DIC->user(),
+            $DIC->database()
+        );
+
+        $this->get_request = new ArrayBasedRequestWrapper(
+            $DIC->http()->request()->getQueryParams()
+        );
 
         self::$instance = $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function _isOffline($a_obj_id): bool
-    {
-        global $DIC;
-        if ($DIC['ilObjDataCache']->lookupType($a_obj_id) !== ilH5PPlugin::PLUGIN_ID) {
-            return (bool) ilObjectFactory::getInstanceByObjId($a_obj_id, false)->getOfflineStatus();
-        }
-
-        $object_settings = self::h5p()->objectSettings()->getObjectSettingsById((int) $a_obj_id);
-
-        if ($object_settings !== null) {
-            return (!$object_settings->isOnline());
-        }
-
-        return true;
-    }
-
-    /**
-     * @return self
-     */
     public static function getInstance(): self
     {
         if (self::$instance === null) {
@@ -87,68 +72,70 @@ class ilObjH5PAccess extends ilObjectPluginAccess
     }
 
     /**
-     * @param int|null $ref_id
-     *
-     * @return bool
+     * @inheritDoc
      */
+    public static function _isOffline($a_obj_id): bool
+    {
+        global $DIC;
+
+        /** @var $obj_data_cache ilObjectDataCache */
+        $obj_data_cache = $DIC['ilObjDataCache'];
+
+        if (ilH5PPlugin::PLUGIN_ID !== $obj_data_cache->lookupType((int) $a_obj_id)) {
+            return parent::_isOffline($a_obj_id);
+        }
+
+        $object_settings = (new ilH5PSettingsRepository())->getObjectSettings((int) $a_obj_id);
+
+        if (null !== $object_settings) {
+            return !$object_settings->isOnline();
+        }
+
+        return true;
+    }
+
     public static function hasDeleteAccess(int $ref_id = null): bool
     {
         return self::checkAccess("delete", "delete", $ref_id);
     }
 
-    /**
-     * @param int|null $ref_id
-     *
-     * @return bool
-     */
     public static function hasEditPermissionAccess(?int $ref_id = null): bool
     {
         return self::checkAccess("edit_permission", "edit_permission", $ref_id);
     }
 
-    /**
-     * @param int|null $ref_id
-     *
-     * @return bool
-     */
     public static function hasReadAccess(?int $ref_id = null): bool
     {
         return self::checkAccess("read", "read", $ref_id);
     }
 
-    /**
-     * @param int|null $ref_id
-     *
-     * @return bool
-     */
     public static function hasVisibleAccess(?int $ref_id = null): bool
     {
         return self::checkAccess("visible", "visible", $ref_id);
     }
 
-    /**
-     * @param int|null $ref_id
-     *
-     * @return bool
-     */
     public static function hasWriteAccess(?int $ref_id = null): bool
     {
         global $DIC;
-        $permission = ($DIC['ilObjDataCache']->lookupType(
-            $DIC['ilObjDataCache']->lookupObjId($ref_id)
-        ) === "wiki" ? "edit_content" : "write");
+
+        /** @var $obj_data_cache ilObjectDataCache */
+        $obj_data_cache = $DIC['ilObjDataCache'];
+
+        $permission = ($obj_data_cache->lookupType($obj_data_cache->lookupObjId($ref_id)) === "wiki") ?
+            "edit_content" :
+            "write";
 
         return self::checkAccess($permission, $permission, $ref_id);
     }
 
     /**
      * @param object|string $class
-     * @param string        $cmd
      */
     public static function redirectNonAccess($class, string $cmd = ""): void
     {
         global $DIC;
-        $plugin = \ilH5PPlugin::getInstance();
+
+        $plugin = ilH5PPlugin::getInstance();
 
         ilUtil::sendFailure($plugin->txt("permission_denied"), true);
 
@@ -161,15 +148,6 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         }
     }
 
-    /**
-     * @param string   $a_cmd
-     * @param string   $a_permission
-     * @param int|null $a_ref_id
-     * @param int|null $a_obj_id
-     * @param int|null $a_user_id
-     *
-     * @return bool
-     */
     protected static function checkAccess(
         string $a_cmd,
         string $a_permission,
@@ -190,12 +168,15 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         $a_obj_id = null,
         $a_user_id = null
     ): bool {
-        if ($a_ref_id === null) {
-            $a_ref_id = $this->request->getQueryParams()['ref_id'] ?? null;
-        }
+        if (null === $a_ref_id) {
+            if (!$this->get_request->has('ref_id')) {
+                return false;
+            }
 
-        if ($a_ref_id === null) {
-            return false;
+            $a_ref_id = $this->get_request->retrieve(
+                'ref_id',
+                $this->refinery->kindlyTo()->int()
+            );
         }
 
         if ($a_obj_id === null) {
@@ -209,9 +190,13 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         switch ($a_permission) {
             case "visible":
             case "read":
-                return
-                    ($this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) && !self::_isOffline($a_obj_id)) ||
-                    $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id);
+                return (
+                    (
+                        $this->access->checkAccessOfUser($a_user_id, $a_permission, "", $a_ref_id) &&
+                        !self::_isOffline($a_obj_id)
+                    ) ||
+                    $this->access->checkAccessOfUser($a_user_id, "write", "", $a_ref_id)
+                );
             case "delete":
                 return
                     $this->access->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id) ||
@@ -238,15 +223,17 @@ class ilObjH5PAccess extends ilObjectPluginAccess
             case "content":
                 $content_id = (int) substr($ilWACPath->getPath(), strlen($ilWACPath->getModulePath() . "content/"));
 
-                $content = self::h5p()->contents()->getContentById($content_id);
+                $content = $this->content_repository->getContent($content_id);
 
                 if ($content !== null) {
                     switch ($content->getParentType()) {
-                        case Content::PARENT_TYPE_OBJECT:
+                        case IContent::PARENT_TYPE_OBJECT:
                             return self::hasReadAccess(current(ilObject::_getAllReferences($content->getObjId())));
-
-                        case Content::PARENT_TYPE_PAGE:
+                        case IContent::PARENT_TYPE_PAGE:
                             return true;
+
+                        default:
+                            return false;
                     }
                 }
         }

@@ -265,7 +265,7 @@ if (!$ilDB->tableExists('rep_robj_xhfp_ev')) {
         'content_id' => [
             'type' => 'integer',
             'length' => '8',
-            'notnull' => '1',
+            'notnull' => '0',
         ],
         'content_title' => [
             'type' => 'text',
@@ -687,7 +687,8 @@ if (!$ilDB->tableExists('rep_robj_xhfp_solv')) {
             'notnull' => '1',
         ],
         'finished' => [
-            'type' => 'timestamp',
+            'type' => 'integer',
+            'length' => '1',
             'notnull' => '1',
         ],
         'id' => [
@@ -759,6 +760,15 @@ if (!$ilDB->tableExists('rep_robj_xhfp_obj')) {
     $ilDB->addPrimaryKey('rep_robj_xhfp_obj', [
         'obj_id',
     ]);
+}
+
+if (null === ilWACSecurePath::find('h5p')) {
+    $path = new ilWACSecurePath();
+    $path->setPath('h5p');
+    $path->setCheckingClass(ilObjH5PAccess::class);
+    $path->setInSecFolder(false);
+    $path->setComponentDirectory('./Customizing/global/plugins/Services/Repository/RepositoryObject/H5P');
+    $path->store();
 }
 ?>
 <#2>
@@ -1086,5 +1096,16 @@ if (!$ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'machine_name')) {
         'length' => '127',
         'notnull' => '1',
     ]);
+}
+?>
+<#11>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
+    $ilDB->query("
+        INSERT IGNORE INTO rep_robj_xhfp_opt_n (`name`, `value`) VALUES ('send_usage_statistics', '0')
+    ");
 }
 ?>

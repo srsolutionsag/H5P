@@ -26,7 +26,7 @@ use Rector\Core\PhpParser\Comparing\NodeComparator;
 use Rector\Core\Util\MultiInstanceofChecker;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use RectorPrefix202212\Webmozart\Assert\Assert;
+use RectorPrefix202302\Webmozart\Assert\Assert;
 /**
  * @see \Rector\Core\Tests\PhpParser\Node\BetterNodeFinder\BetterNodeFinderTest
  */
@@ -70,19 +70,17 @@ final class BetterNodeFinder
      * @param array<class-string<TNode>> $types
      * @return TNode|null
      */
-    public function findParentByTypes(Node $currentNode, array $types) : ?Node
+    public function findParentByTypes(Node $node, array $types) : ?Node
     {
         Assert::allIsAOf($types, Node::class);
-        while ($currentNode = $currentNode->getAttribute(AttributeKey::PARENT_NODE)) {
-            /** @var Node|null $currentNode */
-            if (!$currentNode instanceof Node) {
-                return null;
-            }
+        $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
+        while ($parentNode instanceof Node) {
             foreach ($types as $type) {
-                if (\is_a($currentNode, $type, \true)) {
-                    return $currentNode;
+                if ($parentNode instanceof $type) {
+                    return $parentNode;
                 }
             }
+            $parentNode = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
         }
         return null;
     }
@@ -95,15 +93,12 @@ final class BetterNodeFinder
     {
         Assert::isAOf($type, Node::class);
         $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (!$parentNode instanceof Node) {
-            return null;
-        }
-        do {
-            if (\is_a($parentNode, $type, \true)) {
+        while ($parentNode instanceof Node) {
+            if ($parentNode instanceof $type) {
                 return $parentNode;
             }
             $parentNode = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
-        } while ($parentNode instanceof Node);
+        }
         return null;
     }
     /**
@@ -212,6 +207,7 @@ final class BetterNodeFinder
         return $this->nodeFinder->find($nodes, $filter);
     }
     /**
+     * @api symfony
      * @param Node[] $nodes
      * @return ClassLike|null
      */
@@ -254,6 +250,7 @@ final class BetterNodeFinder
         });
     }
     /**
+     * @api symfony
      * @return Assign|null
      */
     public function findPreviousAssignToExpr(Expr $expr) : ?Node

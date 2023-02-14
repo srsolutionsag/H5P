@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202212\Symfony\Component\Console\Helper;
+namespace RectorPrefix202302\Symfony\Component\Console\Helper;
 
-use RectorPrefix202212\Symfony\Component\Console\Cursor;
-use RectorPrefix202212\Symfony\Component\Console\Exception\LogicException;
-use RectorPrefix202212\Symfony\Component\Console\Output\ConsoleOutputInterface;
-use RectorPrefix202212\Symfony\Component\Console\Output\ConsoleSectionOutput;
-use RectorPrefix202212\Symfony\Component\Console\Output\OutputInterface;
-use RectorPrefix202212\Symfony\Component\Console\Terminal;
+use RectorPrefix202302\Symfony\Component\Console\Cursor;
+use RectorPrefix202302\Symfony\Component\Console\Exception\LogicException;
+use RectorPrefix202302\Symfony\Component\Console\Output\ConsoleOutputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Output\ConsoleSectionOutput;
+use RectorPrefix202302\Symfony\Component\Console\Output\OutputInterface;
+use RectorPrefix202302\Symfony\Component\Console\Terminal;
 /**
  * The ProgressBar provides helpers to display progress output.
  *
@@ -104,10 +104,6 @@ final class ProgressBar
      * @var float
      */
     private $percent = 0.0;
-    /**
-     * @var int
-     */
-    private $formatLineCount;
     /**
      * @var mixed[]
      */
@@ -450,7 +446,6 @@ final class ProgressBar
         } else {
             $this->format = $format;
         }
-        $this->formatLineCount = \substr_count($this->format, "\n");
     }
     /**
      * Overwrites a previous message to the output.
@@ -464,7 +459,7 @@ final class ProgressBar
         if ($this->overwrite) {
             if (null !== $this->previousMessage) {
                 if ($this->output instanceof ConsoleSectionOutput) {
-                    $messageLines = \explode("\n", $message);
+                    $messageLines = \explode("\n", $this->previousMessage);
                     $lineCount = \count($messageLines);
                     foreach ($messageLines as $messageLine) {
                         $messageLineLength = Helper::width(Helper::removeDecoration($this->output->getFormatter(), $messageLine));
@@ -474,13 +469,11 @@ final class ProgressBar
                     }
                     $this->output->clear($lineCount);
                 } else {
-                    if ('' !== $this->previousMessage) {
-                        // only clear upper lines when last call was not a clear
-                        for ($i = 0; $i < $this->formatLineCount; ++$i) {
-                            $this->cursor->moveToColumn(1);
-                            $this->cursor->clearLine();
-                            $this->cursor->moveUp();
-                        }
+                    $lineCount = \substr_count($this->previousMessage, "\n");
+                    for ($i = 0; $i < $lineCount; ++$i) {
+                        $this->cursor->moveToColumn(1);
+                        $this->cursor->clearLine();
+                        $this->cursor->moveUp();
                     }
                     $this->cursor->moveToColumn(1);
                     $this->cursor->clearLine();

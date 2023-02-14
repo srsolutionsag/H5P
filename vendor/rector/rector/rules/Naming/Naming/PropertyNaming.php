@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Naming\Naming;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StaticType;
@@ -74,6 +74,10 @@ final class PropertyNaming
     }
     public function getExpectedNameFromType(Type $type) : ?ExpectedName
     {
+        // keep doctrine collections untouched
+        if ($type instanceof ObjectType && $type->isInstanceOf('Doctrine\\Common\\Collections\\Collection')->yes()) {
+            return null;
+        }
         $className = $this->resolveClassNameFromType($type);
         if (!\is_string($className)) {
             return null;
@@ -111,15 +115,6 @@ final class PropertyNaming
         $variableName = \str_replace('_', '', $variableName);
         // prolong too short generic names with one namespace up
         return $this->prolongIfTooShort($variableName, $className);
-    }
-    /**
-     * @see https://stackoverflow.com/a/2792045/1348344
-     */
-    public function underscoreToName(string $underscoreName) : string
-    {
-        $uppercaseWords = \ucwords($underscoreName, '_');
-        $pascalCaseName = \str_replace('_', '', $uppercaseWords);
-        return \lcfirst($pascalCaseName);
     }
     private function resolveShortClassName(string $className) : string
     {
@@ -233,7 +228,7 @@ final class PropertyNaming
             $shortClassName = \strtolower($shortClassName);
         }
         // remove "_"
-        $shortClassName = Strings::replace($shortClassName, '#_#', '');
+        $shortClassName = Strings::replace($shortClassName, '#_#');
         return $this->normalizeUpperCase($shortClassName);
     }
     private function resolveClassNameFromType(Type $type) : ?string

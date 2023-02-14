@@ -71,7 +71,7 @@ class VersionComparator
      */
     public function is6(): bool
     {
-        return $this->isMinVersion("6.0");
+        return $this->isMinVersion("6.0") && $this->isMaxVersion("6.999");
     }
 
     /**
@@ -79,7 +79,7 @@ class VersionComparator
      */
     public function is7(): bool
     {
-        return $this->isMinVersion("7.0");
+        return $this->isMinVersion("7.0") && $this->isMaxVersion("7.999");
     }
 
     /**
@@ -87,7 +87,7 @@ class VersionComparator
      */
     public function is8(): bool
     {
-        return $this->isMinVersion("8.0");
+        return $this->isMinVersion("8.0") && $this->isMaxVersion("8.999");
     }
 
     /**

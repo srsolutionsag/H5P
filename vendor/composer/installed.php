@@ -3,7 +3,7 @@
         'name' => 'srag/h5p',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '116b79fd1f7005d5ba55c772caf42f7db31ddf86',
+        'reference' => 'f7fb9a7ae313faca8a538fcb51d794ccd64b8b13',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,12 +11,14 @@
     ),
     'versions' => array(
         'h5p/h5p-core' => array(
-            'pretty_version' => '1.24.4',
-            'version' => '1.24.4.0',
-            'reference' => '52b1ae5556d0f846b004f8cedc01a1a3cea7bdf8',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'c533cd0d7288c00f3341c84a518b6b495e3c397f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-core',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'h5p/h5p-editor' => array(
@@ -29,18 +31,18 @@
             'dev_requirement' => false,
         ),
         'phpstan/phpstan' => array(
-            'pretty_version' => '1.9.4',
-            'version' => '1.9.4.0',
-            'reference' => 'd03bccee595e2146b7c9d174486b84f4dc61b0f2',
+            'pretty_version' => '1.9.14',
+            'version' => '1.9.14.0',
+            'reference' => 'e5fcc96289cf737304286a9b505fbed091f02e58',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpstan/phpstan',
             'aliases' => array(),
             'dev_requirement' => true,
         ),
         'rector/rector' => array(
-            'pretty_version' => '0.15.1',
-            'version' => '0.15.1.0',
-            'reference' => 'bf5297204f7d46b8a74c1cc01b54341cbf00b74c',
+            'pretty_version' => '0.15.12',
+            'version' => '0.15.12.0',
+            'reference' => '9b9b8ed4d918abcd999f4a7c2575834a8aede929',
             'type' => 'library',
             'install_path' => __DIR__ . '/../rector/rector',
             'aliases' => array(),
@@ -49,7 +51,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '58046a3fc3555eda6567a2bdae7195be6aa9babe',
+            'reference' => '90538aab13dced1209eb1b30e169308fea0fd783',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(
@@ -60,7 +62,7 @@
         'srag/h5p' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '116b79fd1f7005d5ba55c772caf42f7db31ddf86',
+            'reference' => 'f7fb9a7ae313faca8a538fcb51d794ccd64b8b13',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

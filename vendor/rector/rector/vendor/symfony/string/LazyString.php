@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202212\Symfony\Component\String;
+namespace RectorPrefix202302\Symfony\Component\String;
 
 /**
  * A string whose value is computed lazily by a callback.
@@ -117,7 +117,7 @@ class LazyString implements \JsonSerializable
             $method = $callback[1];
         } elseif ($callback instanceof \Closure) {
             $r = new \ReflectionFunction($callback);
-            if (\strpos($r->name, '{closure}') !== \false || !($class = $r->getClosureScopeClass())) {
+            if (\strpos($r->name, '{closure}') !== \false || !($class = \PHP_VERSION_ID >= 80111 ? $r->getClosureCalledClass() : $r->getClosureScopeClass())) {
                 return $r->name;
             }
             $class = $class->name;

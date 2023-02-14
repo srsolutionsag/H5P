@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\ObjectSettings\ObjectSettings;
-use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\Settings\ISettingsRepository;
+use srag\Plugins\H5P\Settings\IObjectSettings;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -11,12 +11,25 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class ilObjH5P extends ilObjectPlugin
 {
-    use H5PTrait;
+    /**
+     * @var ilH5PRepositoryFactory
+     */
+    protected $repositories;
 
     /**
-     * @var ObjectSettings|null
+     * @var H5PStorage
      */
-    protected $object_settings;
+    protected $h5p_storage;
+
+    /**
+     * @var IObjectSettings
+     */
+    protected $settings;
+
+    /**
+     * @var ilH5PPlugin
+     */
+    protected $plugin;
 
     /**
      * @param int $a_ref_id
@@ -27,19 +40,51 @@ class ilObjH5P extends ilObjectPlugin
     {
         parent::__construct($a_ref_id);
 
-        self::h5p()->objectSettings()->factory()->newInstance();
+        $container = ilH5PPlugin::getInstance()->getContainer();
+
+        $this->repositories = $container->getRepositoryFactory();
+        $this->h5p_storage = $container->getKernelStorage();
     }
 
     /**
      * @inheritDoc
      */
-    public function doCreate(): void
+    protected function doCreate(): void
     {
-        $this->object_settings = self::h5p()->objectSettings()->factory()->newInstance();
+        $object_settings = new ilH5PObjectSettings();
+        $object_settings->setObjId($this->getId());
 
-        $this->object_settings->setObjId($this->id);
+        $this->repositories->settings()->storeObjectSettings($object_settings);
+        $this->settings = $object_settings;
+    }
 
-        self::h5p()->objectSettings()->storeObjectSettings($this->object_settings);
+    /**
+     * @param ilObjH5P $new_obj
+     * @param int $a_target_id
+     * @param int $a_copy_id
+     *
+     * @inheritDoc
+     */
+    protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null): void
+    {
+        $new_obj->settings = $this->repositories->settings()->cloneObjectSettings($this->settings);
+        $new_obj->settings->setObjId($new_obj->getId());
+
+        $this->repositories->settings()->storeObjectSettings($new_obj->settings);
+
+        $contents = $this->repositories->content()->getContentsByObject($this->getId());
+
+        foreach ($contents as $content) {
+            $copy = $this->repositories->content()->cloneContent($content);
+            $copy->setObjId($new_obj->getId());
+
+            $this->repositories->content()->storeContent($copy);
+
+            $this->h5p_storage->copyPackage(
+                $copy->getContentId(),
+                $content->getContentId()
+            );
+        }
     }
 
     /**
@@ -47,19 +92,22 @@ class ilObjH5P extends ilObjectPlugin
      */
     protected function doDelete(): void
     {
-        if ($this->object_settings !== null) {
-            self::h5p()->objectSettings()->deleteObjectSettings($this->object_settings);
+        // delete object settings
+        $settings = $this->repositories->settings()->getObjectSettings($this->getId());
+        if (null !== $settings) {
+            $this->repositories->settings()->deleteObjectSettings($settings);
         }
 
-        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
-
-        foreach ($h5p_contents as $h5p_content) {
-            self::h5p()->contents()->editor()->show()->deleteContent($h5p_content, false);
+        // delete object h5p contents
+        $contents = $this->repositories->content()->getContentsByObject($this->getId());
+        foreach ($contents as $content) {
+            $this->repositories->content()->deleteContent($content);
         }
 
-        $h5p_solve_statuses = self::h5p()->results()->getByObject($this->id);
-        foreach ($h5p_solve_statuses as $h5p_solve_status) {
-            self::h5p()->results()->deleteSolveStatus($h5p_solve_status);
+        // delete object h5p solved stati
+        $solved_status_list = $this->repositories->result()->getSolvedStatusListByObject($this->getId());
+        foreach ($solved_status_list as $status) {
+            $this->repositories->result()->deleteSolvedStatus($status);
         }
     }
 
@@ -68,7 +116,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     protected function doRead(): void
     {
-        $this->object_settings = self::h5p()->objectSettings()->getObjectSettingsById(intval($this->id));
+        $this->settings = $this->repositories->settings()->getObjectSettings($this->getId());
     }
 
     /**
@@ -76,7 +124,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     protected function doUpdate(): void
     {
-        self::h5p()->objectSettings()->storeObjectSettings($this->object_settings);
+        $this->repositories->settings()->storeObjectSettings($this->settings);
     }
 
     /**
@@ -92,7 +140,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function isOnline(): bool
     {
-        return $this->object_settings->isOnline();
+        return $this->settings->isOnline();
     }
 
     /**
@@ -100,7 +148,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function isSolveOnlyOnce(): bool
     {
-        return $this->object_settings->isSolveOnlyOnce();
+        return $this->settings->isSolveOnlyOnce();
     }
 
     /**
@@ -108,7 +156,7 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function setOnline(bool $is_online = true): void
     {
-        $this->object_settings->setOnline($is_online);
+        $this->settings->setOnline($is_online);
     }
 
     /**
@@ -116,35 +164,6 @@ class ilObjH5P extends ilObjectPlugin
      */
     public function setSolveOnlyOnce(bool $solve_only_once): void
     {
-        $this->object_settings->setSolveOnlyOnce($solve_only_once);
-    }
-
-    /**
-     * @param ilObjH5P $new_obj
-     *
-     * @inheritDoc
-     */
-    protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null): void
-    {
-        $new_obj->object_settings = self::h5p()->objectSettings()->cloneObjectSettings($this->object_settings);
-
-        $new_obj->object_settings->setObjId($new_obj->id);
-
-        self::h5p()->objectSettings()->storeObjectSettings($new_obj->object_settings);
-
-        $h5p_contents = self::h5p()->contents()->getContentsByObject($this->id);
-
-        foreach ($h5p_contents as $h5p_content) {
-            $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
-
-            $h5p_content_copy->setObjId($new_obj->id);
-
-            self::h5p()->contents()->storeContent($h5p_content_copy);
-
-            self::h5p()->contents()->editor()->storageCore()->copyPackage(
-                $h5p_content_copy->getContentId(),
-                $h5p_content->getContentId()
-            );
-        }
+        $this->settings->setSolveOnlyOnce($solve_only_once);
     }
 }

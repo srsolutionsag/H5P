@@ -8,6 +8,7 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\InlineHTML;
 use PhpParser\Node\Stmt\Nop;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NodeConnectingVisitor;
@@ -42,7 +43,7 @@ use Rector\PhpDocParser\NodeTraverser\SimpleCallableNodeTraverser;
 use Rector\PostRector\Collector\NodesToRemoveCollector;
 use Rector\Skipper\Skipper\Skipper;
 use Rector\StaticTypeMapper\StaticTypeMapper;
-use RectorPrefix202212\Symfony\Contracts\Service\Attribute\Required;
+use RectorPrefix202302\Symfony\Contracts\Service\Attribute\Required;
 abstract class AbstractRector extends NodeVisitorAbstract implements PhpRectorInterface
 {
     /**
@@ -297,6 +298,9 @@ CODE_SAMPLE;
     protected function mirrorComments(Node $newNode, Node $oldNode) : void
     {
         if ($this->nodeComparator->areSameNode($newNode, $oldNode)) {
+            return;
+        }
+        if ($oldNode instanceof InlineHTML) {
             return;
         }
         $newNode->setAttribute(AttributeKey::PHP_DOC_INFO, $oldNode->getAttribute(AttributeKey::PHP_DOC_INFO));

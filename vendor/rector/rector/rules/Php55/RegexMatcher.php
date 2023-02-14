@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Php55;
 
-use RectorPrefix202212\Nette\Utils\Strings;
+use RectorPrefix202302\Nette\Utils\Strings;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Scalar\String_;
@@ -89,7 +89,7 @@ final class RegexMatcher
     }
     private function createPatternWithoutE(string $pattern, string $delimiter, string $modifiers) : string
     {
-        $modifiersWithoutE = Strings::replace($modifiers, '#e#', '');
+        $modifiersWithoutE = Strings::replace($modifiers, '#e#');
         return Strings::before($pattern, $delimiter, -1) . $delimiter . $modifiersWithoutE;
     }
     private function matchConcat(Concat $concat) : ?Concat

@@ -1,14 +1,53 @@
 # H5P Changelog
 
-## 3.2.0
+## 4.0.0
 
+- Fixed `ilH5PEditorStorage::saveFileTemporarily` and `ilH5PEditorStorage::removeTemporarilySavedFiles` which create
+  an `ITmpFile` for uploaded files as well now. This has to be improved due to files being uploaded asynchronously,
+  which led to `H5PFrameworkInterface::getUploadedH5pPath` new paths instead of the upload-paths.
+- Added new "truncate results" bulk-action on the results page, which can be used to easily delete all results of the
+  current H5P object.
+- Updated `h5p/h5p-core` and `h5p/h5p-editor` composer packages and implemented according changes.
+- Improved loading process of H5P contents, which will now display an info-message while loading to avoid empty screens
+  on slow servers
+- User data of H5P contents will now be saved frequently (every 30 seconds) ~~or if the user finished a content~~. This
+  data
+  will be taken into account when displaying them again, showing the users last submitted data.
+- Fixed an issue where the plugins `contentUserData` endpoint has never been reached, due to a typo in the controllers
+  class-method. The endpoint is now available and can (possibly) save the state of H5P contents.
+- Fixed an issue where the form for editing a content could have been submitted without filling out all required input
+  fields.
+- Improved the library deletion, which now deletes **ALL** associated data. Until now only the installed `IHubLibrary`
+  has been deleted without their related `ICachedLibraryAsset`'s and helper `ILibrary`'s.
+- Improved the repository for general settings (plugin configuration) to cache DTOs during a request to reduce the
+  database load.
+- Fixed an issue where the `send_usage_statistics` option was not found, which resulted in usage-statistics being sent
+  by default (eventhough the configuration id disabled initially).
+- Replaced legacy implementation (fluxlabs) of the H5P editor integration by a custom UI component, which is available
+  for UI component `Form`'s.
+- Replaced legacy implementation (fluxlabs) of H5P content integrations by custom UI components.
+- Improved overview- and details-page of H5P libraries by using new UI components.
+- Replaced and removed all usages of the `H5PTrait` and used proper dependency injection (when possible).
+- Extracted workflows and split them up into different smaller GUI classes, rather than handling everything in two GUIs.
+- Moved `ActiveRecord`'s and repositories behind interfaces and removed all direct manipulations (CRUD) the DTOs
+  themselves by according methods in the repositories.
+- Fixed `dbupdate.sql` script so it performs static queries instead of calling `ActiveRecord::installDB()`.
+- Extracted all H5P classes from factories and centralized their initialization in a local
+  dependency-injection-container (`IContainer`).
+- Removed unnecessary root-folder files (git-ignore and CI-config).
+- Applied PSR-12 to the whole codebase except composer packages.
+- Refactored the plugin configuration by using UI components for forms and replaced the legacy implementation (fluxlabs)
+  by a proper `ActiveRecord` class (as database-access-layer).
+- Prohibited deletion of installed libraries, if there are content or other libraries which still depend on it.
+- Replaced abstract form implementations (fluxlabs) by using the UI components.
 - Replaced all `filter_input` calls by ILIAS>=8 request wrappers. To maintain ILIAS<8 compatibility the implementation
   has been copied and can easily be replaced in the future.
+- Replaced abstract table implementations (fluxlabs) by using new UI components (presentation table).
+- Replaced all legacy PHP type-casts (e.g. `intval($x)`) by proper type-casts (like `(int) $x`).
+- Implemented PHP-Rectors which automatically remove the `DICTrait` without breaking the existing implementation. The
+  replacements are directly fetched from the ILIAS dependency-injection-container (`$DIC`).
+- Fixed possible null-pointer exception in several cases.
 - Uninstalled all remaining legacy (fluxlabs) composer packages.
-- Implemented PHP-Rectors which automatically remove the `DICTrait` without breaking the existing implementation.
-- Fixed `dbupdate.sql` script so it performs static queries instead of calling `ActiveRecord::installDB()`.
-- Removed unnecessary root-folder files (git-ignore and CI-config).
-- Removed all fluxlabs (legacy) composer packages
 
 ## 3.1.1
 

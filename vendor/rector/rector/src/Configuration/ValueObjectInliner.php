@@ -5,8 +5,8 @@ namespace Rector\Core\Configuration;
 
 use ReflectionClass;
 use ReflectionMethod;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\Definition;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\Loader\Configurator\InlineServiceConfigurator;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\Definition;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\Loader\Configurator\InlineServiceConfigurator;
 final class ValueObjectInliner
 {
     /**
@@ -24,7 +24,7 @@ final class ValueObjectInliner
      * @param ReflectionClass<object> $reflectionClass
      * @return mixed[]
      */
-    public static function resolveArgumentValues(ReflectionClass $reflectionClass, object $object) : array
+    private static function resolveArgumentValues(ReflectionClass $reflectionClass, object $object) : array
     {
         $argumentValues = [];
         $constructorReflectionMethod = $reflectionClass->getConstructor();

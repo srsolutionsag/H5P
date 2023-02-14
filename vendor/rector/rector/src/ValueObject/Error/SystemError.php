@@ -4,7 +4,7 @@ declare (strict_types=1);
 namespace Rector\Core\ValueObject\Error;
 
 use Rector\Parallel\ValueObject\Name;
-use RectorPrefix202212\Symplify\EasyParallel\Contract\SerializableInterface;
+use RectorPrefix202302\Symplify\EasyParallel\Contract\SerializableInterface;
 final class SystemError implements SerializableInterface
 {
     /**
@@ -45,10 +45,6 @@ final class SystemError implements SerializableInterface
     public function getLine() : ?int
     {
         return $this->line;
-    }
-    public function getFileWithLine() : string
-    {
-        return $this->relativeFilePath . ':' . $this->line;
     }
     public function getRelativeFilePath() : ?string
     {

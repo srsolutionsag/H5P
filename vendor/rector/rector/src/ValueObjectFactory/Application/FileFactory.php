@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Core\ValueObjectFactory\Application;
 
-use RectorPrefix202212\Nette\Utils\FileSystem;
+use RectorPrefix202302\Nette\Utils\FileSystem;
 use Rector\Caching\Detector\ChangedFilesDetector;
 use Rector\Core\Contract\Processor\FileProcessorInterface;
 use Rector\Core\FileSystem\FilesFinder;
@@ -51,12 +51,11 @@ final class FileFactory
         return $this->filesFinder->findInDirectoriesAndFiles($paths, $supportedFileExtensions);
     }
     /**
-     * @param string[] $paths
+     * @param string[] $filePaths
      * @return File[]
      */
-    public function createFromPaths(array $paths, Configuration $configuration) : array
+    public function createFromPaths(array $filePaths) : array
     {
-        $filePaths = $this->createFileInfosFromPaths($paths, $configuration);
         $files = [];
         foreach ($filePaths as $filePath) {
             $files[] = new File($filePath, FileSystem::read($filePath));

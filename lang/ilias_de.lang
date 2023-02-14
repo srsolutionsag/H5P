@@ -20,12 +20,12 @@ xhfp_write#:#Bearbeiten
 actions#:#Aktionen
 add#:#Hinzufügen
 add_content#:#Inhalt hinzufügen
-added_library#:#%%new neue H5P Bibliothek hinzugefügt.
-added_libraries#:#%%new neue H5P Bibliotheken hinzugefügt.
-added_library_updated_library#:#%%new neue H5P Bibliothek hinzugefügt %%old alte aktualisiert.
-added_library_updated_libraries#:#%%new neue H5P Bibliothek hinzugefügt %%old alte aktualisiert.
-added_libraries_updated_library#:#%%new neue H5P Bibliotheken hinzugefügt %%old alte aktualisiert.
-added_libraries_updated_libraries#:#%%new neue H5P Bibliotheken hinzugefügt %%old alte aktualisiert.
+added_library#:#%d new neue H5P Bibliothek hinzugefügt.
+added_libraries#:#%d new neue H5P Bibliotheken hinzugefügt.
+added_library_updated_library#:#%d neue H5P Bibliothek hinzugefügt %d alte aktualisiert.
+added_library_updated_libraries#:#%d neue H5P Bibliothek hinzugefügt %d alte aktualisiert.
+added_libraries_updated_library#:#%d neue H5P Bibliotheken hinzugefügt %d alte aktualisiert.
+added_libraries_updated_libraries#:#%d neue H5P Bibliotheken hinzugefügt %d alte aktualisiert.
 all#:#Alle
 author#:#Autor
 by#:#von
@@ -45,7 +45,7 @@ delete#:#Löschen
 delete_content#:#Inhalt löschen
 delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
-delete_library_in_use#:#Die Bibliothek wird noch benutzt
+delete_library_in_use#:#Sie können diese Bibliothek nicht löschen, es existieren noch H5P-Inhalte und -Bibliotheken die auf sie angewiesen sind.
 delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
 deleted_content#:#Inhalt %s gelöscht
 deleted_files#:#Folgende Dateien wurden in %s gelöscht:
@@ -71,9 +71,9 @@ finish#:#Beenden
 finished#:#Beendet
 fullscreen#:#Vollbild
 hide_advanced#:#Details ausblenden
-hub_last_refresh#:#HUB zuletzt aktualisiert: %s
-hub_refresh#:#HUB neu laden
-hub_refreshed#:#HUB wurde erfolgreich neu geladen
+libraries_last_refresh#:#Bibliotheken zuletzt aktualisiert: %s
+libraries_refresh#:#Bibliothek-liste aktualisieren
+libraries_refreshed#:#Bibliothek-liste wurde erfolgreich aktualisiert
 import#:#Importieren
 import_content#:#Inhalt importieren
 incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder
@@ -129,8 +129,8 @@ summary#:#Zusammenfassung
 thumbnail#:#Vorschaubild
 title#:#Titel
 tutorial#:#Tutorial
-updated_library#:#%%old H5P Bibliothek aktualisiert.
-updated_libraries#:#%%old H5P Bibliotheken aktualisiert.
+updated_library#:#%d old H5P Bibliothek aktualisiert.
+updated_libraries#:#%d old H5P Bibliotheken aktualisiert.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
@@ -150,12 +150,41 @@ visible#:#Sichtbar
 write#:#Schreiben
 year#:#Jahr
 yes#:#Ja
-hub#:#HUB
 delete_old_events#:#Alte Event-Logs löschen
 delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
 delete_old_tmp_files#:#Alte Temp-Dateien löschen
 delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
-refresh_hub#:#Hub-Liste aktualisieren
-refresh_hub_description#:#Lädt die Hub-Liste neu
 object_not_found#:#Das angefragte H5P Objekt wurde nicht gefunden.
 missing_parameter#:#Fehler, Parameter %s wurde nicht gefunden.
+msg_invalid_ref_ids#:#Die angegebenen Ref-ID's sind ungültig.
+msg_invalid_ref_id#:#Die angegebene Ref-ID ist ungültig.
+msg_invalid_email#:#Die angegebene E-Mail Adresse ist ungültig.
+msg_number_less_than#:#Die angegebene Nummer muss kleiner oder gleich %d sein.
+back#:#Zurück
+no_content#:#Es wurde noch kein Inhalt hinzugefügt.
+other#:#Andere
+library_not_found#:#Bibliothek wurde nicht gefunden.
+library_update_available#:#Neue Bibliothek-Version verfügbar, klicken Sie %s, um die Bibliothek zu aktualisieren.
+here#:#hier
+more#:#Mehr
+screenshots#:#Screenshots
+screenshot_x_of_y#:#Screenshot %d von %d
+show_screenshots#:#Öffnen
+perm_settings#:#Rechte
+dependencies#:#Abhängigkeiten
+move_up#:#Inhalt nach oben
+move_down#:#Inhalt nach unten
+result_count#:#Anzahl
+avg_score#:#Avg Score
+delete_results#:#Resultate löschen
+score#:#Punkte
+score_total#:#Punkte Total
+overview#:#Übersicht
+no_results#:#Es gibt noch keine Resultate für dieses Objekt.
+cant_reset#:#Inhalt kann nicht zurückgesetzt werden, da diese nur einmal gelöst werden dürfen.
+reset#:#Zurücksetzen
+result_count_missmatch#:#Die Anzahl Resultate stimmt nicht mit der Anzahl Inhalte überein.
+content_loading#:#Bitte warten Sie, während der Inhalt am laden ist...
+truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate von diesem Objekt löschen wollen?
+truncate_results#:#Resultate löschen
+user_not_found#:#Der angefragte Benutzer konnte nicht gefunden werden.

@@ -7,7 +7,7 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Caching\ValueObject\Storage\MemoryCacheStorage;
 use Rector\Core\Configuration\Option;
 use Rector\Core\Configuration\Parameter\ParameterProvider;
-use RectorPrefix202212\Symfony\Component\Filesystem\Filesystem;
+use RectorPrefix202302\Symfony\Component\Filesystem\Filesystem;
 final class CacheFactory
 {
     /**
@@ -25,6 +25,9 @@ final class CacheFactory
         $this->parameterProvider = $parameterProvider;
         $this->fileSystem = $fileSystem;
     }
+    /**
+     * @api config factory
+     */
     public function create() : \Rector\Caching\Cache
     {
         $cacheDirectory = $this->parameterProvider->provideStringParameter(Option::CACHE_DIR);

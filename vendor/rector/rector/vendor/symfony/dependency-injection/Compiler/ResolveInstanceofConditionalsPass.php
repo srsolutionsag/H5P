@@ -8,13 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202212\Symfony\Component\DependencyInjection\Compiler;
+namespace RectorPrefix202302\Symfony\Component\DependencyInjection\Compiler;
 
-use RectorPrefix202212\Symfony\Component\DependencyInjection\ChildDefinition;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\ContainerBuilder;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\Definition;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use RectorPrefix202212\Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\ChildDefinition;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\ContainerBuilder;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\Definition;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use RectorPrefix202302\Symfony\Component\DependencyInjection\Exception\RuntimeException;
 /**
  * Applies instanceof conditionals to definitions.
  *
@@ -109,7 +109,7 @@ class ResolveInstanceofConditionalsPass implements CompilerPassInterface
                 foreach ($instanceofTags[$i] as $k => $v) {
                     if (null === $definition->getDecoratedService() || \in_array($k, $tagsToKeep, \true)) {
                         foreach ($v as $v) {
-                            if ($definition->hasTag($k) && (!$v || \in_array($v, $definition->getTag($k)))) {
+                            if ($definition->hasTag($k) && \in_array($v, $definition->getTag($k))) {
                                 continue;
                             }
                             $definition->addTag($k, $v);

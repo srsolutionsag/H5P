@@ -12,6 +12,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\Reflection\ClassReflection;
 use Rector\Core\Enum\ObjectReference;
+use Rector\Core\NodeAnalyzer\ClassAnalyzer;
 use Rector\Core\NodeAnalyzer\PropertyFetchAnalyzer;
 use Rector\Core\NodeManipulator\PropertyManipulator;
 use Rector\Core\PhpParser\AstResolver;
@@ -50,7 +51,12 @@ final class ParentPropertyLookupGuard
      * @var \Rector\Core\NodeManipulator\PropertyManipulator
      */
     private $propertyManipulator;
-    public function __construct(BetterNodeFinder $betterNodeFinder, ReflectionResolver $reflectionResolver, NodeNameResolver $nodeNameResolver, PropertyFetchAnalyzer $propertyFetchAnalyzer, AstResolver $astResolver, PropertyManipulator $propertyManipulator)
+    /**
+     * @readonly
+     * @var \Rector\Core\NodeAnalyzer\ClassAnalyzer
+     */
+    private $classAnalyzer;
+    public function __construct(BetterNodeFinder $betterNodeFinder, ReflectionResolver $reflectionResolver, NodeNameResolver $nodeNameResolver, PropertyFetchAnalyzer $propertyFetchAnalyzer, AstResolver $astResolver, PropertyManipulator $propertyManipulator, ClassAnalyzer $classAnalyzer)
     {
         $this->betterNodeFinder = $betterNodeFinder;
         $this->reflectionResolver = $reflectionResolver;
@@ -58,14 +64,14 @@ final class ParentPropertyLookupGuard
         $this->propertyFetchAnalyzer = $propertyFetchAnalyzer;
         $this->astResolver = $astResolver;
         $this->propertyManipulator = $propertyManipulator;
+        $this->classAnalyzer = $classAnalyzer;
     }
-    public function isLegal(Property $property) : bool
+    public function isLegal(Property $property, Class_ $class) : bool
     {
-        $class = $this->betterNodeFinder->findParentType($property, Class_::class);
-        if (!$class instanceof Class_) {
+        if ($this->classAnalyzer->isAnonymousClass($class)) {
             return \false;
         }
-        $classReflection = $this->reflectionResolver->resolveClassReflection($property);
+        $classReflection = $this->reflectionResolver->resolveClassReflection($class);
         if (!$classReflection instanceof ClassReflection) {
             return \false;
         }
@@ -77,20 +83,12 @@ final class ParentPropertyLookupGuard
             return \true;
         }
         $className = $classReflection->getName();
-        $parents = $classReflection->getParents();
+        $parentClassReflections = $classReflection->getParents();
         // parent class not autoloaded
-        if ($parents === []) {
+        if ($parentClassReflections === []) {
             return \false;
         }
-        foreach ($parents as $parent) {
-            if ($parent->hasProperty($propertyName)) {
-                return \false;
-            }
-            if ($this->isFoundInParentClassMethods($parent, $propertyName, $className)) {
-                return \false;
-            }
-        }
-        return \true;
+        return $this->isGuardedByParents($parentClassReflections, $propertyName, $className);
     }
     private function isFoundInParentClassMethods(ClassReflection $parentClassReflection, string $propertyName, string $className) : bool
     {
@@ -131,5 +129,20 @@ final class ParentPropertyLookupGuard
             }
             return $this->nodeNameResolver->isName($subNode->name, $propertyName);
         });
+    }
+    /**
+     * @param ClassReflection[] $parentClassReflections
+     */
+    private function isGuardedByParents(array $parentClassReflections, string $propertyName, string $className) : bool
+    {
+        foreach ($parentClassReflections as $parentClassReflection) {
+            if ($parentClassReflection->hasProperty($propertyName)) {
+                return \false;
+            }
+            if ($this->isFoundInParentClassMethods($parentClassReflection, $propertyName, $className)) {
+                return \false;
+            }
+        }
+        return \true;
     }
 }
