@@ -28,7 +28,7 @@ class ClientData
      * @param string[] $css_files
      * @param string[] $js_files
      */
-    public function __construct(array $css_files, array $js_files, $data)
+    public function __construct(array $css_files, array $js_files, array $data)
     {
         $this->css_files = $css_files;
         $this->js_files = $js_files;

@@ -133,7 +133,7 @@ class ContentOverviewBuilder
         }
 
         if (0 < $sum) {
-            return ($sum / count($results));
+            return (int) floor($sum / count($results));
         }
 
         return 0;

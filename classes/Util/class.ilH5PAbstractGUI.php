@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\IRequestParameters;
+use srag\Plugins\H5P\TemplateHelper;
 use srag\Plugins\H5P\RequestHelper;
 use srag\Plugins\H5P\IContainer;
 use srag\Plugins\H5P\ITranslator;
@@ -22,6 +23,7 @@ use ILIAS\UI\Renderer;
 abstract class ilH5PAbstractGUI
 {
     use ilH5PTargetHelper;
+    use TemplateHelper;
     use RequestHelper;
 
     /**
@@ -45,11 +47,6 @@ abstract class ilH5PAbstractGUI
     protected $request;
 
     /**
-     * @var ilCtrl
-     */
-    protected $ctrl;
-
-    /**
      * @var ilObjUser
      */
     protected $user;
@@ -58,16 +55,6 @@ abstract class ilH5PAbstractGUI
      * @var Factory
      */
     protected $components;
-
-    /**
-     * @var Renderer
-     */
-    protected $renderer;
-
-    /**
-     * @var ilGlobalTemplateInterface
-     */
-    protected $template;
 
     /**
      * @var ilH5PGlobalTabManager
@@ -171,36 +158,6 @@ abstract class ilH5PAbstractGUI
     protected function setBackTo(string $target): void
     {
         $this->tab_manager->setBackTarget($target);
-    }
-
-    /**
-     * Please use $force_print with caution, it may be possible that the entire page
-     * will be printed out twice, which would only be visible in the source-code and
-     * can be recognized by UI signals not working anymore.
-     *
-     * @param Component[] $components
-     */
-    protected function render(array $components, bool $force_print = false): void
-    {
-        $this->template->setContent(
-            $this->renderer->render($components)
-        );
-
-        if ($force_print) {
-            $this->template->printToStdout();
-        }
-    }
-
-    /**
-     * @deprecated please use render() whenever possible.
-     */
-    protected function renderLegacy(string $html, bool $force_print = false): void
-    {
-        $this->template->setContent($html);
-
-        if ($force_print) {
-            $this->template->printToStdout();
-        }
     }
 
     /**

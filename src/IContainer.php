@@ -46,6 +46,12 @@ interface IContainer
      */
     public function getComponentFactory(): Factory;
 
+    /**
+     * Returns whether all dependencies are available and can be safely
+     * retrieved. This may be necessary to check if in CLI context.
+     */
+    public function areDependenciesAvailable(): bool;
+
     // ================================================================
     // BEGIN 'h5p/h5p-core' classes
     // ================================================================

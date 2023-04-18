@@ -579,9 +579,9 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     /**
      * @inheritDoc
      */
-    public function insertContent($content, $content_main_id = null): void
+    public function insertContent($content, $content_main_id = null): int
     {
-        $this->updateContent($content, $content_main_id);
+        return $this->updateContent($content, $content_main_id);
     }
 
     /**
@@ -1210,7 +1210,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     /**
      * @inheritDoc
      */
-    public function updateContent($content, $content_main_id = null): void
+    public function updateContent($content, $content_main_id = null): int
     {
         $h5p_content = $this->content_repository->getContent((int) $content["id"]);
 
@@ -1266,6 +1266,8 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $event->setLibraryVersion("{$content['library']['majorVersion']}.{$content['library']['minorVersion']}");
 
         $this->broadcastEvent($event);
+
+        return $h5p_content->getContentId();
     }
 
     /**

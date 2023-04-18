@@ -26,9 +26,6 @@ H5P.preventInit = true;
 // register an event-listener which manually initializes
 // the H5P kernel or editor if necessary.
 window.addEventListener('load', function () {
-    // this is currently affected by a jQuery bug, which leads
-    // to content not being initialized when assets are cached.
-    // see https://stackoverflow.com/a/65898996
     il.H5P.initContents();
 });
 

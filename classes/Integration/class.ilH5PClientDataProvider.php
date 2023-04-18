@@ -129,11 +129,11 @@ class ilH5PClientDataProvider implements IClientDataProvider
                     "height" => 50
                 ],
                 "ajaxPath" => $this->ctrl->getLinkTargetByClass(
-                    [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PAjaxEndpointGUI::class],
-                    '',
-                    '',
-                    true
-                ) . '&cmd=',
+                        [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PAjaxEndpointGUI::class],
+                        '',
+                        '',
+                        true
+                    ) . '&cmd=',
                 "libraryUrl" => ILIAS_HTTP_PATH . "/" . IContainer::H5P_EDITOR_DIR . "/",
                 "copyrightSemantics" => $this->h5p_content_validator->getCopyrightSemantics(),
                 "metadataSemantics" => $this->h5p_content_validator->getMetadataSemantics(),
@@ -213,7 +213,13 @@ class ilH5PClientDataProvider implements IClientDataProvider
     {
         $array = [];
         foreach ($assets as $asset) {
-            $array[] = $prefix . '/' . $asset;
+            // this is a hotfix due to H5P using a buggy jQuery version,
+            // see #PLH5P-188 or h5p.jquery.js for details.
+            if ('js/jquery.js' === $asset) {
+                $array[] = ilH5PPlugin::PLUGIN_DIR . 'templates/js/h5p.jquery.js';
+            } else {
+                $array[] = $prefix . '/' . $asset;
+            }
         }
 
         return $array;

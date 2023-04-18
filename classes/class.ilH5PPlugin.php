@@ -70,7 +70,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     /**
      * @inheritDoc
      */
-    public function exchangeUIRendererAfterInitialization(\ILIAS\DI\Container $dic) : Closure
+    public function exchangeUIRendererAfterInitialization(\ILIAS\DI\Container $dic): Closure
     {
         $default_renderer = $dic->raw('ui.renderer');
 
@@ -98,33 +98,34 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     protected function uninstallCustom(): void
     {
         $this->db->dropTable('rep_robj_xhfp_cnt');
-        $this->db->dropTable('rep_robj_xhfp_cnt_seq');
         $this->db->dropTable('rep_robj_xhfp_cont');
         $this->db->dropTable('rep_robj_xhfp_cont_dat');
-        $this->db->dropTable('rep_robj_xhfp_cont_dat_seq');
         $this->db->dropTable('rep_robj_xhfp_cont_lib');
-        $this->db->dropTable('rep_robj_xhfp_cont_lib_seq');
-        $this->db->dropTable('rep_robj_xhfp_cont_seq');
+        $this->db->dropIndex('rep_robj_xhfp_cont');
         $this->db->dropTable('rep_robj_xhfp_ev');
-        $this->db->dropTable('rep_robj_xhfp_ev_seq');
         $this->db->dropTable('rep_robj_xhfp_lib');
         $this->db->dropTable('rep_robj_xhfp_lib_ca');
-        $this->db->dropTable('rep_robj_xhfp_lib_ca_seq');
         $this->db->dropTable('rep_robj_xhfp_lib_dep');
-        $this->db->dropTable('rep_robj_xhfp_lib_dep_seq');
         $this->db->dropTable('rep_robj_xhfp_lib_hub');
-        $this->db->dropTable('rep_robj_xhfp_lib_hub_seq');
         $this->db->dropTable('rep_robj_xhfp_lib_lng');
-        $this->db->dropTable('rep_robj_xhfp_lib_lng_seq');
-        $this->db->dropTable('rep_robj_xhfp_lib_seq');
         $this->db->dropTable('rep_robj_xhfp_obj');
         $this->db->dropTable('rep_robj_xhfp_opt_n');
         $this->db->dropTable('rep_robj_xhfp_res');
-        $this->db->dropTable('rep_robj_xhfp_res_seq');
         $this->db->dropTable('rep_robj_xhfp_solv');
-        $this->db->dropTable('rep_robj_xhfp_solv_seq');
         $this->db->dropTable('rep_robj_xhfp_tmp');
-        $this->db->dropTable('rep_robj_xhfp_tmp_seq');
+
+        $this->db->dropSequence('rep_robj_xhfp_cnt');
+        $this->db->dropSequence('rep_robj_xhfp_cont_dat');
+        $this->db->dropSequence('rep_robj_xhfp_cont_lib');
+        $this->db->dropSequence('rep_robj_xhfp_ev');
+        $this->db->dropSequence('rep_robj_xhfp_lib_ca');
+        $this->db->dropSequence('rep_robj_xhfp_lib_dep');
+        $this->db->dropSequence('rep_robj_xhfp_lib_hub');
+        $this->db->dropSequence('rep_robj_xhfp_lib_lng');
+        $this->db->dropSequence('rep_robj_xhfp_lib');
+        $this->db->dropSequence('rep_robj_xhfp_solv');
+        $this->db->dropSequence('rep_robj_xhfp_res');
+        $this->db->dropSequence('rep_robj_xhfp_tmp');
 
         $data_folder = ilWACSecurePath::find("h5p");
         if (null !== $data_folder) {

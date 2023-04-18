@@ -154,7 +154,7 @@ class ilH5PRepositoryContentBuilder
         } else {
             // enable the finish button if the user is solving the last
             // content of this object.
-            $this->addFinishButton(($amount_of_contents - 1) > count($user_results_of_object));
+            $this->addFinishButton(($amount_of_contents - 1) < count($user_results_of_object));
         }
 
         $components = [];

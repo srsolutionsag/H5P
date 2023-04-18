@@ -69,11 +69,9 @@ class ilH5PAjaxEndpointGUI
             $DIC->http()->request()->getQueryParams()
         );
 
-        $this->refinery = $DIC->refinery();
-
-        $this->object = $this->getRequestedObjectOrAbort($this->get_request);
-
         $this->http = $DIC->http();
+        $this->refinery = $DIC->refinery();
+        $this->object = $this->getRequestedObjectOrAbort($this->get_request);
         $this->ctrl = $DIC->ctrl();
         $this->user = $DIC->user();
     }
@@ -233,8 +231,8 @@ class ilH5PAjaxEndpointGUI
             $this->user->getId()
         ) ?? new ilH5PContentUserData();
 
-        $preload = (bool) $this->getRequestedInteger($this->post_request, 'preload');
-        $invalidate = (bool) $this->getRequestedInteger($this->post_request, 'invalidate');
+        $preload = (bool)$this->getRequestedInteger($this->post_request, 'preload');
+        $invalidate = (bool)$this->getRequestedInteger($this->post_request, 'invalidate');
         $json_data = $this->getRequestedString($this->post_request, 'data') ?? '{}';
 
         $user_data->setUserId($this->user->getId());
@@ -288,6 +286,31 @@ class ilH5PAjaxEndpointGUI
         }
 
         $this->http->close();
+    }
+
+    /**
+     * This method will be called whenever files are uploaded by the H5P-
+     * editor.
+     *
+     * This method will be provided by the followind data in $_POST:
+     *      - contentId (string)    -> can be parsed to int safely
+     *      - field (string)        -> JSON string
+     *
+     * This method will call the H5P endpoint and overload the action
+     * method by the provided values.
+     *
+     * Request will be triggered by h5peditor-file-uploader.js:70
+     */
+    protected function files(): void
+    {
+        $content_id = $this->getRequestedInteger($this->post_request, IRequestParameters::CONTENT_ID);
+
+        /** will eventually call @see H5PFileStorage::saveFile() */
+        $this->h5p_container->getEditor()->ajax->action(
+            H5PEditorEndpoints::FILES,
+            null,
+            (0 !== $content_id) ? $content_id : null
+        );
     }
 
     /**

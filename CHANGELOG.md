@@ -1,5 +1,15 @@
 # H5P Changelog
 
+## 4.0.1
+
+- Fixed a bug where H5P contents could only be loaded once in Firefox, due to a jQuery bug that lead to a broken
+  initialization when assets were cached.
+- Fixed an issue where the entire page was sent in asynchronous requests to `ilH5PAjaxEndpointGUI`, which routed
+  via `ilObjH5PGUI`.
+- Fixed an issue where the H5P editor could not upload any files, due to a endpoint in `ilH5PAjaxEndpointGUI`.
+- Fixed a fatal error caused by a type-missmatch in `ilObjH5PAccess` during access checks.
+- Fixed an issue where contents could not have beend editted due to ID 0 being used.
+
 ## 4.0.0
 
 - Fixed `ilH5PEditorStorage::saveFileTemporarily` and `ilH5PEditorStorage::removeTemporarilySavedFiles` which create

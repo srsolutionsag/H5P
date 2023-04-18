@@ -153,6 +153,22 @@ class ilH5PContainer implements IContainer
     /**
      * @inheritDoc
      */
+    public function areDependenciesAvailable(): bool
+    {
+        $required_offsets = ['ilDB', 'ilUser', 'ilCtrl', 'lng'];
+
+        foreach ($required_offsets as $offset) {
+            if (!$this->dic->offsetExists($offset)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getKernelFramework(): H5PFrameworkInterface
     {
         if (null === $this->h5p_kernel_framework) {

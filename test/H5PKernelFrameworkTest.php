@@ -12,6 +12,7 @@ use srag\Plugins\H5P\Settings\ISettingsRepository;
 use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\Event\IEvent;
+use srag\Plugins\H5P\File\ITmpFileRepository;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -58,6 +59,7 @@ class H5PKernelFrameworkTest extends TestCase
             $this->createMock(IEventRepository::class),
             $this->createMock(IResultRepository::class),
             $this->createMock(ISettingsRepository::class),
+            $this->createMock(ITmpFileRepository::class),
             $this->createMock(H5PDefaultStorage::class),
             $this->createMock(ilH5PPlugin::class),
             $this->createMock(ilObjUser::class),

@@ -13,9 +13,9 @@ trait ilH5PTargetHelper
      */
     protected $ctrl;
 
-    protected function getLinkTarget(string $target_class, string $command, array $options = []): string
+    protected function getLinkTarget(string $target_class, ?string $command, array $options = [], bool $async = false): string
     {
-        $previous_options = $this->ctrl->getParameterArrayByClass($target_class);
+        $previous_options = $this->getTargetOptions($target_class);
 
         $this->ctrl->clearParametersByClass($target_class);
 
@@ -23,7 +23,9 @@ trait ilH5PTargetHelper
 
         $target = $this->ctrl->getLinkTargetByClass(
             $target_class,
-            $command
+            $command ?? '',
+            false,
+            $async
         );
 
         $this->setTargetOptions($target_class, $previous_options);
@@ -33,7 +35,7 @@ trait ilH5PTargetHelper
 
     protected function getFormAction(string $target_class, string $command = null, array $options = []): string
     {
-        $previous_options = $this->ctrl->getParameterArrayByClass($target_class);
+        $previous_options = $this->getTargetOptions($target_class);
 
         $this->ctrl->clearParametersByClass($target_class);
 
@@ -54,5 +56,10 @@ trait ilH5PTargetHelper
         foreach ($options as $parameter_name => $parameter_value) {
             $this->ctrl->setParameterByClass($target_class, $parameter_name, $parameter_value);
         }
+    }
+
+    private function getTargetOptions(string $target_class): array
+    {
+        return $this->ctrl->getParameterArrayByClass($target_class);
     }
 }

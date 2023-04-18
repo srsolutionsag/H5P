@@ -43,7 +43,7 @@ class ilH5PEditorStorage implements H5peditorStorage
     public static function markFileForCleanup($file, $content_id = null): void
     {
         $path = IContainer::H5P_STORAGE_DIR;
-        $path .= (null !== $content_id) ?
+        $path .= (null !== $content_id && 0 !== $content_id) ?
             "/content/" . $content_id . "/" :
             "/editor/";
 

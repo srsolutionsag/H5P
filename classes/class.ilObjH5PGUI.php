@@ -63,6 +63,9 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                 $this->ctrl->forwardCommand(new ilH5PObjectSettingsGUI());
                 break;
             case strtolower(ilH5PAjaxEndpointGUI::class):
+                // this is an ugly workaround if the creation-mode is not defined,
+                // which solves printing to sdtout during async requests.
+                $this->creation_mode = true;
                 $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
                 break;
 

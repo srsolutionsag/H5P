@@ -228,7 +228,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess
                 if ($content !== null) {
                     switch ($content->getParentType()) {
                         case IContent::PARENT_TYPE_OBJECT:
-                            return self::hasReadAccess(current(ilObject::_getAllReferences($content->getObjId())));
+                            return self::hasReadAccess((int) current(ilObject::_getAllReferences($content->getObjId())));
                         case IContent::PARENT_TYPE_PAGE:
                             return true;
 

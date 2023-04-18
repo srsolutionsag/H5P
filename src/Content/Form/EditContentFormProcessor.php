@@ -93,7 +93,7 @@ class EditContentFormProcessor extends AbstractFormProcessor
             ]
         ];
 
-        if (null !== ($content_id = $content_data->getContentId())) {
+        if (null !== ($content_id = $content_data->getContentId()) && 0 !== $content_id) {
             $content['id'] = $content_id;
         }
 
