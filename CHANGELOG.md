@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.0.2
+
+- Fixed an issue where H5P libraries could not be installed, due to `ilH5PKernelFramework:getUploadedH5pPath()`
+  returning null or an already existing file.
+
 ## 4.0.1
 
 - Fixed a bug where H5P contents could only be loaded once in Firefox, due to a jQuery bug that lead to a broken

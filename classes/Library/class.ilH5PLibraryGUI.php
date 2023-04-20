@@ -193,11 +193,25 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
 
         ob_start();
 
-        $this->h5p_container->getEditor()->ajax->action(
-            H5PEditorEndpoints::LIBRARY_INSTALL,
-            "",
-            $unified_library->getMachineName()
-        );
+        // we need to create an empty file before the installation begins,
+        // otherwise H5PFrameworkInterface::getUploadedH5pPath() will
+        // return either a different already existing file-path or throw
+        // an exception (because no file exists).
+        $file = ilH5PEditorStorage::saveFileTemporarily(null, false);
+
+        try {
+            $this->h5p_container->getEditor()->ajax->action(
+                H5PEditorEndpoints::LIBRARY_INSTALL,
+                "",
+                $unified_library->getMachineName()
+            );
+        } catch (Throwable $t) {
+            ilUtil::sendFailure($t->getMessage(), true);
+        } finally {
+            // ensures that empty files are deleted even if fatal errors
+            // ocurr during installation.
+            ilH5PEditorStorage::removeTemporarilySavedFiles("$file->dir/$file->fileName");
+        }
 
         ob_end_clean();
 
