@@ -318,7 +318,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $curlConnection = new ilCurlConnection($url);
             $curlConnection->init();
 
-            $x = $this->version_comparator->is6();
             if (!$this->version_comparator->is6()) {
                 $proxy = ilProxySettings::_getInstance();
                 if (null !== $proxy && $proxy->isActive()) {
@@ -386,22 +385,29 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     }
 
     /**
+     * it's very unclear what needs to be returned by this method,
+     * due to lacking documentation by H5P. however, returning an
+     * integer lead to:
+     *
+     * @see https://github.com/h5p/h5p-php-library/issues/141
+     * @see https://jira.sr.solutions/browse/PLH5P-190
+     *
      * @inheritDoc
      */
-    public function getLibraryContentCount(): int
+    public function getLibraryContentCount(): array
     {
         $h5p_libraries = $this->library_repository->getInstalledLibraries();
 
         $count = [];
         foreach ($h5p_libraries as $h5p_library) {
-            $count_key = $h5p_library->getMachineName() . " Framework.php" .
+            $count_key = $h5p_library->getMachineName() . " " .
                 $h5p_library->getMajorVersion() . " " .
                 $h5p_library->getMinorVersion();
 
             $count[$count_key] = count($this->content_repository->getContentsByLibrary($h5p_library->getLibraryId()));
         }
 
-        return count($count);
+        return $count;
     }
 
     /**
@@ -511,11 +517,37 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     }
 
     /**
+     * When storing H5P options we cannot know as what kind of value
+     * they need to be stored. The only information we can obtain is
+     * here, by inspecting the type of $default. Therefore, this
+     * method is responsible to convert option values into the right
+     * format. I know how ridiculous this is.
+     *
      * @inheritDoc
      */
     public function getOption($name, $default = null)
     {
-        return $this->settings_repository->getGeneralSettingValue($name) ?? $default;
+        $option = $this->settings_repository->getGeneralSettingValue($name);
+
+        if (null === $option) {
+            return $default;
+        }
+
+        switch (gettype($default)) {
+            case 'string':
+                // sometimes values are stored with quotes, which leads to
+                // errors when working with data for https://api.h5p.org.
+                return trim((string) $option, '"');
+            case 'boolean':
+                return (bool) $option;
+            case 'integer':
+                return (int) $option;
+            case 'NULL':
+                // fall to default
+
+            default:
+                return $option;
+        }
     }
 
     /**

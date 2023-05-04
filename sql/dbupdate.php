@@ -1105,7 +1105,18 @@ if (!$ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'machine_name')) {
  */
 if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
     $ilDB->query("
-        INSERT IGNORE INTO rep_robj_xhfp_opt_n (`name`, `value`) VALUES ('send_usage_statistics', '0')
+        INSERT IGNORE INTO rep_robj_xhfp_opt_n (`name`, `value`) VALUES ('send_usage_statistics', '0');
+    ");
+}
+?>
+<#12>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
+    $ilDB->query("
+        UPDATE rep_robj_xhfp_opt_n SET `value` = '0' WHERE `name` = 'send_usage_statistics' AND `value` IS NULL;
     ");
 }
 ?>

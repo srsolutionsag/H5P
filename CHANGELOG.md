@@ -1,5 +1,13 @@
 # H5P Changelog
 
+## 4.0.3
+
+- Fixed an issue where `ilH5PKernelFramework::getOption()` returned strings incl. quotes, which lead to denied requests
+  when working with https://api.h5p.org.
+- Fixed an issue where usage-statistics could not be submitted due to an invalud argument supplied for `foreach`.
+- Fixed an issue where the H5P librarieis could not be refreshed (by the H5P hub) if the usage-statistics were enabled.
+- Fixed an issue where the default setting for usage-statistics was `true`.
+
 ## 4.0.2
 
 - Fixed an issue where H5P libraries could not be installed, due to `ilH5PKernelFramework:getUploadedH5pPath()`
