@@ -2,27 +2,29 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\H5P\ITranslator;
+
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
 class ilH5PRefreshLibrariesJob extends ilCronJob
 {
-    public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_hub";
+    public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_libraries";
 
     /**
-     * @var ilH5PPlugin
+     * @var ITranslator
      */
-    protected $plugin;
+    protected $translator;
 
     /**
      * @var H5PCore
      */
     protected $core;
 
-    public function __construct(ilH5PPlugin $plugin, H5PCore $core)
+    public function __construct(ITranslator $translator, H5PCore $core)
     {
-        $this->plugin = $plugin;
+        $this->translator = $translator;
         $this->core = $core;
     }
 
@@ -47,7 +49,7 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
      */
     public function getDescription(): string
     {
-        return $this->plugin->txt("refresh_hub_description");
+        return $this->translator->txt("libraries_refresh_info");
     }
 
     /**
@@ -63,7 +65,7 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
      */
     public function getTitle(): string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->plugin->txt("refresh_hub");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("libraries_refresh");
     }
 
     /**

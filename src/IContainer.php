@@ -47,6 +47,11 @@ interface IContainer
     public function getComponentFactory(): Factory;
 
     /**
+     * Returns the H5P main translator (the core plugin).
+     */
+    public function getTranslator(): ITranslator;
+
+    /**
      * Returns whether all dependencies are available and can be safely
      * retrieved. This may be necessary to check if in CLI context.
      */

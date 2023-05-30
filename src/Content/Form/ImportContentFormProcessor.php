@@ -11,8 +11,10 @@ use ILIAS\UI\Component\Input\Container\Form\Form as UIForm;
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
-class ImportContentFormProcessor extends AbstractFormProcessor
+class ImportContentFormProcessor extends AbstractFormProcessor implements IPostProcessorAware
 {
+    use PostProcessorAware;
+
     /**
      * @var \H5PValidator
      */
@@ -28,17 +30,34 @@ class ImportContentFormProcessor extends AbstractFormProcessor
      */
     protected $h5p_kernel;
 
+    /**
+     * @var int
+     */
+    protected $parent_obj_id;
+
+    /**
+     * @var string
+     */
+    protected $parent_type;
+
+    /**
+     * @param string $parent_type one of IContent::PARENT_TYPE_* constants
+     */
     public function __construct(
         \H5PValidator $h5p_validator,
         \H5PStorage $h5p_storage,
         \H5PCore $h5p_kernel,
         ServerRequestInterface $request,
-        UIForm $form
+        UIForm $form,
+        int $parent_obj_id,
+        string $parent_type
     ) {
         parent::__construct($request, $form);
         $this->h5p_validator = $h5p_validator;
         $this->h5p_storage = $h5p_storage;
         $this->h5p_kernel = $h5p_kernel;
+        $this->parent_obj_id = $parent_obj_id;
+        $this->parent_type = $parent_type;
     }
 
     /**
@@ -77,8 +96,12 @@ class ImportContentFormProcessor extends AbstractFormProcessor
                 "source" => $this->h5p_kernel->mainJsonData["source"],
                 "title" => ($this->h5p_kernel->mainJsonData["title"] ?: basename($tmp_file)),
                 "yearFrom" => $this->h5p_kernel->mainJsonData["yearFrom"],
-                "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"]
-            ]
+                "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"],
+                "parent_type" => $this->parent_type,
+                "obj_id" => $this->parent_obj_id,
+            ],
         ]);
+
+        $this->runProcessorsFor($this->h5p_kernel->loadContent($this->h5p_storage->contentId));
     }
 }

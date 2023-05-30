@@ -22,6 +22,7 @@ declare(strict_types=1);
  * @ilCtrl_Calls      ilObjH5PGUI: ilH5PAjaxEndpointGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilH5PContentGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilH5PResultGUI
+ * @ilCtrl_Calls      ilObjH5PGUI: ilH5PUploadHandlerGUI
  *
  * @noinspection      AutoloadingIssuesInspection
  */
@@ -45,6 +46,31 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     }
 
     /**
+     * Overrides the parent method to work around issues due to async requests.
+     *
+     * @inheritDoc
+     */
+    public function executeCommand()
+    {
+        $next_class = $this->ctrl->getNextClass();
+
+        // this is an ugly workaround if the creation-mode is not defined,
+        // which solves printing to sdtout during async requests.
+        if ($this->ctrl->isAsynch()) {
+            $this->creation_mode = true;
+        }
+
+        if (0 === strcasecmp(ilH5PAjaxEndpointGUI::class, $next_class)) {
+            return $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
+        }
+        if (0 === strcasecmp(ilH5PUploadHandlerGUI::class, $next_class)) {
+            return $this->ctrl->forwardCommand(new ilH5PUploadHandlerGUI());
+        }
+
+        return parent::executeCommand();
+    }
+
+    /**
      * Must be implemented because it is called by parent class (even though
      * it is not declared abstract).
      */
@@ -61,12 +87,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                 break;
             case strtolower(ilH5PObjectSettingsGUI::class):
                 $this->ctrl->forwardCommand(new ilH5PObjectSettingsGUI());
-                break;
-            case strtolower(ilH5PAjaxEndpointGUI::class):
-                // this is an ugly workaround if the creation-mode is not defined,
-                // which solves printing to sdtout during async requests.
-                $this->creation_mode = true;
-                $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
                 break;
 
             default:

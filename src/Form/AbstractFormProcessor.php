@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace srag\Plugins\H5P\Form;
@@ -57,11 +58,9 @@ abstract class AbstractFormProcessor implements IFormProcessor
 
     /**
      * This method MUST process the provided POST-data.
+     * The method is only called when AbstractFormProcessor::isValid() returned true.
      *
-     * The method is only called when @param array $post_data
-     * @see AbstractFormProcessor::isValid()
-     *      returned true.
-     *
+     * @param array $post_data
      */
     abstract protected function processData(array $post_data): void;
 }

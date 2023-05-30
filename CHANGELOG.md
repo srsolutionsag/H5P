@@ -1,5 +1,16 @@
 # H5P Changelog
 
+## 4.0.4
+
+- The `EditContentFormProcessor` now properly sets the parent object's ID and type, so it can be used by the
+  H5PPageComponent-Plugin as well.
+- Introduced an `ITranslator` to the local DIC `IContainer`, so plugins can share the translations with the H5P plugin.
+- Fixed an issue where the `ilObjH5PGUI` did not properly forward the command to the `ilH5PAjaxEndpointGUI` due to the
+  creation mode.
+- Fixed an issue where H5P contents could not be imported, due to a missing ref-id in the upload URL.
+- Fixed an issue where the cron-job names were not properly translated.
+- Fixed translations for the "Refresh Libraries" cron-job.
+
 ## 4.0.3
 
 - Fixed an issue where `ilH5PKernelFramework::getOption()` returned strings incl. quotes, which lead to denied requests

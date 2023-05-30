@@ -7,6 +7,7 @@ use srag\Plugins\H5P\Content\Form\ImportContentFormProcessor;
 use srag\Plugins\H5P\Content\Form\EditContentFormProcessor;
 use srag\Plugins\H5P\Content\Form\ImportContentFormBuilder;
 use srag\Plugins\H5P\Content\Form\EditContentFormBuilder;
+use srag\Plugins\H5P\Content\ContentEditorHelper;
 use srag\Plugins\H5P\Content\ContentEditorData;
 use srag\Plugins\H5P\Content\IContentUserData;
 use srag\Plugins\H5P\Content\IContent;
@@ -25,6 +26,8 @@ use ILIAS\UI\Component\Component;
  */
 class ilH5PContentGUI extends ilH5PAbstractGUI
 {
+    use ContentEditorHelper;
+
     public const CMD_RESET_CONTENT = 'resetContent';
     public const CMD_EDIT_CONTENT = 'editContent';
     public const CMD_SAVE_CONTENT = 'saveContent';
@@ -417,34 +420,6 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         $this->toolbar->addComponent($import_content_button);
     }
 
-    protected function getContentEditorData(int $content_id): ?ContentEditorData
-    {
-        $content_data = $copy = $this->h5p_container->getKernel()->loadContent($content_id);
-
-        if (empty($content_data)) {
-            return null;
-        }
-
-        /** @var $content_json string|false */
-        $content_json = $this->h5p_container->getKernel()->filterParameters($copy);
-
-        if (false === $content_json) {
-            return null;
-        }
-
-        $content_json = json_encode([
-            'params' => json_decode($content_json),
-            'metadata' => $content_data['metadata'] ?? '',
-        ]);
-
-        return new ContentEditorData(
-            $content_id,
-            $content_data['title'] ?? '',
-            H5PCore::libraryToString($content_data['library']),
-            $content_json
-        );
-    }
-
     protected function getEditContentForm(): Form
     {
         $content = $this->getRequestedContent($this->get_request);
@@ -478,7 +453,9 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->h5p_container->getKernel(),
             $this->h5p_container->getEditor(),
             $this->request,
-            $this->getEditContentForm()
+            $this->getEditContentForm(),
+            $this->object->getId(),
+            IContent::PARENT_TYPE_OBJECT
         );
     }
 
@@ -532,7 +509,9 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->h5p_container->getKernelStorage(),
             $this->h5p_container->getKernel(),
             $this->request,
-            $this->getImportContentForm()
+            $this->getImportContentForm(),
+            $this->object->getId(),
+            IContent::PARENT_TYPE_OBJECT
         );
     }
 
@@ -591,5 +570,10 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function setBackToManageContents(): void
     {
         $this->setBackTo($this->getLinkTarget(self::class, self::CMD_MANAGE_CONTENTS));
+    }
+
+    protected function getKernel(): \H5PCore
+    {
+        return $this->h5p_container->getKernel();
     }
 }

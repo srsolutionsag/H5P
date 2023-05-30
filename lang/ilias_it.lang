@@ -73,6 +73,7 @@ fullscreen#:#Fullscreen
 hide_advanced#:#Nascondi avanzate
 libraries_last_refresh#:#Ultimo aggiornamento Librerias: %s
 libraries_refresh#:#Aggiorna Librerias
+libraries_refresh_info#:#Ricarica l'elenco degli hub di contenuti H5P.
 libraries_refreshed#:#Librerias è stato aggiornato correttamente.
 import#:#Importa
 import_content#:#Importa contenuto

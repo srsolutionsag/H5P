@@ -73,6 +73,7 @@ fullscreen#:#Fullscreen
 hide_advanced#:#Hide advanced
 libraries_last_refresh#:#Libraries last refreshed at: %s
 libraries_refresh#:#Refresh libraries
+libraries_refresh_info#:#Refreshes the list of available H5P libraries with the latest versions.
 libraries_refreshed#:#Libraries were successfully refreshed.
 import#:#Import
 import_content#:#Import content

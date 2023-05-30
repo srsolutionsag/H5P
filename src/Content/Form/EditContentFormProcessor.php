@@ -15,8 +15,10 @@ use ILIAS\UI\Component\Input\Container\Form\Form as UIForm;
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
-class EditContentFormProcessor extends AbstractFormProcessor
+class EditContentFormProcessor extends AbstractFormProcessor implements IPostProcessorAware
 {
+    use PostProcessorAware;
+
     /**
      * @var IContentRepository
      */
@@ -37,19 +39,36 @@ class EditContentFormProcessor extends AbstractFormProcessor
      */
     protected $h5p_editor;
 
+    /**
+     * @var int
+     */
+    protected $parent_obj_id;
+
+    /**
+     * @var string
+     */
+    protected $parent_type;
+
+    /**
+     * @param string $parent_type one of IContent::PARENT_TYPE_* constants
+     */
     public function __construct(
         IContentRepository $content_repository,
         ILibraryRepository $library_repository,
         \H5PCore $h5p_kernel,
         \H5peditor $h5p_editor,
         ServerRequestInterface $request,
-        UIForm $form
+        UIForm $form,
+        int $parent_obj_id,
+        string $parent_type
     ) {
         parent::__construct($request, $form);
         $this->content_repository = $content_repository;
         $this->library_repository = $library_repository;
         $this->h5p_kernel = $h5p_kernel;
         $this->h5p_editor = $h5p_editor;
+        $this->parent_obj_id = $parent_obj_id;
+        $this->parent_type = $parent_type;
     }
 
     /**
@@ -65,13 +84,43 @@ class EditContentFormProcessor extends AbstractFormProcessor
      */
     protected function processData(array $post_data): void
     {
-        /** @var $content_data ContentEditorData */
-        $content_data = $post_data[EditContentFormBuilder::INPUT_CONTENT];
+        /** @var $editor_data ContentEditorData */
+        $editor_data = $post_data[EditContentFormBuilder::INPUT_CONTENT];
 
-        $library = \H5PCore::libraryFromString($content_data->getContentLibrary());
+        $previous_content = null;
+        if (null !== ($content_id = $editor_data->getContentId()) && 0 !== $content_id) {
+            $previous_content = $this->h5p_kernel->loadContent($content_id);
+            $content['id'] = $content_id;
+        }
 
+        $previous_params = (null !== $previous_content) ? json_decode($previous_content['params']) : null;
+        $previous_library = (null !== $previous_content) ? $previous_content["library"] : null;
+
+        $content_json = json_decode($editor_data->getContentJson());
+        $content_json->metadata->parent_type = $this->parent_type;
+
+        $content["params"] = json_encode($content_json->params);
+        $content["metadata"] = $content_json->metadata;
+        $content["library"] = $this->getLibraryOf($editor_data);
+        $content["obj_id"] = $this->parent_obj_id;
+        $content["id"] = $this->h5p_kernel->saveContent($content);
+
+        $this->h5p_editor->processParameters(
+            $content['id'], // PHPDoc comment is wrong, the integer content-id is expected.
+            $content["library"],
+            $content_json->params,
+            $previous_library,
+            $previous_params
+        );
+
+        $this->runProcessorsFor($content);
+    }
+
+    protected function getLibraryOf(ContentEditorData $editor_data): array
+    {
+        $library = \H5PCore::libraryFromString($editor_data->getContentLibrary());
         if (false === $library) {
-            return;
+            return [];
         }
 
         $installed_library = $this->library_repository->getVersionOfInstalledLibraryByName(
@@ -81,35 +130,14 @@ class EditContentFormProcessor extends AbstractFormProcessor
         );
 
         if (null === $installed_library) {
-            return;
+            return [];
         }
 
-        $content = [
-            "library" => [
-                "libraryId" => $installed_library->getLibraryId(),
-                "name" => $installed_library->getMachineName(),
-                "majorVersion" => $installed_library->getMajorVersion(),
-                "minorVersion" => $installed_library->getMinorVersion(),
-            ]
+        return [
+            "libraryId" => $installed_library->getLibraryId(),
+            "name" => $installed_library->getMachineName(),
+            "majorVersion" => $installed_library->getMajorVersion(),
+            "minorVersion" => $installed_library->getMinorVersion(),
         ];
-
-        if (null !== ($content_id = $content_data->getContentId()) && 0 !== $content_id) {
-            $content['id'] = $content_id;
-        }
-
-        $content_json = json_decode($content_data->getContentJson());
-
-        $content["params"] = json_encode($content_json->params);
-        $content["metadata"] = $content_json->metadata;
-
-        $content["id"] = $this->h5p_kernel->saveContent($content);
-
-        $this->h5p_editor->processParameters(
-            $content['id'], // PHPDoc comment is wrong, the integer content-id is expected.
-            $content["library"],
-            $content_json->params,
-            null,
-            null
-        );
     }
 }

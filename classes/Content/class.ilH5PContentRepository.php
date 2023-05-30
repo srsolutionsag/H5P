@@ -274,11 +274,6 @@ class ilH5PContentRepository implements IContentRepository
         if (empty($content->getContentId())) {
             $content->setCreatedAt($time);
             $content->setContentUserId($this->user->getId());
-
-            if (empty($content->getObjId())) {
-                $content->setObjId((int) $this->ctrl->getContextObjId());
-            }
-
             $content->setSort((count($this->getContentsByObject($content->getObjId())) + 1) * 10);
         }
 

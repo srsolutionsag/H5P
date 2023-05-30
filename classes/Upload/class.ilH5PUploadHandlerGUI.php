@@ -13,42 +13,17 @@ use ILIAS\FileUpload\Location;
 
 /**
  * @author            Thibeau Fuhrer <thibeau@sr.solutions>
- *
- * We cannot route this over ilObjH5PGUI because this would lead
- * to problems with ref-ids. The GUI would also assume it's in
- * creation mode, which messes up the control flow. Therefore, we
- * route directly via ilObjPluginDispatchGUI.
- *
- * @ilCtrl_IsCalledBy ilH5PUploadHandlerGUI: ilObjPluginDispatchGUI
- *
  * @noinspection      AutoloadingIssuesInspection
  */
 class ilH5PUploadHandlerGUI extends AbstractCtrlAwareUploadHandler
 {
-    /**
-     * Since we cannot route over one of our dispatcher classes,
-     * we have to override the default method and check the user
-     * permissions manually.
-     */
-    public function executeCommand(): void
-    {
-        if (!ilObjH5PAccess::hasWriteAccess()) {
-            $response = $this->http->response()->withBody(Streams::ofString('permission denied.'));
-            $this->http->saveResponse($response);
-            $this->http->sendResponse();
-            $this->http->close();
-        }
-
-        parent::executeCommand();
-    }
-
     /**
      * @inheritDoc
      */
     public function getUploadURL(): string
     {
         return $this->ctrl->getLinkTargetByClass(
-            [ilObjPluginDispatchGUI::class, self::class],
+            [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, self::class],
             self::CMD_UPLOAD,
             "",
             true
@@ -61,7 +36,7 @@ class ilH5PUploadHandlerGUI extends AbstractCtrlAwareUploadHandler
     public function getExistingFileInfoURL(): string
     {
         return $this->ctrl->getLinkTargetByClass(
-            [ilObjPluginDispatchGUI::class, self::class],
+            [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, self::class],
             self::CMD_INFO,
             "",
             true
@@ -74,7 +49,7 @@ class ilH5PUploadHandlerGUI extends AbstractCtrlAwareUploadHandler
     public function getFileRemovalURL(): string
     {
         return $this->ctrl->getLinkTargetByClass(
-            [ilObjPluginDispatchGUI::class, self::class],
+            [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, self::class],
             self::CMD_REMOVE,
             "",
             true

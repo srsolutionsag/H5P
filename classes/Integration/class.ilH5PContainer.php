@@ -12,6 +12,7 @@ use srag\Plugins\H5P\UI\Factory;
 use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\IContainer;
 use ILIAS\DI\Container;
+use srag\Plugins\H5P\ITranslator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -148,6 +149,14 @@ class ilH5PContainer implements IContainer
         }
 
         return $this->h5p_component_factory;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTranslator(): ITranslator
+    {
+        return $this->plugin;
     }
 
     /**

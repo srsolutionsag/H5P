@@ -73,6 +73,7 @@ fullscreen#:#Vollbild
 hide_advanced#:#Details ausblenden
 libraries_last_refresh#:#Bibliotheken zuletzt aktualisiert: %s
 libraries_refresh#:#Bibliothek-liste aktualisieren
+libraries_refresh_info#:#Aktualisiert die Liste der verfügbaren H5P-Bibliotheken mit deren neusten Versionen.
 libraries_refreshed#:#Bibliothek-liste wurde erfolgreich aktualisiert
 import#:#Importieren
 import_content#:#Inhalt importieren
@@ -129,8 +130,8 @@ summary#:#Zusammenfassung
 thumbnail#:#Vorschaubild
 title#:#Titel
 tutorial#:#Tutorial
-updated_library#:#%d old H5P Bibliothek aktualisiert.
-updated_libraries#:#%d old H5P Bibliotheken aktualisiert.
+updated_library#:#%d Alte H5P Bibliothek aktualisiert.
+updated_libraries#:#%d Alte H5P Bibliotheken aktualisiert.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
