@@ -143,7 +143,7 @@ class Renderer extends DecoratedRenderer
 
                 $integration_json = $this->escapeJsonString(json_encode($content_data));
 
-                return "il.H5P.queueContent(
+                return "il.H5P.initContent(
                     '$id', 
                     $content_id,
                     `$integration_json`,

@@ -98,11 +98,11 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
 
         $content_json = json_decode($editor_data->getContentJson());
         $content_json->metadata->parent_type = $this->parent_type;
+        $content_json->metadata->obj_id = $this->parent_obj_id;
 
         $content["params"] = json_encode($content_json->params);
         $content["metadata"] = $content_json->metadata;
         $content["library"] = $this->getLibraryOf($editor_data);
-        $content["obj_id"] = $this->parent_obj_id;
         $content["id"] = $this->h5p_kernel->saveContent($content);
 
         $this->h5p_editor->processParameters(

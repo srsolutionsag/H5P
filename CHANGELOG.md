@@ -1,5 +1,13 @@
 # H5P Changelog
 
+## 4.0.5
+
+- Fixed an issue where H5P contents could not be loaded in Firefox due to a
+  [jQuery bug](https://stackoverflow.com/questions/61910610/window-onload-fires-before-jquery-document-ready-in-firefox)
+  by initializing contents individually instead of globally.
+- Fixed an issue where H5P contents were not referenced to their parent ILIAS object, which preventet users from adding
+  new content in the repository object.
+
 ## 4.0.4
 
 - The `EditContentFormProcessor` now properly sets the parent object's ID and type, so it can be used by the

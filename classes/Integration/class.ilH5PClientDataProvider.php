@@ -213,13 +213,7 @@ class ilH5PClientDataProvider implements IClientDataProvider
     {
         $array = [];
         foreach ($assets as $asset) {
-            // this is a hotfix due to H5P using a buggy jQuery version,
-            // see #PLH5P-188 or h5p.jquery.js for details.
-            if ('js/jquery.js' === $asset) {
-                $array[] = ilH5PPlugin::PLUGIN_DIR . 'templates/js/h5p.jquery.js';
-            } else {
-                $array[] = $prefix . '/' . $asset;
-            }
+            $array[] = $prefix . '/' . $asset;
         }
 
         return $array;
