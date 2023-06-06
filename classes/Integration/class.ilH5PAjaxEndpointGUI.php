@@ -35,7 +35,7 @@ class ilH5PAjaxEndpointGUI
     protected $repositories;
 
     /**
-     * @var ilObjH5P|ilObjContentPage
+     * @var ilObject
      */
     protected $object;
 
@@ -231,8 +231,8 @@ class ilH5PAjaxEndpointGUI
             $this->user->getId()
         ) ?? new ilH5PContentUserData();
 
-        $preload = (bool)$this->getRequestedInteger($this->post_request, 'preload');
-        $invalidate = (bool)$this->getRequestedInteger($this->post_request, 'invalidate');
+        $preload = (bool) $this->getRequestedInteger($this->post_request, 'preload');
+        $invalidate = (bool) $this->getRequestedInteger($this->post_request, 'invalidate');
         $json_data = $this->getRequestedString($this->post_request, 'data') ?? '{}';
 
         $user_data->setUserId($this->user->getId());
@@ -315,9 +315,7 @@ class ilH5PAjaxEndpointGUI
 
     /**
      * Since this endpoint can also be called from the H5PPageComponent-
-     * plugin, we need to also provide COPage objects.
-     *
-     * @return ilObjH5P|ilObjContentPage
+     * plugin, we need to provide various types of parent objects.
      */
     protected function getRequestedObjectOrAbort(ArrayBasedRequestWrapper $request): ilObject
     {
@@ -328,7 +326,7 @@ class ilH5PAjaxEndpointGUI
 
         $object = ilObjectFactory::getInstanceByRefId($ref_id, false);
 
-        if (!$object instanceof ilObjH5P && !$object instanceof ilObjContentPage) {
+        if (false === $object) {
             $this->sendResourceNotFound();
         }
 

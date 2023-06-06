@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.0.6
+
+- Fixed an issue where H5P contents could only be used in 'copa' ILIAS objects.
+
 ## 4.0.5
 
 - Fixed an issue where H5P contents could not be loaded in Firefox due to a
