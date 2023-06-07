@@ -37,6 +37,13 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
         global $DIC;
         parent::__construct();
 
+        // this plugin might be called by the cron-hook plugin, which allows
+        // this class to be called in CLI context, where the ILIAS_HTTP_PATH
+        // is not defined.
+        if (!defined('ILIAS_HTTP_PATH')) {
+            define('ILIAS_HTTP_PATH', ilUtil::_getHttpPath());
+        }
+
         $this->h5p_container = new ilH5PContainer($this, $DIC);
 
         self::$instance = $this;

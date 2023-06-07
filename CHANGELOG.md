@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.0.7
+
+- Fixed an issue where the 'ILIAS_HTTP_PATH' constant has been used in a CLI context by the cron-hook plugin, which is
+  not available in this context.
+
 ## 4.0.6
 
 - Fixed an issue where H5P contents could only be used in 'copa' ILIAS objects.
