@@ -14,6 +14,7 @@ interface IRequestParameters
     public const USER_ID = 'usr_id';
     public const OBJ_ID = 'obj_id';
     public const REF_ID = 'ref_id';
+    public const TARGET = 'target';
 
     // Plugin request parameters:
     public const LIBRARY_NAME = 'h5p_library_name';

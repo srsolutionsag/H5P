@@ -136,18 +136,13 @@ abstract class ilH5PAbstractGUI
 
     protected function getRequestedObjectOrAbort(): ilObjH5P
     {
-        $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId() ?? -1, false);
+        $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId($this->get_request) ?? -1, false);
 
         if (!$object instanceof ilObjH5P) {
             $this->redirectObjectNotFound();
         }
 
         return $object;
-    }
-
-    protected function getRequestedReferenceId(): ?int
-    {
-        return $this->getRequestedInteger($this->get_request, IRequestParameters::REF_ID);
     }
 
     protected function setCurrentTab(string $tab_id): void

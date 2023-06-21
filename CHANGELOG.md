@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.1
+
+- Added support for ILIAS goto links when retrieving object reference IDs.
+
 ## 4.1.0
 
 - Added new general setting to allow the import of H5P contents from local .h5p files. The new setting will be enabled
