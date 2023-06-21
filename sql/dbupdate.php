@@ -1120,3 +1120,15 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
     ");
 }
 ?>
+<#13>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
+    $ilDB->insert('rep_robj_xhfp_opt_n', [
+        'name' => ['text', 'allow_h5p_imports'],
+        'value' => ['text', '1'],
+    ]);
+}
+?>

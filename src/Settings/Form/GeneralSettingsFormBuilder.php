@@ -52,6 +52,11 @@ class GeneralSettingsFormBuilder extends AbstractFormBuilder
                     '<a href="https://h5p.org/tracking-the-usage-of-h5p" rel="noopener" target="_blank">h5p.org</a>'
                 )
             )->withValue((bool) ($this->repository->getGeneralSettingValue(IGeneralSettings::SETTING_SEND_USAGE_STATISTICS) ?? false)),
+
+            IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS => $this->fields->checkbox(
+                $this->translator->txt(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS),
+                $this->translator->txt(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS . "_info")
+            )->withValue((bool) ($this->repository->getGeneralSettingValue(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS) ?? false)),
         ];
 
         return $this->forms->standard($form_action, $inputs);

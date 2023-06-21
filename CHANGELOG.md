@@ -1,8 +1,14 @@
 # H5P Changelog
 
+## 4.1.0
+
+- Added new general setting to allow the import of H5P contents from local .h5p files. The new setting will be enabled
+  by default, to keep the same behaviour as before. This option will also be considered in the H5PPageComponent plugin.
+- Fixed an issue where the `ilH5PContentGUI` redirected endlessly if the user did not have the required permissions.
+
 ## 4.0.7
 
-- Fixed an issue where the 'ILIAS_HTTP_PATH' constant has been used in a CLI context by the cron-hook plugin, which is
+- Fixed an issue where the `ILIAS_HTTP_PATH` constant has been used in a CLI context by the cron-hook plugin, which is
   not available in this context.
 
 ## 4.0.6

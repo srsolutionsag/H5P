@@ -107,7 +107,8 @@ class ilH5PContainer implements IContainer
                 new ilH5PTmpFileRepository(),
                 new ilH5PLibraryRepository($this->dic->database()),
                 new ilH5PResultRepository($this->dic->database(), $this->dic->user()),
-                new ilH5PSettingsRepository()
+                new ilH5PSettingsRepository(),
+                new ilH5PGeneralRepository($this->dic->database()),
             );
         }
 

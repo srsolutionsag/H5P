@@ -189,3 +189,5 @@ content_loading#:#Bitte warten Sie, während der Inhalt am laden ist...
 truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate von diesem Objekt löschen wollen?
 truncate_results#:#Resultate löschen
 user_not_found#:#Der angefragte Benutzer konnte nicht gefunden werden.
+allow_h5p_imports#:#H5P Import zulassen
+allow_h5p_imports_info#:#Wenn diese Option aktiv ist, können Benutzer H5P-Inhalte von Dateien importieren.

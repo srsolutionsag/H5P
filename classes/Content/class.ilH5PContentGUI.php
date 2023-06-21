@@ -19,6 +19,7 @@ use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\IContainer;
 use ILIAS\UI\Component\Input\Container\Form\Form;
 use ILIAS\UI\Component\Component;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -369,12 +370,14 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             case self::CMD_MOVE_CONTENT_DOWN:
             case self::CMD_MOVE_CONTENT_UP:
             case self::CMD_DELETE_CONTENT_CONFIRM:
-            case self::CMD_UPLOAD_CONTENT:
-            case self::CMD_IMPORT_CONTENT:
             case self::CMD_DELETE_CONTENT:
             case self::CMD_EDIT_CONTENT:
             case self::CMD_SAVE_CONTENT:
                 return ilObjH5PAccess::hasWriteAccess();
+
+            case self::CMD_UPLOAD_CONTENT:
+            case self::CMD_IMPORT_CONTENT:
+                return ilObjH5PAccess::hasWriteAccess() && $this->areImportsAllowed();
 
             default:
                 return false;
@@ -388,12 +391,19 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     {
         // redirects are different if the user only has read access.
         if ($command === self::CMD_FINISH_ALL_CONTENTS ||
-            $command === self::CMD_SHOW_CONTENTS
+            $command === self::CMD_SHOW_CONTENTS ||
+            $command === self::CMD_RESET_CONTENT
         ) {
             ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
         }
 
-        ilObjH5PAccess::redirectNonAccess(self::class);
+        if ($command === self::CMD_UPLOAD_CONTENT ||
+            $command === self::CMD_IMPORT_CONTENT
+        ) {
+            ilObjH5PAccess::redirectNonAccess(self::class, self::CMD_MANAGE_CONTENTS);
+        }
+
+        ilObjH5PAccess::redirectNonAccess(self::class, self::CMD_SHOW_CONTENTS);
     }
 
     protected function addManageContentToolbarButtons(bool $have_contents_been_solved): void
@@ -406,17 +416,26 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             )
         );
 
+        if ($have_contents_been_solved) {
+            $add_content_button = $add_content_button->withUnavailableAction();
+        }
+
+        $this->toolbar->addComponent($add_content_button);
+
+        // only show import button if users are allowed to do so.
+        if (!$this->areImportsAllowed()) {
+            return;
+        }
+
         $import_content_button = $this->components->button()->standard(
             $this->translator->txt('import_content'),
             $this->getLinkTarget(self::class, self::CMD_UPLOAD_CONTENT)
         );
 
         if ($have_contents_been_solved) {
-            $add_content_button = $add_content_button->withUnavailableAction();
             $import_content_button = $import_content_button->withUnavailableAction();
         }
 
-        $this->toolbar->addComponent($add_content_button);
         $this->toolbar->addComponent($import_content_button);
     }
 
@@ -555,6 +574,16 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         }
 
         return $content;
+    }
+
+    protected function areImportsAllowed(): bool
+    {
+        $option = $this->repositories->settings()->getGeneralSettingValue(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS);
+        if (null !== $option) {
+            return (bool) $option;
+        }
+
+        return false;
     }
 
     protected function setManageContentsTab(): void

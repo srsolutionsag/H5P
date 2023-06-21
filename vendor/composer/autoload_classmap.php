@@ -29,6 +29,7 @@ return array(
     'ilH5PEventBroadcast' => $baseDir . '/classes/Integration/class.ilH5PEventBroadcast.php',
     'ilH5PEventRepository' => $baseDir . '/classes/Event/class.ilH5PEventRepository.php',
     'ilH5PExporter' => $baseDir . '/classes/class.ilH5PExporter.php',
+    'ilH5PGeneralRepository' => $baseDir . '/classes/Util/class.ilH5PGeneralRepository.php',
     'ilH5PGeneralSettings' => $baseDir . '/classes/Settings/class.ilH5PGeneralSettings.php',
     'ilH5PGeneralSettingsGUI' => $baseDir . '/classes/Settings/class.ilH5PGeneralSettingsGUI.php',
     'ilH5PGlobalTabManager' => $baseDir . '/classes/Util/class.ilH5PGlobalTabManager.php',

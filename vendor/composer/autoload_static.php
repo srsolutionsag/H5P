@@ -70,6 +70,7 @@ class ComposerStaticInite17a264ac993b77db2105116364c37f1
         'ilH5PEventBroadcast' => __DIR__ . '/../..' . '/classes/Integration/class.ilH5PEventBroadcast.php',
         'ilH5PEventRepository' => __DIR__ . '/../..' . '/classes/Event/class.ilH5PEventRepository.php',
         'ilH5PExporter' => __DIR__ . '/../..' . '/classes/class.ilH5PExporter.php',
+        'ilH5PGeneralRepository' => __DIR__ . '/../..' . '/classes/Util/class.ilH5PGeneralRepository.php',
         'ilH5PGeneralSettings' => __DIR__ . '/../..' . '/classes/Settings/class.ilH5PGeneralSettings.php',
         'ilH5PGeneralSettingsGUI' => __DIR__ . '/../..' . '/classes/Settings/class.ilH5PGeneralSettingsGUI.php',
         'ilH5PGlobalTabManager' => __DIR__ . '/../..' . '/classes/Util/class.ilH5PGlobalTabManager.php',

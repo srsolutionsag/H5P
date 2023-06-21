@@ -8,6 +8,7 @@ use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\File\ITmpFileRepository;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Content\IContentRepository;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -26,4 +27,6 @@ interface IRepositoryFactory
     public function result(): IResultRepository;
 
     public function settings(): ISettingsRepository;
+
+    public function general(): IGeneralRepository;
 }

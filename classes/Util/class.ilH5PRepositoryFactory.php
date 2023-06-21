@@ -9,6 +9,8 @@ use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Settings\ISettingsRepository;
 use srag\Plugins\H5P\File\ITmpFileRepository;
 use srag\Plugins\H5P\IRepositoryFactory;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
+use srag\Plugins\H5P\IGeneralRepository;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -46,13 +48,19 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
      */
     protected $settings_repository;
 
+    /**
+     * @var IGeneralRepository
+     */
+    protected $general_repository;
+
     public function __construct(
         IContentRepository $content_repository,
         IEventRepository $event_repositiry,
         ITmpFileRepository $file_repository,
         ILibraryRepository $library_repository,
         IResultRepository $result_repository,
-        ISettingsRepository $settings_repository
+        ISettingsRepository $settings_repository,
+        IGeneralRepository $general_repository
     ) {
         $this->content_repository = $content_repository;
         $this->event_repositiry = $event_repositiry;
@@ -60,6 +68,7 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
         $this->library_repository = $library_repository;
         $this->result_repository = $result_repository;
         $this->settings_repository = $settings_repository;
+        $this->general_repository = $general_repository;
     }
 
     public function content(): IContentRepository
@@ -90,5 +99,10 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
     public function settings(): ISettingsRepository
     {
         return $this->settings_repository;
+    }
+
+    public function general(): IGeneralRepository
+    {
+        return $this->general_repository;
     }
 }

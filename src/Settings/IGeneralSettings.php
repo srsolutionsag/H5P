@@ -11,6 +11,7 @@ interface IGeneralSettings
     public const SETTING_SEND_USAGE_STATISTICS = 'send_usage_statistics';
     public const SETTING_CONTENT_TYPE_UPDATED = 'content_type_cache_updated_at';
     public const SETTING_ENABLE_LRS_CONTENT = 'enable_lrs_content_types';
+    public const SETTING_ALLOW_H5P_IMPORTS = 'allow_h5p_imports';
 
     public function getName(): string;
 
