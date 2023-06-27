@@ -39,18 +39,20 @@ class ilH5PEventRepository implements IEventRepository
     {
         $user_id = $this->user->getId();
 
-        $result = $this->database->queryF(
-            "SELECT library_name, MAX(created_at) AS max_created_at
+        $result = $this->database->fetchAll(
+            $this->database->queryF(
+                "SELECT library_name, MAX(created_at) AS max_created_at
             FROM " . ilH5PEvent::TABLE_NAME . "
             WHERE type = 'content' AND sub_type = 'create' AND user_id = %s
             GROUP BY library_name
             ORDER BY max_created_at DESC",
-            [ilDBConstants::T_INTEGER],
-            [$user_id]
+                [ilDBConstants::T_INTEGER],
+                [$user_id]
+            )
         );
 
         $h5p_events = [];
-        while (($h5p_event = $result->fetchAssoc()) !== false) {
+        foreach ($result as $h5p_event) {
             $h5p_events[] = $h5p_event["library_name"];
         }
 

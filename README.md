@@ -8,8 +8,8 @@ This project is licensed under the GPL-3.0-only license
 
 ## Requirements
 
-* ILIAS 6.0 - 7.999
-* PHP >=7.2
+* ILIAS 8.0 - 8.999
+* PHP >=8.0
 
 ## Installation
 

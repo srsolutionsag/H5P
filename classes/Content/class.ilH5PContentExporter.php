@@ -5,6 +5,7 @@ declare(strict_types=1);
 use srag\Plugins\H5P\Content\IContentRepository;
 use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\IContainer;
+use ILIAS\Filesystem\Filesystem;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -69,8 +70,10 @@ class ilH5PContentExporter
 
         // use php's built in renaming function, which MOVES the exported
         // h5p-file to the current working directory.
-        rename(
-            "$export_file_path/$export_file_name",
+
+        global $DIC;
+        $DIC->filesystem()->storage()->copy(
+            "$export_file_path{$export_file_name}",
             "$this->absolute_working_dir/$export_file_name"
         );
 
@@ -135,7 +138,7 @@ class ilH5PContentExporter
      */
     protected function getXml(): string
     {
-        return $this->xml_writer->xmlStr;
+        return $this->xml_writer->xmlDumpMem();
     }
 
     /**
@@ -143,6 +146,6 @@ class ilH5PContentExporter
      */
     protected function clearXml(): void
     {
-        $this->xml_writer->xmlStr = '';
+        $this->xml_writer->xmlClear();
     }
 }

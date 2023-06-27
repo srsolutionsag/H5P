@@ -61,9 +61,16 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function removeTemporarilySavedFiles($filePath): void
     {
+        global $DIC;
+
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
         $filePath = (string) $filePath;
 
-        $file_repository = ilH5PPlugin::getInstance()->getContainer()->getRepositoryFactory()->file();
+        $file_repository = $plugin->getContainer()->getRepositoryFactory()->file();
 
         $file = $file_repository->getFileByPath($filePath);
 
@@ -85,7 +92,15 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function saveFileTemporarily($data, $move_file)
     {
-        $container = ilH5PPlugin::getInstance()->getContainer();
+        global $DIC;
+
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $container = $plugin->getContainer();
+
         $path = $container->getFileStorage()->getTmpPath() . '.h5p';
 
         try {

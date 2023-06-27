@@ -13,6 +13,7 @@ use ILIAS\Refinery\Constraint;
 use ILIAS\Refinery\Factory as Refinery;
 use ILIAS\Data\Result\Ok;
 use ILIAS\Data\Factory as DataFactory;
+use ILIAS\UI\Component\Input\Field\Input;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -70,7 +71,7 @@ class H5PEditor extends Group
     /**
      * @inheritDoc
      */
-    public function withValue($value)
+    public function withValue($value): Input
     {
         if (null === $value) {
             return $this;
@@ -89,7 +90,7 @@ class H5PEditor extends Group
         ]);
     }
 
-    public function withInput(InputData $post_input)
+    public function withInput(InputData $post_input): Input
     {
         $clone = parent::withInput($post_input);
 
@@ -114,13 +115,5 @@ class H5PEditor extends Group
     {
         return static function () {
         };
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getConstraintForRequirement()
-    {
-        return null;
     }
 }

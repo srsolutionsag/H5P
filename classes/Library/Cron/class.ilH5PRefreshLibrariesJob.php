@@ -39,7 +39,7 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleValue()
+    public function getDefaultScheduleValue(): ?int
     {
         return null;
     }

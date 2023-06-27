@@ -50,7 +50,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      *
      * @inheritDoc
      */
-    public function executeCommand()
+    public function executeCommand(): void
     {
         $next_class = $this->ctrl->getNextClass();
 
@@ -61,20 +61,20 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         }
 
         if (0 === strcasecmp(ilH5PAjaxEndpointGUI::class, $next_class)) {
-            return $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
+            $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
         }
         if (0 === strcasecmp(ilH5PUploadHandlerGUI::class, $next_class)) {
-            return $this->ctrl->forwardCommand(new ilH5PUploadHandlerGUI());
+            $this->ctrl->forwardCommand(new ilH5PUploadHandlerGUI());
         }
 
-        return parent::executeCommand();
+        parent::executeCommand();
     }
 
     /**
      * Must be implemented because it is called by parent class (even though
      * it is not declared abstract).
      */
-    protected function performCommand(string $command): void
+    public function performCommand(string $cmd): void
     {
         $next_class = $this->ctrl->getNextClass();
 
@@ -109,7 +109,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      *
      * @inheritDoc
      */
-    public function afterSave(ilObject $newObj): void
+    public function afterSave(ilObject $new_object): void
     {
         $this->ctrl->redirectByClass(
             [ilObjPluginDispatchGUI::class, self::class, ilH5PObjectSettingsGUI::class],

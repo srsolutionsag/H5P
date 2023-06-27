@@ -57,6 +57,7 @@ class ilH5PEditorFramework implements H5PEditorAjaxInterface
                 "major_version" => $latest_version->getMajorVersion(),
                 "minor_version" => $latest_version->getMinorVersion(),
                 "patch_version" => $latest_version->getPatchVersion(),
+                "patch_version_in_folder_name" => null,
                 "restricted"    => $latest_version->isRestricted(),
                 "has_icon"      => $latest_version->hasIcon()
             ];

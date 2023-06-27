@@ -19,6 +19,7 @@ use srag\Plugins\H5P\File\ITmpFileRepository;
  */
 class ilH5PKernelFramework implements H5PFrameworkInterface
 {
+    use ilH5POnScreenMessages;
     use ilH5PTimestampHelper;
     use ilH5PConcatHelper;
 
@@ -63,6 +64,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     protected $file_storage;
 
     /**
+     * @var ilGlobalTemplateInterface
+     */
+    protected $template;
+
+    /**
      * @var ilH5PPlugin
      */
     protected $plugin;
@@ -94,6 +100,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         ISettingsRepository $settings_repository,
         ITmpFileRepository $file_repository,
         H5PFileStorage $file_storage,
+        ilGlobalTemplateInterface $template,
         ilH5PPlugin $plugin,
         ilObjUser $user,
         ilCtrl $ctrl
@@ -106,6 +113,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->settings_repository = $settings_repository;
         $this->file_repository = $file_repository;
         $this->file_storage = $file_storage;
+        $this->template = $template;
         $this->plugin = $plugin;
         $this->user = $user;
         $this->ctrl = $ctrl;
@@ -261,7 +269,8 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
         foreach ($library_dependencies as $dependency) {
             $library_usages = $this->getLibraryUsage(
-                $dependency->getRequiredLibraryId(), true
+                $dependency->getRequiredLibraryId(),
+                true
             )['libraries'] ?? 1;
 
             // delete dependant library if it is only used by the current one.
@@ -972,15 +981,15 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $installed_library->setPatchVersion((int) $library_data["patchVersion"]);
         $installed_library->setRunnable((bool) $library_data["runnable"]);
 
-        if (null !== $library_data["fullscreen"]) {
+        if (isset($library_data["fullscreen"])) {
             $installed_library->setFullscreen((bool) $library_data["fullscreen"]);
         }
 
-        if (null !== $library_data["embedTypes"]) {
+        if (isset($library_data["embedTypes"])) {
             $installed_library->setEmbedTypes($this->joinArray((array) $library_data["embedTypes"]));
         }
 
-        if (null !== $library_data["preloadedJs"]) {
+        if (isset($library_data["preloadedJs"])) {
             $installed_library->setPreloadedJs(
                 $this->joinArray(
                     (array) array_map(static function ($preloaded_js) {
@@ -990,7 +999,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             );
         }
 
-        if (null !== $library_data["preloadedCss"]) {
+        if (isset($library_data["preloadedCss"])) {
             $installed_library->setPreloadedCss(
                 $this->joinArray(
                     (array) array_map(static function ($preloaded_css) {
@@ -1000,7 +1009,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             );
         }
 
-        if (null !== $library_data["dropLibraryCss"]) {
+        if (isset($library_data["dropLibraryCss"])) {
             $installed_library->setDropLibraryCss(
                 $this->joinArray(
                     (array) array_map(static function ($drop_library_css) {
@@ -1010,25 +1019,25 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             );
         }
 
-        if (null !== $library_data["semantics"]) {
+        if (isset($library_data["semantics"])) {
             $installed_library->setSemantics((string) $library_data["semantics"]);
         }
 
-        if (null !== $library_data["hasIcon"]) {
+        if (isset($library_data["hasIcon"])) {
             $installed_library->setHasIcon((bool) $library_data["hasIcon"]);
         }
 
-        if (null !== $library_data["addTo"]) {
+        if (isset($library_data["addTo"])) {
             $installed_library->setAddTo(json_encode($library_data["addTo"]));
         }
 
-        if (null !== $library_data["metadataSettings"]) {
+        if (isset($library_data["metadataSettings"])) {
             $installed_library->setMetadataSettings(json_decode($library_data["metadataSettings"], true));
         }
 
         $this->library_repository->storeInstalledLibrary($installed_library);
 
-        if (null !== $library_data['language']) {
+        if (isset($library_data['language'])) {
             // delete existing translations if the library is already stored.
             if (false === $new) {
                 $installed_languages = $this->library_repository->getLibraryLanguages(
@@ -1124,7 +1133,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         ];
 
         if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
-            ilUtil::sendFailure($message, true);
+            $this->sendFailure($message);
         }
     }
 
@@ -1136,7 +1145,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->messages["info"][] = $message;
 
         if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
-            ilUtil::sendInfo($message, true);
+            $this->sendInfo($message);
         }
     }
 
@@ -1216,6 +1225,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
         // Replace placeholders
         $message = preg_replace_callback("/(!|@|%)[A-Za-z0-9-_]+/", static function ($found) use ($replacements) {
+            if (!isset($replacements[$found[0]])) {
+                return '';
+            }
+
             $text = (string) $replacements[$found[0]];
 
             switch ($found[1]) {
@@ -1244,7 +1257,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      */
     public function updateContent($content, $content_main_id = null): int
     {
-        $h5p_content = $this->content_repository->getContent((int) $content["id"]);
+        if (isset($content["id"])) {
+            $h5p_content = $this->content_repository->getContent((int) $content["id"]);
+        } else {
+            $h5p_content = null;
+        }
 
         if ($h5p_content !== null) {
             $new = false;
@@ -1268,16 +1285,16 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $h5p_content->setDisable(0);
         }
 
-        $h5p_content->setAuthors((array) $metadata["authors"] ?: []);
-        $h5p_content->setAuthorComments((array) $metadata["authorComments"] ?: "");
-        $h5p_content->setChanges((array) $metadata["changes"] ?: []);
-        $h5p_content->setDefaultLanguage((string) $metadata["defaultLanguage"] ?: "");
-        $h5p_content->setLicense((string) $metadata["license"] ?: "");
-        $h5p_content->setLicenseExtras((string) $metadata["licenseExtras"] ?: "");
-        $h5p_content->setLicenseVersion((string) $metadata["licenseVersion"] ?: "");
-        $h5p_content->setSource((string) $metadata["source"] ?: "");
-        $h5p_content->setYearFrom((int) $metadata["yearFrom"] ?: 0);
-        $h5p_content->setYearTo((int) $metadata["yearTo"] ?: 0);
+        $h5p_content->setAuthors((array) ($metadata["authors"] ?? []));
+        $h5p_content->setAuthorComments((string) ($metadata["authorComments"] ?? ""));
+        $h5p_content->setChanges((array) ($metadata["changes"] ?? []));
+        $h5p_content->setDefaultLanguage((string) ($metadata["defaultLanguage"] ?? ""));
+        $h5p_content->setLicense((string) ($metadata["license"] ?? ""));
+        $h5p_content->setLicenseExtras((string) ($metadata["licenseExtras"] ?? ""));
+        $h5p_content->setLicenseVersion((string) ($metadata["licenseVersion"] ?? ""));
+        $h5p_content->setSource((string) ($metadata["source"] ?? ""));
+        $h5p_content->setYearFrom((int) ($metadata["yearFrom"] ?? 0));
+        $h5p_content->setYearTo((int) ($metadata["yearTo"] ?? 0));
 
         if (isset($metadata['obj_id'])) {
             $h5p_content->setObjId((int) $metadata['obj_id']);
@@ -1376,5 +1393,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $this->event_repository,
             $event
         );
+    }
+
+    protected function getTemplate(): ilGlobalTemplateInterface
+    {
+        return $this->template;
     }
 }

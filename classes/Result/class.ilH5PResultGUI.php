@@ -90,7 +90,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             )
         );
 
-        $confirmation->addItem(IRequestParameters::USER_ID, $user->getId(), $user->getFullname());
+        $confirmation->addItem(IRequestParameters::USER_ID, (string) $user->getId(), $user->getFullname());
 
         $this->renderLegacy($confirmation->getHTML());
     }
@@ -122,12 +122,11 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->content()->deleteUserData($state);
         }
 
-        ilUtil::sendSuccess(
+        $this->sendSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
                 $user->getFullname()
             ),
-            true
         );
 
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
@@ -148,7 +147,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
         $confirmation->setHeaderText($this->translator->txt("truncate_results_confirm"));
 
-        $confirmation->addItem(IRequestParameters::OBJ_ID, $this->object->getId(), $this->object->getTitle());
+        $confirmation->addItem(IRequestParameters::OBJ_ID, (string) $this->object->getId(), $this->object->getTitle());
 
         $this->renderLegacy($confirmation->getHTML());
     }
@@ -176,12 +175,11 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->content()->deleteUserData($state);
         }
 
-        ilUtil::sendSuccess(
+        $this->sendSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
                 $object->getTitle()
             ),
-            true
         );
 
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
@@ -262,7 +260,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
     protected function redirectUserNotFound(): void
     {
-        ilUtil::sendFailure($this->translator->txt('user_not_found'), true);
+        $this->sendFailure($this->translator->txt('user_not_found'));
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
     }
 

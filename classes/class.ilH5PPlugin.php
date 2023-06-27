@@ -20,11 +20,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     public const PLUGIN_ID = "xhfp";
 
     /**
-     * @var self|null
-     */
-    protected static $instance;
-
-    /**
      * @var IContainer
      */
     protected $h5p_container;
@@ -32,10 +27,13 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     /**
      * @inheritDoc
      */
-    public function __construct()
-    {
+    public function __construct(
+        ilDBInterface $db,
+        ilComponentRepositoryWrite $component_repository,
+        string $id
+    ) {
         global $DIC;
-        parent::__construct();
+        parent::__construct($db, $component_repository, $id);
 
         // this plugin might be called by the cron-hook plugin, which allows
         // this class to be called in CLI context, where the ILIAS_HTTP_PATH
@@ -45,17 +43,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
         }
 
         $this->h5p_container = new ilH5PContainer($this, $DIC);
-
-        self::$instance = $this;
-    }
-
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
     }
 
     /**

@@ -24,7 +24,7 @@ trait ilH5PTargetHelper
         $target = $this->ctrl->getLinkTargetByClass(
             $target_class,
             $command ?? '',
-            false,
+            null,
             $async
         );
 

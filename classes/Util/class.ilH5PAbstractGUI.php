@@ -22,6 +22,7 @@ use ILIAS\UI\Renderer;
  */
 abstract class ilH5PAbstractGUI
 {
+    use ilH5POnScreenMessages;
     use ilH5PTargetHelper;
     use TemplateHelper;
     use RequestHelper;
@@ -65,7 +66,10 @@ abstract class ilH5PAbstractGUI
     {
         global $DIC;
 
-        $plugin = ilH5PPlugin::getInstance();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
         $this->h5p_container = $plugin->getContainer();
         $this->repositories = $this->h5p_container->getRepositoryFactory();
@@ -167,8 +171,13 @@ abstract class ilH5PAbstractGUI
      */
     protected function redirectObjectNotFound(): void
     {
-        ilUtil::sendFailure($this->translator->txt('object_not_found'), true);
+        $this->sendFailure($this->translator->txt('object_not_found'));
         $this->ctrl->redirectToURL(ilLink::_getLink(1));
+    }
+
+    protected function getTemplate(): ilGlobalTemplateInterface
+    {
+        return $this->template;
     }
 
     /**

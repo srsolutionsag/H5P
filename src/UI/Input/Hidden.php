@@ -34,7 +34,7 @@ class Hidden extends Input
     /**
      * @inheritDoc
      */
-    protected function getConstraintForRequirement()
+    protected function getConstraintForRequirement(): ?Constraint
     {
         return null;
     }

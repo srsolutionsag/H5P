@@ -23,10 +23,16 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
      */
     protected $repository;
 
-    public function __construct(ITranslator $translator, ITmpFileRepository $repository)
+    /**
+     * @var ilCronManager
+     */
+    protected $cron_manager;
+
+    public function __construct(ITranslator $translator, ITmpFileRepository $repository, ilCronManager $cron_manager)
     {
         $this->translator = $translator;
         $this->repository = $repository;
+        $this->cron_manager = $cron_manager;
     }
 
     /**
@@ -40,7 +46,7 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleValue()
+    public function getDefaultScheduleValue(): ?int
     {
         return null;
     }
@@ -98,7 +104,7 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
         foreach ($h5p_tmp_files as $h5p_tmp_file) {
             $this->repository->deleteTmpFile($h5p_tmp_file);
 
-            ilCronManager::ping($this->getId());
+            $this->cron_manager->ping($this->getId());
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

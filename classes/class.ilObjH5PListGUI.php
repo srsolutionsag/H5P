@@ -58,13 +58,6 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
         $this->tags_enabled = false;
         $this->timings_enabled = false;
 
-        // legacy properties
-        // $this->link_enabled = false;
-        // $this->payment_enabled = false;
-        // $this->cut_enabled = true;
-        // $this->delete_enabled = true;
-        // $this->subscribe_enabled = true;
-
         return [
             [
                 "cmd" => ilObjH5PGUI::getStartCmd(),
@@ -80,16 +73,16 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
      *
      * @inheritDoc
      */
-    public function getCommandLink($a_cmd): string
+    public function getCommandLink($cmd): string
     {
-        if (ilObjH5PGUI::getStartCmd() === $a_cmd) {
+        if (ilObjH5PGUI::getStartCmd() === $cmd) {
             return $this->ctrl->getLinkTargetByClass(
                 [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PContentGUI::class],
-                $a_cmd
+                $cmd
             );
         }
 
-        return parent::getCommandLink($a_cmd);
+        return parent::getCommandLink($cmd);
     }
 
     /**

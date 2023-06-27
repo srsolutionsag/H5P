@@ -191,6 +191,7 @@ class ilH5PContainer implements IContainer
                 $this->getRepositoryFactory()->settings(),
                 $this->getRepositoryFactory()->file(),
                 $this->getFileStorage(),
+                $this->dic->ui()->mainTemplate(),
                 $this->plugin,
                 $this->dic->user(),
                 $this->dic->ctrl()

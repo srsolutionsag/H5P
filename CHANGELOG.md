@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.0
+
+- Added ILIAS 8 compatibility.
+
 ## 4.1.1
 
 - Added support for ILIAS goto links when retrieving object reference IDs.

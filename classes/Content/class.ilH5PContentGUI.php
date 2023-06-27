@@ -95,7 +95,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function resetContent(): void
     {
         if ($this->object->isSolveOnlyOnce()) {
-            ilUtil::sendFailure($this->translator->txt('cant_reset'), true);
+            $this->sendFailure($this->translator->txt('cant_reset'));
             $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);
         }
 
@@ -165,7 +165,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->getFormAction(self::class)
         );
 
-        $confirmation->addItem(IRequestParameters::CONTENT_ID, $content->getContentId(), $content->getTitle());
+        $confirmation->addItem(IRequestParameters::CONTENT_ID, (string) $content->getContentId(), $content->getTitle());
 
         $confirmation->setHeaderText(
             sprintf(
@@ -190,7 +190,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             'slug' => $content->getSlug()
         ]);
 
-        ilUtil::sendSuccess(sprintf($this->translator->txt('deleted_content'), $content->getTitle()), true);
+        $this->sendSuccess(sprintf($this->translator->txt('deleted_content'), $content->getTitle()));
         $this->ctrl->redirectByClass(self::class, self::CMD_MANAGE_CONTENTS);
     }
 
@@ -321,7 +321,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
 
         // abort if there are not as many results as there are contents.
         if (count($contents_of_object) !== count($user_results_of_object)) {
-            ilUtil::sendFailure($this->translator->txt('result_count_missmatch'), true);
+            $this->sendFailure($this->translator->txt('result_count_missmatch'));
             $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);
         }
 
@@ -340,7 +340,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         // if the object can only be solved once there will already
         // be another message box displayed.
         if (!$this->object->isSolveOnlyOnce()) {
-            ilUtil::sendSuccess($this->translator->txt('finished'), true);
+            $this->sendSuccess($this->translator->txt('finished'));
         }
 
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);

@@ -96,7 +96,7 @@ class ilH5PUploadHandlerGUI extends AbstractCtrlAwareUploadHandler
     /**
      * @inheritDoc
      */
-    protected function getInfoResult(string $identifier): FileInfoResult
+    public function getInfoResult(string $identifier): FileInfoResult
     {
         if (!file_exists($identifier)) {
             return new BasicFileInfoResult(

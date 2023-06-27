@@ -27,29 +27,26 @@ class ilObjH5P extends ilObjectPlugin
     protected $settings;
 
     /**
-     * @var ilH5PPlugin
-     */
-    protected $plugin;
-
-    /**
-     * @param int $a_ref_id
-     *
      * @inheritDoc
      */
-    public function __construct($a_ref_id = 0)
+    public function __construct(int $a_ref_id = 0)
     {
+        global $DIC;
         parent::__construct($a_ref_id);
 
-        $container = ilH5PPlugin::getInstance()->getContainer();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
-        $this->repositories = $container->getRepositoryFactory();
-        $this->h5p_storage = $container->getKernelStorage();
+        $this->repositories = $plugin->getContainer()->getRepositoryFactory();
+        $this->h5p_storage = $plugin->getContainer()->getKernelStorage();
     }
 
     /**
      * @inheritDoc
      */
-    protected function doCreate(): void
+    protected function doCreate(bool $clone_mode = false): void
     {
         $object_settings = new ilH5PObjectSettings();
         $object_settings->setObjId($this->getId());
@@ -59,13 +56,9 @@ class ilObjH5P extends ilObjectPlugin
     }
 
     /**
-     * @param ilObjH5P $new_obj
-     * @param int $a_target_id
-     * @param int $a_copy_id
-     *
      * @inheritDoc
      */
-    protected function doCloneObject($new_obj, $a_target_id, $a_copy_id = null): void
+    protected function doCloneObject(ilObject2 $new_obj, int $a_target_id, ?int $a_copy_id = null): void
     {
         $new_obj->settings = $this->repositories->settings()->cloneObjectSettings($this->settings);
         $new_obj->settings->setObjId($new_obj->getId());

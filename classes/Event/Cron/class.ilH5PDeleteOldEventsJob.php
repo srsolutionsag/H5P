@@ -23,10 +23,16 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
      */
     protected $event_repository;
 
-    public function __construct(ITranslator $translator, IEventRepository $repository)
+    /**
+     * @var ilCronManager
+     */
+    protected $cron_manager;
+
+    public function __construct(ITranslator $translator, IEventRepository $repository, ilCronManager $cron_manager)
     {
         $this->translator = $translator;
         $this->event_repository = $repository;
+        $this->cron_manager = $cron_manager;
     }
 
     /**
@@ -40,7 +46,7 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleValue()
+    public function getDefaultScheduleValue(): ?int
     {
         return null;
     }
@@ -98,7 +104,7 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
         foreach ($h5p_events as $h5p_event) {
             $this->event_repository->deleteEvent($h5p_event);
 
-            ilCronManager::ping($this->getId());
+            $this->cron_manager->ping($this->getId());
         }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);

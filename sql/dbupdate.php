@@ -1132,3 +1132,12 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
     ]);
 }
 ?>
+<#14>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'mnachine_name')) {
+    $ilDB->dropTableColumn('rep_robj_xhfp_lib_hub', 'mnachine_name');
+}
+?>

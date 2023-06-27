@@ -10,7 +10,7 @@ use srag\Plugins\H5P\RequestHelper;
 use srag\Plugins\H5P\IContainer;
 use Psr\Http\Message\ResponseInterface;
 use ILIAS\Filesystem\Stream\Streams;
-use ILIAS\DI\HTTPServices;
+use ILIAS\HTTP\GlobalHttpState;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -40,7 +40,7 @@ class ilH5PAjaxEndpointGUI
     protected $object;
 
     /**
-     * @var HTTPServices
+     * @var GlobalHttpState
      */
     protected $http;
 
@@ -58,7 +58,12 @@ class ilH5PAjaxEndpointGUI
     {
         global $DIC;
 
-        $this->h5p_container = ilH5PPlugin::getInstance()->getContainer();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $this->h5p_container = $plugin->getContainer();
         $this->repositories = $this->h5p_container->getRepositoryFactory();
 
         $this->post_request = new ArrayBasedRequestWrapper(

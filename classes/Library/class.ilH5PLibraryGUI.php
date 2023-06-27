@@ -174,7 +174,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
             );
         }
 
-        ilUtil::sendSuccess(sprintf($this->translator->txt('deleted_library'), $unified_library->getTitle()), true);
+        $this->sendSuccess(sprintf($this->translator->txt('deleted_library'), $unified_library->getTitle()));
         $this->ctrl->redirectByClass(self::class, self::CMD_LIBRARY_INDEX);
     }
 
@@ -206,7 +206,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
                 $unified_library->getMachineName()
             );
         } catch (Throwable $t) {
-            ilUtil::sendFailure($t->getMessage(), true);
+            $this->sendFailure($t->getMessage());
         } finally {
             // ensures that empty files are deleted even if fatal errors
             // ocurr during installation.
@@ -279,7 +279,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
             return;
         }
 
-        ilUtil::sendFailure($this->translator->txt('delete_library_in_use'), true);
+        $this->sendFailure($this->translator->txt('delete_library_in_use'));
         $this->ctrl->redirectToURL(
             $this->getLinkTarget(self::class, self::CMD_LIBRARY_SHOW, [
                 IRequestParameters::LIBRARY_NAME => $library->getMachineName(),
@@ -485,7 +485,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
      */
     protected function redirectObjectNotFound(): void
     {
-        ilUtil::sendFailure($this->translator->txt('library_not_found'), true);
+        $this->sendFailure($this->translator->txt('library_not_found'));
         $this->ctrl->redirectByClass(self::class, self::CMD_LIBRARY_INDEX);
     }
 

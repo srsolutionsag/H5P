@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use srag\Plugins\H5P\Content\IContentRepository;
+use ILIAS\Filesystem\Filesystem;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -16,6 +17,11 @@ class ilH5PExporter extends ilXmlExporter
     protected $content_repository;
 
     /**
+     * @var Filesystem
+     */
+    protected $file_system;
+
+    /**
      * @var H5PCore
      */
     protected $h5p_kernel;
@@ -26,19 +32,25 @@ class ilH5PExporter extends ilXmlExporter
      */
     public function init(): void
     {
-        $container = ilH5PPlugin::getInstance()->getContainer();
+        global $DIC;
 
-        $this->content_repository = $container->getRepositoryFactory()->content();
-        $this->h5p_kernel = $container->getKernel();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $this->file_system = $DIC->filesystem()->storage();
+        $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
+        $this->h5p_kernel = $plugin->getContainer()->getKernel();
     }
 
     /**
      * @inheritdoc
      */
-    public function getXmlRepresentation($a_entity, $a_schema_version, $a_id): string
+    public function getXmlRepresentation(string $a_entity, string $a_schema_version, string $a_id): string
     {
         // at this point, the working directory does not yet exist.
-        ilUtil::makeDir($this->getAbsoluteExportDirectory());
+        $this->file_system->createDir($this->getAbsoluteExportDirectory());
 
         return (new ilH5PContentExporter(
             $this->content_repository,
@@ -46,7 +58,7 @@ class ilH5PExporter extends ilXmlExporter
             $this->h5p_kernel,
             $this->getAbsoluteExportDirectory(),
             $this->getRelativeExportDirectory()
-        ))->exportAll($a_id);
+        ))->exportAll((int) $a_id);
     }
 
     /**
@@ -54,6 +66,13 @@ class ilH5PExporter extends ilXmlExporter
      */
     public function getValidSchemaVersions($a_entity): array
     {
-        return [];
+        return [
+            "5.0.0" => [
+                "namespace" => "srag\Plugins\H5P",
+                "xsd_file" => "",
+                "min" => "8.0",
+                "max" => "8.999",
+            ],
+        ];
     }
 }
