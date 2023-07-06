@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.2
+
+- Fixed an issue where files could not be uploaded due to an invalid return-type.
+
 ## 4.1.1
 
 - Added support for ILIAS goto links when retrieving object reference IDs.
