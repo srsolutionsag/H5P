@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.1
+
+- Fixed an issue where files could not be uploaded due to an invalid return-type.
+
 ## 5.0.0
 
 - Added ILIAS 8 compatibility.
