@@ -81,14 +81,14 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         /** @var $obj_data_cache ilObjectDataCache */
         $obj_data_cache = $DIC['ilObjDataCache'];
 
-        if (ilH5PPlugin::PLUGIN_ID !== $obj_data_cache->lookupType($obj_id)) {
-            return parent::_isOffline($obj_id);
+        if (ilH5PPlugin::PLUGIN_ID !== $obj_data_cache->lookupType((int) $a_obj_id)) {
+            return (bool) parent::_isOffline($a_obj_id);
         }
 
         $object_settings = (new ilH5PSettingsRepository())->getObjectSettings($obj_id);
 
         if (null !== $object_settings) {
-            return !$object_settings->isOnline();
+            return (bool) !$object_settings->isOnline();
         }
 
         return true;
