@@ -13,6 +13,9 @@ use ILIAS\Filesystem\Filesystem;
  */
 class ilH5PContentExporter
 {
+    protected const WEB_DIR = ILIAS_ABSOLUTE_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID;
+    protected const STORAGE_DIR = ILIAS_DATA_DIR . '/' . CLIENT_ID;
+
     /**
      * @var string attribute name for exported files.
      */
@@ -34,6 +37,16 @@ class ilH5PContentExporter
     protected $content_repository;
 
     /**
+     * @var Filesystem
+     */
+    protected $web_filesystem;
+
+    /**
+     * @var Filesystem
+     */
+    protected $storage_filesystem;
+
+    /**
      * @var ilXmlWriter
      */
     protected $xml_writer;
@@ -45,6 +58,8 @@ class ilH5PContentExporter
 
     public function __construct(
         IContentRepository $content_repository,
+        Filesystem $web_filesystem,
+        Filesystem $storage_filesystem,
         ilXmlWriter $xml_writer,
         H5PCore $h5p_kernel,
         string $absolute_working_dir,
@@ -53,6 +68,8 @@ class ilH5PContentExporter
         $this->absolute_working_dir = $absolute_working_dir;
         $this->relative_working_dir = $relative_working_dir;
         $this->content_repository = $content_repository;
+        $this->web_filesystem = $web_filesystem;
+        $this->storage_filesystem = $storage_filesystem;
         $this->xml_writer = $xml_writer;
         $this->h5p_kernel = $h5p_kernel;
     }
@@ -66,16 +83,17 @@ class ilH5PContentExporter
         $this->clearXml();
 
         $export_file_name = $this->createH5pFile($content->getContentId());
-        $export_file_path = $this->getH5pExportDir();
+        $export_file_path = $this->getAbsoluteH5pExportDir();
 
-        // use php's built in renaming function, which MOVES the exported
-        // h5p-file to the current working directory.
+        $export_file = $this->getRelativeWebPath("$export_file_path/$export_file_name");
 
-        global $DIC;
-        $DIC->filesystem()->storage()->copy(
-            "$export_file_path{$export_file_name}",
-            "$this->absolute_working_dir/$export_file_name"
+        $this->storage_filesystem->writeStream(
+            $this->getRelativeStoragePath("$this->absolute_working_dir/$export_file_name"),
+            $this->web_filesystem->readStream($export_file)
         );
+
+        // after the file has been copied, it can be safely removed.
+        $this->web_filesystem->delete($export_file);
 
         $this->writeXml($content->getTitle(), $export_file_name);
 
@@ -112,9 +130,25 @@ class ilH5PContentExporter
     /**
      * returns the static export directory where all .h5p-files are located.
      */
-    protected function getH5pExportDir(): string
+    protected function getAbsoluteH5pExportDir(): string
     {
-        return ILIAS_ABSOLUTE_PATH . '/' . IContainer::H5P_STORAGE_DIR . "/exports/";
+        return ILIAS_ABSOLUTE_PATH . '/' . IContainer::H5P_STORAGE_DIR . "/exports";
+    }
+
+    /**
+     * Returns the given path relative to the web directory WITHOUT tailing '/'.
+     */
+    protected function getRelativeWebPath(string $absolute_path): string
+    {
+        return rtrim(str_replace(self::WEB_DIR, '', $absolute_path), '/');
+    }
+
+    /**
+     * Returns the given path relative to the storage directory WITHOUT tailing '/'.
+     */
+    protected function getRelativeStoragePath(string $absolute_path): string
+    {
+        return rtrim(str_replace(self::STORAGE_DIR, '', $absolute_path), '/');
     }
 
     /**

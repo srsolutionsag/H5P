@@ -1311,7 +1311,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $event->setSubType(($new ? 'create' : 'update'));
         $event->setContentId($h5p_content->getContentId());
         $event->setContentTitle($h5p_content->getTitle());
-        $event->setLibraryName((string) $content['library']['name']);
+        $event->setLibraryName((string) ($content['library']['machineName'] ?? $content['library']['name'] ?? ''));
         $event->setLibraryVersion("{$content['library']['majorVersion']}.{$content['library']['minorVersion']}");
 
         $this->broadcastEvent($event);

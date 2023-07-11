@@ -104,22 +104,16 @@ class ilH5PContentImporter
             return null;
         }
 
+        $metadata = (array) $this->h5p_kernel->mainJsonData;
+        if (!isset($metadata["title"])) {
+            $metadata["title"] = $h5p_data[self::KEY_CONTENT_TITLE];
+        }
+
+        $metadata["parent_type"] = $this->parent_type;
+        $metadata["obj_id"] = $obj_id;
+
         $this->h5p_storage->savePackage([
-            "metadata" => [
-                "authors" => $this->h5p_kernel->mainJsonData["authors"],
-                "authorComments" => $this->h5p_kernel->mainJsonData["authorComments"],
-                "changes" => $this->h5p_kernel->mainJsonData["changes"],
-                "defaultLanguage" => $this->h5p_kernel->mainJsonData["defaultLanguage"],
-                "license" => $this->h5p_kernel->mainJsonData["license"],
-                "licenseExtras" => $this->h5p_kernel->mainJsonData["licenseExtras"],
-                "licenseVersion" => $this->h5p_kernel->mainJsonData["licenseVersion"],
-                "source" => $this->h5p_kernel->mainJsonData["source"],
-                "title" => $this->h5p_kernel->mainJsonData["title"] ?: $h5p_data[self::KEY_CONTENT_TITLE],
-                "yearFrom" => $this->h5p_kernel->mainJsonData["yearFrom"],
-                "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"],
-                "obj_id" => $obj_id,
-                "parent_type" => $this->parent_type
-            ]
+            "metadata" => $metadata,
         ]);
 
         ilH5PEditorStorage::removeTemporarilySavedFiles($this->h5p_framework->getUploadedH5pFolderPath());

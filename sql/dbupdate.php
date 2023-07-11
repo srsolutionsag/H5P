@@ -1104,9 +1104,11 @@ if (!$ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'machine_name')) {
  * @var $ilDB ilDBInterface
  */
 if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
-    $ilDB->query("
+    $ilDB->query(
+        "
         INSERT IGNORE INTO rep_robj_xhfp_opt_n (`name`, `value`) VALUES ('send_usage_statistics', '0');
-    ");
+    "
+    );
 }
 ?>
 <#12>
@@ -1115,9 +1117,11 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
  * @var $ilDB ilDBInterface
  */
 if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
-    $ilDB->query("
+    $ilDB->query(
+        "
         UPDATE rep_robj_xhfp_opt_n SET `value` = '0' WHERE `name` = 'send_usage_statistics' AND `value` IS NULL;
-    ");
+    "
+    );
 }
 ?>
 <#13>
@@ -1139,5 +1143,19 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
  */
 if ($ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'mnachine_name')) {
     $ilDB->dropTableColumn('rep_robj_xhfp_lib_hub', 'mnachine_name');
+}
+?>
+<#15>
+<?php
+global $DIC;
+
+// this setting will eventually be used in ILIAS\Filesystem\Security\Sanitizing\FilenameSanitizerImpl
+// to allow the suffix "h5p" for file names. This needs to be done for import/exports to work.
+$whitelist = $DIC->settings()->get('suffix_custom_white_list', '');
+$whitelist = explode(',', $whitelist);
+
+if (!in_array('h5p', $whitelist, true)) {
+    $whitelist[] = 'h5p';
+    $DIC->settings()->set('suffix_custom_white_list', implode(',', $whitelist));
 }
 ?>

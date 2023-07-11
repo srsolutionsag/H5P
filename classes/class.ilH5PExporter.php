@@ -19,7 +19,12 @@ class ilH5PExporter extends ilXmlExporter
     /**
      * @var Filesystem
      */
-    protected $file_system;
+    protected $web_filesystem;
+
+    /**
+     * @var Filesystem
+     */
+    protected $storage_filesystem;
 
     /**
      * @var H5PCore
@@ -39,7 +44,8 @@ class ilH5PExporter extends ilXmlExporter
         /** @var $plugin ilH5PPlugin */
         $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
-        $this->file_system = $DIC->filesystem()->storage();
+        $this->web_filesystem = $DIC->filesystem()->web();
+        $this->storage_filesystem = $DIC->filesystem()->storage();
         $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
         $this->h5p_kernel = $plugin->getContainer()->getKernel();
     }
@@ -49,11 +55,10 @@ class ilH5PExporter extends ilXmlExporter
      */
     public function getXmlRepresentation(string $a_entity, string $a_schema_version, string $a_id): string
     {
-        // at this point, the working directory does not yet exist.
-        $this->file_system->createDir($this->getAbsoluteExportDirectory());
-
         return (new ilH5PContentExporter(
             $this->content_repository,
+            $this->web_filesystem,
+            $this->storage_filesystem,
             new ilXmlWriter(),
             $this->h5p_kernel,
             $this->getAbsoluteExportDirectory(),

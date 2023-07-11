@@ -70,13 +70,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI
         parent::executeCommand();
     }
 
-    /**
-     * Must be implemented because it is called by parent class (even though
-     * it is not declared abstract).
-     */
     public function performCommand(string $cmd): void
     {
         $next_class = $this->ctrl->getNextClass();
+
+        // this is a workaround for https://mantis.ilias.de/view.php?id=37531,
+        // until https://github.com/ILIAS-eLearning/ILIAS/pull/6060 is merged.
+        if (empty($next_class) && 'create' === $cmd) {
+            $this->$cmd();
+            return;
+        }
 
         switch ($next_class) {
             case strtolower(ilH5PContentGUI::class):

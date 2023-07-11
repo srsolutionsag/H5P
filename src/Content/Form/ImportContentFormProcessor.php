@@ -83,23 +83,17 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
         // in case H5P cannot determine the content title...
         $tmp_file = $post_data[ImportContentFormBuilder::INPUT_CONTENT][0] ?? '';
 
+        $metadata = (array) $this->h5p_kernel->mainJsonData;
+        if (!isset($metadata["title"])) {
+            $metadata["title"] = basename($tmp_file);
+        }
+
+        $metadata["parent_type"] = $this->parent_type;
+        $metadata["obj_id"] = $this->parent_obj_id;
+
         // this will remove the temporarily saved file automatically.
         $this->h5p_storage->savePackage([
-            "metadata" => [
-                "authors" => $this->h5p_kernel->mainJsonData["authors"],
-                "authorComments" => $this->h5p_kernel->mainJsonData["authorComments"],
-                "changes" => $this->h5p_kernel->mainJsonData["changes"],
-                "defaultLanguage" => $this->h5p_kernel->mainJsonData["defaultLanguage"],
-                "license" => $this->h5p_kernel->mainJsonData["license"],
-                "licenseExtras" => $this->h5p_kernel->mainJsonData["licenseExtras"],
-                "licenseVersion" => $this->h5p_kernel->mainJsonData["licenseVersion"],
-                "source" => $this->h5p_kernel->mainJsonData["source"],
-                "title" => ($this->h5p_kernel->mainJsonData["title"] ?: basename($tmp_file)),
-                "yearFrom" => $this->h5p_kernel->mainJsonData["yearFrom"],
-                "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"],
-                "parent_type" => $this->parent_type,
-                "obj_id" => $this->parent_obj_id,
-            ],
+            "metadata" => $metadata,
         ]);
 
         $this->runProcessorsFor($this->h5p_kernel->loadContent($this->h5p_storage->contentId));

@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.2
+
+- Fixed an issue where content-page objects could not export or import H5P contents.
+
 ## 5.0.1
 
 - Fixed an issue where files could not be uploaded due to an invalid return-type.
