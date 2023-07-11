@@ -52,7 +52,7 @@ class ilH5PGeneralSettingsGUI extends ilH5PAbstractGUI
         $form_processor = $this->getFormProcessor();
 
         if ($form_processor->processForm()) {
-            ilUtil::sendSuccess($this->translator->txt('settings_saved'), true);
+            $this->sendSuccess($this->translator->txt('settings_saved'));
             $this->ctrl->redirectByClass(self::class, self::CMD_SETTINGS_INDEX);
         }
 

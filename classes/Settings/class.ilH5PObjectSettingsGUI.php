@@ -16,6 +16,8 @@ use ILIAS\UI\Component\Input\Container\Form\Form;
  */
 class ilH5PObjectSettingsGUI extends ilH5PAbstractGUI
 {
+    use ilH5POnScreenMessages;
+
     public const CMD_SETTINGS_INDEX = 'showSettings';
     public const CMD_SETTINGS_SAVE = 'saveSettings';
 
@@ -55,7 +57,7 @@ class ilH5PObjectSettingsGUI extends ilH5PAbstractGUI
         $form_processor = $this->getFormProcessor();
 
         if ($form_processor->processForm()) {
-            ilUtil::sendSuccess($this->translator->txt('settings_saved'), true);
+            $this->sendSuccess($this->translator->txt('settings_saved'));
             $this->ctrl->redirectByClass(self::class, self::CMD_SETTINGS_INDEX);
         }
 

@@ -120,6 +120,9 @@ abstract class ilH5PAbstractGUI
             case strtolower(ilH5PUploadHandlerGUI::class):
                 $this->ctrl->forwardCommand(new ilH5PUploadHandlerGUI());
                 break;
+            case strtolower(ilPermissionGUI::class):
+                $this->ctrl->forwardCommand(new ilPermissionGUI($this));
+                break;
         }
 
         $command = $this->ctrl->getCmd();

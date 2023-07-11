@@ -3,6 +3,8 @@
 ## 5.0.2
 
 - Fixed an issue where content-page objects could not export or import H5P contents.
+- Fixed an issue where the permission screen did not show the H5P repository object tabs anymore.
+- Removed `ilUtil` usages which lead to a fatal error in ILIAS 8.
 
 ## 5.0.1
 

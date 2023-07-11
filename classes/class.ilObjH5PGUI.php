@@ -28,6 +28,29 @@ declare(strict_types=1);
  */
 class ilObjH5PGUI extends ilObjectPluginGUI
 {
+    /**
+     * @var ilH5PGlobalTabManager
+     */
+    protected $tab_manager;
+
+    public function __construct(int $a_ref_id = 0, int $a_id_type = self::REPOSITORY_NODE_ID, int $a_parent_node_id = 0)
+    {
+        global $DIC;
+        parent::__construct($a_ref_id, $a_id_type, $a_parent_node_id);
+
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $this->tab_manager = new ilH5PGlobalTabManager(
+            $plugin,
+            $this->tpl,
+            $this->ctrl,
+            $this->tabs
+        );
+    }
+
     public static function getStartCmd(): string
     {
         if (ilObjH5PAccess::hasWriteAccess()) {
@@ -62,9 +85,11 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
         if (0 === strcasecmp(ilH5PAjaxEndpointGUI::class, $next_class)) {
             $this->ctrl->forwardCommand(new ilH5PAjaxEndpointGUI());
+            return;
         }
         if (0 === strcasecmp(ilH5PUploadHandlerGUI::class, $next_class)) {
             $this->ctrl->forwardCommand(new ilH5PUploadHandlerGUI());
+            return;
         }
 
         parent::executeCommand();
@@ -118,6 +143,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             [ilObjPluginDispatchGUI::class, self::class, ilH5PObjectSettingsGUI::class],
             ilH5PObjectSettingsGUI::CMD_SETTINGS_INDEX
         );
+    }
+
+    /**
+     * Override parent method to add our own tabs. This was necessary
+     * due to the permission-tab handling, which is not working properly.
+     *
+     * @inheritDoc
+     */
+    protected function setTabs(): void
+    {
+        $this->tab_manager->addRepositoryTabs();
     }
 
     /**
