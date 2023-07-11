@@ -28,6 +28,23 @@ declare(strict_types=1);
  */
 class ilObjH5PGUI extends ilObjectPluginGUI
 {
+    /**
+     * @var ilH5PGlobalTabManager
+     */
+    protected $tab_manager;
+
+    public function __construct($a_ref_id = 0, $a_id_type = self::REPOSITORY_NODE_ID, $a_parent_node_id = 0)
+    {
+        parent::__construct($a_ref_id, $a_id_type, $a_parent_node_id);
+
+        $this->tab_manager = new ilH5PGlobalTabManager(
+            ilH5PPlugin::getInstance(),
+            $this->tpl,
+            $this->ctrl,
+            $this->tabs,
+        );
+    }
+
     public static function getStartCmd(): string
     {
         if (ilObjH5PAccess::hasWriteAccess()) {
@@ -97,6 +114,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI
                     ilH5PContentGUI::CMD_SHOW_CONTENTS
                 );
         }
+    }
+
+    /**
+     * Override parent method to add our own tabs. This was necessary
+     * due to the permission-tab handling, which is not working properly.
+     *
+     * @inheritDoc
+     */
+    protected function setTabs(): void
+    {
+        $this->tab_manager->addRepositoryTabs();
     }
 
     /**

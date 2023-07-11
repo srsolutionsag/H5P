@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.3
+
+- Fixed an issue where the permission screen did not show the H5P repository object tabs anymore.
+
 ## 4.1.2
 
 - Fixed an issue where files could not be uploaded due to an invalid return-type.
