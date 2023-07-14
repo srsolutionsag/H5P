@@ -1,29 +1,29 @@
-obj_xhfp#:#H5P
-obj_xhfp_duplicate#:#H5P kopieren
-objs_xhfp#:#H5P's
-objs_xhfp_duplicate#:#H5P's kopieren
-grp_create_xhfp#:#H5P anlegen
-crs_create_xhfp#:#H5P anlegen
-cat_create_xhfp#:#H5P anlegen
-root_create_xhfp#:#H5P anlegen
-fold_create_xhfp#:#H5P anlegen
-rbac_create_xhfp#:#H5P anlegen
-rep_robj_xhfp_obj_xhfp#:#H5P
+obj_xhfp#:#H5P-Objekt
+obj_xhfp_duplicate#:#H5P-Objekt kopieren
+objs_xhfp#:#H5P-Objekte
+objs_xhfp_duplicate#:#H5P-Objekte kopieren
+grp_create_xhfp#:#H5P-Objekt anlegen
+crs_create_xhfp#:#H5P-Objekt anlegen
+cat_create_xhfp#:#H5P-Objekt anlegen
+root_create_xhfp#:#H5P-Objekt anlegen
+fold_create_xhfp#:#H5P-Objekt anlegen
+rbac_create_xhfp#:#H5P-Objekt anlegen
+rep_robj_xhfp_obj_xhfp#:#H5P-Objekt
 xhfp_add#:#Hinzufügen
-xhfp_copy#:#H5P kopieren
+xhfp_copy#:#H5P-Objekt kopieren
 xhfp_delete#:#Löschen
 xhfp_edit_permission#:#Rechte bearbeiten
-xhfp_new#:#H5P anlegen
+xhfp_new#:#H5P-Objekt anlegen
 xhfp_read#:#Lesen
 xhfp_visible#:#Sichtbar
 xhfp_write#:#Bearbeiten
 actions#:#Aktionen
 add#:#Hinzufügen
 add_content#:#Inhalt hinzufügen
-added_library#:#%d new neue H5P Bibliothek hinzugefügt.
-added_libraries#:#%d new neue H5P Bibliotheken hinzugefügt.
-added_library_updated_library#:#%d neue H5P Bibliothek hinzugefügt %d alte aktualisiert.
-added_library_updated_libraries#:#%d neue H5P Bibliothek hinzugefügt %d alte aktualisiert.
+added_library#:#%d neue H5P-Bibliothek hinzugefügt.
+added_libraries#:#%d neue H5P-Bibliotheken hinzugefügt.
+added_library_updated_library#:#%d neue H5P-Bibliothek hinzugefügt %d alte aktualisiert.
+added_library_updated_libraries#:#%d neue H5P-Bibliothek hinzugefügt %d alte aktualisiert.
 added_libraries_updated_library#:#%d neue H5P Bibliotheken hinzugefügt %d alte aktualisiert.
 added_libraries_updated_libraries#:#%d neue H5P Bibliotheken hinzugefügt %d alte aktualisiert.
 all#:#Alle
@@ -38,14 +38,14 @@ confirm_action_text#:#Bitte bestätigen Sie, dass Sie fortfahren möchten. Diese
 content#:#Inhalt
 content_changed#:#Dieser Inhalt wurde seit Ihrem letzten Besuch geändert.
 content_count#:#Inhalt %1$d von %2$d
-content_not_exists#:#Der H5P-Inhalt existiert nicht mehr
+content_not_exists#:#Der H5P-Inhalt existiert nicht mehr.
 content_types#:#Inhaltstypen
 contents#:#Inhalte
 delete#:#Löschen
 delete_content#:#Inhalt löschen
 delete_content_confirm#:#Möchten Sie den Inhalt wirklich löschen: %s ?
 delete_library_confirm#:#Möchten Sie die Bibliothek wirklich löschen: %s ?
-delete_library_in_use#:#Sie können diese Bibliothek nicht löschen, es existieren noch H5P-Inhalte und -Bibliotheken die auf sie angewiesen sind.
+delete_library_in_use#:#Sie können diese Bibliothek nicht löschen. Es existieren noch H5P-Inhalte und -Bibliotheken die auf sie angewiesen sind.
 delete_results_confirm#:#Möchten Sie die Resultate von %s wirklich löschen?
 deleted_content#:#Inhalt %s gelöscht
 deleted_files#:#Folgende Dateien wurden in %s gelöscht:
@@ -55,14 +55,14 @@ description#:#Beschreibung
 details#:#Details
 disable_fullscreen#:#Vollbild aus
 download#:#Download
-download_content#:#Inhalt als H5P Datei herunterladen.
+download_content#:#Inhalt als H5P-Datei herunterladen.
 edit#:#Bearbeiten
 edit_content#:#Inhalt bearbeiten
 edit_permission#:#Rechte bearbeiten
 embed#:#Einbetten
-embed_include_script#:#Dieses Script auf Website einbauen, wenn die Größe des eingebetteten Inhalts dynamisch verändert werden soll:
-enable_lrs_content_types#:#Aktiviere Inhaltstypen, die von LRS abhängig sind.
-enable_lrs_content_types_info#:#Macht es möglich, Inhaltstypen zu verwenden, die sich auf eine externe Quelle verlassen um richtig zu funktionieren, so wie der Fragebogen-Inhaltstyp.
+embed_include_script#:#Bauen Sie folgendes Script auf der Website ein, wenn sich die Größe des eingebetteten Inhalts dynamisch verändern soll:
+enable_lrs_content_types#:#LRS-Inhaltstypen aktivieren
+enable_lrs_content_types_info#:#Es können Inhaltstypen aus externen Quellen (Learning Record Store) verwendet werden. Beispielweise der Inhaltstyp „Fragebogen“.
 example#:#Beispiel
 export#:#Exportieren
 export_content#:#Inhalt exportieren
@@ -72,12 +72,12 @@ finished#:#Beendet
 fullscreen#:#Vollbild
 hide_advanced#:#Details ausblenden
 libraries_last_refresh#:#Bibliotheken zuletzt aktualisiert: %s
-libraries_refresh#:#Bibliothek-liste aktualisieren
+libraries_refresh#:#Bibliotheksliste aktualisieren
 libraries_refresh_info#:#Aktualisiert die Liste der verfügbaren H5P-Bibliotheken mit deren neusten Versionen.
-libraries_refreshed#:#Bibliothek-liste wurde erfolgreich aktualisiert
+libraries_refreshed#:#Bibliotheksliste wurde erfolgreich aktualisiert
 import#:#Importieren
 import_content#:#Inhalt importieren
-incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder
+incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder.
 install#:#Installieren
 installed#:#Installiert
 installed_libraries#:#Bibliotheken
@@ -92,7 +92,7 @@ msg_content_not_editable#:#Die Inhalte können nicht mehr bearbeitet werden, da 
 next_content#:#Nächster Inhalt
 no#:#Nein
 not_available#:#Nicht verfügbar
-no_content_copyright#:#Keine Copyright Informationen für diesen Inhalt hinterlegt.
+no_content_copyright#:#Keine Copyright-Informationen für diesen Inhalt hinterlegt.
 no_result#:#Kein Resultat
 not_installed#:#Nicht installiert
 offline#:#Offline
@@ -109,7 +109,7 @@ runnable#:#Startbar
 save#:#Speichern
 saved_content#:#%s gespeichert
 send_usage_statistics#:#Nutzungsstatistiken automatisch erstellen
-send_usage_statistics_info#:#Die Nutzungsstatistiken werden automatisch übermittelt, damit die Entwickler besser verstehen können, wie H5P verwendet wird und wo Verbesserungspotenziale liegen. Lese mehr darüber, welche Daten auf %s gesammelt werden.
+send_usage_statistics_info#:#Die Nutzungsstatistik wird automatisch übermittelt, damit die Verwendung von H5P nachvollzogen und verbessert werden kann. Mehr über die gesammelten Daten: %s
 settings#:#Einstellungen
 settings_saved#:#Einstellungen gespeichert
 show#:#Anzeigen
@@ -119,7 +119,7 @@ show_less#:#Weniger anzeigen
 show_more#:#Mehr anzeigen
 size#:#Grösse
 solve_only_once#:#Inhalte nur einmal lösen
-solve_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden
+solve_only_once_info#:#Hinweis: Bei einigen Inhalten muss möglicherweise den Lösung-/Wiederholen-Button ausgeschaltet werden.
 solved_all_contents#:#Sie haben bereits alle Inhalte gelöst.
 solved_content#:#Sie haben diesen Inhalt bereits gelöst.
 source#:#Quelle
@@ -130,13 +130,13 @@ summary#:#Zusammenfassung
 thumbnail#:#Vorschaubild
 title#:#Titel
 tutorial#:#Tutorial
-updated_library#:#%d Alte H5P Bibliothek aktualisiert.
-updated_libraries#:#%d Alte H5P Bibliotheken aktualisiert.
+updated_library#:#%d Alte H5P-Bibliothek aktualisiert.
+updated_libraries#:#%d Alte H5P-Bibliotheken aktualisiert.
 upgrade#:#Upgrade
 upgrade_available#:#Upgrade verfügbar
 upload#:#Hochladen
 upload_file#:#Datei hochladen
-upload_file_info#:#Lädt eine Datei hoch\nZip-Dateien werden automatisch entpackt\nBitte geben Sie die Startdatei unter 'Quelle' an
+upload_file_info#:#Lädt eine Datei hoch\nZip-Dateien werden automatisch entpackt\nBitte geben Sie die Startdatei unter „Quelle“ an.
 upload_library#:#Bibliothek hochladen
 uploaded_files#:#Folgende Datei(en) wurde(n) nach %s hochgeladen:
 uploaded_files_failed#:#Folgende Datei(en) wurde(n) nicht angenommen, da sie eine schädliche Endung haben/hat:
@@ -155,11 +155,11 @@ delete_old_events#:#Alte Event-Logs löschen
 delete_old_events_description#:#Löscht alte Event-Logs, die H5P generiert hat
 delete_old_tmp_files#:#Alte Temp-Dateien löschen
 delete_old_tmp_files_description#:#Löscht alte Temp-Dateien, die H5P generiert hat
-object_not_found#:#Das angefragte H5P Objekt wurde nicht gefunden.
+object_not_found#:#Das angefragte H5P-Objekt wurde nicht gefunden.
 missing_parameter#:#Fehler, Parameter %s wurde nicht gefunden.
-msg_invalid_ref_ids#:#Die angegebenen Ref-ID's sind ungültig.
+msg_invalid_ref_ids#:#Die angegebenen Ref-ID sind ungültig.
 msg_invalid_ref_id#:#Die angegebene Ref-ID ist ungültig.
-msg_invalid_email#:#Die angegebene E-Mail Adresse ist ungültig.
+msg_invalid_email#:#Die angegebene E-Mail-Adresse ist ungültig.
 msg_number_less_than#:#Die angegebene Nummer muss kleiner oder gleich %d sein.
 back#:#Zurück
 no_content#:#Es wurde noch kein Inhalt hinzugefügt.
@@ -182,12 +182,12 @@ score#:#Punkte
 score_total#:#Punkte Total
 overview#:#Übersicht
 no_results#:#Es gibt noch keine Resultate für dieses Objekt.
-cant_reset#:#Inhalt kann nicht zurückgesetzt werden, da diese nur einmal gelöst werden dürfen.
+cant_reset#:#Inhalt kann nicht zurückgesetzt werden, da dieser nur einmal gelöst werden darf.
 reset#:#Zurücksetzen
 result_count_missmatch#:#Die Anzahl Resultate stimmt nicht mit der Anzahl Inhalte überein.
-content_loading#:#Bitte warten Sie, während der Inhalt am laden ist...
-truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate von diesem Objekt löschen wollen?
+content_loading#:#Bitte warten Sie, bis der Inhalt geladen werden konnte.
+truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate aus diesem Objekt löschen wollen?
 truncate_results#:#Resultate löschen
 user_not_found#:#Der angefragte Benutzer konnte nicht gefunden werden.
-allow_h5p_imports#:#H5P Import zulassen
+allow_h5p_imports#:#H5P-Import zulassen
 allow_h5p_imports_info#:#Wenn diese Option aktiv ist, können Benutzer H5P-Inhalte von Dateien importieren.
