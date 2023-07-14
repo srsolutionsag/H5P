@@ -1,19 +1,19 @@
-obj_xhfp#:#H5P-Objekt
-obj_xhfp_duplicate#:#H5P-Objekt kopieren
-objs_xhfp#:#H5P-Objekte
-objs_xhfp_duplicate#:#H5P-Objekte kopieren
-grp_create_xhfp#:#H5P-Objekt anlegen
-crs_create_xhfp#:#H5P-Objekt anlegen
-cat_create_xhfp#:#H5P-Objekt anlegen
-root_create_xhfp#:#H5P-Objekt anlegen
-fold_create_xhfp#:#H5P-Objekt anlegen
-rbac_create_xhfp#:#H5P-Objekt anlegen
-rep_robj_xhfp_obj_xhfp#:#H5P-Objekt
+obj_xhfp#:#H5P
+obj_xhfp_duplicate#:#H5P kopieren
+objs_xhfp#:#H5P
+objs_xhfp_duplicate#:#H5P kopieren
+grp_create_xhfp#:#H5P anlegen
+crs_create_xhfp#:#H5P anlegen
+cat_create_xhfp#:#H5P anlegen
+root_create_xhfp#:#H5P anlegen
+fold_create_xhfp#:#H5P anlegen
+rbac_create_xhfp#:#H5P anlegen
+rep_robj_xhfp_obj_xhfp#:#H5P
 xhfp_add#:#Hinzufügen
-xhfp_copy#:#H5P-Objekt kopieren
+xhfp_copy#:#H5P kopieren
 xhfp_delete#:#Löschen
 xhfp_edit_permission#:#Rechte bearbeiten
-xhfp_new#:#H5P-Objekt anlegen
+xhfp_new#:#H5P anlegen
 xhfp_read#:#Lesen
 xhfp_visible#:#Sichtbar
 xhfp_write#:#Bearbeiten
