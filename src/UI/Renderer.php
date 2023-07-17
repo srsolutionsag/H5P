@@ -131,24 +131,24 @@ class Renderer extends DecoratedRenderer
                 // on clientside because the array itself already contains
                 // json-strings which cannot be parsed by javascript if
                 // encoded once more by PHP.
-                $content_json = $this->escapeJsonString($content_data['jsonContent'] ?? '');
+                $content_base64 = base64_encode($content_data['jsonContent'] ?? '');
                 unset($content_data['jsonContent']);
 
                 if (isset($content_data['contentUserData'][0]['state'])) {
-                    $previous_state_json = '`' . $content_data['contentUserData'][0]['state'] . '`';
+                    $previous_state_base64 = '`' . base64_encode($content_data['contentUserData'][0]['state']) . '`';
                     unset($content_data['contentUserData'][0]['state']);
                 } else {
-                    $previous_state_json = 'null';
+                    $previous_state_base64 = 'null';
                 }
 
-                $integration_json = $this->escapeJsonString(json_encode($content_data));
+                $integration_base64 = base64_encode(json_encode($content_data));
 
                 return "il.H5P.initContent(
                     '$id', 
                     $content_id,
-                    `$integration_json`,
-                    `$content_json`,
-                    $previous_state_json,
+                    `$integration_base64`,
+                    `$content_base64`,
+                    $previous_state_base64,
                 );";
             }
         );
@@ -187,8 +187,8 @@ class Renderer extends DecoratedRenderer
 
         $enriched_component = $component->withAdditionalOnLoadCode(
             static function ($id) use ($editor_integration, $content_id): string {
-                $integration_json = json_encode($editor_integration->getData());
-                return "il.H5P.initEditor('$id', `$integration_json`, $content_id)";
+                $integration_base64 = base64_encode(json_encode($editor_integration->getData()));
+                return "il.H5P.initEditor('$id', `$integration_base64`, $content_id)";
             }
         );
 
@@ -222,11 +222,11 @@ class Renderer extends DecoratedRenderer
 
         $kernel_integration = $this->client_data_provider->getKernelIntegration();
 
-        $kernel_data = $this->escapeJsonString(json_encode($kernel_integration->getData()));
-        $kernel_data = "var H5PIntegration = JSON.parse(`$kernel_data`);";
+        $kernel_data_base64 = base64_encode(json_encode($kernel_integration->getData()));
+        $kernel_data_base64 = "var H5PIntegration = JSON.parse(atob(`$kernel_data_base64`));";
 
         $this->registry
-            ->registerBase64Content($kernel_data)
+            ->registerBase64Content($kernel_data_base64)
             ->registerStylesheets($kernel_integration->getCssFiles())
             ->registerJavaScripts(
                 $kernel_integration->getJsFiles(),
@@ -277,20 +277,6 @@ class Renderer extends DecoratedRenderer
         }
 
         return (string) $content->getContentId();
-    }
-
-    protected function escapeJsonString(string $json): string
-    {
-        $quote = "\"";
-        $slash = "\\";
-
-        return str_replace([
-            $slash . $quote,
-            $slash . 'n',
-        ], [
-            $slash . $slash . $slash .$quote,
-            ''
-        ], $json);
     }
 
     /**
