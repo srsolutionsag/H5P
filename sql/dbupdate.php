@@ -319,7 +319,6 @@ if (!$ilDB->tableExists('rep_robj_xhfp_lib')) {
         'add_to' => [
             'type' => 'text',
             'notnull' => '0',
-            'default' => 'null',
         ],
         'created_at' => [
             'type' => 'timestamp',
@@ -622,7 +621,6 @@ if (!$ilDB->tableExists('rep_robj_xhfp_opt_n')) {
         'value' => [
             'type' => 'text',
             'notnull' => '0',
-            'default' => 'null',
         ],
     ]);
 
