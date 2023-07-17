@@ -1,5 +1,19 @@
 # H5P Changelog
 
+## 4.1.4
+
+- Removed default values for table columns to prevent an issue during installation, where certain MySQL-versions could
+  not handle the default value of `NULL` for ILIAS column-types 'text' and 'clob' sometimes.
+- Changed the data format from JSON to base64 when passing data to the client, to avoid invalid JSON strings which
+  sometimes occurred during the rendering of H5P contents, due to invisible control characters like line-breaks.
+- Fixed an issue where H5P contents were not visible if rendered inside of an ILIAS content-page accordion.
+- Fixed an issue where H5P contents with embed-type 'div' were not rendered properly.
+
+- fix possibly incompatible default value for certain mysql versions.
+- fix H5P contents rendered inside ILIAS accordions.
+- pass data to client as base64 to avoid invalid JSON strings.
+- rendering of H5P contents with embed-type 'div'.
+
 ## 4.1.3
 
 - Fixed an issue where the permission screen did not show the H5P repository object tabs anymore.
