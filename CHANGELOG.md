@@ -9,11 +9,6 @@
 - Fixed an issue where H5P contents were not visible if rendered inside of an ILIAS content-page accordion.
 - Fixed an issue where H5P contents with embed-type 'div' were not rendered properly.
 
-- fix possibly incompatible default value for certain mysql versions.
-- fix H5P contents rendered inside ILIAS accordions.
-- pass data to client as base64 to avoid invalid JSON strings.
-- rendering of H5P contents with embed-type 'div'.
-
 ## 4.1.3
 
 - Fixed an issue where the permission screen did not show the H5P repository object tabs anymore.
