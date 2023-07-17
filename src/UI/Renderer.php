@@ -234,6 +234,9 @@ class Renderer extends DecoratedRenderer
             )->registerJavaScript(
                 \ilH5PPlugin::PLUGIN_DIR . 'templates/js/h5p.adapter.js',
                 IResourceRegistry::PRIORITY_FIRST
+            )->registerJavaScript(
+                \ilH5PPlugin::PLUGIN_DIR . 'templates/js/ilias.adapter.js',
+                IResourceRegistry::PRIORITY_LAST
             );
 
         $this->is_kernel_integrated = true;
