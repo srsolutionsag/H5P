@@ -153,11 +153,16 @@ class Renderer extends DecoratedRenderer
             }
         );
 
-        $template = $this->getContentTemplateFor($content_data['embedType'] ?? 'unknown');
+        $embed_type = $content_data['embedType'] ?? 'unknown';
+
+        $template = $this->getContentTemplateFor($embed_type);
         $template->setVariable('CONTENT_ID', $component->getContent()->getContentId());
         $template->setVariable('ID', $this->bindJavaScript($enriched_component) ?? '');
 
-        if (null !== ($message = $component->getLoadingMessage())) {
+        // since we cannot properly listen to some "initialized" event of H5P contents,
+        // we cannot safely remove the message box for contents which are not embedded
+        // in an iframe (because we cannot listen to a "loca" event).
+        if ('div' !== $embed_type && null !== ($message = $component->getLoadingMessage())) {
             $template->setVariable(
                 'MESSAGE_BOX',
                 $this->render($this->ilias_component_factory->messageBox()->info($message))

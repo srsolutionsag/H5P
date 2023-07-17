@@ -93,7 +93,7 @@ H5P.preventInit = true;
       let content_wrapper = document.getElementById(element_id);
 
       if (null === content_wrapper) {
-        throw new Error(`Could not gather all required elements to initialize H5P editor.`);
+        throw new Error(`Could not gather all required elements to initialize H5P content.`);
       }
 
       H5PIntegration.contents = H5PIntegration.contents || [];
