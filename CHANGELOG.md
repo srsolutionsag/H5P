@@ -1,5 +1,14 @@
 # H5P Changelog
 
+## 5.0.3
+
+- Removed default values for table columns to prevent an issue during installation, where certain MySQL-versions could
+  not handle the default value of `NULL` for ILIAS column-types 'text' and 'clob' sometimes.
+- Changed the data format from JSON to base64 when passing data to the client, to avoid invalid JSON strings which
+  sometimes occurred during the rendering of H5P contents, due to invisible control characters like line-breaks.
+- Fixed an issue where H5P contents were not visible if rendered inside of an ILIAS content-page accordion.
+- Fixed an issue where H5P contents with embed-type 'div' were not rendered properly.
+
 ## 5.0.2
 
 - Fixed an issue where content-page objects could not export or import H5P contents.
