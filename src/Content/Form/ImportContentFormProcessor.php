@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace srag\Plugins\H5P\Content\Form;
 
+use srag\Plugins\H5P\File\FileUploadCommunicator;
 use srag\Plugins\H5P\Form\AbstractFormProcessor;
 use Psr\Http\Message\ServerRequestInterface;
 use ILIAS\UI\Component\Input\Container\Form\Form as UIForm;
@@ -14,6 +15,11 @@ use ILIAS\UI\Component\Input\Container\Form\Form as UIForm;
 class ImportContentFormProcessor extends AbstractFormProcessor implements IPostProcessorAware
 {
     use PostProcessorAware;
+
+    /**
+     * @var FileUploadCommunicator
+     */
+    protected $file_upload_communicator;
 
     /**
      * @var \H5PValidator
@@ -44,6 +50,7 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
      * @param string $parent_type one of IContent::PARENT_TYPE_* constants
      */
     public function __construct(
+        FileUploadCommunicator $file_upload_communicator,
         \H5PValidator $h5p_validator,
         \H5PStorage $h5p_storage,
         \H5PCore $h5p_kernel,
@@ -53,6 +60,7 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
         string $parent_type
     ) {
         parent::__construct($request, $form);
+        $this->file_upload_communicator = $file_upload_communicator;
         $this->h5p_validator = $h5p_validator;
         $this->h5p_storage = $h5p_storage;
         $this->h5p_kernel = $h5p_kernel;
@@ -65,13 +73,14 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
      */
     protected function isValid(array $post_data): bool
     {
-        /**
-         * this method-call will receive the $h5p_file path automatically
-         * because @see H5PFrameworkInterface::getUploadedH5pPath() returns the
-         * latest uploaded .h5p file. When this is called, the file has
-         * already been stored by @see ilH5PUploadHandler::getUploadResult()
-         * asynchronously. Therefore, we can just call the validation.
-         */
+        if (empty($post_data[ImportContentFormBuilder::INPUT_CONTENT]) ||
+            empty(($tmp_file = $post_data[ImportContentFormBuilder::INPUT_CONTENT][0]))
+        ) {
+            return false;
+        }
+
+        $this->file_upload_communicator->setUploadPath($tmp_file);
+
         return $this->h5p_validator->isValidPackage();
     }
 
@@ -81,7 +90,7 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
     protected function processData(array $post_data): void
     {
         // in case H5P cannot determine the content title...
-        $tmp_file = $post_data[ImportContentFormBuilder::INPUT_CONTENT][0] ?? '';
+        $tmp_file = $post_data[ImportContentFormBuilder::INPUT_CONTENT][0];
 
         // this will remove the temporarily saved file automatically.
         $this->h5p_storage->savePackage([

@@ -22,7 +22,7 @@ class ilH5PImporter extends ilXmlImporter
         // has to be initialized here because getImportDirectory() will
         // be initialized after the object is constructed.
         (new ilH5PContentImporter(
-            $container->getKernelFramework(),
+            $container->getFileUploadCommunicator(),
             $container->getKernelValidator(),
             $container->getKernelStorage(),
             $container->getKernel(),

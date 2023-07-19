@@ -524,6 +524,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function getImportContentFormProcessor(): IFormProcessor
     {
         return new ImportContentFormProcessor(
+            $this->h5p_container->getFileUploadCommunicator(),
             $this->h5p_container->getKernelValidator(),
             $this->h5p_container->getKernelStorage(),
             $this->h5p_container->getKernel(),
