@@ -268,31 +268,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $library_dependencies = $this->library_repository->getLibraryDependencies((int) $library_id);
 
         foreach ($library_dependencies as $dependency) {
-            $library_usages = $this->getLibraryUsage(
-                $dependency->getRequiredLibraryId(),
-                true
-            )['libraries'] ?? 1;
-
-            // delete dependant library if it is only used by the current one.
-            if (1 === $library_usages) {
-                $dependant_library = $this->library_repository->getInstalledLibrary(
-                    $dependency->getRequiredLibraryId()
-                );
-
-                if (null === $dependant_library) {
-                    continue;
-                }
-
-                $this->deleteLibrary(
-                    (object) [
-                        "name" => $dependant_library->getMachineName(),
-                        "library_id" => $dependant_library->getLibraryId(),
-                        "major_version" => $dependant_library->getMajorVersion(),
-                        "minor_version" => $dependant_library->getMinorVersion(),
-                    ]
-                );
-            }
-
             $this->library_repository->deleteLibraryDependency($dependency);
         }
     }
@@ -1080,7 +1055,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $h5p_library = $this->library_repository->getVersionOfInstalledLibraryByName(
                 $dependency["machineName"],
                 $dependency["majorVersion"],
-                $dependency["minorVersion"]
             );
 
             $h5p_dependency = new ilH5PLibraryDependency();

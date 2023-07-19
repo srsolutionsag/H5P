@@ -439,7 +439,7 @@ class ilH5PLibraryRepository implements ILibraryRepository
     public function isLibraryUpdateAvailable(string $name, int $major_version, int $minor_version): bool
     {
         $result = $this->database->queryF(
-            "SELECT id FROM " . ilH5PLibrary::TABLE_NAME
+            "SELECT library_id FROM " . ilH5PLibrary::TABLE_NAME
             . " WHERE name=%s AND (major_version>%s OR (major_version=%s AND minor_version>%s))",
             [
                 ilDBConstants::T_TEXT,
