@@ -13,6 +13,7 @@ use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\IContainer;
 use ILIAS\DI\Container;
 use srag\Plugins\H5P\ITranslator;
+use srag\Plugins\H5P\File\FileUploadCommunicator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -74,6 +75,11 @@ class ilH5PContainer implements IContainer
      * @var H5peditor|null
      */
     protected $h5p_editor;
+
+    /**
+     * @var FileUploadCommunicator|null
+     */
+    protected $file_upload_communicator;
 
     /**
      * @var ilH5PPlugin
@@ -163,6 +169,18 @@ class ilH5PContainer implements IContainer
     /**
      * @inheritDoc
      */
+    public function getFileUploadCommunicator(): FileUploadCommunicator
+    {
+        if (null === $this->file_upload_communicator) {
+            $this->file_upload_communicator = new FileUploadCommunicator();
+        }
+
+        return $this->file_upload_communicator;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function areDependenciesAvailable(): bool
     {
         $required_offsets = ['ilDB', 'ilUser', 'ilCtrl', 'lng'];
@@ -184,6 +202,7 @@ class ilH5PContainer implements IContainer
         if (null === $this->h5p_kernel_framework) {
             $this->h5p_kernel_framework = new ilH5PKernelFramework(
                 new VersionComparator(),
+                $this->getFileUploadCommunicator(),
                 $this->getRepositoryFactory()->content(),
                 $this->getRepositoryFactory()->library(),
                 $this->getRepositoryFactory()->event(),

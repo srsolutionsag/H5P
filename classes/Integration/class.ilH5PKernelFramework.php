@@ -12,6 +12,7 @@ use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\Event\IEvent;
 use srag\Plugins\H5P\Library\ILibrary;
 use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\FileUploadCommunicator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -27,6 +28,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      * @var VersionComparator
      */
     protected $version_comparator;
+
+    /**
+     * @var FileUploadCommunicator
+     */
+    protected $file_upload_communicator;
 
     /**
      * @var IContentRepository
@@ -93,6 +99,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
     public function __construct(
         VersionComparator $version_comparator,
+        FileUploadCommunicator $file_upload_communicator,
         IContentRepository $content_repository,
         ILibraryRepository $library_repository,
         IEventRepository $event_repository,
@@ -106,6 +113,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         ilCtrl $ctrl
     ) {
         $this->version_comparator = $version_comparator;
+        $this->file_upload_communicator = $file_upload_communicator;
         $this->content_repository = $content_repository;
         $this->library_repository = $library_repository;
         $this->event_repository = $event_repository;
@@ -559,13 +567,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      */
     public function getUploadedH5pPath(): string
     {
-        $file = $this->file_repository->getLatestFile();
-
-        if (null === $file) {
+        if (null === $this->file_upload_communicator->getUploadPath()) {
             throw new LogicException('Illegal state, please call this method only if files have been uploaded.');
         }
 
-        return $file->getPath();
+        return $this->file_upload_communicator->getUploadPath();
     }
 
     /**

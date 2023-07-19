@@ -6,6 +6,7 @@ use srag\Plugins\H5P\UI\Factory;
 use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\Integration\ClientData;
 use srag\Plugins\H5P\Integration\IClientDataProvider;
+use srag\Plugins\H5P\File\FileUploadCommunicator;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -50,6 +51,12 @@ interface IContainer
      * Returns the H5P main translator (the core plugin).
      */
     public function getTranslator(): ITranslator;
+
+    /**
+     * Returns a communicator which must be used to communicate file-uploads
+     * to the ILIAS H5P framework.
+     */
+    public function getFileUploadCommunicator(): FileUploadCommunicator;
 
     /**
      * Returns whether all dependencies are available and can be safely

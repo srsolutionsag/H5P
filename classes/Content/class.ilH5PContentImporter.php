@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\H5P\File\FileUploadCommunicator;
+
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
@@ -35,9 +37,9 @@ class ilH5PContentImporter
     protected $parent_type;
 
     /**
-     * @var H5PFrameworkInterface
+     * @var FileUploadCommunicator
      */
-    protected $h5p_framework;
+    protected $file_upload_communicator;
 
     /**
      * @var H5PValidator
@@ -55,7 +57,7 @@ class ilH5PContentImporter
     protected $h5p_kernel;
 
     public function __construct(
-        H5PFrameworkInterface $h5p_framework,
+        FileUploadCommunicator $file_upload_communicator,
         H5PValidator $h5p_validator,
         H5PStorage $h5p_storage,
         H5PCore $h5p_kernel,
@@ -64,7 +66,7 @@ class ilH5PContentImporter
     ) {
         $this->relative_working_dir = $relative_working_dir;
         $this->parent_type = $parent_type;
-        $this->h5p_framework = $h5p_framework;
+        $this->file_upload_communicator = $file_upload_communicator;
         $this->h5p_validator = $h5p_validator;
         $this->h5p_storage = $h5p_storage;
         $this->h5p_kernel = $h5p_kernel;
@@ -95,10 +97,12 @@ class ilH5PContentImporter
      */
     protected function importH5pFile(array $h5p_data, int $obj_id): ?int
     {
-        ilH5PEditorStorage::saveFileTemporarily(
+        $file = ilH5PEditorStorage::saveFileTemporarily(
             "$this->relative_working_dir/{$h5p_data[self::KEY_FILE_PATH]}",
             true
         );
+
+        $this->file_upload_communicator->setUploadPath("$file->dir/$file->fileName");
 
         if (!$this->h5p_validator->isValidPackage()) {
             return null;
@@ -116,7 +120,7 @@ class ilH5PContentImporter
             "metadata" => $metadata,
         ]);
 
-        ilH5PEditorStorage::removeTemporarilySavedFiles($this->h5p_framework->getUploadedH5pFolderPath());
+        ilH5PEditorStorage::removeTemporarilySavedFiles($this->file_upload_communicator->getUploadPath());
 
         return $this->h5p_storage->contentId;
     }

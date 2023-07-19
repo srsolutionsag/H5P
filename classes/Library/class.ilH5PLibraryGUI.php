@@ -198,6 +198,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
         // return either a different already existing file-path or throw
         // an exception (because no file exists).
         $file = ilH5PEditorStorage::saveFileTemporarily(null, false);
+        $this->h5p_container->getFileUploadCommunicator()->setUploadPath("$file->dir/$file->fileName");
 
         try {
             $this->h5p_container->getEditor()->ajax->action(
@@ -435,6 +436,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
     protected function getUploadFormProcessor(): IFormProcessor
     {
         return new UploadLibraryFormProcessor(
+            $this->h5p_container->getFileUploadCommunicator(),
             $this->h5p_container->getKernelValidator(),
             $this->h5p_container->getKernelStorage(),
             $this->request,
