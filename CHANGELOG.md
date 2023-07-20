@@ -1,5 +1,12 @@
 # H5P Changelog
 
+## 4.1.5
+
+- Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
+- Reverted library deletion behaviour:
+  - Ignored patch-version in SQL query when deleting library-dependencies.
+  - Removed deletion of dependent libraries when deleting a library.
+
 ## 4.1.4
 
 - Removed default values for table columns to prevent an issue during installation, where certain MySQL-versions could
