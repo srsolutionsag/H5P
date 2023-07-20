@@ -27,3 +27,8 @@ the future.
   interface, to keep compatibility with the H5P kernel. This way the plugin has type-safety by using according getters
   and setters on the DTO but H5P can still access any value like it were an array. This will make the code much more
   trustworthy and readable.
+
+- [ ] Introduce some sort of trigger to manually purge temporary files inside H5P's `/temp` directory, to enable
+  administrators to may already solve issues which ocurr when importing libraries and contents. This is due to some
+  undocumented behaviour, where the H5P kernel will extract files into an already existing directory instead of creating
+  a new one with the same name.
