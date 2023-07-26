@@ -134,7 +134,6 @@ class ilH5PClientDataProvider implements IClientDataProvider
                         '',
                         true
                     ) . '&cmd=',
-                "libraryUrl" => ILIAS_HTTP_PATH . "/" . IContainer::H5P_EDITOR_DIR . "/",
                 "copyrightSemantics" => $this->h5p_content_validator->getCopyrightSemantics(),
                 "metadataSemantics" => $this->h5p_content_validator->getMetadataSemantics(),
                 "assets" => [
@@ -162,6 +161,7 @@ class ilH5PClientDataProvider implements IClientDataProvider
             [
                 'baseUrl' => ILIAS_HTTP_PATH,
                 'siteUrl' => ILIAS_HTTP_PATH,
+                'libraryUrl' => ILIAS_HTTP_PATH . '/' . IContainer::H5P_KERNEL_DIR . '/js',
                 'url' => ILIAS_HTTP_PATH . '/' . IContainer::H5P_STORAGE_DIR,
                 'ajax' => [
                     'setFinished' => $this->ctrl->getLinkTargetByClass(
@@ -196,6 +196,7 @@ class ilH5PClientDataProvider implements IClientDataProvider
                 'hubIsEnabled' => false,
                 'saveFreq' => 30,
                 'contents' => [],
+                'pluginCacheBuster' => '',
                 'loadedCss' => $css_files,
                 'loadedJs' => $js_files,
                 'core' => [
