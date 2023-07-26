@@ -1,11 +1,16 @@
 # H5P Changelog
 
+## 4.1.6
+
+- Fixed an issue where outdated H5P contents (newer library version installed) could not be saved when editting, because
+  the integration data was misformed (`pluginCacheBuster`, `libraryUrl`).
+
 ## 4.1.5
 
 - Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
 - Reverted library deletion behaviour:
-  - Ignored patch-version in SQL query when deleting library-dependencies.
-  - Removed deletion of dependent libraries when deleting a library.
+    - Ignored patch-version in SQL query when deleting library-dependencies.
+    - Removed deletion of dependent libraries when deleting a library.
 
 ## 4.1.4
 
