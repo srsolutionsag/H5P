@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.0.5
+
+- Fixed an issue where outdated H5P contents (newer library version installed) could not be saved when editting, because
+  the integration data was misformed (`pluginCacheBuster`, `libraryUrl`).
+  
 ## 5.0.4
 
 - Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
