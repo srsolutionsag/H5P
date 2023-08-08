@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 4.1.7
+
+- Fixed an issue where H5Ps WYSIWYG editor (CKEditor) could not be loaded due to misformed integration data.
+- Fixed an issue where the plugin could not be used with PHP>7.4 because of an incompatible method-declaration.
+- Fixed an issue where H5P repository objects could not be accessed via bin.
+
 ## 4.1.6
 
 - Fixed an issue where outdated H5P contents (newer library version installed) could not be saved when editting, because
