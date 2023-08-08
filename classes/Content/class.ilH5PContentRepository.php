@@ -16,11 +16,6 @@ class ilH5PContentRepository implements IContentRepository
     use ilH5PActiveRecordHelper;
 
     /**
-     * @var ilCtrl
-     */
-    protected $ctrl;
-
-    /**
      * @var ilObjUser
      */
     protected $user;
@@ -30,9 +25,8 @@ class ilH5PContentRepository implements IContentRepository
      */
     protected $database;
 
-    public function __construct(ilCtrl $ctrl, ilObjUser $user, ilDBInterface $database)
+    public function __construct(ilObjUser $user, ilDBInterface $database)
     {
-        $this->ctrl = $ctrl;
         $this->user = $user;
         $this->database = $database;
     }
@@ -46,7 +40,7 @@ class ilH5PContentRepository implements IContentRepository
         $this->reSortContents($content->getObjId());
     }
 
-    public function getContent(int $content_id): ?ilH5PContent
+    public function getContent(int $content_id): ?IContent
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return ilH5PContent::where(["content_id" => $content_id])->first();
