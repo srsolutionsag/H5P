@@ -122,6 +122,7 @@ class ilH5PClientDataProvider implements IClientDataProvider
             $editor_css_files,
             $editor_js_files,
             [
+                "libraryUrl" => ILIAS_HTTP_PATH . '/' . IContainer::H5P_EDITOR_DIR . '/',
                 "filesPath" => ILIAS_HTTP_PATH . '/' . IContainer::H5P_STORAGE_DIR . '/editor',
                 "fileIcon" => [
                     "path" => ILIAS_HTTP_PATH . '/' . IContainer::H5P_EDITOR_DIR . "/images/binary-file.png",
