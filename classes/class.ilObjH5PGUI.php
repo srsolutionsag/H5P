@@ -13,6 +13,7 @@ declare(strict_types=1);
  * own save method since executeCommand is not overwritten.
  *
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilObjPluginDispatchGUI
+ * @ilCtrl_isCalledBy ilObjH5PGUI: ilAdministrationGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilRepositoryGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilH5PConfigGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilPermissionGUI
