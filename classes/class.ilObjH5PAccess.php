@@ -50,7 +50,6 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         $this->obj_data_cache = $DIC['ilObjDataCache'];
 
         $this->content_repository = new ilH5PContentRepository(
-            $DIC->ctrl(),
             $DIC->user(),
             $DIC->database()
         );

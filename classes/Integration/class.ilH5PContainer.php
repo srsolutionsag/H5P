@@ -105,7 +105,6 @@ class ilH5PContainer implements IContainer
         if (null === $this->repository_factory) {
             $this->repository_factory = new ilH5PRepositoryFactory(
                 new ilH5PContentRepository(
-                    $this->dic->ctrl(),
                     $this->dic->user(),
                     $this->dic->database()
                 ),
