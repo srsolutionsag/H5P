@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.8
+
+- Added compatibility for PHP 7.3.
+
 ## 4.1.7
 
 - Fixed an issue where H5Ps WYSIWYG editor (CKEditor) could not be loaded due to misformed integration data.

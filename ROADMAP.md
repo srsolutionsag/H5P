@@ -27,3 +27,6 @@ the future.
   interface, to keep compatibility with the H5P kernel. This way the plugin has type-safety by using according getters
   and setters on the DTO but H5P can still access any value like it were an array. This will make the code much more
   trustworthy and readable.
+
+- [ ] Add a custom `H5PFileStorage` implementation which uses the ILIAS resource storage instead of H5Ps default. If
+  this is implemented, existing files also need to be migrated to the new storage.
