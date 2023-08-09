@@ -124,7 +124,7 @@ class ilH5PContentRepository implements IContentRepository
         ])->orderBy("sort", "asc")->getArray();
     }
 
-    public function getContentBySlug(string $slug): ?ilH5PContent
+    public function getContentBySlug(string $slug): ?IContent
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return ilH5PContent::where(["slug" => $slug])->first();
@@ -161,7 +161,7 @@ class ilH5PContentRepository implements IContentRepository
         string $data_type,
         int $sub_content_id,
         int $user_id
-    ): ?ilH5PContentUserData {
+    ): ?IContentUserData {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return ilH5PContentUserData::where([
             "content_id" => $content_id,

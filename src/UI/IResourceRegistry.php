@@ -15,19 +15,19 @@ interface IResourceRegistry
     /**
      * @param mixed $content
      */
-    public function registerBase64Content($content): self;
+    public function registerBase64Content($content): IResourceRegistry;
 
     /**
      * @param string[] $paths
      */
-    public function registerJavaScripts(array $paths, int $priority): self;
+    public function registerJavaScripts(array $paths, int $priority): IResourceRegistry;
 
-    public function registerJavaScript(string $path, int $priority): self;
+    public function registerJavaScript(string $path, int $priority): IResourceRegistry;
 
     /**
      * @param string[] $paths
      */
-    public function registerStylesheets(array $paths): self;
+    public function registerStylesheets(array $paths): IResourceRegistry;
 
-    public function registerStylesheet(string $path): self;
+    public function registerStylesheet(string $path): IResourceRegistry;
 }

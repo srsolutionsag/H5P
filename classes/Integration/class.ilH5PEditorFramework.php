@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+// Using ILIAS 7 and PHP 7.3 will lead to a fatal error while building
+// artifacts, if the autoload is not required here.
+require_once __DIR__ . "/../../vendor/autoload.php";
+
 use srag\Plugins\H5P\Library\Collector\UnifiedLibraryCollector;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Event\IEventRepository;

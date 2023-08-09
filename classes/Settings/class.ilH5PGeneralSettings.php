@@ -49,7 +49,7 @@ class ilH5PGeneralSettings extends ActiveRecord implements IGeneralSettings
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): IGeneralSettings
     {
         $this->name = $name;
         return $this;
@@ -66,7 +66,7 @@ class ilH5PGeneralSettings extends ActiveRecord implements IGeneralSettings
     /**
      * @param mixed $value
      */
-    public function setValue($value): self
+    public function setValue($value): IGeneralSettings
     {
         $this->value = $value;
         return $this;

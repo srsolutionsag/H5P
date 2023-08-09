@@ -24,7 +24,7 @@ class ilH5PResourceRegistry implements IResourceRegistry
     /**
      * @inheritDoc
      */
-    public function registerBase64Content($content): self
+    public function registerBase64Content($content): IResourceRegistry
     {
         $base_64_content = base64_encode($content);
 
