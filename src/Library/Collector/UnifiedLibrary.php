@@ -83,17 +83,17 @@ class UnifiedLibrary
     /**
      * @var object[]
      */
-    protected array $screenshots;
+    protected $screenshots;
 
     /**
      * @var string[]
      */
-    protected array $keywords;
+    protected $keywords;
 
     /**
      * @var string[]
      */
-    protected array $categories;
+    protected $categories;
 
     /**
      * @var int
