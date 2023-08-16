@@ -195,6 +195,13 @@ class Renderer extends DecoratedRenderer
         $template = $this->getPluginTemplate('tpl.h5p_editor.html');
 
         foreach ($component->getInputs() as $key => $input) {
+            // we need to pass base64 encoded data to the client, where they will
+            // be decoded to a JSON string again, because otherwise this leads to
+            // prolblems with hidden control-characters.
+            if (H5PEditor::INPUT_CONTENT === $key && null !== $input->getValue()) {
+                $input = $input->withValue(base64_encode($input->getValue()));
+            }
+
             $template->setVariable(strtoupper($key), $this->render($input));
         }
 
