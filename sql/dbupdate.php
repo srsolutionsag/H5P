@@ -1130,3 +1130,145 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
     ]);
 }
 ?>
+<#14>
+<?php
+/**
+ * This database update step has been introduced because of a bug which referenced
+ * library dependencies incorrectly when deprecated content was imported and an old
+ * version of a library was installed. The framework referenced the latest installed
+ * version of a dependency instead of the version which is specified in the library
+ * which is being imported. This lead to scripts not being found or wrong semantics
+ * being loaded.
+ *
+ * The update step cannot rely on the database only, but must scan the installed H5P
+ * libraries in the filesystem. The information needed to fix the database is
+ * contained in the library.json file, which stores the depencencies in according
+ * properties. Since this code is executed by eval(), we cannot properly error-handle
+ * this step, which makes it somewhat fragile. Therefore I recommend to create a
+ * backup of the 'rep_robj_xhfp_lib_dep' database table, in case something goes wrong.
+ *
+ * Possibly affected libraries can be limited to those which have been installed the
+ * day after the first official release-date of the version which introduced this bug:
+ * https://github.com/srsolutionsag/H5P/commit/753120f3506d2b5622c182204a2f63dd34c30e3c
+ */
+
+$last_unaffected_create_date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2023-02-13 59:59:59');
+$date_for_updated_libraries = new DateTimeImmutable();
+$h5p_library_storage = ILIAS_ABSOLUTE_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID . '/h5p/libraries';
+$h5p_installed_libraries = (@scandir($h5p_library_storage)) ?: [];
+
+foreach ($h5p_installed_libraries as $h5p_library_dir) {
+    if ('.' === substr($h5p_library_dir, 0, 1)) {
+        continue;
+    }
+
+    $h5p_library_json = (@file_get_contents("$h5p_library_storage/$h5p_library_dir/library.json")) ?: null;
+    if (null === $h5p_library_json) {
+        continue;
+    }
+
+    $h5p_library_data = json_decode($h5p_library_json, true);
+    if (!isset($h5p_library_data['machineName'], $h5p_library_data['majorVersion'], $h5p_library_data['minorVersion'])) {
+        continue;
+    }
+
+    $installed_library = getInstalledLibraryIdAndDate(
+        $h5p_library_data['machineName'],
+        (int) $h5p_library_data['majorVersion'],
+        (int) $h5p_library_data['minorVersion']
+    );
+
+    if (null === $installed_library || $installed_library['updated_at'] <= $last_unaffected_create_date) {
+        continue;
+    }
+
+    $updated = false;
+    if (isset($h5p_library_data['preloadedDependencies'])) {
+        processDependencies($installed_library['id'], $h5p_library_data['preloadedDependencies'], 'preloaded');
+        $updated = true;
+    }
+    if (isset($h5p_library_data['dynamicDependencies'])) {
+        processDependencies($installed_library['id'], $h5p_library_data['dynamicDependencies'], 'dynamic');
+        $updated = true;
+    }
+    if (isset($h5p_library_data['editorDependencies'])) {
+        processDependencies($installed_library['id'], $h5p_library_data['editorDependencies'], 'editor');
+        $updated = true;
+    }
+
+    if ($updated) {
+        $ilDB->update('rep_robj_xhfp_lib', [
+            'updated_at' => ['timestamp', $date_for_updated_libraries->format('Y-m-d H:i:s')],
+        ], [
+            'library_id' => ['integer', $installed_library['id']],
+        ]);
+    }
+
+    $installed_library = null;
+    $h5p_library_data = null;
+}
+
+function processDependencies(int $library_id, array $dependencies, string $dependency_type): void
+{
+    /** @var $ilDB ilDBInterface */
+    global $ilDB;
+
+    $ilDB->queryF(
+        "DELETE FROM rep_robj_xhfp_lib_dep WHERE library_id = %s AND dependency_type = %s;",
+        ['integer', 'text'],
+        [$library_id, $dependency_type]
+    );
+
+    foreach ($dependencies as $dependency) {
+        $dependant_library = getInstalledLibraryIdAndDate(
+            $dependency['machineName'],
+            (int) $dependency['majorVersion'],
+            (int) $dependency['minorVersion']
+        );
+
+        if (null === $dependant_library) {
+            continue;
+        }
+
+        $next_id = (int) $ilDB->nextId('rep_robj_xhfp_lib_dep');
+        $ilDB->insert(
+            'rep_robj_xhfp_lib_dep',
+            [
+                'id' => ['integer', $next_id],
+                'dependency_type' => ['text', $dependency_type],
+                'library_id' => ['integer', $library_id],
+                'required_library_id' => ['integer', $dependant_library['id']],
+            ]
+        );
+    }
+}
+
+/**
+ * @return array{id: int, updated_at: DateTimeImmutable|false}|null
+ */
+function getInstalledLibraryIdAndDate(string $name, int $major_version, int $minor_version): ?array
+{
+    /** @var $ilDB ilDBInterface */
+    global $ilDB;
+
+    $installed_library = $ilDB->fetchAll(
+        $ilDB->queryF(
+            "SELECT library_id, updated_at FROM rep_robj_xhfp_lib WHERE name = %s AND major_version = %s AND minor_version = %s",
+            ['text', 'integer', 'integer'],
+            [$name, $major_version, $minor_version]
+        )
+    );
+
+    if (empty($installed_library[0])) {
+        return null;
+    }
+
+    return [
+        'id' => (int) $installed_library[0]['library_id'],
+        'updated_at' => DateTimeImmutable::createFromFormat(
+            'Y-m-d H:i:s',
+            $installed_library[0]['updated_at']
+        ),
+    ];
+}
+?>
