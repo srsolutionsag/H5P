@@ -20,11 +20,13 @@ use ILIAS\UI\Component\Input\Field\Input;
  */
 class H5PEditor extends Group
 {
+    public const INPUT_CONTENT = 'h5p_content_json';
+
     protected const INPUT_EDITOR_ACTION = 'h5p_editor_action';
     protected const INPUT_CONTENT_LIBRARY = 'h5p_content_library';
     protected const INPUT_CONTENT_TITLE = 'h5p_content_title';
-    protected const INPUT_CONTENT_JSON = 'h5p_content_json';
     protected const INPUT_CONTENT_ID = 'h5p_content_id';
+    protected const INPUT_CONTENT_TYPE = 'h5p_content_type';
 
     protected const EDITOR_ACTION_CREATE = 'create';
 
@@ -43,7 +45,7 @@ class H5PEditor extends Group
         parent::__construct($data_factory, $refinery, $language, [
             self::INPUT_CONTENT_LIBRARY => $h5p_components->hidden(),
             self::INPUT_CONTENT_TITLE => $h5p_components->hidden(),
-            self::INPUT_CONTENT_JSON => $h5p_components->hidden(),
+            self::INPUT_CONTENT => $h5p_components->hidden(),
             self::INPUT_CONTENT_ID => $h5p_components->hidden(),
             self::INPUT_EDITOR_ACTION => $h5p_components->hidden()->withValue(self::EDITOR_ACTION_CREATE),
         ], $label, $byline);
@@ -64,7 +66,7 @@ class H5PEditor extends Group
             $value[self::INPUT_CONTENT_ID],
             $value[self::INPUT_CONTENT_TITLE],
             $value[self::INPUT_CONTENT_LIBRARY],
-            $value[self::INPUT_CONTENT_JSON]
+            $value[self::INPUT_CONTENT]
         );
     }
 
@@ -84,9 +86,10 @@ class H5PEditor extends Group
         return parent::withValue([
             self::INPUT_CONTENT_LIBRARY => $value->getContentLibrary(),
             self::INPUT_CONTENT_TITLE => $value->getContentTitle(),
-            self::INPUT_CONTENT_JSON => $value->getContentJson(),
+            self::INPUT_CONTENT => $value->getContentJson(),
             self::INPUT_CONTENT_ID => $value->getContentId(),
             self::INPUT_EDITOR_ACTION => self::EDITOR_ACTION_CREATE,
+
         ]);
     }
 
@@ -100,7 +103,7 @@ class H5PEditor extends Group
             (null !== ($id = $inputs[self::INPUT_CONTENT_ID]->getValue())) ? (int) $id : null,
             $inputs[self::INPUT_CONTENT_TITLE]->getValue(),
             $inputs[self::INPUT_CONTENT_LIBRARY]->getValue(),
-            $inputs[self::INPUT_CONTENT_JSON]->getValue(),
+            $inputs[self::INPUT_CONTENT]->getValue(),
         );
 
         $clone->content = new Ok($data);

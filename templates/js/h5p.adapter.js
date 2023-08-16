@@ -48,6 +48,11 @@ H5P.preventInit = true;
         H5PIntegration.editor.nodeVersionId = content_id;
       }
 
+      // convert the base64 encoded value to a JSON string again.
+      if (content_json_input.value.length > 0) {
+        content_json_input.value = base64ToJsonString(content_json_input.value);
+      }
+
       // H5P will expect jQuery objects.
       H5PEditor.init(
         $(editor_form),
