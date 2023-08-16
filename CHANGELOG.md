@@ -1,6 +1,11 @@
 # H5P Changelog
 
-## 5.0.5
+## 5.0.7
+
+- Fixed an issue where some deprecated H5P contents which have been imported could not be displayed or editted.
+- Changed JSON to base64 format for H5P editor as well.
+
+## 5.0.6
 
 - Fixed an issue where H5Ps WYSIWYG editor (CKEditor) could not be loaded due to misformed integration data.
 - Fixed an issue where the plugin could not be used with PHP>7.4 because of an incompatible method-declaration.
