@@ -1061,6 +1061,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $h5p_library = $this->library_repository->getVersionOfInstalledLibraryByName(
                 $dependency["machineName"],
                 $dependency["majorVersion"],
+                $dependency["minorVersion"],
             );
 
             $h5p_dependency = new ilH5PLibraryDependency();
