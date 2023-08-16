@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 4.1.9
+
+- Fixed an issue where some deprecated H5P contents which have been imported could not be displayed or editted.
+- Changed JSON to base64 format for H5P editor as well.
+- Added remaining compatibility for PHP 7.3.
+
 ## 4.1.8
 
 - Added compatibility for PHP 7.3.
