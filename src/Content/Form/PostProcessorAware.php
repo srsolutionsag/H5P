@@ -17,7 +17,7 @@ trait PostProcessorAware
     /**
      * @inheritDoc
      */
-    public function withPostProcessor(ContentPostProcessor $processor): self
+    public function withPostProcessor(ContentPostProcessor $processor): IPostProcessorAware
     {
         $clone = clone $this;
         $clone->processors[$processor->getId()] = $processor;
