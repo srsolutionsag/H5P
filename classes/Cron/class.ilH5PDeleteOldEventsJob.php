@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\ITranslator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PDeleteOldTmpFilesJob extends ilCronJob
+class ilH5PDeleteOldEventsJob extends ilCronJob
 {
-    public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_tmp_files";
+    public const CRON_JOB_ID = \ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
 
     /**
      * @var ITranslator
@@ -19,19 +19,19 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
     protected $translator;
 
     /**
-     * @var ITmpFileRepository
+     * @var IEventRepository
      */
-    protected $repository;
+    protected $event_repository;
 
     /**
      * @var ilCronManager
      */
     protected $cron_manager;
 
-    public function __construct(ITranslator $translator, ITmpFileRepository $repository, ilCronManager $cron_manager)
+    public function __construct(ITranslator $translator, IEventRepository $repository, ilCronManager $cron_manager)
     {
         $this->translator = $translator;
-        $this->repository = $repository;
+        $this->event_repository = $repository;
         $this->cron_manager = $cron_manager;
     }
 
@@ -56,7 +56,7 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
      */
     public function getDescription(): string
     {
-        return $this->translator->txt("delete_old_tmp_files_description");
+        return $this->translator->txt("delete_old_events_description");
     }
 
     /**
@@ -72,7 +72,7 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
      */
     public function getTitle(): string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("delete_old_tmp_files");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("delete_old_events");
     }
 
     /**
@@ -98,12 +98,16 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        $older_than = (time() - 86400);
-        $h5p_tmp_files = $this->repository->getOldTmpFiles($older_than);
+        $before_30_days = (time() - H5PEventBase::$log_time);
+        $h5p_events = $this->event_repository->getEventsOlderThan($before_30_days);
 
-        foreach ($h5p_tmp_files as $h5p_tmp_file) {
-            $this->repository->deleteTmpFile($h5p_tmp_file);
+        if (empty($h5p_events)) {
+            $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
+            return $result;
+        }
 
+        foreach ($h5p_events as $h5p_event) {
+            $this->event_repository->deleteEvent($h5p_event);
             $this->cron_manager->ping($this->getId());
         }
 

@@ -11,7 +11,7 @@ use srag\Plugins\H5P\IContainer;
 use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\Event\IEvent;
 use srag\Plugins\H5P\Library\ILibrary;
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\File\FileUploadCommunicator;
 
 /**
@@ -60,7 +60,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     protected $settings_repository;
 
     /**
-     * @var ITmpFileRepository
+     * @var IFileRepository
      */
     protected $file_repository;
 
@@ -105,7 +105,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         IEventRepository $event_repository,
         IResultRepository $result_repository,
         ISettingsRepository $settings_repository,
-        ITmpFileRepository $file_repository,
+        IFileRepository $file_repository,
         H5PFileStorage $file_storage,
         ilGlobalTemplateInterface $template,
         ilH5PPlugin $plugin,

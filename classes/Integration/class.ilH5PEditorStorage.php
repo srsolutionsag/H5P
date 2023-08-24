@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use srag\Plugins\H5P\Library\ILibraryRepository;
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\IContainer;
 
 /**
@@ -18,7 +18,7 @@ class ilH5PEditorStorage implements H5peditorStorage
     protected $library_repository;
 
     /**
-     * @var ITmpFileRepository
+     * @var IFileRepository
      */
     protected $file_repository;
 
@@ -29,7 +29,7 @@ class ilH5PEditorStorage implements H5peditorStorage
 
     public function __construct(
         ILibraryRepository $library_repository,
-        ITmpFileRepository $file_repository,
+        IFileRepository $file_repository,
         H5PFrameworkInterface $framework
     ) {
         $this->library_repository = $library_repository;
@@ -42,18 +42,15 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function markFileForCleanup($file, $content_id = null): void
     {
-        $path = IContainer::H5P_STORAGE_DIR;
-        $path .= (null !== $content_id && 0 !== $content_id) ?
-            "/content/" . $content_id . "/" :
-            "/editor/";
+        $container = ilH5PPlugin::getInstance()->getContainer();
+        $repository = $container->getRepositoryFactory()->file();
 
-        $path .= $file->getType() . "s/" . $file->getName();
+        $path = self::replicateDefaultStoragePath($file, $content_id);
 
-        $h5p_tmp_file = new ilH5PTmpFile();
-        $h5p_tmp_file->setPath($path);
+        $marked_file = new ilH5PMarkedFile();
+        $marked_file->setPath($path);
 
-        $file_repository = new ilH5PTmpFileRepository();
-        $file_repository->storeTmpFile($h5p_tmp_file);
+        $repository->storeMarkedFile($marked_file);
     }
 
     /**
@@ -61,29 +58,9 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function removeTemporarilySavedFiles($filePath): void
     {
-        global $DIC;
-
-        /** @var $component_factory ilComponentFactory */
-        $component_factory = $DIC['component.factory'];
-        /** @var $plugin ilH5PPlugin */
-        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
-
-        $filePath = (string) $filePath;
-
-        $file_repository = $plugin->getContainer()->getRepositoryFactory()->file();
-
-        $file = $file_repository->getFileByPath($filePath);
-
-        if (null !== $file) {
-            $file_repository->deleteTmpFile($file);
-        }
-
-        if (file_exists($filePath)) {
-            if (is_dir($filePath) && !is_link($filePath)) {
-                H5PCore::deleteFileTree($filePath);
-            } else {
-                unlink($filePath);
-            }
+        try {
+            H5PCore::deleteFileTree((string) $filePath);
+        } catch (Throwable $t) {
         }
     }
 
@@ -105,13 +82,7 @@ class ilH5PEditorStorage implements H5peditorStorage
 
         try {
             ($move_file) ? rename($data, $path) : file_put_contents($path, $data);
-
-            $tmp_file = new ilH5PTmpFile();
-            $tmp_file->setPath($path);
-            $tmp_file->setCreatedAt(time());
-
-            $container->getRepositoryFactory()->file()->storeTmpFile($tmp_file);
-        } catch (Exception $e) {
+        } catch (Throwable $t) {
             return false;
         }
 
@@ -222,11 +193,29 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public function keepFile($fileId): void
     {
-        // file id will be a path in our case.
-        $tmp_file = $this->file_repository->getFileByPath((string) $fileId);
+        // this hook makes no sense because at this point the file is already
+        // saved in the content folder.
+    }
 
-        if (null !== $tmp_file) {
-            $this->file_repository->deleteTmpFile($tmp_file);
+    /**
+     * This method replicates the file path used by the H5P default storage because
+     * it will never be set in H5peditorFile::$path. H5P sucks.
+     *
+     * @see H5PDefaultStorage::saveFile()
+     */
+    protected static function replicateDefaultStoragePath(H5peditorFile $file, int $content_id = null): string
+    {
+        // an empty() is used to catch values like 0 as well, which is dumb but
+        // needs to be done.
+        if (empty($content_id)) {
+            $path = IContainer::H5P_STORAGE_DIR . '/editor';
+        } else {
+            $path = IContainer::H5P_STORAGE_DIR . '/content/' . $content_id;
         }
+
+        $path .= '/' . $file->getType() . 's';
+        $path .= '/' . $file->getName();
+
+        return $path;
     }
 }
