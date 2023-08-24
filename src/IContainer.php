@@ -59,6 +59,12 @@ interface IContainer
     public function getFileUploadCommunicator(): FileUploadCommunicator;
 
     /**
+     * Returns a cron job factory which can be used to retrieve cron jobs, like
+     * the H5PCron plugin does.
+     */
+    public function getCronJobFactory(): ICronJobFactory;
+
+    /**
      * Returns whether all dependencies are available and can be safely
      * retrieved. This may be necessary to check if in CLI context.
      */

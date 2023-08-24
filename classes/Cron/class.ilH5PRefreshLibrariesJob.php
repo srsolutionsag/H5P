@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\ITranslator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PDeleteOldEventsJob extends ilCronJob
+class ilH5PRefreshLibrariesJob extends ilCronJob
 {
-    public const CRON_JOB_ID = \ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
+    public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_libraries";
 
     /**
      * @var ITranslator
@@ -19,14 +18,14 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
     protected $translator;
 
     /**
-     * @var IEventRepository
+     * @var H5PCore
      */
-    protected $event_repository;
+    protected $core;
 
-    public function __construct(ITranslator $translator, IEventRepository $repository)
+    public function __construct(ITranslator $translator, H5PCore $core)
     {
         $this->translator = $translator;
-        $this->event_repository = $repository;
+        $this->core = $core;
     }
 
     /**
@@ -50,7 +49,7 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
      */
     public function getDescription(): string
     {
-        return $this->translator->txt("delete_old_events_description");
+        return $this->translator->txt("libraries_refresh_info");
     }
 
     /**
@@ -66,7 +65,7 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
      */
     public function getTitle(): string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("delete_old_events");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("libraries_refresh");
     }
 
     /**
@@ -92,16 +91,13 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        $older_than = (time() - H5PEventBase::$log_time);
-        $h5p_events = $this->event_repository->getEventsOlderThan($older_than);
-
-        foreach ($h5p_events as $h5p_event) {
-            $this->event_repository->deleteEvent($h5p_event);
-
-            ilCronManager::ping($this->getId());
+        try {
+            $status = $this->core->updateContentTypeCache();
+        } catch (Throwable $t) {
+            $status = false;
         }
 
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $result->setStatus((false !== $status) ? ilCronJobResult::STATUS_OK : ilCronJobResult::STATUS_FAIL);
 
         return $result;
     }

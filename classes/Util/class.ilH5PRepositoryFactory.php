@@ -7,7 +7,7 @@ use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Settings\ISettingsRepository;
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\Settings\IGeneralSettings;
 use srag\Plugins\H5P\IGeneralRepository;
@@ -29,7 +29,7 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
     protected $event_repositiry;
 
     /**
-     * @var ITmpFileRepository
+     * @var IFileRepository
      */
     protected $file_repository;
 
@@ -56,7 +56,7 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
     public function __construct(
         IContentRepository $content_repository,
         IEventRepository $event_repositiry,
-        ITmpFileRepository $file_repository,
+        IFileRepository $file_repository,
         ILibraryRepository $library_repository,
         IResultRepository $result_repository,
         ISettingsRepository $settings_repository,
@@ -81,7 +81,7 @@ class ilH5PRepositoryFactory implements IRepositoryFactory
         return $this->event_repositiry;
     }
 
-    public function file(): ITmpFileRepository
+    public function file(): IFileRepository
     {
         return $this->file_repository;
     }

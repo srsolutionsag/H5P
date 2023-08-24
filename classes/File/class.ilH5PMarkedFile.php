@@ -1,12 +1,12 @@
 <?php
 
-use srag\Plugins\H5P\File\ITmpFile;
+use srag\Plugins\H5P\File\IMarkedFile;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PTmpFile extends ActiveRecord implements ITmpFile
+class ilH5PMarkedFile extends ActiveRecord implements IMarkedFile
 {
     use ilH5PTimestampHelper;
 
@@ -32,7 +32,7 @@ class ilH5PTmpFile extends ActiveRecord implements ITmpFile
     protected $path = "";
 
     /**
-     * @var int
+     * @var int|null
      *
      * @con_has_field    true
      * @con_fieldtype    integer
@@ -79,7 +79,7 @@ class ilH5PTmpFile extends ActiveRecord implements ITmpFile
         $this->path = $path;
     }
 
-    public function getTmpId(): int
+    public function getTmpId(): ?int
     {
         return $this->tmp_id;
     }

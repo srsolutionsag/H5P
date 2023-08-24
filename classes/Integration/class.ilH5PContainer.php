@@ -14,6 +14,7 @@ use srag\Plugins\H5P\IContainer;
 use ILIAS\DI\Container;
 use srag\Plugins\H5P\ITranslator;
 use srag\Plugins\H5P\File\FileUploadCommunicator;
+use srag\Plugins\H5P\ICronJobFactory;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -82,6 +83,11 @@ class ilH5PContainer implements IContainer
     protected $file_upload_communicator;
 
     /**
+     * @var ICronJobFactory|null
+     */
+    protected $cron_job_fcatory;
+
+    /**
      * @var ilH5PPlugin
      */
     protected $plugin;
@@ -109,7 +115,7 @@ class ilH5PContainer implements IContainer
                     $this->dic->database()
                 ),
                 new ilH5PEventRepository($this->dic->database(), $this->dic->user()),
-                new ilH5PTmpFileRepository(),
+                new ilH5PFileRepository(),
                 new ilH5PLibraryRepository($this->dic->database()),
                 new ilH5PResultRepository($this->dic->database(), $this->dic->user()),
                 new ilH5PSettingsRepository(),
@@ -175,6 +181,22 @@ class ilH5PContainer implements IContainer
         }
 
         return $this->file_upload_communicator;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCronJobFactory(): ICronJobFactory
+    {
+        if (null === $this->cron_job_fcatory) {
+            $this->cron_job_fcatory = new ilH5PCronJobFactory(
+                $this->getRepositoryFactory(),
+                $this->getTranslator(),
+                $this->getKernel()
+            );
+        }
+
+        return $this->cron_job_fcatory;
     }
 
     /**

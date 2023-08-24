@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\ITranslator;
+use srag\Plugins\H5P\IContainer;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PDeleteOldTmpFilesJob extends ilCronJob
+class ilH5PDeleteOldMarkedFiles extends ilCronJob
 {
     public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_delete_old_tmp_files";
 
@@ -19,11 +20,11 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
     protected $translator;
 
     /**
-     * @var ITmpFileRepository
+     * @var IFileRepository
      */
     protected $repository;
 
-    public function __construct(ITranslator $translator, ITmpFileRepository $repository)
+    public function __construct(ITranslator $translator, IFileRepository $repository)
     {
         $this->translator = $translator;
         $this->repository = $repository;
@@ -92,17 +93,33 @@ class ilH5PDeleteOldTmpFilesJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        $older_than = (time() - 86400);
-        $h5p_tmp_files = $this->repository->getOldTmpFiles($older_than);
+        $before_24_hours = (time() - 86400);
+        $marked_files = $this->repository->getMarkedFilesOlderThan($before_24_hours);
+        $status = true;
 
-        foreach ($h5p_tmp_files as $h5p_tmp_file) {
-            $this->repository->deleteTmpFile($h5p_tmp_file);
+        foreach ($marked_files as $file) {
+            $path = ILIAS_ABSOLUTE_PATH . $file->getPath();
+            if (file_exists($path)) {
+                $status = $status && $this->deleteFile($path);
+            }
 
+            $this->repository->deleteMarkedFile($file);
             ilCronManager::ping($this->getId());
         }
 
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $status = $status && $this->deleteFile(ILIAS_ABSOLUTE_PATH . "/" . IContainer::H5P_STORAGE_DIR . "/temp");
+
+        $result->setStatus(($status) ? ilCronJobResult::STATUS_OK : ilCronJobResult::STATUS_FAIL);
 
         return $result;
+    }
+
+    protected function deleteFile(string $path): bool
+    {
+        try {
+            return H5PCore::deleteFileTree($path);
+        } catch (Throwable $t) {
+            return false;
+        }
     }
 }

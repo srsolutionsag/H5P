@@ -5,7 +5,7 @@ namespace srag\Plugins\H5P;
 use srag\Plugins\H5P\Settings\ISettingsRepository;
 use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Event\IEventRepository;
-use srag\Plugins\H5P\File\ITmpFileRepository;
+use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Content\IContentRepository;
 use srag\Plugins\H5P\Settings\IGeneralSettings;
@@ -20,7 +20,7 @@ interface IRepositoryFactory
 
     public function event(): IEventRepository;
 
-    public function file(): ITmpFileRepository;
+    public function file(): IFileRepository;
 
     public function library(): ILibraryRepository;
 

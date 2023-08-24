@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\ITranslator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PRefreshLibrariesJob extends ilCronJob
+class ilH5PDeleteOldEventsJob extends ilCronJob
 {
-    public const CRON_JOB_ID = ilH5PPlugin::PLUGIN_ID . "_refresh_libraries";
+    public const CRON_JOB_ID = \ilH5PPlugin::PLUGIN_ID . "_delete_old_events";
 
     /**
      * @var ITranslator
@@ -18,14 +19,14 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
     protected $translator;
 
     /**
-     * @var H5PCore
+     * @var IEventRepository
      */
-    protected $core;
+    protected $event_repository;
 
-    public function __construct(ITranslator $translator, H5PCore $core)
+    public function __construct(ITranslator $translator, IEventRepository $repository)
     {
         $this->translator = $translator;
-        $this->core = $core;
+        $this->event_repository = $repository;
     }
 
     /**
@@ -49,7 +50,7 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
      */
     public function getDescription(): string
     {
-        return $this->translator->txt("libraries_refresh_info");
+        return $this->translator->txt("delete_old_events_description");
     }
 
     /**
@@ -65,7 +66,7 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
      */
     public function getTitle(): string
     {
-        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("libraries_refresh");
+        return ilH5PPlugin::PLUGIN_NAME . ": " . $this->translator->txt("delete_old_events");
     }
 
     /**
@@ -91,7 +92,18 @@ class ilH5PRefreshLibrariesJob extends ilCronJob
     {
         $result = new ilCronJobResult();
 
-        $this->core->updateContentTypeCache();
+        $before_30_days = (time() - H5PEventBase::$log_time);
+        $h5p_events = $this->event_repository->getEventsOlderThan($before_30_days);
+
+        if (empty($h5p_events)) {
+            $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
+            return $result;
+        }
+
+        foreach ($h5p_events as $h5p_event) {
+            $this->event_repository->deleteEvent($h5p_event);
+            ilCronManager::ping($this->getId());
+        }
 
         $result->setStatus(ilCronJobResult::STATUS_OK);
 
