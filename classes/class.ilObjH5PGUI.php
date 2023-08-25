@@ -54,10 +54,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
     public static function getStartCmd(): string
     {
-        if (ilObjH5PAccess::hasWriteAccess()) {
-            return ilH5PContentGUI::CMD_MANAGE_CONTENTS;
-        }
-
         return ilH5PContentGUI::CMD_SHOW_CONTENTS;
     }
 
@@ -129,6 +125,17 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     }
 
     /**
+     * Override parent method to add our own tabs. This was necessary
+     * due to the permission-tab handling, which is not working properly.
+     *
+     * @inheritDoc
+     */
+    protected function setTabs(): void
+    {
+        $this->tab_manager->addAdminRepositoryTabs();
+    }
+
+    /**
      * Overwrites redirect to the object settings implementation of this
      * plugin after creation.
      *
@@ -144,17 +151,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI
             [ilObjPluginDispatchGUI::class, self::class, ilH5PObjectSettingsGUI::class],
             ilH5PObjectSettingsGUI::CMD_SETTINGS_INDEX
         );
-    }
-
-    /**
-     * Override parent method to add our own tabs. This was necessary
-     * due to the permission-tab handling, which is not working properly.
-     *
-     * @inheritDoc
-     */
-    protected function setTabs(): void
-    {
-        $this->tab_manager->addRepositoryTabs();
     }
 
     /**

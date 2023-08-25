@@ -25,7 +25,7 @@ class ilH5PFileRepository implements IFileRepository
     {
         $this->abortIfNoActiveRecord($file);
 
-        if (null === $file->getTmpId()) {
+        if (empty($file->getTmpId())) {
             $file->setCreatedAt(time());
         }
 

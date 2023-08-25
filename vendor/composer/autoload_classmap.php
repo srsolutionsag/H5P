@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'ilH5PAbstractGUI' => $baseDir . '/classes/Util/class.ilH5PAbstractGUI.php',
+    'ilH5PAccessHandler' => $baseDir . '/classes/Util/class.ilH5PAccessHandler.php',
     'ilH5PActiveRecordHelper' => $baseDir . '/classes/Util/trait.ilH5PActiveRecordHelper.php',
     'ilH5PAjaxEndpointGUI' => $baseDir . '/classes/Integration/class.ilH5PAjaxEndpointGUI.php',
     'ilH5PCachedLibraryAsset' => $baseDir . '/classes/Library/class.ilH5PCachedLibraryAsset.php',
@@ -52,6 +53,7 @@ return array(
     'ilH5PRefreshLibrariesJob' => $baseDir . '/classes/Cron/class.ilH5PRefreshLibrariesJob.php',
     'ilH5PRepositoryContentBuilder' => $baseDir . '/classes/Content/Builder/class.ilH5PRepositoryContentBuilder.php',
     'ilH5PRepositoryFactory' => $baseDir . '/classes/Util/class.ilH5PRepositoryFactory.php',
+    'ilH5PRequestObject' => $baseDir . '/classes/Util/trait.ilH5PRequestObject.php',
     'ilH5PResourceRegistry' => $baseDir . '/classes/Integration/class.ilH5PResourceRegistry.php',
     'ilH5PResult' => $baseDir . '/classes/Result/class.ilH5PResult.php',
     'ilH5PResultGUI' => $baseDir . '/classes/Result/class.ilH5PResultGUI.php',

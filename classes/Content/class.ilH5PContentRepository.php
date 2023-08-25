@@ -97,34 +97,17 @@ class ilH5PContentRepository implements IContentRepository
     /**
      * @inheritDoc
      */
-    public function getContentsByObject(?int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array
+    public function getContentsByObject(int $obj_id): array
     {
-        $where = ["parent_type" => $parent_type];
-
-        if ($obj_id !== null) {
-            $where["obj_id"] = $obj_id;
-        }
-
-        $h5p_contents = ilH5PContent::where($where)
-                                    ->orderBy("sort", "asc")
-                                    ->get();
+        $h5p_contents = ilH5PContent::where([
+            "obj_id" => $obj_id,
+        ])->orderBy("sort", "asc")->get();
 
         // Fix index with array_values
         return array_values($h5p_contents);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getContentArrayByObject(int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array
-    {
-        return ilH5PContent::where([
-            "obj_id" => $obj_id,
-            "parent_type" => $parent_type
-        ])->orderBy("sort", "asc")->getArray();
-    }
-
-    public function getContentBySlug(string $slug): ?ilH5PContent
+    public function getContentBySlug(string $slug): ?IContent
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return ilH5PContent::where(["slug" => $slug])->first();

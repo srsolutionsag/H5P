@@ -36,7 +36,8 @@ class ilH5PImporter extends ilXmlImporter
             $container->getKernelStorage(),
             $container->getKernel(),
             $this->getImportDirectory(),
-            IContent::PARENT_TYPE_OBJECT
+            ilH5PPlugin::PLUGIN_ID,
+            false
         ))->import($a_xml, $imported_xhfp_obj_id);
     }
 

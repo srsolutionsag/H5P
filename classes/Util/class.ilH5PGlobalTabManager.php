@@ -66,10 +66,6 @@ class ilH5PGlobalTabManager
 
     public function addManageContentTab(): self
     {
-        if (!ilObjH5PAccess::hasEditPermissionAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_CONTENT_MANAGE,
             $this->translator->txt(self::TAB_CONTENT_MANAGE),
@@ -84,10 +80,6 @@ class ilH5PGlobalTabManager
 
     public function addResultTab(): self
     {
-        if (!ilObjH5PAccess::hasEditPermissionAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_RESULTS,
             $this->translator->txt(self::TAB_RESULTS),
@@ -102,10 +94,6 @@ class ilH5PGlobalTabManager
 
     public function addObjectSettingsTab(): self
     {
-        if (!ilObjH5PAccess::hasEditPermissionAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_SETTINGS_OBJECT,
             $this->translator->txt('settings'),
@@ -120,10 +108,6 @@ class ilH5PGlobalTabManager
 
     protected function addGeneralSettingsTab(): self
     {
-        if (!ilObjH5PAccess::hasWriteAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_SETTINGS_GENERAL,
             $this->translator->txt('settings'),
@@ -138,10 +122,6 @@ class ilH5PGlobalTabManager
 
     public function addLibraryTab(): self
     {
-        if (!ilObjH5PAccess::hasWriteAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_LIBRARIES,
             $this->translator->txt(self::TAB_LIBRARIES),
@@ -156,10 +136,6 @@ class ilH5PGlobalTabManager
 
     public function addPermissionTab(): self
     {
-        if (!ilObjH5PAccess::hasEditPermissionAccess()) {
-            return $this;
-        }
-
         $this->tabs->addTab(
             self::TAB_PERMISSIONS,
             $this->translator->txt(self::TAB_PERMISSIONS),
@@ -172,7 +148,12 @@ class ilH5PGlobalTabManager
         return $this;
     }
 
-    public function addRepositoryTabs(): self
+    public function addUserRepositoryTabs(): self
+    {
+        return $this->addShowContentTab();
+    }
+
+    public function addAdminRepositoryTabs(): self
     {
         // clears permission tab in repository context.
         $this->tabs->clearTargets();

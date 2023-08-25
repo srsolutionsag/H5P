@@ -15,59 +15,32 @@ use ILIAS\Refinery\Factory as Refinery;
 class ilObjH5PAccess extends ilObjectPluginAccess
 {
     /**
-     * @var self|null
-     */
-    protected static $instance;
-
-    /**
      * @var IContentRepository
      */
     protected $content_repository;
 
     /**
-     * @var ilObjectDataCache
+     * @var ilH5PAccessHandler
      */
-    protected $obj_data_cache;
-
-    /**
-     * @var ArrayBasedRequestWrapper
-     */
-    protected $get_request;
-
-    /**
-     * @var Refinery
-     */
-    protected $refinery;
+    protected $h5p_access_handler;
 
     public function __construct()
     {
         global $DIC;
         parent::__construct();
 
-        $this->user = $DIC->user();
-        $this->access = $DIC->access();
-        $this->refinery = $DIC->refinery();
-        $this->obj_data_cache = $DIC['ilObjDataCache'];
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
-        $this->content_repository = new ilH5PContentRepository(
-            $DIC->user(),
-            $DIC->database()
+        $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
+        $this->h5p_access_handler = new ilH5PAccessHandler(
+            new ilPortfolioAccessHandler(),
+            new ilWorkspaceAccessHandler(),
+            new ilWorkspaceTree($DIC->user()->getId()),
+            $DIC->rbac()->system()
         );
-
-        $this->get_request = new ArrayBasedRequestWrapper(
-            $DIC->http()->request()->getQueryParams()
-        );
-
-        self::$instance = $this;
-    }
-
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
     }
 
     /**
@@ -93,127 +66,39 @@ class ilObjH5PAccess extends ilObjectPluginAccess
         return true;
     }
 
-    public static function hasDeleteAccess(int $ref_id = null): bool
-    {
-        return self::checkAccess("delete", "delete", $ref_id);
-    }
-
-    public static function hasEditPermissionAccess(?int $ref_id = null): bool
-    {
-        return self::checkAccess("edit_permission", "edit_permission", $ref_id);
-    }
-
-    public static function hasReadAccess(?int $ref_id = null): bool
-    {
-        return self::checkAccess("read", "read", $ref_id);
-    }
-
-    public static function hasVisibleAccess(?int $ref_id = null): bool
-    {
-        return self::checkAccess("visible", "visible", $ref_id);
-    }
-
-    public static function hasWriteAccess(?int $ref_id = null): bool
-    {
-        global $DIC;
-
-        /** @var $obj_data_cache ilObjectDataCache */
-        $obj_data_cache = $DIC['ilObjDataCache'];
-
-        $permission = "write";
-        if (null !== $ref_id && $obj_data_cache->lookupType($obj_data_cache->lookupObjId($ref_id)) === "wiki") {
-            $permission = "edit_content";
-        }
-
-        return self::checkAccess($permission, $permission, $ref_id);
-    }
-
-    /**
-     * @param object|string $class
-     */
-    public static function redirectNonAccess($class, string $cmd = ""): void
-    {
-        global $DIC;
-
-        /** @var $component_factory ilComponentFactory */
-        $component_factory = $DIC['component.factory'];
-        /** @var $plugin ilH5PPlugin */
-        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
-
-        $DIC->ui()->mainTemplate()->setOnScreenMessage(
-            ilGlobalTemplateInterface::MESSAGE_TYPE_FAILURE,
-            $plugin->txt("permission_denied"),
-            true
-        );
-
-        if (is_object($class)) {
-            $DIC->ctrl()->clearParameters($class);
-            $DIC->ctrl()->redirect($class, $cmd);
-        } else {
-            $DIC->ctrl()->clearParametersByClass($class);
-            $DIC->ctrl()->redirectByClass($class, $cmd);
-        }
-    }
-
-    protected static function checkAccess(
-        string $a_cmd,
-        string $permission,
-        ?int $ref_id = null,
-        ?int $obj_id = null,
-        int $user_id = null
-    ): bool {
-        return self::getInstance()->_checkAccess($a_cmd, $permission, $ref_id, $obj_id, $user_id);
-    }
-
     /**
      * @inheritDoc
      */
     public function _checkAccess(
         string $cmd,
         string $permission,
-        int $ref_id = null,
-        int $obj_id = null,
+        int $ref_id,
+        int $obj_id,
         int $user_id = null
     ): bool {
-        if (null === $ref_id) {
-            if (!$this->get_request->has('ref_id')) {
-                return false;
+        $user_id = $user_id ?? $this->user->getId();
+
+        if ("visible" === $permission || "read" === $permission) {
+            // if the current user can edit the given object it should also be visible.
+            if ($this->access->checkAccessOfUser($user_id, "write", "", $ref_id)) {
+                return true;
             }
 
-            $ref_id = $this->get_request->retrieve(
-                'ref_id',
-                $this->refinery->kindlyTo()->int()
+            if (!self::_isOffline($obj_id)) {
+                return $this->access->checkAccessOfUser($user_id, $permission, "", $ref_id);
+            }
+
+            return false;
+        }
+
+        if ("delete" === $permission) {
+            return (
+                $this->access->checkAccessOfUser($user_id, "delete", "", $ref_id) ||
+                $this->access->checkAccessOfUser($user_id, "write", "", $ref_id)
             );
         }
 
-        if ($obj_id === null) {
-            $obj_id = $this->obj_data_cache->lookupObjId($ref_id);
-        }
-
-        if ($user_id === null) {
-            $user_id = $this->user->getId();
-        }
-
-        switch ($permission) {
-            case "visible":
-            case "read":
-                return (
-                    (
-                        $this->access->checkAccessOfUser($user_id, $permission, "", $ref_id) &&
-                        !self::_isOffline($obj_id)
-                    ) ||
-                    $this->access->checkAccessOfUser($user_id, "write", "", $ref_id)
-                );
-            case "delete":
-                return
-                    $this->access->checkAccessOfUser($user_id, "delete", "", $ref_id) ||
-                    $this->access->checkAccessOfUser($user_id, "write", "", $ref_id);
-            case "write":
-            case "edit_permission":
-
-            default:
-                return (bool) $this->access->checkAccessOfUser($user_id, $permission, "", $ref_id);
-        }
+        return (bool) $this->access->checkAccessOfUser($user_id, $permission, "", $ref_id);
     }
 
     /**
@@ -221,32 +106,28 @@ class ilObjH5PAccess extends ilObjectPluginAccess
      */
     public function canBeDelivered(ilWACPath $ilWACPath): bool
     {
-        switch ($ilWACPath->getModuleIdentifier()) {
-            case "cachedassets":
-            case "editor":
-            case "libraries":
-                return true;
+        $module = $ilWACPath->getModuleIdentifier();
 
-            case "content":
-                $content_id = (int) substr($ilWACPath->getPath(), strlen($ilWACPath->getModulePath() . "content/"));
-
-                $content = $this->content_repository->getContent($content_id);
-
-                if ($content !== null) {
-                    switch ($content->getParentType()) {
-                        case IContent::PARENT_TYPE_OBJECT:
-                            return self::hasReadAccess(
-                                (int) current(ilObject::_getAllReferences($content->getObjId()))
-                            );
-                        case IContent::PARENT_TYPE_PAGE:
-                            return true;
-
-                        default:
-                            return false;
-                    }
-                }
+        if ("cachedassets" === $module || "libraries" === $module || "editor" === $module) {
+            return true;
         }
 
-        return false;
+        if ("content" !== $module) {
+            return false;
+        }
+
+        $content_id = (int) substr($ilWACPath->getPath(), strlen($ilWACPath->getModulePath() . "content/"));
+        $content = $this->content_repository->getContent($content_id);
+
+        if (null === $content) {
+            return false;
+        }
+
+        return $this->h5p_access_handler->checkAccess(
+            $content->getObjId(),
+            $content->getParentType(),
+            $content->isInWorkspace(),
+            "read"
+        );
     }
 }

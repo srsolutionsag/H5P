@@ -50,8 +50,10 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
     protected $parent_type;
 
     /**
-     * @param string $parent_type one of IContent::PARENT_TYPE_* constants
+     * @var bool
      */
+    protected $in_workspace;
+
     public function __construct(
         IContentRepository $content_repository,
         ILibraryRepository $library_repository,
@@ -60,7 +62,8 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
         ServerRequestInterface $request,
         UIForm $form,
         int $parent_obj_id,
-        string $parent_type
+        string $parent_type,
+        bool $in_workspace
     ) {
         parent::__construct($request, $form);
         $this->content_repository = $content_repository;
@@ -69,6 +72,7 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
         $this->h5p_editor = $h5p_editor;
         $this->parent_obj_id = $parent_obj_id;
         $this->parent_type = $parent_type;
+        $this->in_workspace = $in_workspace;
     }
 
     /**
@@ -99,6 +103,7 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
         $content_json = json_decode($editor_data->getContentJson());
         $content_json->metadata->parent_type = $this->parent_type;
         $content_json->metadata->obj_id = $this->parent_obj_id;
+        $content_json->metadata->in_workspace = $this->in_workspace;
 
         $content["params"] = json_encode($content_json->params);
         $content["metadata"] = $content_json->metadata;

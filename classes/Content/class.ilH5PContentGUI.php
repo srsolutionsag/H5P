@@ -58,7 +58,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         global $DIC;
         parent::__construct();
 
-        $this->object = $this->getRequestedObjectOrAbort();
+        $this->object = $this->getRequestedPluginObjectOrAbort();
         $this->toolbar = $DIC->toolbar();
     }
 
@@ -349,21 +349,25 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     /**
      * @inheritDoc
      */
-    protected function setupCurrentTabs(ilH5PGlobalTabManager $manager): void
+    protected function setupCurrentTabs(ilH5PAccessHandler $access_handler, ilH5PGlobalTabManager $manager): void
     {
-        $manager->addRepositoryTabs();
+        $manager->addUserRepositoryTabs();
+
+        if ($access_handler->canCurrentUserEdit($this->object)) {
+            $manager->addAdminRepositoryTabs();
+        }
     }
 
     /**
      * @inheritDoc
      */
-    protected function checkAccess(string $command): bool
+    protected function checkAccess(ilH5PAccessHandler $access_handler, string $command): bool
     {
         switch ($command) {
             case self::CMD_FINISH_ALL_CONTENTS:
             case self::CMD_SHOW_CONTENTS:
             case self::CMD_RESET_CONTENT:
-                return ilObjH5PAccess::hasReadAccess();
+                return $access_handler->canCurrentUserRead($this->object);
 
             case self::CMD_MANAGE_CONTENTS:
             case self::CMD_EXPORT_CONTENT:
@@ -373,11 +377,11 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             case self::CMD_DELETE_CONTENT:
             case self::CMD_EDIT_CONTENT:
             case self::CMD_SAVE_CONTENT:
-                return ilObjH5PAccess::hasWriteAccess();
+                return $access_handler->canCurrentUserEdit($this->object);
 
             case self::CMD_UPLOAD_CONTENT:
             case self::CMD_IMPORT_CONTENT:
-                return ilObjH5PAccess::hasWriteAccess() && $this->areImportsAllowed();
+                return $access_handler->canCurrentUserEdit($this->object) && $this->areImportsAllowed();
 
             default:
                 return false;
@@ -394,16 +398,16 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $command === self::CMD_SHOW_CONTENTS ||
             $command === self::CMD_RESET_CONTENT
         ) {
-            ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+            $this->redirectPermissionDenied(ilRepositoryGUI::class);
         }
 
         if ($command === self::CMD_UPLOAD_CONTENT ||
             $command === self::CMD_IMPORT_CONTENT
         ) {
-            ilObjH5PAccess::redirectNonAccess(self::class, self::CMD_MANAGE_CONTENTS);
+            $this->redirectPermissionDenied(self::class, self::CMD_MANAGE_CONTENTS);
         }
 
-        ilObjH5PAccess::redirectNonAccess(self::class, self::CMD_SHOW_CONTENTS);
+        $this->redirectPermissionDenied(self::class, self::CMD_SHOW_CONTENTS);
     }
 
     protected function addManageContentToolbarButtons(bool $have_contents_been_solved): void
@@ -474,7 +478,8 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->request,
             $this->getEditContentForm(),
             $this->object->getId(),
-            IContent::PARENT_TYPE_OBJECT
+            $this->object->getType(),
+            false
         );
     }
 
@@ -531,7 +536,8 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->request,
             $this->getImportContentForm(),
             $this->object->getId(),
-            IContent::PARENT_TYPE_OBJECT
+            $this->object->getType(),
+            false
         );
     }
 

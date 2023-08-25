@@ -85,7 +85,7 @@ class ilH5PGeneralSettingsGUI extends ilH5PAbstractGUI
     /**
      * @inheritDoc
      */
-    protected function setupCurrentTabs(ilH5PGlobalTabManager $manager): void
+    protected function setupCurrentTabs(ilH5PAccessHandler $access_handler, ilH5PGlobalTabManager $manager): void
     {
         $manager->addAdministrationTabs();
     }
@@ -93,9 +93,11 @@ class ilH5PGeneralSettingsGUI extends ilH5PAbstractGUI
     /**
      * @inheritDoc
      */
-    protected function checkAccess(string $command): bool
+    protected function checkAccess(ilH5PAccessHandler $access_handler, string $command): bool
     {
-        return ilObjH5PAccess::hasWriteAccess();
+        // this controller routes via ilH5PConfigGUI which already performs
+        // the necessary access checks.
+        return true;
     }
 
     /**
@@ -103,7 +105,7 @@ class ilH5PGeneralSettingsGUI extends ilH5PAbstractGUI
      */
     protected function redirectNonAccess(string $command): void
     {
-        ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+        $this->redirectPermissionDenied(ilRepositoryGUI::class);
     }
 
     protected function setGeneralSettingsTab(): void

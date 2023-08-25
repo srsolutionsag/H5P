@@ -13,6 +13,7 @@ use srag\Plugins\H5P\Event\IEvent;
 use srag\Plugins\H5P\Library\ILibrary;
 use srag\Plugins\H5P\File\IFileRepository;
 use srag\Plugins\H5P\File\FileUploadCommunicator;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -591,11 +592,22 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     }
 
     /**
+     * Access checks cannot be implemented here, because the framework may be used in
+     * other contexts than 'web' (e.g. CLI) and ILIAS requires a valid object to properly
+     * determine access rights, which is only possible in 'web'. Therefore, all access
+     * checks are implemented in according controllers before using the framework.
+     *
      * @inheritDoc
      */
     public function hasPermission($permission, $id = null): bool
     {
-        return ilObjH5PAccess::hasEditPermissionAccess();
+        // one exception are content exports, which may be disallowed by
+        // a configuration which is stored in the database.
+        if (H5PPermission::DOWNLOAD_H5P === $permission) {
+            return $this->mayImportContents();
+        }
+
+        return true;
     }
 
     /**
@@ -1285,6 +1297,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $h5p_content->setParentType((string) $metadata['parent_type']);
         }
 
+        if (isset($metadata['in_workspace'])) {
+            $h5p_content->setInWorkspace((bool) $metadata['in_workspace']);
+        }
+
         $this->content_repository->storeContent($h5p_content);
 
         $event = new ilH5PEvent();
@@ -1374,6 +1390,17 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $this->event_repository,
             $event
         );
+    }
+
+    protected function mayImportContents(): bool
+    {
+        $setting = $this->settings_repository->getGeneralSetting(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS);
+
+        if (null === $setting) {
+            return false;
+        }
+
+        return (bool) $setting->getValue();
     }
 
     protected function getTemplate(): ilGlobalTemplateInterface

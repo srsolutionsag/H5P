@@ -18,7 +18,7 @@ use ILIAS\HTTP\GlobalHttpState;
  */
 class ilH5PAjaxEndpointGUI
 {
-    use RequestHelper;
+    use ilH5PRequestObject;
 
     public const CMD_FETCH_LIBRARY_DATA = H5PEditorEndpoints::LIBRARIES;
     public const CMD_FINISH_SINGLE_CONTENT = 'finishSingleContent';
@@ -33,6 +33,19 @@ class ilH5PAjaxEndpointGUI
      * @var IRepositoryFactory
      */
     protected $repositories;
+
+    /**
+     * @var ilH5PAccessHandler
+     */
+    protected $access_handler;
+
+    /**
+     * Boolean flag which determines whether or not $this->object is located in the workspace.
+     * If true, the object-id (obj_id) must be used over the reference-id (ref_id).
+     *
+     * @var bool
+     */
+    protected $in_workspace;
 
     /**
      * @var ilObject
@@ -76,7 +89,27 @@ class ilH5PAjaxEndpointGUI
 
         $this->http = $DIC->http();
         $this->refinery = $DIC->refinery();
-        $this->object = $this->getRequestedObjectOrAbort($this->get_request);
+
+        $repository_object = $this->getRequestedRepositoryObject($this->get_request);
+        $workspace_object = $this->getRequestedObject($this->get_request);
+
+        if (null !== $repository_object) {
+            $this->object = $repository_object;
+            $this->in_workspace = false;
+        } elseif (null !== $workspace_object) {
+            $this->object = $workspace_object;
+            $this->in_workspace = true;
+        } else {
+            $this->sendResourceNotFound();
+        }
+
+        $this->access_handler = new ilH5PAccessHandler(
+            new ilPortfolioAccessHandler(),
+            new ilWorkspaceAccessHandler(),
+            new ilWorkspaceTree($DIC->user()->getId()),
+            $DIC->rbac()->system()
+        );
+
         $this->ctrl = $DIC->ctrl();
         $this->user = $DIC->user();
     }
@@ -133,8 +166,12 @@ class ilH5PAjaxEndpointGUI
             return;
         }
 
-        $is_repository_object = ($this->object instanceof ilObjH5P);
-        $is_solvable_once = ($is_repository_object && $this->object->isSolveOnlyOnce());
+        // this endpoint is only supported for plugin objects (yet).
+        if (!$this->object instanceof ilObjH5P) {
+            $this->sendSuccess();
+        }
+
+        $is_solvable_once = $this->object->isSolveOnlyOnce();
 
         $solve_status = $this->repositories->result()->getSolvedStatus(
             $this->object->getId(),
@@ -170,17 +207,12 @@ class ilH5PAjaxEndpointGUI
 
         $this->repositories->result()->storeResult($result);
 
-        // store the users progresss if the requested object is a
-        // repository object.
-        if ($is_repository_object) {
-            $solve_status->setContentId($content->getContentId());
-            $solve_status->setUserId($this->user->getId());
-            $solve_status->setObjId($this->object->getId());
+        $solve_status->setContentId($content->getContentId());
+        $solve_status->setUserId($this->user->getId());
+        $solve_status->setObjId($this->object->getId());
 
-            $this->repositories->result()->storeSolvedStatus($solve_status);
-        }
-
-        $this->http->close();
+        $this->repositories->result()->storeSolvedStatus($solve_status);
+        $this->sendSuccess();
     }
 
     /**
@@ -318,33 +350,23 @@ class ilH5PAjaxEndpointGUI
         );
     }
 
-    /**
-     * Since this endpoint can also be called from the H5PPageComponent-
-     * plugin, we need to provide various types of parent objects.
-     */
-    protected function getRequestedObjectOrAbort(ArrayBasedRequestWrapper $request): ilObject
-    {
-        $ref_id = $this->getRequestedInteger($request, IRequestParameters::REF_ID);
-        if (null === $ref_id) {
-            $this->sendResourceNotFound();
-        }
-
-        $object = ilObjectFactory::getInstanceByRefId($ref_id, false);
-
-        if (false === $object) {
-            $this->sendResourceNotFound();
-        }
-
-        return $object;
-    }
-
     protected function checkAccess(string $command): bool
     {
         if (self::CMD_FETCH_LIBRARY_DATA === $command) {
-            return ilObjH5PAccess::hasWriteAccess();
+            return $this->access_handler->checkAccess(
+                ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+                $this->object->getType(),
+                $this->in_workspace,
+                ilH5PAccessHandler::WRITE
+            );
         }
 
-        return ilObjH5PAccess::hasReadAccess();
+        return $this->access_handler->checkAccess(
+            ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+            $this->object->getType(),
+            $this->in_workspace,
+            ilH5PAccessHandler::READ
+        );
     }
 
     /**

@@ -34,16 +34,20 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
         global $DIC;
         parent::__construct();
 
-        $this->object = $this->getRequestedObjectOrAbort();
+        $this->object = $this->getRequestedPluginObjectOrAbort();
         $this->toolbar = $DIC->toolbar();
     }
 
     /**
      * @inheritDoc
      */
-    protected function setupCurrentTabs(ilH5PGlobalTabManager $manager): void
+    protected function setupCurrentTabs(ilH5PAccessHandler $access_handler, ilH5PGlobalTabManager $manager): void
     {
-        $manager->addRepositoryTabs();
+        $manager->addUserRepositoryTabs();
+
+        if ($access_handler->canCurrentUserEdit($this->object)) {
+            $manager->addAdminRepositoryTabs();
+        }
     }
 
     /**
@@ -188,19 +192,9 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
     /**
      * @inheritDoc
      */
-    protected function checkAccess(string $command): bool
+    protected function checkAccess(ilH5PAccessHandler $access_handler, string $command): bool
     {
-        switch ($command) {
-            case self::CMD_TRUNCATE_RESULTS_CONFIRM:
-            case self::CMD_TRUNCATE_RESULTS:
-            case self::CMD_DELETE_RESULTS_CONFIRM:
-            case self::CMD_DELETE_RESULTS:
-            case self::CMD_SHOW_RESULTS:
-                return ilObjH5PAccess::hasWriteAccess();
-
-            default:
-                return false;
-        }
+        return $access_handler->canCurrentUserEdit($this->object);
     }
 
     protected function addTruncateResultsToolbarButton(): void
@@ -269,7 +263,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
      */
     protected function redirectNonAccess(string $command): void
     {
-        $this->ctrl->redirectByClass(ilH5PContentGUI::class, ilH5PContentGUI::CMD_SHOW_CONTENTS);
+        $this->redirectPermissionDenied(ilH5PContentGUI::class, ilH5PContentGUI::CMD_SHOW_CONTENTS);
     }
 
     protected function setResultsTab(): void
