@@ -1,5 +1,21 @@
 # H5P Changelog
 
+## 4.1.10
+
+- Improved overall security by adding proper access checks for any parent object of H5P contents, until now only
+  repository objects have been supported.
+- Improved parent type information of H5P contents:
+  - Migrated existing "page" contents to a new parent type "unknown", because a migration with the current information
+    is technically not possible.
+  - Migrated existing "object" contents which were affected by a bug where the wrong pseudo parent type has been used.
+  - Migrated existing "object" contents to their actual parent type "xhfp".
+  - Removed pseudo parent types and adjusted implementations to provide actual parent types.
+- Improved temporary file handling:
+  - The cron job will now purge the entire `temp/` directory instead of only saved files from the database.
+  - The database will only be used to mark files outside of the `temp/` directory now.
+- Added new cron-job factory to centralize cron-job management and reduce maintenance workload of H5PCron.
+- Added remaining compatibility for PHP 7.3.
+
 ## 4.1.9
 
 - Fixed an issue where some deprecated H5P contents which have been imported could not be displayed or editted.
