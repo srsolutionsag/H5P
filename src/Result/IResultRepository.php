@@ -20,15 +20,14 @@ interface IResultRepository
     /**
      * @return IResult[]
      */
-    public function getResultsByObject(int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array;
+    public function getResultsByObject(int $obj_id): array;
 
     /**
      * @return IResult[]
      */
     public function getResultsByUserAndObject(
         int $user_id,
-        int $obj_id,
-        string $parent_type = IContent::PARENT_TYPE_OBJECT
+        int $obj_id
     ): array;
 
     public function haveUsersStartedSolvingContents(int $obj_id): bool;

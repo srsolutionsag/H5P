@@ -33,7 +33,7 @@ class ilH5PObjectSettingsGUI extends ilH5PAbstractGUI
     {
         parent::__construct();
 
-        $this->object = $this->getRequestedObjectOrAbort();
+        $this->object = $this->getRequestedPluginObjectOrAbort();
 
         $this->form_builder = new ObjectSettingsFormBuilder(
             $this->translator,
@@ -81,17 +81,21 @@ class ilH5PObjectSettingsGUI extends ilH5PAbstractGUI
     /**
      * @inheritDoc
      */
-    protected function setupCurrentTabs(ilH5PGlobalTabManager $manager): void
+    protected function setupCurrentTabs(ilH5PAccessHandler $access_handler, ilH5PGlobalTabManager $manager): void
     {
-        $manager->addRepositoryTabs();
+        $manager->addUserRepositoryTabs();
+
+        if ($access_handler->canCurrentUserEdit($this->object)) {
+            $manager->addAdminRepositoryTabs();
+        }
     }
 
     /**
      * @inheritDoc
      */
-    protected function checkAccess(string $command): bool
+    protected function checkAccess(ilH5PAccessHandler $access_handler, string $command): bool
     {
-        return ilObjH5PAccess::hasWriteAccess();
+        return $access_handler->canCurrentUserEdit($this->object);
     }
 
     /**
@@ -99,7 +103,7 @@ class ilH5PObjectSettingsGUI extends ilH5PAbstractGUI
      */
     protected function redirectNonAccess(string $command): void
     {
-        ilObjH5PAccess::redirectNonAccess(ilRepositoryGUI::class);
+        $this->redirectPermissionDenied(ilRepositoryGUI::class);
     }
 
     protected function setObjectSettingsTab(): void

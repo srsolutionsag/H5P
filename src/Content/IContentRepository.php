@@ -26,12 +26,7 @@ interface IContentRepository
     /**
      * @return IContent[]
      */
-    public function getContentsByObject(?int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array;
-
-    /**
-     * @return IContent[]
-     */
-    public function getContentArrayByObject(int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array;
+    public function getContentsByObject(int $obj_id): array;
 
     /**
      * @return IContent[]

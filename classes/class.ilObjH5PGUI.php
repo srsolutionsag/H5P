@@ -48,10 +48,6 @@ class ilObjH5PGUI extends ilObjectPluginGUI
 
     public static function getStartCmd(): string
     {
-        if (ilObjH5PAccess::hasWriteAccess()) {
-            return ilH5PContentGUI::CMD_MANAGE_CONTENTS;
-        }
-
         return ilH5PContentGUI::CMD_SHOW_CONTENTS;
     }
 
@@ -125,7 +121,7 @@ class ilObjH5PGUI extends ilObjectPluginGUI
      */
     protected function setTabs(): void
     {
-        $this->tab_manager->addRepositoryTabs();
+        $this->tab_manager->addAdminRepositoryTabs();
     }
 
     /**

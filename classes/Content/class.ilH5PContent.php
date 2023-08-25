@@ -181,7 +181,7 @@ class ilH5PContent extends ActiveRecord implements IContent
      * @con_fieldtype    text
      * @con_is_notnull   true
      */
-    protected $parent_type = self::PARENT_TYPE_OBJECT;
+    protected $parent_type = self::PARENT_TYPE_UNKNOWN;
 
     /**
      * @var string
@@ -258,6 +258,16 @@ class ilH5PContent extends ActiveRecord implements IContent
      * @con_is_notnull true
      */
     protected $year_to = 0;
+
+    /**
+     * @var bool
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     * @con_is_notnull true
+     */
+    protected $in_workspace = false;
 
     /**
      * @inheritDoc
@@ -537,6 +547,16 @@ class ilH5PContent extends ActiveRecord implements IContent
         $this->year_to = $year_to;
     }
 
+    public function isInWorkspace(): bool
+    {
+        return $this->in_workspace;
+    }
+
+    public function setInWorkspace(bool $in_workspace): void
+    {
+        $this->in_workspace = $in_workspace;
+    }
+
     /**
      * @inheritDoc
      */
@@ -553,6 +573,9 @@ class ilH5PContent extends ActiveRecord implements IContent
             case "changes":
             case "uploaded_files":
                 return json_encode($field_value);
+
+            case "in_workspace":
+                return (int) $field_value;
 
             default:
                 return parent::sleep($field_name);
@@ -589,6 +612,9 @@ class ilH5PContent extends ActiveRecord implements IContent
             case "changes":
             case "uploaded_files":
                 return (array) json_decode($field_value);
+
+            case "in_workspace":
+                return (bool) $field_value;
 
             default:
                 return parent::wakeUp($field_name, $field_value);

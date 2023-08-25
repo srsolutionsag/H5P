@@ -47,8 +47,10 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
     protected $parent_type;
 
     /**
-     * @param string $parent_type one of IContent::PARENT_TYPE_* constants
+     * @var bool
      */
+    protected $in_workspace;
+
     public function __construct(
         FileUploadCommunicator $file_upload_communicator,
         \H5PValidator $h5p_validator,
@@ -57,7 +59,8 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
         ServerRequestInterface $request,
         UIForm $form,
         int $parent_obj_id,
-        string $parent_type
+        string $parent_type,
+        bool $in_workspace
     ) {
         parent::__construct($request, $form);
         $this->file_upload_communicator = $file_upload_communicator;
@@ -66,6 +69,7 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
         $this->h5p_kernel = $h5p_kernel;
         $this->parent_obj_id = $parent_obj_id;
         $this->parent_type = $parent_type;
+        $this->in_workspace = $in_workspace;
     }
 
     /**
@@ -106,6 +110,7 @@ class ImportContentFormProcessor extends AbstractFormProcessor implements IPostP
                 "title" => ($this->h5p_kernel->mainJsonData["title"] ?: basename($tmp_file)),
                 "yearFrom" => $this->h5p_kernel->mainJsonData["yearFrom"],
                 "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"],
+                "in_workspace" => $this->in_workspace,
                 "parent_type" => $this->parent_type,
                 "obj_id" => $this->parent_obj_id,
             ],

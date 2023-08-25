@@ -8,8 +8,15 @@ namespace srag\Plugins\H5P\Content;
  */
 interface IContent
 {
-    public const PARENT_TYPE_OBJECT = "object";
-    public const PARENT_TYPE_PAGE = "page";
+    /**
+     * This string is used in the database to indicate that this contents
+     * 'parent_type' is not yet determined or migrated. This could not be
+     * done in a db update step, because parsing content pages database
+     * is not possible. This string is therefore used instead of the actual
+     * parent type until such contents are editted again and automatically
+     * migrated.
+     */
+    public const PARENT_TYPE_UNKNOWN = "unknown";
 
     public function getAuthorComments(): string;
 
@@ -114,4 +121,8 @@ interface IContent
     public function getYearTo(): int;
 
     public function setYearTo(int $year_to): void;
+
+    public function isInWorkspace(): bool;
+
+    public function setInWorkspace(bool $in_workspace): void;
 }

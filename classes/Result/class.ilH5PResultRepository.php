@@ -103,7 +103,7 @@ class ilH5PResultRepository implements IResultRepository
     /**
      * @inheritDoc
      */
-    public function getResultsByObject(int $obj_id, string $parent_type = IContent::PARENT_TYPE_OBJECT): array
+    public function getResultsByObject(int $obj_id): array
     {
         return ilH5PResult::innerjoin(
             ilH5PContent::TABLE_NAME,
@@ -111,7 +111,6 @@ class ilH5PResultRepository implements IResultRepository
             "content_id"
         )->where([
             ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
-            ilH5PContent::TABLE_NAME . ".parent_type" => $parent_type
         ])->orderBy(ilH5PResult::TABLE_NAME . ".user_id", "asc")
                           ->orderBy(ilH5PContent::TABLE_NAME . ".sort", "asc")
                           ->get();
@@ -122,8 +121,7 @@ class ilH5PResultRepository implements IResultRepository
      */
     public function getResultsByUserAndObject(
         int $user_id,
-        int $obj_id,
-        string $parent_type = IContent::PARENT_TYPE_OBJECT
+        int $obj_id
     ): array {
         $results = ilH5PResult::innerjoin(
             ilH5PContent::TABLE_NAME,
@@ -131,7 +129,6 @@ class ilH5PResultRepository implements IResultRepository
             "content_id"
         )->where([
             ilH5PContent::TABLE_NAME . ".obj_id" => $obj_id,
-            ilH5PContent::TABLE_NAME . ".parent_type" => $parent_type,
             ilH5PResult::TABLE_NAME . ".user_id" => $user_id
         ])->orderBy(ilH5PContent::TABLE_NAME . ".sort")->get();
 

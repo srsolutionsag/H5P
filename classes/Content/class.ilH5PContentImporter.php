@@ -37,6 +37,11 @@ class ilH5PContentImporter
     protected $parent_type;
 
     /**
+     * @var bool
+     */
+    protected $in_workspace;
+
+    /**
      * @var FileUploadCommunicator
      */
     protected $file_upload_communicator;
@@ -62,10 +67,12 @@ class ilH5PContentImporter
         H5PStorage $h5p_storage,
         H5PCore $h5p_kernel,
         string $relative_working_dir,
-        string $parent_type
+        string $parent_type,
+        bool $in_workspace
     ) {
         $this->relative_working_dir = $relative_working_dir;
         $this->parent_type = $parent_type;
+        $this->in_workspace = $in_workspace;
         $this->file_upload_communicator = $file_upload_communicator;
         $this->h5p_validator = $h5p_validator;
         $this->h5p_storage = $h5p_storage;
@@ -122,7 +129,8 @@ class ilH5PContentImporter
                 "yearFrom" => $this->h5p_kernel->mainJsonData["yearFrom"],
                 "yearTo" => $this->h5p_kernel->mainJsonData["yearTo"],
                 "obj_id" => $obj_id,
-                "parent_type" => $this->parent_type
+                "parent_type" => $this->parent_type,
+                "in_workspace" => $this->in_workspace
             ]
         ]);
 

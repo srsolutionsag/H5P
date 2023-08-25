@@ -1272,3 +1272,30 @@ function getInstalledLibraryIdAndDate(string $name, int $major_version, int $min
     ];
 }
 ?>
+<#15>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableExists('rep_robj_xhfp_cont')) {
+    // migrate contents which were affected by a bug where the wrong parent type
+    // has been used in the ilH5PPageComponentImporter.
+    $ilDB->query("UPDATE rep_robj_xhfp_cont SET parent_type = 'unknown' WHERE parent_type = 'object' AND obj_id = 0;");
+
+    // migrate contents classified as pages to unknown, because we cannot determine
+    // the actual parent type the currently stored information.
+    $ilDB->query("UPDATE rep_robj_xhfp_cont SET parent_type = 'unknown' WHERE parent_type = 'page';");
+
+    // migrate contents classified as objects to the actual parent type.
+    $ilDB->query("UPDATE rep_robj_xhfp_cont SET parent_type = 'xhfp' WHERE parent_type = 'object';");
+}
+
+if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'in_workspace')) {
+    $ilDB->addTableColumn('rep_robj_xhfp_cont', 'in_workspace', [
+        'type' => 'integer',
+        'length' => '1',
+        'notnull' => '1',
+        'default' => '0',
+    ]);
+}
+?>

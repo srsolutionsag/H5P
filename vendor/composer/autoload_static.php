@@ -49,6 +49,7 @@ class ComposerStaticInite17a264ac993b77db2105116364c37f1
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'ilH5PAbstractGUI' => __DIR__ . '/../..' . '/classes/Util/class.ilH5PAbstractGUI.php',
+        'ilH5PAccessHandler' => __DIR__ . '/../..' . '/classes/Util/class.ilH5PAccessHandler.php',
         'ilH5PActiveRecordHelper' => __DIR__ . '/../..' . '/classes/Util/trait.ilH5PActiveRecordHelper.php',
         'ilH5PAjaxEndpointGUI' => __DIR__ . '/../..' . '/classes/Integration/class.ilH5PAjaxEndpointGUI.php',
         'ilH5PCachedLibraryAsset' => __DIR__ . '/../..' . '/classes/Library/class.ilH5PCachedLibraryAsset.php',
@@ -93,6 +94,7 @@ class ComposerStaticInite17a264ac993b77db2105116364c37f1
         'ilH5PRefreshLibrariesJob' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PRefreshLibrariesJob.php',
         'ilH5PRepositoryContentBuilder' => __DIR__ . '/../..' . '/classes/Content/Builder/class.ilH5PRepositoryContentBuilder.php',
         'ilH5PRepositoryFactory' => __DIR__ . '/../..' . '/classes/Util/class.ilH5PRepositoryFactory.php',
+        'ilH5PRequestObject' => __DIR__ . '/../..' . '/classes/Util/trait.ilH5PRequestObject.php',
         'ilH5PResourceRegistry' => __DIR__ . '/../..' . '/classes/Integration/class.ilH5PResourceRegistry.php',
         'ilH5PResult' => __DIR__ . '/../..' . '/classes/Result/class.ilH5PResult.php',
         'ilH5PResultGUI' => __DIR__ . '/../..' . '/classes/Result/class.ilH5PResultGUI.php',

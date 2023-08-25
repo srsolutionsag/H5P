@@ -22,6 +22,7 @@ use ILIAS\UI\Renderer;
  */
 abstract class ilH5PAbstractGUI
 {
+    use ilH5PRequestObject;
     use ilH5PTargetHelper;
     use TemplateHelper;
     use RequestHelper;
@@ -40,6 +41,11 @@ abstract class ilH5PAbstractGUI
      * @var ITranslator
      */
     protected $translator;
+
+    /**
+     * @var ilH5PAccessHandler
+     */
+    protected $access_handler;
 
     /**
      * @var ServerRequestInterface
@@ -70,6 +76,13 @@ abstract class ilH5PAbstractGUI
         $this->h5p_container = $plugin->getContainer();
         $this->repositories = $this->h5p_container->getRepositoryFactory();
         $this->translator = $plugin;
+
+        $this->access_handler = new ilH5PAccessHandler(
+            new ilPortfolioAccessHandler(),
+            new ilWorkspaceAccessHandler(),
+            new ilWorkspaceTree($DIC->user()->getId()),
+            $DIC->rbac()->system()
+        );
 
         $this->tab_manager = new ilH5PGlobalTabManager(
             $this->translator,
@@ -120,7 +133,7 @@ abstract class ilH5PAbstractGUI
 
         $command = $this->ctrl->getCmd();
 
-        if (!$this->checkAccess($command)) {
+        if (!$this->checkAccess($this->access_handler, $command)) {
             $this->redirectNonAccess($command);
             return;
         }
@@ -129,14 +142,14 @@ abstract class ilH5PAbstractGUI
             throw new LogicException(static::class . " cannot handle command '$command'.");
         }
 
-        $this->setupCurrentTabs($this->tab_manager);
+        $this->setupCurrentTabs($this->access_handler, $this->tab_manager);
 
         $this->{$command}();
     }
 
-    protected function getRequestedObjectOrAbort(): ilObjH5P
+    protected function getRequestedPluginObjectOrAbort(): ilObjH5P
     {
-        $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId($this->get_request) ?? -1, false);
+        $object = $this->getRequestedRepositoryObject($this->get_request);
 
         if (!$object instanceof ilObjH5P) {
             $this->redirectObjectNotFound();
@@ -172,16 +185,34 @@ abstract class ilH5PAbstractGUI
     }
 
     /**
+     * Redirects to the given target class and command with a permission denied on-
+     * screen message.
+     */
+    protected function redirectPermissionDenied(string $target_class, string $command = null): void
+    {
+        ilUtil::sendFailure($this->translator->txt('permission_denied'), true);
+
+        $this->ctrl->clearParametersByClass($target_class);
+
+        $this->ctrl->redirectToURL(
+            $this->ctrl->getLinkTargetByClass($target_class, $command ?? '')
+        );
+    }
+
+    /**
      * This method should add all visible tabs for the current command. Tabs have
      * to be activated manually in each method by setCurrentTab() though.
      */
-    abstract protected function setupCurrentTabs(ilH5PGlobalTabManager $manager): void;
+    abstract protected function setupCurrentTabs(
+        ilH5PAccessHandler $access_handler,
+        ilH5PGlobalTabManager $manager
+    ): void;
 
     /**
      * Returns whether the current user has access to perform the given command.
      * If this check fails the command will not be executed.
      */
-    abstract protected function checkAccess(string $command): bool;
+    abstract protected function checkAccess(ilH5PAccessHandler $access_handler, string $command): bool;
 
     /**
      * This method is invoked if checkAccess() returned false.
