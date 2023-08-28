@@ -355,6 +355,7 @@ class ilH5PAjaxEndpointGUI
         if (self::CMD_FETCH_LIBRARY_DATA === $command) {
             return $this->access_handler->checkAccess(
                 ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+                !$this->in_workspace,
                 $this->object->getType(),
                 $this->in_workspace,
                 ilH5PAccessHandler::WRITE
@@ -363,6 +364,7 @@ class ilH5PAjaxEndpointGUI
 
         return $this->access_handler->checkAccess(
             ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+            !$this->in_workspace,
             $this->object->getType(),
             $this->in_workspace,
             ilH5PAccessHandler::READ

@@ -125,6 +125,7 @@ class ilObjH5PAccess extends ilObjectPluginAccess
 
         return $this->h5p_access_handler->checkAccess(
             $content->getObjId(),
+            false,
             $content->getParentType(),
             $content->isInWorkspace(),
             "read"

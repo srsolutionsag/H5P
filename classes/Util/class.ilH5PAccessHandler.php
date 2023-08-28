@@ -57,7 +57,13 @@ class ilH5PAccessHandler
      *
      * @param string $operation see self::PERMISSION_* constants
      */
-    public function checkAccess(int $ilias_id, string $parent_type, bool $is_workspace, string $operation): bool
+    public function checkAccess(
+        int $ilias_id,
+        bool $is_ref_id,
+        string $parent_type,
+        bool $is_workspace,
+        string $operation
+    ): bool
     {
         // we cannot check permissions for unknown parent types.
         if (IContent::PARENT_TYPE_UNKNOWN === $parent_type) {
@@ -65,7 +71,8 @@ class ilH5PAccessHandler
         }
 
         if (ilH5PPlugin::PLUGIN_ID === $parent_type) {
-            if ($is_workspace) { // not sure if this is possible, but we only must get the reference in case of $ilias_id is a obj_id
+            // we must handle the parameter $ilias_id differently in case it's a ref_id or not (see calls to this method)
+            if (!$is_ref_id) { // it's an obj_id
                 $ref_id = $this->getFirstReferenceId($ilias_id);
             } else {
                 $ref_id = $ilias_id; // otherwise we can use the ilias_id as ref_id
