@@ -65,7 +65,11 @@ class ilH5PAccessHandler
         }
 
         if (ilH5PPlugin::PLUGIN_ID === $parent_type) {
-            $ref_id = $this->getFirstReferenceId($ilias_id);
+            if ($is_workspace) { // not sure if this is possible, but we only must get the reference in case of $ilias_id is a obj_id
+                $ref_id = $this->getFirstReferenceId($ilias_id);
+            } else {
+                $ref_id = $ilias_id; // otherwise we can use the ilias_id as ref_id
+            }
             return (
                 null !== $ref_id &&
                 $this->default_access_handler->checkAccess($operation, $ref_id, $parent_type)
