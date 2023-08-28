@@ -291,7 +291,7 @@ class ilH5PContainer implements IContainer
             $this->h5p_kernel = new H5PCore(
                 $this->getKernelFramework(),
                 self::H5P_STORAGE_DIR,
-                ILIAS_HTTP_PATH . "/" . self::H5P_STORAGE_DIR,
+                "./" . self::H5P_STORAGE_DIR, // we must use relative path here, since CssCollection::addItem does not support absolute paths
                 $this->dic->user()->getLanguage(),
                 true
             );
