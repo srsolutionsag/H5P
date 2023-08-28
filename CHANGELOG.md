@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.1.11
+- Usage of relative paths for assets which lead to broken presentation of some content
+- Dropped support for ILIAS 6 since libraries are used, which are not present in this version.
+- Some access checks with Ref-IDs did not work as expected.
+
 ## 4.1.10
 
 - Improved overall security by adding proper access checks for any parent object of H5P contents, until now only

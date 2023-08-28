@@ -1,7 +1,7 @@
 <?php
 
 $id = "xhfp";
-$version = "4.1.10";
+$version = "4.1.11";
 $ilias_min_version = "7.0";
 $ilias_max_version  = "7.999";
 $responsible        = "sr solutions ag";
