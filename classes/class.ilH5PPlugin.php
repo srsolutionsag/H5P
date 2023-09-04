@@ -81,6 +81,10 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     {
         $default_renderer = $dic->raw('ui.renderer');
 
+        if(!$this->isActive()) {
+            return $default_renderer;
+        }
+
         return function () use ($dic, $default_renderer) {
             return new Renderer(
                 $this->getContainer()->getClientDataProvider(),
@@ -104,41 +108,50 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
      */
     protected function uninstallCustom(): void
     {
-        $this->db->dropTable('rep_robj_xhfp_cnt');
-        $this->db->dropTable('rep_robj_xhfp_cont');
-        $this->db->dropTable('rep_robj_xhfp_cont_dat');
-        $this->db->dropTable('rep_robj_xhfp_cont_lib');
-        $this->db->dropIndex('rep_robj_xhfp_cont');
-        $this->db->dropTable('rep_robj_xhfp_ev');
-        $this->db->dropTable('rep_robj_xhfp_lib');
-        $this->db->dropTable('rep_robj_xhfp_lib_ca');
-        $this->db->dropTable('rep_robj_xhfp_lib_dep');
-        $this->db->dropTable('rep_robj_xhfp_lib_hub');
-        $this->db->dropTable('rep_robj_xhfp_lib_lng');
-        $this->db->dropTable('rep_robj_xhfp_obj');
-        $this->db->dropTable('rep_robj_xhfp_opt_n');
-        $this->db->dropTable('rep_robj_xhfp_res');
-        $this->db->dropTable('rep_robj_xhfp_solv');
-        $this->db->dropTable('rep_robj_xhfp_tmp');
+        H5PCore::deleteFileTree(IContainer::H5P_STORAGE_DIR);
 
-        $this->db->dropSequence('rep_robj_xhfp_cnt');
-        $this->db->dropSequence('rep_robj_xhfp_cont_dat');
-        $this->db->dropSequence('rep_robj_xhfp_cont_lib');
-        $this->db->dropSequence('rep_robj_xhfp_ev');
-        $this->db->dropSequence('rep_robj_xhfp_lib_ca');
-        $this->db->dropSequence('rep_robj_xhfp_lib_dep');
-        $this->db->dropSequence('rep_robj_xhfp_lib_hub');
-        $this->db->dropSequence('rep_robj_xhfp_lib_lng');
-        $this->db->dropSequence('rep_robj_xhfp_lib');
-        $this->db->dropSequence('rep_robj_xhfp_solv');
-        $this->db->dropSequence('rep_robj_xhfp_res');
-        $this->db->dropSequence('rep_robj_xhfp_tmp');
+        $this->db->dropTable('rep_robj_xhfp_cnt', false);
+        $this->db->dropTable('rep_robj_xhfp_cont', false);
+        $this->db->dropTable('rep_robj_xhfp_cont_dat', false);
+        $this->db->dropTable('rep_robj_xhfp_cont_lib', false);
+        $this->db->dropTable('rep_robj_xhfp_cont', false);
+        $this->db->dropTable('rep_robj_xhfp_ev', false);
+        $this->db->dropTable('rep_robj_xhfp_lib', false);
+        $this->db->dropTable('rep_robj_xhfp_lib_ca', false);
+        $this->db->dropTable('rep_robj_xhfp_lib_dep', false);
+        $this->db->dropTable('rep_robj_xhfp_lib_hub', false);
+        $this->db->dropTable('rep_robj_xhfp_lib_lng', false);
+        $this->db->dropTable('rep_robj_xhfp_obj', false);
+        $this->db->dropTable('rep_robj_xhfp_opt_n', false);
+        $this->db->dropTable('rep_robj_xhfp_res', false);
+        $this->db->dropTable('rep_robj_xhfp_solv', false);
+        $this->db->dropTable('rep_robj_xhfp_tmp', false);
+
+        $sequences = [
+            'rep_robj_xhfp_cnt',
+            'rep_robj_xhfp_cont_dat',
+            'rep_robj_xhfp_cont_lib',
+            'rep_robj_xhfp_ev',
+            'rep_robj_xhfp_lib_ca',
+            'rep_robj_xhfp_lib_dep',
+            'rep_robj_xhfp_lib_hub',
+            'rep_robj_xhfp_lib_lng',
+            'rep_robj_xhfp_lib',
+            'rep_robj_xhfp_solv',
+            'rep_robj_xhfp_res',
+            'rep_robj_xhfp_tmp',
+        ];
+        foreach ($sequences as $sequence) {
+            try {
+                $this->db->dropSequence($sequence);
+            }catch (Exception $e){
+                //ignore
+            }
+        }
 
         $data_folder = ilWACSecurePath::find("h5p");
         if (null !== $data_folder) {
             $data_folder->delete();
         }
-
-        H5PCore::deleteFileTree(IContainer::H5P_STORAGE_DIR);
     }
 }
