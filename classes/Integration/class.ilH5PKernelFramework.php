@@ -80,17 +80,19 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     protected $user;
 
     /**
-     * @var ilCtrl
+     * @var bool
      */
-    protected $ctrl;
+    protected $is_synchronous_web_context;
 
     /**
-     * @var array<string, array>
+     * @var string[]
      */
-    protected $messages = [
-        "error" => [],
-        "info" => []
-    ];
+    protected $previous_error_messages = [];
+
+    /**
+     * @var string[]
+     */
+    protected $previous_info_messages = [];
 
     public function __construct(
         VersionComparator $version_comparator,
@@ -104,7 +106,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         H5PFileStorage $file_storage,
         ilH5PPlugin $plugin,
         ilObjUser $user,
-        ilCtrl $ctrl
+        bool $is_synchronous_web_context
     ) {
         $this->version_comparator = $version_comparator;
         $this->file_upload_communicator = $file_upload_communicator;
@@ -117,7 +119,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->file_storage = $file_storage;
         $this->plugin = $plugin;
         $this->user = $user;
-        $this->ctrl = $ctrl;
+        $this->is_synchronous_web_context = $is_synchronous_web_context;
     }
 
     /**
@@ -462,15 +464,15 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      */
     public function getMessages($type): array
     {
-        if (empty($this->messages[$type])) {
-            return [];
+        if ('error' === $type) {
+            return $this->previous_error_messages;
         }
 
-        $messages = $this->messages[$type];
+        if ('info' === $type) {
+            return $this->previous_info_messages;
+        }
 
-        $this->messages[$type] = [];
-
-        return $messages;
+        return [];
     }
 
     /**
@@ -1112,13 +1114,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      */
     public function setErrorMessage($message, $code = null): void
     {
-        $this->messages["error"][] = (object) [
-            "message" => $message,
-            "code" => $code
-        ];
+        $this->previous_error_messages[] = $message;
 
-        if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
-            ilUtil::sendFailure($message, true);
+        if ($this->is_synchronous_web_context) {
+            ilUtil::sendFailure(implode('<br />', $this->previous_error_messages), true);
         }
     }
 
@@ -1127,10 +1126,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
      */
     public function setInfoMessage($message): void
     {
-        $this->messages["info"][] = $message;
+        $this->previous_info_messages[] = $message;
 
-        if (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->ctrl->isAsynch()) {
-            ilUtil::sendInfo($message, true);
+        if ($this->is_synchronous_web_context) {
+            ilUtil::sendFailure(implode('<br />', $this->previous_info_messages), true);
         }
     }
 
@@ -1244,13 +1243,15 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $new = false;
         } else {
             $new = true;
-
             $h5p_content = new ilH5PContent();
             $h5p_content->setEmbedType("div");
-            $h5p_content->setLibraryId((int) $content["library"]["libraryId"]);
         }
 
         $metadata = (array) $content["metadata"];
+
+        // the library id may change due to content upgrades performed
+        // automatically by the H5P editor.
+        $h5p_content->setLibraryId((int) $content["library"]["libraryId"]);
 
         $h5p_content->setTitle($metadata["title"] ?: "");
         $h5p_content->setParameters($content["params"]);

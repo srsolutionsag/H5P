@@ -233,7 +233,7 @@ class ilH5PContainer implements IContainer
                 $this->getFileStorage(),
                 $this->plugin,
                 $this->dic->user(),
-                $this->dic->ctrl()
+                (ilContext::getType() === ilContext::CONTEXT_WEB && !$this->dic->ctrl()->isAsynch())
             );
         }
 
