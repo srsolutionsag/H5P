@@ -1,6 +1,13 @@
 # H5P Changelog
 
+## 4.1.12
+
+- Added support for automatic content migrations performed by the H5P editor.
+- Fixed an issue where only the latest error or info messages have been displayed on the current page.
+- Fixed and issue where the H5P plugin could not be uninstalled.
+
 ## 4.1.11
+
 - Usage of relative paths for assets which lead to broken presentation of some content
 - Dropped support for ILIAS 6 since libraries are used, which are not present in this version.
 - Some access checks with Ref-IDs did not work as expected.
