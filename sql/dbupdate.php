@@ -1299,7 +1299,7 @@ function getInstalledLibraryIdAndDate(string $name, int $major_version, int $min
     ];
 }
 ?>
-<#15>
+<#17>
 <?php
 /**
  * @var $ilDB ilDBInterface
