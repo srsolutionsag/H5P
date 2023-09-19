@@ -71,11 +71,8 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
             $components[] = $this->components->panel()->standard(
                 $this->translator->txt('screenshots'),
                 [
-                    $this->components->item()->standard(
-                        $this->renderer->render([
-                            $modal, $button
-                        ])
-                    ),
+                    $modal,
+                    $button
                 ]
             );
         }
