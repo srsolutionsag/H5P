@@ -1137,7 +1137,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->previous_info_messages[] = $message;
 
         if ($this->is_synchronous_web_context) {
-            $this->sendFailure(implode('<br />', $this->previous_info_messages));
+            $this->sendInfo(implode('<br />', $this->previous_info_messages));
         }
     }
 
