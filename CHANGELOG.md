@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.13
+
+- Fixed an issue where info messages have been displayed like error messages.
+
 ## 4.1.12
 
 - Added support for automatic content migrations performed by the H5P editor.
