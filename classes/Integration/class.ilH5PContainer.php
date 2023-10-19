@@ -276,7 +276,7 @@ class ilH5PContainer implements IContainer
     public function getFileStorage(): \H5PFileStorage
     {
         if (null === $this->h5p_file_storage) {
-            $this->h5p_file_storage = new H5PDefaultStorage(self::H5P_STORAGE_DIR);
+            $this->h5p_file_storage = new H5PDefaultStorage(ILIAS_ABSOLUTE_PATH . "/" . self::H5P_STORAGE_DIR);
         }
 
         return $this->h5p_file_storage;
@@ -290,7 +290,7 @@ class ilH5PContainer implements IContainer
         if (null === $this->h5p_kernel) {
             $this->h5p_kernel = new H5PCore(
                 $this->getKernelFramework(),
-                self::H5P_STORAGE_DIR,
+                $this->getFileStorage(),
                 "./" . self::H5P_STORAGE_DIR, // we must use relative path here, since CssCollection::addItem does not support absolute paths
                 $this->dic->user()->getLanguage(),
                 true
