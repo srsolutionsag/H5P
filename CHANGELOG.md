@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.14
+
+- Fixed an issue where the file storage used a relative path and silently failed to perform some operations.
+
 ## 4.1.13
 
 - Fixed an issue where info messages have been displayed like error messages.
