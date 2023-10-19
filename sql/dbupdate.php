@@ -1326,3 +1326,16 @@ if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'in_workspace')) {
     ]);
 }
 ?>
+<#18>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_solv', 'content_id')) {
+    $ilDB->modifyTableColumn('rep_robj_xhfp_solv', 'content_id', [
+        'type' => 'integer',
+        'length' => '8',
+        'notnull' => '0',
+    ]);
+}
+?>
