@@ -49,6 +49,7 @@ return array(
     'ilH5PMarkedFile' => $baseDir . '/classes/File/class.ilH5PMarkedFile.php',
     'ilH5PObjectSettings' => $baseDir . '/classes/Settings/class.ilH5PObjectSettings.php',
     'ilH5PObjectSettingsGUI' => $baseDir . '/classes/Settings/class.ilH5PObjectSettingsGUI.php',
+    'ilH5POnScreenMessages' => $baseDir . '/classes/Util/class.ilH5POnScreenMessages.php',
     'ilH5PPlugin' => $baseDir . '/classes/class.ilH5PPlugin.php',
     'ilH5PRefreshLibrariesJob' => $baseDir . '/classes/Cron/class.ilH5PRefreshLibrariesJob.php',
     'ilH5PRepositoryContentBuilder' => $baseDir . '/classes/Content/Builder/class.ilH5PRepositoryContentBuilder.php',

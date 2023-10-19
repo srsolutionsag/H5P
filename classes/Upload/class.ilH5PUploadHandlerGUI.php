@@ -66,7 +66,7 @@ class ilH5PUploadHandlerGUI extends AbstractCtrlAwareUploadHandler
         $results = $this->upload->getResults();
         $result = end($results);
 
-        if (!$result instanceof UploadResult) {
+        if (!$result instanceof UploadResult || !$result->isOK()) {
             return $this->getFailedResult("could not find uploaded files.");
         }
 

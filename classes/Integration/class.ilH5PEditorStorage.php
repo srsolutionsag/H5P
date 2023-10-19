@@ -42,8 +42,14 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function markFileForCleanup($file, $content_id = null): void
     {
-        $container = ilH5PPlugin::getInstance()->getContainer();
-        $repository = $container->getRepositoryFactory()->file();
+        global $DIC;
+
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $repository = $plugin->getContainer()->getRepositoryFactory()->file();
 
         $path = self::replicateDefaultStoragePath($file, $content_id);
 

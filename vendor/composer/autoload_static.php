@@ -90,6 +90,7 @@ class ComposerStaticInite17a264ac993b77db2105116364c37f1
         'ilH5PMarkedFile' => __DIR__ . '/../..' . '/classes/File/class.ilH5PMarkedFile.php',
         'ilH5PObjectSettings' => __DIR__ . '/../..' . '/classes/Settings/class.ilH5PObjectSettings.php',
         'ilH5PObjectSettingsGUI' => __DIR__ . '/../..' . '/classes/Settings/class.ilH5PObjectSettingsGUI.php',
+        'ilH5POnScreenMessages' => __DIR__ . '/../..' . '/classes/Util/class.ilH5POnScreenMessages.php',
         'ilH5PPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPlugin.php',
         'ilH5PRefreshLibrariesJob' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PRefreshLibrariesJob.php',
         'ilH5PRepositoryContentBuilder' => __DIR__ . '/../..' . '/classes/Content/Builder/class.ilH5PRepositoryContentBuilder.php',
