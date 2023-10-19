@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.10
+
+- Fixed an issue where the file storage used a relative path and silently failed to perform some operations.
+
 ## 5.0.9
 
 - Fixed an issue where files could not be uploaded inside of an H5P content.
