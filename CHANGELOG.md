@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.0.9
+
+- Fixed an issue where files could not be uploaded inside of an H5P content.
+- Fixed an issue where H5P repository objects could not be finished.
+
 ## 5.0.8
 
 - Fixed an issue where the example images of an H5P library were not properly displayed.
