@@ -64,8 +64,18 @@ class ilH5PEditorStorage implements H5peditorStorage
      */
     public static function removeTemporarilySavedFiles($filePath): void
     {
+        $filePath = (string) $filePath;
+
+        if (!file_exists($filePath)) {
+            return;
+        }
+
         try {
-            H5PCore::deleteFileTree((string) $filePath);
+            if (is_dir($filePath)) {
+                H5PCore::deleteFileTree($filePath);
+            } else {
+                unlink($filePath);
+            }
         } catch (Throwable $t) {
         }
     }

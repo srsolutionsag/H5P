@@ -131,7 +131,9 @@ class ilH5PDeleteOldMarkedFiles extends ilCronJob
         }
 
         // delete the H5P temp dir to purge all other temporarily saved files.
-        $status = $status && $this->deleteDirectory(ILIAS_ABSOLUTE_PATH . "/" . IContainer::H5P_STORAGE_DIR . "/temp");
+        if (file_exists($temp_dir = ILIAS_ABSOLUTE_PATH . "/" . IContainer::H5P_STORAGE_DIR . "/temp")) {
+            $status = $status && $this->deleteDirectory($temp_dir);
+        }
 
         $result->setStatus(($status) ? ilCronJobResult::STATUS_OK : ilCronJobResult::STATUS_FAIL);
 
