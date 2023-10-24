@@ -11,7 +11,7 @@ interface IFileRepository
     /**
      * @return IMarkedFile[]
      */
-    public function getMarkedFilesOlderThan(int $older_than): array;
+    public function getMarkedFilesOlderThan(string $older_than): array;
 
     public function storeMarkedFile(IMarkedFile $file): void;
 

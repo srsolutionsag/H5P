@@ -192,7 +192,8 @@ class ilH5PContainer implements IContainer
             $this->cron_job_fcatory = new ilH5PCronJobFactory(
                 $this->getRepositoryFactory(),
                 $this->getTranslator(),
-                $this->getKernel()
+                $this->getKernel(),
+                $this->dic->logger()->root()
             );
         }
 
@@ -204,7 +205,7 @@ class ilH5PContainer implements IContainer
      */
     public function areDependenciesAvailable(): bool
     {
-        $required_offsets = ['ilDB', 'ilUser', 'ilCtrl', 'lng'];
+        $required_offsets = ['ilDB', 'ilUser', 'ilCtrl', 'lng', 'ilLoggerFactory'];
 
         foreach ($required_offsets as $offset) {
             if (!$this->dic->offsetExists($offset)) {

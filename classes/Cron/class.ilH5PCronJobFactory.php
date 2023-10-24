@@ -27,11 +27,21 @@ class ilH5PCronJobFactory implements ICronJobFactory
      */
     protected $h5p_kernel;
 
-    public function __construct(IRepositoryFactory $repositories, ITranslator $translator, H5PCore $h5p_kernel)
-    {
+    /**
+     * @var ilLogger
+     */
+    protected $log;
+
+    public function __construct(
+        IRepositoryFactory $repositories,
+        ITranslator $translator,
+        H5PCore $h5p_kernel,
+        ilLogger $log
+    ) {
         $this->repositories = $repositories;
         $this->translator = $translator;
         $this->h5p_kernel = $h5p_kernel;
+        $this->log = $log;
     }
 
     /**
@@ -47,7 +57,7 @@ class ilH5PCronJobFactory implements ICronJobFactory
                 return new ilH5PRefreshLibrariesJob($this->translator, $this->h5p_kernel);
 
             case ilH5PDeleteOldMarkedFiles::CRON_JOB_ID:
-                return new ilH5PDeleteOldMarkedFiles($this->translator, $this->repositories->file());
+                return new ilH5PDeleteOldMarkedFiles($this->translator, $this->repositories->file(), $this->log);
 
             default:
                 return null;
