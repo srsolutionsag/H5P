@@ -1,5 +1,14 @@
 # H5P Changelog
 
+## 5.0.11
+
+- Fixed an issue where the cron-job instances could not be created.
+- Fixed an issue where the cleanup procedure returned an incorrect status.
+- Fixed an issue where temporarily saved files could not be deleted, only directories.
+- Fixed an issue where marked files for cleanup procedure could not be found and thus not be deleted.
+- Fixed an issue where old marked files could not be found due to a malformed where-clause.
+- Improved logging mechanism of cleanup procedure.
+
 ## 5.0.10
 
 - Fixed an issue where the file storage used a relative path and silently failed to perform some operations.
