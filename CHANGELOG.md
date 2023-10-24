@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 4.1.15
+
+- Fixed an issue where marked files for cleanup procedure could not be found and thus not be deleted.
+- Fixed an issue where old marked files could not be found due to a malformed where-clause.
+- Improved logging mechanism of cleanup procedure.
+
 ## 4.1.14
 
 - Fixed an issue where the file storage used a relative path and silently failed to perform some operations.
