@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.1.16
+
+- Fixed an issue where the cleanup procedure returned an incorrect status.
+- Fixed an issue where temporarily saved files could not be deleted, only directories.
+
 ## 4.1.15
 
 - Fixed an issue where marked files for cleanup procedure could not be found and thus not be deleted.
