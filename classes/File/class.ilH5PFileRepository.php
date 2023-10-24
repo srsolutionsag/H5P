@@ -16,7 +16,7 @@ class ilH5PFileRepository implements IFileRepository
     /**
      * @inheritDoc
      */
-    public function getMarkedFilesOlderThan(int $older_than): array
+    public function getMarkedFilesOlderThan(string $older_than): array
     {
         return ilH5PMarkedFile::where(["created_at" => $older_than], "<")->get();
     }
