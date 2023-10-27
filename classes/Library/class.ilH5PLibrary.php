@@ -227,7 +227,7 @@ class ilH5PLibrary extends ActiveRecord implements ILibrary
         return $this->runnable;
     }
 
-    public function getAddTo(): string
+    public function getAddTo(): ?string
     {
         return $this->add_to;
     }

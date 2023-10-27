@@ -26,7 +26,7 @@ interface ILibrary
      */
     public function setRunnable(bool $runnable): void;
 
-    public function getAddTo(): string;
+    public function getAddTo(): ?string;
 
     public function setAddTo(?string $add_to = null): void;
 

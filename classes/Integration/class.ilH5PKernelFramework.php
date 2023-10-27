@@ -683,6 +683,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
                 "title" => $h5p_library->getTitle(),
                 "majorVersion" => $h5p_library->getMajorVersion(),
                 "minorVersion" => $h5p_library->getMinorVersion(),
+                "patchVersion" => $h5p_library->getPatchVersion(),
                 "addTo" => $h5p_library->getAddTo(),
                 "preloadedJs" => $h5p_library->getPreloadedJs(),
                 "preloadedCss" => $h5p_library->getPreloadedCss()
@@ -842,7 +843,8 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
                 $library[$h5p_dependency["dependency_type"] . "Dependencies"][] = [
                     "machineName" => $h5p_dependency["name"],
                     "majorVersion" => $h5p_dependency["major_version"],
-                    "minorVersion" => $h5p_dependency["minor_version"]
+                    "minorVersion" => $h5p_dependency["minor_version"],
+                    "patchVersion" => $h5p_dependency["patch_version"],
                 ];
             }
 
