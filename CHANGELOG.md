@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 4.1.17
+
+- Fixed an issue in H5P repository objects where administrative tabs (e.g. permissions, settings) were visible to
+  everyone.
+- Fixed an issue in H5P repository objects where the contents tab was visible twice.
+
 ## 4.1.16
 
 - Fixed an issue where the cleanup procedure returned an incorrect status.
