@@ -29,6 +29,8 @@ declare(strict_types=1);
  */
 class ilObjH5PGUI extends ilObjectPluginGUI
 {
+    public const CMD_EDIT_PERMISSIONS = 'perm';
+
     /**
      * @var ilH5PGlobalTabManager
      */
@@ -125,14 +127,16 @@ class ilObjH5PGUI extends ilObjectPluginGUI
     }
 
     /**
-     * Override parent method to add our own tabs. This was necessary
-     * due to the permission-tab handling, which is not working properly.
+     * Override parent method to add our own tabs in case this GUI is used as
+     * final command class, which will be the case for the permission screen.
      *
      * @inheritDoc
      */
     protected function setTabs(): void
     {
-        $this->tab_manager->addAdminRepositoryTabs();
+        if (self::CMD_EDIT_PERMISSIONS === $this->ctrl->getCmd()) {
+            $this->tab_manager->addAdminRepositoryTabs();
+        }
     }
 
     /**
