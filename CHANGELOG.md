@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 5.0.12
+
+- Fixed an issue in H5P repository objects where administrative tabs (e.g. permissions, settings) were visible to everyone.
+- Fixed an issue in H5P repository objects where the contents tab was visible twice.
+- Added (missing) patch-version to loaded H5P addons.
+
 ## 5.0.11
 
 - Fixed an issue where the cron-job instances could not be created.
