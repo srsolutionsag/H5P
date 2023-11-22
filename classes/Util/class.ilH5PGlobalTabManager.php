@@ -141,7 +141,7 @@ class ilH5PGlobalTabManager
             $this->translator->txt(self::TAB_PERMISSIONS),
             $this->ctrl->getLinkTargetByClass(
                 [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilPermissionGUI::class],
-                "perm"
+                ilObjH5PGUI::CMD_EDIT_PERMISSIONS
             )
         );
 
@@ -150,6 +150,10 @@ class ilH5PGlobalTabManager
 
     public function addUserRepositoryTabs(): self
     {
+        // ILIAS will not render single tabs by default, therefore we
+        // need to manually allow it.
+        $this->tabs->setForcePresentationOfSingleTab(true);
+
         return $this->addShowContentTab();
     }
 
