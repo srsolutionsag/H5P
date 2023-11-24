@@ -83,7 +83,7 @@ Look at the [H5PCron](https://github.com/srsolutionsag/H5PCron) plugin
 
 ## Adjustment suggestions
 
-You can report bugs or suggestions at https://plugins.sr.solutions/goto.php?target=uihk_srsu_PLH5P
+You can report bugs or suggestions at [support.sr.solutions](https://support.sr.solutions/)
 
 # ILIAS Plugin SLA
 We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or in our own work, we make publicly available to all interested parties free of charge at https://github.com/srsolutionsag.
