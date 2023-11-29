@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.13
+
+- Fixed an issue where the plugin could not be installed due to misused ILIAS constants.
+
 ## 5.0.12
 
 - Fixed an issue in H5P repository objects where administrative tabs (e.g. permissions, settings) were visible to everyone.
