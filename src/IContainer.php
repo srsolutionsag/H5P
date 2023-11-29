@@ -17,7 +17,7 @@ interface IContainer
      * Holds the H5P storage path relative to the ILIAS root directory
      * (accessible via web).
      */
-    public const H5P_STORAGE_DIR = ILIAS_WEB_DIR . "/" . CLIENT_ID . "/h5p";
+    public const H5P_STORAGE_DIR = \ILIAS_WEB_DIR . "/" . \CLIENT_ID . "/h5p";
 
     /**
      * Holds the path of the H5P editor package relative to the
