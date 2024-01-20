@@ -184,7 +184,8 @@ overview#:#Übersicht
 no_results#:#Es gibt noch keine Resultate für dieses Objekt.
 cant_reset#:#Inhalt kann nicht zurückgesetzt werden, da dieser nur einmal gelöst werden darf.
 reset#:#Zurücksetzen
-result_count_missmatch#:#Die Anzahl Resultate stimmt nicht mit der Anzahl Inhalte überein.
+confirm_finish_message#:#Sie haben noch nicht so viele Resultate eingereicht wie Inhalte vorhanden sind. Falls dieses Objekt nicht lösbare Inhalte beinhaltet können Sie diese Nachricht ignorieren.
+confirm_finish#:#Inhalte abschliessen
 content_loading#:#Bitte warten Sie, bis der Inhalt geladen werden konnte.
 truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate aus diesem Objekt löschen wollen?
 truncate_results#:#Resultate löschen

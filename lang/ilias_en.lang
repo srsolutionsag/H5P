@@ -184,7 +184,8 @@ overview#:#Overview
 no_results#:#There are no results yet.
 cant_reset#:#Cannot reset data because contents may only be solved once.
 reset#:#Reset
-result_count_missmatch#:#There are not as many results as there are contents (yet).
+confirm_finish_message#:#You have not submitted as many results as there are contents. If this object contains unsolvable contents you may ignore this notice.
+confirm_finish#:#Finish all contents
 content_loading#:#Please wait while the content is loading...
 truncate_results_confirm#:#Are you sure you want to delete ALL results of this object?
 truncate_results#:#Truncate results

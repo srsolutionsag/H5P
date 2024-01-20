@@ -3,15 +3,18 @@
 declare(strict_types=1);
 
 use srag\Plugins\H5P\Content\IContentRepository;
+use srag\Plugins\H5P\Content\IContentUserData;
 use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\Result\IResultRepository;
+use srag\Plugins\H5P\Result\IResult;
 use srag\Plugins\H5P\UI\Factory as H5PComponents;
 use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\ITranslator;
 use ILIAS\UI\Component\Component;
+use ILIAS\UI\Component\Modal\Modal;
+use ILIAS\UI\Component\Signal;
 use ILIAS\UI\Renderer as ComponentRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
-use srag\Plugins\H5P\Content\IContentUserData;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -96,10 +99,7 @@ class ilH5PRepositoryContentBuilder
     public function buildContent(IContent $content = null, IContentUserData $state = null): array
     {
         $contents_of_object = $this->content_repository->getContentsByObject($this->object->getId());
-        $user_results_of_object = $this->result_repository->getResultsByUserAndObject(
-            $this->user->getId(),
-            $this->object->getId()
-        );
+        $user_results_of_object = $this->orderResultsByContent($contents_of_object, $this->getCurrentUserResults());
         $solve_status = $this->result_repository->getSolvedStatus($this->object->getId(), $this->user->getId());
         $amount_of_contents = count($contents_of_object);
         $has_object_content = (0 < $amount_of_contents);
@@ -114,7 +114,7 @@ class ilH5PRepositoryContentBuilder
             )
         ) {
             return ($has_object_content) ?
-                [$this->components->messageBox()->info($this->translator->txt('solved_all_contents'))] :
+                [$this->components->messageBox()->success($this->translator->txt('solved_all_contents'))] :
                 [$this->components->messageBox()->info($this->translator->txt('no_content'))];
         }
 
@@ -144,20 +144,30 @@ class ilH5PRepositoryContentBuilder
         // add reset button if contents can be solved more than once,
         // disable it if the content has no state.
         if (!$this->object->isSolveOnlyOnce()) {
-            $this->addResetButton($current_content, (null === $state));
-        }
-
-        // either add finish or next button dependeing on the position
-        // of the current content.
-        if (!$is_last_content) {
-            $this->addNextButton($this->getNextContent($contents_of_object, $current_position));
-        } else {
-            // enable the finish button if the user is solving the last
-            // content of this object.
-            $this->addFinishButton(($amount_of_contents - 1) < count($user_results_of_object));
+            $this->addResetButton($current_content, (!$has_user_solved_current_content));
         }
 
         $components = [];
+
+        if (!$is_last_content) {
+            $this->addNextButton($this->getNextContent($contents_of_object, $current_position));
+        }
+
+        if ($is_last_content && $this->object->isSolveOnlyOnce()) {
+            $action = $this->getLinkTarget(ilH5PContentGUI::class, ilH5PContentGUI::CMD_FINISH_ALL_CONTENTS);
+
+            if (($amount_of_contents - 1) !== count($user_results_of_object)) {
+                $modal = $this->getConfirmFinishModal($action);
+                $components[] = $modal;
+                $action = $modal->getShowSignal();
+            }
+
+            $this->addFinishButton($action);
+        }
+
+        if ($is_last_content && !$this->object->isSolveOnlyOnce()) {
+            $this->addNextButton($this->getNextContent($contents_of_object, $current_position));
+        }
 
         if ($has_user_solved_current_content) {
             $components[] = $this->components->messageBox()->info($this->translator->txt('solved_content'));
@@ -175,6 +185,37 @@ class ilH5PRepositoryContentBuilder
             );
 
         return $components;
+    }
+
+    /**
+     * @param IContent[] $contents
+     * @param IResult[]  $results
+     * @return IResult[]
+     */
+    protected function orderResultsByContent(array $contents, array $results): array
+    {
+        $content_results = [];
+        foreach ($contents as $position => $other_content) {
+            // order results by content as well
+            foreach ($results as $result) {
+                if ($result->getContentId() === $other_content->getContentId()) {
+                    $content_results[$position] = $result;
+                }
+            }
+        }
+
+        return $content_results;
+    }
+
+    /**
+     * @return IResult[]
+     */
+    protected function getCurrentUserResults(): array
+    {
+        return $this->result_repository->getResultsByUserAndObject(
+            $this->user->getId(),
+            $this->object->getId()
+        );
     }
 
     protected function addPreviousButton(?IContent $previous_content = null): void
@@ -217,17 +258,37 @@ class ilH5PRepositoryContentBuilder
         );
     }
 
-    protected function addFinishButton(bool $is_disabled): void
+    /**
+     * This modal has been introduced to confirm the finish-action of repository objects by
+     * users which have not as many results as there are contents. This process is merely a
+     * half-measure, because the entire use-case must be reworked. Until then, we just ask
+     * the user if he really wants to finish.
+     *
+     * @see https://jira.sr.solutions/browse/PLH5P-225
+     */
+    protected function getConfirmFinishModal(string $action): Modal
     {
-        $this->addToolbarButton(
-            'finish',
-            $this->getLinkTarget(ilH5PContentGUI::class, ilH5PContentGUI::CMD_FINISH_ALL_CONTENTS),
-            $is_disabled,
-            true
+        return $this->components->modal()->interruptive(
+            $this->translator->txt('confirm_finish'),
+            $this->translator->txt('confirm_finish_message'),
+            $action
+        )->withActionButtonLabel(
+            $this->translator->txt('finish')
         );
     }
 
-    protected function addToolbarButton(string $caption, string $action, bool $is_disabled, bool $primary = false): void
+    /**
+     * @param Signal|string $action
+     */
+    protected function addFinishButton($action): void
+    {
+        $this->addToolbarButton('finish', $action, false, true);
+    }
+
+    /**
+     * @param Signal|string $action
+     */
+    protected function addToolbarButton(string $caption, $action, bool $is_disabled, bool $primary = false): void
     {
         $button_type = ($primary) ? 'primary' : 'standard';
         $button = $this->components->button()->{$button_type}(
