@@ -88,9 +88,8 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     }
 
     /**
-     * Resets the current state of the requested content. The results are
-     * however not deleted, because we like to keep track of contents being
-     * solved multiple times.
+     * Resets the state and result of the requested content. This also modifies the objects
+     * @see ISolvedStatus
      */
     protected function resetContent(): void
     {
@@ -104,6 +103,21 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         $state = $this->repositories->content()->getContentStateOfUser($content->getContentId(), $this->user->getId());
         if (null !== $state) {
             $this->repositories->content()->deleteUserData($state);
+        }
+
+        $result = $this->repositories->result()->getResultByUserAndContent(
+            $this->user->getId(), $content->getContentId()
+        );
+
+        if (null !== $result) {
+            $this->repositories->result()->deleteResult($result);
+        }
+
+        $status = $this->repositories->result()->getSolvedStatus($this->object->getId(), $this->user->getId());
+        if (null !== $status) {
+            $status->setFinished(false);
+            $status->setContentId($content->getContentId());
+            $this->repositories->result()->storeSolvedStatus($status);
         }
 
         $this->ctrl->redirectToURL(
@@ -310,21 +324,12 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     /**
      * This method will store a new or update an @see ISolvedStatus object
      * to mark the requested object as finished by the current user.
+     *
+     * Note, this endpoint should only be called if the user is sure about
+     * its consequences. @see ilH5PRepositoryContentBuilder::getConfirmFinishModal()
      */
     protected function finishAllContents(): void
     {
-        $contents_of_object = $this->repositories->content()->getContentsByObject($this->object->getId());
-        $user_results_of_object = $this->repositories->result()->getResultsByUserAndObject(
-            $this->user->getId(),
-            $this->object->getId()
-        );
-
-        // abort if there are not as many results as there are contents.
-        if (count($contents_of_object) !== count($user_results_of_object)) {
-            ilUtil::sendFailure($this->translator->txt('result_count_missmatch'), true);
-            $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);
-        }
-
         $solved_status = $this->repositories->result()->getSolvedStatus(
             $this->object->getId(),
             $this->user->getId()
