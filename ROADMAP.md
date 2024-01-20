@@ -28,7 +28,13 @@ the future.
   and setters on the DTO but H5P can still access any value like it were an array. This will make the code much more
   trustworthy and readable.
 
-- [ ] Introduce some sort of trigger to manually purge temporary files inside H5P's `/temp` directory, to enable
-  administrators to may already solve issues which ocurr when importing libraries and contents. This is due to some
-  undocumented behaviour, where the H5P kernel will extract files into an already existing directory instead of creating
-  a new one with the same name.
+- [ ] Add a custom `H5PFileStorage` implementation which uses the ILIAS resource storage instead of H5Ps default. If
+  this is implemented, existing files also need to be migrated to the new storage.
+
+- [ ] The use-case of repository objects should be conceptually refined. Currently, there is no reliable way to
+  determine whether a H5P library or content is considered as solvable, which makes the finish-process of repository
+  objects impossible. This is because we need to know if a user has finished all contents, since we cannot collect the
+  max achievable score of contents unless a user submits a result. Also see https://jira.sr.solutions/browse/PLH5P-225
+
+- [ ] The database is poorly designed and could use an entire rework as well. There are lots of columns which are never
+  used and/or contain redundant data.

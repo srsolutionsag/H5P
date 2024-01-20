@@ -1,5 +1,15 @@
 # H5P Changelog
 
+## 5.0.14
+
+- Improved user experience for H5P repository objects:
+  - Finish button will now only be displayed if the object is only solvable once.
+  - Finish button will now open a modal first, if the current user does not have as many results as there are
+    contents.
+  - Reset button will now only be enabled if the user has submitted a result.
+  - Reset button will update an objects solved status now.
+- H5P importer throws a proper exception if the exports .h5p file cannot be found now.
+
 ## 5.0.13
 
 - Fixed an issue where the plugin could not be installed due to misused ILIAS constants.
