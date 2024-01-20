@@ -104,10 +104,20 @@ class ilH5PContentImporter
      */
     protected function importH5pFile(array $h5p_data, int $obj_id): ?int
     {
-        $file = ilH5PEditorStorage::saveFileTemporarily(
-            "$this->relative_working_dir/{$h5p_data[self::KEY_FILE_PATH]}",
-            true
-        );
+        $h5p_file = "$this->relative_working_dir/{$h5p_data[self::KEY_FILE_PATH]}";
+
+        // abort import if the h5p file does not exist. this throws a LogicException
+        // because there is currently no way of "softly" stopping an import.
+        if (!file_exists($h5p_file)) {
+            throw new LogicException(
+                "The exported .h5p file does not exist." .
+                "Please make sure the export was created using a plugin version >= 3.1.0 and " .
+                "the .h5p file extension is an allowed file type in ILIAS (importing AND exporting system)." .
+                "Check the configuration at: Administration > System Settings and Maintenance > File Services."
+            );
+        }
+
+        $file = ilH5PEditorStorage::saveFileTemporarily($h5p_file, true);
 
         $this->file_upload_communicator->setUploadPath("$file->dir/$file->fileName");
 
