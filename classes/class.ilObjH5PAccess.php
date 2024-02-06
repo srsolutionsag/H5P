@@ -125,10 +125,11 @@ class ilObjH5PAccess extends ilObjectPluginAccess
 
         return $this->h5p_access_handler->checkAccess(
             $content->getObjId(),
-            false,
+            // in case of a plugin content we must handle the ilias_id as a object_id, otherwise as a ref_id
+            ($content->getParentType() !== ilH5PPlugin::PLUGIN_ID),
             $content->getParentType(),
             $content->isInWorkspace(),
-            "read"
+            ilH5PAccessHandler::READ
         );
     }
 }

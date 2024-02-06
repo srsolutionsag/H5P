@@ -72,19 +72,11 @@ class ilH5PAccessHandler
 
         if (ilH5PPlugin::PLUGIN_ID === $parent_type) {
             // we must handle the parameter $ilias_id differently in case it's a ref_id or not (see calls to this method)
-            if (!$is_ref_id) { // it's an obj_id
-                $ref_id = $this->getFirstReferenceId($ilias_id);
-            } else {
-                $ref_id = $ilias_id; // otherwise we can use the ilias_id as ref_id
-            }
-            return (
-                null !== $ref_id &&
-                $this->default_access_handler->checkAccess($operation, $ref_id, $parent_type)
-            );
+            return $this->hasAccessToAnyReference($ilias_id, $is_ref_id, $operation, $parent_type);
         }
 
         if (!$is_workspace) {
-            return $this->default_access_handler->checkAccess($operation, $ilias_id, $parent_type);
+            return $this->hasAccessToAnyReference($ilias_id, $is_ref_id, $operation, $parent_type);
         }
 
         if ($this->isPortfolio($parent_type)) {
@@ -130,16 +122,40 @@ class ilH5PAccessHandler
         return $this->canCurrentUserPerformOperation($object, self::VIEW);
     }
 
-    protected function getFirstReferenceId(int $obj_id): ?int
-    {
-        $references = ilObject::_getAllReferences($obj_id);
-        $first_ref_id = array_shift($references);
-
-        if (null !== $first_ref_id) {
-            return (int) $first_ref_id;
+    /**
+     * This method has been introduces to grant access to resources of H5P contents,
+     * which must be available if a user has access to any of the references the H5P
+     * content belongs to.
+     *
+     * @see https://jira.sr.solutions/browse/PLH5P-232
+     */
+    protected function hasAccessToAnyReference(
+        int $ilias_id,
+        bool $is_ref_id,
+        string $operation,
+        string $parent_type
+    ): bool {
+        if ($is_ref_id) {
+            $object_id = (int) ilObject::_lookupObjId($ilias_id);
+        } else {
+            $object_id = $ilias_id;
         }
 
-        return null;
+        foreach ($this->getAllReferenceIds($object_id) as $ref_id) {
+            if ($this->default_access_handler->checkAccess($operation, $ref_id, $parent_type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getAllReferenceIds(int $obj_id): array
+    {
+        return array_map('intval', ilObject::_getAllReferences($obj_id));
     }
 
     /**
