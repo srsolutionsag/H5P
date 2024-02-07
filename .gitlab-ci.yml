@@ -12,8 +12,8 @@ review:
     ILIAS_DEVMODE: 1
     ILIAS_INSTALL_ARGUMENTS: --no-plugins
   environment:
-    name: review/${CI_BUILD_REF_SLUG}
-    url: http://${CI_PROJECT_PATH_SLUG}_${CI_BUILD_REF_SLUG}.review.sr.solutions
+    name: review/${CI_COMMIT_REF_SLUG}
+    url: http://${CI_PROJECT_PATH_SLUG}_${CI_COMMIT_REF_SLUG}.review.sr.solutions
     on_stop: stop_review
   script:
     - srag-review deploy
@@ -21,7 +21,7 @@ review:
 stop_review:
   extends: .review_deployment
   environment:
-    name: review/${CI_BUILD_REF_SLUG}
+    name: review/${CI_COMMIT_REF_SLUG}
     action: stop
   script:
     - srag-review stop
