@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.0.15
+
+- Fixed an issue where the WAC did not grant access to resources of H5P contents.
+- Fixed gitlab CI environment variables.
+
 ## 5.0.14
 
 - Improved user experience for H5P repository objects:
