@@ -14,9 +14,10 @@ the future.
   data is stored asynchronously as well as updated on the page. The H5PPageComponent plugin would especially benefit
   from this feature in (page-)editing mode.
 
-- [ ] Internal data this plugin stores about H5P is currently referenced to an `ilObject`s `obj_id` instead of
-  its `ref_id`. This could lead to some issues when said objects are copied and should be considered separately,
-  because the data will point to the same ID still.
+- [ ] H5P contents created by H5PPageComponent plugin will store the ref-id of their parents in the database. This id
+  cannot be used for access checks of resources, e.g. in case of WAC. Since this reference is only stored for these
+  kinds of access checks, we need to migrate all ref-ids to the corresponding obj-id. After doing so, a lot of
+  unnecessary logic in this regard can be removed.
 
 - [ ] When H5P contents are "finished", an according event will be broadcasted on clientside which could be listened to
   in order to enable the reset-button (if available) and submit the current content-state (to `userContentData`). Right
