@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.17
+
+- Copying database updates that get missed upgrading from ilias 7 to ilias 8.
+
 ## 5.0.16
 
 - Fixed an issue where the H5PPageComponent plugin could not be used if this plugin has been deactivated.

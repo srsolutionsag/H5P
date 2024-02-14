@@ -1339,3 +1339,26 @@ if ($ilDB->tableColumnExists('rep_robj_xhfp_solv', 'content_id')) {
     ]);
 }
 ?>
+<#19>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'mnachine_name')) {
+	$ilDB->dropTableColumn('rep_robj_xhfp_lib_hub', 'mnachine_name');
+}
+?>
+<#20>
+<?php
+global $DIC;
+
+// this setting will eventually be used in ILIAS\Filesystem\Security\Sanitizing\FilenameSanitizerImpl
+// to allow the suffix "h5p" for file names. This needs to be done for import/exports to work.
+$whitelist = $DIC->settings()->get('suffix_custom_white_list', '');
+$whitelist = explode(',', $whitelist);
+
+if (!in_array('h5p', $whitelist, true)) {
+	$whitelist[] = 'h5p';
+	$DIC->settings()->set('suffix_custom_white_list', implode(',', $whitelist));
+}
+?>
