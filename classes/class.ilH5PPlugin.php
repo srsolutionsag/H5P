@@ -81,10 +81,6 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
     {
         $default_renderer = $dic->raw('ui.renderer');
 
-        if(!$this->isActive()) {
-            return $default_renderer;
-        }
-
         return function () use ($dic, $default_renderer) {
             return new Renderer(
                 $this->getContainer()->getClientDataProvider(),
