@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.20
+
+- Fixed an issue where the H5PPageComponent plugin could not be used if this plugin has been deactivated.
+
 ## 4.1.19
 
 - Fixed an issue where the WAC did not grant access to resources of H5P contents.
