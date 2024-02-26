@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.17
+
+- Fixed an issue where upgrading from versions >=4.1.19 to >=5.0.16.
+
 ## 5.0.16
 
 - Fixed an issue where the H5PPageComponent plugin could not be used if this plugin has been deactivated.
