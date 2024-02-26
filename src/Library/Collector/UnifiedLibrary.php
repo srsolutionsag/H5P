@@ -7,13 +7,14 @@ namespace srag\Plugins\H5P\Library\Collector;
 use srag\Plugins\H5P\Library\LibraryVersionHelper;
 use srag\Plugins\H5P\Library\IHubLibrary;
 use srag\Plugins\H5P\Library\ILibrary;
+use srag\Plugins\H5P\Content\IContent;
 
 /**
  * This data object wraps the combined data of @see IHubLibrary and
  * @see IHubLibrary
  *
- * It is used to represent a specific version of an installed library
- * and will primarily be used for the library overview and/or details.
+ * It is used to represented multiple versions of a library, which may or
+ * may not be installed.
  *
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
@@ -58,7 +59,7 @@ class UnifiedLibrary
     /**
      * @var string
      */
-    protected $latest_version;
+    protected $latest_version_string;
 
     /**
      * @var string|null
@@ -111,12 +112,13 @@ class UnifiedLibrary
     protected $number_of_library_usages = 0;
 
     /**
-     * @var string|null
+     * @var int|null
      */
-    protected $latest_installed_version = null;
+    protected $latest_installed_version_id = null;
 
     /**
-     * @var ILibrary[]
+     * Libraries mapped by their id for ease of use and duplicate protection.
+     * @var array<int, ILibrary>
      */
     protected $installed_versions = [];
 
@@ -145,7 +147,7 @@ class UnifiedLibrary
         $this->summary = $summary;
         $this->description = $description;
         $this->author = $author;
-        $this->latest_version = $latest_version;
+        $this->latest_version_string = $latest_version;
         $this->example_url = $example_url;
         $this->tutorial_url = $tutorial_url;
         $this->icon_url = $icon_url;
@@ -187,7 +189,7 @@ class UnifiedLibrary
 
     public function getLatestVersion(): string
     {
-        return $this->latest_version;
+        return $this->latest_version_string;
     }
 
     public function getExampleUrl(): ?string
@@ -250,11 +252,16 @@ class UnifiedLibrary
     }
 
     /**
-     * @return string[]
+     * @return string[] library-id => version-string pairs
      */
     public function getInstalledVersionStrings(): array
     {
-        return array_keys($this->installed_versions);
+        $version_strings = [];
+        foreach ($this->installed_versions as $library) {
+            $version_strings[$library->getLibraryId()] = $this->getLibraryVersion($library);
+        }
+
+        return $version_strings;
     }
 
     /**
@@ -288,8 +295,8 @@ class UnifiedLibrary
 
     public function getLatestInstalledVersion(): ?ILibrary
     {
-        if (null !== $this->latest_installed_version) {
-            return $this->installed_versions[$this->latest_installed_version] ?? null;
+        if (null !== $this->latest_installed_version_id) {
+            return $this->installed_versions[$this->latest_installed_version_id] ?? null;
         }
 
         return null;
@@ -297,18 +304,24 @@ class UnifiedLibrary
 
     public function addInstalledVersion(ILibrary $library): self
     {
-        $installed_version = $this->getLibraryVersion($library);
+        // keep track of duplicate entries, map them by library-id.
+        $this->installed_versions[$library->getLibraryId()] = $library;
 
-        $this->latest_installed_version = ($this->latest_installed_version < $installed_version) ?
-            $installed_version :
-            $this->latest_installed_version;
+        // if there is no latest installed version, set the current one.
+        if (null === $this->latest_installed_version_id) {
+            $this->latest_installed_version_id = $library->getLibraryId();
+            $this->status = self::STATUS_INSTALLED;
+        }
 
-        $this->status = ($this->latest_installed_version < $this->latest_version) ?
-            self::STATUS_UPGRADE_AVAILABLE :
-            self::STATUS_INSTALLED;
+        $latest_installed_version_string = $this->getLibraryVersion(
+            $this->getLatestInstalledVersion() ?? $library
+        );
 
-        // keep track of duplicate entries
-        $this->installed_versions[$installed_version] = $library;
+        // check if the latest installed version is still behind (only possible
+        // for hub-libraries).
+        if ($latest_installed_version_string < $this->latest_version_string) {
+            $this->status = self::STATUS_UPGRADE_AVAILABLE;
+        }
 
         return $this;
     }
@@ -340,15 +353,23 @@ class UnifiedLibrary
     public function isUpgradeAvailable(): bool
     {
         return (self::STATUS_UPGRADE_AVAILABLE === $this->getStatus());
-
-        // return (
-        //     $this->isInstalled() &&
-        //     $this->latest_installed_version < $this->latest_version
-        // );
     }
 
     public function isInstalled(): bool
     {
         return !empty($this->getInstalledVersions());
+    }
+
+    public function getInstalledLibraryVersion(int $library_id): ?ILibrary
+    {
+        return $this->installed_versions[$library_id] ?? null;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getInstalledLibraryVersionIds(): array
+    {
+        return array_keys($this->installed_versions);
     }
 }

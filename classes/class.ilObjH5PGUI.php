@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 /**
- * This class handles the creation of a repository object.
- * For this plugin, this class is merely a dispatcher.
+ * This class handles the creation of a H5P repository object.
+ * For this plugin, this class also serves as the entry-point
+ * of all 'repository' controllers.
  *
- * @author            Thibeau Fuhrer <thibeau@sr.solutions>
+ * When implementing a new controller which should be reachable by any
+ * other repository controller, this class must be extended with an
+ * according @ilCtrl_Calls statement. If the controller should also be
+ * reachable from the administration, do the same in @see ilH5PConfigGUI
  *
  * NOTE that commands routing via this class MUST NEVER be
  * named 'save', otherwise the parent class will invoke its
@@ -16,6 +20,7 @@ declare(strict_types=1);
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilAdministrationGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilRepositoryGUI
  * @ilCtrl_isCalledBy ilObjH5PGUI: ilH5PConfigGUI
+ *
  * @ilCtrl_Calls      ilObjH5PGUI: ilPermissionGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilInfoScreenGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilObjectCopyGUI
@@ -25,6 +30,7 @@ declare(strict_types=1);
  * @ilCtrl_Calls      ilObjH5PGUI: ilH5PResultGUI
  * @ilCtrl_Calls      ilObjH5PGUI: ilH5PUploadHandlerGUI
  *
+ * @author            Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection      AutoloadingIssuesInspection
  */
 class ilObjH5PGUI extends ilObjectPluginGUI

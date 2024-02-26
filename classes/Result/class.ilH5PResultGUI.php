@@ -126,7 +126,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->content()->deleteUserData($state);
         }
 
-        $this->sendSuccess(
+        $this->setSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
                 $user->getFullname()
@@ -179,7 +179,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->content()->deleteUserData($state);
         }
 
-        $this->sendSuccess(
+        $this->setSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
                 $object->getTitle()
@@ -254,7 +254,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
     protected function redirectUserNotFound(): void
     {
-        $this->sendFailure($this->translator->txt('user_not_found'));
+        $this->setFailure($this->translator->txt('user_not_found'));
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
     }
 

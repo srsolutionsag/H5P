@@ -11,7 +11,7 @@ var il = il || {};
 // prevent H5P from automatically initializing itself.
 H5P.preventInit = true;
 
-(function (il) {
+(function (il, $) {
   il.H5P = (function () {
     /**
      * Immediately initializes an H5PEditor for the provided data.
@@ -43,10 +43,7 @@ H5P.preventInit = true;
       }
 
       // register the editor in the already sent H5PIntegration.
-      H5PIntegration.editor = base64ToJsonObject(integration_base64);
-      if (null !== content_id) {
-        H5PIntegration.editor.nodeVersionId = content_id;
-      }
+      registerEditorIntegration(integration_base64, content_id);
 
       // convert the base64 encoded value to a JSON string again.
       if (content_json_input.value.length > 0) {
@@ -130,6 +127,97 @@ H5P.preventInit = true;
     };
 
     /**
+     * @param {string} migration_modal_id
+     * @param {string} editor_integration_base64
+     * @param {string} retrieval_endpoint
+     * @param {string} storage_endpoint
+     * @param {string} finish_endpoint
+     * @param {string} migration_parameter
+     * @param {string} content_parameter
+     * @param {string} library_name
+     * @param {string} start_migration_signal
+     * @param {string} stop_migration_signal
+     * @param {string} replace_signal
+     * @param {number|null} chunk_size
+     * @param {number[]} content_ids
+     */
+    let initMigrationModal = function (
+      migration_modal_id,
+      editor_integration_base64,
+      retrieval_endpoint,
+      storage_endpoint,
+      finish_endpoint,
+      migration_parameter,
+      content_parameter,
+      library_name,
+      start_migration_signal,
+      stop_migration_signal,
+      replace_signal,
+      chunk_size,
+      content_ids
+    ) {
+      // register the editor in the already sent H5PIntegration.
+      registerEditorIntegration(editor_integration_base64);
+
+      // initialize migration wrapper.
+      const migration = new il.H5P.Migration(
+        retrieval_endpoint,
+        storage_endpoint,
+        migration_parameter,
+        content_parameter,
+        library_name
+      );
+
+      const content_batches = (null !== chunk_size) ?
+        chunkArray(content_ids, chunk_size) :
+        [content_ids];
+
+      $(document).on(start_migration_signal, () => {
+        migration.handleMigrationBatches(content_batches)
+          .then(() => {
+            il.UI.modal.replaceFromSignal(migration_modal_id, {
+              options: { url: finish_endpoint }
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+        ;
+      });
+    };
+
+    /**
+     * Populates the editor integration in the already sent H5PIntegration object.
+     *
+     * @param {string} integration_base64
+     * @param {number|null} content_id
+     */
+    let registerEditorIntegration = function (integration_base64, content_id = null) {
+      H5PIntegration.editor = base64ToJsonObject(integration_base64);
+      if (null !== content_id) {
+        H5PIntegration.editor.nodeVersionId = content_id;
+      }
+    };
+
+    /**
+     * Returns an array of arrays, where each inner array represents a chunk of the
+     * input array, according to the given chunk-size.
+     *
+     * @param {Array} array
+     * @param {number} chunkSize
+     * @returns {Array<Array>}
+     */
+    let chunkArray = function (array, chunkSize) {
+      const result = [];
+      for (let i = 0; i < array.length; i += chunkSize) {
+        const chunk = array.slice(i, i + chunkSize);
+        result.push(chunk);
+      }
+
+      return result;
+    }
+
+    /**
      * @param {string} base64
      * @returns {string}
      */
@@ -149,8 +237,9 @@ H5P.preventInit = true;
     };
 
     return {
+      initMigrationModal: initMigrationModal,
       initContent: initContent,
       initEditor: initEditor,
     };
   })();
-})(il);
+})(il, $);
