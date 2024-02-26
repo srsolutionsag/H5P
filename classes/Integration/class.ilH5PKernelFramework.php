@@ -1251,7 +1251,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
         // the library id may change due to content upgrades performed
         // automatically by the H5P editor.
-        $h5p_content->setLibraryId((int) $content["library"]["libraryId"]);
+        $h5p_content->setLibraryId((int) ($content["library"]["libraryId"] ?? $content["library"]["id"]));
 
         $h5p_content->setTitle($metadata["title"] ?: "");
         $h5p_content->setParameters($content["params"]);

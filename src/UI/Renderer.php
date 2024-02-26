@@ -5,18 +5,24 @@ declare(strict_types=1);
 namespace srag\Plugins\H5P\UI;
 
 use srag\Plugins\H5P\Integration\IClientDataProvider;
+use srag\Plugins\H5P\UI\Content\H5PContentMigrationModal;
 use srag\Plugins\H5P\UI\Content\H5PContent;
 use srag\Plugins\H5P\UI\Input\H5PEditor;
 use srag\Plugins\H5P\UI\Input\Hidden;
 use srag\Plugins\H5P\UI\Factory as H5PComponentFactory;
+use srag\Plugins\H5P\Content\IContent;
+use srag\Plugins\H5P\ITranslator;
+use srag\Plugins\H5P\IContainer;
 use ILIAS\UI\Implementation\Render\DecoratedRenderer;
 use ILIAS\UI\Implementation\Render\JavaScriptBinding;
 use ILIAS\UI\Implementation\Render\TemplateFactory;
 use ILIAS\UI\Implementation\Render\Template;
 use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\UI\Component\JavaScriptBindable;
+use ILIAS\UI\Component\Modal\Modal;
 use ILIAS\UI\Renderer as IRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
+use srag\Plugins\H5P\IRequestParameters;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -59,8 +65,10 @@ class Renderer extends DecoratedRenderer
     protected $registry;
 
     /**
-     * @inheritDoc
+     * @var ITranslator
      */
+    protected $translator;
+
     public function __construct(
         IClientDataProvider $client_data_provider,
         H5PComponentFactory $h5p_component_factory,
@@ -68,6 +76,7 @@ class Renderer extends DecoratedRenderer
         JavaScriptBinding $java_script_binding,
         TemplateFactory $template_factory,
         IResourceRegistry $registry,
+        ITranslator $translator,
         IRenderer $default
     ) {
         parent::__construct($default);
@@ -78,6 +87,7 @@ class Renderer extends DecoratedRenderer
         $this->java_script_binding = $java_script_binding;
         $this->template_factory = $template_factory;
         $this->registry = $registry;
+        $this->translator = $translator;
     }
 
     /**
@@ -85,6 +95,10 @@ class Renderer extends DecoratedRenderer
      */
     protected function manipulateRendering($component, IRenderer $root): ?string
     {
+        if ($component instanceof H5PContentMigrationModal) {
+            return $this->renderContentMigrationModal($component, $root);
+        }
+
         if ($component instanceof H5PContent) {
             return $this->renderContent($component);
         }
@@ -98,6 +112,65 @@ class Renderer extends DecoratedRenderer
         }
 
         return null;
+    }
+
+    protected function renderContentMigrationModal(H5PContentMigrationModal $component, IRenderer $renderer): string
+    {
+        $this->maybeIntegrateKernel();
+
+        $editor_integration = $this->client_data_provider->getEditorIntegration();
+
+        $this->registry->registerJavaScripts(
+            $editor_integration->getJsFiles(),
+            IResourceRegistry::PRIORITY_FIRST
+        );
+
+        // register additional resources required for content migration.
+        $this->registry->registerJavaScripts([
+            \ilH5PPlugin::PLUGIN_DIR . 'templates/js/h5p.migration.js',
+            IContainer::H5P_KERNEL_DIR . '/js/h5p-utils.js',
+            IContainer::H5P_KERNEL_DIR . '/js/h5p-version.js',
+            IContainer::H5P_KERNEL_DIR . '/js/h5p-content-upgrade-process.js',
+        ], IResourceRegistry::PRIORITY_FIRST);
+
+        // add start button which triggers the start signal.
+        $modal = $component->getModal()->withActionButtons([
+            $this->ilias_component_factory->button()->primary(
+                $this->translator->txt('start_migration'),
+                $component->getStartMigrationSignal()
+            )->withLoadingAnimationOnClick(true),
+        ]);
+
+        /** @var $enriched_modal Modal */
+        $enriched_modal = $modal->withAdditionalOnLoadCode(
+            function (string $id) use ($editor_integration, $component, $modal): string {
+                $editor_integration_base64 = base64_encode(json_encode($editor_integration->getData()));
+                $js_chunk_size = (string) ($component->getContentChunkSize() ?? 'null');
+                $js_content_ids = $this->getContentIdsForJs($component->getContents());
+                $js_migration_parameter = IRequestParameters::MIGRATION_DATA;
+                $js_content_parameter = IRequestParameters::CONTENT_ID;
+                
+                return "
+                    il.H5P.initMigrationModal(
+                        '$id',
+                        `$editor_integration_base64`,
+                        '{$component->getDataRetrievalEndpoint()}',
+                        '{$component->getDataStorageEndpoint()}',
+                        '{$component->getFinishEndpoint()}',
+                        '$js_migration_parameter',
+                        '$js_content_parameter',
+                        '{$component->getLibrary()->getMachineName()}',
+                        '{$component->getStartMigrationSignal()}',
+                        '{$component->getStopMigrationSignal()}',
+                        '{$modal->getReplaceSignal()}',
+                        $js_chunk_size,
+                        $js_content_ids
+                    );
+                ";
+            }
+        );
+
+        return $renderer->render($enriched_modal);
     }
 
     protected function renderContent(H5PContent $component): string
@@ -161,7 +234,7 @@ class Renderer extends DecoratedRenderer
 
         // since we cannot properly listen to some "initialized" event of H5P contents,
         // we cannot safely remove the message box for contents which are not embedded
-        // in an iframe (because we cannot listen to a "loca" event).
+        // in an iframe (because we cannot listen to a "local" event).
         if ('div' !== $embed_type && null !== ($message = $component->getLoadingMessage())) {
             $template->setVariable(
                 'MESSAGE_BOX',
@@ -197,7 +270,7 @@ class Renderer extends DecoratedRenderer
         foreach ($component->getInputs() as $key => $input) {
             // we need to pass base64 encoded data to the client, where they will
             // be decoded to a JSON string again, because otherwise this leads to
-            // prolblems with hidden control-characters.
+            // problems with hidden control-characters.
             if (H5PEditor::INPUT_CONTENT === $key && null !== $input->getValue()) {
                 $input = $input->withValue(base64_encode($input->getValue()));
             }
@@ -269,6 +342,24 @@ class Renderer extends DecoratedRenderer
             true,
             true
         );
+    }
+
+    /**
+     * @param IContent[] $contents
+     */
+    protected function getContentIdsForJs(array $contents): string
+    {
+        $content_ids = [];
+        foreach ($contents as $content) {
+            $content_id = $content->getContentId();
+            $content_ids[$content_id] = $content_id;
+        }
+
+        if (empty($content_ids)) {
+            return '[]';
+        }
+
+        return '[' . implode(',', $content_ids) . ']';
     }
 
     protected function getEditorContentIdForJs(H5PEditor $component): string

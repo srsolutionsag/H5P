@@ -3,8 +3,6 @@
 namespace srag\Plugins\H5P;
 
 use srag\Plugins\H5P\UI\Factory;
-use srag\Plugins\H5P\IRepositoryFactory;
-use srag\Plugins\H5P\Integration\ClientData;
 use srag\Plugins\H5P\Integration\IClientDataProvider;
 use srag\Plugins\H5P\File\FileUploadCommunicator;
 

@@ -14,6 +14,7 @@ use ILIAS\UI\Component\Panel\Panel;
 use ILIAS\UI\Component\Item\Item;
 use ILIAS\UI\Renderer as ComponentRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
+use srag\Plugins\H5P\UI\Content\H5PContentMigrationModal;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -44,7 +45,9 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
                 ),
             ]
         )->withActions(
-            $this->getActionDropdownOf($library)
+            $this->components->dropdown()->standard(
+                $this->getActionButtonsOf($library)
+            )
         );
 
         $components[] = $this->components->panel()->standard(
@@ -73,7 +76,8 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
                 [
                     $this->components->item()->standard(
                         $this->renderer->render([
-                            $modal, $button
+                            $modal,
+                            $button
                         ])
                     ),
                 ]
@@ -81,6 +85,16 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
         }
 
         return $components;
+    }
+
+    protected function getMigrationModal(): H5PContentMigrationModal
+    {
+        return $this->h5p_components->contentMigrationModal(
+            "",
+            "",
+            "",
+            ""
+        );
     }
 
     /**

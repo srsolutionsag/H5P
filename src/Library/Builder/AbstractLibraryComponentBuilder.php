@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace srag\Plugins\H5P\Library\Builder;
 
+use srag\Plugins\H5P\Library\Collector\UnifiedLibrary;
+use srag\Plugins\H5P\UI\Factory as H5PComponentFactory;
+use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\ITranslator;
 use ILIAS\UI\Factory as ComponentFactory;
 use ILIAS\UI\Renderer as ComponentRenderer;
-use srag\Plugins\H5P\Library\Collector\UnifiedLibrary;
 use ILIAS\UI\Component\Button\Shy;
 use ILIAS\UI\Component\Dropdown\Dropdown;
-use srag\Plugins\H5P\IRequestParameters;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -46,8 +47,14 @@ abstract class AbstractLibraryComponentBuilder
         $this->ctrl = $ctrl;
     }
 
-    protected function getActionDropdownOf(UnifiedLibrary $library): Dropdown
+    /**
+     * @param UnifiedLibrary $library
+     * @return Shy[]
+     */
+    protected function getActionButtonsOf(UnifiedLibrary $library): array
     {
+        $actions = [];
+
         if (null !== ($tutorial_url = $library->getTutorialUrl())) {
             $actions[] = $this->components->button()->shy(
                 $this->translator->txt('tutorial'),
@@ -76,20 +83,20 @@ abstract class AbstractLibraryComponentBuilder
             );
         }
 
-        // add delete button if installed or upgrade available.
+        // add delete and manage-contents button if installed or upgrade available.
         if (UnifiedLibrary::STATUS_NOT_INSTALLED !== $library->getStatus()) {
             $actions[] = $this->components->button()->shy(
                 $this->translator->txt('delete'),
                 $this->getDeleteUrl($library)
             );
+
+            $actions[] = $this->components->button()->shy(
+                $this->translator->txt('manage_library_contents'),
+                $this->getManageContentsUrl($library)
+            );
         }
 
-        $actions[] = $this->components->button()->shy(
-            $this->translator->txt('details'),
-            $this->getDetailsUrl($library)
-        );
-
-        return $this->components->dropdown()->standard($actions);
+        return $actions;
     }
 
     protected function getDetailsUrl(UnifiedLibrary $library): string
@@ -109,6 +116,13 @@ abstract class AbstractLibraryComponentBuilder
     protected function getDeleteUrl(UnifiedLibrary $library): string
     {
         return $this->getLinkTarget(\ilH5PLibraryGUI::class, \ilH5PLibraryGUI::CMD_LIBRARY_DELETE_CONFIRM, [
+            IRequestParameters::LIBRARY_NAME => $library->getMachineName(),
+        ]);
+    }
+
+    protected function getManageContentsUrl(UnifiedLibrary $library): string
+    {
+        return $this->getLinkTarget(\ilH5PLibraryContentsGUI::class, \ilH5PLibraryContentsGUI::CMD_MANAGE_CONTENTS, [
             IRequestParameters::LIBRARY_NAME => $library->getMachineName(),
         ]);
     }

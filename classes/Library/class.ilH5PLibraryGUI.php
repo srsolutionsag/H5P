@@ -28,6 +28,7 @@ use ILIAS\UI\Factory as ComponentFactory;
  */
 class ilH5PLibraryGUI extends ilH5PAbstractGUI
 {
+    use ilH5PLibraryRequestHelper;
     use ilH5PTargetHelper;
 
     public const CMD_LIBRARY_DELETE_CONFIRM = "confirmLibraryDeletion";
@@ -401,19 +402,6 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
                 $this->renderer->render($upgrade_link)
             )
         );
-    }
-
-    protected function getRequestedLibraryOrAbort(ArrayBasedRequestWrapper $request): UnifiedLibrary
-    {
-        if (null === ($machine_name = $this->getRequestedString($request, IRequestParameters::LIBRARY_NAME))) {
-            $this->redirectObjectNotFound();
-        }
-
-        if (null === ($unified_library = $this->getUnifiedLibraryCollector()->collectOne($machine_name))) {
-            $this->redirectObjectNotFound();
-        }
-
-        return $unified_library;
     }
 
     protected function getUploadForm(): Form

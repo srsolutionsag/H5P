@@ -11,6 +11,7 @@ use srag\Plugins\H5P\IContainer;
 use Psr\Http\Message\ResponseInterface;
 use ILIAS\Filesystem\Stream\Streams;
 use ILIAS\DI\HTTPServices;
+use ILIAS\HTTP\GlobalHttpState;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -19,6 +20,7 @@ use ILIAS\DI\HTTPServices;
 class ilH5PAjaxEndpointGUI
 {
     use ilH5PRequestObject;
+    use ilH5PAjaxHelper;
 
     public const CMD_FETCH_LIBRARY_DATA = H5PEditorEndpoints::LIBRARIES;
     public const CMD_FINISH_SINGLE_CONTENT = 'finishSingleContent';
@@ -366,38 +368,8 @@ class ilH5PAjaxEndpointGUI
         );
     }
 
-    /**
-     * @param mixed $data
-     */
-    protected function sendSuccess($data = null): void
+    protected function getHttpService(): GlobalHttpState
     {
-        H5PCore::ajaxSuccess($data);
-        $this->http->close();
-    }
-
-    protected function sendFailure(int $code, string $human_message = null, string $robot_message = null): void
-    {
-        H5PCore::ajaxError($human_message, $robot_message, $code);
-        $this->http->close();
-    }
-
-    protected function sendResourceNotFound(): void
-    {
-        $this->sendFailure(404, 'resource not found.', 'RESOURCE_NOT_FOUND');
-    }
-
-    protected function sendAccessDenied(): void
-    {
-        $this->sendFailure(403, 'access denied.', 'ACCESS_DENIED');
-    }
-
-    protected function isPostRequest(): bool
-    {
-        return ('POST' === $this->http->request()->getMethod());
-    }
-
-    protected function isGetRequest(): bool
-    {
-        return ('GET' === $this->http->request()->getMethod());
+        return $this->http;
     }
 }
