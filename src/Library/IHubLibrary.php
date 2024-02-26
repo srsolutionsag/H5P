@@ -49,6 +49,21 @@ interface IHubLibrary
 
     public function setKeywords(string $keywords): void;
 
+    /**
+     * JSON object with similar structure to:
+     *  {
+     *      "id": "MIT",
+     *      "attributes": {
+     *          "useCommercially": true,
+     *          "modifiable": true,
+     *          "distributable": true,
+     *          "sublicensable": true,
+     *          "canHoldLiable": false,
+     *          "mustIncludeCopyright": true,
+     *          "mustIncludeLicense": true
+     *      }
+     *  }
+     */
     public function getLicense(): string;
 
     public function setLicense(string $license): void;

@@ -76,6 +76,7 @@ class ilH5PPlugin extends ilRepositoryObjectPlugin implements ITranslator
                 $dic["ui.javascript_binding"],
                 $dic["ui.template_factory"],
                 new ilH5PResourceRegistry($dic['tpl']),
+                $this->getContainer()->getTranslator(),
                 $default_renderer($dic)
             );
         };

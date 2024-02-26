@@ -187,7 +187,7 @@ abstract class ilH5PAbstractGUI
      */
     protected function redirectObjectNotFound(): void
     {
-        $this->sendFailure($this->translator->txt('object_not_found'));
+        $this->setFailure($this->translator->txt('object_not_found'));
         $this->ctrl->redirectToURL(ilLink::_getLink(1));
     }
 
@@ -202,7 +202,7 @@ abstract class ilH5PAbstractGUI
      */
     protected function redirectPermissionDenied(string $target_class, string $command = null): void
     {
-        $this->sendFailure($this->translator->txt('permission_denied'));
+        $this->setFailure($this->translator->txt('permission_denied'));
 
         $this->ctrl->clearParametersByClass($target_class);
 

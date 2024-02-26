@@ -192,3 +192,17 @@ truncate_results#:#Resultate löschen
 user_not_found#:#Der angefragte Benutzer konnte nicht gefunden werden.
 allow_h5p_imports#:#H5P-Import zulassen
 allow_h5p_imports_info#:#Wenn diese Option aktiv ist, können Benutzer H5P-Inhalte von Dateien importieren.
+manage_library_contents#:#Inhalte verwalten
+unknown#:#Unbekannt
+owner#:#Besitzer
+created_at#:#Erstellt am
+updated_at#:#Bearbeitet am
+parent_type#:#Parent-Typ
+parent_obj#:#Parent-ID
+view_content#:#Inhalt ansehen
+migrate_content#:#Inhalt migrieren
+migrate_all#:#Alle Inhalte mirgieren
+migrate_info#:#ACHTUNG: Sie sind dabei eine client-seitige Migration durchzuführen. Bitte verlassen Sie die Seite nicht und behalten dieses Modal offen, bis eine entsprechende Meldung kommt. Sie können die Migration mit der Aktion unten starten.
+start_migration#:#Migration starten
+migration_success#:#Sie haben die client-seitige Migration erfolgreich durchgeführt. Sie können nun die Seite neu laden oder alte Bibliothek-Daten aufräumen mit den unteren Aktionen. Bitte beachten Sie, dass nach dem Schliessen dieses Modals die Tabelle möglicherweise nicht mehr aktuell ist.
+reload_page#:#Seite neu laden

@@ -2,53 +2,64 @@
 
 declare(strict_types=1);
 
+use ILIAS\UI\Implementation\Component\ComponentHelper;
+
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
 trait ilH5PTargetHelper
 {
+    use ComponentHelper;
+
     /**
      * @var ilCtrl
      */
     protected $ctrl;
 
-    protected function getLinkTarget(string $target_class, ?string $command, array $options = [], bool $async = false): string
+    /**
+     * @param string[]|string $target
+     */
+    protected function getLinkTarget($target, ?string $command, array $options = [], bool $async = false): string
     {
-        $previous_options = $this->getTargetOptions($target_class);
+        $target = $this->toArray($target);
+        $this->checkArgListElements('target', $target, 'string');
 
-        $this->ctrl->clearParametersByClass($target_class);
+        $previous_state = $this->getAndEraseCurrentState($target);
 
-        $this->setTargetOptions($target_class, $options);
+        // apply $options to the final command class.
+        $this->setTargetOptions($target[array_key_last($target)], $options);
 
-        $target = $this->ctrl->getLinkTargetByClass(
-            $target_class,
+        $link_target = $this->ctrl->getLinkTargetByClass(
+            $target,
             $command ?? '',
             null,
             $async
         );
 
-        $this->setTargetOptions($target_class, $previous_options);
+        $this->setNewState($previous_state);;
 
-        return $target;
+        return $link_target;
     }
 
-    protected function getFormAction(string $target_class, string $command = null, array $options = []): string
+    /**
+     * @param string[]|string $target
+     */
+    protected function getFormAction($target, string $command = null, array $options = []): string
     {
-        $previous_options = $this->getTargetOptions($target_class);
+        $target = $this->toArray($target);
+        $this->checkArgListElements('target', $target, 'string');
 
-        $this->ctrl->clearParametersByClass($target_class);
+        $previous_state = $this->getAndEraseCurrentState($target);
 
-        $this->setTargetOptions($target_class, $options);
+        // apply $options to the final command class.
+        $this->setTargetOptions($target[array_key_last($target)], $options);
 
-        $target = $this->ctrl->getFormActionByClass(
-            $target_class,
-            $command ?? ''
-        );
+        $form_action = $this->ctrl->getFormActionByClass($target, $command ?? '');
 
-        $this->setTargetOptions($target_class, $previous_options);
+        $this->setNewState($previous_state);
 
-        return $target;
+        return $form_action;
     }
 
     private function setTargetOptions(string $target_class, array $options): void
@@ -58,8 +69,29 @@ trait ilH5PTargetHelper
         }
     }
 
-    private function getTargetOptions(string $target_class): array
+    /**
+     * @param string[] $target
+     * @return array<string, array<string, string>>
+     */
+    private function getAndEraseCurrentState(array $target): array
     {
-        return $this->ctrl->getParameterArrayByClass($target_class);
+        $options = [];
+        foreach ($target as $target_class) {
+            // note for this action in ILIAS<=7 there needs to be a valid path for this operation.
+            $options[$target_class] = $this->ctrl->getParameterArrayByClass($target_class);
+            $this->ctrl->clearParametersByClass($target_class);
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param array<string, array<string, string>> $state
+     */
+    private function setNewState(array $state): void
+    {
+        foreach ($state as $target_class => $previous_options) {
+            $this->setTargetOptions($target_class, $previous_options);
+        }
     }
 }

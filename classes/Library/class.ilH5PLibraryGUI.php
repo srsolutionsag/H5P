@@ -28,6 +28,7 @@ use ILIAS\UI\Factory as ComponentFactory;
  */
 class ilH5PLibraryGUI extends ilH5PAbstractGUI
 {
+    use ilH5PLibraryRequestHelper;
     use ilH5PTargetHelper;
 
     public const CMD_LIBRARY_DELETE_CONFIRM = "confirmLibraryDeletion";
@@ -174,7 +175,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
             );
         }
 
-        $this->sendSuccess(sprintf($this->translator->txt('deleted_library'), $unified_library->getTitle()));
+        $this->setSuccess(sprintf($this->translator->txt('deleted_library'), $unified_library->getTitle()));
         $this->ctrl->redirectByClass(self::class, self::CMD_LIBRARY_INDEX);
     }
 
@@ -207,7 +208,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
                 $unified_library->getMachineName()
             );
         } catch (Throwable $t) {
-            $this->sendFailure($t->getMessage());
+            $this->setFailure($t->getMessage());
         } finally {
             // ensures that empty files are deleted even if fatal errors
             // ocurr during installation.
@@ -280,7 +281,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
             return;
         }
 
-        $this->sendFailure($this->translator->txt('delete_library_in_use'));
+        $this->setFailure($this->translator->txt('delete_library_in_use'));
         $this->ctrl->redirectToURL(
             $this->getLinkTarget(self::class, self::CMD_LIBRARY_SHOW, [
                 IRequestParameters::LIBRARY_NAME => $library->getMachineName(),
@@ -403,19 +404,6 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
         );
     }
 
-    protected function getRequestedLibraryOrAbort(ArrayBasedRequestWrapper $request): UnifiedLibrary
-    {
-        if (null === ($machine_name = $this->getRequestedString($request, IRequestParameters::LIBRARY_NAME))) {
-            $this->redirectObjectNotFound();
-        }
-
-        if (null === ($unified_library = $this->getUnifiedLibraryCollector()->collectOne($machine_name))) {
-            $this->redirectObjectNotFound();
-        }
-
-        return $unified_library;
-    }
-
     protected function getUploadForm(): Form
     {
         $this->ctrl->saveParameterByClass(ilH5PUploadHandlerGUI::class, 'ref_id');
@@ -487,7 +475,7 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
      */
     protected function redirectObjectNotFound(): void
     {
-        $this->sendFailure($this->translator->txt('library_not_found'));
+        $this->setFailure($this->translator->txt('library_not_found'));
         $this->ctrl->redirectByClass(self::class, self::CMD_LIBRARY_INDEX);
     }
 

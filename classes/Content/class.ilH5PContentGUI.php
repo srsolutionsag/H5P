@@ -94,7 +94,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function resetContent(): void
     {
         if ($this->object->isSolveOnlyOnce()) {
-            $this->sendFailure($this->translator->txt('cant_reset'));
+            $this->setFailure($this->translator->txt('cant_reset'));
             $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);
         }
 
@@ -204,7 +204,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             'slug' => $content->getSlug()
         ]);
 
-        $this->sendSuccess(sprintf($this->translator->txt('deleted_content'), $content->getTitle()));
+        $this->setSuccess(sprintf($this->translator->txt('deleted_content'), $content->getTitle()));
         $this->ctrl->redirectByClass(self::class, self::CMD_MANAGE_CONTENTS);
     }
 
@@ -345,7 +345,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         // if the object can only be solved once there will already
         // be another message box displayed.
         if (!$this->object->isSolveOnlyOnce()) {
-            $this->sendSuccess($this->translator->txt('finished'));
+            $this->setSuccess($this->translator->txt('finished'));
         }
 
         $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_CONTENTS);

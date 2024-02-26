@@ -192,3 +192,17 @@ truncate_results#:#Truncate results
 user_not_found#:#The requested user could not be found.
 allow_h5p_imports#:#Allow H5P Imports
 allow_h5p_imports_info#:#If this options is enabled, users are allowed to import H5P contents.
+manage_library_contents#:#Manage contents
+unknown#:#Unknown
+owner#:#Owner
+created_at#:#Created at
+updated_at#:#Updated ad
+parent_type#:#Parent type
+parent_obj#:#Parent id
+view_content#:#View content
+migrate_content#:#Migrate content
+migrate_all#:#Migrate contents
+migrate_info#:#ATTENTION: you are about to perform a client-side migration. Please do not leave this page or close this modal until corresponding feedback is given. You can start this migration with the action below.
+start_migration#:#Start migration
+migration_success#:#You have successfully performed the client-side migration. You may clean-up the library data or reload the page with the actions beneath. Please note, that after closing this modal the displayed table might be out-of-date.
+reload_page#:#Reload page

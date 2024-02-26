@@ -153,6 +153,8 @@ class ilH5PContainer implements IContainer
 
         if (null === $this->h5p_component_factory) {
             $this->h5p_component_factory = new Factory(
+                $DIC['ui.signal_generator'],
+                $DIC->ui()->factory()->modal(),
                 $DIC->ui()->factory()->input()->field(),
                 new ILIAS\Data\Factory(),
                 $DIC->refinery(),

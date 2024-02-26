@@ -1127,7 +1127,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->previous_error_messages[] = $message;
 
         if ($this->is_synchronous_web_context) {
-            $this->sendFailure(implode('<br />', $this->previous_error_messages));
+            $this->setFailure(implode('<br />', $this->previous_error_messages));
         }
     }
 
@@ -1139,7 +1139,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $this->previous_info_messages[] = $message;
 
         if ($this->is_synchronous_web_context) {
-            $this->sendInfo(implode('<br />', $this->previous_info_messages));
+            $this->setInfo(implode('<br />', $this->previous_info_messages));
         }
     }
 
@@ -1269,7 +1269,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
         // the library id may change due to content upgrades performed
         // automatically by the H5P editor.
-        $h5p_content->setLibraryId((int) $content["library"]["libraryId"]);
+        $h5p_content->setLibraryId((int) ($content["library"]["libraryId"] ?? $content["library"]["id"]));
 
         $h5p_content->setTitle($metadata["title"] ?: "");
         $h5p_content->setParameters($content["params"]);

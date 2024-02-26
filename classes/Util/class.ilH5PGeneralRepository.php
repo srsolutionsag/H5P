@@ -39,4 +39,13 @@ class ilH5PGeneralRepository implements IGeneralRepository
 
         return false;
     }
+
+    public function getUserById(int $user_id): ?\ilObjUser
+    {
+        if (\ilObjUser::_exists($user_id)) {
+            return new \ilObjUser($user_id);
+        }
+
+        return null;
+    }
 }
