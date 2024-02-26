@@ -1137,29 +1137,6 @@ if ($ilDB->tableExists('rep_robj_xhfp_opt_n')) {
 <#14>
 <?php
 /**
- * @var $ilDB ilDBInterface
- */
-if ($ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'mnachine_name')) {
-    $ilDB->dropTableColumn('rep_robj_xhfp_lib_hub', 'mnachine_name');
-}
-?>
-<#15>
-<?php
-global $DIC;
-
-// this setting will eventually be used in ILIAS\Filesystem\Security\Sanitizing\FilenameSanitizerImpl
-// to allow the suffix "h5p" for file names. This needs to be done for import/exports to work.
-$whitelist = $DIC->settings()->get('suffix_custom_white_list', '');
-$whitelist = explode(',', $whitelist);
-
-if (!in_array('h5p', $whitelist, true)) {
-    $whitelist[] = 'h5p';
-    $DIC->settings()->set('suffix_custom_white_list', implode(',', $whitelist));
-}
-?>
-<#16>
-<?php
-/**
  * This database update step has been introduced because of a bug which referenced
  * library dependencies incorrectly when deprecated content was imported and an old
  * version of a library was installed. The framework referenced the latest installed
@@ -1299,7 +1276,7 @@ function getInstalledLibraryIdAndDate(string $name, int $major_version, int $min
     ];
 }
 ?>
-<#17>
+<#15>
 <?php
 /**
  * @var $ilDB ilDBInterface
@@ -1326,6 +1303,10 @@ if (!$ilDB->tableColumnExists('rep_robj_xhfp_cont', 'in_workspace')) {
     ]);
 }
 ?>
+<#16>
+<?php /** Maintain compatibility between major-versions, @see https://jira.sr.solutions/browse/PLH5P-233 */ ?>
+<#17>
+<?php /** Maintain compatibility between major-versions, @see https://jira.sr.solutions/browse/PLH5P-233 */ ?>
 <#18>
 <?php
 /**
@@ -1337,5 +1318,28 @@ if ($ilDB->tableColumnExists('rep_robj_xhfp_solv', 'content_id')) {
         'length' => '8',
         'notnull' => '0',
     ]);
+}
+?>
+<#19>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_lib_hub', 'mnachine_name')) {
+    $ilDB->dropTableColumn('rep_robj_xhfp_lib_hub', 'mnachine_name');
+}
+?>
+<#20>
+<?php
+global $DIC;
+
+// this setting will eventually be used in ILIAS\Filesystem\Security\Sanitizing\FilenameSanitizerImpl
+// to allow the suffix "h5p" for file names. This needs to be done for import/exports to work.
+$whitelist = $DIC->settings()->get('suffix_custom_white_list', '');
+$whitelist = explode(',', $whitelist);
+
+if (!in_array('h5p', $whitelist, true)) {
+    $whitelist[] = 'h5p';
+    $DIC->settings()->set('suffix_custom_white_list', implode(',', $whitelist));
 }
 ?>
