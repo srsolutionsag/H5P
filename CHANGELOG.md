@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 5.1.0
+
+- Added support for H5P content migrations, so contents can be updated to the latest library version.
+- Added an overview page for H5P library contents, where they can be managed (view, migrate).
+- Fixed an issue where the action for opening the library-details page was also visible on this page.
+
 ## 5.0.18
 
 - Updated H5P kernel to version 1.26 to maintain compatibility with latest H5P libraries.
