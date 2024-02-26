@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 4.1.21
+
+- Fixed an issue where H5P contents could not be exported or imported by default.
+- Fixed an issue where H5P repository objects could not be finished.
+- Fixed an issue where upgrading from versions >=4.1.19 to >=5.0.16.
+
 ## 4.1.20
 
 - Fixed an issue where the H5PPageComponent plugin could not be used if this plugin has been deactivated.
