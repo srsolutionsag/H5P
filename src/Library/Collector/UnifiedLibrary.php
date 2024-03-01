@@ -307,23 +307,41 @@ class UnifiedLibrary
         // keep track of duplicate entries, map them by library-id.
         $this->installed_versions[$library->getLibraryId()] = $library;
 
-        // if there is no latest installed version, set the current one.
-        if (null === $this->latest_installed_version_id) {
-            $this->latest_installed_version_id = $library->getLibraryId();
-            $this->status = self::STATUS_INSTALLED;
-        }
-
-        $latest_installed_version_string = $this->getLibraryVersion(
-            $this->getLatestInstalledVersion() ?? $library
-        );
-
-        // check if the latest installed version is still behind (only possible
-        // for hub-libraries).
-        if ($latest_installed_version_string < $this->latest_version_string) {
-            $this->status = self::STATUS_UPGRADE_AVAILABLE;
-        }
+        $this->applyLatestVersion();
 
         return $this;
+    }
+
+    /**
+     * Applies this instances latest_version_string, latest_installed_version_id, and status
+     * properties by comparing all installed versions.
+     */
+    protected function applyLatestVersion(): void
+    {
+        $latest_version_string = null;
+        $latest_version_id = null;
+
+        foreach ($this->getInstalledVersions() as $library_id => $library) {
+            $current_version = $this->getLibraryVersion($library);
+
+            if ($latest_version_string === null || version_compare($current_version, $latest_version_string) > 0) {
+                $latest_version_string = $current_version;
+                $latest_version_id = $library_id;
+            }
+        }
+
+        if (null === $latest_version_string || null === $latest_version_id) {
+            $this->status = self::STATUS_NOT_INSTALLED;
+            return;
+        }
+
+        if (version_compare($latest_version_string, $this->latest_version_string, '>=')) {
+            $this->latest_installed_version_id = $latest_version_id;
+            $this->latest_version_string = $latest_version_string;
+            $this->status = self::STATUS_INSTALLED;
+        } else {
+            $this->status = self::STATUS_UPGRADE_AVAILABLE;
+        }
     }
 
     /**
