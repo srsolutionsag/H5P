@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.1.1
+
+- Fixed an issue where the latest installed version of an H5P library was not properly determined.
+
 ## 5.1.0
 
 - Added support for H5P content migrations, so contents can be updated to the latest library version.
