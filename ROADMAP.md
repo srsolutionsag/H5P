@@ -39,3 +39,8 @@ the future.
 
 - [ ] The database is poorly designed and could use an entire rework as well. There are lots of columns which are never
   used and/or contain redundant data.
+
+- [ ] The `UnifiedLibrary` should be refactored:
+  - it has methods with severe side-effects on the entire instance.
+  - an instance of this class should merely hold the information, not determine it.
+  - the `UnifiedLibraryCollector` should do most of the work instead.
