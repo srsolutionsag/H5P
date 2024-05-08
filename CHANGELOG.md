@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.1.22
+
+- Updated H5P kernel to version 1.26 to maintain compatibility with latest H5P libraries.
+
 ## 4.1.21
 
 - Fixed an issue where H5P contents could not be exported or imported by default.
