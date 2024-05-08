@@ -2,24 +2,23 @@
     "packages": [
         {
             "name": "h5p/h5p-core",
-            "version": "dev-master",
-            "version_normalized": "dev-master",
+            "version": "1.26",
+            "version_normalized": "1.26.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-php-library.git",
-                "reference": "c533cd0d7288c00f3341c84a518b6b495e3c397f"
+                "reference": "f3579c0d28205bf34490ee151c07d43a2ffc3507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/c533cd0d7288c00f3341c84a518b6b495e3c397f",
-                "reference": "c533cd0d7288c00f3341c84a518b6b495e3c397f",
+                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/f3579c0d28205bf34490ee151c07d43a2ffc3507",
+                "reference": "f3579c0d28205bf34490ee151c07d43a2ffc3507",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0.0"
             },
-            "time": "2022-12-12T11:26:39+00:00",
-            "default-branch": true,
+            "time": "2023-12-12T09:27:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -61,7 +60,7 @@
             ],
             "support": {
                 "issues": "https://github.com/h5p/h5p-php-library/issues",
-                "source": "https://github.com/h5p/h5p-php-library/tree/master"
+                "source": "https://github.com/h5p/h5p-php-library/tree/1.26"
             },
             "install-path": "../h5p/h5p-core"
         },
