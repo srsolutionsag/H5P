@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.1.2
+
+- Changed the order of library actions so "delete" is not the most prominent anymore.
+- Fixed a typo in the english translation(s).
+
 ## 5.1.1
 
 - Fixed an issue where the latest installed version of an H5P library was not properly determined.
