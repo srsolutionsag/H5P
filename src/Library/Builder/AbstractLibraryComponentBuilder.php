@@ -86,13 +86,14 @@ abstract class AbstractLibraryComponentBuilder
         // add delete and manage-contents button if installed or upgrade available.
         if (UnifiedLibrary::STATUS_NOT_INSTALLED !== $library->getStatus()) {
             $actions[] = $this->components->button()->shy(
-                $this->translator->txt('delete'),
-                $this->getDeleteUrl($library)
-            );
-
-            $actions[] = $this->components->button()->shy(
                 $this->translator->txt('manage_library_contents'),
                 $this->getManageContentsUrl($library)
+            );
+
+            // add this last, so the delete action is the least prominent.
+            $actions[] = $this->components->button()->shy(
+                $this->translator->txt('delete'),
+                $this->getDeleteUrl($library)
             );
         }
 

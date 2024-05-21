@@ -87,16 +87,6 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
         return $components;
     }
 
-    protected function getMigrationModal(): H5PContentMigrationModal
-    {
-        return $this->h5p_components->contentMigrationModal(
-            "",
-            "",
-            "",
-            ""
-        );
-    }
-
     /**
      * @return array<string, string>
      */
