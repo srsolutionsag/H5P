@@ -72,8 +72,8 @@ class LibraryOverwiewBuilder extends AbstractLibraryComponentBuilder
                 )->withAction(
                     $this->components->dropdown()->standard(
                         array_merge(
+                            [$this->getDetailActionButton($library)],
                             $this->getActionButtonsOf($library),
-                            [$this->getDetailActionButton($library)]
                         )
                     )
                 );
