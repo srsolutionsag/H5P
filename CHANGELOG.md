@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.1.3
+
+- Fixed an issue where empty H5P contents (no parameters) could not be migrated.
+
 ## 5.1.2
 
 - Changed the order of library actions so "delete" is not the most prominent anymore.
