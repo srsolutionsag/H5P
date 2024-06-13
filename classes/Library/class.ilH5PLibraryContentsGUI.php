@@ -11,7 +11,6 @@ use srag\Plugins\H5P\UI\Content\IH5PContentMigrationModal;
 use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\IRequestParameters;
 use ILIAS\HTTP\GlobalHttpState;
-use ILIAS\Filesystem\Stream\Streams;
 
 /**
  * This controller is responsible for managing contents which are using
@@ -245,6 +244,15 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
             return null;
         }
 
+        // it might be possible for some contents to be empty, in which case (accidentally)
+        // the string "null" was stored in the database. To avoid a migration error, we
+        // temporarily assign an empty object here. However, this is merely a band-aid and
+        // does not address the root cause. see https://jira.sr.solutions/browse/PLH5P-239
+        $content = $content['params'] ?? '';
+        if ('null' === $content || '' === $content) {
+            $content = '{}';
+        }
+
         $data = new stdClass();
         $data->contentId = $content_id;
         $data->fromLibraryId = $library->getLibraryId();
@@ -253,7 +261,7 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
         $data->toLibraryVersion = $this->getLibraryVersion($latest_version);
         $data->params = json_encode([
             'metadata' => $content['metadata'] ?? null,
-            'params' => json_decode($content['params'] ?? '')
+            'params' => json_decode($content),
         ]);
 
         return $data;
