@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.1.4
+
+- Removed unnecessary "view content" action from library-contents overview.
+- Decreased chunk-size for content migrations to 20 contents.
+
 ## 5.1.3
 
 - Fixed an issue where empty H5P contents (no parameters) could not be migrated.
