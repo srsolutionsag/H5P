@@ -90,37 +90,8 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
                     $this->translator->txt('library') => $installed_library->getMachineName(),
                     $this->translator->txt('version') => $this->getLibraryVersion($installed_library),
                     $this->translator->txt('license') => (null !== ($l = $library->getLicense())) ? $l->id : '-',
-                ])->withAction(
-                    $this->getContentActionDropdown(
-                        $components,
-                        $library,
-                        $content
-                    )
-                );
+                ]);
         };
-    }
-
-    protected function getContentActionDropdown(
-        ComponentFactory $components,
-        UnifiedLibrary $library,
-        IContent $content
-    ): Dropdown {
-        $view_action = $this->getViewAction($content);
-        $view_button = $components->button()->shy($this->translator->txt('view_content'), $view_action ?? '#');
-
-        if (null === $view_action) {
-            $view_button = $view_button->withUnavailableAction();
-        }
-
-        $migrate_button = $components->button()->shy($this->translator->txt('migrate_content'), '#showSignal');
-        if ($this->isContentUsingLatestVersion($content, $library)) {
-            $migrate_button = $migrate_button->withUnavailableAction();
-        }
-
-        return $components->dropdown()->standard([
-            // $migrate_button,
-            $view_button,
-        ]);
     }
 
     protected function getContentLibrary(UnifiedLibrary $library, IContent $content): ILibrary
@@ -142,18 +113,6 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
         );
     }
 
-    protected function isContentUsingLatestVersion(IContent $content, UnifiedLibrary $library): bool
-    {
-        $latest_version = $library->getLatestInstalledVersion();
-        if (null === $latest_version) {
-            return false;
-        }
-
-        $content_library_version = $this->getContentLibrary($library, $content);
-
-        return ($content_library_version->getLibraryId() === $latest_version->getLibraryId());
-    }
-
     /**
      * Returns a username like "Thibeau Fuhrer (tfuhrer)" or the translation for "unknown".
      */
@@ -165,27 +124,5 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
         }
 
         return "{$user->getFirstname()} {$user->getLastname()} ({$user->getLogin()})";
-    }
-
-    /**
-     * It's not possible to generate link targets to a contents parent object, which means it
-     * is not possible to go to the actual content. We might introduce a page dedicated to
-     * rendering contents by their ID or open a roundtrip modal to show them, but until then
-     * we cannot link contents.
-     *
-     * Linking to a contents parent object is not possible for several reasons:
-     *
-     *      (a) contents are still referenced to their parent object by its obj-id, instead of
-     *          their ref-id, which means we cannot reliably determine which parent object to
-     *          show - since there might be multiple references.
-     *      (b) contents might have a unknown parent object type and no reference, due to poor
-     *          handling in versions of this plugin prior to v4.1.10, which makes it impossible
-     *          to find the parent object.
-     *      (c) ILIAS does not provide a neat method to reliably generate link targets to reach
-     *          objects outside of the repository context. Until then, this is just complicated.
-     */
-    protected function getViewAction(IContent $content): ?string
-    {
-        return null;
     }
 }
