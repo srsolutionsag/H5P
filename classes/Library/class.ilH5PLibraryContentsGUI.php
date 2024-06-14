@@ -36,7 +36,7 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
     /**
      * Amount of contents which are provided/stored per request during a migration.
      */
-    protected const MIGRATION_CHUNK_SIZE = 50;
+    protected const MIGRATION_CHUNK_SIZE = 20;
 
     /**
      * @var ilToolbarGUI
