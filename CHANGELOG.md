@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.0.18
+
+- Updated H5P kernel to version 1.26 to maintain compatibility with latest H5P libraries.
+
 ## 5.0.17
 
 - Fixed an issue where upgrading from versions >=4.1.19 to >=5.0.16.
