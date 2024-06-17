@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'srag/h5p',
-        'pretty_version' => 'dev-release_7',
-        'version' => 'dev-release_7',
-        'reference' => 'a257daa53f71b732ed2d582354af6b62e777e0b0',
+        'pretty_version' => 'dev-custom/9/databay',
+        'version' => 'dev-custom/9/databay',
+        'reference' => 'ea64ef287a3f4b846d8d355a28af3a1c60a90e23',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,12 +20,14 @@
             'dev_requirement' => false,
         ),
         'h5p/h5p-editor' => array(
-            'pretty_version' => '1.25',
-            'version' => '1.25.0.0',
-            'reference' => '53dc7bdc57b17f5a0d55a8871a36d1b1bd631e70',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '8cd9c7fb9a3668fa553b0e093078e87a1fbcdc6d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-editor',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'phpstan/phpstan' => array(
@@ -58,9 +60,9 @@
             'dev_requirement' => true,
         ),
         'srag/h5p' => array(
-            'pretty_version' => 'dev-release_7',
-            'version' => 'dev-release_7',
-            'reference' => 'a257daa53f71b732ed2d582354af6b62e777e0b0',
+            'pretty_version' => 'dev-custom/9/databay',
+            'version' => 'dev-custom/9/databay',
+            'reference' => 'ea64ef287a3f4b846d8d355a28af3a1c60a90e23',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

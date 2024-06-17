@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1337e6b6313b6638d93870b0a815147f",
+    "content-hash": "18986441b8b9357ee713d02d4be6392a",
     "packages": [
         {
             "name": "h5p/h5p-core",
@@ -69,21 +69,22 @@
         },
         {
             "name": "h5p/h5p-editor",
-            "version": "1.25",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-editor-php-library.git",
-                "reference": "53dc7bdc57b17f5a0d55a8871a36d1b1bd631e70"
+                "reference": "8cd9c7fb9a3668fa553b0e093078e87a1fbcdc6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/53dc7bdc57b17f5a0d55a8871a36d1b1bd631e70",
-                "reference": "53dc7bdc57b17f5a0d55a8871a36d1b1bd631e70",
+                "url": "https://api.github.com/repos/h5p/h5p-editor-php-library/zipball/8cd9c7fb9a3668fa553b0e093078e87a1fbcdc6d",
+                "reference": "8cd9c7fb9a3668fa553b0e093078e87a1fbcdc6d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -124,9 +125,9 @@
             ],
             "support": {
                 "issues": "https://github.com/h5p/h5p-editor-php-library/issues",
-                "source": "https://github.com/h5p/h5p-editor-php-library/tree/1.25"
+                "source": "https://github.com/h5p/h5p-editor-php-library/tree/master"
             },
-            "time": "2022-08-22T09:01:47+00:00"
+            "time": "2024-06-05T13:46:32+00:00"
         }
     ],
     "packages-dev": [
@@ -821,6 +822,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "h5p/h5p-editor": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

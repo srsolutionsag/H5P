@@ -9,7 +9,7 @@ class H5peditor {
   );
 
   public static $styles = array(
-    'libs/darkroom.css',
+    'libs/cropper.css',
     'styles/css/h5p-hub-client.css',
     'styles/css/fonts.css',
     'styles/css/application.css',
@@ -51,7 +51,7 @@ class H5peditor {
     'ckeditor/ckeditor.js',
   );
   private $h5p, $storage;
-  public $ajax, $ajaxInterface;
+  public $ajax, $ajaxInterface, $content;
 
   /**
    * Constructor for the core editor library.
