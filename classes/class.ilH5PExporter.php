@@ -76,7 +76,7 @@ class ilH5PExporter extends ilXmlExporter
                 "namespace" => "srag\Plugins\H5P",
                 "xsd_file" => "",
                 "min" => "8.0",
-                "max" => "8.999",
+                "max" => "",
             ],
         ];
     }

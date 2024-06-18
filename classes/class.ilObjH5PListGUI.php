@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\H5P\IRequestParameters;
+
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
 class ilObjH5PListGUI extends ilObjectPluginListGUI
 {
+    use ilH5PTargetHelper;
+
     /**
      * @inheritDoc
      */
@@ -76,9 +80,12 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     public function getCommandLink($cmd): string
     {
         if (ilObjH5PGUI::getStartCmd() === $cmd) {
-            return $this->ctrl->getLinkTargetByClass(
+            return $this->getLinkTarget(
                 [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PContentGUI::class],
-                $cmd
+                $cmd,
+                [
+                    IRequestParameters::REF_ID => $this->ref_id,
+                ]
             );
         }
 
@@ -92,5 +99,10 @@ class ilObjH5PListGUI extends ilObjectPluginListGUI
     {
         // cannot use $this->plugin here because it is initialized afterwards.
         $this->setType(ilH5PPlugin::PLUGIN_ID);
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 }

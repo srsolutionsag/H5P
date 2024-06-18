@@ -69,6 +69,11 @@ class ilH5PRepositoryContentBuilder
      */
     protected $user;
 
+    /**
+     * @var ilCtrlInterface
+     */
+    protected $ctrl;
+
     public function __construct(
         H5PComponents $h5p_components,
         IContentRepository $content_repository,
@@ -79,7 +84,7 @@ class ilH5PRepositoryContentBuilder
         ilObjH5P $object,
         ilToolbarGUI $toolbar,
         ilObjUser $user,
-        ilCtrl $ctrl
+        ilCtrlInterface $ctrl
     ) {
         $this->h5p_components = $h5p_components;
         $this->content_repository = $content_repository;
@@ -311,5 +316,10 @@ class ilH5PRepositoryContentBuilder
     protected function getNextContent(array $contents, int $position): ?IContent
     {
         return $contents[($position + 1)] ?? null;
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 }

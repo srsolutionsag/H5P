@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace srag\Plugins\H5P\UI\Input;
 
-use ILIAS\UI\Implementation\Component\Input\Field\Input;
+use ILIAS\UI\Implementation\Component\Input\Field\FormInput;
 use ILIAS\Refinery\Constraint;
 use ILIAS\Refinery\Factory;
 use ILIAS\Data\Factory as DataFactory;
@@ -12,7 +12,7 @@ use ILIAS\Data\Factory as DataFactory;
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
-class Hidden extends Input
+class Hidden extends FormInput
 {
     /**
      * @inheritDoc

@@ -75,7 +75,7 @@ class LibraryDetailPanelBuilder extends AbstractLibraryComponentBuilder
                 $this->translator->txt('screenshots'),
                 [
                     $modal,
-                    $button,
+                    $button
                 ]
             );
         }

@@ -9,11 +9,9 @@ use srag\Plugins\H5P\UI\Factory as H5PComponentFactory;
 use ILIAS\UI\Implementation\Component\Input\Field\Group;
 use ILIAS\UI\Implementation\Component\Input\InputData;
 use ILIAS\UI\Component\Input\Field\Factory as FieldFactory;
-use ILIAS\Refinery\Constraint;
 use ILIAS\Refinery\Factory as Refinery;
 use ILIAS\Data\Result\Ok;
 use ILIAS\Data\Factory as DataFactory;
-use ILIAS\UI\Component\Input\Field\Input;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -73,7 +71,7 @@ class H5PEditor extends Group
     /**
      * @inheritDoc
      */
-    public function withValue($value): Input
+    public function withValue($value): self
     {
         if (null === $value) {
             return $this;
@@ -93,9 +91,9 @@ class H5PEditor extends Group
         ]);
     }
 
-    public function withInput(InputData $post_input): Input
+    public function withInput(InputData $input): self
     {
-        $clone = parent::withInput($post_input);
+        $clone = parent::withInput($input);
 
         $inputs = $clone->getInputs();
 

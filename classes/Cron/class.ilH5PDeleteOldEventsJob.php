@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\ITranslator;
+use ILIAS\Cron\Schedule\CronJobScheduleType;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -38,9 +39,9 @@ class ilH5PDeleteOldEventsJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function getDefaultScheduleType(): int
+    public function getDefaultScheduleType(): CronJobScheduleType
     {
-        return self::SCHEDULE_TYPE_DAILY;
+        return CronJobScheduleType::SCHEDULE_TYPE_DAILY;
     }
 
     /**

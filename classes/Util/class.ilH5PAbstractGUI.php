@@ -64,6 +64,11 @@ abstract class ilH5PAbstractGUI
     protected $components;
 
     /**
+     * @var ilCtrlInterface
+     */
+    protected $ctrl;
+
+    /**
      * @var ilH5PGlobalTabManager
      */
     private $tab_manager;
@@ -209,6 +214,11 @@ abstract class ilH5PAbstractGUI
         $this->ctrl->redirectToURL(
             $this->ctrl->getLinkTargetByClass($target_class, $command ?? '')
         );
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 
     /**

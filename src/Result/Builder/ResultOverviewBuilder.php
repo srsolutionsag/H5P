@@ -52,12 +52,17 @@ class ResultOverviewBuilder
      */
     protected $translator;
 
+    /**
+     * @var \ilCtrlInterface
+     */
+    protected $ctrl;
+
     public function __construct(
         IContentRepository $content_repository,
         ComponentFactory $components,
         ComponentRenderer $renderer,
         ITranslator $translator,
-        \ilCtrl $ctrl
+        \ilCtrlInterface $ctrl
     ) {
         $this->content_repository = $content_repository;
         $this->components = $components;
@@ -149,8 +154,6 @@ class ResultOverviewBuilder
         }
 
         return $content_items;
-
-        return $components->panel()->standard($this->translator->txt('results'), $content_items);
     }
 
     /**
@@ -188,5 +191,10 @@ class ResultOverviewBuilder
         }
 
         return self::$content_cache[$content_id];
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 }

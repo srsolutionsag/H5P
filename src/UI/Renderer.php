@@ -17,7 +17,7 @@ use ILIAS\UI\Implementation\Render\DecoratedRenderer;
 use ILIAS\UI\Implementation\Render\JavaScriptBinding;
 use ILIAS\UI\Implementation\Render\TemplateFactory;
 use ILIAS\UI\Implementation\Render\Template;
-use ILIAS\UI\Component\Input\Field\Input;
+use ILIAS\UI\Component\Input\Container\Form\FormInput;
 use ILIAS\UI\Component\JavaScriptBindable;
 use ILIAS\UI\Component\Modal\Modal;
 use ILIAS\UI\Renderer as IRenderer;
@@ -384,7 +384,7 @@ class Renderer extends DecoratedRenderer
      * @see \ILIAS\UI\Implementation\Component\Input\Field\Renderer::wrapInFormContext()
      */
     protected function wrapInFormContext(
-        Input $component,
+        FormInput $component,
         string $input_html,
         string $id_pointing_to_input = ''
     ): string {

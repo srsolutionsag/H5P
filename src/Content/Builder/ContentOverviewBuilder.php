@@ -57,13 +57,18 @@ class ContentOverviewBuilder
      */
     protected $translator;
 
+    /**
+     * @var \ilCtrlInterface
+     */
+    protected $ctrl;
+
     public function __construct(
         ComponentFactory $components,
         ComponentRenderer $renderer,
         ILibraryRepository $library_repository,
         IResultRepository $result_repository,
         ITranslator $translator,
-        \ilCtrl $ctrl
+        \ilCtrlInterface $ctrl
     ) {
         $this->components = $components;
         $this->renderer = $renderer;
@@ -231,5 +236,10 @@ class ContentOverviewBuilder
                 IRequestParameters::CONTENT_ID => $content->getContentId()
             ])
         );
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 }

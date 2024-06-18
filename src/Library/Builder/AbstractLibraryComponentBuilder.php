@@ -35,11 +35,16 @@ abstract class AbstractLibraryComponentBuilder
      */
     protected $translator;
 
+    /**
+     * @var \ilCtrlInterface
+     */
+    protected $ctrl;
+
     public function __construct(
         ComponentFactory $components,
         ComponentRenderer $renderer,
         ITranslator $translator,
-        \ilCtrl $ctrl
+        \ilCtrlInterface $ctrl
     ) {
         $this->components = $components;
         $this->renderer = $renderer;
@@ -131,5 +136,10 @@ abstract class AbstractLibraryComponentBuilder
     protected function getUpgradeUrl(UnifiedLibrary $library): string
     {
         return $this->getInstallUrl($library);
+    }
+
+    protected function getCtrl(): \ilCtrl
+    {
+        return $this->ctrl;
     }
 }

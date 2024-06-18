@@ -12,10 +12,7 @@ trait ilH5PTargetHelper
 {
     use ComponentHelper;
 
-    /**
-     * @var ilCtrl
-     */
-    protected $ctrl;
+    abstract protected function getCtrl(): \ilCtrl;
 
     /**
      * @param string[]|string $target
@@ -30,7 +27,7 @@ trait ilH5PTargetHelper
         // apply $options to the final command class.
         $this->setTargetOptions($target[array_key_last($target)], $options);
 
-        $link_target = $this->ctrl->getLinkTargetByClass(
+        $link_target = $this->getCtrl()->getLinkTargetByClass(
             $target,
             $command ?? '',
             null,
@@ -55,7 +52,7 @@ trait ilH5PTargetHelper
         // apply $options to the final command class.
         $this->setTargetOptions($target[array_key_last($target)], $options);
 
-        $form_action = $this->ctrl->getFormActionByClass($target, $command ?? '');
+        $form_action = $this->getCtrl()->getFormActionByClass($target, $command ?? '');
 
         $this->setNewState($previous_state);
 
@@ -65,7 +62,7 @@ trait ilH5PTargetHelper
     private function setTargetOptions(string $target_class, array $options): void
     {
         foreach ($options as $parameter_name => $parameter_value) {
-            $this->ctrl->setParameterByClass($target_class, $parameter_name, $parameter_value);
+            $this->getCtrl()->setParameterByClass($target_class, $parameter_name, $parameter_value);
         }
     }
 
@@ -78,8 +75,8 @@ trait ilH5PTargetHelper
         $options = [];
         foreach ($target as $target_class) {
             // note for this action in ILIAS<=7 there needs to be a valid path for this operation.
-            $options[$target_class] = $this->ctrl->getParameterArrayByClass($target_class);
-            $this->ctrl->clearParametersByClass($target_class);
+            $options[$target_class] = $this->getCtrl()->getParameterArrayByClass($target_class);
+            $this->getCtrl()->clearParametersByClass($target_class);
         }
 
         return $options;
