@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.0.0
+
+- Updated H5P editor library for PHP 8.2 compatibility.
+- Added ILIAS 9 compatibility.
+
 ## 5.1.6
 
 - Fixed an issue where the HTML of the screenshots modal and opener has been escaped.
