@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.2.5
+
+- Fixed an issue where the metadata of H5P contents was not properly provided during a content migration, which has led
+  to some information being lost (e.g. title).
+
 ## 4.2.4
 
 - Removed unnecessary "view content" action from library-contents overview.
