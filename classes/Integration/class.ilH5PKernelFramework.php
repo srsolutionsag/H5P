@@ -708,7 +708,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             "disable" => $h5p_content->getDisable(),
             "language" => $this->user->getLanguage(),
             "libraryId" => $h5p_content->getLibraryId(),
-            "metadata" => array_filter([
+            "metadata" => [
                 "authors" => $h5p_content->getAuthors(),
                 "authorComments" => $h5p_content->getAuthorComments(),
                 "changes" => $h5p_content->getChanges(),
@@ -720,7 +720,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
                 "title" => $h5p_content->getTitle(),
                 "yearFrom" => $h5p_content->getYearFrom(),
                 "yearTo" => $h5p_content->getYearTo()
-            ])
+            ],
         ];
 
         $h5p_library = $this->library_repository->getInstalledLibrary($h5p_content->getLibraryId());
@@ -1253,26 +1253,26 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         // automatically by the H5P editor.
         $h5p_content->setLibraryId((int) ($content["library"]["libraryId"] ?? $content["library"]["id"]));
 
-        $h5p_content->setTitle($metadata["title"] ?: "");
+        $h5p_content->setTitle($content['title'] ?? $metadata["title"] ?? "");
         $h5p_content->setParameters($content["params"]);
         $h5p_content->setFiltered("");
 
         if (isset($content["disable"])) {
-            $h5p_content->setDisable($content["disable"]);
+            $h5p_content->setDisable((int) $content["disable"]);
         } else {
             $h5p_content->setDisable(0);
         }
 
-        $h5p_content->setAuthors((array) $metadata["authors"] ?: []);
-        $h5p_content->setAuthorComments((array) $metadata["authorComments"] ?: "");
-        $h5p_content->setChanges((array) $metadata["changes"] ?: []);
-        $h5p_content->setDefaultLanguage((string) $metadata["defaultLanguage"] ?: "");
-        $h5p_content->setLicense((string) $metadata["license"] ?: "");
-        $h5p_content->setLicenseExtras((string) $metadata["licenseExtras"] ?: "");
-        $h5p_content->setLicenseVersion((string) $metadata["licenseVersion"] ?: "");
-        $h5p_content->setSource((string) $metadata["source"] ?: "");
-        $h5p_content->setYearFrom((int) $metadata["yearFrom"] ?: 0);
-        $h5p_content->setYearTo((int) $metadata["yearTo"] ?: 0);
+        $h5p_content->setAuthors((array) ($metadata["authors"] ?? []));
+        $h5p_content->setAuthorComments((string) ($metadata["authorComments"] ?? ""));
+        $h5p_content->setChanges((array) ($metadata["changes"] ?? []));
+        $h5p_content->setDefaultLanguage((string) ($metadata["defaultLanguage"] ?? ""));
+        $h5p_content->setLicense((string) ($metadata["license"] ?? ""));
+        $h5p_content->setLicenseExtras((string) ($metadata["licenseExtras"] ?? ""));
+        $h5p_content->setLicenseVersion((string) ($metadata["licenseVersion"] ?? ""));
+        $h5p_content->setSource((string) ($metadata["source"] ?? ""));
+        $h5p_content->setYearFrom((int) ($metadata["yearFrom"] ?? 0));
+        $h5p_content->setYearTo((int) ($metadata["yearTo"] ?? 0));
 
         if (isset($metadata['obj_id'])) {
             $h5p_content->setObjId((int) $metadata['obj_id']);
