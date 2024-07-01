@@ -248,9 +248,9 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
         // the string "null" was stored in the database. To avoid a migration error, we
         // temporarily assign an empty object here. However, this is merely a band-aid and
         // does not address the root cause. see https://jira.sr.solutions/browse/PLH5P-239
-        $content = $content['params'] ?? '';
-        if ('null' === $content || '' === $content) {
-            $content = '{}';
+        $content_params = $content['params'] ?? '';
+        if ('null' === $content_params || '' === $content_params) {
+            $content_params = '{}';
         }
 
         $data = new stdClass();
@@ -261,7 +261,7 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
         $data->toLibraryVersion = $this->getLibraryVersion($latest_version);
         $data->params = json_encode([
             'metadata' => $content['metadata'] ?? null,
-            'params' => json_decode($content),
+            'params' => json_decode($content_params),
         ]);
 
         return $data;
