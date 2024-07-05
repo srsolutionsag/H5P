@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.1.6
+
+- Fixed an issue where the HTML of the screenshots modal and opener has been escaped.
+
 ## 5.1.5
 
 - Fixed an issue where the metadata of H5P contents was not properly provided during a content migration, which has led
