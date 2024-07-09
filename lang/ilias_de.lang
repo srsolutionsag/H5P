@@ -77,7 +77,7 @@ libraries_refresh_info#:#Aktualisiert die Liste der verfügbaren H5P-Bibliotheke
 libraries_refreshed#:#Bibliotheksliste wurde erfolgreich aktualisiert
 import#:#Importieren
 import_content#:#Inhalt importieren
-incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtsfelder.
+incomplete_content#:#Der H5P-Inhalt ist unvollständig. Bitte prüfen Sie alle Eingaben und Pflichtfelder.
 install#:#Installieren
 installed#:#Installiert
 installed_libraries#:#Bibliotheken
@@ -201,7 +201,7 @@ parent_type#:#Parent-Typ
 parent_obj#:#Parent-ID
 view_content#:#Inhalt ansehen
 migrate_content#:#Inhalt migrieren
-migrate_all#:#Alle Inhalte mirgieren
+migrate_all#:#Alle Inhalte migrieren
 migrate_info#:#ACHTUNG: Sie sind dabei eine client-seitige Migration durchzuführen. Bitte verlassen Sie die Seite nicht und behalten dieses Modal offen, bis eine entsprechende Meldung kommt. Sie können die Migration mit der Aktion unten starten.
 start_migration#:#Migration starten
 migration_success#:#Sie haben die client-seitige Migration erfolgreich durchgeführt. Sie können nun die Seite neu laden oder alte Bibliothek-Daten aufräumen mit den unteren Aktionen. Bitte beachten Sie, dass nach dem Schliessen dieses Modals die Tabelle möglicherweise nicht mehr aktuell ist.
