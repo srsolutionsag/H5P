@@ -117,7 +117,8 @@ H5P.preventInit = true;
 
       // removes the message-box after the content is fully loaded.
       content_wrapper.querySelector('.h5p-iframe')
-        ?.addEventListener('load', function (event) {
+        ?.addEventListener('load', function () {
+          registerContentStateStorageHandler(this.contentWindow.H5P);
           content_wrapper.querySelector('.alert')?.remove();
         });
 
@@ -185,6 +186,63 @@ H5P.preventInit = true;
     };
 
     /**
+     * Stores the current content user data (state) of the H5P content by calling H5P.setUserData(),
+     * which ultimately triggers a request to the plugin endpoint with command "contentUserData".
+     *
+     * The H5P kernel needs to be provided as an argument and MUST NOT be accessed globally, because
+     * every content embedded in an iframe will have its own instance of the kernel. Therefore, every
+     * instance has its own list of instances where their content is registered and must be processed
+     * in.
+     *
+     * @param {number} content_id
+     * @param {H5P} h5p
+     */
+    let storeContentState = function (content_id, h5p) {
+      h5p.instances.forEach((instance) => {
+        // only process the corresponding instance if it supports state.
+        if (content_id !== instance.contentId || !hasContentInstanceState(instance)) {
+          return;
+        }
+
+        h5p.setUserData(content_id, 'state', instance.getCurrentState(), { deleteOnChange: true });
+      });
+    };
+
+    /**
+     * Exchanges the default H5P.setFinished() handler by a custom one, which additionally calls the
+     * il.H5P.storeContentUserData() function to manually store the current user data (state) when a
+     * content is finished.
+     *
+     * The H5P kernel needs to be provided as an argument and MUST NOT be accessed globally, because
+     * every content embedded in an iframe will have its own instance of the kernel. Therefore, every
+     * instance must call this function to register our custom content user data (state) handler.
+     *
+     * @param {H5P} h5p
+     */
+    let registerContentStateStorageHandler = function (h5p) {
+      const setFinished = h5p.setFinished || function () {
+      };
+
+      h5p.setFinished = (content_id, score, max_score, time) => {
+        // it's important to call the content user data (state) handler first, because this
+        // data has more value to the user than the adjusted solved status.
+        storeContentState(content_id, h5p);
+        setFinished(content_id, score, max_score, time);
+      };
+    };
+
+    /**
+     * Returns whether the given H5P content instance supports content user data (state).
+     * Check is copied from h5p.js:224-225.
+     *
+     * @param {object} instance
+     * @returns {boolean}
+     */
+    let hasContentInstanceState = function (instance) {
+      return instance.getCurrentState instanceof Function || typeof instance.getCurrentState === 'function';
+    };
+
+    /**
      * Populates the editor integration in the already sent H5PIntegration object.
      *
      * @param {string} integration_base64
@@ -234,13 +292,8 @@ H5P.preventInit = true;
       return JSON.parse(atob(base64));
     };
 
-    /**
-     * @param {object} object
-     * @returns {string}
-     */
-    let objectToJsonString = function (object) {
-      return JSON.stringify(object);
-    };
+    // register content user data (state) handler inside the initial H5P kernel instance.
+    registerContentStateStorageHandler(H5P);
 
     return {
       initMigrationModal: initMigrationModal,
