@@ -292,6 +292,14 @@ H5P.preventInit = true;
       return JSON.parse(atob(base64));
     };
 
+    /**
+     * @param {object} object
+     * @returns {string}
+     */
+    let objectToJsonString = function (object) {
+      return JSON.stringify(object);
+    };
+
     // register content user data (state) handler inside the initial H5P kernel instance.
     registerContentStateStorageHandler(H5P);
 

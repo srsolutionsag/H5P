@@ -23,7 +23,8 @@ use ILIAS\UI\Factory as ComponentFactory;
  */
 class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
 {
-    use \ilH5PTimestampHelper;
+    use \ilH5PDisplayNameHelper;
+    use \ilH5PActiveRecordHelper;
     use LibraryVersionHelper;
     use ComponentHelper;
 
@@ -73,6 +74,8 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
             $environment
         ) use ($library): PresentationRow {
             $installed_library = $this->getContentLibrary($library, $content);
+            $user = $this->general_repository->getUser($content->getContentId());
+
             return $row
                 ->withHeadline($content->getTitle())
                 ->withImportantFields([
@@ -80,9 +83,9 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
                     $this->getLibraryVersion($installed_library),
                 ])->withContent(
                     $components->listing()->descriptive([
-                        $this->translator->txt('owner') => $this->getUserDisplayName($content->getContentUserId()),
-                        $this->translator->txt('created_at') => $this->timestampToDbDate($content->getCreatedAt()),
-                        $this->translator->txt('updated_at') => $this->timestampToDbDate($content->getUpdatedAt()),
+                        $this->translator->txt('owner') => $this->getUserDisplayName($user),
+                        $this->translator->txt('created_at') => $this->getMysqlDateTimeByTimestamp($content->getCreatedAt()),
+                        $this->translator->txt('updated_at') => $this->getMysqlDateTimeByTimestamp($content->getUpdatedAt()),
                         $this->translator->txt('parent_type') => $content->getParentType(),
                         $this->translator->txt('parent_obj') => (string) $content->getObjId(),
                     ])
@@ -113,16 +116,8 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
         );
     }
 
-    /**
-     * Returns a username like "Thibeau Fuhrer (tfuhrer)" or the translation for "unknown".
-     */
-    protected function getUserDisplayName(int $user_id): string
+    protected function getTranslator(): ITranslator
     {
-        $user = $this->general_repository->getUserById($user_id);
-        if (null === $user) {
-            return $this->translator->txt('unknown');
-        }
-
-        return "{$user->getFirstname()} {$user->getLastname()} ({$user->getLogin()})";
+        return $this->translator;
     }
 }

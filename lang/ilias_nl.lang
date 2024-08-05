@@ -46,7 +46,7 @@ delete_content#:#Delete content
 delete_content_confirm#:#Are you really want to delete the content: %s ?
 delete_library_confirm#:#Are you really want to delete the library: %s ?
 delete_library_in_use#:#You cannot delete this library because there are still H5P libraries or contents depending on it.
-delete_results_confirm#:#Are you really want to delete the results of %s?
+delete_results_confirm#:#Are you sure really want to delete all the results of %s?
 deleted_content#:#Content %s deleted
 deleted_files#:#Follow files was deleted in %s:
 deleted_library#:#Library %s deleted
@@ -57,7 +57,7 @@ disable_fullscreen#:#Disable fullscreen
 download#:#Download
 download_content#:#Download this content as a H5P file.
 edit#:#Edit
-edit_content#:#Edit content
+edit_content#:#Manage contents
 edit_permission#:#Edit permission
 embed#:#Embed
 embed_include_script#:#Include this script on your website if you want dynamic sizing of the embedded content:
@@ -119,7 +119,7 @@ show_less#:#Show less
 show_more#:#Show more
 size#:#Size
 solve_only_once#:#Solve contents only once
-solve_only_once_info#:#Note: For some contents may it is necessary the turn off the solution / retry button
+solve_only_once_info#:#Note: For some contents may it is necessary to turn off the solution / retry button
 solved_all_contents#:#You have already solved all contents.
 solved_content#:#You have already solved this content.
 source#:#Source
@@ -175,8 +175,9 @@ perm_settings#:#Permissions
 dependencies#:#Dependencies
 move_up#:#Move up
 move_down#:#Move down
-result_count#:#Amount
-avg_score#:#Avg Score
+result_count#:#Result amount
+avg_score#:#Average-Score
+high_score#:#High-Score
 delete_results#:#Delete results
 score#:#Score
 score_total#:#Total score
@@ -188,8 +189,8 @@ confirm_finish_message#:#You have not submitted as many results as there are con
 confirm_finish#:#Finish all contents
 content_loading#:#Please wait while the content is loading...
 truncate_results_confirm#:#Are you sure you want to delete ALL results of this object?
-truncate_results#:#Truncate results
-user_not_found#:#The requested user could not be found.
+truncate_results#:#Delete all user results
+user_not_found#:#The requested user(s) could not be found.
 allow_h5p_imports#:#Allow H5P Imports
 allow_h5p_imports_info#:#If this options is enabled, users are allowed to import H5P contents.
 manage_library_contents#:#Manage contents
@@ -206,3 +207,15 @@ migrate_info#:#ATTENTION: you are about to perform a client-side migration. Plea
 start_migration#:#Start migration
 migration_success#:#You have successfully performed the client-side migration. You may clean-up the library data or reload the page with the actions beneath. Please note, that after closing this modal the displayed table might be out-of-date.
 reload_page#:#Reload page
+content_not_found#:#The requested content could not be found.
+msg_no_results#:#There are not results for this content yet.
+attempts#:#Attempts
+score_info#:#Score-Info
+avg_duration#:#Average-duration
+max_score#:#Maximum score
+user_score#:#Achieved score
+finished_at#:#Finish date
+opened_at#:#Start date
+duration#:#Duration
+user_count#:#Solved by
+low_score#:#Low-Score

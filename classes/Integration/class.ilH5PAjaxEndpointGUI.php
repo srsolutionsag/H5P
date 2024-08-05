@@ -145,7 +145,9 @@ class ilH5PAjaxEndpointGUI
 
     /**
      * Will mark the requested content as solved by the current user and
-     * saves the result.
+     * saves the result. If the current object does allow to solve a content
+     * multiple times, each request will store a new result. Otherwise, only
+     * the first result will ever be saved.
      *
      * This method will be called with request-method POST and contain at
      * least the following parameters:
@@ -154,7 +156,12 @@ class ilH5PAjaxEndpointGUI
      *      - maxScore (string)     -> can be parsed to int safely
      *      - opened (string)       -> can be parsed to timestamp safely
      *      - finished (string)     -> can be parsed to timestamp safely
-     *      - time (string)         -> can be parsed to timestamp safely
+     *      - time (string)         -> cannot be used safely
+     *
+     * Please note the "time" value is not documented and cannot be used due to
+     * missing information about it. We simply ignore this value and calculate
+     * the difference in seconds using the "opened" and "finished" timestamps,
+     * until there is proper documentation about this value.
      *
      * Request will be triggered by h5p.js:2167 H5P.setFinished
      */
@@ -186,25 +193,29 @@ class ilH5PAjaxEndpointGUI
             return;
         }
 
-        $result = $this->repositories->result()->getResultByUserAndContent(
+        $result = $this->repositories->result()->getSingleUserContentResult(
             $this->user->getId(),
             $content->getContentId()
-        ) ?? new ilH5PResult();
+        );
 
         // abort if the content can only be solved once AND the current
         // content has already a stored result.
-        if ($is_solvable_once && 0 !== $result->getId()) {
+        if ($is_solvable_once && null !== $result) {
             $this->sendSuccess();
             return;
         }
 
+        $result = new ilH5PResult();
         $result->setContentId($content->getContentId());
         $result->setUserId($this->user->getId());
         $result->setMaxScore($this->getRequestedInteger($this->post_request, 'maxScore') ?? 0);
         $result->setScore($this->getRequestedInteger($this->post_request, 'score') ?? 0);
         $result->setOpened($this->getRequestedInteger($this->post_request, 'opened') ?? time());
         $result->setFinished($this->getRequestedInteger($this->post_request, 'finished') ?? time());
-        $result->setTime($this->getRequestedInteger($this->post_request, 'time') ?? time());
+
+        // we don't have any information about the "time" value, therefore we simply store
+        // the elapsed time in seconds using the "opened" and "finished" timestamps.
+        $result->setTime($result->getFinished() - $result->getOpened());
 
         $this->repositories->result()->storeResult($result);
 

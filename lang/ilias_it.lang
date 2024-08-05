@@ -57,7 +57,7 @@ disable_fullscreen#:#Disattiva il fullscreen
 download#:#Scarica
 download_content#:#Scarica questo contenuto come file H5P.
 edit#:#Modifica
-edit_content#:#modifica contenuto
+edit_content#:#amministrare contenuto
 edit_permission#:#Modifica permesso
 embed#:#Incorporato
 embed_include_script#:#Includi questo script nel tuo sito web se desideri il ridimensionamento dinamico del contenuto incorporato:
@@ -175,8 +175,9 @@ perm_settings#:#Permissions
 dependencies#:#Dependencies
 move_up#:#Move up
 move_down#:#Move down
-result_count#:#Amount
-avg_score#:#Avg Score
+result_count#:#Result amount
+avg_score#:#Average-Score
+high_score#:#High-Score
 delete_results#:#Delete results
 score#:#Score
 score_total#:#Total score
@@ -188,8 +189,8 @@ confirm_finish_message#:#You have not submitted as many results as there are con
 confirm_finish#:#Finish all contents
 content_loading#:#Please wait while the content is loading...
 truncate_results_confirm#:#Are you sure you want to delete ALL results of this object?
-truncate_results#:#Truncate results
-user_not_found#:#The requested user could not be found.
+truncate_results#:#Delete all user results
+user_not_found#:#The requested user(s) could not be found.
 allow_h5p_imports#:#Allow H5P Imports
 allow_h5p_imports_info#:#If this options is enabled, users are allowed to import H5P contents.
 manage_library_contents#:#Manage contents
@@ -206,3 +207,15 @@ migrate_info#:#ATTENTION: you are about to perform a client-side migration. Plea
 start_migration#:#Start migration
 migration_success#:#You have successfully performed the client-side migration. You may clean-up the library data or reload the page with the actions beneath. Please note, that after closing this modal the displayed table might be out-of-date.
 reload_page#:#Reload page
+content_not_found#:#The requested content could not be found.
+msg_no_results#:#There are not results for this content yet.
+attempts#:#Attempts
+score_info#:#Score-Info
+avg_duration#:#Average-duration
+max_score#:#Maximum score
+user_score#:#Achieved score
+finished_at#:#Finish date
+opened_at#:#Start date
+duration#:#Duration
+user_count#:#Solved by
+low_score#:#Low-Score

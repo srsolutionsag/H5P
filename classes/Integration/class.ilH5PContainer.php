@@ -106,15 +106,21 @@ class ilH5PContainer implements IContainer
     public function getRepositoryFactory(): IRepositoryFactory
     {
         if (null === $this->repository_factory) {
+            $content_repository = new ilH5PContentRepository(
+                $this->dic->user(),
+                $this->dic->database()
+            );
+
             $this->repository_factory = new ilH5PRepositoryFactory(
-                new ilH5PContentRepository(
-                    $this->dic->user(),
-                    $this->dic->database()
-                ),
+                $content_repository,
                 new ilH5PEventRepository($this->dic->database(), $this->dic->user()),
                 new ilH5PFileRepository(),
                 new ilH5PLibraryRepository($this->dic->database()),
-                new ilH5PResultRepository($this->dic->database(), $this->dic->user()),
+                new ilH5PResultRepository(
+                    $content_repository,
+                    $this->dic->database(),
+                    $this->dic->user()
+                ),
                 new ilH5PSettingsRepository(),
                 new ilH5PGeneralRepository($this->dic->database()),
             );

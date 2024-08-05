@@ -40,12 +40,19 @@ class ilH5PGeneralRepository implements IGeneralRepository
         return false;
     }
 
-    public function getUserById(int $user_id): ?\ilObjUser
+    /**
+     * @inheritDoc
+     */
+    public function getUser(int $user_id): ?\ilObjUser
     {
-        if (\ilObjUser::_exists($user_id)) {
-            return new \ilObjUser($user_id);
-        }
+        // we cannot use ilObjUser::_exists() because this only checks the object_data
+        // table. we therefore simply try to read the user from the database and catch
+        // any throwable along the way. see https://jira.sr.solutions/browse/PLSRLCM-62
 
-        return null;
+        try {
+            return new ilObjUser($user_id);
+        } catch (Throwable $any) {
+            return null;
+        }
     }
 }

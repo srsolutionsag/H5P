@@ -57,7 +57,7 @@ disable_fullscreen#:#Vollbild aus
 download#:#Download
 download_content#:#Inhalt als H5P-Datei herunterladen.
 edit#:#Bearbeiten
-edit_content#:#Inhalt bearbeiten
+edit_content#:#Inhalte verwalten
 edit_permission#:#Rechte bearbeiten
 embed#:#Einbetten
 embed_include_script#:#Bauen Sie folgendes Script auf der Website ein, wenn sich die Größe des eingebetteten Inhalts dynamisch verändern soll:
@@ -175,8 +175,9 @@ perm_settings#:#Rechte
 dependencies#:#Abhängigkeiten
 move_up#:#Inhalt nach oben
 move_down#:#Inhalt nach unten
-result_count#:#Anzahl
-avg_score#:#Avg Score
+result_count#:#Anzahl Resultate
+avg_score#:#Punkte-Durchschnitt
+high_score#:#Höchste Punktzahl
 delete_results#:#Resultate löschen
 score#:#Punkte
 score_total#:#Punkte Total
@@ -188,8 +189,8 @@ confirm_finish_message#:#Sie haben noch nicht so viele Resultate eingereicht wie
 confirm_finish#:#Inhalte abschliessen
 content_loading#:#Bitte warten Sie, bis der Inhalt geladen werden konnte.
 truncate_results_confirm#:#Sind Sie sicher, dass Sie ALLE Resultate aus diesem Objekt löschen wollen?
-truncate_results#:#Resultate löschen
-user_not_found#:#Der angefragte Benutzer konnte nicht gefunden werden.
+truncate_results#:#Alle Resultate löschen
+user_not_found#:#Die angefragten Benutzer konnten nicht gefunden werden.
 allow_h5p_imports#:#H5P-Import zulassen
 allow_h5p_imports_info#:#Wenn diese Option aktiv ist, können Benutzer H5P-Inhalte von Dateien importieren.
 manage_library_contents#:#Inhalte verwalten
@@ -206,3 +207,15 @@ migrate_info#:#ACHTUNG: Sie sind dabei eine client-seitige Migration durchzufüh
 start_migration#:#Migration starten
 migration_success#:#Sie haben die client-seitige Migration erfolgreich durchgeführt. Sie können nun die Seite neu laden oder alte Bibliothek-Daten aufräumen mit den unteren Aktionen. Bitte beachten Sie, dass nach dem Schliessen dieses Modals die Tabelle möglicherweise nicht mehr aktuell ist.
 reload_page#:#Seite neu laden
+content_not_found#:#Der angefragte Inhalt konnte nicht gefunden werden.
+msg_no_results#:#Es gibt noch keine Resultate für diesen Inhalt.
+attempts#:#Versuche
+score_info#:#Punktzahl-Infos
+avg_duration#:#Durchschnittsdauer
+max_score#:#Maximalpunktzahl
+user_score#:#Erreichte Punktzahl
+finished_at#:#Startdatum
+opened_at#:#Enddatum
+duration#:#Dauer
+user_count#:#Gelöst von
+low_score#:#Tiefste Punktzahl

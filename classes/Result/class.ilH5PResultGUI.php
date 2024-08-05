@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\Result\Builder\ResultOverviewBuilder;
-use srag\Plugins\H5P\Result\Collector\UserResultCollector;
+use srag\Plugins\H5P\Result\Builder\SingleUserResultOverviewBuilder;
+use srag\Plugins\H5P\Result\Builder\MultiUserResultsOverviewBuilder;
+use srag\Plugins\H5P\Result\IResultRepository;
+use srag\Plugins\H5P\Content\ContentRequestHelper;
+use srag\Plugins\H5P\Content\IContentRepository;
+use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\IRequestParameters;
+use srag\Plugins\H5P\ITranslator;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -13,10 +18,13 @@ use srag\Plugins\H5P\IRequestParameters;
  */
 class ilH5PResultGUI extends ilH5PAbstractGUI
 {
-    public const CMD_TRUNCATE_RESULTS_CONFIRM = "confirmTruncateResults";
-    public const CMD_TRUNCATE_RESULTS = "truncateResults";
-    public const CMD_DELETE_RESULTS_CONFIRM = "confirmResultDeletion";
-    public const CMD_DELETE_RESULTS = "deleteResults";
+    use ilH5PDisplayNameHelper;
+    use ContentRequestHelper;
+
+    public const CMD_CONFIRM_DELETE_SINGLE_USER_RESULTS = "confirmSingleUserResultsDeletion";
+    public const CMD_DELETE_SINGLE_USER_RESULTS = "deleteSingleUserResults";
+    public const CMD_CONFIRM_DELETE_MULTIPLE_USER_RESULTS = "confirmMultipleUserResultsDeletion";
+    public const CMD_TRUNCATE_CONTENT_RESULTS = "deleteMultipleUserResults";
     public const CMD_SHOW_RESULTS = "showResults";
 
     /**
@@ -43,150 +51,259 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
      */
     protected function setupCurrentTabs(ilH5PAccessHandler $access_handler, ilH5PGlobalTabManager $manager): void
     {
-        $manager->addUserRepositoryTabs();
-
-        if ($access_handler->canCurrentUserEdit($this->object)) {
-            $manager->addAdminRepositoryTabs();
-        }
+        $manager->setBackTarget(
+            $this->getLinkTarget(ilH5PContentGUI::class, ilH5PContentGUI::CMD_SHOW_CONTENTS)
+        );
     }
 
     /**
-     * Shows a list of users which contains a list of results they submitted
-     * for contents of the current object.
+     * Shows an overview of the current content's user results. Depending on whether the plugin
+     * object allows multiple results per user or not, a different overview is being displayed:
+     *
+     *  - @see ilH5PResultGUI::showMultipleUserResults()
+     *  - @see ilH5PResultGUI::showSingleUserResult()
      */
     protected function showResults(): void
     {
-        $this->setResultsTab();
-        $this->addTruncateResultsToolbarButton();
+        $content = $this->getRequestedContentOrAbort($this->get_request);
 
-        $user_result_collections = $this->getUserResultCollector()->collectAll($this->object->getId());
+        $this->setBackTo(
+            $this->getLinkTarget(ilH5PContentGUI::class, ilH5PContentGUI::CMD_MANAGE_CONTENTS)
+        );
 
-        $components = [];
-
-        if (empty($user_result_collections)) {
-            $components[] = $this->components->messageBox()->info($this->translator->txt('no_results'));
+        if ($this->object->isSolveOnlyOnce()) {
+            $this->showSingleUserResult($content);
         } else {
-            $components[] = $this->getResultOverviewBuilder()->buildTable($user_result_collections);
+            $this->showMultipleUserResults($content);
         }
-
-        $this->render($components);
     }
 
     /**
-     * Shows a confirmation-gui with the currently requested user (whose
-     * results should be deleted).
+     * Shows a list of users who solved the requested content. Each entry lists all of their submitted
+     * results, next to an overview of their average score and time.
      */
-    protected function confirmResultDeletion(): void
+    protected function showMultipleUserResults(IContent $content): void
     {
-        $user = $this->getRequestedUserOrAbort($this->get_request);
+        $user_results = $this->repositories->result()->getAllUserResultsOfContent($content->getContentId());
 
-        $this->setResultsTab();
+        $this->addTruncateContentResultsToolbarButton($content, empty($user_results));
+
+        $overview = $this->getMultiUserResultsOverviewBuilder()->buildOverview($user_results);
+
+        $this->render($overview);
+    }
+
+    /**
+     * Shows a list of the most recent results submitted by users for the requested content, so only
+     * one result of one user is shown.
+     */
+    protected function showSingleUserResult(IContent $content): void
+    {
+        $user_results = $this->repositories->result()->getLatestUserResultsOfContent($content->getContentId());
+
+        $this->addTruncateContentResultsToolbarButton($content, empty($user_results));
+
+        $overview = $this->getSingleUserResultOverviewBuilder()->buildOverview($user_results);
+
+        $this->render($overview);
+    }
+
+    /**
+     * Displays a prompt to confirm the deletion of all the users results for the associated
+     * content (id).
+     */
+    protected function confirmMultipleUserResultsDeletion(): void
+    {
+        $content = $this->getRequestedContentOrAbort($this->get_request);
 
         $confirmation = new ilConfirmationGUI();
-        $confirmation->setFormAction($this->getFormAction(self::class));
-        $confirmation->setConfirm($this->translator->txt('delete'), self::CMD_DELETE_RESULTS);
+        $confirmation->setConfirm($this->translator->txt('delete'), self::CMD_TRUNCATE_CONTENT_RESULTS);
         $confirmation->setCancel($this->translator->txt('cancel'), self::CMD_SHOW_RESULTS);
+        $confirmation->setFormAction($this->getFormAction(self::class, null, [
+            IRequestParameters::CONTENT_ID => $content->getContentId(),
+        ]));
 
         $confirmation->setHeaderText(
             sprintf(
                 $this->translator->txt("delete_results_confirm"),
-                $user->getFullname()
+                $content->getTitle()
             )
         );
 
-        $confirmation->addItem(IRequestParameters::USER_ID, (string) $user->getId(), $user->getFullname());
+        $user_content_results = $this->repositories->result()->getLatestUserResultsOfContent($content->getContentId());
+
+        foreach ($user_content_results as $result) {
+            $user = $this->repositories->general()->getUser($result->getUserId());
+
+            $confirmation->addItem(
+                IRequestParameters::USER_IDS . '[]',
+                (string) $result->getUserId(),
+                $this->getUserDisplayName($user)
+            );
+        }
 
         $this->renderLegacy($confirmation->getHTML());
     }
 
     /**
-     * Deletes the requested content and redirects back to showResults().
-     * Note that confirmation GUIs will provide the data in $_POST.
+     * This endpoint will be called by @see ilH5PResultGUI::confirmMultipleUserResultsDeletion()
+     * which must provide the content (id) with GET and one or many users (ids) by POST.
+     *
+     * This method will then delete all the users results.
      */
-    protected function deleteResults(): void
+    protected function deleteMultipleUserResults(): void
     {
-        $user = $this->getRequestedUserOrAbort($this->post_request);
+        $content = $this->getRequestedContentOrAbort($this->get_request);
+        $user_ids = $this->getRequestedParameter(
+            $this->post_request,
+            IRequestParameters::USER_IDS,
+            $this->refinery->kindlyTo()->listOf(
+                $this->refinery->kindlyTo()->int()
+            )
+        ) ?? [];
 
-        $h5p_solve_status = $this->repositories->result()->getSolvedStatus($this->object->getId(), $user->getId());
-        if (null !== $h5p_solve_status) {
-            $this->repositories->result()->deleteSolvedStatus($h5p_solve_status);
-        }
-
-        $h5p_results = $this->repositories->result()->getResultsByUserAndObject($user->getId(), $this->object->getId());
-        foreach ($h5p_results as $h5p_result) {
-            $this->repositories->result()->deleteResult($h5p_result);
-        }
-
-        $user_states = $this->repositories->content()->getContentStatesByObjectAndUser(
-            $this->object->getId(),
-            $user->getId()
-        );
-
-        foreach ($user_states as $state) {
-            $this->repositories->content()->deleteUserData($state);
+        foreach ($user_ids as $user_id) {
+            $this->repositories->result()->deleteUserContentResults($content, $user_id);
         }
 
         $this->setSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
-                $user->getFullname()
+                $content->getTitle()
             ),
         );
 
-        $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
+        $this->redirectToResultsOverview($content);
     }
 
     /**
-     * Shows a confirmation-gui with the currently requested object (whose
-     * results should be deleted).
+     * Displays a prompt to confirm the deletion of all results submitted by the given user (id)
+     * for the requested content (id).
      */
-    protected function confirmTruncateResults(): void
+    protected function confirmSingleUserResultsDeletion(): void
     {
-        $this->setResultsTab();
+        $content = $this->getRequestedContentOrAbort($this->get_request);
+        $user_id = $this->getRequestedUserIdOrAbort($this->get_request);
+        $user = $this->repositories->general()->getUser($user_id);
 
         $confirmation = new ilConfirmationGUI();
-        $confirmation->setFormAction($this->getFormAction(self::class));
-        $confirmation->setConfirm($this->translator->txt('delete'), self::CMD_TRUNCATE_RESULTS);
+        $confirmation->setConfirm($this->translator->txt('delete'), self::CMD_DELETE_SINGLE_USER_RESULTS);
         $confirmation->setCancel($this->translator->txt('cancel'), self::CMD_SHOW_RESULTS);
+        $confirmation->setFormAction($this->getFormAction(self::class, null, [
+            IRequestParameters::CONTENT_ID => $content->getContentId(),
+        ]));
 
-        $confirmation->setHeaderText($this->translator->txt("truncate_results_confirm"));
+        $confirmation->setHeaderText(
+            sprintf(
+                $this->translator->txt("delete_results_confirm"),
+                $this->getUserDisplayName($user)
+            )
+        );
 
-        $confirmation->addItem(IRequestParameters::OBJ_ID, (string) $this->object->getId(), $this->object->getTitle());
+        $confirmation->addItem(IRequestParameters::USER_ID, (string) $user_id, $this->getUserDisplayName($user));
 
         $this->renderLegacy($confirmation->getHTML());
     }
 
     /**
-     * Truncates results of the requested object and redirects back to showResults().
-     * Note that confirmation GUIs will provide the data in $_POST.
+     * This endpoint will be called by @see ilH5PResultGUI::confirmSingleUserResultsDeletion()
+     * which must provide the content (id) with GET and the user (id) by POST.
+     *
+     * This method will then delete all the users results.
      */
-    protected function truncateResults(): void
+    protected function deleteSingleUserResults(): void
     {
-        $object = $this->getRequestedObjectFromPostOrAbort();
+        $content = $this->getRequestedContentOrAbort($this->get_request);
+        $user_id = $this->getRequestedUserIdOrAbort($this->post_request);
+        $user = $this->repositories->general()->getUser($user_id);
 
-        $solved_status_list = $this->repositories->result()->getSolvedStatusListByObject($object->getId());
-        foreach ($solved_status_list as $solved_status) {
-            $this->repositories->result()->deleteSolvedStatus($solved_status);
-        }
-
-        $user_results = $this->repositories->result()->getResultsByObject($object->getId());
-        foreach ($user_results as $result) {
-            $this->repositories->result()->deleteResult($result);
-        }
-
-        $user_states = $this->repositories->content()->getContentStatesByObject($object->getId());
-        foreach ($user_states as $state) {
-            $this->repositories->content()->deleteUserData($state);
-        }
+        $this->repositories->result()->deleteUserContentResults($content, $user_id);
 
         $this->setSuccess(
             sprintf(
                 $this->translator->txt("deleted_results"),
-                $object->getTitle()
+                $this->getUserDisplayName($user)
             ),
         );
 
-        $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
+        $this->redirectToResultsOverview($content);
+    }
+
+    protected function addTruncateContentResultsToolbarButton(IContent $content, bool $is_disabled): void
+    {
+        $truncate_button = $this->components->button()->standard(
+            $this->translator->txt('truncate_results'),
+            $this->getFormAction(self::class, self::CMD_CONFIRM_DELETE_MULTIPLE_USER_RESULTS, [
+                IRequestParameters::CONTENT_ID => $content->getContentId(),
+            ])
+        );
+
+        if ($is_disabled) {
+            $truncate_button = $truncate_button->withUnavailableAction();
+        }
+
+        $this->toolbar->addComponent($truncate_button);
+    }
+
+    protected function getSingleUserResultOverviewBuilder(): SingleUserResultOverviewBuilder
+    {
+        return new SingleUserResultOverviewBuilder(
+            $this->repositories->general(),
+            $this->components,
+            $this->renderer,
+            $this->translator,
+            $this->ctrl
+        );
+    }
+
+    protected function getMultiUserResultsOverviewBuilder(): MultiUserResultsOverviewBuilder
+    {
+        return new MultiUserResultsOverviewBuilder(
+            $this->repositories->general(),
+            $this->components,
+            $this->renderer,
+            $this->translator,
+            $this->ctrl
+        );
+    }
+
+    protected function getRequestedUserIdOrAbort(ArrayBasedRequestWrapper $request): int
+    {
+        if (null === ($user_id = $this->getRequestedInteger($request, IRequestParameters::USER_ID))) {
+            $this->redirectUserNotFound();
+        }
+
+        return $user_id;
+    }
+
+    protected function getRequestedContentOrAbort(ArrayBasedRequestWrapper $request): IContent
+    {
+        if (null === ($content = $this->getRequestedContent($request))) {
+            $this->redirectContentNotFound();
+        }
+
+        return $content;
+    }
+
+    protected function redirectToResultsOverview(IContent $content): void
+    {
+        $this->ctrl->redirectToURL(
+            $this->getLinkTarget(self::class, self::CMD_SHOW_RESULTS, [
+                IRequestParameters::CONTENT_ID => $content->getContentId(),
+            ])
+        );
+    }
+
+    protected function redirectContentNotFound(): void
+    {
+        $this->setFailure($this->translator->txt('content_not_found'));
+        $this->redirectToContentOverview();
+    }
+
+    protected function redirectUserNotFound(): void
+    {
+        $this->setFailure($this->translator->txt('user_not_found'));
+        $this->redirectToContentOverview();
     }
 
     /**
@@ -197,67 +314,6 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
         return $access_handler->canCurrentUserEdit($this->object);
     }
 
-    protected function addTruncateResultsToolbarButton(): void
-    {
-        $truncate_button = $this->components->button()->standard(
-            $this->translator->txt('truncate_results'),
-            $this->getFormAction(self::class, self::CMD_TRUNCATE_RESULTS_CONFIRM)
-        );
-
-        if (!$this->repositories->result()->haveUsersStartedSolvingContents($this->object->getId())) {
-            $truncate_button = $truncate_button->withUnavailableAction();
-        }
-
-        $this->toolbar->addComponent($truncate_button);
-    }
-
-    protected function getResultOverviewBuilder(): ResultOverviewBuilder
-    {
-        return new ResultOverviewBuilder(
-            $this->repositories->content(),
-            $this->components,
-            $this->renderer,
-            $this->translator,
-            $this->ctrl
-        );
-    }
-
-    protected function getUserResultCollector(): UserResultCollector
-    {
-        return new UserResultCollector(
-            $this->repositories->result()
-        );
-    }
-
-    protected function getRequestedUserOrAbort(ArrayBasedRequestWrapper $request): ilObjUser
-    {
-        $user_id = $this->getRequestedInteger($request, IRequestParameters::USER_ID);
-
-        if (null === $user_id || !ilObjUser::_exists($user_id)) {
-            $this->redirectUserNotFound();
-        }
-
-        return new ilObjUser($user_id);
-    }
-
-    protected function getRequestedObjectFromPostOrAbort(): ilObjH5P
-    {
-        $obj_id = $this->getRequestedInteger($this->post_request, IRequestParameters::OBJ_ID);
-        $object = ilObjectFactory::getInstanceByObjId($obj_id ?? -1, false);
-
-        if (!$object instanceof ilObjH5P) {
-            $this->redirectObjectNotFound();
-        }
-
-        return $object;
-    }
-
-    protected function redirectUserNotFound(): void
-    {
-        $this->setFailure($this->translator->txt('user_not_found'));
-        $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_RESULTS);
-    }
-
     /**
      * @inheritDoc
      */
@@ -266,8 +322,23 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
         $this->redirectPermissionDenied(ilH5PContentGUI::class, ilH5PContentGUI::CMD_SHOW_CONTENTS);
     }
 
-    protected function setResultsTab(): void
+    protected function redirectToContentOverview(): void
     {
-        $this->setCurrentTab(ilH5PGlobalTabManager::TAB_RESULTS);
+        $this->ctrl->redirectByClass(ilH5PContentGUI::class, ilH5PContentGUI::CMD_SHOW_CONTENTS);
+    }
+
+    protected function getContentRepository(): IContentRepository
+    {
+        return $this->repositories->content();
+    }
+
+    protected function getResultRepository(): IResultRepository
+    {
+        return $this->repositories->result();
+    }
+
+    protected function getTranslator(): ITranslator
+    {
+        return $this->translator;
     }
 }

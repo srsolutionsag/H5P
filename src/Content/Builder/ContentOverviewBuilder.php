@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace srag\Plugins\H5P\Content\Builder;
 
+use srag\Plugins\H5P\Result\Builder\ResultScoreInformation;
 use srag\Plugins\H5P\Result\IResultRepository;
-use srag\Plugins\H5P\Result\IResult;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Library\ILibrary;
 use srag\Plugins\H5P\Content\IContent;
+use srag\Plugins\H5P\DateTimeConversion;
+use srag\Plugins\H5P\IGeneralRepository;
 use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\ITranslator;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
@@ -18,19 +20,28 @@ use ILIAS\UI\Component\Dropdown\Dropdown;
 use ILIAS\UI\Component\Button\Shy;
 use ILIAS\UI\Renderer as ComponentRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
+use ILIAS\UI\Component\Component;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
 class ContentOverviewBuilder
 {
+    use \ilH5PDisplayNameHelper;
     use \ilH5PTargetHelper;
+    use ResultScoreInformation;
+    use DateTimeConversion;
     use ComponentHelper;
 
     /**
      * @var array<int, ILibrary>
      */
     protected static $library_cache = [];
+
+    /**
+     * @var IGeneralRepository
+     */
+    protected $general_repository;
 
     /**
      * @var ILibraryRepository
@@ -65,6 +76,7 @@ class ContentOverviewBuilder
     public function __construct(
         ComponentFactory $components,
         ComponentRenderer $renderer,
+        IGeneralRepository $general_repository,
         ILibraryRepository $library_repository,
         IResultRepository $result_repository,
         ITranslator $translator,
@@ -72,6 +84,7 @@ class ContentOverviewBuilder
     ) {
         $this->components = $components;
         $this->renderer = $renderer;
+        $this->general_repository = $general_repository;
         $this->library_repository = $library_repository;
         $this->result_repository = $result_repository;
         $this->translator = $translator;
@@ -80,16 +93,31 @@ class ContentOverviewBuilder
 
     /**
      * @param IContent[] $contents
+     * @return Component[]
      */
-    public function buildTable(array $contents, bool $have_contents_been_solved): PresentationTable
+    public function buildOverview(array $contents, bool $have_contents_been_solved): array
     {
-        $this->checkArgListElements('unified_libraries', $contents, [IContent::class]);
+        $this->checkArgListElements('contents', $contents, [IContent::class]);
 
-        return $this->components->table()->presentation(
+        if (empty($contents)) {
+            return [$this->components->messageBox()->info($this->translator->txt('no_content'))];
+        }
+
+        $overview = [];
+
+        if ($have_contents_been_solved) {
+            $overview[] = $this->components->messageBox()->confirmation(
+                $this->translator->txt('msg_content_not_editable')
+            );
+        }
+
+        $overview[] = $this->components->table()->presentation(
             $this->translator->txt('contents'),
             [], // filtering should happen via Filter\Standard
             $this->getMappingClosure($have_contents_been_solved)
         )->withData($contents);
+
+        return $overview;
     }
 
     protected function getMappingClosure(bool $have_contents_been_solved): \Closure
@@ -101,47 +129,37 @@ class ContentOverviewBuilder
             $environment
         ) use ($have_contents_been_solved): PresentationRow {
             $results = $this->result_repository->getResultsByContent($content->getContentId());
+            $latest_user_results = $this->result_repository->getLatestUserResultsOfContent($content->getContentId());
             $library = $this->getLibrary($content->getLibraryId());
-            $result_count = count($results);
+            $owner = $this->general_repository->getUser($content->getContentUserId());
 
             return $row
                 ->withHeadline($content->getTitle())
                 ->withSubheadline((null !== $library) ? $library->getTitle() : '')
-                ->withImportantFields([
-                    $this->translator->txt('results') . ': ' => (string) $result_count,
-                ])
                 ->withContent(
                     $components->listing()->descriptive([
-//                        '' => $this->renderer->render(
-//                            \ilH5PPlugin::getInstance()->getContainer()->getComponentFactory()->content($content)
-//                        ),
+                        $this->translator->txt('owner') => $this->getUserDisplayName($owner),
+                        $this->translator->txt('created_at') => $this->getPrettyDateString(
+                            $this->getDateTimeByTimestamp($content->getCreatedAt())
+                        ),
+                        $this->translator->txt('updated_at') => $this->getPrettyDateString(
+                            $this->getDateTimeByTimestamp($content->getUpdatedAt())
+                        ),
+                        $this->translator->txt('license') => $content->getLicense(),
+                        $this->translator->txt('default_language') => $content->getDefaultLanguage(),
                     ])
                 )->withFurtherFieldsHeadline(
-                    $this->translator->txt('results')
+                    $this->renderer->render($this->getResultsButton($components, $content)),
                 )->withFurtherFields([
-                    $this->translator->txt('result_count') => (string) $result_count,
-                    $this->translator->txt('avg_score') => (string) $this->getAverageScore($results),
+                    $this->translator->txt('result_count') . ': ' => (string) count($results),
+                    $this->translator->txt('user_count') . ': ' => (string) count($latest_user_results),
+                    $this->translator->txt('high_score') . ': ' => (string) $this->getHighScore($results),
+                    $this->translator->txt('avg_score') . ': ' => (string) $this->getAverageScore($results),
+                    $this->translator->txt('low_score') . ': ' => (string) $this->getLowScore($results),
                 ])->withAction(
                     $this->getActionDropdownOf($components, $content, $have_contents_been_solved)
                 );
         };
-    }
-
-    /**
-     * @param IResult[] $results
-     */
-    protected function getAverageScore(array $results): ?int
-    {
-        $sum = 0;
-        foreach ($results as $result) {
-            $sum += $result->getScore();
-        }
-
-        if (0 < $sum) {
-            return (int) floor($sum / count($results));
-        }
-
-        return 0;
     }
 
     protected function getLibrary(int $library_id): ?ILibrary
@@ -170,11 +188,12 @@ class ContentOverviewBuilder
 
         return $components->dropdown()->standard([
             $this->getShowButton($components, $content),
-            $this->getExportButton($components, $content),
-            $this->getDeleteButton($components, $content),
             $edit_button,
+            $this->getResultsButton($components, $content),
+            $this->getExportButton($components, $content),
             $move_up_button,
             $move_down_button,
+            $this->getDeleteButton($components, $content),
         ]);
     }
 
@@ -184,6 +203,16 @@ class ContentOverviewBuilder
             $this->translator->txt('show'),
             $this->getLinkTarget(\ilH5PContentGUI::class, \ilH5PContentGUI::CMD_SHOW_CONTENTS, [
                 IRequestParameters::CONTENT_ID => $content->getContentId()
+            ])
+        );
+    }
+
+    protected function getResultsButton(ComponentFactory $components, IContent $content): Shy
+    {
+        return $components->button()->shy(
+            $this->translator->txt('results'),
+            $this->getLinkTarget(\ilH5PResultGUI::class, \ilH5PResultGUI::CMD_SHOW_RESULTS, [
+                IRequestParameters::CONTENT_ID => $content->getContentId(),
             ])
         );
     }
@@ -241,5 +270,10 @@ class ContentOverviewBuilder
     protected function getCtrl(): \ilCtrl
     {
         return $this->ctrl;
+    }
+
+    protected function getTranslator(): ITranslator
+    {
+        return $this->translator;
     }
 }
