@@ -78,20 +78,6 @@ class ilH5PGlobalTabManager
         return $this;
     }
 
-    public function addResultTab(): self
-    {
-        $this->tabs->addTab(
-            self::TAB_RESULTS,
-            $this->translator->txt(self::TAB_RESULTS),
-            $this->ctrl->getLinkTargetByClass(
-                [ilObjPluginDispatchGUI::class, ilObjH5PGUI::class, ilH5PResultGUI::class],
-                ilH5PResultGUI::CMD_SHOW_RESULTS
-            )
-        );
-
-        return $this;
-    }
-
     public function addObjectSettingsTab(): self
     {
         $this->tabs->addTab(
@@ -165,7 +151,6 @@ class ilH5PGlobalTabManager
         return $this
             ->addShowContentTab()
             ->addManageContentTab()
-            ->addResultTab()
             ->addObjectSettingsTab()
             ->addPermissionTab();
     }

@@ -1354,3 +1354,16 @@ if ($ilDB->tableColumnExists('rep_robj_xhfp_cont_dat', 'data')) {
     $ilDB->query("DELETE FROM rep_robj_xhfp_cont_dat WHERE data = 'RESET';");
 }
 ?>
+<#22>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_res', 'finished') &&
+    $ilDB->tableColumnExists('rep_robj_xhfp_res', 'opened') &&
+    $ilDB->tableColumnExists('rep_robj_xhfp_res', 'time')
+) {
+    /** @see https://mariadb.com/docs/skysql-dbaas/ref/xpand/functions/TIMESTAMPDIFF/ */
+    $ilDB->query("UPDATE rep_robj_xhfp_res SET time = TIMESTAMPDIFF(SECOND, opened, finished);");
+}
+?>

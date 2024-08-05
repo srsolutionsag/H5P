@@ -18,6 +18,7 @@ interface IRequestParameters
     public const TARGET = 'target';
 
     // Plugin request parameters:
+    public const USER_IDS = 'usr_ids';
     public const IN_WORKSPACE = 'in_wsp';
     public const LIBRARY_NAME = 'h5p_library_name';
     public const SUB_CONTENT_ID = 'h5p_sub_content_id';

@@ -22,7 +22,7 @@ use srag\Plugins\H5P\Settings\IGeneralSettings;
 class ilH5PKernelFramework implements H5PFrameworkInterface
 {
     use ilH5POnScreenMessages;
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
     use ilH5PConcatHelper;
 
     /**
@@ -906,8 +906,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             $library_hub_cache->setDescription($content_type->description);
             $library_hub_cache->setIcon($content_type->icon);
             $library_hub_cache->setSummary($content_type->summary);
-            $library_hub_cache->setCreatedAt($this->dbDateToTimestamp($content_type->createdAt));
-            $library_hub_cache->setUpdatedAt($this->dbDateToTimestamp($content_type->updatedAt));
+            $created_at = $this->getDateTimeByUnknownFormat($content_type->createdAt);
+            $library_hub_cache->setCreatedAt((null !== $created_at) ? $created_at->getTimestamp() : time());
+            $updated_at = $this->getDateTimeByUnknownFormat($content_type->updatedAt);
+            $library_hub_cache->setUpdatedAt((null !== $updated_at) ? $updated_at->getTimestamp() : time());
             $library_hub_cache->setIsRecommended($content_type->isRecommended);
             $library_hub_cache->setPopularity($content_type->popularity);
             $library_hub_cache->setScreenshots(json_encode($content_type->screenshots));

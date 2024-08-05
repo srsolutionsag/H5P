@@ -10,12 +10,37 @@ use srag\Plugins\H5P\Content\IContent;
  */
 interface IResultRepository
 {
-    public function getResultByUserAndContent(int $user_id, int $content_id): ?IResult;
+    /**
+     * @depracated
+     */
+    public function getSingleUserContentResult(int $user_id, int $content_id): ?IResult;
+
+    /**
+     * @return IResult[]
+     */
+    public function getUserContentResults(int $user_id, int $content_id): array;
 
     /**
      * @return IResult[]
      */
     public function getResultsByContent(int $content_id): array;
+
+    /**
+     * Returns an array of the most recent results of every user who has results
+     * for the associated content (id).
+     *
+     * @return IResult[]
+     */
+    public function getLatestUserResultsOfContent(int $content_id): array;
+
+    /**
+     * Returns an array of all the results of every user who has results for the
+     * associated content (id). Results are mapped by user-id and ordered from oldest
+     * to most recent results (ASC).
+     *
+     * @return array<int, IResult[]>
+     */
+    public function getAllUserResultsOfContent(int $content_id): array;
 
     /**
      * @return IResult[]
@@ -32,6 +57,16 @@ interface IResultRepository
 
     public function haveUsersStartedSolvingContents(int $obj_id): bool;
 
+    public function haveUsersStartedSolvingContent(int $content_id): bool;
+
+    /**
+     * Deletes all the results of the given content which have been submitted by the
+     * given user (id). This method also deletes any user content state and updates
+     * the solve-status of the current ILIAS object, by either setting the first
+     * unsolved content-id or deleting the status altogether.
+     */
+    public function deleteUserContentResults(IContent $content, int $user_id): void;
+
     public function storeResult(IResult $result): void;
 
     public function deleteResult(IResult $result): void;
@@ -40,11 +75,6 @@ interface IResultRepository
      * @return ISolvedStatus[]
      */
     public function getSolvedStatusListByObject(int $obj_id): array;
-
-    /**
-     * @return int[]
-     */
-    public function getUsersWhoSolvedContentsOfObject(int $obj_id): array;
 
     public function getSolvedStatus(int $obj_id, int $user_id): ?ISolvedStatus;
 

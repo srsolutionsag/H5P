@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Event\IEvent;
  */
 class ilH5PEvent extends ActiveRecord implements IEvent
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_ev";
 
@@ -218,7 +218,7 @@ class ilH5PEvent extends ActiveRecord implements IEvent
 
         switch ($field_name) {
             case "created_at":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             default:
                 return parent::sleep($field_name);
@@ -236,7 +236,7 @@ class ilH5PEvent extends ActiveRecord implements IEvent
                 return (int) $field_value;
 
             case "created_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             case "content_id":
                 if ($field_value !== null) {

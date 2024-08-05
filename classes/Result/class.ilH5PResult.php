@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Result\IResult;
  */
 class ilH5PResult extends ActiveRecord implements IResult
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_res";
 
@@ -198,7 +198,7 @@ class ilH5PResult extends ActiveRecord implements IResult
         switch ($field_name) {
             case "opened":
             case "finished":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             default:
                 return parent::sleep($field_name);
@@ -221,7 +221,7 @@ class ilH5PResult extends ActiveRecord implements IResult
 
             case "opened":
             case "finished":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);

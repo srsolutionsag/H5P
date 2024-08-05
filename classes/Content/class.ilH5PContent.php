@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Content\IContent;
  */
 class ilH5PContent extends ActiveRecord implements IContent
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont";
 
@@ -567,7 +567,7 @@ class ilH5PContent extends ActiveRecord implements IContent
         switch ($field_name) {
             case "created_at":
             case "updated_at":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             case "authors":
             case "changes":
@@ -599,7 +599,7 @@ class ilH5PContent extends ActiveRecord implements IContent
 
             case "created_at":
             case "updated_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             case "obj_id":
                 if ($field_value !== null) {

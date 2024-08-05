@@ -8,7 +8,7 @@ use srag\Plugins\H5P\File\IMarkedFile;
  */
 class ilH5PMarkedFile extends ActiveRecord implements IMarkedFile
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_tmp";
 
@@ -98,7 +98,7 @@ class ilH5PMarkedFile extends ActiveRecord implements IMarkedFile
 
         switch ($field_name) {
             case "created_at":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             default:
                 return parent::sleep($field_name);
@@ -115,7 +115,7 @@ class ilH5PMarkedFile extends ActiveRecord implements IMarkedFile
                 return (int) $field_value;
 
             case "created_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);

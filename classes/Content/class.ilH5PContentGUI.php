@@ -7,19 +7,19 @@ use srag\Plugins\H5P\Content\Form\ImportContentFormProcessor;
 use srag\Plugins\H5P\Content\Form\EditContentFormProcessor;
 use srag\Plugins\H5P\Content\Form\ImportContentFormBuilder;
 use srag\Plugins\H5P\Content\Form\EditContentFormBuilder;
+use srag\Plugins\H5P\Content\UnsolvedContentRetrieval;
+use srag\Plugins\H5P\Content\ContentRequestHelper;
 use srag\Plugins\H5P\Content\ContentEditorHelper;
-use srag\Plugins\H5P\Content\ContentEditorData;
-use srag\Plugins\H5P\Content\IContentUserData;
+use srag\Plugins\H5P\Content\IContentRepository;
 use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Result\ISolvedStatus;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
 use srag\Plugins\H5P\Form\IFormProcessor;
 use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\IContainer;
 use ILIAS\UI\Component\Input\Container\Form\Form;
-use ILIAS\UI\Component\Component;
-use srag\Plugins\H5P\Settings\IGeneralSettings;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -27,6 +27,8 @@ use srag\Plugins\H5P\Settings\IGeneralSettings;
  */
 class ilH5PContentGUI extends ilH5PAbstractGUI
 {
+    use UnsolvedContentRetrieval;
+    use ContentRequestHelper;
     use ContentEditorHelper;
 
     public const CMD_RESET_CONTENT = 'resetContent';
@@ -73,8 +75,8 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
 
         $content =
             $this->getRequestedContent($this->get_request) ??
-            $this->getFirstUnsolvedContent() ??
-            $this->repositories->content()->getFirstContentOf($this->object->getId());
+            $this->getFirstUnsolvedContent($this->object->getRefId(), $this->user->getId()) ??
+            $this->repositories->content()->getFirstContentOf($this->object->getRefId());
 
         $state = (null !== $content) ?
             $this->repositories->content()->getContentStateOfUser(
@@ -88,8 +90,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     }
 
     /**
-     * Resets the state and result of the requested content. This also modifies the objects
-     * @see ISolvedStatus
+     * Deletes the current user content data (state).
      */
     protected function resetContent(): void
     {
@@ -103,21 +104,6 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         $state = $this->repositories->content()->getContentStateOfUser($content->getContentId(), $this->user->getId());
         if (null !== $state) {
             $this->repositories->content()->deleteUserData($state);
-        }
-
-        $result = $this->repositories->result()->getResultByUserAndContent(
-            $this->user->getId(), $content->getContentId()
-        );
-
-        if (null !== $result) {
-            $this->repositories->result()->deleteResult($result);
-        }
-
-        $status = $this->repositories->result()->getSolvedStatus($this->object->getId(), $this->user->getId());
-        if (null !== $status) {
-            $status->setFinished(false);
-            $status->setContentId($content->getContentId());
-            $this->repositories->result()->storeSolvedStatus($status);
         }
 
         $this->ctrl->redirectToURL(
@@ -142,23 +128,10 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
 
         $this->addManageContentToolbarButtons($have_contents_been_solved);
 
-        $components = [];
-
-        if ($have_contents_been_solved) {
-            $components[] = $this->components->messageBox()->confirmation(
-                $this->translator->txt('msg_content_not_editable')
-            );
-        }
-
         $contents = $this->repositories->content()->getContentsByObject($this->object->getId());
+        $overview = $this->getContentOverviewBuilder()->buildOverview($contents, $have_contents_been_solved);
 
-        if (empty($contents)) {
-            $components[] = $this->components->messageBox()->info($this->translator->txt('no_content'));
-        } else {
-            $components[] = $this->getContentOverviewBuilder()->buildTable($contents, $have_contents_been_solved);
-        }
-
-        $this->render($components);
+        $this->render($overview);
     }
 
     /**
@@ -509,6 +482,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         return new ContentOverviewBuilder(
             $this->components,
             $this->renderer,
+            $this->repositories->general(),
             $this->repositories->library(),
             $this->repositories->result(),
             $this->translator,
@@ -546,39 +520,6 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         );
     }
 
-    protected function getFirstUnsolvedContent(): ?IContent
-    {
-        $contents_of_object = $this->repositories->content()->getContentsByObject($this->object->getId());
-        $user_results_of_object = $this->repositories->result()->getResultsByUserAndObject(
-            $this->user->getId(),
-            $this->object->getId()
-        );
-
-        // if both arrays are ordered by content-sort, the first missmatch
-        // of result content id and content id will be the first unsolved
-        // content which can be returned.
-        foreach ($contents_of_object as $position => $content) {
-            if (isset($user_results_of_object[$position]) &&
-                $user_results_of_object[$position]->getContentId() !== $content->getContentId()
-            ) {
-                return $content;
-            }
-        }
-
-        return null;
-    }
-
-    protected function getRequestedContent(ArrayBasedRequestWrapper $request): ?IContent
-    {
-        $content_id = $this->getRequestedInteger($request, IRequestParameters::CONTENT_ID);
-
-        if (null !== $content_id) {
-            return $this->repositories->content()->getContent($content_id);
-        }
-
-        return null;
-    }
-
     protected function getRequestedContentOrAbort(ArrayBasedRequestWrapper $request): IContent
     {
         if (null === ($content = $this->getRequestedContent($request))) {
@@ -611,6 +552,16 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function setBackToManageContents(): void
     {
         $this->setBackTo($this->getLinkTarget(self::class, self::CMD_MANAGE_CONTENTS));
+    }
+
+    protected function getContentRepository(): IContentRepository
+    {
+        return $this->repositories->content();
+    }
+
+    protected function getResultRepository(): IResultRepository
+    {
+        return $this->repositories->result();
     }
 
     protected function getKernel(): \H5PCore

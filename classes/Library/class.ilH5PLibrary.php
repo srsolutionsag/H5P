@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Library\ILibrary;
  */
 class ilH5PLibrary extends ActiveRecord implements ILibrary
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib";
 
@@ -438,7 +438,7 @@ class ilH5PLibrary extends ActiveRecord implements ILibrary
 
             case "created_at":
             case "updated_at":
-                return (0 !== $field_value) ? $this->timestampToDbDate($field_value) : 0;
+                return (0 !== $field_value) ? $this->getMysqlDateTimeByTimestamp($field_value) : 0;
 
             case "metadata_settings":
                 return json_encode($field_value);
@@ -468,7 +468,7 @@ class ilH5PLibrary extends ActiveRecord implements ILibrary
 
             case "created_at":
             case "updated_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             case "metadata_settings":
                 return (array) json_decode($field_value);

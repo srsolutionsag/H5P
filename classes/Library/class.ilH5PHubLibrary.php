@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Library\IHubLibrary;
  */
 class ilH5PHubLibrary extends ActiveRecord implements IHubLibrary
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_lib_hub";
 
@@ -475,7 +475,7 @@ class ilH5PHubLibrary extends ActiveRecord implements IHubLibrary
 
             case "created_at":
             case "updated_at":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             default:
                 return parent::sleep($field_name);
@@ -503,7 +503,7 @@ class ilH5PHubLibrary extends ActiveRecord implements IHubLibrary
 
             case "created_at":
             case "updated_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);

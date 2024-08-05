@@ -8,7 +8,7 @@ use srag\Plugins\H5P\Content\IContentUserData;
  */
 class ilH5PContentUserData extends ActiveRecord implements IContentUserData
 {
-    use ilH5PTimestampHelper;
+    use ilH5PActiveRecordHelper;
 
     public const TABLE_NAME = "rep_robj_" . ilH5PPlugin::PLUGIN_ID . "_cont_dat";
 
@@ -241,7 +241,7 @@ class ilH5PContentUserData extends ActiveRecord implements IContentUserData
 
             case "created_at":
             case "updated_at":
-                return $this->timestampToDbDate($field_value);
+                return $this->getMysqlDateTimeByTimestamp($field_value);
 
             default:
                 return parent::sleep($field_name);
@@ -266,7 +266,7 @@ class ilH5PContentUserData extends ActiveRecord implements IContentUserData
 
             case "created_at":
             case "updated_at":
-                return $this->dbDateToTimestamp($field_value);
+                return $this->getTimestampByMysqlDateTimeString($field_value);
 
             default:
                 return parent::wakeUp($field_name, $field_value);
