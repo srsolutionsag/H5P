@@ -7,7 +7,7 @@ stages:
 review:
   extends: .review_deployment
   variables:
-    REVIEW_APP_IMAGE: srsolutions/ilias:7-php7.4-apache
+    REVIEW_APP_IMAGE: srsolutions/ilias:8-php7.4-apache
     REVIEW_APP_DEST: /var/www/html/Customizing/global/plugins/Services/Repository/RepositoryObject/H5P
     ILIAS_DEVMODE: 1
     ILIAS_INSTALL_ARGUMENTS: --no-plugins
