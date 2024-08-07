@@ -1343,3 +1343,14 @@ if (!in_array('h5p', $whitelist, true)) {
     $DIC->settings()->set('suffix_custom_white_list', implode(',', $whitelist));
 }
 ?>
+<#21>
+<?php
+/**
+ * @var $ilDB ilDBInterface
+ */
+if ($ilDB->tableColumnExists('rep_robj_xhfp_cont_dat', 'data')) {
+    // delete all user content data (state) that is "RESET", so contents
+    // can be properly loaded again.
+    $ilDB->query("DELETE FROM rep_robj_xhfp_cont_dat WHERE data = 'RESET';");
+}
+?>
