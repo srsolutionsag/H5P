@@ -929,9 +929,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         $h5p_user_datas = $this->content_repository->getUserDataByContent((int) $content_id);
 
         foreach ($h5p_user_datas as $h5p_user_data) {
-            $h5p_user_data->setData("RESET");
-
-            $this->content_repository->storeUserData($h5p_user_data);
+            // in the past we have set "RESET" as the content user data (state), which
+            // appears in the h5p.js on line 2436. This has led to some issues with H5P
+            // contents, so to avoid this we simply delete the state now (until H5P
+            // finally writes some documentation, so we know what to do here).
+            $this->content_repository->deleteUserData($h5p_user_data);
         }
     }
 
