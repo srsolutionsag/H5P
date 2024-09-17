@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 4.2.6
+
+- Fixed an issue where H5P contents could not be loaded anymore after being edited while there was stored user content
+  data (state).
+
 ## 4.2.5
 
 - Fixed an issue where the metadata of H5P contents was not properly provided during a content migration, which has led
