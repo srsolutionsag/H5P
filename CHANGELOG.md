@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.1.7
+
+- Fixed an issue where H5P contents could not be loaded anymore after being edited while there was stored user content
+  data (state).
+
 ## 5.1.6
 
 - Fixed an issue where the HTML of the screenshots modal and opener has been escaped.
