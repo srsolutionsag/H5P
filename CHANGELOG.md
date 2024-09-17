@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.0.1
+
+- Fixed an issue where H5P contents could not be loaded anymore after being edited while there was stored user content
+  data (state).
+
 ## 6.0.0
 
 - Updated H5P editor library for PHP 8.2 compatibility.
