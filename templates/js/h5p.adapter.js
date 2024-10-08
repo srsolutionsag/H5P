@@ -80,17 +80,17 @@ H5P.preventInit = true;
      *
      * @param {string} element_id
      * @param {number} content_id
-     * @param {string} integration_base64
-     * @param {string} content_base64
-     * @param {string|null} previous_state_base64
+     * @param {object} content_integration
+     * @param {object} content_parameters
+     * @param {object|null} previous_state
      * @throws {Error} if DOM elements are missing
      */
     let initContent = function (
       element_id,
       content_id,
-      integration_base64,
-      content_base64,
-      previous_state_base64
+      content_integration,
+      content_parameters,
+      previous_state
     ) {
       let content_wrapper = document.getElementById(element_id);
 
@@ -102,19 +102,17 @@ H5P.preventInit = true;
       H5PIntegration.loadedJs = H5PIntegration.loadedJs || [];
       H5PIntegration.loadedCss = H5PIntegration.loadedCss || [];
 
-      let content_integration = base64ToJsonObject(integration_base64);
-
       H5PIntegration.contents[`cid-${content_id}`] = content_integration;
-      H5PIntegration.contents[`cid-${content_id}`].jsonContent = base64ToJsonString(content_base64);
+      H5PIntegration.contents[`cid-${content_id}`].jsonContent = objectToJsonString(content_parameters);
 
       H5PIntegration.loadedJs = H5PIntegration.loadedJs.concat(content_integration.scripts);
       H5PIntegration.loadedCss = H5PIntegration.loadedCss.concat(content_integration.styles);
 
-      if (null !== previous_state_base64) {
+      if (null !== previous_state) {
         H5PIntegration
           .contents[`cid-${content_id}`]
           .contentUserData[0]
-          .state = base64ToJsonString(previous_state_base64);
+          .state = objectToJsonString(previous_state);
       }
 
       // removes the message-box after the content is fully loaded.
@@ -234,6 +232,14 @@ H5P.preventInit = true;
      */
     let base64ToJsonObject = function (base64) {
       return JSON.parse(atob(base64));
+    };
+
+    /**
+     * @param {object} object
+     * @returns {string}
+     */
+    let objectToJsonString = function (object) {
+      return JSON.stringify(object);
     };
 
     return {
