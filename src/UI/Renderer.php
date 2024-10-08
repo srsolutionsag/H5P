@@ -204,24 +204,24 @@ class Renderer extends DecoratedRenderer
                 // on clientside because the array itself already contains
                 // json-strings which cannot be parsed by javascript if
                 // encoded once more by PHP.
-                $content_base64 = base64_encode($content_data['jsonContent'] ?? '');
+                $content_parameters_json = $content_data['jsonContent'] ?? '{}';
                 unset($content_data['jsonContent']);
 
                 if (isset($content_data['contentUserData'][0]['state'])) {
-                    $previous_state_base64 = '`' . base64_encode($content_data['contentUserData'][0]['state']) . '`';
+                    $previous_state_json = $content_data['contentUserData'][0]['state'];
                     unset($content_data['contentUserData'][0]['state']);
                 } else {
-                    $previous_state_base64 = 'null';
+                    $previous_state_json = 'null';
                 }
 
-                $integration_base64 = base64_encode(json_encode($content_data));
+                $content_integration = json_encode($content_data);
 
                 return "il.H5P.initContent(
                     '$id', 
                     $content_id,
-                    `$integration_base64`,
-                    `$content_base64`,
-                    $previous_state_base64,
+                    $content_integration,
+                    $content_parameters_json,
+                    $previous_state_json,
                 );";
             }
         );
