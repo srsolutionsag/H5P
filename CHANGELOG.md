@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.0.2
+
+- Fixed an issue where umlauts (like ä, è, ø) inside contents and content states have not been displayed correctly.
+
 ## 6.0.1
 
 - Fixed an issue where H5P contents could not be loaded anymore after being edited while there was stored user content
