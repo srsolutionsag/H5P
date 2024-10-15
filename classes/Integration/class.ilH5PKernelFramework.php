@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator;
 use srag\Plugins\H5P\Settings\ISettingsRepository;
 use srag\Plugins\H5P\Content\IContentRepository;
 use srag\Plugins\H5P\Library\ILibraryRepository;
@@ -24,11 +23,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     use ilH5POnScreenMessages;
     use ilH5PTimestampHelper;
     use ilH5PConcatHelper;
-
-    /**
-     * @var VersionComparator
-     */
-    protected $version_comparator;
 
     /**
      * @var FileUploadCommunicator
@@ -101,7 +95,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     protected $previous_info_messages = [];
 
     public function __construct(
-        VersionComparator $version_comparator,
         FileUploadCommunicator $file_upload_communicator,
         IContentRepository $content_repository,
         ILibraryRepository $library_repository,
@@ -115,7 +108,6 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         ilObjUser $user,
         bool $is_synchronous_web_context
     ) {
-        $this->version_comparator = $version_comparator;
         $this->file_upload_communicator = $file_upload_communicator;
         $this->content_repository = $content_repository;
         $this->library_repository = $library_repository;
@@ -312,23 +304,21 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         try {
             $curlConnection = new ilCurlConnection($url);
             $curlConnection->init();
+            
+            $proxy = ilProxySettings::_getInstance();
+            if (null !== $proxy && $proxy->isActive()) {
+                $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
 
-            if (!$this->version_comparator->is6()) {
-                $proxy = ilProxySettings::_getInstance();
-                if (null !== $proxy && $proxy->isActive()) {
-                    $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
+                if (!empty($proxy->getHost())) {
+                    $curlConnection->setOpt(CURLOPT_PROXY, $proxy->getHost());
+                }
 
-                    if (!empty($proxy->getHost())) {
-                        $curlConnection->setOpt(CURLOPT_PROXY, $proxy->getHost());
-                    }
-
-                    if (!empty($proxy->getPort())) {
-                        $curlConnection->setOpt(CURLOPT_PROXYPORT, $proxy->getPort());
-                    }
+                if (!empty($proxy->getPort())) {
+                    $curlConnection->setOpt(CURLOPT_PROXYPORT, $proxy->getPort());
                 }
             }
 
-            $headers["User-Agent"] = "ILIAS " . $this->version_comparator->getILIASVersion();
+            $headers["User-Agent"] = "ILIAS " . ILIAS_VERSION_NUMERIC;
             $curlConnection->setOpt(
                 CURLOPT_HTTPHEADER,
                 array_map(static function (string $key, string $value): string {
@@ -552,7 +542,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     {
         return [
             "name" => "ILIAS",
-            "version" => $this->version_comparator->getILIASVersion(),
+            "version" => ILIAS_VERSION_NUMERIC,
             "h5pVersion" => $this->plugin->getVersion()
         ];
     }

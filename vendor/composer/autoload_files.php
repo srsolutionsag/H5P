@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    '9b38cf48e83f5d8f60375221cd213eee' => $vendorDir . '/phpstan/phpstan/bootstrap.php',
     '0c6f877f03a67a7485a2a748706e2f2f' => $vendorDir . '/h5p/h5p-core/h5p.classes.php',
     'a63ae9f41847366feffbb295da33fc13' => $vendorDir . '/h5p/h5p-core/h5p-development.class.php',
     'b0f066922f2544ef1e43b5d30974b0f1' => $vendorDir . '/h5p/h5p-core/h5p-file-storage.interface.php',
@@ -18,5 +17,4 @@ return array(
     '138126db212e09ea471720e87b638b63' => $vendorDir . '/h5p/h5p-editor/h5peditor-ajax.class.php',
     '920009c17c818a2668db044d76f129b9' => $vendorDir . '/h5p/h5p-editor/h5peditor-storage.interface.php',
     '101279c1523ab77899b4b6921c749836' => $vendorDir . '/h5p/h5p-editor/h5peditor-ajax.interface.php',
-    '38143a9afc50997d55e4815db8489d1c' => $vendorDir . '/rector/rector/bootstrap.php',
 );

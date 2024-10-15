@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator;
 use srag\Plugins\H5P\Library\ILibraryRepository;
 use srag\Plugins\H5P\Library\ILibraryLanguage;
 use srag\Plugins\H5P\Library\ILibrary;
@@ -13,6 +12,7 @@ use srag\Plugins\H5P\Result\IResultRepository;
 use srag\Plugins\H5P\Event\IEventRepository;
 use srag\Plugins\H5P\Event\IEvent;
 use srag\Plugins\H5P\File\IFileRepository;
+use srag\Plugins\H5P\File\FileUploadCommunicator;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -53,7 +53,7 @@ class H5PKernelFrameworkTest extends TestCase
         $this->library_repository = $this->createMock(ILibraryRepository::class);
 
         $this->h5p_framework = new ilH5PKernelFramework(
-            $this->createMock(VersionComparator::class),
+            $this->createMock(FileUploadCommunicator::class),
             $this->content_reposiory,
             $this->library_repository,
             $this->createMock(IEventRepository::class),
@@ -61,9 +61,10 @@ class H5PKernelFrameworkTest extends TestCase
             $this->createMock(ISettingsRepository::class),
             $this->createMock(IFileRepository::class),
             $this->createMock(H5PDefaultStorage::class),
+            $this->createMock(ilGlobalTemplateInterface::class),
             $this->createMock(ilH5PPlugin::class),
             $this->createMock(ilObjUser::class),
-            $this->createMock(ilCtrl::class),
+            false
         );
 
         $this->h5p_core = new H5PCore(
@@ -214,7 +215,6 @@ class H5PKernelFrameworkTest extends TestCase
     protected function getTestableFrameworkInstance(): H5PFrameworkInterface
     {
         return new class (
-            $this->createMock(VersionComparator::class),
             $this->content_reposiory,
             $this->library_repository,
             $this->createMock(IEventRepository::class),

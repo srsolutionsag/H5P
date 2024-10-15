@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-use srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator;
 use srag\Plugins\H5P\Library\Collector\UnifiedLibraryCollector;
 use srag\Plugins\H5P\Integration\IClientDataProvider;
 use srag\Plugins\H5P\Content\ContentAssetCollector;
-use srag\Plugins\H5P\Settings\IGeneralSettings;
-use srag\Plugins\H5P\Integration\ClientData;
 use srag\Plugins\H5P\UI\Factory;
 use srag\Plugins\H5P\IRepositoryFactory;
 use srag\Plugins\H5P\IContainer;
@@ -226,7 +223,6 @@ class ilH5PContainer implements IContainer
     {
         if (null === $this->h5p_kernel_framework) {
             $this->h5p_kernel_framework = new ilH5PKernelFramework(
-                new VersionComparator(),
                 $this->getFileUploadCommunicator(),
                 $this->getRepositoryFactory()->content(),
                 $this->getRepositoryFactory()->library(),
