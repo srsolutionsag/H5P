@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.0.3
+
+- Fixed an issue where the H5P plugin conflicted with ILIAS due to a transitive composer dependency.
+
 ## 6.0.2
 
 - Fixed an issue where umlauts (like ä, è, ø) inside contents and content states have not been displayed correctly.
