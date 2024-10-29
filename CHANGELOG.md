@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.1.9
+
+- Updated H5P kernel to version 1.27 to maintain compatibility with latest H5P libraries.
+
 ## 5.1.8
 
 - Fixed an issue where umlauts (like ä, è, ø) inside contents and content states have not been displayed correctly.
