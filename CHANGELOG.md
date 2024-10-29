@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.0.4
+
+- Updated H5P kernel to version 1.26 to maintain compatibility with latest H5P libraries.
+
 ## 6.0.3
 
 - Fixed an issue where the H5P plugin conflicted with ILIAS due to a transitive composer dependency.
