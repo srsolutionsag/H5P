@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'srag/h5p',
-        'pretty_version' => 'dev-release_9',
-        'version' => 'dev-release_9',
-        'reference' => '46bae89e5869d706ece58e5e54b2242af8fd5ca2',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'ced93153f1aee2093a12d8e776ffdefe0bbcd2c6',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'h5p/h5p-core' => array(
-            'pretty_version' => '1.26',
-            'version' => '1.26.0.0',
-            'reference' => 'f3579c0d28205bf34490ee151c07d43a2ffc3507',
+            'pretty_version' => '1.27.0',
+            'version' => '1.27.0.0',
+            'reference' => '829524eaf81fe3f3a295d0e843812be4735f51fc',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-core',
             'aliases' => array(),
@@ -31,9 +31,9 @@
             'dev_requirement' => false,
         ),
         'srag/h5p' => array(
-            'pretty_version' => 'dev-release_9',
-            'version' => 'dev-release_9',
-            'reference' => '46bae89e5869d706ece58e5e54b2242af8fd5ca2',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'ced93153f1aee2093a12d8e776ffdefe0bbcd2c6',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
