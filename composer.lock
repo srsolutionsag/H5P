@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1337e6b6313b6638d93870b0a815147f",
+    "content-hash": "e3febf8a6f3b76cf8d833ebb86163f5c",
     "packages": [
         {
             "name": "h5p/h5p-core",
-            "version": "1.26",
+            "version": "1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h5p/h5p-php-library.git",
-                "reference": "f3579c0d28205bf34490ee151c07d43a2ffc3507"
+                "reference": "829524eaf81fe3f3a295d0e843812be4735f51fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/f3579c0d28205bf34490ee151c07d43a2ffc3507",
-                "reference": "f3579c0d28205bf34490ee151c07d43a2ffc3507",
+                "url": "https://api.github.com/repos/h5p/h5p-php-library/zipball/829524eaf81fe3f3a295d0e843812be4735f51fc",
+                "reference": "829524eaf81fe3f3a295d0e843812be4735f51fc",
                 "shasum": ""
             },
             "require": {
@@ -63,9 +63,9 @@
             ],
             "support": {
                 "issues": "https://github.com/h5p/h5p-php-library/issues",
-                "source": "https://github.com/h5p/h5p-php-library/tree/1.26"
+                "source": "https://github.com/h5p/h5p-php-library/tree/1.27.0"
             },
-            "time": "2023-12-12T09:27:24+00:00"
+            "time": "2024-10-25T11:30:55+00:00"
         },
         {
             "name": "h5p/h5p-editor",
