@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.0.5
+
+- Fixed an issue where file uploads failed when editing H5P contents. 
+- Updated H5P editor to version latest dev-master.
+
 ## 6.0.4
 
 - Updated H5P kernel to version 1.26 to maintain compatibility with latest H5P libraries.
