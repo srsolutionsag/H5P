@@ -1,5 +1,14 @@
 # H5P Changelog
 
+## 5.2.0
+
+- Improved the result handling so users can submit multiple results, if "solve contents only once" is not active.
+- Improved the result overview of H5P contents inside repository objects.
+- Improved the content overview of H5P repository objects.
+- Removed the "results" tab from H5P repository objects due to the improved results handling.
+- Fixed an issue where H5P content user data (state) has not been stored when the content was finished.
+- Fixed an issue where the H5P result time (duration) was not properly stored.
+
 ## 5.1.9
 
 - Updated H5P kernel to version 1.27 to maintain compatibility with latest H5P libraries.
