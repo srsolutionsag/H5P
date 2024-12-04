@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 4.2.7
+
+- Updated H5P kernel to version 1.27 to maintain compatibility with latest H5P libraries.
+
 ## 4.2.6
 
 - Fixed an issue where H5P contents could not be loaded anymore after being edited while there was stored user content
