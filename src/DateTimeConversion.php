@@ -239,4 +239,20 @@ trait DateTimeConversion
     {
         return $date->format(self::$pretty_date_format);
     }
+
+    /**
+     * Returns the duration of an integer (seconds) as "hh:mm:ss" or e.g. "00:01:23".
+     */
+    protected function getFormattedDuration(int $seconds): string
+    {
+        if (0 === $seconds) {
+            return "00:00:00";
+        }
+
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $remainingSeconds = $seconds % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
+    }
 }

@@ -11,6 +11,11 @@ use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\ITranslator;
+use srag\Plugins\H5P\Result\IResult;
+use ILIAS\UI\Component\Modal\Interruptive;
+use ILIAS\UI\Component\Button\Button;
+use srag\Plugins\H5P\Result\CsvUserResultWriter;
+use ILIAS\HTTP\GlobalHttpState;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -24,6 +29,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
     public const CMD_CONFIRM_DELETE_SINGLE_USER_RESULTS = "confirmSingleUserResultsDeletion";
     public const CMD_DELETE_SINGLE_USER_RESULTS = "deleteSingleUserResults";
     public const CMD_CONFIRM_DELETE_MULTIPLE_USER_RESULTS = "confirmMultipleUserResultsDeletion";
+    public const CMD_EXPORT_USER_RESULTS = "exportUserResults";
     public const CMD_TRUNCATE_CONTENT_RESULTS = "deleteMultipleUserResults";
     public const CMD_SHOW_RESULTS = "showResults";
 
@@ -44,6 +50,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
         $this->object = $this->getRequestedPluginObjectOrAbort();
         $this->toolbar = $DIC->toolbar();
+        $this->http = $DIC->http();
     }
 
     /**
@@ -90,6 +97,10 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
         $overview = $this->getMultiUserResultsOverviewBuilder()->buildOverview($user_results);
 
+        [$button, $modal] = $this->getExportContentResultsButtonAndModal($content, empty($user_results));
+        $this->toolbar->addComponent($button);
+        $overview[] = $modal;
+
         $this->render($overview);
     }
 
@@ -105,7 +116,44 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
 
         $overview = $this->getSingleUserResultOverviewBuilder()->buildOverview($user_results);
 
+        [$button, $modal] = $this->getExportContentResultsButtonAndModal($content, empty($user_results));
+        $this->toolbar->addComponent($button);
+        $overview[] = $modal;
+
         $this->render($overview);
+    }
+
+    /**
+     * This endpoint will be called by the @see ilH5PResultGUI::getExportContentResultsButtonAndModal()
+     * interruptive modal and starts exporting ALL results from the requested content (id).
+     */
+    protected function exportUserResults(): void
+    {
+        $content = $this->getRequestedContentOrAbort($this->get_request);
+
+        $csv_writer = $this->getCsvUserResultWriter();
+
+        try {
+            $resource = tmpfile();
+            $csv_writer->appendCsvResults($content, $resource);
+            $filename = \ILIAS\FileDelivery\Delivery::returnASCIIFileName(
+                "{$this->translator->txt('results_of')} {$content->getTitle()}.csv"
+            );
+            $response = $this
+                ->http->response()
+                ->withHeader('Content-Type', 'application/csv')
+                ->withHeader('Content-Disposition', "attachment; filename=\"$filename\"")
+                ->withBody(\ILIAS\Filesystem\Stream\Streams::ofResource($resource));
+
+            $this->http->saveResponse($response);
+            $this->http->sendResponse();
+        } finally {
+            // stream normally gets closed when sending the response.
+            if (is_resource($resource)) {
+                fclose($resource);
+            }
+            $this->http->close();
+        }
     }
 
     /**
@@ -229,6 +277,45 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
         $this->redirectToResultsOverview($content);
     }
 
+    /**
+     * Returns a [$button, $modal] pair, which can be destructured. The button and modal are
+     * linked in a way so the button can be used to open the modal. Both components MUST be rendered.
+     *
+     * The modal will trigger a request to @see ilH5PResultGUI::exportUserResults() if the
+     * primary button is clicked - which also closes the modal. The current page is never refreshed.
+     *
+     * @return array{0: Button, 1: Interruptive}
+     */
+    protected function getExportContentResultsButtonAndModal(IContent $content, bool $is_disabled): array
+    {
+        $confirmation_modal = $this->components->modal()->roundtrip(
+            $this->translator->txt('export_results'),
+            [
+                $this->components->messageBox()->info($this->translator->txt('confirm_export_results')),
+            ],
+        );
+
+        $confirmation_modal = $confirmation_modal->withActionButtons([
+            $this->components->button()->primary(
+                $this->translator->txt('export_results'),
+                $this->getFormAction(self::class, self::CMD_EXPORT_USER_RESULTS, [
+                    IRequestParameters::CONTENT_ID => $content->getContentId(),
+                ]),
+            )->appendOnClick($confirmation_modal->getCloseSignal()),
+        ]);
+
+        $confirm_export_button = $this->components->button()->standard(
+            $this->translator->txt('export_results'),
+            $confirmation_modal->getShowSignal(),
+        );
+
+        if ($is_disabled) {
+            $confirm_export_button = $confirm_export_button->withUnavailableAction();
+        }
+
+        return [$confirm_export_button, $confirmation_modal];
+    }
+
     protected function addTruncateContentResultsToolbarButton(IContent $content, bool $is_disabled): void
     {
         $truncate_button = $this->components->button()->standard(
@@ -264,6 +351,16 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->renderer,
             $this->translator,
             $this->ctrl
+        );
+    }
+
+    protected function getCsvUserResultWriter(): CsvUserResultWriter
+    {
+        return new CsvUserResultWriter(
+            $this->repositories->library(),
+            $this->repositories->general(),
+            $this->repositories->result(),
+            $this->translator
         );
     }
 
