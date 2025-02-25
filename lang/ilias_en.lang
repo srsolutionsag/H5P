@@ -219,3 +219,6 @@ opened_at#:#Start date
 duration#:#Duration
 user_count#:#Solved by
 low_score#:#Low-Score
+results_of#:#Results of
+export_results#:#Export all results
+confirm_export_results#:#You are about to export ALL results. This may take a while, do you want to proceed?

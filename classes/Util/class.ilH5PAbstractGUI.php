@@ -113,6 +113,7 @@ abstract class ilH5PAbstractGUI
         $this->template = $DIC->ui()->mainTemplate();
         $this->renderer = $DIC->ui()->renderer();
         $this->refinery = $DIC->refinery();
+        $this->http = $DIC->http();
         $this->user = $DIC->user();
         $this->ctrl = $DIC->ctrl();
     }

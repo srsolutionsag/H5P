@@ -219,3 +219,6 @@ opened_at#:#Enddatum
 duration#:#Dauer
 user_count#:#Gelöst von
 low_score#:#Tiefste Punktzahl
+results_of#:#Resultate von
+export_results#:#Alle Resultate exportieren
+confirm_export_results#:#Sie sind davor ALLE Resultate zu exportieren. Dies könnte eine Weile dauern, möchten Sie fortfahren?
