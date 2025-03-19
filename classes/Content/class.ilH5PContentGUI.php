@@ -20,6 +20,8 @@ use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\IRequestParameters;
 use srag\Plugins\H5P\IContainer;
 use ILIAS\UI\Component\Input\Container\Form\Form;
+use ILIAS\UI\Component\Modal\RoundTrip;
+use ILIAS\UI\Component\Button\Button;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
@@ -44,6 +46,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     public const CMD_MOVE_CONTENT_DOWN = "moveContentDown";
     public const CMD_MOVE_CONTENT_UP = "moveContentUp";
     public const CMD_EXPORT_CONTENT = "exportContent";
+    public const CMD_TRUNCATE_RESULTS = 'truncateResults';
 
     /**
      * @var ilToolbarGUI
@@ -130,6 +133,10 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
 
         $contents = $this->repositories->content()->getContentsByObject($this->object->getId());
         $overview = $this->getContentOverviewBuilder()->buildOverview($contents, $have_contents_been_solved);
+
+        [$truncate_button, $modal] = $this->getTruncateResultsButtonAndModal();
+        $this->toolbar->addComponent($truncate_button);
+        $overview[] = $modal;
 
         $this->render($overview);
     }
@@ -353,6 +360,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             case self::CMD_MOVE_CONTENT_UP:
             case self::CMD_DELETE_CONTENT_CONFIRM:
             case self::CMD_DELETE_CONTENT:
+            case self::CMD_TRUNCATE_RESULTS:
             case self::CMD_EDIT_CONTENT:
             case self::CMD_SAVE_CONTENT:
                 return $access_handler->canCurrentUserEdit($this->object);
@@ -419,6 +427,55 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         }
 
         $this->toolbar->addComponent($import_content_button);
+    }
+
+    /**
+     * Deletes all existing results and associated data of the requested object.
+     * This endpoint will be triggered by the @see ilH5PContentGUI::getTruncateResultsButtonAndModal()
+     * button.
+     */
+    protected function truncateResults(): void
+    {
+        $this->repositories->result()->deleteObjectResults($this->object->getId());
+
+        $this->ctrl->redirectByClass(self::class, self::CMD_MANAGE_CONTENTS);
+    }
+
+    /**
+     * Returns a [$button, $modal] pair, which can be destructured. The button and modal are
+     * linked in a way so the button can be used to open the modal. Both components MUST be rendered.
+     *
+     * The modal will trigger a request to @see ilH5PContentGUI::truncateResults() if the
+     * primary button is clicked.
+     *
+     * @return array{0: Button, 1: RoundTrip}
+     */
+    protected function getTruncateResultsButtonAndModal(): array
+    {
+        $confirmation_modal = $this->components->modal()->roundtrip(
+            $this->translator->txt('truncate_results'),
+            [
+                $this->components->messageBox()->confirmation($this->translator->txt('truncate_results_confirm')),
+            ],
+        );
+
+        $confirmation_modal = $confirmation_modal->withActionButtons([
+            $this->components->button()->primary(
+                $this->translator->txt('truncate_results'),
+                $this->getFormAction(self::class, self::CMD_TRUNCATE_RESULTS),
+            ),
+        ]);
+
+        $truncate_button = $this->components->button()->standard(
+            $this->translator->txt('truncate_results'),
+            $confirmation_modal->getShowSignal(),
+        );
+
+        if (!$this->repositories->result()->haveUsersStartedSolvingContents($this->object->getId())) {
+            $truncate_button = $truncate_button->withUnavailableAction();
+        }
+
+        return [$truncate_button, $confirmation_modal];
     }
 
     protected function getEditContentForm(): Form

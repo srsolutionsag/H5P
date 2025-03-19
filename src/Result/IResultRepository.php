@@ -67,6 +67,13 @@ interface IResultRepository
      */
     public function deleteUserContentResults(IContent $content, int $user_id): void;
 
+    /**
+     * Deletes all the results of the given object which have been submitted by the
+     * users. This method also deletes any user content state and updates and their
+     * solve-status.
+     */
+    public function deleteObjectResults(int $obj_id): void;
+
     public function storeResult(IResult $result): void;
 
     public function deleteResult(IResult $result): void;

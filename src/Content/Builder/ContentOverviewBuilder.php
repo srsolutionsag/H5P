@@ -94,16 +94,17 @@ class ContentOverviewBuilder
     {
         $this->checkArgListElements('contents', $contents, [IContent::class]);
 
-        if (empty($contents)) {
-            return [$this->components->messageBox()->info($this->translator->txt('no_content'))];
-        }
-
         $overview = [];
 
         if ($have_contents_been_solved) {
             $overview[] = $this->components->messageBox()->confirmation(
                 $this->translator->txt('msg_content_not_editable')
             );
+        }
+
+        if (empty($contents)) {
+            $overview[] = $this->components->messageBox()->info($this->translator->txt('no_content'));
+            return $overview;
         }
 
         $overview[] = $this->components->table()->presentation(
