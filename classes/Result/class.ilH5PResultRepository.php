@@ -255,6 +255,24 @@ class ilH5PResultRepository implements IResultRepository
         }
     }
 
+    public function deleteObjectResults(int $obj_id): void
+    {
+        $object_content_results = $this->getResultsByObject($obj_id);
+        foreach ($object_content_results as $result) {
+            $this->deleteResult($result);
+        }
+
+        $object_content_states = $this->content_repository->getContentStatesByObject($obj_id);
+        foreach ($object_content_states as $content_state) {
+            $this->content_repository->deleteUserData($content_state);
+        }
+
+        $solve_status_list = $this->getSolvedStatusListByObject($obj_id);
+        foreach ($solve_status_list as $solve_status) {
+            $this->deleteSolvedStatus($solve_status);
+        }
+    }
+
     public function storeResult(IResult $result): void
     {
         $this->abortIfNoActiveRecord($result);
