@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.3.0
+
+- Added function to export all user results of a content into a CSV file.
+
 ## 5.2.0
 
 - Improved the result handling so users can submit multiple results, if "solve contents only once" is not active.
