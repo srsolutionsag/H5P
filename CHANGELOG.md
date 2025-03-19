@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 5.4.0
+
+- Added function to delete all user results of the current repository object.
+- Fixed an issue where the message for non-editable repository objects was not dispalyed. 
+
 ## 5.3.0
 
 - Added function to export all user results of a content into a CSV file.
