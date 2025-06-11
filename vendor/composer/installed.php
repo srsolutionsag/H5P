@@ -3,7 +3,7 @@
         'name' => 'srag/h5p',
         'pretty_version' => 'dev-release_9',
         'version' => 'dev-release_9',
-        'reference' => '641e345361a0aaedd3ec4d0d6fab2507e86a4609',
+        'reference' => '896dbee6e32483337249dc96edc8510d5ee33c44',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'h5p/h5p-editor' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'cd282161e5ee1006332fdfda909399a35e935244',
+            'reference' => 'f3a60ec2bdbe410cb2b11e8f8cb4cf206c41364b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-editor',
             'aliases' => array(
@@ -33,7 +33,7 @@
         'srag/h5p' => array(
             'pretty_version' => 'dev-release_9',
             'version' => 'dev-release_9',
-            'reference' => '641e345361a0aaedd3ec4d0d6fab2507e86a4609',
+            'reference' => '896dbee6e32483337249dc96edc8510d5ee33c44',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
