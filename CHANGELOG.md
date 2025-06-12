@@ -1,5 +1,9 @@
 # H5P Changelog
 
+# 6.3.1
+
+- Updated `h5p/h5p-editor` composer package to resolve a regression of file-uploads in e.g. `InteractiveVideo` contents.
+
 # 6.3.0
 
 - Added function to delete all user results of the current repository object.
