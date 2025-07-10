@@ -65,18 +65,20 @@ class ilH5PClientDataProvider implements IClientDataProvider
         /** @var $json_content string */
         $json_content = $this->h5p_kernel->filterParameters($copy);
 
+        $embed_type = \H5PCore::determineEmbedType(
+            $content->getEmbedType(),
+            $content_data["library"]["embedTypes"] ?? null
+        );
+
         $integration_data = [
             "jsonContent" => $json_content,
             "library" => \H5PCore::libraryToString($content_data['library']),
             "fullScreen" => $content_data["library"]["fullscreen"] ?? false,
-            "embedType" => \H5PCore::determineEmbedType(
-                $content->getEmbedType(),
-                $content_data["library"]["embedTypes"] ?? null
-            ),
+            "embedType" => $embed_type,
             "title" => $content_data["slug"] ?? '',
             "metadata" => $content_data["metadata"] ?? null,
             "displayOptions" => [
-                "frame" => true,
+                "frame" => ($embed_type === 'iframe'),
                 "export" => false,
                 "embed" => false,
                 "copyright" => true,
