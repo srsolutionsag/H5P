@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.4.1
+
+- Added user time-zone for correct display of formatted date-time values.
+
 ## 5.4.0
 
 - Added function to delete all user results of the current repository object.
