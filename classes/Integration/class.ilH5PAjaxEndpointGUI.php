@@ -154,8 +154,8 @@ class ilH5PAjaxEndpointGUI
      *      - contentId (string)    -> can be parsed to int safely
      *      - score (string)        -> can be parsed to int safely
      *      - maxScore (string)     -> can be parsed to int safely
-     *      - opened (string)       -> can be parsed to timestamp safely
-     *      - finished (string)     -> can be parsed to timestamp safely
+     *      - opened (string)       -> can be parsed to timestamp safely (UTC timezone!)
+     *      - finished (string)     -> can be parsed to timestamp safely (UTC timezone!)
      *      - time (string)         -> cannot be used safely
      *
      * Please note the "time" value is not documented and cannot be used due to

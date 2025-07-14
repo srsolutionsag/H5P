@@ -542,6 +542,7 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
             $this->repositories->general(),
             $this->repositories->library(),
             $this->repositories->result(),
+            new DateTimeZone($this->user->getTimeZone()),
             $this->translator,
             $this->ctrl
         );

@@ -48,4 +48,10 @@ trait ilH5PActiveRecordHelper
             throw new LogicException(self::class . " can only process " . ActiveRecord::class . " objects yet");
         }
     }
+
+    protected function getDisplayDateTimeZone(): DateTimeZone
+    {
+        global $DIC;
+        return new DateTimeZone($DIC->user()->getTimeZone());
+    }
 }

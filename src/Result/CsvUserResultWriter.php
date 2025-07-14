@@ -10,6 +10,7 @@ use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\IGeneralRepository;
 use srag\Plugins\H5P\DateTimeConversion;
 use srag\Plugins\H5P\ITranslator;
+use DateTimeZone;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -23,17 +24,20 @@ class CsvUserResultWriter
     protected ILibraryRepository $library_repository;
     protected IGeneralRepository $general_repository;
     protected IResultRepository $result_repository;
+    protected DateTimeZone $user_time_zone;
     protected ITranslator $translator;
 
     public function __construct(
         ILibraryRepository $library_repository,
         IGeneralRepository $general_repository,
         IResultRepository $result_repository,
+        DateTimeZone $user_time_zone,
         ITranslator $translator
     ) {
         $this->library_repository = $library_repository;
         $this->general_repository = $general_repository;
         $this->result_repository = $result_repository;
+        $this->user_time_zone = $user_time_zone;
         $this->translator = $translator;
     }
 
@@ -128,5 +132,10 @@ class CsvUserResultWriter
     protected function write($resource, array $column_contents): void
     {
         fputcsv($resource, $column_contents, self::DELIMITER);
+    }
+
+    protected function getDisplayDateTimeZone(): DateTimeZone
+    {
+        return $this->user_time_zone;
     }
 }

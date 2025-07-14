@@ -338,6 +338,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->general(),
             $this->components,
             $this->renderer,
+            new DateTimeZone($this->user->getTimeZone()),
             $this->translator,
             $this->ctrl
         );
@@ -349,6 +350,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->general(),
             $this->components,
             $this->renderer,
+            new DateTimeZone($this->user->getTimeZone()),
             $this->translator,
             $this->ctrl
         );
@@ -360,6 +362,7 @@ class ilH5PResultGUI extends ilH5PAbstractGUI
             $this->repositories->library(),
             $this->repositories->general(),
             $this->repositories->result(),
+            new DateTimeZone($this->user->getTimeZone()),
             $this->translator
         );
     }

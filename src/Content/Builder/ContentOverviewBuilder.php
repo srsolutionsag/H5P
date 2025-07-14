@@ -21,6 +21,7 @@ use ILIAS\UI\Component\Button\Shy;
 use ILIAS\UI\Renderer as ComponentRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
 use ILIAS\UI\Component\Component;
+use DateTimeZone;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
@@ -64,6 +65,11 @@ class ContentOverviewBuilder
     protected $renderer;
 
     /**
+     * @var DateTimeZone
+     */
+    protected $user_time_zone;
+
+    /**
      * @var ITranslator
      */
     protected $translator;
@@ -79,6 +85,7 @@ class ContentOverviewBuilder
         IGeneralRepository $general_repository,
         ILibraryRepository $library_repository,
         IResultRepository $result_repository,
+        DateTimeZone $user_time_zone,
         ITranslator $translator,
         \ilCtrlInterface $ctrl
     ) {
@@ -87,6 +94,7 @@ class ContentOverviewBuilder
         $this->general_repository = $general_repository;
         $this->library_repository = $library_repository;
         $this->result_repository = $result_repository;
+        $this->user_time_zone = $user_time_zone;
         $this->translator = $translator;
         $this->ctrl = $ctrl;
     }
@@ -266,6 +274,11 @@ class ContentOverviewBuilder
                 IRequestParameters::CONTENT_ID => $content->getContentId()
             ])
         );
+    }
+
+    protected function getDisplayDateTimeZone(): DateTimeZone
+    {
+        return $this->user_time_zone;
     }
 
     protected function getCtrl(): \ilCtrl
