@@ -1,5 +1,9 @@
 # H5P Changelog
 
+# 6.3.2
+
+- Added user time-zone for correct display of formatted date-time values. 
+
 # 6.3.1
 
 - Updated `h5p/h5p-editor` composer package to resolve a regression of file-uploads in e.g. `InteractiveVideo` contents.
