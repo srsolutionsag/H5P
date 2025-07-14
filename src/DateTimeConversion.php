@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace srag\Plugins\H5P;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use LogicException;
 
 /**
@@ -43,6 +44,25 @@ trait DateTimeConversion
     private static $unix_timestamp_format = 'U';
 
     /**
+     * Returns the time-zone in which "pretty" date time strings should be displayed in.
+     * MUST NOT be used for calculations!
+     *
+     * @return DateTimeZone
+     */
+    abstract protected function getDisplayDateTimeZone(): DateTimeZone;
+
+    /**
+     * Returns UTC as default time-zone used for calculations and conversions.
+     * MUST always be used for calculations!
+     *
+     * @return DateTimeZone
+     */
+    protected function getDefaultDateTimeZone(): DateTimeZone
+    {
+        return new DateTimeZone('UTC');
+    }
+
+    /**
      * @param string $datetime (Y-m-d H:i:s)
      * @return DateTimeImmutable|null
      */
@@ -50,7 +70,8 @@ trait DateTimeConversion
     {
         return (DateTimeImmutable::createFromFormat(
             self::$mysql_datetime_format,
-            $datetime
+            $datetime,
+            $this->getDefaultDateTimeZone(),
         )) ?: null;
     }
 
@@ -62,7 +83,8 @@ trait DateTimeConversion
     {
         return (DateTimeImmutable::createFromFormat(
             self::$mysql_datetime_format,
-            "$date 00:00:00"
+            "$date 00:00:00",
+            $this->getDefaultDateTimeZone(),
         )) ?: null;
     }
 
@@ -74,8 +96,9 @@ trait DateTimeConversion
     {
         return (DateTimeImmutable::createFromFormat(
             self::$unix_timestamp_format,
-            (string) $unix_timestamp)
-        ) ?: null;
+            (string) $unix_timestamp,
+            $this->getDefaultDateTimeZone(),
+        )) ?: null;
     }
 
     /**
@@ -85,7 +108,7 @@ trait DateTimeConversion
     protected function getDateTimeByUnknownFormat(string $datetime): ?DateTimeImmutable
     {
         try {
-            return new DateTimeImmutable($datetime);
+            return new DateTimeImmutable($datetime, $this->getDefaultDateTimeZone());
         } catch (\Throwable $any) {
             return null;
         }
@@ -159,7 +182,8 @@ trait DateTimeConversion
 
     /**
      * Returns the amount of days between $before and $after. Note that negative
-     * numbers are returned if $before is past $after.
+     * numbers are returned if $before is past $after. Differences in time-zones
+     * are also not handled.
      *
      * @param DateTimeImmutable $before
      * @param DateTimeImmutable $after
@@ -196,7 +220,7 @@ trait DateTimeConversion
      */
     protected function getCurrentDate(): DateTimeImmutable
     {
-        $today = $this->getDate(date(self::$mysql_date_format));
+        $today = $this->getDateTimeByTimestamp(time());
         if (null === $today) {
             throw new LogicException("Could not create datetime object for today's date.");
         }
@@ -210,7 +234,7 @@ trait DateTimeConversion
      */
     protected function getMysqlDateTimeString(DateTimeImmutable $datetime): string
     {
-        return $datetime->format(self::$mysql_datetime_format);
+        return $datetime->setTimezone($this->getDefaultDateTimeZone())->format(self::$mysql_datetime_format);
     }
 
     /**
@@ -219,7 +243,7 @@ trait DateTimeConversion
      */
     protected function getMysqlDateString(DateTimeImmutable $date): string
     {
-        return $date->format(self::$mysql_date_format);
+        return $date->setTimezone($this->getDefaultDateTimeZone())->format(self::$mysql_date_format);
     }
 
     /**
@@ -228,7 +252,7 @@ trait DateTimeConversion
      */
     protected function getPrettyDateTimeString(DateTimeImmutable $datetime): string
     {
-        return $datetime->format(self::$pretty_datetime_format);
+        return $datetime->setTimezone($this->getDisplayDateTimeZone())->format(self::$pretty_datetime_format);
     }
 
     /**
@@ -237,7 +261,7 @@ trait DateTimeConversion
      */
     protected function getPrettyDateString(DateTimeImmutable $date): string
     {
-        return $date->format(self::$pretty_date_format);
+        return $date->setTimezone($this->getDisplayDateTimeZone())->format(self::$pretty_date_format);
     }
 
     /**
@@ -251,8 +275,8 @@ trait DateTimeConversion
 
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds % 3600) / 60);
-        $remainingSeconds = $seconds % 60;
+        $remaining_seconds = $seconds % 60;
 
-        return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $remaining_seconds);
     }
 }
