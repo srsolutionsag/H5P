@@ -1,19 +1,23 @@
 # H5P Changelog
 
-# 6.3.2
+## 6.3.3
+
+- Apply user time-zone for correct display of formatted date-time values in content overview.
+
+## 6.3.2
 
 - Added user time-zone for correct display of formatted date-time values. 
 
-# 6.3.1
+## 6.3.1
 
 - Updated `h5p/h5p-editor` composer package to resolve a regression of file-uploads in e.g. `InteractiveVideo` contents.
 
-# 6.3.0
+## 6.3.0
 
 - Added function to delete all user results of the current repository object.
 - Fixed an issue where the message for non-editable repository objects was not dispalyed.
 
-# 6.2.0
+## 6.2.0
 
 - Added function to export all user results of a content into a CSV file.
 
