@@ -84,8 +84,8 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
                 ])->withContent(
                     $components->listing()->descriptive([
                         $this->translator->txt('owner') => $this->getUserDisplayName($user),
-                        $this->translator->txt('created_at') => $this->getMysqlDateTimeByTimestamp($content->getCreatedAt()),
-                        $this->translator->txt('updated_at') => $this->getMysqlDateTimeByTimestamp($content->getUpdatedAt()),
+                        $this->translator->txt('created_at') => $this->getPrettyDateTimeString($this->getDateTimeByTimestamp($content->getCreatedAt())),
+                        $this->translator->txt('updated_at') => $this->getPrettyDateTimeString($this->getDateTimeByTimestamp($content->getUpdatedAt())),
                         $this->translator->txt('parent_type') => $content->getParentType(),
                         $this->translator->txt('parent_obj') => (string) $content->getObjId(),
                     ])

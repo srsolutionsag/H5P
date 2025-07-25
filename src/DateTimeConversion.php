@@ -55,6 +55,12 @@ trait DateTimeConversion
      * Returns UTC as default time-zone used for calculations and conversions.
      * MUST always be used for calculations!
      *
+     * ATTENTION: in the ILIAS environment, this most likely IS NOT the default
+     * for PHP. This so-called "default" has been introduced to account for the
+     * automatic use of UTC timezone when DateTime(Immutable) instances are created
+     * from a unix timestamp. This luckily accounts for all timezone differences in
+     * the H5P plugin, but this should not be applied somewhere else!
+     *
      * @return DateTimeZone
      */
     protected function getDefaultDateTimeZone(): DateTimeZone
