@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.4.2
+
+- Apply user time-zone for correct display of formatted date-time values in content overview.
+
 ## 5.4.1
 
 - Added user time-zone for correct display of formatted date-time values.
