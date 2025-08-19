@@ -97,9 +97,14 @@ interface IContainer
     public function getFileStorage(): \H5PFileStorage;
 
     /**
-     * Returns the H5P kernel.
+     * Returns the H5P kernel which can be used for anything but exporting.
      */
     public function getKernel(): \H5PCore;
+
+    /**
+     * Returns the H5P kernel which can be used for exporting.
+     */
+    public function getExportKernel(): \H5PCore;
 
     // ================================================================
     // END 'h5p/h5p-core' classes

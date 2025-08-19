@@ -54,14 +54,14 @@ class ilH5PContentExporter
     /**
      * @var H5PCore
      */
-    protected $h5p_kernel;
+    protected $h5p_export_kernel;
 
     public function __construct(
         IContentRepository $content_repository,
         Filesystem $web_filesystem,
         Filesystem $storage_filesystem,
         ilXmlWriter $xml_writer,
-        H5PCore $h5p_kernel,
+        H5PCore $h5p_export_kernel,
         string $absolute_working_dir,
         string $relative_working_dir
     ) {
@@ -71,7 +71,7 @@ class ilH5PContentExporter
         $this->web_filesystem = $web_filesystem;
         $this->storage_filesystem = $storage_filesystem;
         $this->xml_writer = $xml_writer;
-        $this->h5p_kernel = $h5p_kernel;
+        $this->h5p_export_kernel = $h5p_export_kernel;
     }
 
     /**
@@ -120,9 +120,9 @@ class ilH5PContentExporter
      */
     protected function createH5pFile(int $content_id): string
     {
-        $export_file = $this->h5p_kernel->loadContent($content_id);
+        $export_file = $this->h5p_export_kernel->loadContent($content_id);
 
-        $this->h5p_kernel->filterParameters($export_file);
+        $this->h5p_export_kernel->filterParameters($export_file);
 
         return $export_file["slug"] . "-" . $export_file["id"] . ".h5p";
     }

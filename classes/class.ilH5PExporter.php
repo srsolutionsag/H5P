@@ -29,7 +29,7 @@ class ilH5PExporter extends ilXmlExporter
     /**
      * @var H5PCore
      */
-    protected $h5p_kernel;
+    protected $h5p_export_kernel;
 
     /**
      * cannot initialize ContentExporter here because the
@@ -47,7 +47,7 @@ class ilH5PExporter extends ilXmlExporter
         $this->web_filesystem = $DIC->filesystem()->web();
         $this->storage_filesystem = $DIC->filesystem()->storage();
         $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
-        $this->h5p_kernel = $plugin->getContainer()->getKernel();
+        $this->h5p_export_kernel = $plugin->getContainer()->getExportKernel();
     }
 
     /**
@@ -60,7 +60,7 @@ class ilH5PExporter extends ilXmlExporter
             $this->web_filesystem,
             $this->storage_filesystem,
             new ilXmlWriter(),
-            $this->h5p_kernel,
+            $this->h5p_export_kernel,
             $this->getAbsoluteExportDirectory(),
             $this->getRelativeExportDirectory()
         ))->exportAll((int) $a_id);

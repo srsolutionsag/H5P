@@ -264,13 +264,13 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
     protected function exportContent(): void
     {
         $content = $this->getRequestedContentOrAbort($this->get_request);
-        $content = $this->h5p_container->getKernel()->loadContent($content->getContentId());
+        $content = $this->h5p_container->getExportKernel()->loadContent($content->getContentId());
 
-        $this->h5p_container->getKernel()->filterParameters($content);
+        $this->h5p_container->getExportKernel()->filterParameters($content);
 
         $export_file = IContainer::H5P_STORAGE_DIR . "/exports/" . $content["slug"] . "-" . $content["id"] . ".h5p";
 
-        ilFileDelivery::deliverFileAttached($export_file, $content["slug"] . ".h5p");
+        ilFileDelivery::deliverFileAttached($export_file, $content["slug"] . ".h5p", null, true);
     }
 
     /**

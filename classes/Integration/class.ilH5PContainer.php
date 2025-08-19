@@ -60,6 +60,11 @@ class ilH5PContainer implements IContainer
     protected $h5p_kernel;
 
     /**
+     * @var H5PCore|null
+     */
+    protected $h5p_export_kernel;
+
+    /**
      * @var H5PEditorAjaxInterface|null
      */
     protected $h5p_editor_framework;
@@ -300,11 +305,29 @@ class ilH5PContainer implements IContainer
                 $this->getFileStorage(),
                 "./" . self::H5P_STORAGE_DIR, // we must use relative path here, since CssCollection::addItem does not support absolute paths
                 $this->dic->user()->getLanguage(),
-                true
+                false,
             );
         }
 
         return $this->h5p_kernel;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExportKernel(): H5PCore
+    {
+        if (null === $this->h5p_export_kernel) {
+            $this->h5p_export_kernel = new H5PCore(
+                $this->getKernelFramework(),
+                $this->getFileStorage(),
+                "./" . self::H5P_STORAGE_DIR, // we must use relative path here, since CssCollection::addItem does not support absolute paths
+                $this->dic->user()->getLanguage(),
+                true,
+            );
+        }
+
+        return $this->h5p_export_kernel;
     }
 
     /**
