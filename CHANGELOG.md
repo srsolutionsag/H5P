@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.3.5
+
+- Fixed an issue where H5P license information was not found for contents with embed-type "div".
+
 ## 6.3.4
 
 - Fixed an issue which has led to H5P export files being created when a content was rendered.
