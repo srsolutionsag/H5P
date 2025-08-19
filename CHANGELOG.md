@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.3.4
+
+- Fixed an issue which has led to H5P export files being created when a content was rendered.
+- Fixed an issue where H5P export files were not deleted after delivery.
+
 ## 6.3.3
 
 - Apply user time-zone for correct display of formatted date-time values in content overview.
