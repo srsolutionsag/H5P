@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 5.4.3
+
+- Fixed an issue where H5P license information was not found for contents with embed-type "div".
+
 ## 5.4.2
 
 - Apply user time-zone for correct display of formatted date-time values in content overview.
