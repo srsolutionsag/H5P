@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.3.6
+
+- Fixed an issue where H5P contents could be imported even though no library was installed and provided.
+- Fixed an issue where the H5P content import form could not display the proper file info (since there is none).
+
 ## 6.3.5
 
 - Fixed an issue where H5P license information was not found for contents with embed-type "div".
