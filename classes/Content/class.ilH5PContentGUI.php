@@ -253,7 +253,8 @@ class ilH5PContentGUI extends ilH5PAbstractGUI
         $this->setBackToManageContents();
 
         $this->render([
-            $form_processor->getProcessedForm(),
+            // do not display processed form; temporary files are already removed at this point.
+            $this->getImportContentForm(),
         ]);
     }
 

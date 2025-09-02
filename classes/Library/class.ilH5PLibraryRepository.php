@@ -450,7 +450,7 @@ class ilH5PLibraryRepository implements ILibraryRepository
             [$name, $major_version, $major_version, $minor_version]
         );
 
-        return ($result->fetchAssoc() !== false);
+        return ($result->fetchAssoc() !== null);
     }
 
     public function storeInstalledLibrary(ILibrary $library): void
