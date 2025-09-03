@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.3.7
+
+- Added some missing translations for when H5P libraries are missing or cannot be imported.
+
 ## 6.3.6
 
 - Fixed an issue where H5P contents could be imported even though no library was installed and provided.
