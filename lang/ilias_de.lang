@@ -222,3 +222,6 @@ low_score#:#Tiefste Punktzahl
 results_of#:#Resultate von
 export_results#:#Alle Resultate exportieren
 confirm_export_results#:#Sie sind davor ALLE Resultate zu exportieren. Dies könnte eine Weile dauern, möchten Sie fortfahren?
+missing_main_library#:#Der Inhalt konnte nicht erstellt werden, da folgende Bibliothek nicht installiert ist: @library
+missing_required_library#:#Der Inhalt konnte nicht erstellt werden, da folgende Bibliothek nicht installiert ist: @library
+library_upload_not_allowed#:#Der Inhalt konnte nicht erstellt werden, da ein oder mehrere Bibliotheken nicht installiert sind und keine Bibliothek(en) aus Inhalten importiert werden düfren.

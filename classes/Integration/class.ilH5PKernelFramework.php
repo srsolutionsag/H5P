@@ -1204,7 +1204,10 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
             "View copyright information for this content." => "view_content_copyright",
             "View the embed code for this content." => "view_embed_code",
             "Year" => "year",
-            "You'll be starting over." => "start_over"
+            "You'll be starting over." => "start_over",
+            "Missing main library @library" => "missing_main_library",
+            "Missing required library @library" => "missing_required_library",
+            "Note that the libraries may exist in the file you uploaded, but you're not allowed to upload new libraries. Contact the site administrator about this." => "library_upload_not_allowed",
         ];
 
         if (isset($messages_map[$message])) {

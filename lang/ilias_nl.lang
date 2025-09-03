@@ -222,4 +222,6 @@ low_score#:#Low-Score
 results_of#:#Results of
 export_results#:#Export all results
 confirm_export_results#:#You are about to export ALL results. This may take a while, do you want to proceed?
-
+missing_main_library#:#Could not create content because the following library is not installed: @library
+missing_required_library#:#Could not create content because the following library is not installed: @library
+library_upload_not_allowed#:#Could not create content because one or more libraries are not installed and it is not permitted to import them from contents.
