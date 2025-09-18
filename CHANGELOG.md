@@ -1,5 +1,11 @@
 # H5P Changelog
 
+## 6.3.8
+
+- Change format from JSON to base64 and ensure valid UTF-8 characters.
+- Fixes an issue where curly-braces and content inbetween has been stripped, leading to invalid Latex.
+- Fixes an issue where decoded base64 content was not properly encoded anymore, leading to broken unicode characters like umlauts. 
+
 ## 6.3.7
 
 - Added some missing translations for when H5P libraries are missing or cannot be imported.
