@@ -23,12 +23,15 @@ use ILIAS\UI\Component\Modal\Modal;
 use ILIAS\UI\Renderer as IRenderer;
 use ILIAS\UI\Factory as ComponentFactory;
 use srag\Plugins\H5P\IRequestParameters;
+use srag\Plugins\H5P\StringConversion;
 
 /**
  * @author Thibeau Fuhrer <thibeau@sr.solutions>
  */
 class Renderer extends DecoratedRenderer
 {
+    use StringConversion;
+
     /**
      * @var bool
      */
@@ -144,12 +147,12 @@ class Renderer extends DecoratedRenderer
         /** @var $enriched_modal Modal */
         $enriched_modal = $modal->withAdditionalOnLoadCode(
             function (string $id) use ($editor_integration, $component, $modal): string {
-                $editor_integration_base64 = base64_encode(json_encode($editor_integration->getData()));
+                $editor_integration_base64 = $this->stringToBase64(json_encode($editor_integration->getData()));
                 $js_chunk_size = (string) ($component->getContentChunkSize() ?? 'null');
                 $js_content_ids = $this->getContentIdsForJs($component->getContents());
                 $js_migration_parameter = IRequestParameters::MIGRATION_DATA;
                 $js_content_parameter = IRequestParameters::CONTENT_ID;
-                
+
                 return "
                     il.H5P.initMigrationModal(
                         '$id',
@@ -204,24 +207,25 @@ class Renderer extends DecoratedRenderer
                 // on clientside because the array itself already contains
                 // json-strings which cannot be parsed by javascript if
                 // encoded once more by PHP.
-                $content_parameters_json = $content_data['jsonContent'] ?? '{}';
+                $content_parameters_base64 = $this->stringToBase64($content_data['jsonContent'] ?? '{}');
                 unset($content_data['jsonContent']);
 
                 if (isset($content_data['contentUserData'][0]['state'])) {
-                    $previous_state_json = $content_data['contentUserData'][0]['state'];
+                    $previous_state_base64_or_null = $this->stringToBase64($content_data['contentUserData'][0]['state']);
+                    $previous_state_base64_or_null = "`$previous_state_base64_or_null`";
                     unset($content_data['contentUserData'][0]['state']);
                 } else {
-                    $previous_state_json = 'null';
+                    $previous_state_base64_or_null = 'null';
                 }
 
-                $content_integration = json_encode($content_data);
+                $content_integration_base64 = $this->stringToBase64(json_encode($content_data));
 
                 return "il.H5P.initContent(
                     '$id', 
                     $content_id,
-                    $content_integration,
-                    $content_parameters_json,
-                    $previous_state_json,
+                    `$content_integration_base64`,
+                    `$content_parameters_base64`,
+                    $previous_state_base64_or_null,
                 );";
             }
         );
@@ -259,8 +263,8 @@ class Renderer extends DecoratedRenderer
         $content_id = $this->getEditorContentIdForJs($component);
 
         $enriched_component = $component->withAdditionalOnLoadCode(
-            static function ($id) use ($editor_integration, $content_id): string {
-                $integration_base64 = base64_encode(json_encode($editor_integration->getData()));
+            function ($id) use ($editor_integration, $content_id): string {
+                $integration_base64 = $this->stringToBase64(json_encode($editor_integration->getData()));
                 return "il.H5P.initEditor('$id', `$integration_base64`, $content_id)";
             }
         );
@@ -272,7 +276,7 @@ class Renderer extends DecoratedRenderer
             // be decoded to a JSON string again, because otherwise this leads to
             // problems with hidden control-characters.
             if (H5PEditor::INPUT_CONTENT === $key && null !== $input->getValue()) {
-                $input = $input->withValue(base64_encode($input->getValue()));
+                $input = $input->withValue($this->stringToBase64($input->getValue()));
             }
 
             $template->setVariable(strtoupper($key), $this->render($input));
@@ -302,8 +306,8 @@ class Renderer extends DecoratedRenderer
 
         $kernel_integration = $this->client_data_provider->getKernelIntegration();
 
-        $kernel_data_base64 = base64_encode(json_encode($kernel_integration->getData()));
-        $kernel_data_base64 = "var H5PIntegration = JSON.parse(atob(`$kernel_data_base64`));";
+        $kernel_data_base64 = $this->stringToBase64(json_encode($kernel_integration->getData()));
+        $kernel_data_base64 = "var H5PIntegration = JSON.parse((new TextDecoder()).decode(Uint8Array.from(atob(`$kernel_data_base64`), (char) => char.charCodeAt(0))));";
 
         $this->registry
             ->registerBase64Content($kernel_data_base64)

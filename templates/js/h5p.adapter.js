@@ -47,7 +47,7 @@ H5P.preventInit = true;
 
       // convert the base64 encoded value to a JSON string again.
       if (content_json_input.value.length > 0) {
-        content_json_input.value = base64ToJsonString(content_json_input.value);
+        content_json_input.value = base64ToUtf8String(content_json_input.value);
       }
 
       // H5P will expect jQuery objects.
@@ -80,17 +80,17 @@ H5P.preventInit = true;
      *
      * @param {string} element_id
      * @param {number} content_id
-     * @param {object} content_integration
-     * @param {object} content_parameters
-     * @param {object|null} previous_state
+     * @param {string} content_integration_base64
+     * @param {string} content_parameters_base64
+     * @param {string|null} previous_state_base64
      * @throws {Error} if DOM elements are missing
      */
     let initContent = function (
       element_id,
       content_id,
-      content_integration,
-      content_parameters,
-      previous_state
+      content_integration_base64,
+      content_parameters_base64,
+      previous_state_base64
     ) {
       let content_wrapper = document.getElementById(element_id);
 
@@ -102,17 +102,18 @@ H5P.preventInit = true;
       H5PIntegration.loadedJs = H5PIntegration.loadedJs || [];
       H5PIntegration.loadedCss = H5PIntegration.loadedCss || [];
 
+      const content_integration = JSON.parse(base64ToUtf8String(content_integration_base64));
       H5PIntegration.contents[`cid-${content_id}`] = content_integration;
-      H5PIntegration.contents[`cid-${content_id}`].jsonContent = objectToJsonString(content_parameters);
+      H5PIntegration.contents[`cid-${content_id}`].jsonContent = base64ToUtf8String(content_parameters_base64);
 
       H5PIntegration.loadedJs = H5PIntegration.loadedJs.concat(content_integration.scripts);
       H5PIntegration.loadedCss = H5PIntegration.loadedCss.concat(content_integration.styles);
 
-      if (null !== previous_state) {
+      if (null !== previous_state_base64) {
         H5PIntegration
           .contents[`cid-${content_id}`]
           .contentUserData[0]
-          .state = objectToJsonString(previous_state);
+          .state = base64ToUtf8String(previous_state_base64);
       }
 
       // removes the message-box after the content is fully loaded.
@@ -249,7 +250,7 @@ H5P.preventInit = true;
      * @param {number|null} content_id
      */
     let registerEditorIntegration = function (integration_base64, content_id = null) {
-      H5PIntegration.editor = base64ToJsonObject(integration_base64);
+      H5PIntegration.editor = JSON.parse(base64ToUtf8String(integration_base64));
       if (null !== content_id) {
         H5PIntegration.editor.nodeVersionId = content_id;
       }
@@ -271,33 +272,14 @@ H5P.preventInit = true;
       }
 
       return result;
-    }
-
-    /**
-     * @param {string} base64
-     * @returns {string}
-     */
-    let base64ToJsonString = function (base64) {
-      // we have had issues in the past with invalid characters contained in our
-      // JSON strings, therefore we decode and re-encode the string to make sure
-      // we pass valid JSON to H5P.
-      return JSON.stringify(JSON.parse(atob(base64)));
     };
 
     /**
-     * @param {string} base64
-     * @returns {Object}
-     */
-    let base64ToJsonObject = function (base64) {
-      return JSON.parse(atob(base64));
-    };
-
-    /**
-     * @param {object} object
+     * @param {string} string
      * @returns {string}
      */
-    let objectToJsonString = function (object) {
-      return JSON.stringify(object);
+    let base64ToUtf8String = function (string) {
+      return (new TextDecoder()).decode(Uint8Array.from(atob(string), (char) => char.charCodeAt(0)));
     };
 
     // register content user data (state) handler inside the initial H5P kernel instance.
