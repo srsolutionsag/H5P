@@ -64,7 +64,34 @@ class ilH5PEventRepository implements IEventRepository
      */
     public function getEventsOlderThan(int $older_than): array
     {
-        return ilH5PEvent::where(["created_at" => $older_than], "<")->get();
+        $table_name = ilH5PEvent::TABLE_NAME;
+        $query = "
+            SELECT events.* FROM $table_name AS events
+                WHERE events.created_at < FROM_UNIXTIME(%d)
+            ;
+        ";
+
+        $query_results = $this->database->fetchAll(
+            $this->database->queryF(
+                $query,
+                ['integer'],
+                [$older_than]
+            )
+        );
+
+        // we need to flush the cache before using ActiveRecord::buildFromArray(),
+        // otherwise ActiveRecord will remember the empty DTO we needed to create
+        // in order to call this method.
+        arObjectCache::flush(ilH5PEvent::class);
+
+        $results = [];
+        foreach ($query_results as $query_result) {
+            $result = new ilH5PEvent();
+            $result->buildFromArray($query_result);
+            $results[] = $result;
+        }
+
+        return $results;
     }
 
     public function storeEvent(IEvent $event): void
