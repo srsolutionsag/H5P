@@ -1,5 +1,10 @@
 # H5P Changelog
 
+## 6.4.0
+
+- Adds weekly cron-job for deleting .h5p export files (requires H5PCron plugin).
+- Fixes an issue where old event logs were not properly fetched.
+
 ## 6.3.8
 
 - Change format from JSON to base64 and ensure valid UTF-8 characters.
