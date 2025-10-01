@@ -66,6 +66,9 @@ class ilH5PCronJobFactory implements ICronJobFactory
             case ilH5PDeleteOldMarkedFiles::CRON_JOB_ID:
                 return new ilH5PDeleteOldMarkedFiles($this->translator, $this->repositories->file(), $this->cron_manager, $this->log);
 
+            case ilH5PDeleteExportsJob::CRON_JOB_ID:
+                return new ilH5PDeleteExportsJob($this->translator, $this->cron_manager, $this->log);
+
             default:
                 return null;
         }
@@ -80,6 +83,7 @@ class ilH5PCronJobFactory implements ICronJobFactory
             $this->getInstance(ilH5PDeleteOldEventsJob::CRON_JOB_ID),
             $this->getInstance(ilH5PRefreshLibrariesJob::CRON_JOB_ID),
             $this->getInstance(ilH5PDeleteOldMarkedFiles::CRON_JOB_ID),
+            $this->getInstance(ilH5PDeleteExportsJob::CRON_JOB_ID),
         ];
     }
 }

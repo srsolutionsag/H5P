@@ -24,6 +24,7 @@ return array(
     'ilH5PContentRepository' => $baseDir . '/classes/Content/class.ilH5PContentRepository.php',
     'ilH5PContentUserData' => $baseDir . '/classes/Content/class.ilH5PContentUserData.php',
     'ilH5PCronJobFactory' => $baseDir . '/classes/Cron/class.ilH5PCronJobFactory.php',
+    'ilH5PDeleteExportsJob' => $baseDir . '/classes/Cron/class.ilH5PDeleteExportsJob.php',
     'ilH5PDeleteOldEventsJob' => $baseDir . '/classes/Cron/class.ilH5PDeleteOldEventsJob.php',
     'ilH5PDeleteOldMarkedFiles' => $baseDir . '/classes/Cron/class.ilH5PDeleteOldMarkedFiles.php',
     'ilH5PDisplayNameHelper' => $baseDir . '/classes/Util/trait.ilH5PDisplayNameHelper.php',

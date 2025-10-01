@@ -225,3 +225,5 @@ confirm_export_results#:#Sie sind davor ALLE Resultate zu exportieren. Dies kön
 missing_main_library#:#Der Inhalt konnte nicht erstellt werden, da folgende Bibliothek nicht installiert ist: @library
 missing_required_library#:#Der Inhalt konnte nicht erstellt werden, da folgende Bibliothek nicht installiert ist: @library
 library_upload_not_allowed#:#Der Inhalt konnte nicht erstellt werden, da ein oder mehrere Bibliotheken nicht installiert sind und keine Bibliothek(en) aus Inhalten importiert werden düfren.
+delete_exports#:#Export-Dateien löschen
+delete_exports_description#:#Löscht Export-Dateien (.h5p) die während einem Export nicht entfernt wurden (Abbruch, Fehler, etc.).

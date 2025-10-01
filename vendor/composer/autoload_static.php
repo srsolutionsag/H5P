@@ -63,6 +63,7 @@ class ComposerStaticInite17a264ac993b77db2105116364c37f1
         'ilH5PContentRepository' => __DIR__ . '/../..' . '/classes/Content/class.ilH5PContentRepository.php',
         'ilH5PContentUserData' => __DIR__ . '/../..' . '/classes/Content/class.ilH5PContentUserData.php',
         'ilH5PCronJobFactory' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PCronJobFactory.php',
+        'ilH5PDeleteExportsJob' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PDeleteExportsJob.php',
         'ilH5PDeleteOldEventsJob' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PDeleteOldEventsJob.php',
         'ilH5PDeleteOldMarkedFiles' => __DIR__ . '/../..' . '/classes/Cron/class.ilH5PDeleteOldMarkedFiles.php',
         'ilH5PDisplayNameHelper' => __DIR__ . '/../..' . '/classes/Util/trait.ilH5PDisplayNameHelper.php',
