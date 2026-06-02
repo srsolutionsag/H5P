@@ -304,7 +304,7 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         try {
             $curlConnection = new ilCurlConnection($url);
             $curlConnection->init();
-            
+
             $proxy = ilProxySettings::_getInstance();
             if (null !== $proxy && $proxy->isActive()) {
                 $curlConnection->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
@@ -1406,5 +1406,9 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     protected function getTemplate(): ilGlobalTemplateInterface
     {
         return $this->template;
+    }
+
+    public function resetHubOrganizationData(): void
+    {
     }
 }
