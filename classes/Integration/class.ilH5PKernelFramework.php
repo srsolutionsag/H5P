@@ -887,9 +887,9 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
         foreach ($content_type_cache->contentTypes as $content_type) {
             $library_hub_cache = new ilH5PHubLibrary();
             $library_hub_cache->setMachineName($content_type->id);
-            $library_hub_cache->setMajorVersion($content_type->version->major);
-            $library_hub_cache->setMinorVersion($content_type->version->minor);
-            $library_hub_cache->setPatchVersion($content_type->version->patch);
+            $library_hub_cache->setMajorVersion((int)$content_type->version->major);
+            $library_hub_cache->setMinorVersion((int)$content_type->version->minor);
+            $library_hub_cache->setPatchVersion((int)$content_type->version->patch);
             $library_hub_cache->setH5pMajorVersion($content_type->coreApiVersionNeeded->major);
             $library_hub_cache->setH5pMinorVersion($content_type->coreApiVersionNeeded->minor);
             $library_hub_cache->setTitle($content_type->title);
