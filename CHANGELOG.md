@@ -1,5 +1,15 @@
 # H5P Changelog
 
+## 6.5.0
+
+- Update H5P-Core and -Editor to the latest versions.
+- Add cron job to invalidate H5P content library cache.
+- Add filters for usages to H5P library overview.
+- Add content-id property to migration overview.
+- Add patches to H5P-Core and -Editor libraries.
+- Fix issue where H5P content was not properly updated during migration.
+- Fix issue where migration modal was not updated after migration ended.
+
 ## 6.4.0
 
 - Adds weekly cron-job for deleting .h5p export files (requires H5PCron plugin).
