@@ -11,23 +11,21 @@
     ),
     'versions' => array(
         'h5p/h5p-core' => array(
-            'pretty_version' => '1.27.0',
-            'version' => '1.27.0.0',
-            'reference' => '829524eaf81fe3f3a295d0e843812be4735f51fc',
+            'pretty_version' => '1.28.0',
+            'version' => '1.28.0.0',
+            'reference' => '2aeb0b83fa603e331381b3a6b8bf42c3773ba140',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-core',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'h5p/h5p-editor' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '0a88693b6bfd452f8854fc880496aac3fa983160',
+            'pretty_version' => '1.25',
+            'version' => '1.25.0.0',
+            'reference' => '53dc7bdc57b17f5a0d55a8871a36d1b1bd631e70',
             'type' => 'library',
             'install_path' => __DIR__ . '/../h5p/h5p-editor',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'srag/h5p' => array(
