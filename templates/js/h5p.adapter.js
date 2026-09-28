@@ -175,9 +175,7 @@ H5P.preventInit = true;
       $(document).on(start_migration_signal, () => {
         migration.handleMigrationBatches(content_batches)
           .then(() => {
-            il.UI.modal.replaceFromSignal(migration_modal_id, {
-              options: { url: finish_endpoint }
-            });
+            il.UI.core.replaceContent(migration_modal_id, finish_endpoint, 'component');
           })
           .catch((error) => {
             console.error(error);
