@@ -4539,7 +4539,7 @@ class H5PContentValidator {
         $this->h5pF->setErrorMessage($this->h5pF->t('Invalid selected option in select.'));
         $select = $semantics->options[0]->value;
       }
-      $select = htmlspecialchars($select, ENT_QUOTES, 'UTF-8', FALSE);
+      $select = htmlspecialchars((string) $select, ENT_QUOTES, 'UTF-8', FALSE);
     }
   }
 
