@@ -45,7 +45,9 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
     protected const FILTER_INPUT_UNUSED = 'only_not_used';
     protected const FILTER_INPUT_STATUS = 'status';
     protected const FILTER_INPUT_TITLE = 'title';
-
+    protected const FILTER_INPUT_CONTENT_USAGE_GREATER = 'content_usage_greater';
+    protected const FILTER_INPUT_CONTENT_USAGE_LESSER = 'content_usage_lesser';
+    protected const FILTER_INPUT_INSTALLED_LIBRARY_VERSIONS_GREATER = 'installed_library_versions_greater';
     protected const FILTER_STATUS_ALL = 'all';
 
     /**
@@ -314,8 +316,16 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
                         ),
                     ]
                 )->withValue(self::FILTER_STATUS_ALL),
+
+                self::FILTER_INPUT_CONTENT_USAGE_GREATER => $this->components->input()->field()->numeric(
+                    $this->translator->txt(self::FILTER_INPUT_CONTENT_USAGE_GREATER),
+                ),
+
+                self::FILTER_INPUT_INSTALLED_LIBRARY_VERSIONS_GREATER => $this->components->input()->field()->numeric(
+                    $this->translator->txt(self::FILTER_INPUT_INSTALLED_LIBRARY_VERSIONS_GREATER),
+                ),
             ],
-            [true, true],
+            [true, true, false, false],
             true,
             true
         );
@@ -347,7 +357,17 @@ class ilH5PLibraryGUI extends ilH5PAbstractGUI
                     $library->getStatus() === $filter_data[self::FILTER_INPUT_STATUS]
                 );
 
-                return ($matches_title && $matches_status);
+                $matches_content_usage_greater = (
+                    "" === $filter_data[self::FILTER_INPUT_CONTENT_USAGE_GREATER] ||
+                    $library->getNumberOfContentUsages() > (int) $filter_data[self::FILTER_INPUT_CONTENT_USAGE_GREATER]
+                );
+
+                $matches_installed_versions_greater = (
+                    "" === $filter_data[self::FILTER_INPUT_INSTALLED_LIBRARY_VERSIONS_GREATER] ||
+                    count($library->getInstalledLibraryVersionIds()) > (int) $filter_data[self::FILTER_INPUT_INSTALLED_LIBRARY_VERSIONS_GREATER]
+                );
+
+                return ($matches_title && $matches_status && $matches_content_usage_greater && $matches_installed_versions_greater);
             }
         );
     }

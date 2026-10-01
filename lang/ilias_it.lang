@@ -130,8 +130,8 @@ summary#:#Sommario
 thumbnail#:#Miniatura
 title#:#Titolo
 tutorial#:#Tutorial
-updated_library#:#Aggiornata la libreria H5P %d old 
-updated_libraries#:#Aggiornate le librerie H5P %d old 
+updated_library#:#Aggiornata la libreria H5P %d old
+updated_libraries#:#Aggiornate le librerie H5P %d old
 upgrade#:#Aggiornamento
 upgrade_available#:#Aggiornamento disponibile
 upload#:#Carica
@@ -227,3 +227,5 @@ missing_required_library#:#Could not create content because the following librar
 library_upload_not_allowed#:#Could not create content because one or more libraries are not installed and it is not permitted to import them from contents.
 delete_exports#:#Delete export files
 delete_exports_description#:#Delete export files (.h5p) which could not be removed during an export (cancel, error, etc.).
+content_usage_greater#:#Amount of contents (&gt;)
+installed_library_versions_greater#:#Amount of versions (&gt;)
