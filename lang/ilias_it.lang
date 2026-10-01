@@ -229,3 +229,4 @@ delete_exports#:#Delete export files
 delete_exports_description#:#Delete export files (.h5p) which could not be removed during an export (cancel, error, etc.).
 content_usage_greater#:#Amount of contents (&gt;)
 installed_library_versions_greater#:#Amount of versions (&gt;)
+content_id#:#Content id

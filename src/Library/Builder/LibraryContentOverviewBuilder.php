@@ -88,6 +88,7 @@ class LibraryContentOverviewBuilder extends AbstractLibraryComponentBuilder
                         $this->translator->txt('updated_at') => $this->getPrettyDateTimeString($this->getDateTimeByTimestamp($content->getUpdatedAt())),
                         $this->translator->txt('parent_type') => $content->getParentType(),
                         $this->translator->txt('parent_obj') => (string) $content->getObjId(),
+                        $this->translator->txt('content_id') => (string) $content->getContentId(),
                     ])
                 )->withFurtherFields([
                     $this->translator->txt('library') => $installed_library->getMachineName(),

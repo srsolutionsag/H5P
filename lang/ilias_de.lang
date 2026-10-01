@@ -229,3 +229,4 @@ delete_exports#:#Export-Dateien löschen
 delete_exports_description#:#Löscht Export-Dateien (.h5p) die während einem Export nicht entfernt wurden (Abbruch, Fehler, etc.).
 content_usage_greater#:#Anzahl Inhalte (&gt;)
 installed_library_versions_greater#:#Anzahl Versionen (&gt;)
+content_id#:#Inhalts-ID
