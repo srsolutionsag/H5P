@@ -91,34 +91,34 @@ class EditContentFormProcessor extends AbstractFormProcessor implements IPostPro
         /** @var $editor_data ContentEditorData */
         $editor_data = $post_data[EditContentFormBuilder::INPUT_CONTENT];
 
-        $previous_content = null;
+        $old_content = null;
         if (null !== ($content_id = $editor_data->getContentId()) && 0 !== $content_id) {
-            $previous_content = $this->h5p_kernel->loadContent($content_id);
-            $content['id'] = $content_id;
+            $old_content = $this->h5p_kernel->loadContent($content_id);
+            $new_content['id'] = $content_id;
         }
 
-        $previous_params = (null !== $previous_content) ? json_decode($previous_content['params']) : null;
-        $previous_library = (null !== $previous_content) ? $previous_content["library"] : null;
+        $old_params = (null !== $old_content) ? json_decode($old_content['params']) : null;
+        $old_library = (null !== $old_content) ? $old_content["library"] : null;
 
-        $content_json = json_decode($editor_data->getContentJson());
-        $content_json->metadata->parent_type = $this->parent_type;
-        $content_json->metadata->obj_id = $this->parent_obj_id;
-        $content_json->metadata->in_workspace = $this->in_workspace;
+        $new_content_json = json_decode($editor_data->getContentJson());
+        $new_content_json->metadata->parent_type = $this->parent_type;
+        $new_content_json->metadata->obj_id = $this->parent_obj_id;
+        $new_content_json->metadata->in_workspace = $this->in_workspace;
 
-        $content["params"] = json_encode($content_json->params);
-        $content["metadata"] = $content_json->metadata;
-        $content["library"] = $this->getLibraryOf($editor_data);
-        $content["id"] = $this->h5p_kernel->saveContent($content);
+        $new_content["params"] = json_encode($new_content_json->params);
+        $new_content["metadata"] = $new_content_json->metadata;
+        $new_content["library"] = $this->getLibraryOf($editor_data);
+        $new_content["id"] = $this->h5p_kernel->saveContent($new_content);
 
         $this->h5p_editor->processParameters(
-            $content['id'], // PHPDoc comment is wrong, the integer content-id is expected.
-            $content["library"],
-            $content_json->params,
-            $previous_library,
-            $previous_params
+            $new_content['id'], // PHPDoc comment is wrong, the integer content-id is expected.
+            $new_content["library"],
+            $new_content_json->params,
+            $old_library,
+            $old_params,
         );
 
-        $this->runProcessorsFor($content);
+        $this->runProcessorsFor($new_content);
     }
 
     protected function getLibraryOf(ContentEditorData $editor_data): array

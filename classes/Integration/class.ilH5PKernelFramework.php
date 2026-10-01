@@ -150,14 +150,13 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
     /**
      * @inheritDoc
      */
-    public function clearFilteredParameters($library_id): void
+    public function clearFilteredParameters($library_ids): void
     {
-        $h5p_contents = $this->content_repository->getContentsByLibrary((int) $library_id);
-
-        foreach ($h5p_contents as $h5p_content) {
-            $h5p_content->setFiltered("");
-
-            $this->content_repository->storeContent($h5p_content);
+        foreach ($library_ids as $library_id) {
+            foreach ($this->content_repository->getContentsByLibrary((int) $library_id) as $content) {
+                $content->setFiltered("");
+                $this->content_repository->storeContent($content);
+            }
         }
     }
 
@@ -1264,9 +1263,11 @@ class ilH5PKernelFramework implements H5PFrameworkInterface
 
         $metadata = (array) $content["metadata"];
 
-        // the library id may change due to content upgrades performed
-        // automatically by the H5P editor.
-        $h5p_content->setLibraryId((int) ($content["library"]["libraryId"] ?? $content["library"]["id"]));
+        // the library id may change due to content upgrades performed.
+        $possibly_new_library_id = (int) ($content["library"]["libraryId"] ?? $content["library"]["id"]);
+        if ($h5p_content->getLibraryId() !== $possibly_new_library_id) {
+            $h5p_content->setLibraryId($possibly_new_library_id);
+        }
 
         $h5p_content->setTitle($content['title'] ?? $metadata["title"] ?? "");
         $h5p_content->setParameters($content["params"]);

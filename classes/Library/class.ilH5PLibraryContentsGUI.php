@@ -180,27 +180,45 @@ class ilH5PLibraryContentsGUI extends ilH5PAbstractGUI
                 continue;
             }
 
-            $stored_library = $this->repositories->library()->getInstalledLibrary((int) $content['toLibraryId']);
-            if (null === $stored_library) {
+            $new_stored_library = $this->repositories->library()->getInstalledLibrary((int) $content['toLibraryId']);
+            if (null === $new_stored_library) {
                 continue;
             }
 
-            $stored_content = $this->h5p_container->getKernel()->loadContent((int) $content['contentId']);
-            if (empty($stored_content)) {
+            $old_stored_library = $this->repositories->library()->getInstalledLibrary((int) $content['fromLibraryId']);
+            if (null === $old_stored_library) {
                 continue;
             }
 
-            $migratedParams = json_decode($content['params']);
+            $old_content = $this->h5p_container->getKernel()->loadContent((int) $content['contentId']);
+            if (empty($old_content)) {
+                continue;
+            }
 
-            $stored_content['metadata'] = (array) $migratedParams->metadata;
-            $stored_content['params'] = json_encode($migratedParams->params);
-            $stored_content['filtered'] = '';
+            $old_params = json_decode($old_content['params']);
+            $old_library = $old_content["library"];
 
-            $stored_content['library']['id'] = $stored_library->getLibraryId();
-            $stored_content['library']['majorVersion'] = $stored_library->getMajorVersion();
-            $stored_content['library']['minorVersion'] = $stored_library->getMinorVersion();
+            $new_content_json = json_decode($content['params']);
 
-            $this->h5p_container->getKernel()->saveContent($stored_content);
+            $new_content['id'] = $old_content['id'];
+            $new_content["params"] = json_encode($new_content_json->params);
+            $new_content["metadata"] = $new_content_json->metadata;
+            $new_content['filtered'] = '';
+
+            $new_content['library']['libraryId'] = $new_stored_library->getLibraryId();
+            $new_content['library']['name'] = $new_stored_library->getMachineName();
+            $new_content['library']['majorVersion'] = $new_stored_library->getMajorVersion();
+            $new_content['library']['minorVersion'] = $new_stored_library->getMinorVersion();
+
+            $this->h5p_container->getKernel()->saveContent($new_content);
+
+            $this->h5p_container->getEditor()->processParameters(
+                $new_content['id'], // PHPDoc comment is wrong, the integer content-id is expected.
+                $new_content["library"],
+                $new_content_json->params,
+                $old_library,
+                $old_params,
+            );
         }
 
         $this->sendSuccess();

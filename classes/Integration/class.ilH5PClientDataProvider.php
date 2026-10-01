@@ -60,10 +60,10 @@ class ilH5PClientDataProvider implements IClientDataProvider
      */
     public function getContentIntegration(IContent $content, IContentUserData $current_state = null): ClientData
     {
-        $content_data = $copy = $this->h5p_kernel->loadContent($content->getContentId());
+        $content_data = $this->h5p_kernel->loadContent($content->getContentId());
 
         /** @var $json_content string */
-        $json_content = $this->h5p_kernel->filterParameters($copy);
+        $json_content = $this->h5p_kernel->filterParameters($content_data);
 
         $embed_type = \H5PCore::determineEmbedType(
             $content->getEmbedType(),

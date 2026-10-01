@@ -126,7 +126,7 @@ class ilH5PContent extends ActiveRecord implements IContent
      * @con_length       8
      * @con_is_notnull   true
      */
-    protected $library_id;
+    protected $library_id = 0;
 
     /**
      * @var string
