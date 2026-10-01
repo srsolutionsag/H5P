@@ -230,3 +230,5 @@ delete_exports_description#:#Löscht Export-Dateien (.h5p) die während einem Ex
 content_usage_greater#:#Anzahl Inhalte (&gt;)
 installed_library_versions_greater#:#Anzahl Versionen (&gt;)
 content_id#:#Inhalts-ID
+invalidate_content_library_cache#:#Inhalts-Bibliotheken-Cache invalidieren
+invalidate_content_library_cache_description#:#Invalidiert den globalen H5P Inhalts-Bibiliothek-Cache und forciert Anfragen zu H5P Inhalten diesen über Zeit neu zu erstellen.

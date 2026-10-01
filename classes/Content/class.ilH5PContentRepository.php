@@ -31,6 +31,12 @@ class ilH5PContentRepository implements IContentRepository
         $this->database = $database;
     }
 
+    public function getAllContents(): array
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return ilH5PContent::get();
+    }
+
     public function deleteContent(IContent $content): void
     {
         $this->abortIfNoActiveRecord($content);

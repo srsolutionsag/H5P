@@ -230,3 +230,5 @@ delete_exports_description#:#Delete export files (.h5p) which could not be remov
 content_usage_greater#:#Amount of contents (&gt;)
 installed_library_versions_greater#:#Amount of versions (&gt;)
 content_id#:#Content id
+invalidate_content_library_cache#:#Invalidate Content Library Cache
+invalidate_content_library_cache_description#:#Invalidates the global H5P content library cache and forces requests to H5P contents to lazily rebuild this over time.

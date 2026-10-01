@@ -8,6 +8,11 @@ namespace srag\Plugins\H5P\Content;
  */
 interface IContentRepository
 {
+    /**
+     * @return IContent[]
+     */
+    public function getAllContents(): array;
+
     public function getContent(int $content_id): ?IContent;
 
     public function getFirstContentOf(int $obj_id): ?IContent;
