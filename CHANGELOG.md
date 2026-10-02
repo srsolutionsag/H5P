@@ -1,5 +1,9 @@
 # H5P Changelog
 
+## 6.5.1
+
+- Revert fix for issue where H5P content was not properly updated during migration.
+
 ## 6.5.0
 
 - Update H5P-Core and -Editor to the latest versions.
